@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <title>Rééducation Hanche - Programme Complet</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #1a1a1a;
+            --bg-elevated: #242424;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-fire: #ff4500;
+            --accent-success: #00ff88;
+            --accent-warning: #ffa500;
+            --accent-danger: #ff1744;
+            --border: #333333;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 2px solid var(--accent-fire);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+            color: var(--accent-fire);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-fire), var(--accent-warning));
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .phase-badge.locked {
+            background: var(--border);
+            color: var(--text-secondary);
+        }
+
+        .week-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+        }
+
+        .week-btn {
+            padding: 0.75rem;
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .week-btn.active {
+            background: var(--accent-fire);
+            border-color: var(--accent-fire);
+            color: var(--text-primary);
+            transform: scale(1.05);
+        }
+
+        .week-btn.completed {
+            border-color: var(--accent-success);
+        }
+
+        .week-btn.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent-success);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+        }
+
+        .content {
+            padding: 1.5rem;
+        }
+
+        .session-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .session-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .session-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-fire);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .session-card.active::before {
+            transform: scaleX(1);
+        }
+
+        .session-card.active {
+            border-color: var(--accent-fire);
+        }
+
+        .session-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .session-progress {
+            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--accent-success);
+            font-weight: 600;
+        }
+
+        .exercise-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-card.completed {
+            border-color: var(--accent-success);
+        }
+
+        .exercise-card.pain {
+            border-color: var(--accent-danger);
+        }
+
+        .exercise-header {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .exercise-check {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-card.completed .exercise-check {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+        }
+
+        .exercise-card.pain .exercise-check {
+            background: var(--accent-danger);
+            border-color: var(--accent-danger);
+        }
+
+        .checkmark {
+            color: var(--bg-dark);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .exercise-info {
+            flex: 1;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .exercise-volume {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .exercise-expand {
+            color: var(--accent-fire);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .exercise-card.expanded .exercise-expand {
+            transform: rotate(180deg);
+        }
+
+        .exercise-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .exercise-card.expanded .exercise-details {
+            max-height: 1200px;
+        }
+
+        .exercise-content {
+            padding: 0 1.25rem 1.25rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .exercise-notes {
+            background: rgba(255, 69, 0, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            border-left: 3px solid var(--accent-fire);
+        }
+
+        .variant-box {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            border-left: 3px solid var(--accent-success);
+        }
+
+        .variant-label {
+            font-weight: 600;
+            color: var(--accent-success);
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-container {
+            background: var(--bg-elevated);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .timer-display {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-display.active {
+            color: var(--accent-fire);
+        }
+
+        .timer-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .timer-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--accent-fire);
+            border: none;
+            color: white;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn.secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+        }
+
+        .timer-btn:active {
+            transform: scale(0.95);
+        }
+
+        .weight-tracker {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--accent-success);
+            border-radius: 8px;
+        }
+
+        .weight-label {
+            font-size: 0.85rem;
+            color: var(--accent-success);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .weight-input {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .weight-input:focus {
+            outline: none;
+            border-color: var(--accent-success);
+        }
+
+        .pain-tracker {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 23, 68, 0.1);
+            border: 2px solid var(--accent-danger);
+            border-radius: 8px;
+        }
+
+        .pain-label {
+            font-size: 0.85rem;
+            color: var(--accent-danger);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .pain-levels {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+        }
+
+        .pain-btn {
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pain-btn.selected {
+            background: var(--accent-danger);
+            border-color: var(--accent-danger);
+            color: white;
+        }
+
+        .pain-btn.zero.selected {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+        }
+
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-fire);
+            color: white;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .video-link:active {
+            transform: scale(0.95);
+        }
+
+        .back-btn {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.98);
+            background: var(--bg-card);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            margin: 2rem 0 1rem;
+            color: var(--accent-fire);
+        }
+
+        .locked-message {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .locked-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .locked-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .progress-summary {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-success);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .progress-stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-success);
+        }
+
+        .calendar-view {
+            margin: 1.5rem 0;
+        }
+
+        .week-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .day-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-card.workout {
+            border-color: var(--accent-fire);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255, 69, 0, 0.1) 100%);
+        }
+
+        .day-card.rest {
+            border-color: var(--accent-success);
+            opacity: 0.7;
+        }
+
+        .day-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .day-session {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent-fire);
+            margin-bottom: 0.25rem;
+        }
+
+        .day-desc {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 480px) {
+            .week-calendar {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .day-card {
+                min-height: 80px;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Données du programme Phase 1
+        const phase1Data = {
+            warmup: {
+                title: "Échauffement & Bloc Correctif",
+                subtitle: "À faire AVANT chaque séance",
+                exercises: [
+                    {
+                        id: 'w1',
+                        name: 'Respiration par le ventre',
+                        objective: 'Calmer le stress',
+                        volume: '2 min au sol',
+                        execution: 'Allongé, les mollets posés sur une chaise pour relâcher le dos.',
+                        videoUrl: 'https://youtu.be/ZYGr38RoXyw'
+                    },
+                    {
+                        id: 'w2',
+                        name: 'Essuie-glaces au sol',
+                        objective: 'Débloquer la hanche',
+                        volume: '2 x 8 / côté',
+                        execution: 'Assis, genoux pliés, tu laisses tomber les deux genoux d\'un côté puis de l\'autre très lentement.',
+                        videoUrl: 'https://youtu.be/lxq41Y00cGQ'
+                    },
+                    {
+                        id: 'w3',
+                        name: 'Étirement mollet / cheville',
+                        objective: 'Souplesse cheville',
+                        volume: '2 x 10 / côté',
+                        execution: 'Face à un mur, un pied devant l\'autre, plie le genou avant en gardant le talon bien collé au sol.',
+                        videoUrl: 'https://youtu.be/qzWZAHA86AY'
+                    },
+                    {
+                        id: 'w4',
+                        name: 'Coussin entre les genoux',
+                        objective: 'Soigner la pubalgie',
+                        volume: '3 x 20 sec',
+                        execution: 'Allongé sur le dos, genoux pliés, serre un gros coussin entre tes genoux le plus fort possible sans que ça fasse mal.',
+                        videoUrl: 'https://youtu.be/Sk4Vcy7vJP4'
+                    },
+                    {
+                        id: 'w5',
+                        name: 'Ouverture de hanche (Palourde)',
+                        objective: 'Réveiller le fessier',
+                        volume: '3 x 15 / côté',
+                        execution: 'Allongé sur le côté, élastique autour des genoux, ouvre le genou du haut comme une coquille sans bouger le bassin.',
+                        videoUrl: 'https://youtu.be/Jdh54g8zKkA'
+                    }
+                ]
+            },
+            sessionA: {
+                title: "Séance A",
+                subtitle: "Force & Chaîne Postérieure",
+                exercises: [
+                    {
+                        id: 'a1',
+                        name: 'Soulevé de terre jambes tendues (Haltères)',
+                        volume: '4 x 10 - Pause 90 sec',
+                        execution: 'Dos droit, pousse les fesses en arrière pour tirer sur l\'arrière des cuisses.',
+                        variant: 'Avec la grande barre (Barbell) ou avec un gros élastique coincé sous tes pieds.',
+                        rest: 90,
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/WQqbhQdskR0'
+                    },
+                    {
+                        id: 'a2',
+                        name: 'Développé couché au sol (Haltères)',
+                        volume: '3 x 10 - Pause 90 sec',
+                        execution: 'Allongé par terre, tu pousses les poids vers le plafond.',
+                        variant: 'Des pompes classiques au sol (ajoute ton gilet lesté si les pompes sont trop faciles).',
+                        rest: 90,
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/5fvkl3bLle0'
+                    },
+                    {
+                        id: 'a3',
+                        name: 'Fentes vers l\'arrière (Poids du corps)',
+                        volume: '3 x 10 / jambe - Pause 60 sec',
+                        execution: 'Fais un pas en arrière pour protéger tes genoux.',
+                        variant: 'Monter sur une chaise solide ou un banc (Step-up), une jambe après l\'autre, tout doucement.',
+                        rest: 60,
+                        hasWeight: false,
+                        videoUrl: 'https://youtu.be/1l4xBBCAx_s'
+                    },
+                    {
+                        id: 'a4',
+                        name: 'Cardio : Balancier avec Kettlebell (Swing)',
+                        volume: '8 min EMOM - 10-12 reps',
+                        execution: '10 à 12 mouvements au début de chaque minute.',
+                        variant: 'Si le bas du dos fatigue, remplace par le "Pont fessier" au sol : lève le bassin vers le plafond rapidement, 15 fois par minute.',
+                        rest: 'reste de la minute',
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/YSxHifyI6s8'
+                    }
+                ]
+            },
+            sessionB: {
+                title: "Séance B",
+                subtitle: "Jambes & Dos",
+                exercises: [
+                    {
+                        id: 'b1',
+                        name: 'Squat avec un Kettlebell à la poitrine',
+                        volume: '4 x 10 - Pause 90 sec',
+                        execution: 'Descends lentement, genoux vers l\'extérieur.',
+                        variant: 'Squat classique au poids du corps si c\'est trop dur, ou squat avec tes haltères posés sur les épaules.',
+                        rest: 90,
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/qaQfNIdUEbE'
+                    },
+                    {
+                        id: 'b2',
+                        name: 'Tirage dos penché (Grande Barre)',
+                        volume: '4 x 10 - Pause 90 sec',
+                        execution: 'Dos penché en avant, tire la barre vers le nombril.',
+                        variant: 'Tirage à un bras (bûcheron) avec un haltère en appui sur une chaise, ou tirage avec l\'élastique accroché à une porte.',
+                        rest: 90,
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/T3N-TO4reLQ'
+                    },
+                    {
+                        id: 'b3',
+                        name: 'Mollets sur une marche (Un pied)',
+                        volume: '3 x 12 / jambe - Pause 60 sec',
+                        execution: 'Descends très bas pour étirer, monte très haut.',
+                        variant: 'Mollets au sol sur les deux pieds en même temps (plus facile pour l\'équilibre).',
+                        rest: 60,
+                        hasWeight: false,
+                        videoUrl: 'https://youtu.be/3bCraReG5o8'
+                    },
+                    {
+                        id: 'b4',
+                        name: 'Marche du fermier (Haltères lourds)',
+                        volume: '4 x 30 sec - Pause 60 sec',
+                        execution: 'Marche en serrant le ventre avec des poids lourds dans les mains.',
+                        variant: 'Faire la planche classique au sol (sur les coudes) si tu n\'as pas la place de marcher chez toi.',
+                        rest: 60,
+                        hasWeight: true,
+                        videoUrl: 'https://youtu.be/rt17lmnaLSM'
+                    }
+                ]
+            },
+            sessionC: {
+                title: "Séance C",
+                subtitle: "Mobilité & Récupération",
+                exercises: [
+                    {
+                        id: 'c1',
+                        name: 'Respiration Crocodile',
+                        volume: '2 minutes',
+                        execution: 'Allongé sur le ventre, front posé sur les mains. Gonfle ton ventre contre le sol en inspirant.',
+                        focus: 'Fait chuter le stress du système nerveux et détend le bas du dos.',
+                        videoUrl: 'https://youtu.be/ZYGr38RoXyw'
+                    },
+                    {
+                        id: 'c2',
+                        name: 'Chat / Vache',
+                        volume: '15 allers-retours',
+                        execution: 'À quatre pattes. Creuse le dos en regardant en l\'air (Vache), puis arrondis le dos au maximum en rentrant la tête (Chat).',
+                        focus: 'Lubrifie la colonne vertébrale et débloque le bassin.',
+                        videoUrl: 'https://youtu.be/kqnua4rHVVA'
+                    },
+                    {
+                        id: 'c3',
+                        name: 'La Grenouille (Frog Stretch)',
+                        volume: '2 minutes',
+                        execution: 'À quatre pattes, écarte les genoux le plus possible (comme une grenouille). Pousse doucement les fesses vers l\'arrière.',
+                        focus: 'Crucial : Étire les adducteurs en douceur sans agresser la pubalgie.',
+                        videoUrl: 'https://youtu.be/1bIKktGD8Po'
+                    },
+                    {
+                        id: 'c4',
+                        name: 'Essuie-glaces au sol',
+                        volume: '10 allers-retours',
+                        execution: 'Assis, mains derrière toi, pieds au sol plus larges que les épaules. Laisse tomber les deux genoux d\'un côté, puis de l\'autre.',
+                        focus: 'Redonne de la rotation à la hanche droite sans forcer dessus.',
+                        videoUrl: 'https://youtu.be/lxq41Y00cGQ'
+                    },
+                    {
+                        id: 'c5',
+                        name: 'Étirement du Psoas',
+                        volume: '1 min par côté',
+                        execution: 'Un genou au sol (position chevalier). Rentre le ventre, serre la fesse arrière et pousse le bassin vers l\'avant.',
+                        focus: 'Efface la raideur liée à la position assise prolongée.',
+                        videoUrl: 'https://youtu.be/lbozu0DPcYI'
+                    },
+                    {
+                        id: 'c6',
+                        name: 'L\'Alphabet (Chevilles)',
+                        volume: '1 alphabet par pied',
+                        execution: 'Assis au sol ou sur une chaise, lève un pied. Dessine les lettres de l\'alphabet de A à Z avec la pointe de ton pied.',
+                        focus: 'Fait travailler les petits muscles stabilisateurs de la cheville sans charge.',
+                        videoUrl: 'https://youtu.be/FhJxz3Z_nwE'
+                    }
+                ]
+            }
+        };
+
+        // Calendrier hebdomadaire
+        const weekCalendar = [
+            { day: 'Lun', session: 'A', desc: 'Force', type: 'workout' },
+            { day: 'Mar', session: '💤', desc: 'Repos', type: 'rest' },
+            { day: 'Mer', session: 'B', desc: 'Jambes & Dos', type: 'workout' },
+            { day: 'Jeu', session: '💤', desc: 'Repos', type: 'rest' },
+            { day: 'Ven', session: 'C', desc: 'Mobilité', type: 'workout' },
+            { day: 'Sam', session: '🧘', desc: 'Repos actif', type: 'rest' },
+            { day: 'Dim', session: '👨‍👩‍👧', desc: 'Famille', type: 'rest' }
+        ];
+
+        function App() {
+            const [currentPhase, setCurrentPhase] = useState(1);
+            const [currentWeek, setCurrentWeek] = useState(1);
+            const [currentView, setCurrentView] = useState('menu');
+            const [expandedExercises, setExpandedExercises] = useState({});
+            
+            // États sauvegardés dans localStorage
+            const [completedExercises, setCompletedExercises] = useState(() => {
+                const saved = localStorage.getItem('completedExercises');
+                return saved ? JSON.parse(saved) : {};
+            });
+            
+            const [weights, setWeights] = useState(() => {
+                const saved = localStorage.getItem('weights');
+                return saved ? JSON.parse(saved) : {};
+            });
+            
+            const [painLevels, setPainLevels] = useState(() => {
+                const saved = localStorage.getItem('painLevels');
+                return saved ? JSON.parse(saved) : {};
+            });
+
+            const [timers, setTimers] = useState({});
+            const [activeTimer, setActiveTimer] = useState(null);
+            const timerIntervals = useRef({});
+
+            // Sauvegarder dans localStorage
+            useEffect(() => {
+                localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+            }, [completedExercises]);
+
+            useEffect(() => {
+                localStorage.setItem('weights', JSON.stringify(weights));
+            }, [weights]);
+
+            useEffect(() => {
+                localStorage.setItem('painLevels', JSON.stringify(painLevels));
+            }, [painLevels]);
+
+            // Nettoyage des timers
+            useEffect(() => {
+                return () => {
+                    Object.values(timerIntervals.current).forEach(clearInterval);
+                };
+            }, []);
+
+            const toggleExercise = (exerciseId, week) => {
+                const key = `${exerciseId}-w${week}`;
+                setCompletedExercises(prev => ({
+                    ...prev,
+                    [key]: !prev[key]
+                }));
+            };
+
+            const toggleExpand = (exerciseId) => {
+                setExpandedExercises(prev => ({
+                    ...prev,
+                    [exerciseId]: !prev[exerciseId]
+                }));
+            };
+
+            const updateWeight = (exerciseId, week, weight) => {
+                const key = `${exerciseId}-w${week}`;
+                setWeights(prev => ({
+                    ...prev,
+                    [key]: weight
+                }));
+            };
+
+            const updatePainLevel = (exerciseId, week, level) => {
+                const key = `${exerciseId}-w${week}`;
+                setPainLevels(prev => ({
+                    ...prev,
+                    [key]: level
+                }));
+            };
+
+            const startTimer = (exerciseId, seconds) => {
+                if (activeTimer === exerciseId) {
+                    // Stop timer
+                    if (timerIntervals.current[exerciseId]) {
+                        clearInterval(timerIntervals.current[exerciseId]);
+                        delete timerIntervals.current[exerciseId];
+                    }
+                    setActiveTimer(null);
+                    setTimers(prev => ({...prev, [exerciseId]: seconds}));
+                    return;
+                }
+
+                // Start timer
+                setTimers(prev => ({...prev, [exerciseId]: seconds}));
+                setActiveTimer(exerciseId);
+
+                timerIntervals.current[exerciseId] = setInterval(() => {
+                    setTimers(prev => {
+                        const newTime = (prev[exerciseId] || seconds) - 1;
+                        if (newTime <= 0) {
+                            clearInterval(timerIntervals.current[exerciseId]);
+                            delete timerIntervals.current[exerciseId];
+                            setActiveTimer(null);
+                            return {...prev, [exerciseId]: 0};
+                        }
+                        return {...prev, [exerciseId]: newTime};
+                    });
+                }, 1000);
+            };
+
+            const resetTimer = (exerciseId, seconds) => {
+                if (timerIntervals.current[exerciseId]) {
+                    clearInterval(timerIntervals.current[exerciseId]);
+                    delete timerIntervals.current[exerciseId];
+                }
+                setActiveTimer(null);
+                setTimers(prev => ({...prev, [exerciseId]: seconds}));
+            };
+
+            const formatTime = (seconds) => {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            };
+
+            const getSessionProgress = (session) => {
+                if (!session.exercises) return 0;
+                const total = session.exercises.length;
+                const completed = session.exercises.filter(ex => 
+                    completedExercises[`${ex.id}-w${currentWeek}`]
+                ).length;
+                return Math.round((completed / total) * 100);
+            };
+
+            const isWeekCompleted = (week) => {
+                const sessions = [phase1Data.sessionA, phase1Data.sessionB, phase1Data.sessionC];
+                const allExercises = sessions.flatMap(s => s.exercises);
+                return allExercises.every(ex => completedExercises[`${ex.id}-w${week}`]);
+            };
+
+            const isPhase1Completed = () => {
+                // Vérifier que toutes les semaines 1-4 sont complétées SANS douleur
+                for (let week = 1; week <= 4; week++) {
+                    if (!isWeekCompleted(week)) return false;
+                    
+                    const sessions = [phase1Data.sessionA, phase1Data.sessionB, phase1Data.sessionC];
+                    const allExercises = sessions.flatMap(s => s.exercises);
+                    
+                    for (const ex of allExercises) {
+                        const painKey = `${ex.id}-w${week}`;
+                        const painLevel = painLevels[painKey];
+                        if (painLevel === undefined || painLevel > 0) {
+                            return false; // Douleur détectée ou pas d'info
+                        }
+                    }
+                }
+                return true;
+            };
+
+            const renderExercise = (exercise) => {
+                const exerciseKey = `${exercise.id}-w${currentWeek}`;
+                const isCompleted = completedExercises[exerciseKey];
+                const isExpanded = expandedExercises[exercise.id];
+                const currentWeight = weights[exerciseKey] || '';
+                const currentPain = painLevels[exerciseKey];
+                const hasPain = currentPain > 0;
+                const restSeconds = exercise.rest || 60;
+                const timerValue = timers[exercise.id] !== undefined ? timers[exercise.id] : restSeconds;
+
+                return (
+                    <div 
+                        key={exercise.id}
+                        className={`exercise-card ${isCompleted ? 'completed' : ''} ${hasPain ? 'pain' : ''} ${isExpanded ? 'expanded' : ''}`}
+                    >
+                        <div className="exercise-header" onClick={() => toggleExpand(exercise.id)}>
+                            <div 
+                                className="exercise-check"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleExercise(exercise.id, currentWeek);
+                                }}
+                            >
+                                {isCompleted && <span className="checkmark">✓</span>}
+                            </div>
+                            <div className="exercise-info">
+                                <div className="exercise-name">{exercise.name}</div>
+                                <div className="exercise-volume">{exercise.volume}</div>
+                            </div>
+                            <div className="exercise-expand">▼</div>
+                        </div>
+                        <div className="exercise-details">
+                            <div className="exercise-content">
+                                <div className="exercise-notes">
+                                    {exercise.execution}
+                                </div>
+
+                                {exercise.variant && (
+                                    <div className="variant-box">
+                                        <div className="variant-label">💡 Variante</div>
+                                        {exercise.variant}
+                                    </div>
+                                )}
+
+                                {exercise.focus && (
+                                    <div className="variant-box">
+                                        <div className="variant-label">🎯 Focus</div>
+                                        {exercise.focus}
+                                    </div>
+                                )}
+
+                                {exercise.rest && (
+                                    <div className="timer-container">
+                                        <div className={`timer-display ${activeTimer === exercise.id ? 'active' : ''}`}>
+                                            {formatTime(timerValue)}
+                                        </div>
+                                        <div className="timer-buttons">
+                                            <button 
+                                                className="timer-btn"
+                                                onClick={() => startTimer(exercise.id, restSeconds)}
+                                            >
+                                                {activeTimer === exercise.id ? '⏸ Pause' : '▶ Start'}
+                                            </button>
+                                            <button 
+                                                className="timer-btn secondary"
+                                                onClick={() => resetTimer(exercise.id, restSeconds)}
+                                            >
+                                                🔄 Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {exercise.hasWeight && (
+                                    <div className="weight-tracker">
+                                        <div className="weight-label">💪 Charge (Semaine {currentWeek})</div>
+                                        <input 
+                                            type="number" 
+                                            className="weight-input"
+                                            placeholder="Ex: 20 kg"
+                                            value={currentWeight}
+                                            onChange={(e) => updateWeight(exercise.id, currentWeek, e.target.value)}
+                                            onClick={(e) => e.stopPropagation()}
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="pain-tracker">
+                                    <div className="pain-label">🩺 Niveau de douleur hanche (0 = aucune)</div>
+                                    <div className="pain-levels">
+                                        {[0, 1, 2, 3, 4].map(level => (
+                                            <button
+                                                key={level}
+                                                className={`pain-btn ${level === 0 ? 'zero' : ''} ${currentPain === level ? 'selected' : ''}`}
+                                                onClick={() => updatePainLevel(exercise.id, currentWeek, level)}
+                                            >
+                                                {level}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <a 
+                                    href={exercise.videoUrl} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="video-link"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    ▶ Voir la vidéo démo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            const renderWorkout = (sessionKey) => {
+                const session = phase1Data[sessionKey];
+                const progress = getSessionProgress(session);
+
+                return (
+                    <div>
+                        <div className="workout-header" style={{
+                            background: 'linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-card) 100%)',
+                            border: '2px solid var(--accent-fire)',
+                            borderRadius: '16px',
+                            padding: '1.5rem',
+                            marginBottom: '1.5rem'
+                        }}>
+                            <div style={{
+                                fontFamily: 'Bebas Neue, sans-serif',
+                                fontSize: '2rem',
+                                letterSpacing: '1px',
+                                marginBottom: '0.5rem'
+                            }}>{session.title}</div>
+                            <div style={{
+                                color: 'var(--text-secondary)',
+                                fontSize: '0.9rem',
+                                marginBottom: '1rem'
+                            }}>{session.subtitle}</div>
+                            <div style={{
+                                width: '100%',
+                                height: '8px',
+                                background: 'var(--bg-dark)',
+                                borderRadius: '4px',
+                                overflow: 'hidden'
+                            }}>
+                                <div style={{
+                                    height: '100%',
+                                    width: `${progress}%`,
+                                    background: 'linear-gradient(90deg, var(--accent-fire), var(--accent-warning))',
+                                    transition: 'width 0.5s ease',
+                                    borderRadius: '4px'
+                                }}></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            {session.exercises.map(renderExercise)}
+                        </div>
+
+                        <button className="back-btn" onClick={() => setCurrentView('menu')}>
+                            ← Retour au menu
+                        </button>
+                    </div>
+                );
+            };
+
+            const renderMenu = () => {
+                const phase1Complete = isPhase1Completed();
+                const weekProgress = [1, 2, 3, 4].map(w => ({
+                    week: w,
+                    completed: isWeekCompleted(w)
+                }));
+
+                return (
+                    <div>
+                        <div className="section-title">📅 Planning Hebdomadaire</div>
+                        <div className="calendar-view">
+                            <div className="week-calendar">
+                                {weekCalendar.map((day, idx) => (
+                                    <div key={idx} className={`day-card ${day.type}`}>
+                                        <div className="day-name">{day.day}</div>
+                                        {day.type === 'workout' ? (
+                                            <>
+                                                <div className="day-session">{day.session}</div>
+                                                <div className="day-desc">{day.desc}</div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div style={{fontSize: '2rem', marginBottom: '0.25rem'}}>{day.session}</div>
+                                                <div className="day-desc">{day.desc}</div>
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {!phase1Complete && (
+                            <div className="progress-summary">
+                                <div className="section-title" style={{marginTop: 0}}>📊 Progression Phase 1</div>
+                                {weekProgress.map(({week, completed}) => (
+                                    <div key={week} className="progress-stat">
+                                        <span className="stat-label">Semaine {week}</span>
+                                        <span className="stat-value" style={{color: completed ? 'var(--accent-success)' : 'var(--text-secondary)'}}>
+                                            {completed ? '✓ Complète' : 'En cours'}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {phase1Complete && (
+                            <div className="progress-summary">
+                                <div className="section-title" style={{marginTop: 0}}>🎉 Phase 1 Terminée !</div>
+                                <div style={{textAlign: 'center', padding: '1rem 0'}}>
+                                    <div style={{fontSize: '3rem', marginBottom: '1rem'}}>🔓</div>
+                                    <div style={{color: 'var(--accent-success)', fontSize: '1.2rem', fontWeight: 600}}>
+                                        Phase 2 débloquée !
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="section-title">🏋️ Séances d'entraînement</div>
+                        <div className="session-nav">
+                            <div 
+                                className={`session-card ${currentView === 'warmup' ? 'active' : ''}`}
+                                onClick={() => setCurrentView('warmup')}
+                            >
+                                <div className="session-label">🔥</div>
+                                <div className="session-desc">Échauffement</div>
+                                <div className="session-progress">
+                                    {getSessionProgress(phase1Data.warmup)}% complété
+                                </div>
+                            </div>
+
+                            <div 
+                                className={`session-card ${currentView === 'sessionA' ? 'active' : ''}`}
+                                onClick={() => setCurrentView('sessionA')}
+                            >
+                                <div className="session-label">A</div>
+                                <div className="session-desc">Force & Poussée</div>
+                                <div className="session-progress">
+                                    {getSessionProgress(phase1Data.sessionA)}% complété
+                                </div>
+                            </div>
+
+                            <div 
+                                className={`session-card ${currentView === 'sessionB' ? 'active' : ''}`}
+                                onClick={() => setCurrentView('sessionB')}
+                            >
+                                <div className="session-label">B</div>
+                                <div className="session-desc">Jambes & Dos</div>
+                                <div className="session-progress">
+                                    {getSessionProgress(phase1Data.sessionB)}% complété
+                                </div>
+                            </div>
+
+                            <div 
+                                className={`session-card ${currentView === 'sessionC' ? 'active' : ''}`}
+                                onClick={() => setCurrentView('sessionC')}
+                            >
+                                <div className="session-label">C</div>
+                                <div className="session-desc">Mobilité</div>
+                                <div className="session-progress">
+                                    {getSessionProgress(phase1Data.sessionC)}% complété
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>💪 Rééducation Hanche</h1>
+                        <div className={`phase-badge ${currentPhase === 2 && !isPhase1Completed() ? 'locked' : ''}`}>
+                            Phase {currentPhase} {currentPhase === 2 && !isPhase1Completed() ? '🔒' : ''}
+                        </div>
+                        <div className="week-selector">
+                            {[1, 2, 3, 4].map(week => (
+                                <button
+                                    key={week}
+                                    className={`week-btn ${currentWeek === week ? 'active' : ''} ${isWeekCompleted(week) ? 'completed' : ''}`}
+                                    onClick={() => setCurrentWeek(week)}
+                                >
+                                    S{week}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="content">
+                        {currentView === 'menu' && renderMenu()}
+                        {currentView === 'warmup' && renderWorkout('warmup')}
+                        {currentView === 'sessionA' && renderWorkout('sessionA')}
+                        {currentView === 'sessionB' && renderWorkout('sessionB')}
+                        {currentView === 'sessionC' && renderWorkout('sessionC')}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
