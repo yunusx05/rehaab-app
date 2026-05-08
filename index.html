@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Rehaab</title>
@@ -12,177 +12,231 @@
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
-:root{--bg:#000;--card:#111;--card2:#1a1a1a;--border:#222;--text:#fff;--muted:#555;--sub:#888;--accent:#E8FF47;--red:#ff453a;--green:#30d158;--orange:#ff9f0a;--radius:20px;--radius-sm:14px;}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:3rem;}
+:root{--bg:#000;--card:#111;--card2:#1a1a1a;--border:#222;--text:#fff;--muted:#555;--sub:#888;--accent:#E8FF47;--red:#ff453a;--green:#30d158;--orange:#ff9f0a;--radius:20px;--radius-sm:14px}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:5rem}
 
-/* HEADER */
-.header{padding:3rem 1.5rem 1.25rem;background:var(--bg);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem;}
-.title{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1;}
-.title span{color:var(--accent);}
-.phase-pill{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:0.4rem 1rem;font-size:0.75rem;font-weight:600;color:var(--sub);letter-spacing:0.5px;}
-.phase-pill.p2{background:var(--accent);color:#000;border-color:var(--accent);}
-.week-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
-.week-row::-webkit-scrollbar{display:none;}
-.week-btn{flex-shrink:0;width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:12px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Syne',sans-serif;}
-.week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.05);box-shadow:0 6px 20px rgba(232,255,71,0.3);}
+.header{padding:3rem 1.5rem 1.25rem;background:var(--bg);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border)}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem}
+.title{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1}
+.title span{color:var(--accent)}
+.phase-pill{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:.4rem 1rem;font-size:.75rem;font-weight:600;color:var(--sub)}
+.phase-pill.p2{background:var(--accent);color:#000;border-color:var(--accent)}
+.week-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.week-row::-webkit-scrollbar{display:none}
+.week-btn{flex-shrink:0;width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif}
+.week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.05);box-shadow:0 6px 20px rgba(232,255,71,.3)}
 
-/* STATS */
-.section{padding:1.5rem 1.5rem 0;}
-.section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;}
-.stat-card-label{font-size:0.8rem;color:var(--sub);font-weight:500;margin-bottom:0.5rem;}
-.stat-card-value{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1.5px;}
-.stat-card-value span{font-size:1rem;color:var(--sub);font-weight:500;margin-left:2px;letter-spacing:0;}
-.stat-card-sub{font-size:0.75rem;color:var(--muted);margin-top:0.25rem;}
+.section{padding:1.5rem 1.5rem 0}
+.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.stat-card-label{font-size:.8rem;color:var(--sub);font-weight:500;margin-bottom:.5rem}
+.stat-card-value{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1.5px}
+.stat-card-value span{font-size:1rem;color:var(--sub);font-weight:500;margin-left:2px;letter-spacing:0}
+.stat-card-sub{font-size:.75rem;color:var(--muted);margin-top:.25rem}
 
-/* CALENDAR */
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;}
-.day-card{aspect-ratio:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all 0.25s cubic-bezier(.4,0,.2,1);position:relative;}
-.day-card.workout:active{transform:scale(0.92);}
-.day-card.today-w{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
-.day-card.rest{opacity:0.25;cursor:default;}
-.day-name{font-size:0.6rem;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;color:var(--muted);margin-bottom:4px;}
-.day-card.today-w .day-name{color:var(--accent);}
-.day-letter{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;}
-.done-dot{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--green);}
+.today-card{background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);padding:1.25rem;display:flex;align-items:center;gap:1.25rem;cursor:pointer;transition:all .2s;margin-bottom:1rem}
+.today-card:active{transform:scale(.98)}
+.today-letter{width:50px;height:50px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;flex-shrink:0}
+.today-info{flex:1}
+.today-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:.25rem}
+.today-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.today-sub{font-size:.8rem;color:var(--sub);margin-top:.15rem}
 
-/* SESSIONS */
-.session-list{display:flex;flex-direction:column;gap:10px;}
-.session-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1.25rem;cursor:pointer;transition:all 0.2s;}
-.session-row:active{transform:scale(0.98);background:var(--card2);}
-.session-row.today{border-color:var(--accent);}
-.s-num{width:44px;height:44px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;flex-shrink:0;}
-.session-row.today .s-num{background:var(--accent);color:#000;}
-.s-info{flex:1;}
-.s-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:0.2rem;}
-.s-day{font-size:0.8rem;color:var(--sub);}
-.s-arrow{color:var(--muted);font-size:1.4rem;}
-.s-check{color:var(--green);font-size:1.3rem;font-weight:700;}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day-card{aspect-ratio:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;position:relative}
+.day-card.workout:active{transform:scale(.92)}
+.day-card.today-w{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.day-card.rest{opacity:.25;cursor:default}
+.day-name{font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.day-card.today-w .day-name{color:var(--accent)}
+.day-letter{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.done-dot{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--green)}
 
-/* WORKOUT VIEW */
-.workout-view{animation:fadeUp 0.3s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-.topbar{padding:1.5rem 1.5rem 0;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
-.back-btn{width:40px;height:40px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:all 0.2s;}
-.back-btn:active{transform:scale(0.9);}
-.topbar-info{}
-.topbar-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;}
-.topbar-sub{font-size:0.8rem;color:var(--sub);}
+.session-list{display:flex;flex-direction:column;gap:10px}
+.session-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1.25rem;cursor:pointer;transition:all .2s}
+.session-row:active{transform:scale(.98);background:var(--card2)}
+.session-row.today{border-color:var(--accent)}
+.s-num{width:44px;height:44px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;flex-shrink:0}
+.session-row.today .s-num{background:var(--accent);color:#000}
+.s-info{flex:1}
+.s-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
+.s-day{font-size:.8rem;color:var(--sub)}
+.s-arrow{color:var(--muted);font-size:1.4rem}
+.s-check{color:var(--green);font-size:1.3rem;font-weight:700}
 
-.workout-hero{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
-.workout-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);}
-.hero-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:0.3rem;}
-.hero-sub{color:var(--sub);font-size:0.9rem;font-weight:500;margin-bottom:1rem;}
-.hero-tags{display:flex;gap:8px;flex-wrap:wrap;}
-.hero-tag{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:0.35rem 0.85rem;font-size:0.75rem;font-weight:600;color:var(--sub);}
-.prog-bar-wrap{background:var(--card2);border-radius:100px;height:4px;overflow:hidden;margin-top:1rem;}
-.prog-bar-fill{height:100%;background:var(--accent);border-radius:100px;transition:width 0.6s ease;}
+.workout-view{animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.topbar{padding:1.5rem 1.5rem 0;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.back-btn{width:40px;height:40px;background:var(--card);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:all .2s;color:var(--text)}
+.back-btn:active{transform:scale(.9)}
+.topbar-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem}
+.topbar-sub{font-size:.8rem;color:var(--sub)}
 
-/* EXERCISES */
-.ex-section{padding:0 1.5rem;}
-.ex-sec-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;padding-left:0.25rem;}
-.ex-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color 0.3s;}
-.ex-card.done{border-color:var(--green);}
-.ex-card.expanded{border-color:var(--accent);}
-.ex-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;cursor:pointer;}
-.check{width:32px;height:32px;flex-shrink:0;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.25s;font-size:1rem;}
-.ex-card.done .check{background:var(--green);border-color:var(--green);color:#000;font-weight:700;}
-.ex-main{flex:1;min-width:0;}
-.ex-name{font-weight:600;font-size:0.97rem;line-height:1.3;margin-bottom:0.25rem;}
-.ex-vol{font-size:0.8rem;color:var(--accent);font-weight:700;}
-.ex-chev{color:var(--muted);font-size:1rem;transition:transform 0.3s;flex-shrink:0;}
-.ex-card.expanded .ex-chev{transform:rotate(180deg);}
-.ex-details{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(.4,0,.2,1);border-top:1px solid transparent;}
-.ex-card.expanded .ex-details{max-height:1200px;border-top-color:var(--border);}
-.ex-body{padding:1.25rem;display:flex;flex-direction:column;gap:1rem;}
-.ex-desc{font-size:0.88rem;color:var(--sub);line-height:1.6;}
-.variant-box{background:var(--card2);border-left:3px solid var(--orange);border-radius:12px;padding:1rem;}
-.variant-tag{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--orange);margin-bottom:0.4rem;}
-.variant-text{font-size:0.85rem;color:var(--sub);line-height:1.5;}
+.workout-hero{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.workout-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
+.hero-title{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-1px;margin-bottom:.3rem}
+.hero-sub{color:var(--sub);font-size:.9rem;font-weight:500;margin-bottom:1rem}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+.hero-tag{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--sub)}
+.prog-wrap{background:var(--card2);border-radius:100px;height:4px;overflow:hidden;margin-top:1rem}
+.prog-fill{height:100%;background:var(--accent);border-radius:100px;transition:width .6s ease}
 
-/* TIMER */
-.timer-box{background:var(--card2);border-radius:var(--radius-sm);padding:1.25rem;text-align:center;}
-.timer-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.75rem;}
-.timer-digits{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;letter-spacing:-2px;margin-bottom:1rem;transition:color 0.3s;}
-.timer-digits.running{color:var(--accent);}
-.timer-digits.done{color:var(--green);}
-.timer-btns{display:flex;gap:8px;}
-.t-btn{flex:1;background:var(--border);border:none;color:var(--text);padding:0.85rem;border-radius:12px;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
-.t-btn.go{background:var(--accent);color:#000;}
-.t-btn:active{transform:scale(0.95);opacity:0.8;}
+.ex-section{padding:0 1.5rem}
+.ex-sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;padding-left:.25rem;margin-top:1.5rem}
+.ex-sec-label:first-child{margin-top:0}
+.ex-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color .3s}
+.ex-card.done{border-color:var(--green)}
+.ex-card.expanded{border-color:var(--accent)}
+.ex-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;cursor:pointer}
+.check{width:32px;height:32px;flex-shrink:0;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:1rem}
+.ex-card.done .check{background:var(--green);border-color:var(--green);color:#000;font-weight:700}
+.ex-main{flex:1;min-width:0}
+.ex-name{font-weight:600;font-size:.97rem;line-height:1.3;margin-bottom:.25rem}
+.ex-vol{font-size:.8rem;color:var(--accent);font-weight:700}
+.ex-chev{color:var(--muted);font-size:1rem;transition:transform .3s;flex-shrink:0}
+.ex-card.expanded .ex-chev{transform:rotate(180deg)}
+.ex-details{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);border-top:1px solid transparent}
+.ex-card.expanded .ex-details{max-height:1200px;border-top-color:var(--border)}
+.ex-body{padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.ex-desc{font-size:.88rem;color:var(--sub);line-height:1.6}
+.variant-box{background:var(--card2);border-left:3px solid var(--orange);border-radius:12px;padding:1rem}
+.variant-tag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);margin-bottom:.4rem}
+.variant-text{font-size:.85rem;color:var(--sub);line-height:1.5}
 
-/* WEIGHT */
-.weight-box{background:var(--card2);border-radius:var(--radius-sm);padding:1.25rem;}
-.w-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.75rem;}
-.w-row{display:flex;align-items:center;gap:8px;}
-.w-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:0.9rem 1rem;border-radius:12px;font-size:1.2rem;font-weight:700;font-family:'Syne',sans-serif;transition:border-color 0.2s;}
-.w-input:focus{outline:none;border-color:var(--accent);}
-.w-unit{font-size:0.9rem;color:var(--sub);font-weight:600;}
-.w-history{display:flex;gap:6px;margin-top:0.75rem;flex-wrap:wrap;}
-.w-badge{background:var(--card);border:1px solid var(--border);padding:0.3rem 0.6rem;border-radius:8px;font-size:0.75rem;font-weight:600;color:var(--sub);}
-.w-badge.cur{border-color:var(--accent);color:var(--accent);}
+.timer-box{background:var(--card2);border-radius:var(--radius-sm);padding:1.25rem;text-align:center}
+.timer-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.75rem}
+.timer-digits{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;letter-spacing:-2px;margin-bottom:1rem;transition:color .3s}
+.timer-digits.running{color:var(--accent)}
+.timer-digits.done{color:var(--green)}
+.timer-btns{display:flex;gap:8px}
+.t-btn{flex:1;background:var(--border);border:none;color:var(--text);padding:.85rem;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.t-btn.go{background:var(--accent);color:#000}
+.t-btn:active{transform:scale(.95);opacity:.8}
 
-/* VIDEO */
-.video-btn{display:flex;align-items:center;justify-content:center;gap:0.5rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.9rem;text-decoration:none;color:var(--text);font-weight:600;font-size:0.9rem;transition:all 0.2s;}
-.video-btn:active{background:var(--border);transform:scale(0.98);}
+.weight-box{background:var(--card2);border-radius:var(--radius-sm);padding:1.25rem}
+.w-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.75rem}
+.w-row{display:flex;align-items:center;gap:8px}
+.w-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.9rem 1rem;border-radius:12px;font-size:1.2rem;font-weight:700;font-family:'Syne',sans-serif;transition:border-color .2s}
+.w-input:focus{outline:none;border-color:var(--accent)}
+.w-unit{font-size:.9rem;color:var(--sub);font-weight:600}
+.w-history{display:flex;gap:6px;margin-top:.75rem;flex-wrap:wrap}
+.w-badge{background:var(--card);border:1px solid var(--border);padding:.3rem .6rem;border-radius:8px;font-size:.75rem;font-weight:600;color:var(--sub)}
+.w-badge.cur{border-color:var(--accent);color:var(--accent)}
+
+.video-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem;text-decoration:none;color:var(--text);font-weight:600;font-size:.9rem;transition:all .2s}
+.video-btn:active{background:var(--border);transform:scale(.98)}
+
+/* RECOVERY */
+.recov-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.75rem}
+.recov-name{font-weight:600;font-size:.95rem;margin-bottom:.35rem}
+.recov-desc{font-size:.85rem;color:var(--sub);line-height:1.5}
+.recov-vol{font-size:.8rem;color:var(--accent);font-weight:700;margin-top:.35rem}
+
+/* BILAN */
+.bilan-test{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.bilan-test-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
+.bilan-test-desc{font-size:.85rem;color:var(--sub);line-height:1.5;margin-bottom:1rem}
+.pain-scale{display:flex;gap:4px;flex-wrap:wrap}
+.pain-btn{width:36px;height:36px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--sub);font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.pain-btn.sel-green{background:var(--green);border-color:var(--green);color:#000}
+.pain-btn.sel-orange{background:var(--orange);border-color:var(--orange);color:#000}
+.pain-btn.sel-red{background:var(--red);border-color:var(--red);color:#fff}
+.bilan-result{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:1rem;text-align:center}
+.bilan-zone{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding:.5rem 0 env(safe-area-inset-bottom,.5rem)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);font-size:.65rem;font-weight:600;cursor:pointer;padding:.5rem;transition:color .2s}
+.nav-btn.active{color:var(--accent)}
+.nav-icon{font-size:1.3rem}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef} = React;
+const {useState,useEffect,useRef,useCallback} = React;
 
+// ── AUDIO ────
+function playBeep(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    [0,.15,.3].forEach(d=>{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=880;o.type='square';
+      g.gain.value=.15;
+      o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.1);
+    });
+  }catch(e){}
+}
+
+// ── DATA ─────
 const WARMUP=[
-  {id:'w1',name:'Respiration par le ventre',volume:'2 min',desc:'Calmer le corps. Allongé sur le dos, gonfle ton ventre en respirant profondément.',variant:'Allongé, jambes posées sur une chaise pour relâcher le dos.'},
-  {id:'w2',name:'Essuie-glaces au sol',volume:'2 x 8 / côté',desc:'Débloquer la hanche. Assis, laisse tomber les deux genoux d\'un côté puis de l\'autre très lentement.',variant:'Amplitude très petite si douleur.'},
-  {id:'w3',name:'Étirement cheville au mur',volume:'2 x 10 / pied',desc:'Assouplir pour protéger le genou. Pied avant plié, talon bien collé au sol.',variant:'Debout sur une marche, laisse descendre le talon.'},
-  {id:'w4',name:'Coussin entre les genoux',volume:'3 x 20 sec',desc:'Soigner l\'intérieur des cuisses. Allongé, serre un coussin très fort sans que ça fasse mal.',variant:'Mettre un ballon ou utiliser un élastique.'},
-  {id:'w5',name:'Ouverture coquillage',volume:'3 x 15 / côté',desc:'Réveiller le fessier. Allongé sur le côté, ouvre le genou du haut vers le plafond.',variant:'Ajouter un élastique autour des genoux.'},
+  {id:'w1',name:'Respiration Ventrale',volume:'2 min',rest:120,desc:'Allongé au sol. Calme le système nerveux et relâche la pression du dos.'},
+  {id:'w2',name:'Coussin entre les genoux',volume:'3 x 20 sec',rest:20,desc:'Allongé, serre un coussin ferme le plus fort possible. Bétonne l\'intérieur des cuisses.'},
+  {id:'w3',name:'Ouverture Coquillage',volume:'3 x 15 / côté',rest:30,desc:'Élastique aux genoux. Allongé sur le côté, ouvre le genou vers le plafond. Bloque 3 secondes en haut en serrant la fesse.'},
+  {id:'w4',name:'Pas Latéraux (Défense)',volume:'3 x 15 / côté',rest:30,desc:'Élastique aux genoux. Posture de basketteur. Petits pas lents de côté. Ça doit brûler fort sur le côté de la fesse.'},
+  {id:'w5',name:'Étirement Cheville',volume:'2 x 10 / pied',rest:30,desc:'Face au mur. Assouplit la cheville pour que le genou et la hanche travaillent dans le bon axe.'},
+];
+
+const RECOVERY=[
+  {name:'Respiration Crocodile',volume:'2 min',desc:'Sur le ventre, front sur les mains. Gonfle le ventre contre le sol en inspirant.'},
+  {name:'Chat / Vache',volume:'15 allers-retours',desc:'À quatre pattes, arrondis puis creuse le dos très lentement.'},
+  {name:'La Grenouille',volume:'2 min',desc:'À quatre pattes, genoux très écartés. Pousse les fesses en arrière pour étirer l\'intérieur des cuisses.'},
+  {name:'Essuie-glaces au sol',volume:'10 allers-retours',desc:'Assis, laisse tomber les genoux d\'un côté puis de l\'autre.'},
+  {name:'Étirement Psoas',volume:'1 min / jambe',desc:'Un genou au sol, avance le bassin. Serre la fesse arrière.'},
+  {name:'Alphabet Chevilles',volume:'1 fois / pied',desc:'Dessine les lettres de A à Z avec la pointe du pied.'},
+];
+
+const BILAN_TESTS=[
+  {id:'squeeze',name:'1. Squeeze Test',target:'Pubalgie / Adducteurs',desc:'Allongé sur le dos, genoux pliés. Place tes poings entre les genoux. Serre progressivement jusqu\'à 100% pendant 5 sec. Où est la douleur ? Aine, pubis, ou juste fatigue ?'},
+  {id:'trendelenburg',name:'2. Trendelenburg Statique',target:'Moyen fessier / Hanche',desc:'Debout, lève la jambe gauche, tiens 30 sec sur la droite. Bassin droit, hanche ne sort pas. Ça pique ou brûle sur le côté de la fesse ? Irradiation vers le genou ?'},
+  {id:'rotation',name:'3. Rotation Interne Assise',target:'Articulation hanche',desc:'Assis sur une table, pieds dans le vide. Genoux serrés, écarte le pied droit vers l\'extérieur. Blocage ou douleur pincée à l\'aine ? Compare avec le côté gauche.'},
+  {id:'stepdown',name:'4. Step-Down Contrôlé',target:'Genou / Stabilité',desc:'Debout sur une marche. Descends le pied gauche pour effleurer le sol, tout le poids sur la droite. Genou droit aligné avec le pied. Le genou grince ou fait mal ? La hanche lâche ou tremble ?'},
 ];
 
 const PHASE1={
-  A:{title:'Séance A',sub:'Arrière des jambes & Poussée',exercises:[
-    {id:'p1a1',name:'Soulevé de terre (Haltères)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos droit, pousse les fesses en arrière. Tire sur l\'arrière des cuisses. Tempo : 3 sec pour descendre.',variant:'Avec la grande barre, ou un élastique coincé sous les pieds.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
-    {id:'p1a2',name:'Développé couché au sol (Haltères)',volume:'3 x 10',rest:90,hasWeight:true,desc:'Allongé par terre, pousse les poids vers le plafond. Coudes à 45°. Tempo : 3 sec pour descendre.',variant:'Pompes classiques au sol ou avec gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
-    {id:'p1a3',name:'Fentes vers l\'arrière',volume:'3 x 10 / jambe',rest:60,hasWeight:false,desc:'Un grand pas en arrière pour protéger le genou. Descends lentement (3 sec).',variant:'Monter sur une chaise solide très lentement (Step-up).',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
-    {id:'p1a4',name:'Balancier Kettlebell',volume:'8 min EMOM · 10-12 reps',rest:null,hasWeight:true,desc:'Mouvement de hanches, 10 à 12 fois au début de chaque minute. Pas un squat.',variant:'Pont fessier au sol rapide — 15 fois par minute.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
+  A:{title:'Séance A',sub:'Arrière des cuisses & Poussée',exercises:[
+    {id:'p1a1',name:'Soulevé de terre (Haltères)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos plat obligatoire, pousse les fesses en arrière. Tempo : 3 sec descente.',variant:'Grande barre, ou élastique sous les pieds.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
+    {id:'p1a2',name:'Développé couché (Haltères)',volume:'3 x 10',rest:90,hasWeight:true,desc:'Allongé au sol, pousse les poids vers le plafond. Coudes à 45°.',variant:'Pompes classiques au sol ou avec gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
+    {id:'p1a3',name:'Fentes vers l\'arrière',volume:'3 x 10 / jambe',rest:60,hasWeight:false,desc:'Grand pas en arrière sans poids. Protège le genou.',variant:'Monter sur une chaise solide très lentement.',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
+    {id:'p1a4',name:'Swing Kettlebell',volume:'8 min EMOM · 10-12 reps',rest:null,hasWeight:true,desc:'Mouvement sec du bassin, 10 à 12 fois par minute. Pas un squat.',variant:'Pont fessier au sol rapide (15 fois par minute).',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
   ]},
-  B:{title:'Séance B',sub:'Cuisses, Dos & Équilibre',exercises:[
-    {id:'p1b1',name:'Squat Kettlebell (à la poitrine)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Descends bas, genoux vers l\'extérieur. Pause en bas obligatoire. Tempo : 3 sec pour descendre.',variant:'Squat sans poids, ou avec haltères sur les épaules.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
-    {id:'p1b2',name:'Tirage dos penché (Grande Barre)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos droit en avant, tire vers le ventre. Serre les omoplates. Tempo : 3 sec pour descendre.',variant:'Tirage bûcheron à un bras avec haltère appuyé sur une chaise.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p1b3',name:'Mollets sur une marche (un pied)',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Descends très bas pour étirer, monte très haut. Contrôle total. Tempo : 3 sec pour descendre.',variant:'Mollets au sol sur les deux pieds en même temps.',video:'https://www.youtube.com/watch?v=3bCraReG5o8'},
-    {id:'p1b4',name:'Marche du fermier (Haltères lourds)',volume:'4 x 30 sec',rest:60,hasWeight:true,desc:'Marche droit en serrant le ventre. Épaules basses, bassin stable.',variant:'Planche classique sur les coudes au sol.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
+  B:{title:'Séance B',sub:'Cuisses, Dos & Stabilité',exercises:[
+    {id:'p1b1',name:'Squat Kettlebell (poitrine)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Descends bas, genoux vers l\'extérieur. Tempo : 3 sec descente.',variant:'Squat sans poids, ou haltères sur les épaules.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
+    {id:'p1b2',name:'Tirage dos penché (Barre)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos en avant, tire vers le ventre. Serre les omoplates.',variant:'Tirage bûcheron à un bras appuyé sur une chaise.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
+    {id:'p1b3',name:'Mollets marche (1 pied)',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Descends très bas, monte très haut. Contrôle total.',variant:'Mollets au sol sur les deux pieds.',video:'https://www.youtube.com/watch?v=3bCraReG5o8'},
+    {id:'p1b4',name:'Marche du fermier (lourd)',volume:'4 x 30 sec',rest:60,hasWeight:true,desc:'Marche droit, ventre serré. Épaules basses, bassin stable.',variant:'Planche Copenhagen sur chaise pour l\'intérieur des cuisses.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
   ]},
-  C:{title:'Séance C',sub:'Poids du corps',exercises:[
-    {id:'p1c1',name:'Tirage Bûcheron (Haltère lourd)',volume:'4 x 8-10 / bras',rest:90,hasWeight:true,desc:'Une main et un genou en appui sur une chaise. Tire l\'haltère vers ta hanche. Garde ton rythme lent : 3 secondes pour descendre le poids.',variant:'Tirage avec élastique accroché en haut d\'une porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p1c2',name:'Pompes',volume:'4 x 10-15',rest:90,hasWeight:false,desc:'Corps bien droit, gainage constant. Ajoute gilet lesté si trop facile.',variant:'Pompes sur les genoux ou pieds sur le canapé.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
-    {id:'p1c3',name:'Pont fessier à une jambe',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Allongé, lève le bassin avec un seul pied au sol. Pousse sur le talon, contracte fort la fesse en haut.',variant:'Les deux pieds au sol avec un haltère sur le ventre.',video:'https://www.youtube.com/watch?v=AVAXhy6pl7o'},
-    {id:'p1c4',name:'Circuit Cardio',volume:'4 Tours',rest:60,hasWeight:false,desc:'10 Pompes → 15 Squats → 20 Grimpeurs au sol. Pas de pause entre les 3.',variant:'20 squats, 20 fentes arrière, 20 montées de genoux sur place.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
+  C:{title:'Séance C',sub:'Dos, Poussée & Cardio',exercises:[
+    {id:'p1c1',name:'Rowing Bûcheron (Haltère lourd)',volume:'4 x 8-10 / bras',rest:90,hasWeight:true,desc:'Appui sur une chaise. Tire l\'haltère vers ta hanche. 3 secondes de descente. Charge lourde (ex: 25 kg).',variant:'Tirage avec élastique accroché en haut d\'une porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
+    {id:'p1c2',name:'Pompes',volume:'4 x 10-15',rest:90,hasWeight:false,desc:'Corps gainé. Mets le gilet lesté si 15 reps passent facilement.',variant:'Pompes sur les genoux ou pieds sur le canapé.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
+    {id:'p1c3',name:'Pont fessier à 1 jambe',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Talon très proche des fesses. Lève les orteils. Contracte la fesse à 100% AVANT de décoller le bassin.',variant:'Les deux pieds au sol avec un haltère sur le ventre.',video:'https://www.youtube.com/watch?v=AVAXhy6pl7o'},
+    {id:'p1c4',name:'Circuit Cardio',volume:'4 Tours',rest:60,hasWeight:false,desc:'Enchaîne fluide et rapide : 10 Pompes → 15 Squats → 20 Grimpeurs. Pas de pause entre les 3.',variant:'20 squats, 20 fentes arrière, 20 montées de genoux.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
   ]},
 };
 
 const PHASE2={
   A:{title:'Séance A',sub:'Force Jambes & Rebond',exercises:[
-    {id:'p2a1',name:'Squat Lourd (Barre / Haltères)',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Descends en contrôle (2 sec), remonte comme une fusée. Dos verrouillé.',variant:'Squat avec les deux Kettlebells à la poitrine.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
-    {id:'p2a2',name:'Soulevé de terre lourd',volume:'4 x 8',rest:90,hasWeight:true,desc:'Garde le dos plat, cible l\'arrière des cuisses. Remonte explosif.',variant:'Pont fessier avec un gros haltère sur le bassin.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
-    {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',rest:60,hasWeight:false,desc:'Rebondis sur les pointes de pieds, genoux tendus. Léger et rapide.',variant:'Montées sur pointes de pieds très rapides sans décoller.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
-    {id:'p2a4',name:'Planche sur chaise (un genou)',volume:'3 x 30 sec',rest:60,hasWeight:false,desc:'Pour bétonner l\'intérieur des cuisses. Gainage complet.',variant:'Allongé, serre un gros coussin très fort entre les genoux.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs'},
+    {id:'p2a1',name:'Squat Lourd (Barre/Haltères)',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Descends 2 sec, remonte comme une fusée. Dos verrouillé.',variant:'Squat avec deux Kettlebells à la poitrine.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
+    {id:'p2a2',name:'Soulevé de terre lourd',volume:'4 x 8',rest:90,hasWeight:true,desc:'Dos plat, cible l\'arrière des cuisses. Remonte explosif.',variant:'Pont fessier avec gros haltère sur le bassin.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
+    {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',rest:60,hasWeight:false,desc:'Pointes de pieds, genoux tendus. Léger et rapide.',variant:'Montées sur pointes de pieds très rapides sans décoller.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
+    {id:'p2a4',name:'Planche sur chaise',volume:'3 x 30 sec',rest:60,hasWeight:false,desc:'Pour bétonner l\'intérieur des cuisses.',variant:'Allongé, serre un gros coussin entre les genoux.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs'},
   ]},
   B:{title:'Séance B',sub:'Haut du corps & Armure',exercises:[
-    {id:'p2b1',name:'Développé couché lourd',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Mets lourd. Descente 2 sec, pousse avec violence vers le plafond.',variant:'Pompes avec ton gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
-    {id:'p2b2',name:'Tirage dos penché (Grande Barre)',volume:'4 x 8',rest:120,hasWeight:true,desc:'Tire fort vers le ventre. Serre les omoplates en haut.',variant:'Tirage bûcheron avec ton élastique le plus dur à la porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p2b3',name:'Tractions Lestées (Gilet)',volume:'4 x 6-8',rest:90,hasWeight:true,desc:'Pour construire un dos épais. Descente contrôlée, montée explosive.',variant:'Tractions sans gilet ou aide avec élastique sous le pied.',video:'https://www.youtube.com/watch?v=eGo4IYlbE5g'},
-    {id:'p2b4',name:'Marche du fermier (très lourd)',volume:'4 x 40 sec',rest:60,hasWeight:true,desc:'Marche sans pencher sur les côtés. Gainage à fond.',variant:'Marche avec UN SEUL haltère lourd, change de main au tour d\'après.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
+    {id:'p2b1',name:'Développé couché lourd',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Mets lourd. Descente 2 sec, pousse avec violence.',variant:'Pompes avec gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
+    {id:'p2b2',name:'Tirage dos penché (Barre)',volume:'4 x 8',rest:120,hasWeight:true,desc:'Tire fort vers le ventre, serre les omoplates.',variant:'Tirage bûcheron avec élastique le plus dur.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
+    {id:'p2b3',name:'Tractions Lestées (Gilet)',volume:'4 x 6-8',rest:90,hasWeight:true,desc:'Dos épais. Descente contrôlée, montée explosive.',variant:'Tractions sans gilet ou aide élastique.',video:'https://www.youtube.com/watch?v=eGo4IYlbE5g'},
+    {id:'p2b4',name:'Marche du fermier (très lourd)',volume:'4 x 40 sec',rest:60,hasWeight:true,desc:'Marche sans pencher. Gainage max.',variant:'UN SEUL haltère lourd, change de main.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
   ]},
   C:{title:'Séance C',sub:'Déplacements & Souffle',exercises:[
-    {id:'p2c1',name:'Fentes en avançant (Haltères)',volume:'4 x 10 / jambe',rest:90,hasWeight:true,desc:'Avance pas à pas, genou arrière frôle le sol.',variant:'Fentes vers l\'arrière sur place (plus doux pour le genou).',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
-    {id:'p2c2',name:'Pompes Explosives (Gilet lesté)',volume:'4 x 10-12',rest:90,hasWeight:false,desc:'Pousse fort pour décoller un peu les mains si possible.',variant:'Pompes classiques avec un élastique dans le dos.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
-    {id:'p2c3',name:'Balancier Kettlebell',volume:'4 x 15',rest:60,hasWeight:true,desc:'Coup de hanches sec et rapide. Pas de squat.',variant:'Élastique accroché à un poteau, tiré entre les jambes vers l\'avant.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
-    {id:'p2c4',name:'Pas chassés latéraux',volume:'3 x 1 min',rest:60,hasWeight:false,desc:'Élastique aux genoux, posture basse, pas de côté.',variant:'Pas de côté très lents jambes presque tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU'},
+    {id:'p2c1',name:'Fentes en avançant (Haltères)',volume:'4 x 10 / jambe',rest:90,hasWeight:true,desc:'Avance pas à pas, genou arrière frôle le sol.',variant:'Fentes arrière sur place (plus doux genou).',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
+    {id:'p2c2',name:'Pompes Explosives (Gilet)',volume:'4 x 10-12',rest:90,hasWeight:false,desc:'Pousse fort pour décoller les mains.',variant:'Pompes classiques + élastique dans le dos.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
+    {id:'p2c3',name:'Balancier Kettlebell',volume:'4 x 15',rest:60,hasWeight:true,desc:'Coup de hanches sec et rapide.',variant:'Élastique accroché à un poteau, tiré entre les jambes.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
+    {id:'p2c4',name:'Pas chassés latéraux',volume:'3 x 1 min',rest:60,hasWeight:false,desc:'Élastique aux genoux, posture basse, pas de côté.',variant:'Pas de côté lents jambes presque tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU'},
   ]},
 };
 
@@ -190,33 +244,59 @@ const SCHEDULE=[
   {day:'Lun',s:'A',type:'workout'},{day:'Mar',s:'💤',type:'rest'},
   {day:'Mer',s:'B',type:'workout'},{day:'Jeu',s:'💤',type:'rest'},
   {day:'Ven',s:'C',type:'workout'},{day:'Sam',s:'🧘',type:'rest'},
-  {day:'Dim',s:'🏡',type:'rest'},
+  {day:'Dim',s:'📋',type:'bilan'},
 ];
 
-function useTimer(sec){
-  const [t,setT]=useState(sec);
-  const [on,setOn]=useState(false);
-  const iv=useRef(null);
-  useEffect(()=>{
-    if(on){iv.current=setInterval(()=>setT(p=>{if(p<=1){clearInterval(iv.current);setOn(false);return 0;}return p-1;}),1000);}
-    else clearInterval(iv.current);
-    return()=>clearInterval(iv.current);
-  },[on]);
-  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-  const toggle=()=>{if(t===0){setT(sec);return;}setOn(v=>!v);};
-  const reset=()=>{clearInterval(iv.current);setOn(false);setT(sec);};
-  return{t,on,done:t===0,fmt,toggle,reset};
+// ── TIMER (global, persists across views) ──
+function useGlobalTimers(){
+  const timers=useRef({});
+  const intervals=useRef({});
+  const [tick,setTick]=useState(0);
+  const bump=()=>setTick(t=>t+1);
+
+  const get=(id,def)=>timers.current[id]!==undefined?timers.current[id]:def;
+  const isRunning=id=>!!intervals.current[id];
+
+  const start=(id,sec)=>{
+    if(isRunning(id)){clearInterval(intervals.current[id]);delete intervals.current[id];bump();return;}
+    if(get(id,sec)===0){timers.current[id]=sec;bump();return;}
+    if(timers.current[id]===undefined)timers.current[id]=sec;
+    intervals.current[id]=setInterval(()=>{
+      timers.current[id]--;
+      if(timers.current[id]<=0){
+        timers.current[id]=0;
+        clearInterval(intervals.current[id]);
+        delete intervals.current[id];
+        playBeep();
+      }
+      bump();
+    },1000);
+    bump();
+  };
+
+  const reset=(id,sec)=>{
+    if(intervals.current[id]){clearInterval(intervals.current[id]);delete intervals.current[id];}
+    timers.current[id]=sec;
+    bump();
+  };
+
+  useEffect(()=>()=>{Object.values(intervals.current).forEach(clearInterval)},[]);
+  return{get,isRunning,start,reset};
 }
 
-function Timer({seconds}){
-  const{t,on,done,fmt,toggle,reset}=useTimer(seconds);
+// ── COMPONENTS ──
+function Timer({id,seconds,T}){
+  const t=T.get(id,seconds);
+  const on=T.isRunning(id);
+  const done=t===0;
+  const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
   return(
     <div className="timer-box">
-      <div className="timer-label">⏱ Temps de repos</div>
+      <div className="timer-label">⏱ Repos</div>
       <div className={`timer-digits${on?' running':done?' done':''}`}>{fmt(t)}</div>
       <div className="timer-btns">
-        <button className="t-btn go" onClick={toggle}>{done?'🔄 Relancer':on?'⏸ Pause':'▶ Départ'}</button>
-        <button className="t-btn" onClick={reset}>Reset</button>
+        <button className="t-btn go" onClick={()=>T.start(id,seconds)}>{done?'🔄 Relancer':on?'⏸ Pause':'▶ Départ'}</button>
+        <button className="t-btn" onClick={()=>T.reset(id,seconds)}>Reset</button>
       </div>
     </div>
   );
@@ -224,28 +304,21 @@ function Timer({seconds}){
 
 function WeightBox({exId,week,weights,onUpdate}){
   const key=`${exId}-w${week}`;
-  const val=weights[key]||'';
   return(
     <div className="weight-box">
-      <div className="w-label">💪 Charge — Semaine {week}</div>
+      <div className="w-label">💪 Charge — S{week}</div>
       <div className="w-row">
-        <input type="number" className="w-input" placeholder="0"
-          value={val} onChange={e=>onUpdate(key,e.target.value)}
-          onClick={e=>e.stopPropagation()}/>
+        <input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/>
         <span className="w-unit">kg</span>
       </div>
       <div className="w-history">
-        {[1,2,3,4,5,6,7,8].map(w=>{
-          const v=weights[`${exId}-w${w}`];
-          if(!v)return null;
-          return <div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}: {v}kg</div>;
-        })}
+        {[1,2,3,4,5,6,7,8].map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}
       </div>
     </div>
   );
 }
 
-function ExCard({ex,week,done,onToggle,weights,onWeightUpdate}){
+function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T}){
   const[open,setOpen]=useState(false);
   return(
     <div className={`ex-card${done?' done':''}${open?' expanded':''}`}>
@@ -253,162 +326,183 @@ function ExCard({ex,week,done,onToggle,weights,onWeightUpdate}){
         <div className="check" onClick={e=>{e.stopPropagation();onToggle();}}>{done&&'✓'}</div>
         <div className="ex-main" onClick={()=>setOpen(v=>!v)}>
           <div className="ex-name">{ex.name}</div>
-          <div className="ex-vol">{ex.volume}{ex.rest?` · Repos ${ex.rest}s`:''}</div>
+          <div className="ex-vol">{ex.volume}{ex.rest?` · ${ex.rest}s`:''}</div>
         </div>
         <div className="ex-chev" onClick={()=>setOpen(v=>!v)}>▾</div>
       </div>
-      <div className="ex-details">
-        <div className="ex-body">
-          <div className="ex-desc">{ex.desc}</div>
-          {ex.variant&&<div className="variant-box"><div className="variant-tag">Variante</div><div className="variant-text">{ex.variant}</div></div>}
-          {ex.rest&&<Timer seconds={ex.rest}/>}
-          {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate}/>}
-          {ex.video&&<a href={ex.video} target="_blank" rel="noopener noreferrer" className="video-btn" onClick={e=>e.stopPropagation()}>▶ &nbsp;Voir la vidéo démo</a>}
-        </div>
-      </div>
+      <div className="ex-details"><div className="ex-body">
+        <div className="ex-desc">{ex.desc}</div>
+        {ex.variant&&<div className="variant-box"><div className="variant-tag">Variante</div><div className="variant-text">{ex.variant}</div></div>}
+        {ex.rest&&<Timer id={ex.id} seconds={ex.rest} T={T}/>}
+        {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate}/>}
+        {ex.video&&<a href={ex.video} target="_blank" rel="noopener noreferrer" className="video-btn" onClick={e=>e.stopPropagation()}>▶ &nbsp;Voir la vidéo</a>}
+      </div></div>
     </div>
   );
 }
 
+// ── APP ──
 function App(){
   const dayMap=[6,0,2,4,1,3,5];
   const todayIdx=dayMap[new Date().getDay()];
+  const T=useGlobalTimers();
   const[week,setWeek]=useState(1);
   const[view,setView]=useState('home');
   const[sess,setSess]=useState(null);
   const[completed,setCompleted]=useState(()=>JSON.parse(localStorage.getItem('rh_done')||'{}'));
   const[weights,setWeights]=useState(()=>JSON.parse(localStorage.getItem('rh_w')||'{}'));
-  useEffect(()=>{localStorage.setItem('rh_done',JSON.stringify(completed));},[completed]);
-  useEffect(()=>{localStorage.setItem('rh_w',JSON.stringify(weights));},[weights]);
+  const[bilans,setBilans]=useState(()=>JSON.parse(localStorage.getItem('rh_bilan')||'{}'));
+
+  useEffect(()=>{localStorage.setItem('rh_done',JSON.stringify(completed))},[completed]);
+  useEffect(()=>{localStorage.setItem('rh_w',JSON.stringify(weights))},[weights]);
+  useEffect(()=>{localStorage.setItem('rh_bilan',JSON.stringify(bilans))},[bilans]);
 
   const phase=week<=4?PHASE1:PHASE2;
   const phaseLabel=week<=4?'Phase 1':'Phase 2';
-
-  const toggle=id=>{const k=`${id}-w${week}`;setCompleted(p=>({...p,[k]:!p[k]}));};
+  const toggle=id=>{const k=`${id}-w${week}`;setCompleted(p=>({...p,[k]:!p[k]}))};
   const upW=(k,v)=>setWeights(p=>({...p,[k]:v}));
-  const isDone=letter=>{const e=phase[letter]?.exercises||[];return e.length&&e.every(x=>completed[`${x.id}-w${week}`]);};
-  const prog=letter=>{const e=phase[letter]?.exercises||[];if(!e.length)return 0;return Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100);};
+  const isDone=l=>{const e=phase[l]?.exercises||[];return e.length&&e.every(x=>completed[`${x.id}-w${week}`])};
+  const prog=l=>{const e=phase[l]?.exercises||[];return e.length?Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100):0};
   const totalKg=()=>Object.keys(weights).filter(k=>k.endsWith(`-w${week}`)).reduce((s,k)=>s+(parseFloat(weights[k])||0),0);
-  const doneSessions=()=>['A','B','C'].filter(isDone).length;
+  const doneSess=()=>['A','B','C'].filter(isDone).length;
 
+  const todaySchedule=SCHEDULE[todayIdx];
+  const todayIsWorkout=todaySchedule?.type==='workout';
+  const todayIsBilan=todaySchedule?.type==='bilan';
+  const days=['Lundi','Mercredi','Vendredi'];
+
+  const setBilanScore=(testId,score)=>{
+    const k=`w${week}`;
+    setBilans(p=>({...p,[k]:{...(p[k]||{}), [testId]:score}}));
+  };
+  const getBilanScore=(testId)=>(bilans[`w${week}`]||{})[testId];
+  const getZone=score=>{
+    if(score===undefined||score===null)return null;
+    if(score<=2)return{label:'🟢 Zone Verte',color:'var(--green)',msg:'Bruit de fond, on continue de charger.'};
+    if(score<=5)return{label:'🟠 Zone Orange',color:'var(--orange)',msg:'On garde les mêmes poids, pas de montée. Insiste sur la mobilité.'};
+    return{label:'🔴 Zone Rouge',color:'var(--red)',msg:'Réduis les poids de 30% la semaine prochaine. Variantes les plus simples.'};
+  };
+
+  // ── WORKOUT VIEW ──
   if(view==='workout'&&sess){
-    const s=phase[sess];
-    const p=prog(sess);
-    return(
-      <div className="app">
-        <div className="workout-view">
-          <div className="topbar">
-            <div className="back-btn" onClick={()=>setView('home')}>←</div>
-            <div className="topbar-info">
-              <div className="topbar-title">{s.title}</div>
-              <div className="topbar-sub">Semaine {week} · {p}% complété</div>
-            </div>
-          </div>
-          <div className="workout-hero">
-            <div className="hero-title">{s.title}</div>
-            <div className="hero-sub">{s.sub}</div>
-            <div className="hero-tags">
-              <span className="hero-tag">{phaseLabel}</span>
-              <span className="hero-tag">S{week}</span>
-              {week<=4&&<span className="hero-tag">Tempo 3-1-1</span>}
-              {week>4&&<span className="hero-tag">Explosif ↑</span>}
-            </div>
-            <div className="prog-bar-wrap"><div className="prog-bar-fill" style={{width:`${p}%`}}/></div>
-          </div>
-          <div className="ex-section">
-            <div className="ex-sec-label">🔥 Échauffement obligatoire</div>
-            {WARMUP.map(ex=>(
-              <ExCard key={ex.id} ex={ex} week={week}
-                done={!!completed[`${ex.id}-w${week}`]}
-                onToggle={()=>toggle(ex.id)}
-                weights={weights} onWeightUpdate={upW}/>
-            ))}
-            <div className="ex-sec-label" style={{marginTop:'1.5rem'}}>💪 Exercices principaux</div>
-            {s.exercises.map(ex=>(
-              <ExCard key={ex.id} ex={ex} week={week}
-                done={!!completed[`${ex.id}-w${week}`]}
-                onToggle={()=>toggle(ex.id)}
-                weights={weights} onWeightUpdate={upW}/>
-            ))}
-          </div>
-        </div>
+    const s=phase[sess];const p=prog(sess);
+    return(<div className="app"><div className="workout-view">
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}%</div></div></div>
+      <div className="workout-hero"><div className="hero-title">{s.title}</div><div className="hero-sub">{s.sub}</div>
+        <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span>{week<=4&&<span className="hero-tag">Tempo 3-1-1</span>}{week>4&&<span className="hero-tag">Explosif ↑</span>}</div>
+        <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div>
       </div>
-    );
+      <div className="ex-section">
+        <div className="ex-sec-label">🔥 Bloc correctif (obligatoire)</div>
+        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T}/>)}
+        <div className="ex-sec-label">💪 Exercices principaux</div>
+        {s.exercises.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T}/>)}
+      </div>
+    </div></div>);
   }
 
-  return(
-    <div className="app">
-      <div className="header">
-        <div className="header-top">
-          <div className="title">Rehaab<span>.</span></div>
-          <div className={`phase-pill${week>4?' p2':''}`}>{phaseLabel}</div>
-        </div>
-        <div className="week-row">
-          {[1,2,3,4,5,6,7,8].map(w=>(
-            <button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>setWeek(w)}>S{w}</button>
-          ))}
-        </div>
+  // ── RECOVERY VIEW ──
+  if(view==='recovery'){
+    return(<div className="app"><div className="workout-view">
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Récupération</div><div className="topbar-sub">15 min au sol · Jours OFF</div></div></div>
+      <div className="workout-hero"><div className="hero-title">Protocole Récupération</div><div className="hero-sub">Amener du sang neuf dans les tissus sans créer de fatigue.</div></div>
+      <div className="ex-section">
+        {RECOVERY.map((r,i)=><div key={i} className="recov-card"><div className="recov-name">{i+1}. {r.name}</div><div className="recov-desc">{r.desc}</div><div className="recov-vol">{r.volume}</div></div>)}
       </div>
+    </div></div>);
+  }
 
-      <div className="section" style={{paddingTop:'1.5rem'}}>
-        <div className="section-label">Résumé — Semaine {week}</div>
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-card-label">Séances faites</div>
-            <div className="stat-card-value">{doneSessions()}<span>/3</span></div>
-            <div className="stat-card-sub">cette semaine</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-card-label">Volume total</div>
-            <div className="stat-card-value">{totalKg()}<span>kg</span></div>
-            <div className="stat-card-sub">semaine {week}</div>
-          </div>
-        </div>
+  // ── BILAN VIEW ──
+  if(view==='bilan'){
+    const scores=BILAN_TESTS.map(t=>getBilanScore(t.id)).filter(s=>s!==undefined&&s!==null);
+    const avgScore=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:null;
+    const avgZone=avgScore!==null?getZone(avgScore):null;
+    return(<div className="app"><div className="workout-view">
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests · Évalue ta progression</div></div></div>
+      <div className="ex-section">
+        {BILAN_TESTS.map(test=>{
+          const score=getBilanScore(test.id);
+          const zone=getZone(score);
+          return(<div key={test.id} className="bilan-test">
+            <div className="bilan-test-name">{test.name}</div>
+            <div style={{fontSize:'.75rem',color:'var(--accent)',fontWeight:700,marginBottom:'.5rem'}}>{test.target}</div>
+            <div className="bilan-test-desc">{test.desc}</div>
+            <div className="pain-scale">
+              {[0,1,2,3,4,5,6,7,8,9,10].map(n=>{
+                let cls='pain-btn';
+                if(score===n){cls+=n<=2?' sel-green':n<=5?' sel-orange':' sel-red';}
+                return <button key={n} className={cls} onClick={()=>setBilanScore(test.id,n)}>{n}</button>;
+              })}
+            </div>
+            {zone&&<div style={{marginTop:'.75rem',fontSize:'.8rem',color:zone.color,fontWeight:600}}>{zone.label} — {zone.msg}</div>}
+          </div>);
+        })}
+        {avgZone&&<div className="bilan-result">
+          <div style={{fontSize:'.7rem',color:'var(--muted)',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'.5rem'}}>Score moyen</div>
+          <div className="bilan-zone" style={{color:avgZone.color}}>{avgScore}/10</div>
+          <div style={{fontSize:'.85rem',color:'var(--sub)'}}>{avgZone.label} — {avgZone.msg}</div>
+        </div>}
       </div>
+    </div></div>);
+  }
 
-      <div className="section" style={{paddingTop:'1.5rem'}}>
-        <div className="section-label">Planning hebdomadaire</div>
-        <div className="calendar-grid">
-          {SCHEDULE.map((d,i)=>{
-            const done=d.type==='workout'&&isDone(d.s);
-            const isToday=i===todayIdx;
-            return(
-              <div key={i} className={`day-card ${d.type}${isToday&&d.type==='workout'?' today-w':''}`}
-                onClick={()=>{if(d.type==='workout'){setSess(d.s);setView('workout');}}}>
-                <div className="day-name">{d.day}</div>
-                <div className="day-letter">{d.s}</div>
-                {done&&<div className="done-dot"/>}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+  // ── HOME ──
+  return(<div className="app">
+    <div className="header">
+      <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${week>4?' p2':''}`}>{phaseLabel}</div></div>
+      <div className="week-row">{[1,2,3,4,5,6,7,8].map(w=><button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>setWeek(w)}>S{w}</button>)}</div>
+    </div>
 
-      <div className="section" style={{paddingTop:'1.5rem'}}>
-        <div className="section-label">Séances d'entraînement</div>
-        <div className="session-list">
-          {['A','B','C'].map((letter,idx)=>{
-            const days=['Lundi','Mercredi','Vendredi'];
-            const s=phase[letter];
-            const done=isDone(letter);
-            const p=prog(letter);
-            const isToday=(letter==='A'&&todayIdx===0)||(letter==='B'&&todayIdx===2)||(letter==='C'&&todayIdx===4);
-            return(
-              <div key={letter} className={`session-row${isToday?' today':''}`}
-                onClick={()=>{setSess(letter);setView('workout');}}>
-                <div className="s-num">{letter}</div>
-                <div className="s-info">
-                  <div className="s-name">{s.sub}</div>
-                  <div className="s-day">{days[idx]} · {p}% complété</div>
-                </div>
-                {done?<div className="s-check">✓</div>:<div className="s-arrow">›</div>}
-              </div>
-            );
-          })}
-        </div>
+    <div className="section" style={{paddingTop:'1.5rem'}}>
+      {todayIsWorkout&&<><div className="section-label">Aujourd'hui</div>
+        <div className="today-card" onClick={()=>{setSess(todaySchedule.s);setView('workout')}}>
+          <div className="today-letter">{todaySchedule.s}</div>
+          <div className="today-info"><div className="today-label">Séance du jour</div><div className="today-name">{phase[todaySchedule.s].sub}</div><div className="today-sub">{prog(todaySchedule.s)}% complété</div></div>
+          <div className="s-arrow">›</div>
+        </div></>}
+      {todayIsBilan&&<><div className="section-label">Aujourd'hui — Dimanche</div>
+        <div className="today-card" onClick={()=>setView('bilan')}>
+          <div className="today-letter" style={{background:'var(--orange)'}}>📋</div>
+          <div className="today-info"><div className="today-label" style={{color:'var(--orange)'}}>Bilan hebdomadaire</div><div className="today-name">4 tests de progression</div></div>
+          <div className="s-arrow">›</div>
+        </div></>}
+    </div>
+
+    <div className="section"><div className="section-label">Résumé — Semaine {week}</div>
+      <div className="stats-grid">
+        <div className="stat-card"><div className="stat-card-label">Séances faites</div><div className="stat-card-value">{doneSess()}<span>/3</span></div></div>
+        <div className="stat-card"><div className="stat-card-label">Volume total</div><div className="stat-card-value">{totalKg()}<span>kg</span></div></div>
       </div>
     </div>
-  );
+
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Planning</div>
+      <div className="calendar-grid">{SCHEDULE.map((d,i)=>{
+        const done=d.type==='workout'&&isDone(d.s);const isToday=i===todayIdx;
+        return(<div key={i} className={`day-card ${d.type}${isToday&&d.type==='workout'?' today-w':''}`}
+          onClick={()=>{if(d.type==='workout'){setSess(d.s);setView('workout');}if(d.type==='bilan')setView('bilan');}}>
+          <div className="day-name">{d.day}</div><div className="day-letter">{d.s}</div>{done&&<div className="done-dot"/>}
+        </div>);
+      })}</div>
+    </div>
+
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Séances</div>
+      <div className="session-list">
+        {['A','B','C'].map((l,i)=>{const s=phase[l];const done=isDone(l);const p=prog(l);
+          const isToday=(l==='A'&&todayIdx===0)||(l==='B'&&todayIdx===2)||(l==='C'&&todayIdx===4);
+          return(<div key={l} className={`session-row${isToday?' today':''}`} onClick={()=>{setSess(l);setView('workout')}}>
+            <div className="s-num">{l}</div><div className="s-info"><div className="s-name">{s.sub}</div><div className="s-day">{days[i]} · {p}%</div></div>
+            {done?<div className="s-check">✓</div>:<div className="s-arrow">›</div>}
+          </div>);
+        })}
+      </div>
+    </div>
+
+    <div className="nav">
+      <button className={`nav-btn${view==='home'?' active':''}`} onClick={()=>setView('home')}><span className="nav-icon">🏠</span>Accueil</button>
+      <button className={`nav-btn${view==='recovery'?' active':''}`} onClick={()=>setView('recovery')}><span className="nav-icon">🧘</span>Récup</button>
+      <button className={`nav-btn${view==='bilan'?' active':''}`} onClick={()=>setView('bilan')}><span className="nav-icon">📋</span>Bilan</button>
+    </div>
+  </div>);
 }
 
 ReactDOM.render(<App/>,document.getElementById('root'));
