@@ -37,35 +37,55 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .stat-card-value span{font-size:1rem;color:var(--sub);font-weight:500;margin-left:2px;letter-spacing:0}
 .stat-card-sub{font-size:.75rem;color:var(--muted);margin-top:.25rem}
 
-.today-card{background:var(--card);border:1px solid var(--accent);border-radius:var(--radius);padding:1.25rem;display:flex;align-items:center;gap:1.25rem;cursor:pointer;transition:all .2s;margin-bottom:1rem}
-.today-card:active{transform:scale(.98)}
-.today-letter{width:50px;height:50px;background:var(--accent);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;flex-shrink:0}
-.today-info{flex:1}
-.today-label{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700;margin-bottom:.25rem}
-.today-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
-.today-sub{font-size:.8rem;color:var(--sub);margin-top:.15rem}
+/* CALENDAR */
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.cal-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700}
+.cal-nav{display:flex;gap:8px}
+.cal-nav-btn{width:32px;height:32px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--sub);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.cal-nav-btn:active{transform:scale(.9)}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.cal-day-label{text-align:center;font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--muted);padding:4px 0}
+.cal-cell{aspect-ratio:1;background:transparent;border:none;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:default;position:relative;transition:all .2s}
+.cal-cell.today{background:var(--card2);border:1px solid var(--accent)}
+.cal-cell-num{font-size:.8rem;font-weight:600;color:var(--sub)}
+.cal-cell.today .cal-cell-num{color:var(--accent)}
+.cal-cell.empty .cal-cell-num{color:var(--border)}
+.cal-dots{display:flex;gap:3px;margin-top:3px;position:absolute;bottom:4px}
+.cal-dot{width:5px;height:5px;border-radius:50%}
+.cal-dot.A{background:#ff453a}
+.cal-dot.B{background:#E8FF47}
+.cal-dot.C{background:#30d158}
 
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.day-card{aspect-ratio:1;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .25s;position:relative}
-.day-card.workout:active{transform:scale(.92)}
-.day-card.today-w{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-.day-card.rest{opacity:.25;cursor:default}
-.day-name{font-size:.6rem;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--muted);margin-bottom:4px}
-.day-card.today-w .day-name{color:var(--accent)}
-.day-letter{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
-.done-dot{position:absolute;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--green)}
+/* CHART */
+.chart-container{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:10px}
+.chart-bars{display:flex;align-items:flex-end;gap:6px;height:100px;padding-top:.5rem}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+.chart-bar{width:100%;border-radius:6px 6px 0 0;background:var(--accent);transition:height .4s ease;min-height:2px;margin-top:auto}
+.chart-bar.empty{background:var(--card2)}
+.chart-bar-label{font-size:.6rem;color:var(--muted);font-weight:600}
+.chart-bar-val{font-size:.7rem;color:var(--accent);font-weight:700}
 
 .session-list{display:flex;flex-direction:column;gap:10px}
 .session-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1.25rem;cursor:pointer;transition:all .2s}
 .session-row:active{transform:scale(.98);background:var(--card2)}
-.session-row.today{border-color:var(--accent)}
 .s-num{width:44px;height:44px;background:var(--card2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;flex-shrink:0}
-.session-row.today .s-num{background:var(--accent);color:#000}
+.s-num.A{background:rgba(255,69,58,.2);color:#ff453a}
+.s-num.B{background:rgba(232,255,71,.15);color:var(--accent)}
+.s-num.C{background:rgba(48,209,88,.2);color:#30d158}
 .s-info{flex:1}
 .s-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.2rem}
 .s-day{font-size:.8rem;color:var(--sub)}
 .s-arrow{color:var(--muted);font-size:1.4rem}
 .s-check{color:var(--green);font-size:1.3rem;font-weight:700}
+
+/* LOG */
+.log-row{display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.log-row:last-child{border-bottom:none}
+.log-date{font-size:.85rem;color:var(--sub);font-weight:500;width:90px;flex-shrink:0}
+.log-badge{padding:.3rem .7rem;border-radius:8px;font-size:.75rem;font-weight:700}
+.log-badge.A{background:rgba(255,69,58,.2);color:#ff453a}
+.log-badge.B{background:rgba(232,255,71,.15);color:var(--accent)}
+.log-badge.C{background:rgba(48,209,88,.2);color:#30d158}
 
 .workout-view{animation:fadeUp .3s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -129,13 +149,11 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .video-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem;text-decoration:none;color:var(--text);font-weight:600;font-size:.9rem;transition:all .2s}
 .video-btn:active{background:var(--border);transform:scale(.98)}
 
-/* RECOVERY */
 .recov-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.75rem}
 .recov-name{font-weight:600;font-size:.95rem;margin-bottom:.35rem}
 .recov-desc{font-size:.85rem;color:var(--sub);line-height:1.5}
 .recov-vol{font-size:.8rem;color:var(--accent);font-weight:700;margin-top:.35rem}
 
-/* BILAN */
 .bilan-test{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
 .bilan-test-name{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.5rem}
 .bilan-test-desc{font-size:.85rem;color:var(--sub);line-height:1.5;margin-bottom:1rem}
@@ -147,7 +165,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .bilan-result{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:1rem;text-align:center}
 .bilan-zone{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
 
-/* NAV */
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding:.5rem 0 env(safe-area-inset-bottom,.5rem)}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);font-size:.65rem;font-weight:600;cursor:pointer;padding:.5rem;transition:color .2s}
 .nav-btn.active{color:var(--accent)}
@@ -157,23 +174,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const {useState,useEffect,useRef,useCallback} = React;
+const {useState,useEffect,useRef} = React;
 
-// ── AUDIO ────
+// ── AUDIO ──
 function playBeep(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [0,.15,.3].forEach(d=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=880;o.type='square';
-      g.gain.value=.15;
-      o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.1);
-    });
-  }catch(e){}
+  try{const ctx=new(window.AudioContext||window.webkitAudioContext)();[0,.15,.3].forEach(d=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type='square';g.gain.value=.15;o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.1)});}catch(e){}
 }
 
-// ── DATA ─────
+// ── DATA ──
 const WARMUP=[
   {id:'w1',name:'Respiration Ventrale',volume:'2 min',rest:120,desc:'Allongé au sol. Calme le système nerveux et relâche la pression du dos.'},
   {id:'w2',name:'Coussin entre les genoux',volume:'3 x 20 sec',rest:20,desc:'Allongé, serre un coussin ferme le plus fort possible. Bétonne l\'intérieur des cuisses.'},
@@ -216,15 +224,15 @@ const PHASE1={
     {id:'p1c1',name:'Rowing Bûcheron (Haltère lourd)',volume:'4 x 8-10 / bras',rest:90,hasWeight:true,desc:'Appui sur une chaise. Tire l\'haltère vers ta hanche. 3 secondes de descente. Charge lourde (ex: 25 kg).',variant:'Tirage avec élastique accroché en haut d\'une porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
     {id:'p1c2',name:'Pompes',volume:'4 x 10-15',rest:90,hasWeight:false,desc:'Corps gainé. Mets le gilet lesté si 15 reps passent facilement.',variant:'Pompes sur les genoux ou pieds sur le canapé.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
     {id:'p1c3',name:'Pont fessier à 1 jambe',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Talon très proche des fesses. Lève les orteils. Contracte la fesse à 100% AVANT de décoller le bassin.',variant:'Les deux pieds au sol avec un haltère sur le ventre.',video:'https://www.youtube.com/watch?v=AVAXhy6pl7o'},
-    {id:'p1c4',name:'Circuit Cardio',volume:'4 Tours',rest:60,hasWeight:false,desc:'Enchaîne fluide et rapide : 10 Pompes → 15 Squats → 20 Grimpeurs. Pas de pause entre les 3.',variant:'20 squats, 20 fentes arrière, 20 montées de genoux.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
+    {id:'p1c4',name:'Circuit Cardio',volume:'4 Tours',rest:60,hasWeight:false,desc:'Enchaîne fluide : 10 Pompes → 15 Squats → 20 Grimpeurs. Pas de pause entre les 3.',variant:'20 squats, 20 fentes arrière, 20 montées de genoux.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
   ]},
 };
 
 const PHASE2={
   A:{title:'Séance A',sub:'Force Jambes & Rebond',exercises:[
-    {id:'p2a1',name:'Squat Lourd (Barre/Haltères)',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Descends 2 sec, remonte comme une fusée. Dos verrouillé.',variant:'Squat avec deux Kettlebells à la poitrine.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
+    {id:'p2a1',name:'Squat Lourd (Barre/Haltères)',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Descends 2 sec, remonte comme une fusée.',variant:'Squat avec deux Kettlebells à la poitrine.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
     {id:'p2a2',name:'Soulevé de terre lourd',volume:'4 x 8',rest:90,hasWeight:true,desc:'Dos plat, cible l\'arrière des cuisses. Remonte explosif.',variant:'Pont fessier avec gros haltère sur le bassin.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
-    {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',rest:60,hasWeight:false,desc:'Pointes de pieds, genoux tendus. Léger et rapide.',variant:'Montées sur pointes de pieds très rapides sans décoller.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
+    {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',rest:60,hasWeight:false,desc:'Pointes de pieds, genoux tendus.',variant:'Montées sur pointes très rapides sans décoller.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
     {id:'p2a4',name:'Planche sur chaise',volume:'3 x 30 sec',rest:60,hasWeight:false,desc:'Pour bétonner l\'intérieur des cuisses.',variant:'Allongé, serre un gros coussin entre les genoux.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs'},
   ]},
   B:{title:'Séance B',sub:'Haut du corps & Armure',exercises:[
@@ -241,111 +249,107 @@ const PHASE2={
   ]},
 };
 
-const SCHEDULE=[
-  {day:'Lun',s:'A',type:'workout'},{day:'Mar',s:'💤',type:'rest'},
-  {day:'Mer',s:'B',type:'workout'},{day:'Jeu',s:'💤',type:'rest'},
-  {day:'Ven',s:'C',type:'workout'},{day:'Sam',s:'🧘',type:'rest'},
-  {day:'Dim',s:'📋',type:'bilan'},
-];
+// ── HELPERS ──
+const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const MONTHS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const DAY_LABELS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
-// ── TIMER (global, persists across views) ──
+// ── GLOBAL TIMERS ──
 function useGlobalTimers(){
-  const timers=useRef({});
-  const intervals=useRef({});
-  const [tick,setTick]=useState(0);
-  const bump=()=>setTick(t=>t+1);
-
+  const timers=useRef({});const intervals=useRef({});const[tick,setTick]=useState(0);const bump=()=>setTick(t=>t+1);
   const get=(id,def)=>timers.current[id]!==undefined?timers.current[id]:def;
   const isRunning=id=>!!intervals.current[id];
-
   const start=(id,sec)=>{
     if(isRunning(id)){clearInterval(intervals.current[id]);delete intervals.current[id];bump();return;}
     if(get(id,sec)===0){timers.current[id]=sec;bump();return;}
     if(timers.current[id]===undefined)timers.current[id]=sec;
-    intervals.current[id]=setInterval(()=>{
-      timers.current[id]--;
-      if(timers.current[id]<=0){
-        timers.current[id]=0;
-        clearInterval(intervals.current[id]);
-        delete intervals.current[id];
-        playBeep();
-      }
-      bump();
-    },1000);
-    bump();
+    intervals.current[id]=setInterval(()=>{timers.current[id]--;if(timers.current[id]<=0){timers.current[id]=0;clearInterval(intervals.current[id]);delete intervals.current[id];playBeep();}bump();},1000);bump();
   };
-
-  const reset=(id,sec)=>{
-    if(intervals.current[id]){clearInterval(intervals.current[id]);delete intervals.current[id];}
-    timers.current[id]=sec;
-    bump();
-  };
-
+  const reset=(id,sec)=>{if(intervals.current[id]){clearInterval(intervals.current[id]);delete intervals.current[id];}timers.current[id]=sec;bump();};
   useEffect(()=>()=>{Object.values(intervals.current).forEach(clearInterval)},[]);
   return{get,isRunning,start,reset};
 }
 
 // ── COMPONENTS ──
 function Timer({id,seconds,T}){
-  const t=T.get(id,seconds);
-  const on=T.isRunning(id);
-  const done=t===0;
+  const t=T.get(id,seconds);const on=T.isRunning(id);const done=t===0;
   const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-  return(
-    <div className="timer-box">
-      <div className="timer-label">⏱ Repos</div>
-      <div className={`timer-digits${on?' running':done?' done':''}`}>{fmt(t)}</div>
-      <div className="timer-btns">
-        <button className="t-btn go" onClick={()=>T.start(id,seconds)}>{done?'🔄 Relancer':on?'⏸ Pause':'▶ Départ'}</button>
-        <button className="t-btn" onClick={()=>T.reset(id,seconds)}>Reset</button>
-      </div>
-    </div>
-  );
+  return(<div className="timer-box"><div className="timer-label">⏱ Repos</div>
+    <div className={`timer-digits${on?' running':done?' done':''}`}>{fmt(t)}</div>
+    <div className="timer-btns"><button className="t-btn go" onClick={()=>T.start(id,seconds)}>{done?'🔄 Relancer':on?'⏸ Pause':'▶ Départ'}</button><button className="t-btn" onClick={()=>T.reset(id,seconds)}>Reset</button></div></div>);
 }
 
 function WeightBox({exId,week,weights,onUpdate}){
   const key=`${exId}-w${week}`;
-  return(
-    <div className="weight-box">
-      <div className="w-label">💪 Charge — S{week}</div>
-      <div className="w-row">
-        <input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/>
-        <span className="w-unit">kg</span>
-      </div>
-      <div className="w-history">
-        {[1,2,3,4,5,6,7,8].map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}
-      </div>
-    </div>
-  );
+  return(<div className="weight-box"><div className="w-label">💪 Charge — S{week}</div>
+    <div className="w-row"><input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/><span className="w-unit">kg</span></div>
+    <div className="w-history">{[1,2,3,4,5,6,7,8].map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}</div></div>);
 }
 
 function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T}){
   const[open,setOpen]=useState(false);
-  return(
-    <div className={`ex-card${done?' done':''}${open?' expanded':''}`}>
-      <div className="ex-row">
-        <div className="check" onClick={e=>{e.stopPropagation();onToggle();}}>{done&&'✓'}</div>
-        <div className="ex-main" onClick={()=>setOpen(v=>!v)}>
-          <div className="ex-name">{ex.name}</div>
-          <div className="ex-vol">{ex.volume}{ex.rest?` · ${ex.rest}s`:''}</div>
-        </div>
-        <div className="ex-chev" onClick={()=>setOpen(v=>!v)}>▾</div>
-      </div>
-      <div className="ex-details"><div className="ex-body">
-        <div className="ex-desc">{ex.desc}</div>
-        {ex.variant&&<div className="variant-box"><div className="variant-tag">Variante</div><div className="variant-text">{ex.variant}</div></div>}
-        {ex.rest&&<Timer id={ex.id} seconds={ex.rest} T={T}/>}
-        {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate}/>}
-        {ex.video&&<a href={ex.video} target="_blank" rel="noopener noreferrer" className="video-btn" onClick={e=>e.stopPropagation()}>▶ &nbsp;Voir la vidéo</a>}
-      </div></div>
-    </div>
-  );
+  return(<div className={`ex-card${done?' done':''}${open?' expanded':''}`}>
+    <div className="ex-row"><div className="check" onClick={e=>{e.stopPropagation();onToggle();}}>{done&&'✓'}</div>
+      <div className="ex-main" onClick={()=>setOpen(v=>!v)}><div className="ex-name">{ex.name}</div><div className="ex-vol">{ex.volume}{ex.rest?` · ${ex.rest}s`:''}</div></div>
+      <div className="ex-chev" onClick={()=>setOpen(v=>!v)}>▾</div></div>
+    <div className="ex-details"><div className="ex-body">
+      <div className="ex-desc">{ex.desc}</div>
+      {ex.variant&&<div className="variant-box"><div className="variant-tag">Variante</div><div className="variant-text">{ex.variant}</div></div>}
+      {ex.rest&&<Timer id={ex.id} seconds={ex.rest} T={T}/>}
+      {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate}/>}
+      {ex.video&&<a href={ex.video} target="_blank" rel="noopener noreferrer" className="video-btn" onClick={e=>e.stopPropagation()}>▶ &nbsp;Voir la vidéo</a>}
+    </div></div></div>);
+}
+
+function Calendar({log}){
+  const[offset,setOffset]=useState(0);
+  const now=new Date();const y=now.getFullYear();const m=now.getMonth()+offset;
+  const viewDate=new Date(y,m,1);const viewYear=viewDate.getFullYear();const viewMonth=viewDate.getMonth();
+  const daysInMonth=new Date(viewYear,viewMonth+1,0).getDate();
+  let firstDay=(new Date(viewYear,viewMonth,1).getDay()+6)%7;
+  const cells=[];
+  for(let i=0;i<firstDay;i++)cells.push({num:null});
+  for(let d=1;d<=daysInMonth;d++)cells.push({num:d});
+  const today=now.getDate();const isCurrentMonth=offset===0;
+  const getDotsForDay=d=>{
+    const key=`${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    return(log[key]||[]);
+  };
+  return(<div>
+    <div className="cal-header"><div className="cal-title">{MONTHS[viewMonth]} {viewYear}</div>
+      <div className="cal-nav"><button className="cal-nav-btn" onClick={()=>setOffset(o=>o-1)}>‹</button><button className="cal-nav-btn" onClick={()=>setOffset(o=>o+1)}>›</button></div></div>
+    <div className="cal-days">{DAY_LABELS.map(d=><div key={d} className="cal-day-label">{d}</div>)}</div>
+    <div className="cal-days">{cells.map((c,i)=>{
+      const isToday=isCurrentMonth&&c.num===today;
+      const dots=c.num?getDotsForDay(c.num):[];
+      return(<div key={i} className={`cal-cell${isToday?' today':''}${!c.num?' empty':''}`}>
+        <div className="cal-cell-num">{c.num||''}</div>
+        {dots.length>0&&<div className="cal-dots">{dots.map((s,j)=><div key={j} className={`cal-dot ${s}`}/>)}</div>}
+      </div>);
+    })}</div></div>);
+}
+
+function WeeklyChart({log}){
+  const weeks=[];const now=new Date();
+  for(let w=7;w>=0;w--){
+    const weekStart=new Date(now);weekStart.setDate(now.getDate()-now.getDay()+1-(w*7));
+    let count=0;const label=`${weekStart.getDate()}/${weekStart.getMonth()+1}`;
+    for(let d=0;d<7;d++){const day=new Date(weekStart);day.setDate(weekStart.getDate()+d);
+      const key=`${day.getFullYear()}-${String(day.getMonth()+1).padStart(2,'0')}-${String(day.getDate()).padStart(2,'0')}`;
+      if(log[key]&&log[key].length>0)count+=log[key].length;}
+    weeks.push({label,count});
+  }
+  const max=Math.max(...weeks.map(w=>w.count),3);
+  return(<div className="chart-container"><div className="section-label" style={{marginBottom:'.75rem'}}>Activité — 8 semaines</div>
+    <div className="chart-bars">{weeks.map((w,i)=><div key={i} className="chart-bar-wrap">
+      {w.count>0&&<div className="chart-bar-val">{w.count}</div>}
+      <div className={`chart-bar${w.count===0?' empty':''}`} style={{height:`${Math.max(w.count/max*100,4)}%`}}/>
+      <div className="chart-bar-label">{w.label}</div>
+    </div>)}</div></div>);
 }
 
 // ── APP ──
 function App(){
-  const dayMap=[6,0,2,4,1,3,5];
-  const todayIdx=dayMap[new Date().getDay()];
   const T=useGlobalTimers();
   const[week,setWeek]=useState(1);
   const[view,setView]=useState('home');
@@ -353,46 +357,58 @@ function App(){
   const[completed,setCompleted]=useState(()=>JSON.parse(localStorage.getItem('rh_done')||'{}'));
   const[weights,setWeights]=useState(()=>JSON.parse(localStorage.getItem('rh_w')||'{}'));
   const[bilans,setBilans]=useState(()=>JSON.parse(localStorage.getItem('rh_bilan')||'{}'));
+  const[trainingLog,setTrainingLog]=useState(()=>JSON.parse(localStorage.getItem('rh_log')||'{}'));
 
   useEffect(()=>{localStorage.setItem('rh_done',JSON.stringify(completed))},[completed]);
   useEffect(()=>{localStorage.setItem('rh_w',JSON.stringify(weights))},[weights]);
   useEffect(()=>{localStorage.setItem('rh_bilan',JSON.stringify(bilans))},[bilans]);
+  useEffect(()=>{localStorage.setItem('rh_log',JSON.stringify(trainingLog))},[trainingLog]);
 
   const phase=week<=4?PHASE1:PHASE2;
   const phaseLabel=week<=4?'Phase 1':'Phase 2';
+
   const toggle=id=>{const k=`${id}-w${week}`;setCompleted(p=>({...p,[k]:!p[k]}))};
   const upW=(k,v)=>setWeights(p=>({...p,[k]:v}));
+
   const isDone=l=>{const e=phase[l]?.exercises||[];return e.length&&e.every(x=>completed[`${x.id}-w${week}`])};
   const prog=l=>{const e=phase[l]?.exercises||[];return e.length?Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100):0};
   const totalKg=()=>Object.keys(weights).filter(k=>k.endsWith(`-w${week}`)).reduce((s,k)=>s+(parseFloat(weights[k])||0),0);
   const doneSess=()=>['A','B','C'].filter(isDone).length;
 
-  const todaySchedule=SCHEDULE[todayIdx];
-  const todayIsWorkout=todaySchedule?.type==='workout';
-  const todayIsBilan=todaySchedule?.type==='bilan';
-  const days=['Lundi','Mercredi','Vendredi'];
+  // Log a session when all exercises are done
+  useEffect(()=>{
+    ['A','B','C'].forEach(l=>{
+      if(isDone(l)){
+        const today=todayStr();
+        setTrainingLog(prev=>{
+          const existing=prev[today]||[];
+          if(!existing.includes(l))return{...prev,[today]:[...existing,l]};
+          return prev;
+        });
+      }
+    });
+  },[completed]);
 
-  const setBilanScore=(testId,score)=>{
-    const k=`w${week}`;
-    setBilans(p=>({...p,[k]:{...(p[k]||{}), [testId]:score}}));
-  };
-  const getBilanScore=(testId)=>(bilans[`w${week}`]||{})[testId];
+  const setBilanScore=(testId,score)=>{const k=`w${week}`;setBilans(p=>({...p,[k]:{...(p[k]||{}), [testId]:score}}));};
+  const getBilanScore=testId=>(bilans[`w${week}`]||{})[testId];
   const getZone=score=>{
     if(score===undefined||score===null)return null;
     if(score<=2)return{label:'🟢 Zone Verte',color:'var(--green)',msg:'Bruit de fond, on continue de charger.'};
-    if(score<=5)return{label:'🟠 Zone Orange',color:'var(--orange)',msg:'On garde les mêmes poids, pas de montée. Insiste sur la mobilité.'};
-    return{label:'🔴 Zone Rouge',color:'var(--red)',msg:'Réduis les poids de 30% la semaine prochaine. Variantes les plus simples.'};
+    if(score<=5)return{label:'🟠 Zone Orange',color:'var(--orange)',msg:'Mêmes poids, pas de montée. Insiste sur la mobilité.'};
+    return{label:'🔴 Zone Rouge',color:'var(--red)',msg:'Réduis 30%, variantes les plus simples.'};
   };
 
-  // ── WORKOUT VIEW ──
+  // Recent log for display
+  const recentLog=Object.entries(trainingLog).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+
+  // ── WORKOUT ──
   if(view==='workout'&&sess){
     const s=phase[sess];const p=prog(sess);
     return(<div className="app"><div className="workout-view">
       <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}%</div></div></div>
       <div className="workout-hero"><div className="hero-title">{s.title}</div><div className="hero-sub">{s.sub}</div>
         <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span>{week<=4&&<span className="hero-tag">Tempo 3-1-1</span>}{week>4&&<span className="hero-tag">Explosif ↑</span>}</div>
-        <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div>
-      </div>
+        <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div></div>
       <div className="ex-section">
         <div className="ex-sec-label">🔥 Bloc correctif (obligatoire)</div>
         {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T}/>)}
@@ -402,49 +418,39 @@ function App(){
     </div></div>);
   }
 
-  // ── RECOVERY VIEW ──
+  // ── RECOVERY ──
   if(view==='recovery'){
     return(<div className="app"><div className="workout-view">
       <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Récupération</div><div className="topbar-sub">15 min au sol · Jours OFF</div></div></div>
       <div className="workout-hero"><div className="hero-title">Protocole Récupération</div><div className="hero-sub">Amener du sang neuf dans les tissus sans créer de fatigue.</div></div>
-      <div className="ex-section">
-        {RECOVERY.map((r,i)=><div key={i} className="recov-card"><div className="recov-name">{i+1}. {r.name}</div><div className="recov-desc">{r.desc}</div><div className="recov-vol">{r.volume}</div></div>)}
-      </div>
+      <div className="ex-section">{RECOVERY.map((r,i)=><div key={i} className="recov-card"><div className="recov-name">{i+1}. {r.name}</div><div className="recov-desc">{r.desc}</div><div className="recov-vol">{r.volume}</div></div>)}</div>
     </div></div>);
   }
 
-  // ── BILAN VIEW ──
+  // ── BILAN ──
   if(view==='bilan'){
     const scores=BILAN_TESTS.map(t=>getBilanScore(t.id)).filter(s=>s!==undefined&&s!==null);
-    const avgScore=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:null;
-    const avgZone=avgScore!==null?getZone(avgScore):null;
+    const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:null;
+    const avgZ=avg!==null?getZone(avg):null;
     return(<div className="app"><div className="workout-view">
-      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests · Évalue ta progression</div></div></div>
-      <div className="ex-section">
-        {BILAN_TESTS.map(test=>{
-          const score=getBilanScore(test.id);
-          const zone=getZone(score);
-          return(<div key={test.id} className="bilan-test">
-            <div className="bilan-test-name">{test.name}</div>
-            <div style={{fontSize:'.75rem',color:'var(--accent)',fontWeight:700,marginBottom:'.5rem'}}>{test.target}</div>
-            <div className="bilan-test-desc">{test.desc}</div>
-            <div className="pain-scale">
-              {[0,1,2,3,4,5,6,7,8,9,10].map(n=>{
-                let cls='pain-btn';
-                if(score===n){cls+=n<=2?' sel-green':n<=5?' sel-orange':' sel-red';}
-                return <button key={n} className={cls} onClick={()=>setBilanScore(test.id,n)}>{n}</button>;
-              })}
-            </div>
-            {zone&&<div style={{marginTop:'.75rem',fontSize:'.8rem',color:zone.color,fontWeight:600}}>{zone.label} — {zone.msg}</div>}
-          </div>);
-        })}
-        {avgZone&&<div className="bilan-result">
-          <div style={{fontSize:'.7rem',color:'var(--muted)',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'.5rem'}}>Score moyen</div>
-          <div className="bilan-zone" style={{color:avgZone.color}}>{avgScore}/10</div>
-          <div style={{fontSize:'.85rem',color:'var(--sub)'}}>{avgZone.label} — {avgZone.msg}</div>
-        </div>}
-      </div>
-    </div></div>);
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests de progression</div></div></div>
+      <div className="ex-section">{BILAN_TESTS.map(test=>{
+        const score=getBilanScore(test.id);const zone=getZone(score);
+        return(<div key={test.id} className="bilan-test">
+          <div className="bilan-test-name">{test.name}</div>
+          <div style={{fontSize:'.75rem',color:'var(--accent)',fontWeight:700,marginBottom:'.5rem'}}>{test.target}</div>
+          <div className="bilan-test-desc">{test.desc}</div>
+          <div className="pain-scale">{[0,1,2,3,4,5,6,7,8,9,10].map(n=>{
+            let cls='pain-btn';if(score===n){cls+=n<=2?' sel-green':n<=5?' sel-orange':' sel-red';}
+            return <button key={n} className={cls} onClick={()=>setBilanScore(test.id,n)}>{n}</button>;
+          })}</div>
+          {zone&&<div style={{marginTop:'.75rem',fontSize:'.8rem',color:zone.color,fontWeight:600}}>{zone.label} — {zone.msg}</div>}
+        </div>);
+      })}
+      {avgZ&&<div className="bilan-result"><div style={{fontSize:'.7rem',color:'var(--muted)',fontWeight:700,textTransform:'uppercase',letterSpacing:'1px',marginBottom:'.5rem'}}>Score moyen</div>
+        <div className="bilan-zone" style={{color:avgZ.color}}>{avg}/10</div>
+        <div style={{fontSize:'.85rem',color:'var(--sub)'}}>{avgZ.label} — {avgZ.msg}</div></div>}
+      </div></div></div>);
   }
 
   // ── HOME ──
@@ -454,49 +460,46 @@ function App(){
       <div className="week-row">{[1,2,3,4,5,6,7,8].map(w=><button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>setWeek(w)}>S{w}</button>)}</div>
     </div>
 
-    <div className="section" style={{paddingTop:'1.5rem'}}>
-      {todayIsWorkout&&<><div className="section-label">Aujourd'hui</div>
-        <div className="today-card" onClick={()=>{setSess(todaySchedule.s);setView('workout')}}>
-          <div className="today-letter">{todaySchedule.s}</div>
-          <div className="today-info"><div className="today-label">Séance du jour</div><div className="today-name">{phase[todaySchedule.s].sub}</div><div className="today-sub">{prog(todaySchedule.s)}% complété</div></div>
-          <div className="s-arrow">›</div>
-        </div></>}
-      {todayIsBilan&&<><div className="section-label">Aujourd'hui — Dimanche</div>
-        <div className="today-card" onClick={()=>setView('bilan')}>
-          <div className="today-letter" style={{background:'var(--orange)'}}>📋</div>
-          <div className="today-info"><div className="today-label" style={{color:'var(--orange)'}}>Bilan hebdomadaire</div><div className="today-name">4 tests de progression</div></div>
-          <div className="s-arrow">›</div>
-        </div></>}
-    </div>
-
-    <div className="section"><div className="section-label">Résumé — Semaine {week}</div>
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Résumé — Semaine {week}</div>
       <div className="stats-grid">
         <div className="stat-card"><div className="stat-card-label">Séances faites</div><div className="stat-card-value">{doneSess()}<span>/3</span></div></div>
         <div className="stat-card"><div className="stat-card-label">Volume total</div><div className="stat-card-value">{totalKg()}<span>kg</span></div></div>
       </div>
     </div>
 
-    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Planning</div>
-      <div className="calendar-grid">{SCHEDULE.map((d,i)=>{
-        const done=d.type==='workout'&&isDone(d.s);const isToday=i===todayIdx;
-        return(<div key={i} className={`day-card ${d.type}${isToday&&d.type==='workout'?' today-w':''}`}
-          onClick={()=>{if(d.type==='workout'){setSess(d.s);setView('workout');}if(d.type==='bilan')setView('bilan');}}>
-          <div className="day-name">{d.day}</div><div className="day-letter">{d.s}</div>{done&&<div className="done-dot"/>}
-        </div>);
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Choisis ta séance</div>
+      <div className="session-list">{['A','B','C'].map(l=>{
+        const s=phase[l];const done=isDone(l);const p=prog(l);
+        return(<div key={l} className="session-row" onClick={()=>{setSess(l);setView('workout')}}>
+          <div className={`s-num ${l}`}>{l}</div><div className="s-info"><div className="s-name">{s.sub}</div><div className="s-day">{p}% complété</div></div>
+          {done?<div className="s-check">✓</div>:<div className="s-arrow">›</div>}</div>);
       })}</div>
     </div>
 
-    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Séances</div>
-      <div className="session-list">
-        {['A','B','C'].map((l,i)=>{const s=phase[l];const done=isDone(l);const p=prog(l);
-          const isToday=(l==='A'&&todayIdx===0)||(l==='B'&&todayIdx===2)||(l==='C'&&todayIdx===4);
-          return(<div key={l} className={`session-row${isToday?' today':''}`} onClick={()=>{setSess(l);setView('workout')}}>
-            <div className="s-num">{l}</div><div className="s-info"><div className="s-name">{s.sub}</div><div className="s-day">{days[i]} · {p}%</div></div>
-            {done?<div className="s-check">✓</div>:<div className="s-arrow">›</div>}
-          </div>);
-        })}
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Calendrier d'entraînement</div>
+      <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:'var(--radius)',padding:'1.25rem'}}>
+        <Calendar log={trainingLog}/>
+        <div style={{display:'flex',gap:'1rem',marginTop:'1rem',justifyContent:'center'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'.75rem',color:'var(--sub)'}}><div className="cal-dot A" style={{position:'static'}}/>Séance A</div>
+          <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'.75rem',color:'var(--sub)'}}><div className="cal-dot B" style={{position:'static'}}/>Séance B</div>
+          <div style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'.75rem',color:'var(--sub)'}}><div className="cal-dot C" style={{position:'static'}}/>Séance C</div>
+        </div>
       </div>
     </div>
+
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Suivi d'activité</div>
+      <WeeklyChart log={trainingLog}/>
+    </div>
+
+    {recentLog.length>0&&<div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Dernières séances</div>
+      <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:'var(--radius)',padding:'1rem 1.25rem'}}>
+        {recentLog.map(([date,sessions])=>{
+          const d=new Date(date);const formatted=`${d.getDate()}/${d.getMonth()+1}`;
+          return(<div key={date} className="log-row"><div className="log-date">{formatted}</div>
+            <div style={{display:'flex',gap:'6px'}}>{sessions.map((s,i)=><div key={i} className={`log-badge ${s}`}>Séance {s}</div>)}</div></div>);
+        })}
+      </div>
+    </div>}
 
     <div className="nav">
       <button className={`nav-btn${view==='home'?' active':''}`} onClick={()=>setView('home')}><span className="nav-icon">🏠</span>Accueil</button>
