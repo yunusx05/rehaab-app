@@ -10,7 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
 <style>
 :root{--bg:#000;--card:#111;--card2:#1a1a1a;--border:#222;--text:#fff;--muted:#555;--sub:#888;--accent:#E8FF47;--red:#ff453a;--green:#30d158;--orange:#ff9f0a;--radius:20px;--radius-sm:14px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -113,6 +113,20 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .hero-tag{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--sub)}
 .prog-wrap{background:var(--card2);border-radius:100px;height:4px;overflow:hidden;margin-top:1rem}
 .prog-fill{height:100%;background:var(--accent);border-radius:100px;transition:width .6s ease}
+.progbox{background:var(--card2);border-radius:14px;padding:1rem;margin-top:1rem}
+.progbox-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.progbox-tag{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--accent)}
+.progbox-rpe{font-size:.7rem;font-weight:700;color:var(--sub);background:var(--card);border:1px solid var(--border);border-radius:100px;padding:.25rem .6rem}
+.progbox-focus{font-size:.82rem;color:var(--sub);line-height:1.45}
+.progbox-hint{font-size:.74rem;color:var(--accent);margin-top:.55rem;font-weight:600;line-height:1.4}
+.zone-chip{display:inline-block;font-size:.64rem;font-weight:700;border-radius:100px;padding:.18rem .55rem;margin-top:.4rem}
+.zone-chip.push{background:rgba(48,209,88,.15);color:var(--green)}
+.zone-chip.control{background:rgba(255,159,10,.15);color:var(--orange)}
+.wk-intent{display:flex;align-items:center;gap:.85rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem}
+.wk-intent .ic{font-size:1.4rem;flex-shrink:0}
+.wk-intent .t{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem}
+.wk-intent .t span{color:var(--accent)}
+.wk-intent .s{font-size:.76rem;color:var(--sub);margin-top:.1rem;line-height:1.4}
 
 .ex-section{padding:0 1.5rem}
 .ex-sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;padding-left:.25rem;margin-top:1.5rem;display:flex;align-items:center;gap:.5rem}
@@ -267,6 +281,21 @@ const BILAN_TESTS=[
   {id:'stepdown',name:'4. Step-Down Contrôlé',target:'Genou droit (surveillance gonflement)',desc:'Debout sur une marche. Descends le pied gauche pour effleurer le sol, poids sur la droite. Genou aligné. Il grince, fait mal, ou gonfle après ?'},
 ];
 
+// Plan de progression hebdomadaire (difficulté qui monte semaine par semaine)
+const WEEK_PLAN={
+  1:{tag:'Reprise',rpe:'RPE 6/10',focus:'Technique propre, charges légères. On réveille les tissus après ton mois d\'arrêt. Pas de zèle.'},
+  2:{tag:'Volume',rpe:'RPE 7/10',focus:'Mêmes reps, on ajoute du poids. Le muscle (et l\'armure) se construit ici.'},
+  3:{tag:'Intensité',rpe:'RPE 8/10',focus:'Charges plus lourdes, bas de la fourchette de reps. Tu pousses, surtout sur le haut du corps.'},
+  4:{tag:'Peak / Test',rpe:'RPE 8-9/10',focus:'Valider tes charges max, puis remplir le Bilan pour débloquer la Phase 2.'},
+  5:{tag:'Reprise P2',rpe:'RPE 7/10',focus:'Explosivité réintégrée, genou validé. On réapprend à sauter proprement.'},
+  6:{tag:'Volume P2',rpe:'RPE 8/10',focus:'Plus de charge sur la force, plus de vitesse sur l\'explosif.'},
+  7:{tag:'Intensité P2',rpe:'RPE 8-9/10',focus:'Lourd ET explosif. Spécifique basket : détente, changements d\'appui.'},
+  8:{tag:'Peak Basket',rpe:'RPE 9/10',focus:'Pic de forme. Tu arrives affûté pour la reprise d\'octobre.'},
+};
+// Zones d'intensité : où pousser à fond vs où contrôler (genou/hanche en reconstruction)
+const CONTROL_KEYS=['squat','fente','soulevé','leg ','leg extension','leg curl','pont','mollet','rebond','saut','chassé','copenhagen','step-up','step up','hip thrust','romanian','bulgare','adduction','good morning','deadlift','swing'];
+const isPushZone=(name,week)=>{ if(week>4)return true; const n=(name||'').toLowerCase(); return !CONTROL_KEYS.some(k=>n.includes(k)); };
+
 // Questions ressenti du checkpoint Phase 2
 const CP_QUESTIONS=[
   {id:'hanche',label:'Douleur hanche droite cette semaine ?',opts:[{v:'ok',t:'Aucune / 0-1'},{v:'mid',t:'Légère 2-3'},{v:'no',t:'Marquée 4+'}],good:'ok'},
@@ -281,7 +310,7 @@ const PHASE1={
   A:{title:'Séance A',sub:'Chaîne postérieure & Poussée',duration:'~42 min',supersets:[
     {name:'Superset 1',rest:90,exercises:[
       {id:'p1a1',name:'Soulevé de terre (haltères/EZ)',volume:'4 x 10',tempo:'3-1-1',hasWeight:true,desc:'Dos plat, pousse les fesses en arrière. Descente 3 sec contrôlée. Haltères chargeables ou barre EZ.',variant:'Élastique sous les pieds si gêne lombaire.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90',alts:[{name:'Hip Thrust banc (barre)',desc:'Dos sur le banc, barre sur le bassin, pousse via les fessiers. Plus doux pour le bas du dos.'},{name:'Leg Curl (Leg Developer)',desc:'Allongé sur ta station, ramène les talons aux fesses. Isole l\'arrière de cuisse, zéro risque dos.'}]},
-      {id:'p1a2',name:'Développé couché (haltères)',volume:'4 x 10',tempo:'3-1-1',hasWeight:true,desc:'Sur le banc à plat. Coudes à 45°, descente 3 sec. Haltères pour épargner les épaules.',variant:'Pompes lestées (gilet 5kg) si pas envie de charger.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné 30° (haltères)',desc:'Banc incliné. Cible le haut des pecs, encore plus safe pour l\'épaule.'},{name:'Pompes gilet lesté',desc:'Corps gainé, gilet 5kg. Au sol, sans matériel.'}]},
+      {id:'p1a2',name:'Développé couché (barre)',volume:'4 x 8-10',tempo:'3-1-1',hasWeight:true,desc:'Ton mouvement roi de poussée, sur tes chandelles. Coudes ~45°, descente 3 sec, pousse fort — c\'est une zone où tu peux charger. SÉCURITÉ SOLO obligatoire : règle les chandelles à hauteur de poitrine comme butées, garde 1-2 reps en réserve, ne va JAMAIS à l\'échec total sans pareur.',variant:'Passe aux haltères si l\'épaule est sensible ce jour-là (trajet plus naturel, et tu les lâches sur les côtés si tu rates).',video:'https://www.youtube.com/watch?v=rT7DgCr-3pg',alts:[{name:'Développé couché (haltères)',desc:'À plat, un haltère par main. Plus doux pour l\'épaule, sécurité totale en solo : tu lâches sur les côtés.'},{name:'Développé incliné 30° (haltères)',desc:'Banc incliné, cible le haut des pecs.'},{name:'Pompes lestées (gilet)',desc:'Gilet 5kg, corps gainé, au sol.'}]},
     ]},
     {name:'Superset 2',rest:75,exercises:[
       {id:'p1a3',name:'Fentes arrière (haltères légers)',volume:'3 x 10 / jambe',tempo:'2-0-1',hasWeight:true,desc:'Grand pas en arrière, genou frôle le sol. Protège le genou avant. Charge légère.',variant:'Sans poids si le genou droit tire.',video:'https://www.youtube.com/watch?v=xNLfW34fht0',alts:[{name:'Leg Extension légère (Leg Developer)',desc:'Sur ta station. Contrôle la montée, ne verrouille pas le genou à fond. STOP si l\'aine pique.'},{name:'Pont fessier 1 jambe',desc:'Sans charge, au sol. Talon proche des fesses, serre la fesse à 100%.'}]},
@@ -383,14 +412,16 @@ function WeightBox({exId,week,weights,onUpdate,reco}){
     <div className="w-history">{[1,2,3,4,5,6,7,8].map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}</div></div>);
 }
 
-function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T,reco,swapIndex,onSwap}){
+function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T,reco,swapIndex,onSwap,showZone}){
   const[open,setOpen]=useState(false);
   const alts=ex.alts||[];
   const swapped=swapIndex>=0&&alts[swapIndex];
   const shown=swapped?{...ex,name:alts[swapIndex].name,desc:alts[swapIndex].desc}:ex;
+  const push=showZone?isPushZone(shown.name,week):null;
   return(<div className={`ex-card${done?' done':''}${open?' expanded':''}`}>
     <div className="ex-row"><div className="check" onClick={e=>{e.stopPropagation();onToggle();}}>{done&&'✓'}</div>
-      <div className="ex-main" onClick={()=>setOpen(v=>!v)}><div className="ex-name">{shown.name}{swapped&&' ↺'}</div><div className="ex-vol">{ex.volume}{ex.tempo&&ex.tempo!=='—'?` · tempo ${ex.tempo}`:''}</div></div>
+      <div className="ex-main" onClick={()=>setOpen(v=>!v)}><div className="ex-name">{shown.name}{swapped&&' ↺'}</div><div className="ex-vol">{ex.volume}{ex.tempo&&ex.tempo!=='—'?` · tempo ${ex.tempo}`:''}</div>
+      {showZone&&(push?<span className="zone-chip push">🔥 Zone libre — pousse fort</span>:<span className="zone-chip control">🎯 Zone contrôlée — tempo strict</span>)}</div>
       <div className="ex-chev" onClick={()=>setOpen(v=>!v)}>▾</div></div>
     <div className="ex-details"><div className="ex-body">
       <div className="ex-desc">{shown.desc}</div>
@@ -589,16 +620,17 @@ function App(){
       <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}% · {s.duration}</div></div></div>
       <div className="workout-hero"><div className="hero-title">{s.title}</div><div className="hero-sub">{s.sub}</div>
         <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span><span className="hero-tag">⏱ {s.duration}</span>{week<=2&&<span className="hero-tag">🔄 Reprise — léger</span>}{week>4&&<span className="hero-tag">🔥 Explosif</span>}</div>
-        <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div></div>
+        <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div>
+        <div className="progbox"><div className="progbox-top"><div className="progbox-tag">S{week} — {WEEK_PLAN[week].tag}</div><div className="progbox-rpe">{WEEK_PLAN[week].rpe}</div></div><div className="progbox-focus">{WEEK_PLAN[week].focus}</div><div className="progbox-hint">↗ Double progression : monte les reps jusqu'au haut de la fourchette, PUIS ajoute du poids.</div></div></div>
       <div className="ex-section">
         <div className="ex-sec-label">🔥 Bloc correctif hanche/genou (obligatoire)</div>
-        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}}/>)}
+        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
         {s.supersets.map((ss,i)=>(<div key={i}>
           <div className="ex-sec-label">💪 {ss.name}</div>
           <div className="ss-group">
             <div className="ss-head"><div className="ss-name">↯ Enchaîné sans repos</div><div className="ss-info">Repos {ss.rest}s après la paire</div></div>
             {ss.exercises.map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
-              return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)}/>;})}
+              return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)} showZone={true}/>;})}
             <div style={{padding:'.5rem .25rem 0'}}><Timer id={`ss-${sess}-${i}-w${week}`} seconds={ss.rest} T={T}/></div>
           </div>
         </div>))}
@@ -685,6 +717,10 @@ function App(){
     {showCpBanner&&<div className="section" style={{paddingTop:'1.5rem'}}>
       <div className="banner" onClick={()=>setView('checkpoint')}><div className="banner-ic">🔓</div><div className="banner-main"><div className="banner-t">Phase 1 bouclée — passe le checkpoint</div><div className="banner-s">Valide tes voyants verts pour débloquer la Phase 2.</div></div><div className="s-arrow">›</div></div>
     </div>}
+
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Intention de la semaine</div>
+      <div className="wk-intent"><div className="ic">{week<=4?'🧱':'🚀'}</div><div><div className="t">S{week} — <span>{WEEK_PLAN[week].tag}</span> · {WEEK_PLAN[week].rpe}</div><div className="s">{WEEK_PLAN[week].focus}</div></div></div>
+    </div>
 
     <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Résumé — Semaine {week}</div>
       <div className="stats-grid">
