@@ -25,8 +25,10 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .phase-pill.p2{background:var(--accent);color:#000;border-color:var(--accent)}
 .week-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .week-row::-webkit-scrollbar{display:none}
-.week-btn{flex-shrink:0;width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif}
+.week-btn{flex-shrink:0;width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;position:relative}
 .week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.05);box-shadow:0 6px 20px rgba(232,255,71,.3)}
+.week-btn.locked{opacity:.45}
+.week-btn .lock{position:absolute;top:-4px;right:-4px;font-size:.7rem}
 
 .section{padding:1.5rem 1.5rem 0}
 .section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem}
@@ -36,6 +38,13 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .stat-card-value{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1.5px}
 .stat-card-value span{font-size:1rem;color:var(--sub);font-weight:500;margin-left:2px;letter-spacing:0}
 .stat-card-sub{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+
+.banner{background:linear-gradient(135deg,rgba(232,255,71,.12),rgba(232,255,71,.02));border:1px solid rgba(232,255,71,.3);border-radius:var(--radius);padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer}
+.banner.warn{background:linear-gradient(135deg,rgba(255,159,10,.12),rgba(255,159,10,.02));border-color:rgba(255,159,10,.35)}
+.banner-ic{font-size:1.5rem}
+.banner-main{flex:1}
+.banner-t{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.15rem}
+.banner-s{font-size:.78rem;color:var(--sub);line-height:1.4}
 
 /* CALENDAR */
 .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
@@ -77,6 +86,7 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .s-day{font-size:.8rem;color:var(--sub)}
 .s-arrow{color:var(--muted);font-size:1.4rem}
 .s-check{color:var(--green);font-size:1.3rem;font-weight:700}
+.s-meta{font-size:.72rem;color:var(--accent);font-weight:700;margin-top:.15rem}
 
 /* LOG */
 .log-row{display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
@@ -105,9 +115,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .prog-fill{height:100%;background:var(--accent);border-radius:100px;transition:width .6s ease}
 
 .ex-section{padding:0 1.5rem}
-.ex-sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;padding-left:.25rem;margin-top:1.5rem}
+.ex-sec-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem;padding-left:.25rem;margin-top:1.5rem;display:flex;align-items:center;gap:.5rem}
 .ex-sec-label:first-child{margin-top:0}
-.ex-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color .3s}
+.ss-group{border:1px dashed var(--border);border-radius:var(--radius);padding:.75rem;margin-bottom:14px;background:rgba(255,255,255,.01)}
+.ss-head{display:flex;align-items:center;justify-content:space-between;padding:.15rem .5rem .65rem}
+.ss-name{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--accent)}
+.ss-info{font-size:.7rem;color:var(--sub);font-weight:600}
+.ex-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:8px;overflow:hidden;transition:border-color .3s}
+.ex-card:last-child{margin-bottom:0}
 .ex-card.done{border-color:var(--green)}
 .ex-card.expanded{border-color:var(--accent)}
 .ex-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;cursor:pointer}
@@ -119,12 +134,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .ex-chev{color:var(--muted);font-size:1rem;transition:transform .3s;flex-shrink:0}
 .ex-card.expanded .ex-chev{transform:rotate(180deg)}
 .ex-details{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);border-top:1px solid transparent}
-.ex-card.expanded .ex-details{max-height:1200px;border-top-color:var(--border)}
+.ex-card.expanded .ex-details{max-height:1400px;border-top-color:var(--border)}
 .ex-body{padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
 .ex-desc{font-size:.88rem;color:var(--sub);line-height:1.6}
 .variant-box{background:var(--card2);border-left:3px solid var(--orange);border-radius:12px;padding:1rem}
 .variant-tag{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);margin-bottom:.4rem}
 .variant-text{font-size:.85rem;color:var(--sub);line-height:1.5}
+.swap-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.8rem;color:var(--text);font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s}
+.swap-btn:active{background:var(--border);transform:scale(.98)}
 
 .timer-box{background:var(--card2);border-radius:var(--radius-sm);padding:1.25rem;text-align:center}
 .timer-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:.75rem}
@@ -142,6 +159,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .w-input{flex:1;background:var(--card);border:1px solid var(--border);color:var(--text);padding:.9rem 1rem;border-radius:12px;font-size:1.2rem;font-weight:700;font-family:'Syne',sans-serif;transition:border-color .2s}
 .w-input:focus{outline:none;border-color:var(--accent)}
 .w-unit{font-size:.9rem;color:var(--sub);font-weight:600}
+.reco{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;background:rgba(232,255,71,.08);border:1px solid rgba(232,255,71,.25);border-radius:10px;padding:.6rem .8rem;cursor:pointer}
+.reco-t{flex:1;font-size:.8rem;color:var(--accent);font-weight:700}
+.reco-apply{font-size:.72rem;background:var(--accent);color:#000;border:none;border-radius:8px;padding:.35rem .7rem;font-weight:700;cursor:pointer}
 .w-history{display:flex;gap:6px;margin-top:.75rem;flex-wrap:wrap}
 .w-badge{background:var(--card);border:1px solid var(--border);padding:.3rem .6rem;border-radius:8px;font-size:.75rem;font-weight:600;color:var(--sub)}
 .w-badge.cur{border-color:var(--accent);color:var(--accent)}
@@ -165,6 +185,47 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .bilan-result{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-top:1rem;text-align:center}
 .bilan-zone{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
 
+/* MENSURATIONS */
+.meas-form{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem}
+.meas-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.meas-field{display:flex;flex-direction:column;gap:.4rem}
+.meas-flabel{font-size:.72rem;color:var(--sub);font-weight:600}
+.meas-input{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:.8rem .9rem;border-radius:12px;font-size:1.1rem;font-weight:700;font-family:'Syne',sans-serif}
+.meas-input:focus{outline:none;border-color:var(--accent)}
+.meas-save{width:100%;background:var(--accent);color:#000;border:none;border-radius:12px;padding:.95rem;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.meas-save:active{transform:scale(.98)}
+.spark{width:100%;height:90px;margin-top:.5rem}
+.meas-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.meas-stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem}
+.meas-stat-l{font-size:.72rem;color:var(--sub);font-weight:600;margin-bottom:.4rem}
+.meas-stat-v{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;letter-spacing:-1px}
+.meas-stat-v span{font-size:.85rem;color:var(--sub);font-weight:500}
+.meas-delta{font-size:.72rem;font-weight:700;margin-top:.25rem}
+.meas-delta.down{color:var(--green)}
+.meas-delta.up{color:var(--orange)}
+.meas-hist-row{display:flex;align-items:center;gap:.75rem;padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.meas-hist-row:last-child{border-bottom:none}
+.meas-hist-date{color:var(--sub);width:70px;flex-shrink:0;font-weight:600}
+.meas-hist-vals{display:flex;gap:10px;flex-wrap:wrap;color:var(--sub)}
+.meas-hist-vals b{color:var(--text)}
+
+/* CHECKPOINT */
+.cp-req{display:flex;align-items:center;gap:.85rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;margin-bottom:.65rem}
+.cp-req .dot{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.cp-req.ok .dot{background:var(--green);color:#000}
+.cp-req.ko .dot{background:var(--card2);border:2px solid var(--border);color:var(--muted)}
+.cp-req-main{flex:1}
+.cp-req-t{font-weight:600;font-size:.9rem}
+.cp-req-s{font-size:.75rem;color:var(--sub);margin-top:.15rem}
+.cp-unlock{width:100%;border:none;border-radius:14px;padding:1.1rem;font-size:1rem;font-weight:800;font-family:'Syne',sans-serif;cursor:pointer;margin-top:1rem;transition:all .2s}
+.cp-unlock.ready{background:var(--accent);color:#000}
+.cp-unlock.notready{background:var(--card2);color:var(--muted);cursor:not-allowed}
+.q-row{margin-bottom:1rem}
+.q-label{font-size:.88rem;font-weight:600;margin-bottom:.6rem}
+.q-opts{display:flex;gap:6px}
+.q-opt{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.6rem;font-size:.78rem;font-weight:600;color:var(--sub);cursor:pointer;text-align:center;transition:all .2s}
+.q-opt.sel{background:var(--accent);color:#000;border-color:var(--accent)}
+
 .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding:.5rem 0 env(safe-area-inset-bottom,.5rem)}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);font-size:.65rem;font-weight:600;cursor:pointer;padding:.5rem;transition:color .2s}
 .nav-btn.active{color:var(--accent)}
@@ -181,14 +242,13 @@ function playBeep(){
   try{const ctx=new(window.AudioContext||window.webkitAudioContext)();[0,.15,.3].forEach(d=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type='square';g.gain.value=.15;o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.1)});}catch(e){}
 }
 
-// ── DATA ──
+// ── ÉCHAUFFEMENT / BLOC CORRECTIF (hanche/genou — obligatoire) ──
 const WARMUP=[
-  {id:'w1',name:'Respiration Ventrale',volume:'2 min',rest:120,desc:'Allongé au sol. Calme le système nerveux et relâche la pression du dos.'},
-  {id:'w2',name:'Coussin entre les genoux',volume:'3 x 20 sec',rest:20,desc:'Allongé, serre un coussin ferme le plus fort possible. Bétonne l\'intérieur des cuisses.'},
-  {id:'w3',name:'Ouverture Coquillage',volume:'3 x 15 / côté',rest:30,desc:'Élastique aux genoux. Allongé sur le côté, ouvre le genou vers le plafond. Bloque 3 secondes en haut en serrant la fesse.'},
-  {id:'w4',name:'Copenhagen Plank (sur genoux)',volume:'3 x 15-20 sec / côté',rest:20,desc:'Genou sur une chaise, en planche latérale. Bétonne tes adducteurs. Tiens la position sans laisser le bassin tomber.'},
-  {id:'w5',name:'Pas Latéraux (Défense)',volume:'3 x 15 / côté',rest:30,desc:'Élastique aux genoux. Posture de basketteur. Petits pas lents de côté. Ça doit brûler fort sur le côté de la fesse.'},
-  {id:'w6',name:'Étirement Cheville',volume:'2 x 10 / pied',rest:30,desc:'Face au mur. Assouplit la cheville pour que le genou et la hanche travaillent dans le bon axe.'},
+  {id:'w1',name:'Respiration Ventrale',volume:'1 min',rest:0,desc:'Allongé au sol. Calme le système nerveux et relâche la pression du dos.'},
+  {id:'w3',name:'Ouverture Coquillage (élastique)',volume:'2 x 15 / côté',rest:0,desc:'Élastique aux genoux. Allongé sur le côté, ouvre le genou vers le plafond. Bloque 3 sec en haut en serrant la fesse. C\'est LUI qui débloque ta hanche.'},
+  {id:'w4',name:'Copenhagen (sur genou)',volume:'2 x 15-20 sec / côté',rest:0,desc:'Genou sur une chaise, planche latérale. Bétonne tes adducteurs (protège la pubalgie).'},
+  {id:'w5',name:'Pas Latéraux (élastique)',volume:'2 x 15 / côté',rest:0,desc:'Élastique aux genoux, posture basse de basketteur. Petits pas lents. Ça doit brûler sur le côté de la fesse.'},
+  {id:'w6',name:'Étirement Cheville au mur',volume:'1 x 10 / pied',rest:0,desc:'Genou vers le mur sans décoller le talon. Aligne genou et hanche dans le bon axe.'},
 ];
 
 const RECOVERY=[
@@ -196,56 +256,90 @@ const RECOVERY=[
   {name:'Chat / Vache',volume:'15 allers-retours',desc:'À quatre pattes, arrondis puis creuse le dos très lentement.'},
   {name:'La Grenouille',volume:'2 min',desc:'À quatre pattes, genoux très écartés. Pousse les fesses en arrière pour étirer l\'intérieur des cuisses.'},
   {name:'Essuie-glaces au sol',volume:'10 allers-retours',desc:'Assis, laisse tomber les genoux d\'un côté puis de l\'autre.'},
-  {name:'Étirement Psoas',volume:'1 min / jambe',desc:'Un genou au sol, avance le bassin. Serre la fesse arrière.'},
-  {name:'Alphabet Chevilles',volume:'1 fois / pied',desc:'Dessine les lettres de A à Z avec la pointe du pied.'},
+  {name:'Étirement Psoas',volume:'1 min / jambe',desc:'Un genou au sol, avance le bassin. Serre la fesse arrière. Anti-position assise.'},
+  {name:'Massage Gun quadris/fessiers',volume:'2 min / zone',desc:'Passe le pistolet sur les quadriceps, fessiers et bandelette. Évite l\'os et l\'articulation du genou.'},
 ];
 
 const BILAN_TESTS=[
-  {id:'squeeze',name:'1. Squeeze Test',target:'Pubalgie / Adducteurs',desc:'Allongé sur le dos, genoux pliés. Place tes poings entre les genoux. Serre progressivement jusqu\'à 100% pendant 5 sec. Où est la douleur ? Aine, pubis, ou juste fatigue ?'},
-  {id:'trendelenburg',name:'2. Trendelenburg Statique',target:'Moyen fessier / Hanche',desc:'Debout, lève la jambe gauche, tiens 30 sec sur la droite. Bassin droit, hanche ne sort pas. Ça pique ou brûle sur le côté de la fesse ? Irradiation vers le genou ?'},
-  {id:'rotation',name:'3. Rotation Interne Assise',target:'Articulation hanche',desc:'Assis sur une table, pieds dans le vide. Genoux serrés, écarte le pied droit vers l\'extérieur. Blocage ou douleur pincée à l\'aine ? Compare avec le côté gauche.'},
-  {id:'stepdown',name:'4. Step-Down Contrôlé',target:'Genou / Stabilité',desc:'Debout sur une marche. Descends le pied gauche pour effleurer le sol, tout le poids sur la droite. Genou droit aligné avec le pied. Le genou grince ou fait mal ? La hanche lâche ou tremble ?'},
+  {id:'squeeze',name:'1. Squeeze Test',target:'Pubalgie / Adducteurs',desc:'Allongé sur le dos, genoux pliés. Poings entre les genoux. Serre jusqu\'à 100% pendant 5 sec. Où est la douleur ? Aine, pubis, ou juste fatigue ?'},
+  {id:'trendelenburg',name:'2. Trendelenburg Statique',target:'Moyen fessier / Hanche',desc:'Debout, lève la jambe gauche, tiens 30 sec sur la droite. Bassin droit. Ça pique ou brûle sur le côté de la fesse ?'},
+  {id:'rotation',name:'3. Rotation Interne Assise',target:'Articulation hanche (ton point faible droit)',desc:'Assis, pieds dans le vide, genoux serrés. Écarte le pied droit vers l\'extérieur. Blocage ou douleur pincée à l\'aine ? Compare gauche/droite.'},
+  {id:'stepdown',name:'4. Step-Down Contrôlé',target:'Genou droit (surveillance gonflement)',desc:'Debout sur une marche. Descends le pied gauche pour effleurer le sol, poids sur la droite. Genou aligné. Il grince, fait mal, ou gonfle après ?'},
 ];
 
+// Questions ressenti du checkpoint Phase 2
+const CP_QUESTIONS=[
+  {id:'hanche',label:'Douleur hanche droite cette semaine ?',opts:[{v:'ok',t:'Aucune / 0-1'},{v:'mid',t:'Légère 2-3'},{v:'no',t:'Marquée 4+'}],good:'ok'},
+  {id:'genou',label:'Genou droit : gonflement / douleur ?',opts:[{v:'ok',t:'Rien'},{v:'mid',t:'Un peu'},{v:'no',t:'Gonfle'}],good:'ok'},
+  {id:'energie',label:'Niveau d\'énergie global ?',opts:[{v:'ok',t:'Bon'},{v:'mid',t:'Moyen'},{v:'no',t:'Au sol'}],good:'ok'},
+  {id:'sommeil',label:'Sommeil de la semaine ?',opts:[{v:'ok',t:'Correct'},{v:'mid',t:'Juste'},{v:'no',t:'Cassé'}],good:'ok'},
+];
+
+// ── PROGRAMME — structuré en SUPERSETS (repos seulement entre paires) ──
+// Matériel: 99kg disques, haltères chargeables, barre + EZ, 2x KB 10kg, gilet 5kg, banc+leg developer, vélo. PAS de barre de traction.
 const PHASE1={
-  A:{title:'Séance A',sub:'Arrière des cuisses & Poussée',exercises:[
-    {id:'p1a1',name:'Soulevé de terre (Haltères)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos plat obligatoire, pousse les fesses en arrière. Tempo : 3 sec descente.',variant:'Grande barre, ou élastique sous les pieds.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
-    {id:'p1a2',name:'Développé couché (Haltères)',volume:'3 x 10',rest:90,hasWeight:true,desc:'Allongé au sol, pousse les poids vers le plafond. Coudes à 45°.',variant:'Pompes classiques au sol ou avec gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
-    {id:'p1a3',name:'Fentes vers l\'arrière',volume:'3 x 10 / jambe',rest:60,hasWeight:false,desc:'Grand pas en arrière sans poids. Protège le genou.',variant:'Monter sur une chaise solide très lentement.',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
-    {id:'p1a4',name:'Swing Kettlebell',volume:'8 min EMOM · 10-12 reps',rest:null,hasWeight:true,desc:'Mouvement sec du bassin, 10 à 12 fois par minute. Pas un squat.',variant:'Pont fessier au sol rapide (15 fois par minute).',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
+  A:{title:'Séance A',sub:'Chaîne postérieure & Poussée',duration:'~42 min',supersets:[
+    {name:'Superset 1',rest:90,exercises:[
+      {id:'p1a1',name:'Soulevé de terre (haltères/EZ)',volume:'4 x 10',tempo:'3-1-1',hasWeight:true,desc:'Dos plat, pousse les fesses en arrière. Descente 3 sec contrôlée. Haltères chargeables ou barre EZ.',variant:'Élastique sous les pieds si gêne lombaire.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90',alts:[{name:'Hip Thrust banc (barre)',desc:'Dos sur le banc, barre sur le bassin, pousse via les fessiers. Plus doux pour le bas du dos.'},{name:'Leg Curl (Leg Developer)',desc:'Allongé sur ta station, ramène les talons aux fesses. Isole l\'arrière de cuisse, zéro risque dos.'}]},
+      {id:'p1a2',name:'Développé couché (haltères)',volume:'4 x 10',tempo:'3-1-1',hasWeight:true,desc:'Sur le banc à plat. Coudes à 45°, descente 3 sec. Haltères pour épargner les épaules.',variant:'Pompes lestées (gilet 5kg) si pas envie de charger.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné 30° (haltères)',desc:'Banc incliné. Cible le haut des pecs, encore plus safe pour l\'épaule.'},{name:'Pompes gilet lesté',desc:'Corps gainé, gilet 5kg. Au sol, sans matériel.'}]},
+    ]},
+    {name:'Superset 2',rest:75,exercises:[
+      {id:'p1a3',name:'Fentes arrière (haltères légers)',volume:'3 x 10 / jambe',tempo:'2-0-1',hasWeight:true,desc:'Grand pas en arrière, genou frôle le sol. Protège le genou avant. Charge légère.',variant:'Sans poids si le genou droit tire.',video:'https://www.youtube.com/watch?v=xNLfW34fht0',alts:[{name:'Leg Extension légère (Leg Developer)',desc:'Sur ta station. Contrôle la montée, ne verrouille pas le genou à fond. STOP si l\'aine pique.'},{name:'Pont fessier 1 jambe',desc:'Sans charge, au sol. Talon proche des fesses, serre la fesse à 100%.'}]},
+      {id:'p1a4',name:'Swing Kettlebell (10kg)',volume:'3 x 12',tempo:'explosif',hasWeight:false,desc:'Coup de hanche sec et rapide. Pas un squat. Le dos reste plat. KB 10kg.',variant:'Pont fessier au sol rapide (15 reps) si dos sensible.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE',alts:[{name:'Good morning élastique',desc:'Élastique sous les pieds, sur les épaules. Bascule du buste, dos plat.'},{name:'Pont fessier explosif',desc:'Au sol, monte vite, descends lent.'}]},
+    ]},
   ]},
-  B:{title:'Séance B',sub:'Cuisses, Dos & Stabilité',exercises:[
-    {id:'p1b1',name:'Squat Kettlebell (poitrine)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Descends bas, genoux vers l\'extérieur. Tempo : 3 sec descente.',variant:'Squat sans poids, ou haltères sur les épaules.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
-    {id:'p1b2',name:'Tirage dos penché (Barre)',volume:'4 x 10',rest:90,hasWeight:true,desc:'Dos en avant, tire vers le ventre. Serre les omoplates.',variant:'Tirage bûcheron à un bras appuyé sur une chaise.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p1b3',name:'Mollets marche (1 pied)',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Descends très bas, monte très haut. Contrôle total.',variant:'Mollets au sol sur les deux pieds.',video:'https://www.youtube.com/watch?v=3bCraReG5o8'},
-    {id:'p1b4',name:'Marche du fermier (lourd)',volume:'4 x 30 sec',rest:60,hasWeight:true,desc:'Marche droit, ventre serré. Épaules basses, bassin stable.',variant:'Planche Copenhagen sur chaise pour l\'intérieur des cuisses.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
+  B:{title:'Séance B',sub:'Jambes, Dos & Gainage',duration:'~45 min',supersets:[
+    {name:'Superset 1',rest:90,exercises:[
+      {id:'p1b1',name:'Goblet Squat (KB 10kg)',volume:'4 x 10',tempo:'3-1-1',hasWeight:false,desc:'KB contre la poitrine. Descends bas, genoux vers l\'extérieur, talons au sol. Descente 3 sec.',variant:'Squat au poids du corps tempo lent si genou prudent.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo',alts:[{name:'Leg Extension + Leg Curl (combo)',desc:'10 extensions + 10 curls sur la station. Travaille la cuisse sans charge axiale, idéal genou en reprise.'},{name:'Squat 2 haltères épaules',desc:'Un haltère sur chaque épaule. Charge un peu plus lourd.'}]},
+      {id:'p1b2',name:'Tirage dos penché (barre/EZ)',volume:'4 x 10',tempo:'2-1-2',hasWeight:true,desc:'Buste penché à 45°, dos plat. Tire vers le nombril, serre les omoplates.',variant:'Tirage élastique ancré dans une porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Rowing 1 bras (haltère)',desc:'Appui main+genou sur le banc. Tire l\'haltère vers la hanche.'},{name:'Tirage élastique assis',desc:'Élastique autour des pieds, tire vers le ventre.'}]},
+    ]},
+    {name:'Superset 2',rest:60,exercises:[
+      {id:'p1b3',name:'Mollets debout (1 pied)',volume:'3 x 12 / jambe',tempo:'2-1-2',hasWeight:false,desc:'Sur une marche, descends bas, monte haut. Un haltère à la main pour charger.',variant:'Deux pieds au sol si équilibre fragile.',video:'https://www.youtube.com/watch?v=3bCraReG5o8',alts:[{name:'Mollets assis (KB sur genoux)',desc:'Assis, KB posée sur les genoux, monte sur les pointes.'}]},
+      {id:'p1b4',name:'Farmer Walk (2 KB 10kg)',volume:'4 x 30 sec',tempo:'—',hasWeight:false,desc:'Une KB dans chaque main, marche droit, ventre serré, épaules basses. Gainage total.',variant:'Planche Copenhagen sur chaise si pas de place pour marcher.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM',alts:[{name:'Suitcase carry (1 KB)',desc:'Une seule KB d\'un côté, change à chaque tour. Anti-bascule du bassin.'},{name:'Stomach Vacuum debout',desc:'5 x 12 sec d\'apnée ventre rentré. Plaque le transverse.'}]},
+    ]},
   ]},
-  C:{title:'Séance C',sub:'Dos, Poussée & Cardio',exercises:[
-    {id:'p1c1',name:'Rowing Bûcheron (Haltère lourd)',volume:'4 x 8-10 / bras',rest:90,hasWeight:true,desc:'Appui sur une chaise. Tire l\'haltère vers ta hanche. 3 secondes de descente. Charge lourde (ex: 25 kg).',variant:'Tirage avec élastique accroché en haut d\'une porte.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p1c2',name:'Pompes',volume:'4 x 10-15',rest:90,hasWeight:false,desc:'Corps gainé. Mets le gilet lesté si 15 reps passent facilement.',variant:'Pompes sur les genoux ou pieds sur le canapé.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
-    {id:'p1c3',name:'Pont fessier à 1 jambe',volume:'3 x 12 / jambe',rest:60,hasWeight:false,desc:'Talon très proche des fesses. Lève les orteils. Contracte la fesse à 100% AVANT de décoller le bassin.',variant:'Les deux pieds au sol avec un haltère sur le ventre.',video:'https://www.youtube.com/watch?v=AVAXhy6pl7o'},
-    {id:'p1c4',name:'Circuit Cardio',volume:'4 Tours',rest:60,hasWeight:false,desc:'Enchaîne fluide : 10 Pompes → 15 Squats → 20 Grimpeurs. Pas de pause entre les 3.',variant:'20 squats, 20 fentes arrière, 20 montées de genoux.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
+  C:{title:'Séance C',sub:'Dos, Poussée & Cardio',duration:'~40 min',supersets:[
+    {name:'Superset 1',rest:90,exercises:[
+      {id:'p1c1',name:'Rowing Bûcheron (haltère lourd)',volume:'4 x 8-10 / bras',tempo:'2-1-3',hasWeight:true,desc:'Appui sur le banc. Tire l\'haltère vers la hanche, descente 3 sec. Charge lourde.',variant:'Tirage élastique haut (remplace la traction, t\'as pas de barre).',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Tirage élastique vertical (lat pulldown)',desc:'Élastique accroché en haut d\'une porte, tire vers la poitrine à genoux. Le vrai substitut de tes tractions.'},{name:'Rowing barre EZ',desc:'Penché, tire l\'EZ vers le nombril.'}]},
+      {id:'p1c2',name:'Développé incliné 30° (haltères)',volume:'4 x 10',tempo:'3-1-1',hasWeight:true,desc:'Banc incliné à 30° (protège l\'épaule). Pousse vers le plafond, descente contrôlée.',variant:'Pompes pieds surélevés.',video:'https://www.youtube.com/watch?v=8iPEnn-ltC8',alts:[{name:'Pompes lestées (gilet)',desc:'Gilet 5kg, corps gainé.'},{name:'Développé militaire assis (haltères)',desc:'Assis sur le banc, pousse au-dessus de la tête. Épaules.'}]},
+    ]},
+    {name:'Superset 2 (finisher)',rest:60,exercises:[
+      {id:'p1c3',name:'Pont fessier 1 jambe',volume:'3 x 12 / jambe',tempo:'2-1-2',hasWeight:false,desc:'Talon proche des fesses, orteils levés. Serre la fesse à 100% AVANT de décoller. Réveille le fessier (clé hanche/genou).',variant:'Deux pieds + haltère sur le ventre.',video:'https://www.youtube.com/watch?v=AVAXhy6pl7o',alts:[{name:'Hip thrust banc',desc:'Dos sur le banc, charge sur le bassin.'}]},
+      {id:'p1c4',name:'Vélo Ativafit — intervalles doux',volume:'8 min · 30s vite / 30s lent',tempo:'—',hasWeight:false,desc:'Résistance modérée. Alterne 30 sec rythme soutenu / 30 sec récup. Cardio sans impact, safe pour le genou.',variant:'10 min allure constante si fatigue.',video:'',alts:[{name:'Marche rapide 12 min',desc:'Dehors, allure soutenue. Zéro impact.'}]},
+    ]},
   ]},
 };
 
 const PHASE2={
-  A:{title:'Séance A',sub:'Force Jambes & Rebond',exercises:[
-    {id:'p2a1',name:'Squat Lourd (Barre/Haltères)',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Descends 2 sec, remonte comme une fusée.',variant:'Squat avec deux Kettlebells à la poitrine.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo'},
-    {id:'p2a2',name:'Soulevé de terre lourd',volume:'4 x 8',rest:90,hasWeight:true,desc:'Dos plat, cible l\'arrière des cuisses. Remonte explosif.',variant:'Pont fessier avec gros haltère sur le bassin.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90'},
-    {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',rest:60,hasWeight:false,desc:'Pointes de pieds, genoux tendus.',variant:'Montées sur pointes très rapides sans décoller.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M'},
-    {id:'p2a4',name:'Planche sur chaise',volume:'3 x 30 sec',rest:60,hasWeight:false,desc:'Pour bétonner l\'intérieur des cuisses.',variant:'Allongé, serre un gros coussin entre les genoux.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs'},
+  A:{title:'Séance A',sub:'Force Jambes & Rebond',duration:'~48 min',supersets:[
+    {name:'Superset 1',rest:120,exercises:[
+      {id:'p2a1',name:'Squat lourd (barre/haltères)',volume:'4 x 6-8',tempo:'2-0-X',hasWeight:true,desc:'Descente 2 sec, remonte explosif (X). Charge lourde.',variant:'Goblet squat 2 KB si dos prudent.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo',alts:[{name:'Squat bulgare (haltères)',desc:'Pied arrière sur le banc. Unilatéral, gros sur le fessier.'},{name:'Hack squat maison',desc:'Talons surélevés, dos droit, charge sur la poitrine.'}]},
+      {id:'p2a2',name:'Soulevé de terre lourd (barre)',volume:'4 x 8',tempo:'2-0-X',hasWeight:true,desc:'Dos plat, chaîne postérieure, remontée explosive.',variant:'Hip thrust lourd au banc.',video:'https://www.youtube.com/watch?v=vzLAZLlxU90',alts:[{name:'Romanian deadlift (haltères)',desc:'Jambes quasi tendues, étire l\'ischio, dos plat.'}]},
+    ]},
+    {name:'Superset 2 (pliométrie — si genou 0/10)',rest:75,exercises:[
+      {id:'p2a3',name:'Petits rebonds sur place',volume:'3 x 20 sauts',tempo:'élastique',hasWeight:false,desc:'Pointes de pieds, genoux quasi tendus, contact sol minimal. STOP si le genou réagit.',variant:'Montées sur pointes rapides sans décoller (si genou sensible).',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M',alts:[{name:'Montées de mollet explosives',desc:'Sans décoller du sol, juste la cheville. Zéro impact genou.'}]},
+      {id:'p2a4',name:'Copenhagen Plank complet',volume:'3 x 30 sec / côté',tempo:'—',hasWeight:false,desc:'Pied sur le banc (pas le genou). Bétonne l\'intérieur des cuisses, blinde la pubalgie.',variant:'Sur le genou si trop dur.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs',alts:[{name:'Adduction élastique debout',desc:'Élastique à la cheville, ramène la jambe vers l\'intérieur.'}]},
+    ]},
   ]},
-  B:{title:'Séance B',sub:'Haut du corps & Armure',exercises:[
-    {id:'p2b1',name:'Développé couché lourd',volume:'4 x 6-8',rest:120,hasWeight:true,desc:'Mets lourd. Descente 2 sec, pousse avec violence.',variant:'Pompes avec gilet lesté.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs'},
-    {id:'p2b2',name:'Tirage dos penché (Barre)',volume:'4 x 8',rest:120,hasWeight:true,desc:'Tire fort vers le ventre, serre les omoplates.',variant:'Tirage bûcheron avec élastique le plus dur.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw'},
-    {id:'p2b3',name:'Tractions Lestées (Gilet)',volume:'4 x 6-8',rest:90,hasWeight:true,desc:'Dos épais. Descente contrôlée, montée explosive.',variant:'Tractions sans gilet ou aide élastique.',video:'https://www.youtube.com/watch?v=eGo4IYlbE5g'},
-    {id:'p2b4',name:'Marche du fermier (très lourd)',volume:'4 x 40 sec',rest:60,hasWeight:true,desc:'Marche sans pencher. Gainage max.',variant:'UN SEUL haltère lourd, change de main.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM'},
+  B:{title:'Séance B',sub:'Haut du corps & Armure',duration:'~46 min',supersets:[
+    {name:'Superset 1',rest:120,exercises:[
+      {id:'p2b1',name:'Développé couché lourd (haltères/barre)',volume:'4 x 6-8',tempo:'2-0-X',hasWeight:true,desc:'Lourd. Descente 2 sec, pousse avec violence.',variant:'Pompes gilet lesté + élastique.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné lourd',desc:'Banc à 30°, plus safe épaule.'}]},
+      {id:'p2b2',name:'Tirage élastique lourd / Rowing',volume:'4 x 8',tempo:'2-1-2',hasWeight:true,desc:'Pas de barre de traction : tirage élastique vertical le plus dur, OU rowing barre lourd. Dos épais.',variant:'Rowing 1 bras haltère le plus lourd.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Rowing barre penché lourd',desc:'EZ ou barre droite chargée, tire au nombril.'}]},
+    ]},
+    {name:'Superset 2',rest:75,exercises:[
+      {id:'p2b3',name:'Développé militaire (haltères)',volume:'4 x 8',tempo:'2-0-1',hasWeight:true,desc:'Assis sur le banc, dos calé. Pousse au-dessus de la tête sans cambrer.',variant:'Élévations latérales légères.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, descends la tête vers le sol. Épaules au poids du corps.'}]},
+      {id:'p2b4',name:'Farmer Walk lourd (2 KB / haltères)',volume:'4 x 40 sec',tempo:'—',hasWeight:false,desc:'Le plus lourd que tu tiens. Gainage max, épaules basses.',variant:'Suitcase carry 1 côté.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg sur le dos, planche 3x40s.'}]},
+    ]},
   ]},
-  C:{title:'Séance C',sub:'Déplacements & Souffle',exercises:[
-    {id:'p2c1',name:'Fentes en avançant (Haltères)',volume:'4 x 10 / jambe',rest:90,hasWeight:true,desc:'Avance pas à pas, genou arrière frôle le sol.',variant:'Fentes arrière sur place (plus doux genou).',video:'https://www.youtube.com/watch?v=xNLfW34fht0'},
-    {id:'p2c2',name:'Pompes Explosives (Gilet)',volume:'4 x 10-12',rest:90,hasWeight:false,desc:'Pousse fort pour décoller les mains.',variant:'Pompes classiques + élastique dans le dos.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4'},
-    {id:'p2c3',name:'Balancier Kettlebell',volume:'4 x 15',rest:60,hasWeight:true,desc:'Coup de hanches sec et rapide.',variant:'Élastique accroché à un poteau, tiré entre les jambes.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE'},
-    {id:'p2c4',name:'Pas chassés latéraux',volume:'3 x 1 min',rest:60,hasWeight:false,desc:'Élastique aux genoux, posture basse, pas de côté.',variant:'Pas de côté lents jambes presque tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU'},
+  C:{title:'Séance C',sub:'Déplacements & Souffle',duration:'~44 min',supersets:[
+    {name:'Superset 1',rest:90,exercises:[
+      {id:'p2c1',name:'Fentes marchées (haltères)',volume:'4 x 10 / jambe',tempo:'2-0-1',hasWeight:true,desc:'Avance pas à pas, genou arrière frôle le sol. Contrôle l\'axe du genou avant.',variant:'Fentes arrière sur place (plus doux genou).',video:'https://www.youtube.com/watch?v=xNLfW34fht0',alts:[{name:'Step-up sur banc (haltères)',desc:'Monte sur le banc une jambe, contrôle la descente.'}]},
+      {id:'p2c2',name:'Pompes explosives (gilet)',volume:'4 x 10-12',tempo:'X',hasWeight:false,desc:'Pousse fort pour décoller les mains. Gilet si trop facile.',variant:'Pompes classiques + élastique dans le dos.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4',alts:[{name:'Développé haltères explosif',desc:'Léger, pousse vite vers le plafond.'}]},
+    ]},
+    {name:'Superset 2 (basket)',rest:75,exercises:[
+      {id:'p2c3',name:'Swing Kettlebell explosif',volume:'4 x 15',tempo:'X',hasWeight:false,desc:'Coup de hanche sec. Puissance et explosivité du bassin.',variant:'Pont fessier explosif lesté.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE',alts:[{name:'Kettlebell deadlift rapide',desc:'2 KB, monte vite, dos plat.'}]},
+      {id:'p2c4',name:'Pas chassés latéraux (élastique)',volume:'3 x 1 min',tempo:'—',hasWeight:false,desc:'Élastique aux genoux, posture basse de défense, déplacements latéraux. Spécifique basket.',variant:'Pas de côté lents jambes tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU',alts:[{name:'Vélo Ativafit sprint',desc:'6 x 20s sprint / 40s récup. Cardio sans impact.'}]},
+    ]},
   ]},
 };
 
@@ -253,6 +347,7 @@ const PHASE2={
 const todayStr=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
 const MONTHS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const DAY_LABELS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const fmtShort=iso=>{const d=new Date(iso);return `${d.getDate()}/${d.getMonth()+1}`;};
 
 // ── GLOBAL TIMERS ──
 function useGlobalTimers(){
@@ -274,31 +369,50 @@ function useGlobalTimers(){
 function Timer({id,seconds,T}){
   const t=T.get(id,seconds);const on=T.isRunning(id);const done=t===0;
   const fmt=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-  return(<div className="timer-box"><div className="timer-label">⏱ Repos</div>
+  return(<div className="timer-box"><div className="timer-label">⏱ Repos (entre supersets)</div>
     <div className={`timer-digits${on?' running':done?' done':''}`}>{fmt(t)}</div>
     <div className="timer-btns"><button className="t-btn go" onClick={()=>T.start(id,seconds)}>{done?'🔄 Relancer':on?'⏸ Pause':'▶ Départ'}</button><button className="t-btn" onClick={()=>T.reset(id,seconds)}>Reset</button></div></div>);
 }
 
-function WeightBox({exId,week,weights,onUpdate}){
+function WeightBox({exId,week,weights,onUpdate,reco}){
   const key=`${exId}-w${week}`;
   return(<div className="weight-box"><div className="w-label">💪 Charge — S{week}</div>
     <div className="w-row"><input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/><span className="w-unit">kg</span></div>
+    {reco&&<div className="reco" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>
+      <div className="reco-t">🎯 {reco.text}</div><button className="reco-apply" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>Appliquer</button></div>}
     <div className="w-history">{[1,2,3,4,5,6,7,8].map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}</div></div>);
 }
 
-function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T}){
+function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T,reco,swapIndex,onSwap}){
   const[open,setOpen]=useState(false);
+  const alts=ex.alts||[];
+  const swapped=swapIndex>=0&&alts[swapIndex];
+  const shown=swapped?{...ex,name:alts[swapIndex].name,desc:alts[swapIndex].desc}:ex;
   return(<div className={`ex-card${done?' done':''}${open?' expanded':''}`}>
     <div className="ex-row"><div className="check" onClick={e=>{e.stopPropagation();onToggle();}}>{done&&'✓'}</div>
-      <div className="ex-main" onClick={()=>setOpen(v=>!v)}><div className="ex-name">{ex.name}</div><div className="ex-vol">{ex.volume}{ex.rest?` · ${ex.rest}s`:''}</div></div>
+      <div className="ex-main" onClick={()=>setOpen(v=>!v)}><div className="ex-name">{shown.name}{swapped&&' ↺'}</div><div className="ex-vol">{ex.volume}{ex.tempo&&ex.tempo!=='—'?` · tempo ${ex.tempo}`:''}</div></div>
       <div className="ex-chev" onClick={()=>setOpen(v=>!v)}>▾</div></div>
     <div className="ex-details"><div className="ex-body">
-      <div className="ex-desc">{ex.desc}</div>
-      {ex.variant&&<div className="variant-box"><div className="variant-tag">Variante</div><div className="variant-text">{ex.variant}</div></div>}
-      {ex.rest&&<Timer id={ex.id} seconds={ex.rest} T={T}/>}
-      {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate}/>}
+      <div className="ex-desc">{shown.desc}</div>
+      {!swapped&&ex.variant&&<div className="variant-box"><div className="variant-tag">Variante facile</div><div className="variant-text">{ex.variant}</div></div>}
+      {alts.length>0&&<div className="swap-btn" onClick={e=>{e.stopPropagation();onSwap();}}>↺ &nbsp;{swapped?'Exo suivant / revenir à l\'original':'J\'en ai marre — changer d\'exo'}</div>}
+      {ex.hasWeight&&<WeightBox exId={ex.id} week={week} weights={weights} onUpdate={onWeightUpdate} reco={reco}/>}
       {ex.video&&<a href={ex.video} target="_blank" rel="noopener noreferrer" className="video-btn" onClick={e=>e.stopPropagation()}>▶ &nbsp;Voir la vidéo</a>}
     </div></div></div>);
+}
+
+function Sparkline({points,color}){
+  if(!points||points.length<2)return <div style={{fontSize:'.78rem',color:'var(--muted)',padding:'1rem 0'}}>Ajoute au moins 2 mesures pour voir la courbe.</div>;
+  const W=300,H=80,pad=6;
+  const xs=points.map((p,i)=>pad+i*((W-2*pad)/(points.length-1)));
+  const min=Math.min(...points.map(p=>p.v)),max=Math.max(...points.map(p=>p.v));
+  const rng=max-min||1;
+  const ys=points.map(p=>H-pad-((p.v-min)/rng)*(H-2*pad));
+  const d=xs.map((x,i)=>`${i?'L':'M'}${x.toFixed(1)} ${ys[i].toFixed(1)}`).join(' ');
+  return(<svg className="spark" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
+    <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    {xs.map((x,i)=><circle key={i} cx={x} cy={ys[i]} r="3" fill={color}/>)}
+  </svg>);
 }
 
 function Calendar({log}){
@@ -358,24 +472,33 @@ function App(){
   const[weights,setWeights]=useState(()=>JSON.parse(localStorage.getItem('rh_w')||'{}'));
   const[bilans,setBilans]=useState(()=>JSON.parse(localStorage.getItem('rh_bilan')||'{}'));
   const[trainingLog,setTrainingLog]=useState(()=>JSON.parse(localStorage.getItem('rh_log')||'{}'));
+  const[measures,setMeasures]=useState(()=>JSON.parse(localStorage.getItem('rh_meas')||'[]'));
+  const[swaps,setSwaps]=useState(()=>JSON.parse(localStorage.getItem('rh_swap')||'{}'));
+  const[cpAnswers,setCpAnswers]=useState(()=>JSON.parse(localStorage.getItem('rh_cp')||'{}'));
+  const[p2Unlocked,setP2Unlocked]=useState(()=>JSON.parse(localStorage.getItem('rh_p2')||'false'));
 
   useEffect(()=>{localStorage.setItem('rh_done',JSON.stringify(completed))},[completed]);
   useEffect(()=>{localStorage.setItem('rh_w',JSON.stringify(weights))},[weights]);
   useEffect(()=>{localStorage.setItem('rh_bilan',JSON.stringify(bilans))},[bilans]);
   useEffect(()=>{localStorage.setItem('rh_log',JSON.stringify(trainingLog))},[trainingLog]);
+  useEffect(()=>{localStorage.setItem('rh_meas',JSON.stringify(measures))},[measures]);
+  useEffect(()=>{localStorage.setItem('rh_swap',JSON.stringify(swaps))},[swaps]);
+  useEffect(()=>{localStorage.setItem('rh_cp',JSON.stringify(cpAnswers))},[cpAnswers]);
+  useEffect(()=>{localStorage.setItem('rh_p2',JSON.stringify(p2Unlocked))},[p2Unlocked]);
 
   const phase=week<=4?PHASE1:PHASE2;
   const phaseLabel=week<=4?'Phase 1':'Phase 2';
 
+  const flat=l=>{const s=phase[l];return s?s.supersets.reduce((a,ss)=>a.concat(ss.exercises),[]):[];};
   const toggle=id=>{const k=`${id}-w${week}`;setCompleted(p=>({...p,[k]:!p[k]}))};
   const upW=(k,v)=>setWeights(p=>({...p,[k]:v}));
 
-  const isDone=l=>{const e=phase[l]?.exercises||[];return e.length&&e.every(x=>completed[`${x.id}-w${week}`])};
-  const prog=l=>{const e=phase[l]?.exercises||[];return e.length?Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100):0};
+  const isDone=l=>{const e=flat(l);return e.length&&e.every(x=>completed[`${x.id}-w${week}`])};
+  const prog=l=>{const e=flat(l);return e.length?Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100):0};
   const totalKg=()=>Object.keys(weights).filter(k=>k.endsWith(`-w${week}`)).reduce((s,k)=>s+(parseFloat(weights[k])||0),0);
   const doneSess=()=>['A','B','C'].filter(isDone).length;
 
-  // Log a session when all exercises are done
+  // Log session
   useEffect(()=>{
     ['A','B','C'].forEach(l=>{
       if(isDone(l)){
@@ -389,6 +512,7 @@ function App(){
     });
   },[completed]);
 
+  // Bilan
   const setBilanScore=(testId,score)=>{const k=`w${week}`;setBilans(p=>({...p,[k]:{...(p[k]||{}), [testId]:score}}));};
   const getBilanScore=testId=>(bilans[`w${week}`]||{})[testId];
   const getZone=score=>{
@@ -397,23 +521,87 @@ function App(){
     if(score<=5)return{label:'🟠 Zone Orange',color:'var(--orange)',msg:'Mêmes poids, pas de montée. Insiste sur la mobilité.'};
     return{label:'🔴 Zone Rouge',color:'var(--red)',msg:'Réduis 30%, variantes les plus simples.'};
   };
+  // Zone moyenne de la semaine courante (pour les recos)
+  const weekZoneCode=()=>{
+    const b=bilans[`w${week}`]||{};const vals=BILAN_TESTS.map(t=>b[t.id]).filter(s=>s!==undefined&&s!==null);
+    if(!vals.length)return 'none';
+    const avg=vals.reduce((a,c)=>a+c,0)/vals.length;
+    return avg<=2?'green':avg<=5?'orange':'red';
+  };
+  // Reco de poids: basée sur S précédente + zone
+  const recoFor=ex=>{
+    if(!ex.hasWeight)return null;
+    const last=parseFloat(weights[`${ex.id}-w${week-1}`]);
+    const zone=weekZoneCode();
+    if(isNaN(last)){return {value:'', text:'1ère charge : commence léger, technique parfaite (tu reprends après 1 mois).'};}
+    if(zone==='red')return {value:Math.max(0,Math.round((last*0.7)*2)/2), text:`Zone rouge → allège : ${Math.round(last*0.7*2)/2} kg`};
+    if(zone==='orange')return {value:last, text:`Zone orange → tu maintiens : ${last} kg`};
+    // green ou none -> progression douce
+    return {value:Math.round((last+2.5)*2)/2, text:`Tout vert → +2,5 kg : ${Math.round((last+2.5)*2)/2} kg`};
+  };
 
-  // Recent log for display
-  const recentLog=Object.entries(trainingLog).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+  // Swap
+  const swapKey=(l,exId)=>`${l}-${exId}`;
+  const cycleSwap=(l,ex)=>{
+    const k=swapKey(l,ex.id);const max=(ex.alts||[]).length;
+    setSwaps(p=>{const cur=p[k]===undefined?-1:p[k];const next=cur+1>=max?-1:cur+1;return{...p,[k]:next};});
+  };
+
+  // Mensurations
+  const lastMeas=measures.length?measures[measures.length-1]:null;
+  const firstMeas=measures.length?measures[0]:null;
+  const addMeasure=(m)=>{
+    if(m.pince==''&&m.taille==''&&m.hanches==''&&m.poids=='')return;
+    setMeasures(prev=>[...prev,{date:todayStr(),...m}]);
+  };
+
+  // Checkpoint Phase 2
+  const s1to4Done=()=>{
+    // toutes les séances A/B/C des semaines 1-4 complètes
+    for(let w=1;w<=4;w++){
+      for(const l of ['A','B','C']){
+        const e=PHASE1[l].supersets.reduce((a,ss)=>a.concat(ss.exercises),[]);
+        if(!e.every(x=>completed[`${x.id}-w${w}`]))return false;
+      }
+    }
+    return true;
+  };
+  const bilanAllGreen=()=>{
+    // dernier bilan rempli (semaine 4 de préférence) tout vert
+    const b=bilans['w4']||bilans[`w${week}`]||{};
+    const vals=BILAN_TESTS.map(t=>b[t.id]);
+    if(vals.some(v=>v===undefined||v===null))return false;
+    return vals.every(v=>v<=2);
+  };
+  const cpAllOk=()=>CP_QUESTIONS.every(q=>cpAnswers[q.id]===q.good);
+  const canUnlock=()=>s1to4Done()&&bilanAllGreen()&&cpAllOk();
+  const setCp=(id,v)=>setCpAnswers(p=>({...p,[id]:v}));
+
+  const selectWeek=w=>{
+    if(w>4&&!p2Unlocked){setView('checkpoint');return;}
+    setWeek(w);
+  };
 
   // ── WORKOUT ──
   if(view==='workout'&&sess){
     const s=phase[sess];const p=prog(sess);
     return(<div className="app"><div className="workout-view">
-      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}%</div></div></div>
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}% · {s.duration}</div></div></div>
       <div className="workout-hero"><div className="hero-title">{s.title}</div><div className="hero-sub">{s.sub}</div>
-        <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span>{week<=4&&<span className="hero-tag">Tempo 3-1-1</span>}{week>4&&<span className="hero-tag">Explosif ↑</span>}</div>
+        <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span><span className="hero-tag">⏱ {s.duration}</span>{week<=2&&<span className="hero-tag">🔄 Reprise — léger</span>}{week>4&&<span className="hero-tag">🔥 Explosif</span>}</div>
         <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div></div>
       <div className="ex-section">
-        <div className="ex-sec-label">🔥 Bloc correctif (obligatoire)</div>
-        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T}/>)}
-        <div className="ex-sec-label">💪 Exercices principaux</div>
-        {s.exercises.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T}/>)}
+        <div className="ex-sec-label">🔥 Bloc correctif hanche/genou (obligatoire)</div>
+        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}}/>)}
+        {s.supersets.map((ss,i)=>(<div key={i}>
+          <div className="ex-sec-label">💪 {ss.name}</div>
+          <div className="ss-group">
+            <div className="ss-head"><div className="ss-name">↯ Enchaîné sans repos</div><div className="ss-info">Repos {ss.rest}s après la paire</div></div>
+            {ss.exercises.map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
+              return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)}/>;})}
+            <div style={{padding:'.5rem .25rem 0'}}><Timer id={`ss-${sess}-${i}-w${week}`} seconds={ss.rest} T={T}/></div>
+          </div>
+        </div>))}
       </div>
     </div></div>);
   }
@@ -433,7 +621,7 @@ function App(){
     const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:null;
     const avgZ=avg!==null?getZone(avg):null;
     return(<div className="app"><div className="workout-view">
-      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests de progression</div></div></div>
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests · pilote tes recos de poids</div></div></div>
       <div className="ex-section">{BILAN_TESTS.map(test=>{
         const score=getBilanScore(test.id);const zone=getZone(score);
         return(<div key={test.id} className="bilan-test">
@@ -453,25 +641,67 @@ function App(){
       </div></div></div>);
   }
 
+  // ── CHECKPOINT PHASE 2 ──
+  if(view==='checkpoint'){
+    const r1=s1to4Done(),r2=bilanAllGreen(),r3=cpAllOk();
+    const ready=r1&&r2&&r3;
+    return(<div className="app"><div className="workout-view">
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Déverrouillage Phase 2</div><div className="topbar-sub">Explosivité / Basket — voyants verts requis</div></div></div>
+      <div className="workout-hero"><div className="hero-title">Checkpoint</div><div className="hero-sub">La Phase 2 charge lourd et saute. On ne l'ouvre que si ton corps est prêt — surtout ce genou droit.</div></div>
+      <div className="ex-section">
+        <div className="ex-sec-label">Conditions</div>
+        <div className={`cp-req ${r1?'ok':'ko'}`}><div className="dot">{r1?'✓':'1'}</div><div className="cp-req-main"><div className="cp-req-t">Toutes les séances S1→S4 terminées</div><div className="cp-req-s">Phase 1 bouclée intégralement</div></div></div>
+        <div className={`cp-req ${r2?'ok':'ko'}`}><div className="dot">{r2?'✓':'2'}</div><div className="cp-req-main"><div className="cp-req-t">4 tests Bilan en zone verte (≤2)</div><div className="cp-req-s">Remplis le Bilan en semaine 4</div></div></div>
+        <div className={`cp-req ${r3?'ok':'ko'}`}><div className="dot">{r3?'✓':'3'}</div><div className="cp-req-main"><div className="cp-req-t">Questionnaire ressenti au vert</div><div className="cp-req-s">Réponds ci-dessous</div></div></div>
+
+        <div className="ex-sec-label">Questionnaire ressenti</div>
+        {CP_QUESTIONS.map(q=>(<div key={q.id} className="q-row">
+          <div className="q-label">{q.label}</div>
+          <div className="q-opts">{q.opts.map(o=>(<div key={o.v} className={`q-opt${cpAnswers[q.id]===o.v?' sel':''}`} onClick={()=>setCp(q.id,o.v)}>{o.t}</div>))}</div>
+        </div>))}
+
+        <button className={`cp-unlock ${ready?'ready':'notready'}`} disabled={!ready} onClick={()=>{if(ready){setP2Unlocked(true);setWeek(5);setView('home');}}}>
+          {ready?'🔓 Débloquer la Phase 2':'🔒 Voyants pas tous au vert'}
+        </button>
+        {!ready&&<div style={{fontSize:'.8rem',color:'var(--sub)',textAlign:'center',marginTop:'.75rem',lineHeight:1.5}}>Si un voyant reste rouge/orange, ce n'est pas un échec : tu prolonges la Phase 1 une semaine. La voie rapide vers octobre, c'est un genou sain — pas un genou cassé.</div>}
+      </div></div></div>);
+  }
+
+  // ── MENSURATIONS ──
+  if(view==='measures'){
+    return <MeasuresView measures={measures} addMeasure={addMeasure} lastMeas={lastMeas} firstMeas={firstMeas} setView={setView}/>;
+  }
+
   // ── HOME ──
+  const recentLog=Object.entries(trainingLog).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+  const showCpBanner=week<=4&&s1to4Done()&&!p2Unlocked;
   return(<div className="app">
     <div className="header">
       <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${week>4?' p2':''}`}>{phaseLabel}</div></div>
-      <div className="week-row">{[1,2,3,4,5,6,7,8].map(w=><button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>setWeek(w)}>S{w}</button>)}</div>
+      <div className="week-row">{[1,2,3,4,5,6,7,8].map(w=>{const locked=w>4&&!p2Unlocked;
+        return <button key={w} className={`week-btn${week===w?' active':''}${locked?' locked':''}`} onClick={()=>selectWeek(w)}>S{w}{locked&&<span className="lock">🔒</span>}</button>;})}</div>
     </div>
+
+    {showCpBanner&&<div className="section" style={{paddingTop:'1.5rem'}}>
+      <div className="banner" onClick={()=>setView('checkpoint')}><div className="banner-ic">🔓</div><div className="banner-main"><div className="banner-t">Phase 1 bouclée — passe le checkpoint</div><div className="banner-s">Valide tes voyants verts pour débloquer la Phase 2.</div></div><div className="s-arrow">›</div></div>
+    </div>}
 
     <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Résumé — Semaine {week}</div>
       <div className="stats-grid">
         <div className="stat-card"><div className="stat-card-label">Séances faites</div><div className="stat-card-value">{doneSess()}<span>/3</span></div></div>
-        <div className="stat-card"><div className="stat-card-label">Volume total</div><div className="stat-card-value">{totalKg()}<span>kg</span></div></div>
+        <div className="stat-card"><div className="stat-card-label">Volume chargé</div><div className="stat-card-value">{totalKg()}<span>kg</span></div></div>
       </div>
     </div>
+
+    {lastMeas&&<div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Pince ombilicale (ton juge de paix)</div>
+      <div className="banner" onClick={()=>setView('measures')}><div className="banner-ic">📏</div><div className="banner-main"><div className="banner-t">{lastMeas.pince||'—'} mm{firstMeas&&firstMeas.pince&&lastMeas.pince?<span style={{color:(lastMeas.pince-firstMeas.pince)<=0?'var(--green)':'var(--orange)',fontSize:'.8rem',marginLeft:'8px'}}>{(lastMeas.pince-firstMeas.pince)<=0?'▼':'▲'} {Math.abs(lastMeas.pince-firstMeas.pince)} mm depuis le début</span>:null}</div><div className="banner-s">Dernière mesure le {fmtShort(lastMeas.date)} · appuie pour suivre</div></div><div className="s-arrow">›</div></div>
+    </div>}
 
     <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Choisis ta séance</div>
       <div className="session-list">{['A','B','C'].map(l=>{
         const s=phase[l];const done=isDone(l);const p=prog(l);
         return(<div key={l} className="session-row" onClick={()=>{setSess(l);setView('workout')}}>
-          <div className={`s-num ${l}`}>{l}</div><div className="s-info"><div className="s-name">{s.sub}</div><div className="s-day">{p}% complété</div></div>
+          <div className={`s-num ${l}`}>{l}</div><div className="s-info"><div className="s-name">{s.sub}</div><div className="s-day">{p}% complété</div><div className="s-meta">⏱ {s.duration}</div></div>
           {done?<div className="s-check">✓</div>:<div className="s-arrow">›</div>}</div>);
       })}</div>
     </div>
@@ -493,20 +723,71 @@ function App(){
 
     {recentLog.length>0&&<div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Dernières séances</div>
       <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:'var(--radius)',padding:'1rem 1.25rem'}}>
-        {recentLog.map(([date,sessions])=>{
-          const d=new Date(date);const formatted=`${d.getDate()}/${d.getMonth()+1}`;
-          return(<div key={date} className="log-row"><div className="log-date">{formatted}</div>
-            <div style={{display:'flex',gap:'6px'}}>{sessions.map((s,i)=><div key={i} className={`log-badge ${s}`}>Séance {s}</div>)}</div></div>);
-        })}
+        {recentLog.map(([date,sessions])=>(<div key={date} className="log-row"><div className="log-date">{fmtShort(date)}</div>
+            <div style={{display:'flex',gap:'6px'}}>{sessions.map((s,i)=><div key={i} className={`log-badge ${s}`}>Séance {s}</div>)}</div></div>))}
       </div>
     </div>}
 
     <div className="nav">
       <button className={`nav-btn${view==='home'?' active':''}`} onClick={()=>setView('home')}><span className="nav-icon">🏠</span>Accueil</button>
-      <button className={`nav-btn${view==='recovery'?' active':''}`} onClick={()=>setView('recovery')}><span className="nav-icon">🧘</span>Récup</button>
+      <button className={`nav-btn${view==='measures'?' active':''}`} onClick={()=>setView('measures')}><span className="nav-icon">📏</span>Mesures</button>
       <button className={`nav-btn${view==='bilan'?' active':''}`} onClick={()=>setView('bilan')}><span className="nav-icon">📋</span>Bilan</button>
+      <button className={`nav-btn${view==='recovery'?' active':''}`} onClick={()=>setView('recovery')}><span className="nav-icon">🧘</span>Récup</button>
     </div>
   </div>);
+}
+
+// ── MENSURATIONS VIEW ──
+function MeasuresView({measures,addMeasure,lastMeas,firstMeas,setView}){
+  const[f,setF]=useState({pince:'',taille:'',hanches:'',poids:''});
+  const num=v=>v===''||v===null||v===undefined?null:parseFloat(v);
+  const series=key=>measures.filter(m=>num(m[key])!==null).map(m=>({v:num(m[key])}));
+  const delta=(key,unit)=>{
+    const f0=firstMeas&&num(firstMeas[key]),l=lastMeas&&num(lastMeas[key]);
+    if(f0===null||l===null||f0===undefined||l===undefined)return null;
+    const d=l-f0;return{d,cls:d<=0?'down':'up',txt:`${d<=0?'▼':'▲'} ${Math.abs(Math.round(d*10)/10)}${unit} depuis le début`};
+  };
+  const ratio=m=>{const t=num(m&&m.taille),h=num(m&&m.hanches);return t&&h?Math.round(t/h*100)/100:null;};
+  const cards=[
+    {key:'pince',label:'Pince ombilicale',unit:'mm',color:'var(--accent)'},
+    {key:'taille',label:'Tour de taille',unit:'cm',color:'#5ac8fa'},
+    {key:'hanches',label:'Tour de hanches',unit:'cm',color:'#bf5af2'},
+    {key:'poids',label:'Poids (secondaire)',unit:'kg',color:'var(--sub)'},
+  ];
+  const save=()=>{addMeasure(f);setF({pince:'',taille:'',hanches:'',poids:''});};
+  return(<div className="app"><div className="workout-view">
+    <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Mensurations</div><div className="topbar-sub">La pince commande. Le poids = bruit.</div></div></div>
+    <div className="ex-section">
+      <div className="ex-sec-label">Nouvelle mesure — {fmtShort(todayStr())}</div>
+      <div className="meas-form">
+        <div className="meas-grid">
+          <div className="meas-field"><div className="meas-flabel">Pince ombilicale (mm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="22" value={f.pince} onChange={e=>setF({...f,pince:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Poids (kg)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="88" value={f.poids} onChange={e=>setF({...f,poids:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Tour de taille (cm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="91" value={f.taille} onChange={e=>setF({...f,taille:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Tour de hanches (cm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="100" value={f.hanches} onChange={e=>setF({...f,hanches:e.target.value})}/></div>
+        </div>
+        <button className="meas-save" onClick={save}>Enregistrer la mesure</button>
+      </div>
+
+      <div className="ex-sec-label">Évolution</div>
+      <div className="meas-cards">{cards.map(c=>{const last=lastMeas&&num(lastMeas[c.key]);const dl=delta(c.key,c.unit);
+        return(<div key={c.key} className="meas-stat"><div className="meas-stat-l">{c.label}</div>
+          <div className="meas-stat-v">{last!==null&&last!==undefined?last:'—'}<span> {c.unit}</span></div>
+          {dl&&<div className={`meas-delta ${dl.cls}`}>{dl.txt}</div>}</div>);
+      })}</div>
+
+      {lastMeas&&ratio(lastMeas)&&<div className="meas-stat" style={{marginBottom:'1rem'}}><div className="meas-stat-l">Ratio taille / hanches</div><div className="meas-stat-v">{ratio(lastMeas)}</div><div style={{fontSize:'.72rem',color:'var(--sub)',marginTop:'.25rem'}}>Vise &lt; 0,90. Indicateur de gras abdominal.</div></div>}
+
+      <div className="ex-sec-label">Courbe de la pince (mm)</div>
+      <div className="chart-container"><Sparkline points={series('pince')} color="var(--accent)"/></div>
+
+      {measures.length>0&&<div><div className="ex-sec-label">Historique</div>
+        <div style={{background:'var(--card)',border:'1px solid var(--border)',borderRadius:'var(--radius)',padding:'.5rem 1.25rem'}}>
+          {[...measures].reverse().map((m,i)=>(<div key={i} className="meas-hist-row"><div className="meas-hist-date">{fmtShort(m.date)}</div>
+            <div className="meas-hist-vals">{m.pince!==''&&m.pince!=null&&<span>Pince <b>{m.pince}mm</b></span>}{m.taille!==''&&m.taille!=null&&<span>Taille <b>{m.taille}</b></span>}{m.hanches!==''&&m.hanches!=null&&<span>Hanches <b>{m.hanches}</b></span>}{m.poids!==''&&m.poids!=null&&<span>Poids <b>{m.poids}</b></span>}</div></div>))}
+        </div></div>}
+    </div>
+  </div></div>);
 }
 
 ReactDOM.render(<App/>,document.getElementById('root'));
