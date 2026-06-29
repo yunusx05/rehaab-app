@@ -262,11 +262,11 @@ function playBeep(){
 // ── ÉCHAUFFEMENT / BLOC CORRECTIF (hanche/genou — obligatoire) ──
 const WARMUP=[
   {id:'w0',name:'Vélo — échauffement',volume:'5 min facile',rest:0,desc:'5 min de vélo résistance faible AVANT de charger. Amène le sang dans le genou et la hanche, lubrifie l\'articulation. Ne saute jamais cette étape.'},
-  {id:'w1',name:'Respiration Ventrale',volume:'1 min',rest:0,desc:'Allongé au sol. Calme le système nerveux et relâche la pression du dos.'},
   {id:'w3',name:'Ouverture Coquillage (élastique)',volume:'2 x 15 / côté',rest:0,desc:'Élastique aux genoux. Allongé sur le côté, ouvre le genou vers le plafond. Bloque 3 sec en haut en serrant la fesse. C\'est LUI qui débloque ta hanche.'},
-  {id:'w4',name:'Copenhagen (sur genou)',volume:'2 x 15-20 sec / côté',rest:0,desc:'Genou sur une chaise, planche latérale. Bétonne tes adducteurs (protège la pubalgie).'},
   {id:'w5',name:'Pas Latéraux (élastique)',volume:'2 x 15 / côté',rest:0,desc:'Élastique aux genoux, posture basse de basketteur. Petits pas lents. Ça doit brûler sur le côté de la fesse.'},
-  {id:'w6',name:'Étirement Cheville au mur',volume:'1 x 10 / pied',rest:0,desc:'Genou vers le mur sans décoller le talon. Aligne genou et hanche dans le bon axe.'},
+  {id:'w4',name:'Copenhagen (sur genou)',opt:true,volume:'2 x 15-20 sec / côté',rest:0,desc:'Optionnel. Genou sur une chaise, planche latérale. Bétonne tes adducteurs (protège la pubalgie).'},
+  {id:'w6',name:'Étirement Cheville au mur',opt:true,volume:'1 x 10 / pied',rest:0,desc:'Optionnel mais utile pour ton genou. Genou vers le mur sans décoller le talon, aligne genou et hanche.'},
+  {id:'w1',name:'Respiration Ventrale',opt:true,volume:'1 min',rest:0,desc:'Optionnel. Allongé au sol, calme le système nerveux.'},
 ];
 
 const RECOVERY=[
@@ -348,14 +348,19 @@ const PHASE1={
       {id:'p1c4',name:'Vélo Ativafit — intervalles doux',volume:'8 min · 30s vite / 30s lent',tempo:'—',hasWeight:false,desc:'Résistance modérée. Alterne 30 sec rythme soutenu / 30 sec récup. Cardio sans impact, safe pour le genou.',variant:'10 min allure constante si fatigue.',video:'',alts:[{name:'Marche rapide 12 min',desc:'Dehors, allure soutenue. Zéro impact.'}]},
     ]},
   ]},
-  D:{title:'Séance D',sub:'Haut du corps & Cardio (optionnelle)',duration:'~40 min',optional:true,supersets:[
+  D:{title:'Séance D',sub:'Haut du corps · Core · Cardio (optionnelle)',duration:'~45 min',optional:true,circuit:true,supersets:[
     {name:'Superset 1',rest:60,exercises:[
       {id:'p1d1',name:'Développé incliné 30° (haltères)',volume:'4 x 12',tempo:'2-1-1',hasWeight:true,desc:'Reps plus hautes, recherche du pump. Banc à 30°, épaules protégées. Jour léger : on cherche le muscle, pas la barre la plus lourde.',variant:'Pompes pieds surélevés.',video:'https://www.youtube.com/watch?v=8iPEnn-ltC8',alts:[{name:'Développé couché haltères',desc:'À plat, un haltère par main.'},{name:'Pompes lestées (gilet)',desc:'Gilet 5kg, corps gainé.'}]},
       {id:'p1d2',name:'Tirage élastique / Rowing (12 reps)',volume:'4 x 12',tempo:'2-1-2',hasWeight:true,desc:'Dos épais. Tire vers le nombril, serre les omoplates. Pas de barre de traction → élastique ou rowing.',variant:'Rowing 1 bras haltère.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Tirage élastique vertical',desc:'Élastique en haut d\'une porte, vers la poitrine.'}]},
     ]},
     {name:'Superset 2 (bras & épaules — le tracé)',rest:45,exercises:[
       {id:'p1d3',name:'Élévations latérales (haltères légers)',volume:'3 x 15',tempo:'2-0-2',hasWeight:true,desc:'Léger, contrôle strict, pas d\'élan. Dessine la largeur d\'épaules = effet tracé immédiat.',variant:'Élévations à l\'élastique.',video:'https://www.youtube.com/watch?v=3VcKaXpzqRo',alts:[{name:'Développé militaire léger',desc:'Assis, pousse au-dessus de la tête.'}]},
-      {id:'p1d4',name:'Curl marteau + Extension triceps',volume:'3 x 12 (chaque)',tempo:'2-0-1',hasWeight:true,desc:'Enchaîné : biceps (curl marteau) puis triceps (extension au-dessus de la tête). Les bras, c\'est du volume visible.',variant:'Curl/extension à l\'élastique.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Dips sur banc',desc:'Mains derrière sur le banc, descends le bassin. Triceps au poids du corps.'}]},
+      {id:'p1d4',name:'Curl marteau + Dips banc (triceps)',volume:'3 x 12 (chaque)',tempo:'2-0-1',hasWeight:true,desc:'Biceps (curl marteau) puis triceps (dips sur le banc). Volume bras = bras qui ressortent.',variant:'Extension triceps haltère au-dessus de la tête.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Curl + extension à l\'élastique',desc:'Tout à l\'élastique.'}]},
+    ]},
+    {name:'Core / Anti-rotation (le tracé du ventre)',rest:45,exercises:[
+      {id:'p1dc1',name:'Halo Kettlebell',volume:'3 x 8 / sens',tempo:'lent',hasWeight:false,desc:'KB autour de la tête, lent et contrôlé. Serre le ventre fort tout du long. Gaine le tronc + ouvre les épaules.',variant:'Halo avec un disque ou un haltère.',video:'',alts:[{name:'Tour du monde (disque)',desc:'Disque autour de la taille, change de sens.'}]},
+      {id:'p1dc2',name:'Pallof Press (élastique)',volume:'3 x 12 / côté',tempo:'2-1-2',hasWeight:false,desc:'Élastique ancré sur le côté, hauteur poitrine. Pousse les bras devant et RÉSISTE à la rotation. L\'exo roi des obliques.',variant:'À genoux si debout instable.',video:'',alts:[{name:'Suitcase carry (1 KB)',desc:'Porté valise lourd d\'un côté, le tronc résiste à la bascule.'}]},
+      {id:'p1dc3',name:'Stomach Vacuum',volume:'4 x 15 sec',tempo:'apnée',hasWeight:false,desc:'Ventre rentré au max, nombril vers la colonne. Réveille le transverse profond → resserre la taille. Mieux à jeun.',variant:'Allongé si debout trop dur.',video:'',alts:[{name:'Gainage planche',desc:'Corps gainé, ventre serré, 3 x 30s.'}]},
     ]},
     {name:'Finisher cardio',rest:0,exercises:[
       {id:'p1d5',name:'Vélo — intervalles',volume:'10 min · 30s vite / 60s lent',tempo:'—',hasWeight:false,desc:'Ta soupape cardio. Résistance modérée sur les 30s. Zéro impact genou. C\'est ici que tu te défonces sans risque.',variant:'10 min allure constante soutenue si fatigue.',video:'',alts:[{name:'Marche rapide 15 min',desc:'Dehors, allure vive.'}]},
@@ -394,7 +399,7 @@ const PHASE2={
       {id:'p2c4',name:'Pas chassés latéraux (élastique)',volume:'3 x 1 min',tempo:'—',hasWeight:false,desc:'Élastique aux genoux, posture basse de défense, déplacements latéraux. Spécifique basket.',variant:'Pas de côté lents jambes tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU',alts:[{name:'Vélo Ativafit sprint',desc:'6 x 20s sprint / 40s récup. Cardio sans impact.'}]},
     ]},
   ]},
-  D:{title:'Séance D',sub:'Haut du corps & Conditioning (optionnelle)',duration:'~42 min',optional:true,supersets:[
+  D:{title:'Séance D',sub:'Haut du corps · Core · Conditioning (optionnelle)',duration:'~46 min',optional:true,circuit:true,supersets:[
     {name:'Superset 1',rest:75,exercises:[
       {id:'p2d1',name:'Développé incliné lourd (haltères)',volume:'4 x 8-10',tempo:'2-0-X',hasWeight:true,desc:'Plus lourd qu\'en Phase 1, explosif à la poussée. Haut des pecs.',variant:'Développé couché lourd.',video:'https://www.youtube.com/watch?v=8iPEnn-ltC8',alts:[{name:'Pompes lestées explosives',desc:'Gilet 5kg, pousse fort pour décoller.'}]},
       {id:'p2d2',name:'Rowing lourd / Tirage élastique dur',volume:'4 x 8-10',tempo:'2-1-2',hasWeight:true,desc:'Dos épais, charge lourde. Tire au nombril, serre les omoplates.',variant:'Rowing 1 bras le plus lourd.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Tirage élastique vertical dur',desc:'Élastique le plus résistant.'}]},
@@ -402,6 +407,11 @@ const PHASE2={
     {name:'Superset 2 (bras & épaules)',rest:60,exercises:[
       {id:'p2d3',name:'Développé militaire (haltères)',volume:'4 x 10',tempo:'2-0-1',hasWeight:true,desc:'Assis, dos calé, pousse au-dessus de la tête sans cambrer.',variant:'Élévations latérales.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, tête vers le sol.'}]},
       {id:'p2d4',name:'Curl marteau + Extension triceps',volume:'3 x 12 (chaque)',tempo:'2-0-1',hasWeight:true,desc:'Biceps puis triceps en enchaîné. Volume bras.',variant:'À l\'élastique.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Dips sur banc lestés',desc:'Gilet 5kg.'}]},
+    ]},
+    {name:'Core / Anti-rotation',rest:45,exercises:[
+      {id:'p2dc1',name:'Halo Kettlebell lourd',volume:'3 x 8 / sens',tempo:'lent',hasWeight:false,desc:'KB plus lourde autour de la tête, contrôle total. Tronc gainé en béton.',variant:'Disque lourd.',video:'',alts:[{name:'Tour du monde lourd',desc:'Disque autour de la taille.'}]},
+      {id:'p2dc2',name:'Pallof Press (élastique dur)',volume:'3 x 12 / côté',tempo:'2-1-2',hasWeight:false,desc:'Élastique le plus résistant. Résiste à la rotation. Obliques en feu.',variant:'Anti-rotation à genoux.',video:'',alts:[{name:'Suitcase carry lourd',desc:'Porté valise lourd, anti-bascule.'}]},
+      {id:'p2dc3',name:'Stomach Vacuum',volume:'5 x 15 sec',tempo:'apnée',hasWeight:false,desc:'Ventre rentré au max, transverse profond. Resserre la taille.',variant:'Allongé.',video:'',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg, 3 x 40s.'}]},
     ]},
     {name:'Finisher cardio (basket)',rest:0,exercises:[
       {id:'p2d5',name:'Vélo — sprints',volume:'8 tours · 20s sprint / 40s récup',tempo:'—',hasWeight:false,desc:'Conditioning intense type basket. Sprint à fond sur les 20s, récup active sur les 40s. Zéro impact genou.',variant:'6 tours si fatigue.',video:'',alts:[{name:'Pas chassés + montées de genoux',desc:'3 x 1 min, intensité haute.'}]},
@@ -660,8 +670,11 @@ function App(){
         <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div>
         <div className="progbox"><div className="progbox-top"><div className="progbox-tag">S{week} — {WEEK_PLAN[week].tag}</div><div className="progbox-rpe">{WEEK_PLAN[week].rpe}</div></div><div className="progbox-focus">{WEEK_PLAN[week].focus}</div><div className="progbox-hint">↗ Double progression : monte les reps jusqu'au haut de la fourchette, PUIS ajoute du poids.</div></div></div>
       <div className="ex-section">
-        <div className="ex-sec-label">🔥 Bloc correctif hanche/genou (obligatoire)</div>
-        {WARMUP.map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
+        {s.circuit&&<div className="banner warn" style={{marginBottom:'1rem'}}><div className="banner-ic">🔄</div><div className="banner-main"><div className="banner-t">Mode circuit</div><div className="banner-s">Enchaîne TOUS les exos à la suite sans repos, puis 90-120s de récup en fin de tour. Vise 3-4 tours. Ignore les chronos intermédiaires. Coche les exos à ton dernier tour.</div></div></div>}
+        <div className="ex-sec-label">🔥 Échauffement express (obligatoire)</div>
+        {WARMUP.filter(e=>!e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
+        <div className="ex-sec-label">➕ Optionnel (si tu as le temps)</div>
+        {WARMUP.filter(e=>e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
         {s.supersets.map((ss,i)=>(<div key={i}>
           <div className="ex-sec-label">💪 {ss.name}</div>
           <div className="ss-group">
