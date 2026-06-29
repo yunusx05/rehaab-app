@@ -675,7 +675,15 @@ function App(){
         {WARMUP.filter(e=>!e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
         <div className="ex-sec-label">➕ Optionnel (si tu as le temps)</div>
         {WARMUP.filter(e=>e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
-        {s.supersets.map((ss,i)=>(<div key={i}>
+        {s.circuit ? (<div>
+          <div className="ex-sec-label">🔄 Le circuit — enchaîne tout, 1 tour</div>
+          <div className="ss-group">
+            <div className="ss-head"><div className="ss-name">↯ Tout à la suite</div><div className="ss-info">Repos seulement en fin de tour · vise 3-4 tours</div></div>
+            {s.supersets.reduce((a,ss)=>a.concat(ss.exercises),[]).map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
+              return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)} showZone={true}/>;})}
+            <div style={{padding:'.5rem .25rem 0'}}><Timer id={`circuit-${sess}-w${week}`} seconds={120} T={T}/></div>
+          </div>
+        </div>) : s.supersets.map((ss,i)=>(<div key={i}>
           <div className="ex-sec-label">💪 {ss.name}</div>
           <div className="ss-group">
             <div className="ss-head"><div className="ss-name">↯ Enchaîné sans repos</div><div className="ss-info">Repos {ss.rest}s après la paire</div></div>
