@@ -1,0 +1,11 @@
+[     775ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone/babel.min.js:2
+[    1306ms] SyntaxError: Failed to execute 'appendChild' on 'Node': Cannot use import statement outside a module
+    at $ye (https://unpkg.com/@babel/standalone/babel.min.js:3:2443775)
+    at r (https://unpkg.com/@babel/standalone/babel.min.js:3:2444026)
+    at Zye (https://unpkg.com/@babel/standalone/babel.min.js:3:2444826)
+    at https://unpkg.com/@babel/standalone/babel.min.js:3:2447540
+    at mve (https://unpkg.com/@babel/standalone/babel.min.js:3:2447550)
+    at hve (https://unpkg.com/@babel/standalone/babel.min.js:3:2447155)
+[    1309ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://rehaab-app.vercel.app/:0
+[20668905ms] [WARNING] You are using the in-browser Babel transformer. Be sure to precompile your scripts for production - https://babeljs.io/docs/setup/ @ https://unpkg.com/@babel/standalone@7.23.5/babel.min.js:0
+[20669930ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://rehaab-app.vercel.app/:0
