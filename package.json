@@ -1,0 +1,19 @@
+{
+  "name": "reeducation-hanche",
+  "version": "1.0.0",
+  "description": "Application de rééducation de la hanche - Programme sur 8 semaines",
+  "main": "index.html",
+  "scripts": {
+    "start": "open index.html"
+  },
+  "keywords": [
+    "fitness",
+    "rehabilitation",
+    "workout",
+    "tracking",
+    "mobile"
+  ],
+  "author": "Yunus",
+  "license": "UNLICENSED",
+  "private": true
+}
