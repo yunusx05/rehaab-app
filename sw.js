@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v1';
+const CACHE = 'rehaab-v3';
 const PRECACHE = [
   './',
   './index.html',
