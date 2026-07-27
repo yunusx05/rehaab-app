@@ -310,7 +310,7 @@ const RECOVERY=[
 const CARDIO=[
   {tag:'genou',name:'Réhab genou — spin facile',volume:'10-15 min · à volonté',desc:'Résistance TRÈS faible, pédalage souple. Zéro impact. Amène du sang neuf dans le genou qui gonfle → c\'est LE meilleur usage de ton vélo. Tu peux en faire tous les jours, même hors séance.'},
   {tag:'echauf',name:'Échauffement pré-séance',volume:'5 min',desc:'Résistance faible avant la fonte. Chauffe genou + hanche, prépare l\'articulation à charger.'},
-  {tag:'cardio',name:'Intervalles cardio (ta soupape)',volume:'8-12 min · 30s vite / 60s lent',desc:'LÀ tu te défonces sans risque articulaire. Résistance modérée à forte sur les 30s, récup active sur les 60s. ⚠️ Plafonné à 1-2x/semaine en Phase 1 (ta dette de sommeil + déficit = cortisol déjà haut, on ne l\'aggrave pas). On ouvre les vannes en Phase 2.'},
+  {tag:'cardio',name:'Intervalles cardio (ta soupape)',volume:'8-12 min · 30s vite / 60s lent',desc:'LÀ tu te défonces sans risque articulaire. Résistance modérée à forte sur les 30s, récup active sur les 60s. ⚠️ Plafonné à 2-3x/semaine (ta dette de sommeil + déficit = cortisol déjà haut, on ne l\'aggrave pas). C\'est ta seule zone où tu peux te défoncer sans rien risquer pour le genou ou la hanche.'},
   {tag:'flush',name:'Flush post-séance',volume:'10-15 min · très faible',desc:'Après la muscu, résistance minimale. Évacue les tendons de la hanche, draine, aide la récup et le sommeil. Sans forcer.'},
 ];
 
@@ -321,22 +321,35 @@ const BILAN_TESTS=[
   {id:'stepdown',name:'4. Step-Down Contrôlé',target:'Genou droit (surveillance gonflement)',desc:'Debout sur une marche. Descends le pied gauche pour effleurer le sol, poids sur la droite. Genou aligné. Il grince, fait mal, ou gonfle après ?'},
 ];
 
-// Plan de progression hebdomadaire (difficulté qui monte semaine par semaine)
+// ── STRUCTURE EN 3 BLOCS DE 4 SEMAINES (refonte 27/07/2026) ──
+// Le compteur repart à S1 à chaque bloc. En interne les semaines restent numérotées 1→12.
+const TOTAL_WEEKS=12;
+const BLOCS=[
+  {n:1,ic:'🧱',name:'Armure & Volume',short:'Armure',sub:'Le haut du corps encaisse, la hanche reste tenue en laisse.'},
+  {n:2,ic:'🚀',name:'Force & Explosivité',short:'Explosivité',sub:'La puissance revient. Pliométrie progressive, charges lourdes.'},
+  {n:3,ic:'🏀',name:'Pré-saison Basket',short:'Pré-saison',sub:'Spécifique jeu : appuis, détente, efforts répétés. Cap sur octobre.'},
+];
+const blocOf=w=>Math.min(3,Math.floor((w-1)/4)+1);
+const weekInBloc=w=>((w-1)%4)+1;
+const blocInfo=w=>BLOCS[blocOf(w)-1];
+
+// Plan de progression hebdomadaire — 4 semaines par bloc, même logique de vague à chaque fois
 const WEEK_PLAN={
-  1:{tag:'Reprise',rpe:'RPE 6/10',focus:'Technique propre, charges légères. On réveille les tissus après ton mois d\'arrêt. Pas de zèle.'},
-  2:{tag:'Volume',rpe:'RPE 7/10',focus:'Mêmes reps, on ajoute du poids. Le muscle (et l\'armure) se construit ici.'},
-  3:{tag:'Intensité',rpe:'RPE 8/10',focus:'Charges plus lourdes, bas de la fourchette de reps. Tu pousses, surtout sur le haut du corps.'},
-  4:{tag:'Peak / Test',rpe:'RPE 8-9/10',focus:'Valide tes charges et remplis le Bilan : c\'est lui qui ouvre la Phase 2.'},
-  5:{tag:'Reprise P2',rpe:'RPE 7/10',focus:'Explosivité réintégrée, genou validé 14 jours. On réapprend à sauter proprement.'},
-  6:{tag:'Volume P2',rpe:'RPE 8/10',focus:'Plus de charge sur la force, plus de vitesse sur l\'explosif.'},
-  7:{tag:'Intensité P2',rpe:'RPE 8-9/10',focus:'Lourd ET explosif. Le corps encaisse.'},
-  8:{tag:'Force + Plyo',rpe:'RPE 8/10',focus:'On consolide : charges lourdes maintenues, pliométrie qui monte doucement en volume.'},
-  9:{tag:'Puissance',rpe:'RPE 8-9/10',focus:'Vitesse d\'exécution maximale sur charges modérées. La détente se construit ici.'},
-  10:{tag:'Test P2',rpe:'RPE 8/10',focus:'Re-passe le Bilan complet. Voyants verts = la pré-saison basket s\'ouvre.'},
-  11:{tag:'Pré-saison',rpe:'RPE 8/10',focus:'Spécifique basket : appuis, chassés, détente. Le corps redevient un outil de jeu.'},
-  12:{tag:'Puissance max',rpe:'RPE 9/10',focus:'Pic d\'intensité. Sauts de qualité, sprints vélo, charges rapides.'},
-  13:{tag:'Conditioning',rpe:'RPE 9/10',focus:'Efforts répétés type match. Le souffle et les jambes de 4e quart-temps.'},
-  14:{tag:'Affûtage',rpe:'RPE 6-7/10',focus:'Taper : volume divisé par 2 (2 séries par exo), intensité conservée. Tu arrives frais et explosif à la reprise d\'octobre.'},
+  // ── BLOC 1 — ARMURE & VOLUME ──
+  1:{tag:'Lancement',rpe:'RPE 7/10',focus:'Nouveau bloc, nouveau départ. Tu poses tes charges de référence sur le haut du corps. Bas du corps : contrôle, tempo, zéro zèle sur la hanche.'},
+  2:{tag:'Volume',rpe:'RPE 8/10',focus:'Mêmes reps, plus lourd. C\'est ici que l\'armure se construit — haut du corps à fond, tu as le droit de finir cuit.'},
+  3:{tag:'Intensité',rpe:'RPE 9/10',focus:'Bas de la fourchette de reps, charges max. Sur le haut du corps tu vas chercher l\'échec technique à 1 rep près. Le tri-set finit le travail.'},
+  4:{tag:'Peak / Test',rpe:'RPE 9/10',focus:'Semaine de pic. Valide tes charges, remplis le Bilan, prends ta pince. Le Bloc 2 se construit sur ces chiffres.'},
+  // ── BLOC 2 — FORCE & EXPLOSIVITÉ ──
+  5:{tag:'Lancement',rpe:'RPE 7-8/10',focus:'L\'explosivité entre en scène. Volume de saut TRÈS bas cette semaine : on réapprend à atterrir proprement avant de charger.'},
+  6:{tag:'Volume',rpe:'RPE 8/10',focus:'Plus de charge sur la force, plus de vitesse sur l\'explosif. Le tri-set haut du corps reste ta soupape à congestion.'},
+  7:{tag:'Intensité',rpe:'RPE 9/10',focus:'Lourd ET rapide. La semaine la plus dure du programme. Si la hanche parle, tu coupes l\'explosif — pas le bloc entier.'},
+  8:{tag:'Peak / Test',rpe:'RPE 9/10',focus:'Pic de force. Re-teste tes charges et le Bilan. Après ça, on bascule sur le basket.'},
+  // ── BLOC 3 — PRÉ-SAISON BASKET ──
+  9:{tag:'Spécifique',rpe:'RPE 8/10',focus:'Appuis, chassés, détente. Le corps redevient un outil de jeu, pas une machine à soulever.'},
+  10:{tag:'Puissance max',rpe:'RPE 9/10',focus:'Sauts de qualité, sprints vélo, charges rapides. La détente se gagne cette semaine.'},
+  11:{tag:'Conditioning',rpe:'RPE 9/10',focus:'Efforts répétés type match. Les jambes de 4e quart-temps se construisent ici.'},
+  12:{tag:'Affûtage',rpe:'RPE 6-7/10',focus:'Taper : volume divisé par 2 (2 séries par exo), intensité conservée. Tu arrives frais et explosif sur le parquet.'},
 };
 // Zones d'intensité : où pousser à fond vs où contrôler (genou/hanche en reconstruction)
 const CONTROL_KEYS=['squat','fente','soulevé','leg ','leg extension','leg curl','pont','mollet','rebond','saut','chassé','copenhagen','step-up','step up','hip thrust','romanian','bulgare','adduction','good morning','deadlift','swing'];
@@ -415,14 +428,19 @@ const PHASE2={
       {id:'p2a4',name:'Copenhagen Plank complet',volume:'3 x 30 sec / côté',tempo:'—',hasWeight:false,desc:'Pied sur le banc (pas le genou). Bétonne l\'intérieur des cuisses, blinde la pubalgie.',variant:'Sur le genou si trop dur.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs',alts:[{name:'Adduction élastique debout',desc:'Élastique à la cheville, ramène la jambe vers l\'intérieur.'}]},
     ]},
   ]},
-  B:{title:'Séance B',sub:'Haut du corps & Armure',duration:'~46 min',supersets:[
-    {name:'Superset 1',rest:120,exercises:[
-      {id:'p2b1',name:'Développé couché lourd (haltères/barre)',volume:'4 x 6-8',tempo:'2-0-X',hasWeight:true,desc:'Lourd. Descente 2 sec, pousse avec violence.',variant:'Pompes gilet lesté + élastique.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné lourd',desc:'Banc à 30°, plus safe épaule.'}]},
-      {id:'p2b2',name:'Tirage élastique lourd / Rowing',volume:'4 x 8',tempo:'2-1-2',hasWeight:true,desc:'Pas de barre de traction : tirage élastique vertical le plus dur, OU rowing barre lourd. Dos épais.',variant:'Rowing 1 bras haltère le plus lourd.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Rowing barre penché lourd',desc:'EZ ou barre droite chargée, tire au nombril.'}]},
+  B:{title:'Séance B',sub:'Haut du corps & Armure',duration:'~52 min',supersets:[
+    {name:'Superset 1 — le lourd',rest:150,exercises:[
+      {id:'p2b1',name:'Développé couché lourd (haltères/barre)',volume:'5 x 5-6',tempo:'2-0-X',hasWeight:true,desc:'⬆️ Cran au-dessus : moins de reps, plus de charge. Tu vises la dernière rep de chaque série avec 1 SEULE en réserve (RIR 1) — pas deux, pas trois. Descente 2 sec, pousse avec violence. ⚠️ SÉCURITÉ SOLO à la barre : chandelles en butées réglées, jamais l\'échec total sans pareur. Aux haltères tu peux lâcher sur les côtés → c\'est LA solution pour chercher l\'échec en sécurité.',variant:'Développé incliné 30° si l\'épaule tire ce jour-là.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné lourd',desc:'Banc à 30°, plus safe épaule, même intention lourde.'},{name:'Pompes lestées + élastique',desc:'Gilet 5kg + élastique dans le dos, séries longues jusqu\'à l\'échec.'}]},
+      {id:'p2b2',name:'Rowing lourd (barre) / Tirage élastique dur',volume:'5 x 6-8',tempo:'2-1-2',hasWeight:true,desc:'⬆️ Cran au-dessus. Pas de barre de traction : rowing barre penché le plus lourd que ton dos tient à plat, OU tirage élastique vertical le plus dur. RIR 1 aussi. Dos épais = épaules saines pour les contacts.',variant:'Rowing 1 bras haltère le plus lourd.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Rowing 1 bras lourd (haltère)',desc:'Appui banc, tire vers la hanche, charge max.'},{name:'Tirage élastique vertical dur',desc:'Élastique le plus résistant, ancré en haut de porte.'}]},
     ]},
-    {name:'Superset 2',rest:75,exercises:[
-      {id:'p2b3',name:'Développé militaire (haltères)',volume:'4 x 8',tempo:'2-0-1',hasWeight:true,desc:'Assis sur le banc, dos calé. Pousse au-dessus de la tête sans cambrer.',variant:'Élévations latérales légères.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, descends la tête vers le sol. Épaules au poids du corps.'}]},
-      {id:'p2b4',name:'Farmer Walk lourd (2 KB / haltères)',volume:'4 x 40 sec',tempo:'—',hasWeight:false,desc:'Le plus lourd que tu tiens. Gainage max, épaules basses.',variant:'Suitcase carry 1 côté.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg sur le dos, planche 3x40s.'}]},
+    {name:'Superset 2 — épaules & gainage',rest:90,exercises:[
+      {id:'p2b3',name:'Développé militaire (haltères)',volume:'4 x 6-8',tempo:'2-0-1',hasWeight:true,desc:'⬆️ Plus lourd, moins de reps. Assis sur le banc, dos calé, pousse au-dessus de la tête sans cambrer. Serre les fesses et le ventre pour verrouiller le bassin.',variant:'Reste à 4 x 10 plus léger si l\'épaule chauffe.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, descends la tête vers le sol. Épaules au poids du corps.'},{name:'Développé Arnold (haltères)',desc:'Rotation des poignets pendant la poussée, plus de deltoïde antérieur.'}]},
+      {id:'p2b4',name:'Farmer Walk lourd (2 KB / haltères)',volume:'4 x 45 sec',tempo:'—',hasWeight:false,desc:'Le plus lourd que tu tiens. Gainage max, épaules basses, ventre serré. Bonus : ça blinde la sangle sans un seul crunch.',variant:'Suitcase carry 1 côté (anti-bascule du bassin).',video:'https://www.youtube.com/watch?v=rt17lmnaLSM',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg sur le dos, planche 3x40s.'},{name:'Suitcase carry lourd',desc:'Une seule KB d\'un côté, change à chaque tour.'}]},
+    ]},
+    {name:'Tri-set 3 — le finisher congestion',rest:45,triset:true,exercises:[
+      {id:'p2b5',name:'Élévations latérales (haltères)',volume:'4 x 15',tempo:'2-0-2',hasWeight:true,desc:'Départ du tri-set. Léger, strict, zéro élan. Les épaules larges = l\'effet "tracé" le plus rapide à obtenir.',variant:'Élévations à l\'élastique si les haltères les plus légers sont encore trop lourds.',video:'https://www.youtube.com/watch?v=3VcKaXpzqRo',alts:[{name:'Élévations élastique',desc:'Tension continue, brûle encore plus.'},{name:'Oiseau (deltoïde postérieur)',desc:'Buste penché, ouvre les bras sur les côtés. Posture.'}]},
+      {id:'p2b6',name:'Curl marteau (haltères)',volume:'4 x 12',tempo:'2-0-1',hasWeight:true,desc:'Enchaîné SANS repos après les élévations. Prise marteau (paumes face à face) : épargne le poignet et épaissit l\'avant-bras.',variant:'Curl EZ si tu veux charger plus.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Curl barre EZ',desc:'Charge plus lourde, poignets protégés par la barre coudée.'},{name:'Curl élastique',desc:'Tension continue, parfait en fin de tri-set.'}]},
+      {id:'p2b7',name:'Extension triceps au-dessus de la tête',volume:'4 x 12',tempo:'2-0-1',hasWeight:true,desc:'3e et dernier de l\'enchaînement, puis 45s de repos et tu repars. Haltère ou EZ derrière la nuque, coudes serrés et fixes. À la fin du 4e tour les bras doivent être durs comme du bois — c\'est le signal que le tri-set a fait son job.',variant:'Dips sur banc lestés si tu préfères le poids du corps.',video:'https://www.youtube.com/watch?v=_gsUck-7M74',alts:[{name:'Dips sur banc (gilet 5kg)',desc:'Mains sur le banc derrière toi, descends bas.'},{name:'Extension élastique (kickback)',desc:'Élastique ancré haut, tends les bras vers le bas.'}]},
     ]},
   ]},
   C:{title:'Séance C',sub:'Déplacements & Souffle',duration:'~44 min',supersets:[
@@ -435,22 +453,20 @@ const PHASE2={
       {id:'p2c4',name:'Pas chassés latéraux (élastique)',volume:'3 x 1 min',tempo:'—',hasWeight:false,desc:'Élastique aux genoux, posture basse de défense, déplacements latéraux. Spécifique basket.',variant:'Pas de côté lents jambes tendues.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU',alts:[{name:'Vélo Ativafit sprint',desc:'6 x 20s sprint / 40s récup. Cardio sans impact.'}]},
     ]},
   ]},
-  D:{title:'Séance D',sub:'Haut du corps · Core · Conditioning (optionnelle)',duration:'~46 min',optional:true,circuit:true,supersets:[
-    {name:'Superset 1',rest:75,exercises:[
-      {id:'p2d1',name:'Développé incliné lourd (haltères)',volume:'4 x 8-10',tempo:'2-0-X',hasWeight:true,desc:'Plus lourd qu\'en Phase 1, explosif à la poussée. Haut des pecs.',variant:'Développé couché lourd.',video:'https://www.youtube.com/watch?v=8iPEnn-ltC8',alts:[{name:'Pompes lestées explosives',desc:'Gilet 5kg, pousse fort pour décoller.'}]},
-      {id:'p2d2',name:'Rowing lourd / Tirage élastique dur',volume:'4 x 8-10',tempo:'2-1-2',hasWeight:true,desc:'Dos épais, charge lourde. Tire au nombril, serre les omoplates.',variant:'Rowing 1 bras le plus lourd.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Tirage élastique vertical dur',desc:'Élastique le plus résistant.'}]},
+  D:{title:'Séance D',sub:'Circuit haut du corps + Circuit gainage (optionnelle)',duration:'~42 min',optional:true,circuit:true,supersets:[
+    {name:'Circuit 1 — Haut du corps',rest:90,tours:'3 à 4 tours',note:'Enchaîne les 4 exos SANS repos, puis 90s de récup en fin de tour. Charges modérées : ici on cherche la congestion, pas le record. Coche les exos à ton dernier tour.',exercises:[
+      {id:'p2d1',name:'Développé incliné (haltères)',volume:'10-12 reps / tour',tempo:'2-0-1',hasWeight:true,desc:'Ouverture du circuit. Banc 30°, épaules protégées. Charge modérée — tu dois pouvoir enchaîner derrière sans t\'écrouler.',variant:'Pompes pieds surélevés si les haltères sont pris.',video:'https://www.youtube.com/watch?v=8iPEnn-ltC8',alts:[{name:'Pompes lestées (gilet)',desc:'Gilet 5kg, corps gainé.'},{name:'Développé couché haltères',desc:'À plat, un haltère par main.'}]},
+      {id:'p2d2',name:'Rowing / Tirage élastique',volume:'12 reps / tour',tempo:'2-1-2',hasWeight:true,desc:'Enchaîné direct. Tire au nombril, serre les omoplates 1 sec. Équilibre la poussée du dessus.',variant:'Rowing 1 bras haltère.',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Tirage élastique vertical',desc:'Élastique en haut d\'une porte, vers la poitrine.'},{name:'Rowing barre EZ',desc:'Penché, dos plat, tire au nombril.'}]},
+      {id:'p2d3',name:'Élévations latérales (haltères légers)',volume:'15 reps / tour',tempo:'2-0-2',hasWeight:true,desc:'Enchaîné direct. Léger et strict. C\'est l\'exo qui fait le plus mal dans un circuit — et celui qui dessine le plus vite.',variant:'À l\'élastique.',video:'https://www.youtube.com/watch?v=3VcKaXpzqRo',alts:[{name:'Développé militaire léger',desc:'Assis, pousse au-dessus de la tête.'},{name:'Oiseau (deltoïde postérieur)',desc:'Buste penché, ouvre les bras.'}]},
+      {id:'p2d4',name:'Curl marteau + Dips sur banc',volume:'12 reps chacun / tour',tempo:'2-0-1',hasWeight:true,desc:'Fin du tour : biceps puis triceps collés. Puis 90s de repos et tu repars. Les bras finissent le circuit en béton.',variant:'Curl + extension à l\'élastique.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Curl EZ + extension au-dessus de la tête',desc:'Barre EZ pour les deux mouvements.'},{name:'Tout à l\'élastique',desc:'Tension continue, zéro matériel à changer.'}]},
     ]},
-    {name:'Superset 2 (bras & épaules)',rest:60,exercises:[
-      {id:'p2d3',name:'Développé militaire (haltères)',volume:'4 x 10',tempo:'2-0-1',hasWeight:true,desc:'Assis, dos calé, pousse au-dessus de la tête sans cambrer.',variant:'Élévations latérales.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, tête vers le sol.'}]},
-      {id:'p2d4',name:'Curl marteau + Extension triceps',volume:'3 x 12 (chaque)',tempo:'2-0-1',hasWeight:true,desc:'Biceps puis triceps en enchaîné. Volume bras.',variant:'À l\'élastique.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Dips sur banc lestés',desc:'Gilet 5kg.'}]},
+    {name:'Circuit 2 — Gainage & sangle abdominale',rest:60,tours:'2 à 3 tours',note:'Deuxième circuit, plus court. Enchaîne les 3 exos, 60s de repos en fin de tour. Aucun crunch, aucun relevé de buste : on travaille le transverse et les obliques en anti-mouvement.',exercises:[
+      {id:'p2dc1',name:'Halo Kettlebell',volume:'8 / sens',tempo:'lent',hasWeight:false,desc:'KB autour de la tête, lent et contrôlé. Ventre serré fort tout du long. Gaine le tronc + ouvre les épaules après le circuit 1.',variant:'Halo avec un disque.',video:'',alts:[{name:'Tour du monde (disque)',desc:'Disque autour de la taille, change de sens.'}]},
+      {id:'p2dc2',name:'Pallof Press (élastique dur)',volume:'12 / côté',tempo:'2-1-2',hasWeight:false,desc:'Élastique ancré sur le côté, hauteur poitrine. Pousse devant et RÉSISTE à la rotation. L\'exo roi des obliques — celui qui resserre la sangle sans la faire gonfler.',variant:'À genoux si instable debout.',video:'',alts:[{name:'Suitcase carry lourd',desc:'Porté valise d\'un côté, le tronc résiste à la bascule.'}]},
+      {id:'p2dc3',name:'Stomach Vacuum',volume:'4 x 15 sec',tempo:'apnée',hasWeight:false,desc:'Fin de tour. Ventre rentré au max, nombril vers la colonne. Réveille le transverse profond → la réponse directe à la sangle molle et à la distension. Mieux à jeun, mais efficace ici aussi.',variant:'Allongé si debout trop dur.',video:'',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg, 3 x 40s.'}]},
     ]},
-    {name:'Core / Anti-rotation',rest:45,exercises:[
-      {id:'p2dc1',name:'Halo Kettlebell lourd',volume:'3 x 8 / sens',tempo:'lent',hasWeight:false,desc:'KB plus lourde autour de la tête, contrôle total. Tronc gainé en béton.',variant:'Disque lourd.',video:'',alts:[{name:'Tour du monde lourd',desc:'Disque autour de la taille.'}]},
-      {id:'p2dc2',name:'Pallof Press (élastique dur)',volume:'3 x 12 / côté',tempo:'2-1-2',hasWeight:false,desc:'Élastique le plus résistant. Résiste à la rotation. Obliques en feu.',variant:'Anti-rotation à genoux.',video:'',alts:[{name:'Suitcase carry lourd',desc:'Porté valise lourd, anti-bascule.'}]},
-      {id:'p2dc3',name:'Stomach Vacuum',volume:'5 x 15 sec',tempo:'apnée',hasWeight:false,desc:'Ventre rentré au max, transverse profond. Resserre la taille.',variant:'Allongé.',video:'',alts:[{name:'Gainage planche lestée',desc:'Gilet 5kg, 3 x 40s.'}]},
-    ]},
-    {name:'Finisher cardio (basket)',rest:0,exercises:[
-      {id:'p2d5',name:'Vélo — sprints',volume:'8 tours · 20s sprint / 40s récup',tempo:'—',hasWeight:false,desc:'Conditioning intense type basket. Sprint à fond sur les 20s, récup active sur les 40s. Zéro impact genou.',variant:'6 tours si fatigue.',video:'',alts:[{name:'Pas chassés + montées de genoux',desc:'3 x 1 min, intensité haute.'}]},
+    {name:'Finisher cardio — optionnel',rest:0,tours:'si tu as encore du jus',optional:true,note:'À faire SEULEMENT si les deux circuits ne t\'ont pas vidé. Si tu es cuit, tu sors — la séance est déjà complète sans ça.',exercises:[
+      {id:'p2d5',name:'Vélo — sprints (optionnel)',volume:'6 à 8 tours · 20s sprint / 40s récup',tempo:'—',hasWeight:false,desc:'Ta soupape. Sprint à fond sur les 20s, récup active sur les 40s. Zéro impact genou — c\'est ici que tu peux te défoncer sans rien risquer. Coupe à 6 tours si la séance a déjà été longue.',variant:'10 min allure constante si tu veux juste drainer.',video:'',alts:[{name:'Flush 10 min résistance minimale',desc:'Version récup : draine les tendons de la hanche, aide le sommeil.'}]},
     ]},
   ]},
 };
@@ -476,6 +492,11 @@ const PHASE3={
       {id:'p2b3',name:'Développé militaire (haltères)',volume:'4 x 8',tempo:'2-0-1',hasWeight:true,desc:'Assis, dos calé, pousse au-dessus de la tête sans cambrer.',variant:'Élévations latérales légères.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Pike push-up',desc:'En V inversé, tête vers le sol.'}]},
       {id:'p2dc2',name:'Pallof Press (élastique dur)',volume:'3 x 12 / côté',tempo:'2-1-2',hasWeight:false,desc:'Anti-rotation, obliques en béton pour les contacts.',variant:'À genoux si instable.',video:'',alts:[{name:'Suitcase carry lourd',desc:'Porté valise, anti-bascule.'}]},
     ]},
+    {name:'Tri-set 3 — entretien (volume réduit)',rest:45,triset:true,exercises:[
+      {id:'p2b5',name:'Élévations latérales (haltères)',volume:'3 x 15',tempo:'2-0-2',hasWeight:true,desc:'Version pré-saison : 3 tours au lieu de 4. On entretient l\'armure sans créer de fatigue qui plomberait les jambes.',variant:'À l\'élastique.',video:'https://www.youtube.com/watch?v=3VcKaXpzqRo',alts:[{name:'Élévations élastique',desc:'Tension continue.'},{name:'Oiseau (deltoïde postérieur)',desc:'Buste penché, ouvre les bras.'}]},
+      {id:'p2b6',name:'Curl marteau (haltères)',volume:'3 x 12',tempo:'2-0-1',hasWeight:true,desc:'Enchaîné direct. Entretien des bras, charge modérée.',variant:'Curl EZ.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Curl barre EZ',desc:'Poignets protégés.'},{name:'Curl élastique',desc:'Tension continue.'}]},
+      {id:'p2b7',name:'Extension triceps au-dessus de la tête',volume:'3 x 12',tempo:'2-0-1',hasWeight:true,desc:'3e du tri-set. En semaine d\'affûtage (S4 du bloc), coupe à 2 tours.',variant:'Dips sur banc.',video:'https://www.youtube.com/watch?v=_gsUck-7M74',alts:[{name:'Dips sur banc (gilet 5kg)',desc:'Mains sur le banc derrière toi.'},{name:'Extension élastique',desc:'Élastique ancré haut.'}]},
+    ]},
   ]},
   C:{title:'Séance C',sub:'Spécifique Basket & Souffle',duration:'~44 min',supersets:[
     {name:'Superset 1',rest:90,exercises:[
@@ -489,6 +510,51 @@ const PHASE3={
   ]},
 };
 PHASE3.D=PHASE2.D;
+
+// ── BLOC 2 — FORCE & EXPLOSIVITÉ (S1-4 du bloc 2, semaines internes 5-8) ──
+// Progression directe du Bloc 1 : moins de reps, plus lourd, et la pliométrie entre par la petite porte.
+const BLOC2={
+  A:{title:'Séance A',sub:'Force Jambes & Détente',duration:'~50 min',supersets:[
+    {name:'Superset 1 — force pure',rest:150,exercises:[
+      {id:'p2a1',name:'Squat lourd (barre/haltères)',volume:'5 x 5',tempo:'2-0-X',hasWeight:true,desc:'⬆️ Cran au-dessus du Bloc 1 : 5 reps, charge max. Descente 2 sec contrôlée, remontée la plus explosive possible. Genoux vers l\'extérieur, talons plantés. ⚠️ Si l\'aine ou la hanche pince en bas → tu réduis l\'amplitude avant de réduire la charge.',variant:'Goblet squat 2 KB si le dos est prudent ce jour-là.',video:'https://www.youtube.com/watch?v=EkSAynpQxuo',alts:[{name:'Squat bulgare (haltères)',desc:'Pied arrière sur le banc. Unilatéral, très fessier, moins de charge axiale.'},{name:'Leg Extension + Leg Curl lourds',desc:'Sur la station. Zéro charge axiale — la porte de sortie si le dos ou la hanche parle.'}]},
+      {id:'p2a2',name:'Soulevé de terre lourd (barre)',volume:'4 x 5',tempo:'2-0-X',hasWeight:true,desc:'⬆️ Lourd, dos plat, chaîne postérieure. Pousse le sol avec les pieds, ne tire pas avec le bas du dos. Remontée explosive. RIR 1-2 : sur le SDT on ne joue pas avec l\'échec.',variant:'Hip thrust lourd au banc (plus doux lombaires).',video:'https://www.youtube.com/watch?v=vzLAZLlxU90',alts:[{name:'Romanian deadlift (haltères)',desc:'Jambes quasi tendues, étire l\'ischio, dos plat.'},{name:'Hip Thrust lourd (barre + banc)',desc:'Fessiers à fond, zéro compression lombaire.'}]},
+    ]},
+    {name:'Superset 2 — détente (volume bas, qualité haute)',rest:120,exercises:[
+      {id:'b2a3',name:'Sauts verticaux contrôlés',volume:'4 x 4',tempo:'X',hasWeight:false,desc:'⚠️ Le mouvement le plus exigeant du programme pour ton genou. Saute haut, réception AMORTIE genoux fléchis, 3 sec de pause DEBOUT entre chaque saut. 4 reps seulement : c\'est la qualité qui construit la détente, jamais le volume. STOP net au premier signal du genou ou de la hanche — tu bascules sur les petits rebonds.',variant:'Petits rebonds sur place (3 x 20) si le genou est incertain.',video:'https://www.youtube.com/watch?v=RkcZ1BzYl_M',alts:[{name:'Petits rebonds sur place',desc:'Pointes de pieds, contact sol minimal. La version douce, zéro risque.'},{name:'Montées de mollet explosives',desc:'Sans décoller du sol, juste la cheville. Impact nul.'}]},
+      {id:'p2a4',name:'Copenhagen Plank complet',volume:'3 x 35 sec / côté',tempo:'—',hasWeight:false,desc:'Pied sur le banc (pas le genou). Bétonne l\'intérieur des cuisses = l\'assurance-vie de ta pubalgie. Non négociable dans ce bloc : c\'est lui qui te permet de sauter.',variant:'Sur le genou si trop dur.',video:'https://www.youtube.com/watch?v=rJQ1XdHKZBs',alts:[{name:'Adduction élastique debout',desc:'Élastique à la cheville, ramène la jambe vers l\'intérieur.'}]},
+    ]},
+  ]},
+  B:{title:'Séance B',sub:'Haut du corps · Force & Armure',duration:'~54 min',supersets:[
+    {name:'Superset 1 — le très lourd',rest:180,exercises:[
+      {id:'p2b1',name:'Développé couché lourd (haltères/barre)',volume:'5 x 4-5',tempo:'2-0-X',hasWeight:true,desc:'⬆️⬆️ Le plus lourd du programme. 4-5 reps, RIR 1. Repos long (3 min) : c\'est ce qui te permet de charger vraiment. ⚠️ SÉCURITÉ SOLO : chandelles-butées à la barre, ou haltères (que tu peux lâcher sur les côtés). Jamais l\'échec total à la barre sans pareur.',variant:'Développé incliné 30° si l\'épaule tire.',video:'https://www.youtube.com/watch?v=LlguIiYZjUs',alts:[{name:'Développé incliné lourd',desc:'Banc à 30°, plus safe épaule.'},{name:'Développé haltères lourd',desc:'La version sécurisée pour chercher l\'échec en solo.'}]},
+      {id:'p2b2',name:'Rowing lourd (barre) / Tirage élastique dur',volume:'5 x 5-6',tempo:'2-1-2',hasWeight:true,desc:'⬆️⬆️ Charge max, dos plat strict. Si la technique casse, la série est finie — le bas du dos n\'est pas négociable. Serre les omoplates 1 sec en haut.',variant:'Rowing 1 bras haltère le plus lourd (dos soutenu par le banc).',video:'https://www.youtube.com/watch?v=X97Jxni1ofw',alts:[{name:'Rowing 1 bras lourd',desc:'Appui banc, zéro contrainte lombaire, charge max.'},{name:'Tirage élastique vertical dur',desc:'Élastique le plus résistant.'}]},
+    ]},
+    {name:'Superset 2 — épaules & gainage',rest:90,exercises:[
+      {id:'p2b3',name:'Développé militaire (haltères)',volume:'4 x 6',tempo:'2-0-1',hasWeight:true,desc:'⬆️ Lourd. Assis, dos calé, fesses et ventre serrés pour verrouiller le bassin. Pousse au-dessus de la tête sans cambrer.',variant:'4 x 10 plus léger si l\'épaule chauffe.',video:'https://www.youtube.com/watch?v=B-aVuyhvLHU',alts:[{name:'Développé Arnold',desc:'Rotation des poignets pendant la poussée.'},{name:'Pike push-up',desc:'En V inversé, épaules au poids du corps.'}]},
+      {id:'b2b4',name:'Farmer Walk très lourd (2 KB / haltères)',volume:'4 x 50 sec',tempo:'—',hasWeight:false,desc:'Le plus lourd que tes mains tiennent 50 secondes. Épaules basses, ventre serré, pas courts. Le gainage le plus rentable qui existe — et zéro crunch.',variant:'Suitcase carry (1 côté) pour l\'anti-bascule du bassin.',video:'https://www.youtube.com/watch?v=rt17lmnaLSM',alts:[{name:'Suitcase carry lourd',desc:'Une KB d\'un seul côté, change à chaque tour.'},{name:'Gainage planche lestée',desc:'Gilet 5kg, 3 x 45s.'}]},
+    ]},
+    {name:'Tri-set 3 — le finisher congestion',rest:45,triset:true,exercises:[
+      {id:'p2b5',name:'Élévations latérales (haltères)',volume:'4 x 15',tempo:'2-0-2',hasWeight:true,desc:'Départ du tri-set, enchaîné sans repos. Strict, zéro élan. Après le lourd, c\'est ici que tu vas chercher la congestion.',variant:'À l\'élastique.',video:'https://www.youtube.com/watch?v=3VcKaXpzqRo',alts:[{name:'Élévations élastique',desc:'Tension continue.'},{name:'Oiseau (deltoïde postérieur)',desc:'Buste penché, ouvre les bras.'}]},
+      {id:'p2b6',name:'Curl marteau (haltères)',volume:'4 x 12',tempo:'2-0-1',hasWeight:true,desc:'Enchaîné direct. Prise marteau, coudes collés au corps, pas de balancier.',variant:'Curl EZ pour charger plus.',video:'https://www.youtube.com/watch?v=zC3nLlEvin4',alts:[{name:'Curl barre EZ',desc:'Poignets protégés, charge plus lourde.'},{name:'Curl élastique',desc:'Tension continue.'}]},
+      {id:'p2b7',name:'Extension triceps au-dessus de la tête',volume:'4 x 12',tempo:'2-0-1',hasWeight:true,desc:'3e du tri-set, puis 45s et tu repars. Coudes serrés et fixes, seul l\'avant-bras bouge.',variant:'Dips sur banc lestés.',video:'https://www.youtube.com/watch?v=_gsUck-7M74',alts:[{name:'Dips sur banc (gilet 5kg)',desc:'Mains sur le banc derrière toi.'},{name:'Extension élastique',desc:'Élastique ancré haut, tends vers le bas.'}]},
+    ]},
+  ]},
+  C:{title:'Séance C',sub:'Puissance & Déplacements',duration:'~46 min',supersets:[
+    {name:'Superset 1',rest:90,exercises:[
+      {id:'p2c1',name:'Fentes marchées (haltères)',volume:'4 x 12 / jambe',tempo:'2-0-1',hasWeight:true,desc:'Avance pas à pas, genou arrière frôle le sol. Surveille l\'axe du genou avant : il ne rentre JAMAIS vers l\'intérieur. Le meilleur test de contrôle unilatéral que tu as.',variant:'Fentes arrière sur place (plus doux pour le genou).',video:'https://www.youtube.com/watch?v=xNLfW34fht0',alts:[{name:'Step-up sur banc (haltères)',desc:'Monte une jambe, contrôle la descente 3 sec.'},{name:'Fentes arrière sur place',desc:'Moins de contrainte sur le genou avant.'}]},
+      {id:'b2c2',name:'Pompes explosives (gilet 5kg)',volume:'4 x 8-10',tempo:'X',hasWeight:false,desc:'Pousse assez fort pour décoller les mains du sol. Intention de vitesse maximale — c\'est ça qui transfère sur le tir et la passe.',variant:'Pompes classiques + élastique dans le dos.',video:'https://www.youtube.com/watch?v=IODxDxX7oi4',alts:[{name:'Développé haltères explosif',desc:'Charge légère, pousse le plus vite possible.'},{name:'Pompes déclinées',desc:'Pieds sur le banc, plus de charge sur les épaules.'}]},
+    ]},
+    {name:'Superset 2 — spécifique basket',rest:75,exercises:[
+      {id:'p2c3',name:'Swing Kettlebell explosif',volume:'5 x 15',tempo:'X',hasWeight:false,desc:'Coup de hanche SEC. La KB monte parce que le bassin la projette, pas parce que les bras tirent. C\'est ton exo de puissance de hanche n°1 — et il soigne autant qu\'il muscle.',variant:'Pont fessier explosif lesté.',video:'https://www.youtube.com/watch?v=hnPJ1XhN1jE',alts:[{name:'KB deadlift rapide',desc:'2 KB, monte vite, dos plat.'},{name:'Pont fessier explosif lesté',desc:'Disque sur le bassin, monte vite.'}]},
+      {id:'p2c4',name:'Pas chassés latéraux (élastique)',volume:'4 x 1 min',tempo:'—',hasWeight:false,desc:'Élastique aux genoux, posture basse de défense, bassin bas. Déplacements vifs sans croiser les pieds. Le moyen fessier travaille exactement comme en match.',variant:'Pas de côté lents jambes tendues si la hanche est raide.',video:'https://www.youtube.com/watch?v=7GLe7AwtmNU',alts:[{name:'Vélo Ativafit sprint',desc:'6 x 20s sprint / 40s récup. Zéro impact.'},{name:'Monster walk élastique',desc:'Marche avant/arrière élastique aux genoux, posture basse.'}]},
+    ]},
+  ]},
+};
+BLOC2.D=PHASE2.D;
+
+// Mapping final : Bloc 1 = ex-Phase 2 (armure/volume) · Bloc 2 = force/explosivité · Bloc 3 = pré-saison
+const BLOC1=PHASE2;
+const BLOC3=PHASE3;
 
 // ── NUTRITION (2200 kcal · P 180 · L 75 · C 200) ──
 const MEALS=[
@@ -518,7 +584,7 @@ const MONTHS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août'
 const DAY_LABELS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const fmtShort=iso=>{const d=new Date(iso);return `${d.getDate()}/${d.getMonth()+1}`;};
 const dkey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-const phaseFor=w=>w<=4?PHASE1:w<=10?PHASE2:PHASE3;
+const phaseFor=w=>w<=4?BLOC1:w<=8?BLOC2:BLOC3;
 // Reps estimées d'un exo ("4 x 8-10 / jambe" → 4×9×2) pour le tonnage
 const repsOf=vol=>{if(/sec|min/i.test(vol||''))return null;const m=(vol||'').match(/(\d+)\s*x\s*(\d+)(?:\s*-\s*(\d+))?/i);if(!m)return null;const sets=+m[1];let r=+m[2];if(m[3])r=(r+ +m[3])/2;const per=/\/\s*(jambe|bras|c[ôo]t[ée])/i.test(vol)?2:1;return sets*r*per;};
 
@@ -554,7 +620,7 @@ function WeightBox({exId,week,weights,onUpdate,reco}){
     <div className="w-row"><input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/><span className="w-unit">kg</span></div>
     {reco&&<div className="reco" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>
       <div className="reco-t">🎯 {reco.text}</div><button className="reco-apply" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>Appliquer</button></div>}
-    <div className="w-history">{Array.from({length:14},(_,i)=>i+1).map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>S{w}:{v}kg</div>:null;})}</div></div>);
+    <div className="w-history">{Array.from({length:TOTAL_WEEKS},(_,i)=>i+1).map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>{BLOCS[blocOf(w)-1].ic}S{weekInBloc(w)}:{v}kg</div>:null;})}</div></div>);
 }
 
 function ExCard({ex,week,done,onToggle,weights,onWeightUpdate,T,reco,swapIndex,onSwap,showZone}){
@@ -668,6 +734,32 @@ function BoxBreathing(){
     <div style={{fontSize:'.75rem',color:'var(--sub)',marginTop:'.75rem',textAlign:'center',lineHeight:1.5}}>100% biomécanique respiratoire auto-contrôlée. Zéro audio guidé. Pour la power nap et le retour au calme après l'Isha.</div></div>);
 }
 
+// ── MIGRATION v3 (27/07/2026) — passage en blocs de 4 semaines : l'ancienne S5 devient la nouvelle S1 ──
+// Décale toutes les données de -4 semaines. Ce qui était avant S5 (ancienne Phase 1) est archivé, pas effacé du disque.
+(function migrateV3(){
+  try{
+    if(localStorage.getItem('rh_v3'))return;
+    const remap=storeKey=>{
+      const raw=localStorage.getItem(storeKey);if(!raw)return;
+      let o;try{o=JSON.parse(raw)}catch(e){return}
+      if(!o||typeof o!=='object'||Array.isArray(o))return;
+      const out={};
+      Object.keys(o).forEach(k=>{
+        const m=k.match(/w(\d+)$/);
+        if(!m){out[k]=o[k];return;}
+        const n=(+m[1])-4;
+        if(n<1||n>TOTAL_WEEKS)return;
+        out[k.slice(0,m.index)+'w'+n]=o[k];
+      });
+      localStorage.setItem(storeKey,JSON.stringify(out));
+    };
+    ['rh_done','rh_w','rh_bilan','rh_logk'].forEach(remap);
+    let wk=1;try{wk=JSON.parse(localStorage.getItem('rh_week'))||1}catch(e){}
+    localStorage.setItem('rh_week',JSON.stringify(Math.min(TOTAL_WEEKS,Math.max(1,wk>4?wk-4:1))));
+    localStorage.setItem('rh_v3','1');
+  }catch(e){}
+})();
+
 // ── APP ──
 function App(){
   const T=useGlobalTimers();
@@ -689,7 +781,7 @@ function App(){
   const[logk,setLogk]=useState(()=>{
     const s=localStorage.getItem('rh_logk');if(s)return JSON.parse(s);
     const done=JSON.parse(localStorage.getItem('rh_done')||'{}');const k={};
-    for(let w=1;w<=14;w++){['A','B','C','D'].forEach(l=>{const ph=phaseFor(w);if(!ph[l])return;
+    for(let w=1;w<=TOTAL_WEEKS;w++){['A','B','C','D'].forEach(l=>{const ph=phaseFor(w);if(!ph[l])return;
       const e=ph[l].supersets.reduce((a,ss)=>a.concat(ss.exercises),[]);
       if(e.length&&e.every(x=>done[`${x.id}-w${w}`]))k[`${l}-w${w}`]='migrated';});}
     return k;});
@@ -709,11 +801,21 @@ function App(){
   useEffect(()=>{localStorage.setItem('rh_week',JSON.stringify(week))},[week]);
 
   const phase=phaseFor(week);
-  const phaseLabel=week<=4?'Phase 1':week<=10?'Phase 2':'Pré-saison';
+  const bloc=blocInfo(week);
+  const wib=weekInBloc(week);
 
   const flat=l=>{const s=phase[l];return s?s.supersets.reduce((a,ss)=>a.concat(ss.exercises),[]):[];};
   const toggle=id=>{const k=`${id}-w${week}`;setCompleted(p=>({...p,[k]:!p[k]}))};
   const upW=(k,v)=>setWeights(p=>({...p,[k]:v}));
+
+  // ── VALIDATION GROUPÉE (rattrapage) ──
+  // Coche/décoche une séance entière, ou les 3 séances obligatoires de la semaine d'un coup.
+  const setSessionDone=(l,val)=>{
+    setCompleted(p=>{const n={...p};flat(l).forEach(x=>{n[`${x.id}-w${week}`]=val});WARMUP.forEach(x=>{n[`${x.id}-w${week}`]=val});return n;});
+  };
+  const setWeekDone=val=>{
+    setCompleted(p=>{const n={...p};['A','B','C'].forEach(l=>flat(l).forEach(x=>{n[`${x.id}-w${week}`]=val}));WARMUP.forEach(x=>{n[`${x.id}-w${week}`]=val});return n;});
+  };
 
   const isDone=l=>{const e=flat(l);return e.length&&e.every(x=>completed[`${x.id}-w${week}`])};
   const prog=l=>{const e=flat(l);return e.length?Math.round(e.filter(x=>completed[`${x.id}-w${week}`]).length/e.length*100):0};
@@ -809,29 +911,31 @@ function App(){
   if(view==='workout'&&sess){
     const s=phase[sess];const p=prog(sess);
     return(<div className="app"><div className="workout-view">
-      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">Semaine {week} · {p}% · {s.duration}</div></div></div>
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">{s.title}</div><div className="topbar-sub">{bloc.short} · S{wib} · {p}% · {s.duration}</div></div></div>
       <div className="workout-hero"><div className="hero-title">{s.title}</div><div className="hero-sub">{s.sub}</div>
-        <div className="hero-tags"><span className="hero-tag">{phaseLabel}</span><span className="hero-tag">S{week}</span><span className="hero-tag">⏱ {s.duration}</span>{week<=2&&<span className="hero-tag">🔄 Reprise — léger</span>}{week>4&&week<=10&&<span className="hero-tag">🔥 Explosif</span>}{week>10&&week<14&&<span className="hero-tag">🏀 Pré-saison</span>}{week===14&&<span className="hero-tag">🪶 Affûtage — volume ÷2</span>}</div>
+        <div className="hero-tags"><span className="hero-tag">{bloc.ic} {bloc.name}</span><span className="hero-tag">S{wib}/4</span><span className="hero-tag">⏱ {s.duration}</span>{wib===1&&<span className="hero-tag">🔄 Lancement de bloc</span>}{week===TOTAL_WEEKS&&<span className="hero-tag">🪶 Affûtage — volume ÷2</span>}</div>
         <div className="prog-wrap"><div className="prog-fill" style={{width:`${p}%`}}/></div>
-        <div className="progbox"><div className="progbox-top"><div className="progbox-tag">S{week} — {WEEK_PLAN[week].tag}</div><div className="progbox-rpe">{WEEK_PLAN[week].rpe}</div></div><div className="progbox-focus">{WEEK_PLAN[week].focus}</div><div className="progbox-hint">↗ Double progression : monte les reps jusqu'au haut de la fourchette, PUIS ajoute du poids.</div></div></div>
+        <div className="progbox"><div className="progbox-top"><div className="progbox-tag">S{wib} — {WEEK_PLAN[week].tag}</div><div className="progbox-rpe">{WEEK_PLAN[week].rpe}</div></div><div className="progbox-focus">{WEEK_PLAN[week].focus}</div><div className="progbox-hint">↗ Double progression : monte les reps jusqu'au haut de la fourchette, PUIS ajoute du poids.</div></div></div>
       <div className="ex-section">
-        {s.circuit&&<div className="banner warn" style={{marginBottom:'1rem'}}><div className="banner-ic">🔄</div><div className="banner-main"><div className="banner-t">Mode circuit</div><div className="banner-s">Enchaîne TOUS les exos à la suite sans repos, puis 90-120s de récup en fin de tour. Vise 3-4 tours. Ignore les chronos intermédiaires. Coche les exos à ton dernier tour.</div></div></div>}
+        <button className="set-btn accent" style={{marginBottom:'1rem'}} onClick={()=>setSessionDone(sess,p<100)}>{p<100?'✓ Valider toute la séance':'↩︎ Tout décocher'}</button>
+        {s.circuit&&<div className="banner warn" style={{marginBottom:'1rem'}}><div className="banner-ic">🔄</div><div className="banner-main"><div className="banner-t">Séance en circuits</div><div className="banner-s">Deux circuits séparés + un finisher optionnel. Dans chaque circuit tu enchaînes les exos sans repos, puis tu récupères en fin de tour. Ignore les chronos intermédiaires. Coche les exos à ton dernier tour.</div></div></div>}
         <div className="ex-sec-label">🔥 Échauffement express (obligatoire)</div>
         {WARMUP.filter(e=>!e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
         <div className="ex-sec-label">➕ Optionnel (si tu as le temps)</div>
         {WARMUP.filter(e=>e.opt).map(ex=><ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={null} swapIndex={-1} onSwap={()=>{}} showZone={false}/>)}
-        {s.circuit ? (<div>
-          <div className="ex-sec-label">🔄 Le circuit — enchaîne tout, 1 tour</div>
+        {s.circuit ? s.supersets.map((ss,i)=>(<div key={i}>
+          <div className="ex-sec-label">{ss.optional?'➕':'🔄'} {ss.name}{ss.tours?` — ${ss.tours}`:''}</div>
+          {ss.note&&<div className="recov-card" style={{marginBottom:'.75rem'}}><div className="recov-desc">{ss.note}</div></div>}
           <div className="ss-group">
-            <div className="ss-head"><div className="ss-name">↯ Tout à la suite</div><div className="ss-info">Repos seulement en fin de tour · vise 3-4 tours</div></div>
-            {s.supersets.reduce((a,ss)=>a.concat(ss.exercises),[]).map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
+            <div className="ss-head"><div className="ss-name">{ss.optional?'↯ Bonus':'↯ Enchaîné sans repos'}</div><div className="ss-info">{ss.rest>0?`Repos ${ss.rest}s en fin de tour`:'Pas de repos imposé'} · {ss.tours||'3 à 4 tours'}</div></div>
+            {ss.exercises.map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
               return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)} showZone={true}/>;})}
-            <div style={{padding:'.5rem .25rem 0'}}><Timer id={`circuit-${sess}-w${week}`} seconds={120} T={T}/></div>
+            {ss.rest>0&&<div style={{padding:'.5rem .25rem 0'}}><Timer id={`circuit-${sess}-${i}-w${week}`} seconds={ss.rest} T={T}/></div>}
           </div>
-        </div>) : s.supersets.map((ss,i)=>(<div key={i}>
-          <div className="ex-sec-label">💪 {ss.name}</div>
+        </div>)) : s.supersets.map((ss,i)=>(<div key={i}>
+          <div className="ex-sec-label">{ss.triset?'🔥':'💪'} {ss.name}</div>
           <div className="ss-group">
-            <div className="ss-head"><div className="ss-name">↯ Enchaîné sans repos</div><div className="ss-info">Repos {ss.rest}s après la paire</div></div>
+            <div className="ss-head"><div className="ss-name">{ss.triset?'↯ Tri-set — 3 exos à la suite':'↯ Enchaîné sans repos'}</div><div className="ss-info">{ss.triset?`Repos ${ss.rest}s après les 3 · vise 4 tours`:`Repos ${ss.rest}s après la paire`}</div></div>
             {ss.exercises.map(ex=>{const sk=swapKey(sess,ex.id);const si=swaps[sk]===undefined?-1:swaps[sk];
               return <ExCard key={ex.id} ex={ex} week={week} done={!!completed[`${ex.id}-w${week}`]} onToggle={()=>toggle(ex.id)} weights={weights} onWeightUpdate={upW} T={T} reco={recoFor(ex)} swapIndex={si} onSwap={()=>cycleSwap(sess,ex)} showZone={true}/>;})}
             <div style={{padding:'.5rem .25rem 0'}}><Timer id={`ss-${sess}-${i}-w${week}`} seconds={ss.rest} T={T}/></div>
@@ -856,7 +960,7 @@ function App(){
     const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length*10)/10:null;
     const avgZ=avg!==null?getZone(avg):null;
     return(<div className="app"><div className="workout-view">
-      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan Semaine {week}</div><div className="topbar-sub">4 tests · pilote tes recos de poids</div></div></div>
+      <div className="topbar"><div className="back-btn" onClick={()=>setView('home')}>←</div><div><div className="topbar-title">Bilan · {bloc.short} · S{wib}</div><div className="topbar-sub">4 tests · pilote tes recos de poids</div></div></div>
       <div className="ex-section">{BILAN_TESTS.map(test=>{
         const score=getBilanScore(test.id);const zone=getZone(score);
         return(<div key={test.id} className="bilan-test">
@@ -1007,34 +1111,36 @@ function App(){
 
   // ── HOME ──
   const recentLog=Object.entries(trainingLog).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
-  const showCpBanner=week<=4&&rangeDone(1,4)&&!p2Unlocked;
-  const showCp3Banner=p2Unlocked&&week<=10&&rangeDone(5,10)&&!p3Unlocked;
   const nextSess=['A','B','C'].find(l=>!isDone(l));
+  const weekFull=doneSess()>=3;
   return(<div className="app">
     <div className="header">
-      <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${week>4?' p2':''}`}>{phaseLabel}</div></div>
-      <div className="week-row">{Array.from({length:14},(_,i)=>i+1).map(w=>{
-        return <button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>selectWeek(w)}>S{w}</button>;})}</div>
+      <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${bloc.n>1?' p2':''}`}>{bloc.ic} {bloc.short}</div></div>
+      <div className="week-row">{BLOCS.map(b=>(
+        <button key={b.n} className={`week-btn${bloc.n===b.n?' active':''}`} onClick={()=>selectWeek((b.n-1)*4+1)}>{b.ic} {b.short}</button>))}</div>
+      <div className="week-row">{[1,2,3,4].map(i=>{const w=(bloc.n-1)*4+i;
+        return <button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>selectWeek(w)}>S{i}</button>;})}</div>
     </div>
 
-    <div className="section" style={{paddingTop:'1.5rem'}}>
-      {nextSess?<div className="cta" onClick={()=>{setSess(nextSess);setView('workout')}}><div className="cta-play">▶</div><div style={{flex:1}}><div className="cta-big">Séance {nextSess} — {phase[nextSess].sub}</div><div className="cta-small">Ta prochaine séance · S{week} · {phase[nextSess].duration}</div></div></div>
-      :<div className="cta" onClick={()=>{if(week<14)selectWeek(week+1)}}><div className="cta-play">💪</div><div style={{flex:1}}><div className="cta-big">Semaine {week} bouclée</div><div className="cta-small">{week<14?`Appuie pour passer en S${week+1}`:'Programme terminé — reprise basket 🏀'}</div></div></div>}
+    <div className="section" style={{paddingTop:'1.25rem'}}>
+      <div className="wk-intent" style={{marginBottom:'1rem'}}><div className="ic">{bloc.ic}</div><div><div className="t"><span>{bloc.name}</span> · S{wib}/4</div><div className="s">{bloc.sub}</div></div></div>
+      {nextSess?<div className="cta" onClick={()=>{setSess(nextSess);setView('workout')}}><div className="cta-play">▶</div><div style={{flex:1}}><div className="cta-big">Séance {nextSess} — {phase[nextSess].sub}</div><div className="cta-small">Ta prochaine séance · {bloc.name} · S{wib} · {phase[nextSess].duration}</div></div></div>
+      :<div className="cta" onClick={()=>{if(week<TOTAL_WEEKS)selectWeek(week+1)}}><div className="cta-play">💪</div><div style={{flex:1}}><div className="cta-big">S{wib} bouclée — {bloc.short}</div><div className="cta-small">{week<TOTAL_WEEKS?(wib===4?`Appuie pour ouvrir "${(BLOCS[bloc.n]||{}).name||''}"`:`Appuie pour passer en S${wib+1}`):'Programme terminé — reprise basket 🏀'}</div></div></div>}
     </div>
 
-    {showCpBanner&&<div className="section" style={{paddingTop:'1rem'}}>
-      <div className="banner" onClick={()=>setView('checkpoint')}><div className="banner-ic">🔓</div><div className="banner-main"><div className="banner-t">Phase 1 bouclée — passe le checkpoint</div><div className="banner-s">Valide tes voyants verts pour débloquer la Phase 2.</div></div><div className="s-arrow">›</div></div>
-    </div>}
-
-    {showCp3Banner&&<div className="section" style={{paddingTop:'1rem'}}>
-      <div className="banner" onClick={()=>setView('checkpoint3')}><div className="banner-ic">🏀</div><div className="banner-main"><div className="banner-t">Phase 2 bouclée — ouvre la Pré-saison</div><div className="banner-s">Dernier bloc avant la reprise d'octobre.</div></div><div className="s-arrow">›</div></div>
-    </div>}
+    <div className="section" style={{paddingTop:'.75rem'}}>
+      <div style={{display:'flex',gap:'.5rem'}}>
+        <button className="set-btn" style={{flex:1,marginBottom:0}} onClick={()=>setWeekDone(!weekFull)}>{weekFull?'↩︎ Décocher la semaine':'✓ Valider la semaine'}</button>
+        <button className="set-btn accent" style={{flex:1,marginBottom:0}} onClick={()=>{if(week<TOTAL_WEEKS)selectWeek(week+1)}}>Semaine suivante →</button>
+      </div>
+      <div style={{fontSize:'.72rem',color:'var(--muted)',marginTop:'.5rem',lineHeight:1.5}}>Rattrapage : "Valider la semaine" coche les séances A, B et C + l'échauffement. La Séance D (optionnelle) se valide séparément depuis la séance. Tu peux changer de semaine ou de bloc quand tu veux, rien n'est verrouillé.</div>
+    </div>
 
     <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Intention de la semaine</div>
-      <div className="wk-intent"><div className="ic">{week<=4?'🧱':week<=10?'🚀':'🏀'}</div><div><div className="t">S{week} — <span>{WEEK_PLAN[week].tag}</span> · {WEEK_PLAN[week].rpe}</div><div className="s">{WEEK_PLAN[week].focus}</div></div></div>
+      <div className="wk-intent"><div className="ic">{bloc.ic}</div><div><div className="t">S{wib}/4 — <span>{WEEK_PLAN[week].tag}</span> · {WEEK_PLAN[week].rpe}</div><div className="s">{WEEK_PLAN[week].focus}</div></div></div>
     </div>
 
-    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Résumé — Semaine {week}</div>
+    <div className="section" style={{paddingTop:'1.5rem'}}><div className="section-label">Résumé — {bloc.name} · S{wib}</div>
       <div className="stats-grid">
         <div className="stat-card"><div className="stat-card-label">Séances faites</div><div className="stat-card-value">{doneSess()}<span>/3</span></div></div>
         <div className="stat-card"><div className="stat-card-label">Tonnage estimé</div><div className="stat-card-value">{tonnage()>=1000?`${Math.round(tonnage()/100)/10}`:tonnage()}<span>{tonnage()>=1000?' t':' kg'}</span></div><div className="stat-card-sub">charges × séries × reps</div></div>
