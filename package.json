@@ -4,7 +4,10 @@
   "description": "Application de rééducation de la hanche - Programme sur 8 semaines",
   "main": "index.html",
   "scripts": {
-    "start": "open index.html"
+    "start": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
   },
   "keywords": [
     "fitness",

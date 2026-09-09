@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rééducation Hanche - Programme Complet</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -629,7 +629,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
         // Données du programme Phase 1
         const phase1Data = {
@@ -719,7 +719,7 @@
                         volume: '8 min EMOM - 10-12 reps',
                         execution: '10 à 12 mouvements au début de chaque minute.',
                         variant: 'Si le bas du dos fatigue, remplace par le "Pont fessier" au sol : lève le bassin vers le plafond rapidement, 15 fois par minute.',
-                        rest: 'reste de la minute',
+                        rest: 60,
                         hasWeight: true,
                         videoUrl: 'https://youtu.be/YSxHifyI6s8'
                     }
@@ -838,51 +838,89 @@
             { day: 'Dim', session: '👨‍👩‍👧', desc: 'Famille', type: 'rest' }
         ];
 
+        const loadSavedData = (key) => {
+            try {
+                const saved = localStorage.getItem(key);
+                if (!saved) return {};
+
+                const data = JSON.parse(saved);
+                return data && typeof data === 'object' && !Array.isArray(data)
+                    ? data
+                    : {};
+            } catch {
+                return {};
+            }
+        };
+
+        const saveData = (key, data) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch {
+                console.warn(`Impossible de sauvegarder ${key}`);
+            }
+        };
+
+        const programExercises = [
+            ...phase1Data.sessionA.exercises,
+            ...phase1Data.sessionB.exercises,
+            ...phase1Data.sessionC.exercises
+        ];
+
         function App() {
-            const [currentPhase, setCurrentPhase] = useState(1);
             const [currentWeek, setCurrentWeek] = useState(1);
             const [currentView, setCurrentView] = useState('menu');
             const [expandedExercises, setExpandedExercises] = useState({});
             
             // États sauvegardés dans localStorage
-            const [completedExercises, setCompletedExercises] = useState(() => {
-                const saved = localStorage.getItem('completedExercises');
-                return saved ? JSON.parse(saved) : {};
-            });
+            const [completedExercises, setCompletedExercises] = useState(
+                () => loadSavedData('completedExercises')
+            );
             
-            const [weights, setWeights] = useState(() => {
-                const saved = localStorage.getItem('weights');
-                return saved ? JSON.parse(saved) : {};
-            });
+            const [weights, setWeights] = useState(
+                () => loadSavedData('weights')
+            );
             
-            const [painLevels, setPainLevels] = useState(() => {
-                const saved = localStorage.getItem('painLevels');
-                return saved ? JSON.parse(saved) : {};
-            });
+            const [painLevels, setPainLevels] = useState(
+                () => loadSavedData('painLevels')
+            );
 
             const [timers, setTimers] = useState({});
             const [activeTimer, setActiveTimer] = useState(null);
-            const timerIntervals = useRef({});
 
             // Sauvegarder dans localStorage
             useEffect(() => {
-                localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+                saveData('completedExercises', completedExercises);
             }, [completedExercises]);
 
             useEffect(() => {
-                localStorage.setItem('weights', JSON.stringify(weights));
+                saveData('weights', weights);
             }, [weights]);
 
             useEffect(() => {
-                localStorage.setItem('painLevels', JSON.stringify(painLevels));
+                saveData('painLevels', painLevels);
             }, [painLevels]);
 
-            // Nettoyage des timers
             useEffect(() => {
-                return () => {
-                    Object.values(timerIntervals.current).forEach(clearInterval);
-                };
-            }, []);
+                if (!activeTimer) return;
+
+                const intervalId = setInterval(() => {
+                    setTimers(previousTimers => ({
+                        ...previousTimers,
+                        [activeTimer]: Math.max(
+                            0,
+                            (previousTimers[activeTimer] ?? 0) - 1
+                        )
+                    }));
+                }, 1000);
+
+                return () => clearInterval(intervalId);
+            }, [activeTimer]);
+
+            useEffect(() => {
+                if (activeTimer && timers[activeTimer] === 0) {
+                    setActiveTimer(null);
+                }
+            }, [activeTimer, timers]);
 
             const toggleExercise = (exerciseId, week) => {
                 const key = `${exerciseId}-w${week}`;
@@ -915,43 +953,27 @@
                 }));
             };
 
-            const startTimer = (exerciseId, seconds) => {
-                if (activeTimer === exerciseId) {
-                    // Stop timer
-                    if (timerIntervals.current[exerciseId]) {
-                        clearInterval(timerIntervals.current[exerciseId]);
-                        delete timerIntervals.current[exerciseId];
-                    }
+            const startTimer = (timerKey, seconds) => {
+                if (activeTimer === timerKey) {
                     setActiveTimer(null);
-                    setTimers(prev => ({...prev, [exerciseId]: seconds}));
                     return;
                 }
 
-                // Start timer
-                setTimers(prev => ({...prev, [exerciseId]: seconds}));
-                setActiveTimer(exerciseId);
-
-                timerIntervals.current[exerciseId] = setInterval(() => {
-                    setTimers(prev => {
-                        const newTime = (prev[exerciseId] || seconds) - 1;
-                        if (newTime <= 0) {
-                            clearInterval(timerIntervals.current[exerciseId]);
-                            delete timerIntervals.current[exerciseId];
-                            setActiveTimer(null);
-                            return {...prev, [exerciseId]: 0};
-                        }
-                        return {...prev, [exerciseId]: newTime};
-                    });
-                }, 1000);
+                setTimers(previousTimers => ({
+                    ...previousTimers,
+                    [timerKey]: previousTimers[timerKey] > 0
+                        ? previousTimers[timerKey]
+                        : seconds
+                }));
+                setActiveTimer(timerKey);
             };
 
-            const resetTimer = (exerciseId, seconds) => {
-                if (timerIntervals.current[exerciseId]) {
-                    clearInterval(timerIntervals.current[exerciseId]);
-                    delete timerIntervals.current[exerciseId];
-                }
-                setActiveTimer(null);
-                setTimers(prev => ({...prev, [exerciseId]: seconds}));
+            const resetTimer = (timerKey, seconds) => {
+                setActiveTimer(current => current === timerKey ? null : current);
+                setTimers(previousTimers => ({
+                    ...previousTimers,
+                    [timerKey]: seconds
+                }));
             };
 
             const formatTime = (seconds) => {
@@ -961,7 +983,7 @@
             };
 
             const getSessionProgress = (session) => {
-                if (!session.exercises) return 0;
+                if (!session?.exercises?.length) return 0;
                 const total = session.exercises.length;
                 const completed = session.exercises.filter(ex => 
                     completedExercises[`${ex.id}-w${currentWeek}`]
@@ -970,39 +992,35 @@
             };
 
             const isWeekCompleted = (week) => {
-                const sessions = [phase1Data.sessionA, phase1Data.sessionB, phase1Data.sessionC];
-                const allExercises = sessions.flatMap(s => s.exercises);
-                return allExercises.every(ex => completedExercises[`${ex.id}-w${week}`]);
+                return programExercises.every(exercise => {
+                    const key = `${exercise.id}-w${week}`;
+                    return completedExercises[key] === true &&
+                        painLevels[key] !== undefined;
+                });
+            };
+
+            const isWeekPainFree = (week) => {
+                return programExercises.every(exercise =>
+                    painLevels[`${exercise.id}-w${week}`] === 0
+                );
             };
 
             const isPhase1Completed = () => {
-                // Vérifier que toutes les semaines 1-4 sont complétées SANS douleur
-                for (let week = 1; week <= 4; week++) {
-                    if (!isWeekCompleted(week)) return false;
-                    
-                    const sessions = [phase1Data.sessionA, phase1Data.sessionB, phase1Data.sessionC];
-                    const allExercises = sessions.flatMap(s => s.exercises);
-                    
-                    for (const ex of allExercises) {
-                        const painKey = `${ex.id}-w${week}`;
-                        const painLevel = painLevels[painKey];
-                        if (painLevel === undefined || painLevel > 0) {
-                            return false; // Douleur détectée ou pas d'info
-                        }
-                    }
-                }
-                return true;
+                return [1, 2, 3, 4].every(
+                    week => isWeekCompleted(week) && isWeekPainFree(week)
+                );
             };
 
             const renderExercise = (exercise) => {
                 const exerciseKey = `${exercise.id}-w${currentWeek}`;
+                const timerKey = `${exerciseKey}-timer`;
                 const isCompleted = completedExercises[exerciseKey];
                 const isExpanded = expandedExercises[exercise.id];
                 const currentWeight = weights[exerciseKey] || '';
                 const currentPain = painLevels[exerciseKey];
                 const hasPain = currentPain > 0;
-                const restSeconds = exercise.rest || 60;
-                const timerValue = timers[exercise.id] !== undefined ? timers[exercise.id] : restSeconds;
+                const restSeconds = exercise.rest ?? 60;
+                const timerValue = timers[timerKey] ?? restSeconds;
 
                 return (
                     <div 
@@ -1047,19 +1065,19 @@
 
                                 {exercise.rest && (
                                     <div className="timer-container">
-                                        <div className={`timer-display ${activeTimer === exercise.id ? 'active' : ''}`}>
+                                        <div className={`timer-display ${activeTimer === timerKey ? 'active' : ''}`}>
                                             {formatTime(timerValue)}
                                         </div>
                                         <div className="timer-buttons">
                                             <button 
                                                 className="timer-btn"
-                                                onClick={() => startTimer(exercise.id, restSeconds)}
+                                                onClick={() => startTimer(timerKey, restSeconds)}
                                             >
-                                                {activeTimer === exercise.id ? '⏸ Pause' : '▶ Start'}
+                                                {activeTimer === timerKey ? '⏸ Pause' : '▶ Start'}
                                             </button>
                                             <button 
                                                 className="timer-btn secondary"
-                                                onClick={() => resetTimer(exercise.id, restSeconds)}
+                                                onClick={() => resetTimer(timerKey, restSeconds)}
                                             >
                                                 🔄 Reset
                                             </button>
@@ -1072,6 +1090,9 @@
                                         <div className="weight-label">💪 Charge (Semaine {currentWeek})</div>
                                         <input 
                                             type="number" 
+                                            min="0"
+                                            step="0.5"
+                                            inputMode="decimal"
                                             className="weight-input"
                                             placeholder="Ex: 20 kg"
                                             value={currentWeight}
@@ -1212,9 +1233,9 @@
                             <div className="progress-summary">
                                 <div className="section-title" style={{marginTop: 0}}>🎉 Phase 1 Terminée !</div>
                                 <div style={{textAlign: 'center', padding: '1rem 0'}}>
-                                    <div style={{fontSize: '3rem', marginBottom: '1rem'}}>🔓</div>
+                                    <div style={{fontSize: '3rem', marginBottom: '1rem'}}>✅</div>
                                     <div style={{color: 'var(--accent-success)', fontSize: '1.2rem', fontWeight: 600}}>
-                                        Phase 2 débloquée !
+                                        Phase 1 terminée. La Phase 2 sera bientôt disponible.
                                     </div>
                                 </div>
                             </div>
@@ -1274,9 +1295,7 @@
                 <div className="app-container">
                     <div className="header">
                         <h1>💪 Rééducation Hanche</h1>
-                        <div className={`phase-badge ${currentPhase === 2 && !isPhase1Completed() ? 'locked' : ''}`}>
-                            Phase {currentPhase} {currentPhase === 2 && !isPhase1Completed() ? '🔒' : ''}
-                        </div>
+                        <div className="phase-badge">Phase 1</div>
                         <div className="week-selector">
                             {[1, 2, 3, 4].map(week => (
                                 <button
@@ -1301,7 +1320,8 @@
             );
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>

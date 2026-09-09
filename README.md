@@ -11,11 +11,11 @@ Application mobile de suivi de programme de rééducation pour la hanche sur 8 s
 - 🩺 Suivi des niveaux de douleur (0-4)
 - 📺 Vidéos démo YouTube pour chaque exercice
 - 📊 Tableau de progression visuel
-- 🔒 Déblocage conditionnel de la Phase 2
+- 🔒 Vérification des conditions nécessaires avant la Phase 2
 
-### Phase 2 : Force & Vitesse (Semaines 5-8)
-- Débloquée uniquement si Phase 1 complète SANS douleur
-- Programme intensifié avec nouvelles séances
+### Phase 2 : Force & Vitesse (Semaines 5-8) — à venir
+- Prévue après une Phase 1 complète sans douleur
+- Programme intensifié avec de nouvelles séances
 
 ### Organisation hebdomadaire
 - **Lundi** : Séance A (Force & Poussée)
@@ -72,8 +72,9 @@ Ouvre simplement `index.html` dans un navigateur moderne.
 # Cloner le repo
 git clone [votre-repo-url]
 
-# Ouvrir dans le navigateur
-open index.html
+# Installer les outils et lancer l'application
+npm install
+npm start
 ```
 
 ## 📄 Licence
