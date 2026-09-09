@@ -1,12 +1,14 @@
 {
   "name": "reeducation-hanche",
   "version": "1.0.0",
-  "description": "Application de rééducation de la hanche - Programme sur 8 semaines",
+  "description": "Application de réathlétisation et de préparation basket sur 14 semaines",
   "main": "index.html",
   "scripts": {
-    "start": "serve ."
+    "start": "serve .",
+    "test:mobile": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "serve": "^14.2.4"
   },
   "keywords": [

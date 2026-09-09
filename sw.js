@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v3';
+const CACHE = 'rehaab-v4-mobile';
 const PRECACHE = [
   './',
   './index.html',
@@ -25,9 +25,21 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Cache-first avec mise à jour en arrière-plan (stale-while-revalidate)
+// Navigation : réseau d'abord. Autres fichiers : cache avec mise à jour en arrière-plan.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put('./index.html', clone));
+        return res;
+      }).catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fresh = fetch(e.request).then(res => {

@@ -3,37 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#080908">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Rehaab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
 <style>
-:root{--bg:#000;--card:#111;--card2:#1a1a1a;--border:#222;--text:#fff;--muted:#555;--sub:#888;--accent:#E8FF47;--red:#ff453a;--green:#30d158;--orange:#ff9f0a;--radius:20px;--radius-sm:14px}
+:root{--bg:#080908;--card:#111311;--card2:#191c19;--border:#2a2e2a;--text:#f4f5f0;--muted:#737973;--sub:#a7aca7;--accent:#d7f43b;--red:#ff5a50;--green:#49d67d;--orange:#f2a53a;--radius:12px;--radius-sm:8px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);padding-bottom:5rem}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button,input,a{touch-action:manipulation}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.app{width:100%;max-width:480px;margin:0 auto;min-height:100dvh;background:var(--bg);padding-bottom:calc(7rem + env(safe-area-inset-bottom,0px))}
+.skip-link{position:fixed;top:.5rem;left:.5rem;z-index:200;transform:translateY(-160%);background:var(--accent);color:#080908;padding:.7rem 1rem;text-decoration:none;font-weight:700;border-radius:6px}
+.skip-link:focus{transform:translateY(0)}
 
-.header{padding:3rem 1.5rem 1.25rem;background:var(--bg);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border)}
-.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem}
+.header{padding:calc(1.1rem + env(safe-area-inset-top,0px)) 1.25rem 1rem;background:var(--bg);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border)}
+.header-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.9rem}
 .title{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;letter-spacing:-1px;line-height:1}
 .title span{color:var(--accent)}
-.phase-pill{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:.4rem 1rem;font-size:.75rem;font-weight:600;color:var(--sub)}
+.phase-pill{max-width:48%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:.45rem .7rem;font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
 .phase-pill.p2{background:var(--accent);color:#000;border-color:var(--accent)}
-.week-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.week-row::-webkit-scrollbar{display:none}
-.week-btn{flex-shrink:0;width:44px;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:12px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Syne',sans-serif;position:relative}
-.week-btn.active{background:var(--accent);color:#000;border-color:var(--accent);transform:scale(1.05);box-shadow:0 6px 20px rgba(232,255,71,.3)}
+.block-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:6px}
+.block-btn{min-width:0;min-height:44px;padding:.45rem .35rem;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--sub);font-family:'IBM Plex Mono',monospace;font-size:.65rem;font-weight:600;line-height:1.15;cursor:pointer;overflow-wrap:anywhere}
+.block-btn.active{background:var(--accent);border-color:var(--accent);color:#080908}
+.week-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.week-btn{min-width:0;width:100%;height:44px;background:var(--card);border:1px solid var(--border);color:var(--sub);border-radius:6px;font-size:.8rem;font-weight:700;cursor:pointer;transition:transform .2s,background-color .2s,border-color .2s;font-family:'Syne',sans-serif;position:relative}
+.week-btn.active{background:var(--accent);color:#080908;border-color:var(--accent)}
 .week-btn.locked{opacity:.45}
 .week-btn .lock{position:absolute;top:-4px;right:-4px;font-size:.7rem}
 
-.section{padding:1.5rem 1.5rem 0}
-.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:1rem}
+.section{padding:1.5rem 1.25rem 0}
+.section-label{font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:.85rem}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
 .stat-card-label{font-size:.8rem;color:var(--sub);font-weight:500;margin-bottom:.5rem}
@@ -41,8 +47,8 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .stat-card-value span{font-size:1rem;color:var(--sub);font-weight:500;margin-left:2px;letter-spacing:0}
 .stat-card-sub{font-size:.75rem;color:var(--muted);margin-top:.25rem}
 
-.banner{background:linear-gradient(135deg,rgba(232,255,71,.12),rgba(232,255,71,.02));border:1px solid rgba(232,255,71,.3);border-radius:var(--radius);padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer}
-.banner.warn{background:linear-gradient(135deg,rgba(255,159,10,.12),rgba(255,159,10,.02));border-color:rgba(255,159,10,.35)}
+.banner{background:var(--card);border:1px solid rgba(215,244,59,.35);border-radius:var(--radius);padding:1.1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer}
+.banner.warn{background:var(--card);border-color:rgba(242,165,58,.45)}
 .banner-ic{font-size:1.5rem}
 .banner-main{flex:1}
 .banner-t{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.15rem}
@@ -245,17 +251,17 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .q-opt{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.6rem;font-size:.78rem;font-weight:600;color:var(--sub);cursor:pointer;text-align:center;transition:all .2s}
 .q-opt.sel{background:var(--accent);color:#000;border-color:var(--accent)}
 
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding:.5rem 0 env(safe-area-inset-bottom,.5rem)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;color:var(--muted);font-size:.65rem;font-weight:600;cursor:pointer;padding:.5rem;transition:color .2s}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--card);border-top:1px solid var(--border);display:flex;z-index:100;padding:.4rem 0 calc(.5rem + env(safe-area-inset-bottom,0px))}
+.nav-btn{min-width:0;min-height:52px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--muted);font-size:.68rem;font-weight:600;cursor:pointer;padding:.35rem .25rem;transition:color .2s}
 .nav-btn.active{color:var(--accent)}
 .nav-icon{font-size:1.3rem}
 .nav-btn svg{display:block}
-.cta{background:var(--accent);color:#000;border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem;cursor:pointer;box-shadow:0 10px 34px rgba(232,255,71,.22);transition:transform .2s}
+.cta{background:var(--accent);color:#080908;border:1px solid var(--accent);border-radius:var(--radius);padding:1.1rem 1.2rem;display:flex;align-items:center;gap:.85rem;cursor:pointer;transition:transform .2s}
 .cta:active{transform:scale(.98)}
 .cta-big{font-family:'Syne',sans-serif;font-weight:800;font-size:1.15rem}
 .cta-small{font-size:.8rem;font-weight:600;opacity:.72;margin-top:.15rem}
 .cta-play{width:44px;height:44px;border-radius:50%;background:#000;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-.sticky-timer{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:99;background:var(--accent);color:#000;border-radius:100px;padding:.55rem 1.15rem;display:flex;gap:.6rem;align-items:center;font-weight:800;font-family:'Syne',sans-serif;font-size:1rem;box-shadow:0 8px 30px rgba(232,255,71,.35);cursor:pointer;white-space:nowrap}
+.sticky-timer{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:99;max-width:calc(100% - 2rem);background:var(--accent);color:#080908;border:1px solid #080908;border-radius:8px;padding:.6rem 1rem;display:flex;gap:.55rem;align-items:center;font-weight:800;font-family:'Syne',sans-serif;font-size:1rem;cursor:pointer;white-space:nowrap}
 .plus-item{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.15rem 1.35rem;cursor:pointer;margin-bottom:10px;transition:all .2s}
 .plus-item:active{transform:scale(.98);background:var(--card2)}
 .plus-ic{font-size:1.4rem;flex-shrink:0}
@@ -275,6 +281,29 @@ html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-seri
 .set-btn{width:100%;padding:1rem;border-radius:12px;font-weight:700;font-size:.92rem;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--text);margin-bottom:10px;font-family:'DM Sans',sans-serif;text-align:center;display:block}
 .set-btn.accent{background:var(--accent);color:#000;border-color:var(--accent)}
 .set-btn.danger{color:var(--red);border-color:rgba(255,69,58,.4)}
+@media (max-width:360px){
+  .header{padding-left:1rem;padding-right:1rem}
+  .header-top{margin-bottom:.7rem}
+  .title{font-size:1.9rem}
+  .phase-pill{font-size:.62rem;padding:.4rem .55rem}
+  .block-btn{font-size:.59rem;padding:.35rem .2rem}
+  .section{padding-left:1rem;padding-right:1rem}
+  .topbar{padding-left:1rem;padding-right:1rem;gap:.75rem}
+  .ex-section{padding-left:1rem;padding-right:1rem}
+  .cta{padding:.9rem 1rem;gap:.7rem}
+  .cta-play{width:40px;height:40px}
+  .cta-big{font-size:1.02rem;line-height:1.15}
+  .cta-small{font-size:.75rem;line-height:1.3}
+  .wk-intent{padding:.85rem .9rem}
+  .ss-head{align-items:flex-start;flex-direction:column;gap:.25rem}
+  .ss-info{text-align:left;line-height:1.35}
+  .meas-grid{grid-template-columns:1fr}
+  .q-opts{display:grid;grid-template-columns:1fr 1fr}
+  .log-row{align-items:flex-start;flex-direction:column;gap:.45rem}
+  .log-date{width:auto}
+}
+@media (max-height:650px){.header{position:relative}.cta-small{display:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
@@ -724,8 +753,8 @@ const NAV_ITEMS=[
 ];
 function NavBar({view,setView}){
   const activeOf=v=>v==='plus'?PLUS_VIEWS.includes(view):view===v;
-  return(<div className="nav">{NAV_ITEMS.map(it=>(<button key={it.v} className={`nav-btn${activeOf(it.v)?' active':''}`} onClick={()=>setView(it.v)}>
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{it.ic}</svg>{it.label}</button>))}</div>);
+  return(<nav className="nav" aria-label="Navigation principale">{NAV_ITEMS.map(it=>(<button type="button" key={it.v} className={`nav-btn${activeOf(it.v)?' active':''}`} aria-current={activeOf(it.v)?'page':undefined} onClick={()=>setView(it.v)}>
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{it.ic}</svg>{it.label}</button>))}</nav>);
 }
 function Sticky({T}){
   const run=T.firstRunning();
@@ -1124,22 +1153,23 @@ function App(){
   const nextSess=['A','B','C'].find(l=>!isDone(l));
   const weekFull=doneSess()>=3;
   return(<div className="app">
-    <div className="header">
-      <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${bloc.n>1?' p2':''}`}>{bloc.ic} {bloc.short}</div></div>
-      <div className="week-row">{BLOCS.map(b=>(
-        <button key={b.n} className={`week-btn${bloc.n===b.n?' active':''}`} onClick={()=>selectWeek((b.n-1)*4+1)}>{b.ic} {b.short}</button>))}</div>
+    <a className="skip-link" href="#main-content">Aller au contenu</a>
+    <header className="header">
+      <div className="header-top"><div className="title">Rehaab<span>.</span></div><div className={`phase-pill${bloc.n>1?' p2':''}`}>{bloc.short}</div></div>
+      <div className="block-row">{BLOCS.map(b=>(
+        <button type="button" key={b.n} className={`block-btn${bloc.n===b.n?' active':''}`} aria-pressed={bloc.n===b.n} onClick={()=>selectWeek((b.n-1)*4+1)}>{b.short}</button>))}</div>
       <div className="week-row">{[1,2,3,4].map(i=>{const w=(bloc.n-1)*4+i;
-        return <button key={w} className={`week-btn${week===w?' active':''}`} onClick={()=>selectWeek(w)}>S{i}</button>;})}</div>
-    </div>
+        return <button type="button" key={w} className={`week-btn${week===w?' active':''}`} aria-label={`Semaine ${i} du bloc ${bloc.short}`} aria-pressed={week===w} onClick={()=>selectWeek(w)}>S{i}</button>;})}</div>
+    </header>
 
-    <div className="section" style={{paddingTop:'1.25rem'}}>
+    <div id="main-content" className="section" style={{paddingTop:'1.25rem'}}>
       <div className="wk-intent" style={{marginBottom:'1rem'}}><div className="ic">{bloc.ic}</div><div><div className="t"><span>{bloc.name}</span> · S{wib}/4</div><div className="s">{bloc.sub}</div></div></div>
       {nextSess?<div className="cta" onClick={()=>{setSess(nextSess);setView('workout')}}><div className="cta-play">▶</div><div style={{flex:1}}><div className="cta-big">Séance {nextSess} — {phase[nextSess].sub}</div><div className="cta-small">Ta prochaine séance · {bloc.name} · S{wib} · {phase[nextSess].duration}</div></div></div>
       :<div className="cta" onClick={()=>{if(week<TOTAL_WEEKS)selectWeek(week+1)}}><div className="cta-play">💪</div><div style={{flex:1}}><div className="cta-big">S{wib} bouclée — {bloc.short}</div><div className="cta-small">{week<TOTAL_WEEKS?(wib===4?`Appuie pour ouvrir "${(BLOCS[bloc.n]||{}).name||''}"`:`Appuie pour passer en S${wib+1}`):'Programme terminé — reprise basket 🏀'}</div></div></div>}
     </div>
 
     <div className="section" style={{paddingTop:'.75rem'}}>
-      <div style={{display:'flex',gap:'.5rem'}}>
+      <div className="week-actions" style={{display:'flex',gap:'.5rem'}}>
         <button className="set-btn" style={{flex:1,marginBottom:0}} onClick={()=>setWeekDone(!weekFull)}>{weekFull?'↩︎ Décocher la semaine':'✓ Valider la semaine'}</button>
         <button className="set-btn accent" style={{flex:1,marginBottom:0}} onClick={()=>{if(week<TOTAL_WEEKS)selectWeek(week+1)}}>Semaine suivante →</button>
       </div>
