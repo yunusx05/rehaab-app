@@ -585,6 +585,16 @@ const DAY_LABELS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const fmtShort=iso=>{const d=new Date(iso);return `${d.getDate()}/${d.getMonth()+1}`;};
 const dkey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const phaseFor=w=>w<=4?BLOC1:w<=8?BLOC2:BLOC3;
+const readStored=(key,fallback)=>{
+  try{
+    const raw=localStorage.getItem(key);if(raw===null)return fallback;
+    const value=JSON.parse(raw);
+    if(Array.isArray(fallback))return Array.isArray(value)?value:fallback;
+    if(fallback&&typeof fallback==='object')return value&&typeof value==='object'&&!Array.isArray(value)?value:fallback;
+    return value??fallback;
+  }catch(e){return fallback;}
+};
+const writeStored=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value));}catch(e){console.warn(`Sauvegarde impossible : ${key}`);}};
 // Reps estimées d'un exo ("4 x 8-10 / jambe" → 4×9×2) pour le tonnage
 const repsOf=vol=>{if(/sec|min/i.test(vol||''))return null;const m=(vol||'').match(/(\d+)\s*x\s*(\d+)(?:\s*-\s*(\d+))?/i);if(!m)return null;const sets=+m[1];let r=+m[2];if(m[3])r=(r+ +m[3])/2;const per=/\/\s*(jambe|bras|c[ôo]t[ée])/i.test(vol)?2:1;return sets*r*per;};
 
@@ -595,7 +605,7 @@ function useGlobalTimers(){
   const isRunning=id=>!!intervals.current[id];
   const start=(id,sec)=>{
     if(isRunning(id)){clearInterval(intervals.current[id]);delete intervals.current[id];bump();return;}
-    if(get(id,sec)===0){timers.current[id]=sec;bump();return;}
+    if(get(id,sec)===0)timers.current[id]=sec;
     if(timers.current[id]===undefined)timers.current[id]=sec;
     intervals.current[id]=setInterval(()=>{timers.current[id]--;if(timers.current[id]<=0){timers.current[id]=0;clearInterval(intervals.current[id]);delete intervals.current[id];playBeep();}bump();},1000);bump();
   };
@@ -617,7 +627,7 @@ function Timer({id,seconds,T,label}){
 function WeightBox({exId,week,weights,onUpdate,reco}){
   const key=`${exId}-w${week}`;
   return(<div className="weight-box"><div className="w-label">💪 Charge — S{week}</div>
-    <div className="w-row"><input type="number" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/><span className="w-unit">kg</span></div>
+    <div className="w-row"><input type="number" min="0" step="0.5" inputMode="decimal" className="w-input" placeholder="0" value={weights[key]||''} onChange={e=>onUpdate(key,e.target.value)} onClick={e=>e.stopPropagation()}/><span className="w-unit">kg</span></div>
     {reco&&<div className="reco" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>
       <div className="reco-t">🎯 {reco.text}</div><button className="reco-apply" onClick={e=>{e.stopPropagation();onUpdate(key,String(reco.value));}}>Appliquer</button></div>}
     <div className="w-history">{Array.from({length:TOTAL_WEEKS},(_,i)=>i+1).map(w=>{const v=weights[`${exId}-w${w}`];return v?<div key={w} className={`w-badge${w===week?' cur':''}`}>{BLOCS[blocOf(w)-1].ic}S{weekInBloc(w)}:{v}kg</div>:null;})}</div></div>);
@@ -763,42 +773,42 @@ function BoxBreathing(){
 // ── APP ──
 function App(){
   const T=useGlobalTimers();
-  const[week,setWeek]=useState(()=>{try{return JSON.parse(localStorage.getItem('rh_week'))||1}catch(e){return 1}});
+  const[week,setWeek]=useState(()=>Math.min(TOTAL_WEEKS,Math.max(1,Number(readStored('rh_week',1))||1)));
   const[view,setView]=useState('home');
   const[sess,setSess]=useState(null);
-  const[completed,setCompleted]=useState(()=>JSON.parse(localStorage.getItem('rh_done')||'{}'));
-  const[weights,setWeights]=useState(()=>JSON.parse(localStorage.getItem('rh_w')||'{}'));
-  const[bilans,setBilans]=useState(()=>JSON.parse(localStorage.getItem('rh_bilan')||'{}'));
-  const[trainingLog,setTrainingLog]=useState(()=>JSON.parse(localStorage.getItem('rh_log')||'{}'));
-  const[measures,setMeasures]=useState(()=>JSON.parse(localStorage.getItem('rh_meas')||'[]'));
-  const[swaps,setSwaps]=useState(()=>JSON.parse(localStorage.getItem('rh_swap')||'{}'));
-  const[cpAnswers,setCpAnswers]=useState(()=>JSON.parse(localStorage.getItem('rh_cp')||'{}'));
+  const[completed,setCompleted]=useState(()=>readStored('rh_done',{}));
+  const[weights,setWeights]=useState(()=>readStored('rh_w',{}));
+  const[bilans,setBilans]=useState(()=>readStored('rh_bilan',{}));
+  const[trainingLog,setTrainingLog]=useState(()=>readStored('rh_log',{}));
+  const[measures,setMeasures]=useState(()=>readStored('rh_meas',[]));
+  const[swaps,setSwaps]=useState(()=>readStored('rh_swap',{}));
+  const[cpAnswers,setCpAnswers]=useState(()=>readStored('rh_cp',{}));
   const[p2Unlocked,setP2Unlocked]=useState(true);
   const[p3Unlocked,setP3Unlocked]=useState(true);
-  const[daily,setDaily]=useState(()=>JSON.parse(localStorage.getItem('rh_daily')||'{}'));
-  const[supp,setSupp]=useState(()=>JSON.parse(localStorage.getItem('rh_supp')||'{}'));
+  const[daily,setDaily]=useState(()=>readStored('rh_daily',{}));
+  const[supp,setSupp]=useState(()=>readStored('rh_supp',{}));
   // logk = séances déjà loguées au calendrier (anti-doublons). Migration depuis l'ancien système.
   const[logk,setLogk]=useState(()=>{
-    const s=localStorage.getItem('rh_logk');if(s)return JSON.parse(s);
-    const done=JSON.parse(localStorage.getItem('rh_done')||'{}');const k={};
+    const s=readStored('rh_logk',null);if(s&&typeof s==='object'&&!Array.isArray(s))return s;
+    const done=readStored('rh_done',{});const k={};
     for(let w=1;w<=TOTAL_WEEKS;w++){['A','B','C','D'].forEach(l=>{const ph=phaseFor(w);if(!ph[l])return;
       const e=ph[l].supersets.reduce((a,ss)=>a.concat(ss.exercises),[]);
       if(e.length&&e.every(x=>done[`${x.id}-w${w}`]))k[`${l}-w${w}`]='migrated';});}
     return k;});
 
-  useEffect(()=>{localStorage.setItem('rh_done',JSON.stringify(completed))},[completed]);
-  useEffect(()=>{localStorage.setItem('rh_w',JSON.stringify(weights))},[weights]);
-  useEffect(()=>{localStorage.setItem('rh_bilan',JSON.stringify(bilans))},[bilans]);
-  useEffect(()=>{localStorage.setItem('rh_log',JSON.stringify(trainingLog))},[trainingLog]);
-  useEffect(()=>{localStorage.setItem('rh_meas',JSON.stringify(measures))},[measures]);
-  useEffect(()=>{localStorage.setItem('rh_swap',JSON.stringify(swaps))},[swaps]);
-  useEffect(()=>{localStorage.setItem('rh_cp',JSON.stringify(cpAnswers))},[cpAnswers]);
-  useEffect(()=>{localStorage.setItem('rh_p2',JSON.stringify(p2Unlocked))},[p2Unlocked]);
-  useEffect(()=>{localStorage.setItem('rh_p3',JSON.stringify(p3Unlocked))},[p3Unlocked]);
-  useEffect(()=>{localStorage.setItem('rh_daily',JSON.stringify(daily))},[daily]);
-  useEffect(()=>{localStorage.setItem('rh_supp',JSON.stringify(supp))},[supp]);
-  useEffect(()=>{localStorage.setItem('rh_logk',JSON.stringify(logk))},[logk]);
-  useEffect(()=>{localStorage.setItem('rh_week',JSON.stringify(week))},[week]);
+  useEffect(()=>{writeStored('rh_done',completed)},[completed]);
+  useEffect(()=>{writeStored('rh_w',weights)},[weights]);
+  useEffect(()=>{writeStored('rh_bilan',bilans)},[bilans]);
+  useEffect(()=>{writeStored('rh_log',trainingLog)},[trainingLog]);
+  useEffect(()=>{writeStored('rh_meas',measures)},[measures]);
+  useEffect(()=>{writeStored('rh_swap',swaps)},[swaps]);
+  useEffect(()=>{writeStored('rh_cp',cpAnswers)},[cpAnswers]);
+  useEffect(()=>{writeStored('rh_p2',p2Unlocked)},[p2Unlocked]);
+  useEffect(()=>{writeStored('rh_p3',p3Unlocked)},[p3Unlocked]);
+  useEffect(()=>{writeStored('rh_daily',daily)},[daily]);
+  useEffect(()=>{writeStored('rh_supp',supp)},[supp]);
+  useEffect(()=>{writeStored('rh_logk',logk)},[logk]);
+  useEffect(()=>{writeStored('rh_week',week)},[week]);
 
   const phase=phaseFor(week);
   const bloc=blocInfo(week);
@@ -1212,10 +1222,10 @@ function MeasuresView({measures,addMeasure,lastMeas,firstMeas,setView,view,T}){
       <div className="ex-sec-label">Nouvelle mesure — {fmtShort(todayStr())}</div>
       <div className="meas-form">
         <div className="meas-grid">
-          <div className="meas-field"><div className="meas-flabel">Pince ombilicale (mm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="22" value={f.pince} onChange={e=>setF({...f,pince:e.target.value})}/></div>
-          <div className="meas-field"><div className="meas-flabel">Poids (kg)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="88" value={f.poids} onChange={e=>setF({...f,poids:e.target.value})}/></div>
-          <div className="meas-field"><div className="meas-flabel">Tour de taille (cm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="91" value={f.taille} onChange={e=>setF({...f,taille:e.target.value})}/></div>
-          <div className="meas-field"><div className="meas-flabel">Tour de hanches (cm)</div><input className="meas-input" type="number" inputMode="decimal" placeholder="100" value={f.hanches} onChange={e=>setF({...f,hanches:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Pince ombilicale (mm)</div><input className="meas-input" type="number" min="0" step="0.1" inputMode="decimal" placeholder="22" value={f.pince} onChange={e=>setF({...f,pince:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Poids (kg)</div><input className="meas-input" type="number" min="0" step="0.1" inputMode="decimal" placeholder="88" value={f.poids} onChange={e=>setF({...f,poids:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Tour de taille (cm)</div><input className="meas-input" type="number" min="0" step="0.1" inputMode="decimal" placeholder="91" value={f.taille} onChange={e=>setF({...f,taille:e.target.value})}/></div>
+          <div className="meas-field"><div className="meas-flabel">Tour de hanches (cm)</div><input className="meas-input" type="number" min="0" step="0.1" inputMode="decimal" placeholder="100" value={f.hanches} onChange={e=>setF({...f,hanches:e.target.value})}/></div>
         </div>
         <button className="meas-save" onClick={save}>Enregistrer la mesure</button>
       </div>
@@ -1241,7 +1251,8 @@ function MeasuresView({measures,addMeasure,lastMeas,firstMeas,setView,view,T}){
   </div><Sticky T={T}/><NavBar view={view} setView={setView}/></div>);
 }
 
-ReactDOM.render(<App/>,document.getElementById('root'));
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
 </script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}
