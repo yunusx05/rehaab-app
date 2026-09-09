@@ -1,8 +1,9 @@
-const CACHE = 'rehaab-v4-mobile';
+const CACHE = 'rehaab-v5-favicon';
 const PRECACHE = [
   './',
   './index.html',
   './manifest.json',
+  './favicon.svg',
   './icon.svg',
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',

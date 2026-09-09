@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Rehaab</title>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#080908" stroke="#2a2e2a" stroke-width="2"/>
+  <path fill="#f4f5f0" fill-rule="evenodd" d="M14 13h23c9 0 15 5 15 13 0 6-3 10-9 12l10 12H39l-9-11h-5v11H14V13Zm11 9v9h11c3 0 5-2 5-4.5S39 22 36 22H25Z"/>
+  <rect x="49" y="47" width="7" height="7" rx="1" fill="#d7f43b"/>
+</svg>

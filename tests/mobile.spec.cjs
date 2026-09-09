@@ -22,6 +22,7 @@ for (const size of sizes) {
     await page.goto('/');
 
     await expect(page.locator('.title')).toHaveText('Rehaab.');
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', 'favicon.svg');
     await expect(page.locator('.block-btn')).toHaveCount(3);
     await expect(page.locator('.week-btn')).toHaveCount(4);
     await expectNoHorizontalOverflow(page);
