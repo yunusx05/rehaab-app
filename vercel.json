@@ -1,16 +1,18 @@
 {
   "version": 2,
-  "name": "reeducation-hanche",
-  "builds": [
+  "cleanUrls": true,
+  "headers": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/personal-app.jsx",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
     }
   ]
 }
