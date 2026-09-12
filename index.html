@@ -308,7 +308,11 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 </style>
 </head>
 <body>
+<link rel="stylesheet" href="personal.css">
 <div id="root"></div>
+<script src="program-data.js"></script>
+<script src="personal-engine.js"></script>
+<!-- legacy Rehaab interface retained in source for rollback; active interface is below.
 <script type="text/babel">
 const {useState,useEffect,useRef} = React;
 
@@ -1285,6 +1289,8 @@ function MeasuresView({measures,addMeasure,lastMeas,firstMeas,setView,view,T}){
 const root=ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App/>);
 </script>
+-->
+<script type="text/babel" src="personal-app.jsx"></script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}
 </script>

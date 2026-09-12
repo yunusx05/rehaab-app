@@ -1,10 +1,15 @@
-const CACHE = 'rehaab-v5-favicon';
+const CACHE = 'rehaab-v6-personal-engine';
 const PRECACHE = [
   './',
   './index.html',
   './manifest.json',
   './favicon.svg',
   './icon.svg',
+  './personal.css',
+  './personal-app.jsx',
+  './personal-engine.js',
+  './program-data.js',
+  './media/ATTRIBUTION.md',
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
   'https://unpkg.com/@babel/standalone@7.23.5/babel.min.js'
