@@ -2,7 +2,8 @@ const { test, expect } = require('@playwright/test');
 
 const sizes = [
   { name: 'petit téléphone', width: 320, height: 568 },
-  { name: 'téléphone courant', width: 390, height: 844 }
+  { name: 'téléphone courant', width: 390, height: 844 },
+  { name: 'bureau', width: 1440, height: 900 }
 ];
 
 const expectNoHorizontalOverflow = async page => {
@@ -25,7 +26,10 @@ for (const size of sizes) {
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'C’est parti' }).click();
-    await expect(page.getByRole('heading', { name: /Qu’est-ce qui te ferait du bien/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /À toi de jouer/i })).toBeVisible();
+    await expect(page.locator('.training-hero img')).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    await page.screenshot({ path: `test-results/accueil-${size.width}.png`, fullPage: true });
     await page.getByRole('button', { name: 'Trouver ma séance' }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
@@ -37,7 +41,9 @@ for (const size of sizes) {
     await page.getByRole('button', { name: 'Échauffement effectué' }).click();
     await expect(page.getByRole('button', { name: 'Terminé', exact: true })).toBeVisible();
     await expect(page.getByRole('timer')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Mettre en pause', exact: true })).toBeVisible();
     await expectNoHorizontalOverflow(page);
+    await page.screenshot({ path: `test-results/seance-${size.width}.png` });
     expect(errors).toEqual([]);
   });
 }
@@ -50,14 +56,14 @@ test('profil, douleur et export restent accessibles', async ({ page }) => {
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'C’est parti' }).click();
-  await page.getByRole('button', { name: 'Profil' }).click();
+  await page.getByRole('button', { name: 'Profil', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Mon profil.' })).toBeVisible();
   await page.getByRole('button', { name: /Mes douleurs du moment/ }).click();
   await expect(page.getByRole('heading', { name: 'Comment va ton corps ?' })).toBeVisible();
   await page.getByRole('button', { name: 'Genou' }).click();
   await page.getByRole('button', { name: 'Enregistrer le signalement' }).click();
   await expect(page.getByText(/Signalement enregistré/)).toBeVisible();
-  await page.getByRole('button', { name: 'Profil' }).click();
+  await page.getByRole('button', { name: 'Profil', exact: true }).click();
   await page.getByText('Mes données & sauvegardes').click();
   await expect(page.getByRole('button', { name: 'Exporter toutes mes données' })).toBeVisible();
 });

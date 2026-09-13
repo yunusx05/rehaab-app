@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v9-live-action';
+const CACHE = 'rehaab-v10-sport';
 const PRECACHE = [
   './',
   './index.html',
@@ -7,10 +7,23 @@ const PRECACHE = [
   './icon.svg',
   './personal.css',
   './live-session.css',
+  './sport.css',
   './personal-app.jsx',
   './visual-components.jsx',
+  './sport-components.jsx',
   './live-session.jsx',
   './exercise-media.js',
+  './vendor/gsap.min.js',
+  './vendor/ScrollTrigger.min.js',
+  './media/fonts/cabinet.css',
+  './media/fonts/cabinet-400.woff2',
+  './media/fonts/cabinet-500.woff2',
+  './media/fonts/cabinet-700.woff2',
+  './media/fonts/cabinet-800.woff2',
+  './media/fonts/barlow.css',
+  './media/fonts/barlow-0.ttf',
+  './media/fonts/barlow-1.ttf',
+  './media/training-floor.jpg',
   './media/video-credits.json',
   "./media/Pushups/0.jpg",
   "./media/Pushups/1.jpg",
@@ -36,6 +49,8 @@ const PRECACHE = [
   "./media/Wide-Grip_Lat_Pulldown/1.jpg",
   "./media/Pullups/0.jpg",
   "./media/Pullups/1.jpg",
+  "./media/videos/pullup.mp4",
+  "./media/videos/pullup.jpg",
   "./media/Dumbbell_Shoulder_Press/0.jpg",
   "./media/Dumbbell_Shoulder_Press/1.jpg",
   "./media/videos/db-shoulder.mp4",
@@ -52,6 +67,10 @@ const PRECACHE = [
   "./media/Bodyweight_Squat/1.jpg",
   "./media/Goblet_Squat/0.jpg",
   "./media/Goblet_Squat/1.jpg",
+  "./media/Dumbbell_Squat/0.jpg",
+  "./media/Dumbbell_Squat/1.jpg",
+  "./media/Barbell_Full_Squat/0.jpg",
+  "./media/Barbell_Full_Squat/1.jpg",
   "./media/Barbell_Deadlift/0.jpg",
   "./media/Barbell_Deadlift/1.jpg",
   "./media/Butt_Lift_Bridge/0.jpg",
@@ -70,12 +89,22 @@ const PRECACHE = [
   "./media/Dead_Bug/1.jpg",
   "./media/Plank/0.jpg",
   "./media/Plank/1.jpg",
+  "./media/Farmers_Walk/0.jpg",
+  "./media/Farmers_Walk/1.jpg",
   "./media/Cat_Stretch/0.jpg",
   "./media/Cat_Stretch/1.jpg",
+  "./media/Rope_Jumping/0.jpg",
+  "./media/Rope_Jumping/1.jpg",
   "./media/Incline_Dumbbell_Press/0.jpg",
   "./media/Incline_Dumbbell_Press/1.jpg",
   "./media/videos/incline.mp4",
   "./media/videos/incline.jpg",
+  "./media/Standing_Dumbbell_Triceps_Extension/0.jpg",
+  "./media/Standing_Dumbbell_Triceps_Extension/1.jpg",
+  "./media/videos/overhead-triceps.mp4",
+  "./media/videos/overhead-triceps.jpg",
+  "./media/Bench_Dips/0.jpg",
+  "./media/Bench_Dips/1.jpg",
   './personal-engine.js',
   './program-data.js',
   './media/ATTRIBUTION.md',
@@ -83,6 +112,8 @@ const PRECACHE = [
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
   'https://unpkg.com/@babel/standalone@7.23.5/babel.min.js'
 ];
+// Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.
+const CACHEABLE_HOSTS = ['unpkg.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -103,9 +134,13 @@ self.addEventListener('activate', e => {
 // Navigation : réseau d'abord. Autres fichiers : cache avec mise à jour en arrière-plan.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  const sameOrigin = url.origin === self.location.origin;
+  if (!sameOrigin && !CACHEABLE_HOSTS.includes(url.hostname)) return;
+  if (sameOrigin && url.pathname.startsWith('/api/')) return;
 
   // Native video players request byte ranges, including when seeking offline.
-  if (e.request.headers.has('range') && /\.(mp4|webm)$/i.test(new URL(e.request.url).pathname)) {
+  if (e.request.headers.has('range') && /\.(mp4|webm)$/i.test(url.pathname)) {
     e.respondWith((async () => {
       const cached = await caches.match(e.request.url);
       if (!cached || cached.status !== 200) return fetch(e.request);

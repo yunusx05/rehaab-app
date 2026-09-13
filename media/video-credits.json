@@ -70,5 +70,21 @@
     "author": "Goulart",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/",
     "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "pullup",
+    "videoId": 71,
+    "source": "https://wger.de/media/exercise-video/475/83067ffe-ccb9-4e22-8507-5131b211ce74.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed, 640px H.264 transcode, JPEG poster."
+  },
+  {
+    "exercise": "overhead-triceps",
+    "videoId": 57,
+    "source": "https://wger.de/media/exercise-video/211/85f6eb25-a76c-409e-9af9-497794ac0dfb.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed, 640px H.264 transcode, JPEG poster."
   }
 ]

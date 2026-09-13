@@ -60,7 +60,10 @@ window.RehaabMedia = {
     "frames": "Pullups",
     "muscles": [
       "lats"
-    ]
+    ],
+    "video": "media/videos/pullup.mp4",
+    "poster": "media/videos/pullup.jpg",
+    "credit": "Goulart · wger · CC BY-SA 4.0"
   },
   "db-shoulder": {
     "frames": "Dumbbell_Shoulder_Press",
@@ -163,5 +166,44 @@ window.RehaabMedia = {
     "video": "media/videos/incline.mp4",
     "poster": "media/videos/incline.jpg",
     "credit": "Goulart · wger · CC BY-SA 4.0"
+  },
+  "db-squat": {
+    "frames": "Dumbbell_Squat",
+    "muscles": [
+      "quadriceps"
+    ]
+  },
+  "bb-squat": {
+    "frames": "Barbell_Full_Squat",
+    "muscles": [
+      "quadriceps"
+    ]
+  },
+  "carry": {
+    "frames": "Farmers_Walk",
+    "muscles": [
+      "forearms"
+    ]
+  },
+  "overhead-triceps": {
+    "frames": "Standing_Dumbbell_Triceps_Extension",
+    "muscles": [
+      "triceps"
+    ],
+    "video": "media/videos/overhead-triceps.mp4",
+    "poster": "media/videos/overhead-triceps.jpg",
+    "credit": "Goulart · wger · CC BY-SA 4.0"
+  },
+  "dips": {
+    "frames": "Bench_Dips",
+    "muscles": [
+      "triceps"
+    ]
+  },
+  "rope": {
+    "frames": "Rope_Jumping",
+    "muscles": [
+      "quadriceps"
+    ]
   }
 };

@@ -16,7 +16,16 @@ function PTSession({data,update,go,notify}) {
   const [tick,setTick]=usePTState(Date.now()),[logging,setLogging]=usePTState(false),[error,setError]=usePTState('');
   const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[abandon,setAbandon]=usePTState(false);
   const wake=usePTRef(null),fired=usePTRef(null),saved=usePTRef(false);
-  usePTEffect(()=>{const id=setInterval(()=>setTick(Date.now()),250);return()=>clearInterval(id);},[]);
+  const running=!!(draft?.status==='active'&&!finishing&&(draft.clockStarted||draft.stageStarted||draft.timer?.endAt||draft.blockTimer?.endAt));
+  const anchor=usePTRef(0);anchor.current=draft?.timer?.endAt||draft?.blockTimer?.endAt||draft?.stageStarted||draft?.clockStarted||0;
+  // Timestamps remain the source of truth; one render per second, aligned on the active timer's boundaries, and none while paused.
+  usePTEffect(()=>{
+    if(!running)return;
+    let id;const loop=()=>{const now=Date.now();setTick(now);id=setTimeout(loop,((anchor.current-now)%1000+1000)%1000+15);};
+    const resume=()=>{if(document.visibilityState==='visible'){clearTimeout(id);loop();}};
+    loop();document.addEventListener('visibilitychange',resume);
+    return()=>{clearTimeout(id);document.removeEventListener('visibilitychange',resume);};
+  },[running]);
   // Resume drafts created by the earlier interface without resetting the total clock.
   usePTEffect(()=>{if(draft?.status==='active'&&draft.clockStarted&&!draft.stageStarted&&!draft.reviewing){update(s=>({...s,draft:{...s.draft,stageElapsed:s.draft.stageElapsed||0,stageStarted:Date.now(),timer:s.draft.timer||(!s.draft.warmupDone?{id:PT.uid(),endAt:Date.now()+s.draft.warmupSeconds*1000,remaining:s.draft.warmupSeconds,duration:s.draft.warmupSeconds,kind:'warmup',label:'Échauffement'}:null)}}));}},[draft?.id,draft?.clockStarted]);
   usePTEffect(()=>{
@@ -25,7 +34,7 @@ function PTSession({data,update,go,notify}) {
     acquire();document.addEventListener('visibilitychange',acquire);
     return()=>{cancelled=true;document.removeEventListener('visibilitychange',acquire);wake.current?.release().catch(()=>{});};
   },[]);
-  const remaining=timer=>timer?(timer.endAt?Math.max(0,Math.ceil((timer.endAt-tick)/1000)):timer.remaining):0;
+  const remaining=timer=>timer?(timer.endAt?Math.max(0,Math.min(timer.remaining??Infinity,Math.ceil((timer.endAt-tick)/1000))):timer.remaining):0;
   const timerLeft=remaining(draft?.timer);
   usePTEffect(()=>{if(draft?.timer?.endAt&&timerLeft===0&&fired.current!==draft.timer.id){fired.current=draft.timer.id;ptBeep();}},[timerLeft,draft?.timer?.id]);
   if(!draft||draft.status!=='active')return <><PTPageHead title="Prêt à bouger ?"/><PTButton primary onClick={()=>go('today')}>Revenir à aujourd’hui</PTButton></>;
@@ -33,8 +42,8 @@ function PTSession({data,update,go,notify}) {
   const steps=PT.schedule(draft.exercises,draft.format),cursor=Math.min(draft.cursor||0,Math.max(0,steps.length-1)),step=steps[cursor];
   const exercise=draft.exercises.find(e=>e.id===step?.id),row=exercise?draft.entries[exercise.id]?.[step.set]:null;
   const completed=Object.values(draft.entries).flat().filter(r=>r.done&&!r.pain).length,total=Object.values(draft.entries).flat().length;
-  const elapsed=Math.max(0,draft.elapsedBase+(draft.clockStarted?(tick-draft.clockStarted)/1000:0));
-  const stageElapsed=Math.max(0,(draft.stageElapsed||0)+(draft.stageStarted?(tick-draft.stageStarted)/1000:0));
+  const elapsed=Math.max(0,draft.elapsedBase+(draft.clockStarted?Math.max(0,tick-draft.clockStarted)/1000:0));
+  const stageElapsed=Math.max(0,(draft.stageElapsed||0)+(draft.stageStarted?Math.max(0,tick-draft.stageStarted)/1000:0));
   const blocked=PT.safety(data).blocked,permitted=exercise&&PT.allowed(exercise,data,draft.check);
   const phase=!draft.warmupDone?'warmup':draft.timer?.kind==='rest'?'rest':'work';
   const paused=!draft.clockStarted,exerciseIndex=draft.exercises.findIndex(e=>e.id===exercise?.id);
@@ -97,8 +106,12 @@ function PTSession({data,update,go,notify}) {
   const coach=paused?'À ton rythme. Reprends quand tu veux.':phase==='warmup'?'Des gestes faciles. On se met en mouvement.':phase==='rest'?(timerLeft===0?'Prêt pour la suite ?':'Souffle. Relâche les épaules.'):allDone?'Toutes les séries sont validées.':activeTimer&&remaining(activeTimer)===0?'Temps écoulé. Confirme ce que tu as fait.':exercise.instructions[0];
   const mainAction=()=>{if(paused){pause();return;}if(blocked||!permitted){go('symptoms');return;}if(phase==='warmup'||phase==='rest'){beginWork();return;}if(allDone){review();return;}openLog();};
   const actionLabel=paused?'Reprendre la séance':blocked||!permitted?'Voir mes douleurs':phase==='warmup'?'Échauffement effectué':phase==='rest'?`Passer à l’exercice ${exerciseIndex+1}`:allDone?'Terminer la séance':'Terminé';
+  const nextIndex=steps.findIndex((s,i)=>i>cursor&&!draft.entries[s.id][s.set].done&&!draft.entries[s.id][s.set].pain);
+  const upcoming=phase==='warmup'?{step,exercise}:nextIndex<0?null:{step:steps[nextIndex],exercise:draft.exercises.find(e=>e.id===steps[nextIndex].id)};
+  // Moving between sets never validates or discards a result: saving still requires the result sheet.
+  const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
   return <div className={`live-session phase-${phase}`}>
-    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div><button className="icon-button" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'}/></button></header>
+    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div></header>
     <div className="live-progress" aria-label={`${completed} séries validées sur ${total}`}>{steps.map((s,i)=><span key={`${s.id}-${s.set}`} className={draft.entries[s.id][s.set].done?'done':i===cursor?'current':''}/>)}</div>
     {phase!=='warmup'&&<div className="live-step"><span>Exercice <b>{exerciseIndex+1}</b> / {draft.exercises.length}</span><span>Série <b>{step.set+1}</b> / {exercise.sets}</span></div>}
     <div className="live-visual">{phase==='warmup'?<div className="warmup-visual"><PTIcon name="body" size={80}/><span>On réveille le corps.</span></div>:<PTDemo key={exercise.id} exercise={{...exercise,demoUrl:data.demoUrls?.[exercise.id]||exercise.demoUrl}}/>}</div>
@@ -108,7 +121,9 @@ function PTSession({data,update,go,notify}) {
         <svg viewBox="0 0 220 150" aria-hidden="true"><path className="dial-track" d="M30 131 A94 94 0 1 1 190 131" pathLength="100"/><path className="dial-value" d="M30 131 A94 94 0 1 1 190 131" pathLength="100" strokeDasharray={`${activeTimer?Math.min(100,shownTime/(activeTimer.duration||1)*100):100} 100`}/></svg>
         <div><small>{paused?'En pause':phase==='rest'?'Repos':activeTimer?'Temps restant':'Temps de série'}</small><strong>{timeLabel(shownTime)}</strong></div>
       </div>
+      <div className="session-transport">{phase!=='warmup'&&<button type="button" aria-label="Série précédente" disabled={cursor===0} onClick={()=>jump(cursor-1)}><PTIcon name="back" size={20}/></button>}<button type="button" className="transport-pause" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'} size={24}/></button>{phase!=='warmup'&&<button type="button" aria-label={phase==='rest'?'Terminer le repos':'Passer cette série'} disabled={phase==='rest'?paused:nextIndex<0} onClick={()=>{if(phase!=='rest'){jump(nextIndex);return;}if(blocked||!permitted){go('symptoms');return;}beginWork();}}><PTIcon name="arrow" size={20}/></button>}</div>
       {phase!=='warmup'&&<PTExerciseMetrics exercise={exercise} weight={row.weight||PT.loadAdvice(exercise,data,draft.check)?.value}/>}
+      {upcoming&&<div className="next-up"><PTThumbnail exercise={upcoming.exercise}/><div><small>{phase==='warmup'?'Pour commencer':'Ensuite'}</small><strong>{upcoming.exercise.name}</strong><small>Série {upcoming.step.set+1} / {upcoming.exercise.sets}</small></div></div>}
       <p className="live-coach" aria-live="polite"><PTIcon name={phase==='rest'?'heart':'spark'} size={17}/>{coach}</p>
       {blocked||!permitted?<div className="notice warning">{blocked?'Séance suspendue : fais le point sur la douleur signalée.':'Ce mouvement ne convient plus à tes contraintes actuelles.'}</div>:null}
       {phase==='rest'&&<span className="caption">{timerLeft>0?'Le repos reste disponible jusqu’au bout.':'Récupération terminée.'}</span>}
