@@ -16,6 +16,10 @@ Ajouts du 13 septembre 2026, contrôlés image par image : tractions (vidéo wge
 
 Si un média manque ou échoue, les photos exactes du même mouvement prennent le relais, sinon les repères textuels restent accessibles. Aucune variante différente n’est montrée à la place. Les GIF et vidéos personnelles restent des URL HTTPS ; les médias distants ne sont pas garantis hors connexion.
 
+## Illustrations des vignettes
+
+Les images de `media/cards/` sont générées par IA (fal.ai, modèle `google/nano-banana-2-lite`, 13 septembre 2026) pour les mouvements qui n'ont ni vidéo ni photos de posture. Elles servent uniquement de vignette fixe dans les cartes et la bibliothèque : elles ne sont jamais présentées comme une démonstration, et chaque image a été relue pour écarter les postures incorrectes.
+
 ## Polices
 
 - **Barlow Condensed** (Jeremy Tribby) — [SIL Open Font License 1.1](https://openfontlicense.org), fichiers hébergés dans `media/fonts/`.

@@ -1,7 +1,7 @@
 /* The action surface follows the supplied dark / lime workout references. */
 :root{--accent:#d7f43b;--bg:#10120f;--surface:#191c17;--raised:#252a21;--text:#f4f5ef}
-.movement-thumb video,.movement-thumb .thumb-second{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.movement-thumb .thumb-second{object-fit:contain;animation:twoPositions 3.2s steps(1,end) infinite}
+.movement-thumb>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.movement-thumb>img{transition:transform .25s ease}
 .preview-toggle{display:flex;align-items:center;gap:.45rem;justify-self:end;font-size:.75rem}
 .library-view .page-head{margin-bottom:1.2rem}
 .library-view>.stack-lg{gap:1rem}
@@ -92,4 +92,4 @@
 @keyframes sheetIn{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes warmupBreathe{50%{transform:scale(1.07)}}
 @media(max-width:350px){.is-live{padding-left:.85rem;padding-right:.85rem}.live-timer{width:215px;height:150px}.live-timer strong{font-size:3.2rem}.live-timer>div{inset:35px 0 0}.live-visual .demo{aspect-ratio:16/10}.live-topbar strong>span{font-size:.57rem}.live-topbar .eyebrow{font-size:.54rem}.exercise-metrics{gap:.3rem}.exercise-metrics>div{padding:.6rem .3rem}.exercise-metrics>div>span{font-size:.54rem;gap:.2rem}.exercise-metrics strong{font-size:1rem}.live-dock{padding-left:.85rem;padding-right:.85rem}.hero-athlete{right:0;opacity:.3}.live-review .stat strong{font-size:1.2rem}}
-@media(prefers-reduced-motion:reduce){.live-session *,.set-sheet,.movement-thumb *{animation:none!important;transition:none!important}.movement-thumb .thumb-second{display:none}}
+@media(prefers-reduced-motion:reduce){.live-session *,.set-sheet,.movement-thumb *{animation:none!important;transition:none!important}}

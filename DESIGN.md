@@ -19,11 +19,11 @@ Grande carte de séance photographique, rail de séances, calendrier sélectionn
 Boutons d'au moins 44 px, focus visible, pression scale(.98), retour immédiat. Nav flottante ; panneau de saisie natif dialog. Aucun bouton factice.
 
 ## Layout
-Mobile en premier, grille dense. Deux petites colonnes réservées aux contrôles et mesures ; cartes de contenu en une colonne sur petit écran. Bureau : 1080 px maximum. Aucune zone vide dans les grilles. Photos de posture affichées entièrement ; photos d'ambiance recadrables.
+Mobile en premier, grille dense. Deux petites colonnes réservées aux contrôles et mesures ; cartes de contenu en une colonne sur petit écran. Bureau : 1080 px maximum. Aucune zone vide dans les grilles. Démonstrations (vidéos, positions) affichées entièrement à leur ratio, sur fond sombre. Vignettes et cartes : image fixe plein cadre recadrée, jamais de vidéo ni de fond clair ; illustrations `media/cards` réservées aux mouvements sans visuel réel, jamais utilisées comme démonstration.
 
 ## Mouvement
 Courbe cubic-bezier(.23,1,.32,1), pression 140 ms, entrées 240 ms, cascade 40 ms. GSAP ScrollTrigger pour les apparitions du contenu uniquement. Nettoyage au démontage. Aucun mouvement imposé pendant les entrées clavier. Respect de prefers-reduced-motion.
-Lecteurs muets, playsInline, autoplay, loop ; pause hors écran et onglet masqué. Échec : repli vers les positions exactes disponibles, sinon consignes explicites. Ne jamais substituer une variante différente à une démonstration manquante.
+Vidéos réservées à la présentation d'un exercice (bibliothèque dépliée, séance en direct) ; aucune vidéo dans les cartes et vignettes. Lecteurs muets, playsInline, autoplay, loop ; pause hors écran et onglet masqué. Échec : repli vers les positions exactes disponibles, sinon consignes explicites. Ne jamais substituer une variante différente à une démonstration manquante.
 
 ## Vérification
 Parcours à 320/390/1440 px, lecture réelle des vidéos, pause/reprise, séries et historique persistés, filtres musculaires clavier, création de séance sans perdre un brouillon actif, erreurs médias, mode hors connexion. Les nouveaux comptes doivent restaurer les données réelles, isoler les utilisateurs et refuser les conflits de synchronisation.

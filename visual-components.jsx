@@ -8,15 +8,13 @@ function ptMuscles(e){
   return specific[e.id]||({push:['chest','shoulders'],pull:['back'],arms:['arms'],squat:['quads','glutes'],hinge:['glutes','hamstrings'],core:['core'],calf:['calves']}[e.pattern]||[]);
 }
 function ptKindIcon(e){return {strength:'weight',basket:'basket',cardio:'run',mobility:'body',plyo:'spark'}[e.kind]||'body';}
-function PTThumbnail({exercise:e,animated=false}){
-  const m=window.RehaabMedia?.[e.id],container=usePTRef(null),video=usePTRef(null);
-  const [failed,setFailed]=usePTState(false),[videoFailed,setVideoFailed]=usePTState(false),[seen,setSeen]=usePTState(false);
-  const hasVideo=!!m?.video&&!videoFailed,src=(hasVideo&&m.poster)||(m?.frames?`media/${m.frames}/0.jpg`:m?.poster)||null;
-  // Once seen, the player stays mounted: scrolling back must not restart its download.
-  usePTEffect(()=>{const el=container.current;if(!el||!animated||seen)return;const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setSeen(true);observer.disconnect();}},{rootMargin:'120px'});observer.observe(el);return()=>observer.disconnect();},[animated,seen]);
-  const moving=animated&&seen&&!!src&&!failed;
-  usePTVisibleMedia(video,moving,hasVideo&&moving?m.video:null);
-  return <span ref={container} className={`movement-thumb${src&&!failed?' has-image':''}${moving?' animating':''}`}>{src&&!failed?<><img loading="lazy" src={src} alt={`Position de ${e.name}`} onError={()=>setFailed(true)}/>{hasVideo&&moving?<video ref={video} src={m.video} poster={src} muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1} onError={()=>setVideoFailed(true)}/>:m?.frames&&moving?<img className="thumb-second" src={`media/${m.frames}/1.jpg`} alt="" loading="lazy"/>:null}</>:<PTIcon name={ptKindIcon(e)} size={38}/>}<span className="thumb-type"><PTIcon name={hasVideo?'play':src?'body':ptKindIcon(e)} size={13}/>{hasVideo?'Vidéo':src?'Positions':e.kind==='basket'?'Technique':'Repères'}</span></span>;
+function PTThumbnail({exercise:e}){
+  const m=window.RehaabMedia?.[e.id];
+  // Cards stay still and fill their frame; videos are reserved for the exercise demonstration.
+  const sources=[m?.card,m?.poster,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean);
+  const [attempt,setAttempt]=usePTState(0),src=sources[attempt];
+  usePTEffect(()=>setAttempt(0),[e.id]);
+  return <span className={`movement-thumb${src?' has-image':''}`}>{src?<img loading="lazy" decoding="async" src={src} alt="" onError={()=>setAttempt(a=>a+1)}/>:<PTIcon name={ptKindIcon(e)} size={38}/>}<span className="thumb-type"><PTIcon name={m?.video?'play':m?.frames?'body':ptKindIcon(e)} size={13}/>{m?.video?'Vidéo':m?.frames?'Positions':e.kind==='basket'?'Technique':'Repères'}</span></span>;
 }
 function PTExerciseMetrics({exercise:e,weight}){
   const target=e.measure==='seconds'?`${e.seconds}s`:e.targetMin&&e.targetMax&&e.targetMin!==e.targetMax?`${e.targetMin}–${e.targetMax}`:e.targetMax||e.max;

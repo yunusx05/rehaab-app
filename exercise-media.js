@@ -205,5 +205,86 @@ window.RehaabMedia = {
     "muscles": [
       "quadriceps"
     ]
+  },
+  "wall-pushup": {
+    "card": "media/cards/wall-pushup.jpg"
+  },
+  "band-row": {
+    "card": "media/cards/band-row.jpg"
+  },
+  "reverse-lunge": {
+    "card": "media/cards/reverse-lunge.jpg"
+  },
+  "db-lunge": {
+    "card": "media/cards/db-lunge.jpg"
+  },
+  "rdl": {
+    "card": "media/cards/rdl.jpg"
+  },
+  "kb-deadlift": {
+    "card": "media/cards/kb-deadlift.jpg"
+  },
+  "calf": {
+    "card": "media/cards/calf.jpg"
+  },
+  "bike-interval": {
+    "card": "media/cards/bike-interval.jpg"
+  },
+  "walk": {
+    "card": "media/cards/walk.jpg"
+  },
+  "run": {
+    "card": "media/cards/run.jpg"
+  },
+  "march": {
+    "card": "media/cards/march.jpg"
+  },
+  "stepjack": {
+    "card": "media/cards/stepjack.jpg"
+  },
+  "hip-flexor": {
+    "card": "media/cards/hip-flexor.jpg"
+  },
+  "shoulder-mob": {
+    "card": "media/cards/shoulder-mob.jpg"
+  },
+  "landing": {
+    "card": "media/cards/landing.jpg"
+  },
+  "pogo": {
+    "card": "media/cards/pogo.jpg"
+  },
+  "lateral-hop": {
+    "card": "media/cards/lateral-hop.jpg"
+  },
+  "dribble": {
+    "card": "media/cards/dribble.jpg"
+  },
+  "weak-hand": {
+    "card": "media/cards/weak-hand.jpg"
+  },
+  "crossover": {
+    "card": "media/cards/crossover.jpg"
+  },
+  "form-shoot": {
+    "card": "media/cards/form-shoot.jpg"
+  },
+  "layup": {
+    "card": "media/cards/layup.jpg"
+  },
+  "pivot": {
+    "card": "media/cards/pivot.jpg"
+  },
+  "reaction": {
+    "card": "media/cards/reaction.jpg"
+  },
+  "pass": {
+    "card": "media/cards/pass.jpg"
+  },
+  "band-shuffle": {
+    "card": "media/cards/band-shuffle.jpg"
+  },
+  "halo": {
+    "card": "media/cards/halo.jpg"
   }
 };

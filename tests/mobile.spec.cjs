@@ -67,3 +67,16 @@ test('profil, douleur et export restent accessibles', async ({ page }) => {
   await page.getByText('Mes données & sauvegardes').click();
   await expect(page.getByRole('button', { name: 'Exporter toutes mes données' })).toBeVisible();
 });
+
+// iOS ignores SVG icons: the home-screen icon must be a PNG apple-touch-icon.
+test('installation : icônes PNG déclarées et servies', async ({ page, request }) => {
+  await page.goto('/');
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', 'apple-touch-icon.png');
+  const manifest = await (await request.get('/manifest.json')).json();
+  expect(manifest.icons.filter(icon => icon.type === 'image/png').map(icon => icon.sizes)).toEqual(expect.arrayContaining(['192x192', '512x512']));
+  for (const file of ['apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png']) {
+    const response = await request.get(`/${file}`);
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('image/png');
+  }
+});

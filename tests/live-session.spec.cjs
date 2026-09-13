@@ -177,7 +177,8 @@ test('petit écran : chronomètre de travail, dialogue clavier et retour à la s
 test('démonstrations : réduction des animations et repli si une vidéo manque',async({page})=>{
   await page.emulateMedia({reducedMotion:'reduce'});const data=PT.initialState();data.profile.onboarded=true;
   await seed(page,data,'library');await page.getByLabel('Rechercher un exercice').fill('marteau');
-  await expect(page.getByRole('button',{name:'Animer les aperçus'})).toBeVisible();
+  await expect(page.locator('.library-tile .movement-thumb img')).toHaveCount(1);
+  await expect(page.locator('.library-tile .movement-thumb video')).toHaveCount(0);
   await page.locator('.library-tile>.home-action').click();
   await expect(page.getByRole('button',{name:'Lire la démo'})).toBeVisible();
   expect(await page.locator('.library-tile.expanded video').evaluate(v=>v.paused)).toBe(true);
