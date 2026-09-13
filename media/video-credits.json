@@ -1,0 +1,74 @@
+[
+  {
+    "exercise": "db-press",
+    "videoId": 17,
+    "source": "https://wger.de/media/exercise-video/75/080c799b-8afd-4130-8d72-9cef0cd79f54.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "bb-press",
+    "videoId": 21,
+    "source": "https://wger.de/media/exercise-video/73/2bdb390c-312c-4497-a722-5eed2c823e5a.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "cable-row",
+    "videoId": 1,
+    "source": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "lateral",
+    "videoId": 6,
+    "source": "https://wger.de/media/exercise-video/348/de69928a-8a35-4096-821c-1f46de5e0e03.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "curl",
+    "videoId": 51,
+    "source": "https://wger.de/media/exercise-video/272/df069052-2173-4f24-855f-a0eebe729f24.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "incline",
+    "videoId": 24,
+    "source": "https://wger.de/media/exercise-video/537/b9c937e9-daeb-42a9-be8e-7a77e368478c.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "legcurl",
+    "videoId": 35,
+    "source": "https://wger.de/media/exercise-video/365/becaf013-5044-40d0-bae9-7ed60c973737.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "legpress",
+    "videoId": 44,
+    "source": "https://wger.de/media/exercise-video/371/6aae16b4-01b9-4eb4-935c-3250f84d2c59.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  },
+  {
+    "exercise": "db-shoulder",
+    "videoId": 12,
+    "source": "https://wger.de/media/exercise-video/567/64f33c19-1d96-4b7c-af17-6c6a4941c614.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed; scaled to 640px; transcoded to H.264; JPEG poster extracted."
+  }
+]

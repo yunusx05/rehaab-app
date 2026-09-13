@@ -30,12 +30,13 @@ for (const size of sizes) {
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'Propose-moi une séance' }).click();
-    await expect(page.getByRole('button', { name: 'Cette séance me va' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Démarrer la séance' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
-    await page.getByRole('button', { name: 'Cette séance me va' }).click();
+    await page.getByRole('button', { name: 'Démarrer la séance' }).click();
     await expect(page.getByRole('button', { name: 'Échauffement effectué' })).toBeVisible();
     await page.getByRole('button', { name: 'Échauffement effectué' }).click();
-    await expect(page.getByRole('button', { name: /Valider cette série/ })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Terminé', exact: true })).toBeVisible();
+    await expect(page.getByRole('timer')).toBeVisible();
     await expectNoHorizontalOverflow(page);
     expect(errors).toEqual([]);
   });

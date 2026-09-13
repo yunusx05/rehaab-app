@@ -309,9 +309,11 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 </head>
 <body>
 <link rel="stylesheet" href="personal.css">
+<link rel="stylesheet" href="live-session.css">
 <div id="root"></div>
 <script src="program-data.js"></script>
 <script src="personal-engine.js"></script>
+<script src="exercise-media.js"></script>
 <!-- legacy Rehaab interface retained in source for rollback; active interface is below.
 <script type="text/babel">
 const {useState,useEffect,useRef} = React;
@@ -1290,6 +1292,8 @@ const root=ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App/>);
 </script>
 -->
+<script type="text/babel" src="visual-components.jsx"></script>
+<script type="text/babel" src="live-session.jsx"></script>
 <script type="text/babel" src="personal-app.jsx"></script>
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}

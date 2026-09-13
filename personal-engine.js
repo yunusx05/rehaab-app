@@ -150,8 +150,9 @@
     const recentLegs=recent.some(s=>s.focus==='basket' || s.source==='external' && ['match','club'].includes(s.eventType) || s.exercises.some(e=>['squat','hinge','jump'].includes(e.pattern) && (s.entries[e.id]||[]).some(r=>r.done)));
     const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
     const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning';
-    const low=check.energy==='low' || returning || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
-    return {now,recent,upcoming,active,low,returning,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 || upcoming.length>0 || recentLegs || low || !state.profile.impactReady || state.profile.experience==='beginner'};
+    const hardRecently=recent.some(s=>Number(s.effort)>=8);
+    const low=check.energy==='low' || returning || hardRecently || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
+    return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 || upcoming.length>0 || recentLegs || low || !state.profile.impactReady || state.profile.experience==='beginner'};
   }
   function allowed(exercise,state,check=state.checkIn,ctx=context(state,check)) {
     if(ctx.active.blocked) return false;
@@ -233,7 +234,7 @@
     const reasons=[`${equipment.filter(e=>check.equipment.includes(e.id)).map(e=>e.label).join(', ')||'Poids du corps'}.`];
     if(ctx.upcoming.length) reasons.push(`${ctx.upcoming[0].title} approche : priorité à la fraîcheur, pas aux impacts.`);
     else if(ctx.protectLegs) reasons.push('Les jambes ont déjà travaillé récemment : impacts écartés et priorité aux autres mouvements.');
-    if(ctx.low) reasons.push(ctx.returning?'Reprise : moins de volume, aucune hausse automatique de charge.':'Énergie basse : séance allégée, sans HIIT imposé.');
+    if(ctx.low) reasons.push(ctx.returning?'Reprise : moins de volume, aucune hausse automatique de charge.':ctx.hardRecently?'Effort élevé récemment : volume allégé et format contrôlé.':'Énergie basse : séance allégée, sans HIIT imposé.');
     if(ctx.active.active.length) reasons.push('Les mouvements sollicitant les zones signalées sont écartés. Cela ne garantit pas l’absence de douleur.');
     if(format!==check.format && check.format!=='auto' && ['muscle','mixed','core'].includes(check.focus)) reasons.push('Le format demandé a été remplacé par des séries contrôlées compte tenu du contexte.');
     return {id:uid(),title:titles[check.focus],source:'generated',focus:check.focus,format,exercises:selected,check:clone(check),reasons,warmupSeconds,blockSeconds:['amrap','emom'].includes(format)?Math.floor(budget/60)*60:null,estimatedMinutes:Math.ceil((warmupSeconds+60+(['amrap','emom'].includes(format)?Math.floor(budget/60)*60:estimateSeconds(selected,format)))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
@@ -252,7 +253,8 @@
       if(!candidate) {changes.push(`${original.name} : écarté (matériel, niveau ou contraintes).`);return;}
       const p=makePrescription(candidate,'superset',check.minutes,ctx);
       const volume=original.volume.replace(/×/g,'x'),sets=volume.match(/^(\d+)\s*x/i),reps=volume.match(/(?:x\s*|^)(\d+)(?:-(\d+))?/i);
-      p.sets=ctx.low?2:sets?Math.min(6,Number(sets[1])):3;
+      p.sets=sets?Math.min(6,Number(sets[1])):3;
+      if(ctx.low)p.sets=Math.min(2,p.sets);
       if(reps && ['reps','contacts'].includes(p.measure)){p.targetMin=Number(reps[1]);p.targetMax=Number(reps[2]||reps[1]);}
       const seconds=volume.match(/(?:x\s*|^)(\d+)(?:-(\d+))?\s*(sec|min)/i);
       if(seconds && p.measure==='seconds')p.seconds=Number(seconds[1])*(seconds[3]==='min'?60:1);
@@ -314,7 +316,7 @@
   function newRows(e) {return Array.from({length:e.sets},()=>({done:false,reps:'',left:'',right:'',weight:'',seconds:'',attempts:'',made:'',rir:'',losses:'',result:'',reason:'',pain:false}));}
   function startDraft(plan,state) {
     const entries={};plan.exercises.forEach(e=>{entries[e.id]=newRows(e);const advice=loadAdvice(e,state,plan.check);if(advice && advice.value!=null)entries[e.id].forEach(r=>r.weight=String(advice.value));});
-    return {...clone(plan),status:'active',date:dateKey(),startedAt:Date.now(),elapsedBase:0,clockStarted:Date.now(),entries,cursor:0,timer:null,warmupDone:false,rounds:'',extraReps:'',scoreNote:''};
+    return {...clone(plan),status:'active',date:dateKey(),startedAt:Date.now(),elapsedBase:0,clockStarted:Date.now(),entries,cursor:0,timer:{id:uid(),endAt:Date.now()+plan.warmupSeconds*1000,remaining:plan.warmupSeconds,duration:plan.warmupSeconds,kind:'warmup',label:'Échauffement'},stageElapsed:0,stageStarted:Date.now(),blockTimer:null,reviewing:false,warmupDone:false,rounds:'',extraReps:'',scoreNote:''};
   }
   function validateRow(row,e) {
     if(row.pain) return '';
