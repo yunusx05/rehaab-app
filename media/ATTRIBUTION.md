@@ -18,7 +18,11 @@ Si un média manque ou échoue, les photos exactes du même mouvement prennent l
 
 ## Illustrations des vignettes
 
-Les images de `media/cards/` et les paires de `media/generated/<exercice>/` sont générées par IA le 13 septembre 2026 : les paires et leurs vignettes avec Google Gemini (session d’édition d’image), les vignettes pas encore régénérées avec fal.ai (modèle `google/nano-banana-2-lite`). Les invites complètes sont dans `media/cards/prompts.json`. Pour les mouvements sans vidéo ni photos réelles, la seconde position est une retouche de la première (même personne, même décor, même angle) et la démonstration alterne les deux, signalée « Illustration IA · 2 positions ». Chaque paire est relue image par image : celles qui changent d'angle ou de personne, ou qui montrent une posture incorrecte, sont écartées. Les nouveaux visuels générés représentent uniquement des hommes ; les anciennes vignettes encore en place seront remplacées.
+Les images de `media/cards/` et les paires de `media/generated/<exercice>/` sont générées par IA le 13 septembre 2026 : les paires, leurs vignettes et les vignettes seules de `rdl`, `db-lunge`, `bike-interval` et `hip-flexor` avec Google Gemini (session d’édition d’image), les vignettes basket encore sans paire (`form-shoot`, `layup`, `pivot`, `reaction`, `pass`) avec fal.ai (modèle `google/nano-banana-2-lite`). Les invites complètes sont dans `media/cards/prompts.json`. Pour les mouvements sans vidéo ni photos réelles, la seconde position est une retouche de la première (même personne, même décor, même angle) et la démonstration alterne les deux, signalée « Illustration IA · 2 positions ». Chaque paire est relue image par image : celles qui changent d'angle ou de personne, ou qui montrent une posture incorrecte, sont écartées. Les visuels générés représentent uniquement des hommes, à une exception près : la vignette fal.ai « Passes à deux » montre encore une femme et sera remplacée avec la partie basket.
+
+## Carte des muscles
+
+`media/body/front.webp` et `media/body/back.webp` sont des rendus générés par IA le 13 septembre 2026 avec Google Gemini (session d’édition d’image : la vue de dos est une retouche de la vue de face, même silhouette et même éclairage). Mannequin anatomique masculin sans visage, fond retiré puis recadré sur le repère 240 × 350 de la carte ; les zones cliquables sont tracées à la main par-dessus.
 
 ## Polices
 

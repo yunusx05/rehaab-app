@@ -329,10 +329,69 @@ window.RehaabMedia = {
     "card": "media/cards/pass.jpg"
   },
   "band-shuffle": {
-    "card": "media/cards/band-shuffle.jpg"
+    "card": "media/cards/band-shuffle.jpg",
+    "frames": "generated/band-shuffle",
+    "generated": true
   },
   "halo": {
-    "card": "media/cards/halo.jpg"
+    "card": "media/cards/halo.jpg",
+    "frames": "generated/halo",
+    "generated": true
+  },
+  "triceps": {
+    "card": "media/cards/triceps.jpg",
+    "frames": "generated/triceps",
+    "generated": true
+  },
+  "side-plank": {
+    "card": "media/cards/side-plank.jpg",
+    "frames": "generated/side-plank",
+    "generated": true
+  },
+  "pallof": {
+    "card": "media/cards/pallof.jpg",
+    "frames": "generated/pallof",
+    "generated": true
+  },
+  "ankle-mob": {
+    "card": "media/cards/ankle-mob.jpg",
+    "frames": "generated/ankle-mob",
+    "generated": true
+  },
+  "thoracic": {
+    "card": "media/cards/thoracic.jpg",
+    "frames": "generated/thoracic",
+    "generated": true
+  },
+  "copenhagen": {
+    "card": "media/cards/copenhagen.jpg",
+    "frames": "generated/copenhagen",
+    "generated": true
+  },
+  "kb-swing": {
+    "card": "media/cards/kb-swing.jpg",
+    "frames": "generated/kb-swing",
+    "generated": true
+  },
+  "breath": {
+    "card": "media/cards/breath.jpg",
+    "frames": "generated/breath",
+    "generated": true
+  },
+  "free-throw": {
+    "card": "media/cards/free-throw.jpg",
+    "frames": "generated/free-throw",
+    "generated": true
+  },
+  "spot-shoot": {
+    "card": "media/cards/spot-shoot.jpg",
+    "frames": "generated/spot-shoot",
+    "generated": true
+  },
+  "defense": {
+    "card": "media/cards/defense.jpg",
+    "frames": "generated/defense",
+    "generated": true
   },
   "bike": {
     "frames": "Bicycling_Stationary",

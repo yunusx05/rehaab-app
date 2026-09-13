@@ -34,29 +34,30 @@ function PTSportMotion({children,identity}){
   },[identity,reduced]);
   return <div ref={ref}>{children}</div>;
 }
+// Zones traced over media/body renders in viewBox units: left-side points, mirrored as a pair or closed across the midline.
+const ptBodyZones={
+  front:[['shoulders','Épaules','pair','99 59 86 61 76 67 70 78 68 92 72 102 84 104 90 96 93 84 96 72 102 64'],['arms','Bras','pair','71 103 64 114 56 130 48 150 44 168 60 172 67 166 74 150 81 134 87 118 89 106 84 105'],['chest','Pectoraux','pair','119 65 104 62 96 68 92 80 93 92 99 98 110 101 119 99'],['core','Abdominaux','center','120 101 110 102 99 99 93 106 91 122 93 138 98 149 108 160 120 167'],['quads','Quadriceps','pair','96 152 89 166 87 190 89 215 92 236 100 246 110 244 116 232 118 206 118 186 110 172'],['calves','Mollets','pair','88 250 85 268 89 292 95 312 105 313 110 294 115 270 115 251 104 247']],
+  back:[['shoulders','Épaules','pair','101 58 86 61 76 67 70 78 68 92 72 102 84 104 90 96 92 84 94 72 100 64'],['arms','Bras','pair','71 103 64 114 56 130 48 150 44 168 60 172 67 166 74 150 81 134 87 118 89 106 84 105'],['back','Dos','center','120 48 110 50 102 60 95 68 93 82 90 98 91 114 95 128 99 142 110 147 120 149'],['glutes','Fessiers','pair','119 150 108 147 98 149 92 160 90 172 95 182 106 187 118 185'],['hamstrings','Ischio-jambiers','pair','90 178 87 195 89 215 92 238 100 246 111 244 116 230 118 206 118 188 106 190 95 185'],['calves','Mollets','pair','88 250 85 268 89 292 95 312 105 313 110 294 115 270 115 251 104 247']]
+};
+const ptBodyPaths=Object.fromEntries(Object.entries(ptBodyZones).map(([view,zones])=>[view,zones.map(([id,label,kind,list])=>{
+  const n=list.split(' ').map(Number),left=n.flatMap((x,i)=>i%2?[]:[[x,n[i+1]]]),right=left.map(([x,y])=>[240-x,y]),path=points=>`M${points.join(' ')}Z`;
+  return {id,label,d:kind==='pair'?path(left)+path(right):path([...left,...right.reverse().filter(([x])=>x!==120)])};
+})]));
 function PTBodyMap({selected='all',onSelect,back=false}){
-  const uid=React.useId().replace(/:/g,'');
-  const muscle=(id,label,d)=><path key={id+d} className={`muscle-zone${selected===id?' selected':''}`} d={d} onClick={()=>onSelect?.(selected===id?'all':id)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect?.(selected===id?'all':id);}}} tabIndex={onSelect?0:undefined} role={onSelect?'button':undefined} aria-label={label} aria-pressed={onSelect?selected===id:undefined}><title>{label}</title></path>;
+  const uid=React.useId().replace(/:/g,''),view=back?'back':'front',src=`media/body/${view}.webp`;
+  usePTEffect(()=>{['front','back'].forEach(v=>{new Image().src=`media/body/${v}.webp`;});},[]);
+  const toggle=id=>onSelect?.(selected===id?'all':id);
+  // The render's own alpha clips the highlight to the body, so zone outlines only need to be precise between muscles.
   return <svg className="body-map" viewBox="0 0 240 350" role="group" aria-label={`Carte des muscles, ${back?'dos':'face'}`}>
-    <defs><linearGradient id={uid} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#69716b"/><stop offset=".55" stopColor="#333a35"/><stop offset="1" stopColor="#1e2520"/></linearGradient></defs>
-    <ellipse cx="120" cy="329" rx="69" ry="6" fill="#ffffff06"/>
-    <g fill={`url(#${uid})`} stroke="#737e7538" strokeWidth="1.2">
-      <path d="M108 51V42h24v9l21 11 15 15 10 44 10 34 9 31-7 4-16-32-13-31-10-30-3 60 9 29-5 49-14 69 4 22-22 2-3-23 4-68-1-31-8 31 4 69-4 22-21-2 4-22-14-69-5-49 9-29-3-60-10 30-13 31-16 32-7-4 9-31 10-34 10-44 15-15z"/>
-      <path d="M104 22q1-19 16-19t16 19l-2 17-14 11-14-11z"/>
+    <defs>
+      <mask id={`${uid}m`} maskUnits="userSpaceOnUse" x="0" y="0" width="240" height="350" style={{maskType:'alpha'}}><image href={src} width="240" height="350"/></mask>
+      <filter id={`${uid}f`} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4"/></filter>
+    </defs>
+    <ellipse cx="120" cy="336" rx="48" ry="5" fill="#0000004d"/>
+    <image href={src} width="240" height="350" aria-hidden="true"/>
+    <g className="muscle-layer" mask={`url(#${uid}m)`}>
+      {ptBodyPaths[view].map(({id,label,d})=><path key={id} className={`muscle-zone${selected===id?' selected':''}`} d={d} filter={`url(#${uid}f)`} onClick={()=>toggle(id)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(id);}}} tabIndex={onSelect?0:undefined} role={onSelect?'button':undefined} aria-label={label} aria-pressed={onSelect?selected===id:undefined}><title>{label}</title></path>)}
     </g>
-    {muscle('shoulders','Épaules','M95 58Q76 60 72 80l13 9 15-17ZM145 58q19 2 23 22l-13 9-15-17Z')}
-    {muscle('arms','Bras','M71 86l12 7-9 33-13 4ZM169 86l-12 7 9 33 13 4Z')}
-    {back?<>
-      {muscle('back','Dos','M102 57l18 9 18-9 10 32-12 48-16 15-16-15-12-48Z')}
-      {muscle('glutes','Fessiers','M94 154l24 7v35l-26 7-6-24ZM146 154l-24 7v35l26 7 6-24Z')}
-      {muscle('hamstrings','Ischio-jambiers','M90 207l24-7-3 51-12 16ZM150 207l-24-7 3 51 12 16Z')}
-    </>:<>
-      {muscle('chest','Pectoraux','M101 65l17 6v30l-27-7 2-18ZM139 65l-17 6v30l27-7-2-18Z')}
-      {muscle('core','Abdominaux','M106 106h28l-2 44-12 9-12-9ZM91 100l11 8 4 42-10-10ZM149 100l-11 8-4 42 10-10Z')}
-      {muscle('quads','Quadriceps','M91 183l23 1-3 63-13 18-10-41ZM149 183l-23 1 3 63 13 18 10-41Z')}
-    </>}
-    {muscle('calves','Mollets','M98 271l13-9-3 44-8 1ZM142 271l-13-9 3 44 8 1Z')}
-    <g stroke="#111a13" strokeWidth="2" opacity=".8" pointerEvents="none"><path d="M120 72v78M108 118h24m-23 14h22m-20 11h18"/></g>
   </svg>;
 }
 function PTMuscleExplorer({value,onChange}){
