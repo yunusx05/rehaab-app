@@ -86,5 +86,13 @@
     "author": "Goulart",
     "license": "https://creativecommons.org/licenses/by-sa/4.0/",
     "changes": "Audio removed, 640px H.264 transcode, JPEG poster."
+  },
+  {
+    "exercise": "rdl",
+    "videoId": 3,
+    "source": "https://wger.de/media/exercise-video/507/6b6054b5-9236-4a63-8392-6ea7a9010ca6.MOV",
+    "author": "Goulart",
+    "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Audio removed, 640px H.264 transcode, JPEG poster."
   }
 ]

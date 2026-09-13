@@ -182,12 +182,18 @@ test('démonstrations : réduction des animations et repli si une vidéo manque'
   await page.locator('.library-tile>.home-action').click();
   await expect(page.getByRole('button',{name:'Lire la démo'})).toBeVisible();
   expect(await page.locator('.library-tile.expanded video').evaluate(v=>v.paused)).toBe(true);
-  await page.route('**/missing-demo.mp4',route=>route.abort());
-  await page.getByLabel('Ma démonstration GIF / MP4',{exact:true}).fill('https://example.org/missing-demo.mp4');
-  await page.getByRole('button',{name:'Enregistrer la démonstration',exact:true}).click();
+  await expect(page.getByLabel(/démonstration GIF/i)).toHaveCount(0);
+  await page.locator('.library-tile.expanded video').evaluate(v=>v.dispatchEvent(new Event('error')));
   await expect(page.getByText('Démonstration indisponible',{exact:true})).toBeVisible();
   await expect(page.locator('.library-tile.expanded .demo img')).toHaveCount(2);
   await expect(page.locator('.library-tile.expanded .instruction-list')).toBeVisible();
+});
+
+test('médias : chaque exercice du catalogue embarque une image ou une vidéo',()=>{
+  const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.join(__dirname,'..');
+  const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
+  const missing=PT.catalog.filter(e=>{const m=sandbox.window.RehaabMedia[e.id];return ![m?.video,m?.poster,m?.card,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean).some(p=>fs.existsSync(path.join(root,p)));}).map(e=>e.id);
+  expect(missing).toEqual([]);
 });
 
 test('adaptation : effort récent seulement, aucune hausse automatique et règles de douleur conservées',()=>{

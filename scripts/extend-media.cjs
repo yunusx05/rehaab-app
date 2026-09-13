@@ -11,7 +11,7 @@ async function download(url,file) {
   const sandbox={window:{}};vm.runInNewContext(fs.readFileSync('exercise-media.js','utf8'),sandbox);
   const media=sandbox.window.RehaabMedia;
   const catalog=await (await fetch('https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json')).json();
-  const wanted={'db-squat':'Dumbbell_Squat','bb-squat':'Barbell_Full_Squat','rdl':'Romanian_Deadlift_With_Dumbbells','carry':'Farmers_Walk','overhead-triceps':'Standing_Dumbbell_Triceps_Extension','dips':'Bench_Dips','kb-swing':'Two-Arm_Kettlebell_Swing','rope':'Rope_Jumping','bike':'Bicycling,_Stationary','bike-interval':'Bicycling,_Stationary','rower':'Rowing,_Stationary','run':'Running,_Treadmill','calf':'Standing_Calf_Raises'};
+  const wanted={'db-squat':'Dumbbell_Squat','bb-squat':'Barbell_Full_Squat','rdl':'Romanian_Deadlift_With_Dumbbells','carry':'Farmers_Walk','overhead-triceps':'Standing_Dumbbell_Triceps_Extension','dips':'Bench_Dips','kb-swing':'Two-Arm_Kettlebell_Swing','rope':'Rope_Jumping','bike':'Bicycling_Stationary','bike-interval':'Bicycling_Stationary','rower':'Rowing_Stationary','db-lunge':'Dumbbell_Rear_Lunge','hip-flexor':'Kneeling_Hip_Flexor','hamstring':'90_90_Hamstring','run':'Running,_Treadmill','calf':'Standing_Calf_Raises'};
   for(const [id,folder] of Object.entries(wanted)){
     const entry=catalog.find(e=>e.id===folder);if(!entry){console.log('No exact source:',id);continue;}
     if(id==='run'||id==='calf')continue; // Keep outdoor / bodyweight prescriptions distinct from equipment variants.
@@ -20,7 +20,7 @@ async function download(url,file) {
   }
   const videos=await (await fetch('https://wger.de/api/v2/video/?limit=200')).json();
   const credits=JSON.parse(fs.readFileSync('media/video-credits.json','utf8'));
-  for(const [id,videoId] of Object.entries({pullup:71,'overhead-triceps':57})){
+  for(const [id,videoId] of Object.entries({pullup:71,'overhead-triceps':57,rdl:3})){
     const v=videos.results.find(x=>x.id===videoId);if(!v||v.license!==2)throw Error('License mismatch');
     const temp=`test-results/source-${videoId}.mov`;await download(v.video,temp);
     execFileSync('ffmpeg',['-y','-loglevel','error','-i',temp,'-an','-vf','scale=640:-2','-c:v','libx264','-crf','27','-preset','fast','-pix_fmt','yuv420p','-movflags','+faststart',`media/videos/${id}.mp4`]);

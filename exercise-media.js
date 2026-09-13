@@ -207,64 +207,111 @@ window.RehaabMedia = {
     ]
   },
   "wall-pushup": {
-    "card": "media/cards/wall-pushup.jpg"
+    "card": "media/cards/wall-pushup.jpg",
+    "frames": "generated/wall-pushup",
+    "generated": true
   },
   "band-row": {
-    "card": "media/cards/band-row.jpg"
+    "card": "media/cards/band-row.jpg",
+    "frames": "generated/band-row",
+    "generated": true
   },
   "reverse-lunge": {
-    "card": "media/cards/reverse-lunge.jpg"
+    "card": "media/cards/reverse-lunge.jpg",
+    "frames": "generated/reverse-lunge",
+    "generated": true
   },
   "db-lunge": {
-    "card": "media/cards/db-lunge.jpg"
+    "card": "media/cards/db-lunge.jpg",
+    "frames": "Dumbbell_Rear_Lunge",
+    "muscles": [
+      "quadriceps"
+    ]
   },
   "rdl": {
-    "card": "media/cards/rdl.jpg"
+    "card": "media/cards/rdl.jpg",
+    "video": "media/videos/rdl.mp4",
+    "poster": "media/videos/rdl.jpg",
+    "credit": "Goulart · wger · CC BY-SA 4.0"
   },
   "kb-deadlift": {
-    "card": "media/cards/kb-deadlift.jpg"
+    "card": "media/cards/kb-deadlift.jpg",
+    "frames": "generated/kb-deadlift",
+    "generated": true
   },
   "calf": {
-    "card": "media/cards/calf.jpg"
+    "card": "media/cards/calf.jpg",
+    "frames": "generated/calf",
+    "generated": true
   },
   "bike-interval": {
-    "card": "media/cards/bike-interval.jpg"
+    "card": "media/cards/bike-interval.jpg",
+    "frames": "Bicycling_Stationary",
+    "muscles": [
+      "quadriceps"
+    ]
   },
   "walk": {
-    "card": "media/cards/walk.jpg"
+    "card": "media/cards/walk.jpg",
+    "frames": "generated/walk",
+    "generated": true
   },
   "run": {
-    "card": "media/cards/run.jpg"
+    "card": "media/cards/run.jpg",
+    "frames": "generated/run",
+    "generated": true
   },
   "march": {
-    "card": "media/cards/march.jpg"
+    "card": "media/cards/march.jpg",
+    "frames": "generated/march",
+    "generated": true
   },
   "stepjack": {
-    "card": "media/cards/stepjack.jpg"
+    "card": "media/cards/stepjack.jpg",
+    "frames": "generated/stepjack",
+    "generated": true
   },
   "hip-flexor": {
-    "card": "media/cards/hip-flexor.jpg"
+    "card": "media/cards/hip-flexor.jpg",
+    "frames": "Kneeling_Hip_Flexor",
+    "muscles": [
+      "quadriceps"
+    ]
   },
   "shoulder-mob": {
-    "card": "media/cards/shoulder-mob.jpg"
+    "card": "media/cards/shoulder-mob.jpg",
+    "frames": "generated/shoulder-mob",
+    "generated": true
   },
   "landing": {
-    "card": "media/cards/landing.jpg"
+    "card": "media/cards/landing.jpg",
+    "frames": "generated/landing",
+    "generated": true
   },
   "pogo": {
-    "card": "media/cards/pogo.jpg"
+    "card": "media/cards/pogo.jpg",
+    "frames": "generated/pogo",
+    "generated": true
   },
   "lateral-hop": {
-    "card": "media/cards/lateral-hop.jpg"
+    "card": "media/cards/lateral-hop.jpg",
+    "frames": "generated/lateral-hop",
+    "generated": true
   },
   "dribble": {
-    "card": "media/cards/dribble.jpg"
+    "card": "media/cards/dribble.jpg",
+    "frames": "generated/dribble",
+    "generated": true
   },
   "weak-hand": {
-    "card": "media/cards/weak-hand.jpg"
+    "card": "media/cards/weak-hand.jpg",
+    "frames": "generated/weak-hand",
+    "generated": true
   },
   "crossover": {
-    "card": "media/cards/crossover.jpg"
+    "card": "media/cards/crossover.jpg",
+    "frames": "generated/crossover",
+    "generated": true
   },
   "form-shoot": {
     "card": "media/cards/form-shoot.jpg"
@@ -286,5 +333,23 @@ window.RehaabMedia = {
   },
   "halo": {
     "card": "media/cards/halo.jpg"
+  },
+  "bike": {
+    "frames": "Bicycling_Stationary",
+    "muscles": [
+      "quadriceps"
+    ]
+  },
+  "rower": {
+    "frames": "Rowing_Stationary",
+    "muscles": [
+      "quadriceps"
+    ]
+  },
+  "hamstring": {
+    "frames": "90_90_Hamstring",
+    "muscles": [
+      "hamstrings"
+    ]
   }
 };

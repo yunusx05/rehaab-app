@@ -114,7 +114,7 @@ function PTSession({data,update,go,notify}) {
     <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div></header>
     <div className="live-progress" aria-label={`${completed} séries validées sur ${total}`}>{steps.map((s,i)=><span key={`${s.id}-${s.set}`} className={draft.entries[s.id][s.set].done?'done':i===cursor?'current':''}/>)}</div>
     {phase!=='warmup'&&<div className="live-step"><span>Exercice <b>{exerciseIndex+1}</b> / {draft.exercises.length}</span><span>Série <b>{step.set+1}</b> / {exercise.sets}</span></div>}
-    <div className="live-visual">{phase==='warmup'?<div className="warmup-visual"><PTIcon name="body" size={80}/><span>On réveille le corps.</span></div>:<PTDemo key={exercise.id} exercise={{...exercise,demoUrl:data.demoUrls?.[exercise.id]||exercise.demoUrl}}/>}</div>
+    <div className="live-visual">{phase==='warmup'?<div className="warmup-visual"><PTIcon name="body" size={80}/><span>On réveille le corps.</span></div>:<PTDemo key={exercise.id} exercise={exercise}/>}</div>
     <section className="live-command">
       <div className="live-heading"><div className="eyebrow">{phase==='warmup'?'Échauffement':phase==='rest'?'À suivre':PT.patterns[exercise.pattern]}</div><h1>{phase==='warmup'?'On y va doucement.':exercise.name}</h1></div>
       <div className={`live-timer${paused?' paused':''}`} role="timer" aria-label={`${phase==='rest'?'Repos':phase==='warmup'?'Échauffement':'Travail'} : ${timeLabel(shownTime)}`}>
