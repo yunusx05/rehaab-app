@@ -18,6 +18,31 @@ async function setVisibility(page,value){await page.evaluate(value=>{Object.defi
 // A muscle zone groups both body sides, so its bounding-box centre can fall on another zone: tap a point inside one side.
 async function tapMuscle(page,label,[x,y]){const point=await page.getByRole('button',{name:label,exact:true}).evaluate((el,[x,y])=>{const p=el.ownerSVGElement.createSVGPoint();p.x=x;p.y=y;const s=p.matrixTransform(el.getScreenCTM());return {x:s.x,y:s.y};},[x,y]);await page.mouse.click(point.x,point.y);}
 
+for(const width of [320,350,390,430,1280])test(`bibliothèque : stabilité du personnage à ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});const data=PT.initialState();data.profile.onboarded=true;
+  await seed(page,data,'library');await page.evaluate(()=>document.fonts.ready);
+  const bounds=()=>page.locator('.muscle-explorer').evaluate(el=>{
+    const rect=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};
+    return {card:rect(el),body:rect(el.querySelector('.body-map'))};
+  });
+  const initial=await bounds();
+  const stable=async()=>{
+    const current=await bounds();
+    for(const part of ['card','body'])for(const key of ['x','y','width','height'])expect(Math.abs(current[part][key]-initial[part][key]),`${part}.${key}`).toBeLessThanOrEqual(1);
+    expect(await page.locator('.muscle-copy h2').evaluate(el=>el.scrollHeight<=el.clientHeight+1&&el.scrollWidth<=el.clientWidth+1)).toBe(true);
+    await noOverflow(page);
+  };
+  for(const [label,point] of [['Bras',[72,108]],['Pectoraux',[106,82]],['Quadriceps',[102,204]],['Abdominaux',[110,125]]]){
+    await tapMuscle(page,label,point);await expect(page.getByRole('button',{name:label,exact:true})).toHaveAttribute('aria-pressed','true');await stable();
+  }
+  await tapMuscle(page,'Abdominaux',[110,125]);await stable();
+  await page.getByRole('button',{name:'Voir de dos'}).click();await stable();
+  await tapMuscle(page,'Ischio-jambiers',[102,204]);await stable();
+  await page.screenshot({path:`test-results/muscle-stable-${width}.png`});
+  await page.getByRole('button',{name:'Tout afficher',exact:true}).click();await stable();
+  await expect(page.getByRole('button',{name:'Tout afficher',exact:true})).toHaveCount(0);
+});
+
 test('catalogue : filtres combinés, aperçu vidéo, favoris et recherche sans accents',async({page})=>{
   await page.setViewportSize({width:390,height:844});const data=PT.initialState();data.profile.onboarded=true;
   await seed(page,data,'library');

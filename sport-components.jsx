@@ -62,7 +62,7 @@ function PTBodyMap({selected='all',onSelect,back=false}){
 }
 function PTMuscleExplorer({value,onChange}){
   const [back,setBack]=usePTState(false);
-  return <section className="muscle-explorer"><div className="muscle-copy"><span className="eyebrow">Cible ta séance</span><h2>{value==='all'?<>QUEL<br/>MUSCLE ?</>:ptMuscleLabels[value]}</h2><p className="fine">Touche une zone.</p><button className="chip rotate-body" onClick={()=>setBack(!back)}><PTIcon name="refresh" size={16}/>{back?'Voir de face':'Voir de dos'}</button>{value!=='all'&&<button className="text-button" onClick={()=>onChange('all')}>Tout afficher</button>}</div><PTBodyMap selected={value} onSelect={onChange} back={back}/></section>;
+  return <section className="muscle-explorer"><div className="muscle-copy"><span className="eyebrow">Cible ta séance</span><h2>{value==='all'?<>QUEL<br/>MUSCLE ?</>:ptMuscleLabels[value]}</h2><p className="fine">Touche une zone.</p><button className="chip rotate-body" onClick={()=>setBack(!back)}><PTIcon name="refresh" size={16}/>{back?'Voir de face':'Voir de dos'}</button><button className="text-button muscle-reset" aria-hidden={value==='all'} disabled={value==='all'} tabIndex={value==='all'?-1:undefined} onClick={()=>onChange('all')}>Tout afficher</button></div><PTBodyMap selected={value} onSelect={onChange} back={back}/></section>;
 }
 function PTSportWeek({data,go}){
   const [offset,setOffset]=usePTState(0),[selected,setSelected]=usePTState(PT.dateKey());
