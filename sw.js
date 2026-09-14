@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v13-body';
+const CACHE = 'rehaab-v14-programs';
 const PRECACHE = [
   './',
   './index.html',
@@ -14,6 +14,7 @@ const PRECACHE = [
   './personal-app.jsx',
   './visual-components.jsx',
   './sport-components.jsx',
+  './program-components.jsx',
   './live-session.jsx',
   './exercise-media.js',
   './vendor/gsap.min.js',
@@ -219,6 +220,8 @@ const PRECACHE = [
   "./media/Bench_Dips/0.jpg",
   "./media/Bench_Dips/1.jpg",
   './personal-engine.js',
+  './personal-programs.js',
+  './personal-nutrition.js',
   './program-data.js',
   './media/ATTRIBUTION.md',
   'https://unpkg.com/react@18/umd/react.production.min.js',

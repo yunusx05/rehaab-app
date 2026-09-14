@@ -214,11 +214,25 @@ test('démonstrations : réduction des animations et repli si une vidéo manque'
   await expect(page.locator('.library-tile.expanded .instruction-list')).toBeVisible();
 });
 
-test('médias : chaque exercice du catalogue embarque une image ou une vidéo',()=>{
+// Portée volontairement restreinte : depuis le lot « programmes », le catalogue contient des
+// exercices sans illustration (demande explicite de l'utilisateur). Le test vérifie donc que
+// chaque média DÉCLARÉ pointe vers un fichier réellement présent, et que les exercices sans
+// média restent utilisables grâce à leur repli textuel (consignes).
+test('médias : chaque média déclaré pointe vers un fichier existant',()=>{
   const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.join(__dirname,'..');
   const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
-  const missing=PT.catalog.filter(e=>{const m=sandbox.window.RehaabMedia[e.id];return ![m?.video,m?.poster,m?.card,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean).some(p=>fs.existsSync(path.join(root,p)));}).map(e=>e.id);
+  const declared=PT.catalog.filter(e=>sandbox.window.RehaabMedia[e.id]);
+  expect(declared.length).toBeGreaterThan(50);
+  const missing=declared.filter(e=>{const m=sandbox.window.RehaabMedia[e.id];return ![m?.video,m?.poster,m?.card,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean).some(p=>fs.existsSync(path.join(root,p)));}).map(e=>e.id);
   expect(missing).toEqual([]);
+});
+
+test('catalogue : les exercices sans illustration gardent un repli textuel exploitable',()=>{
+  const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.join(__dirname,'..');
+  const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
+  const orphans=PT.catalog.filter(e=>!sandbox.window.RehaabMedia[e.id]);
+  const weak=orphans.filter(e=>!Array.isArray(e.instructions)||e.instructions.length<2||e.instructions.some(t=>typeof t!=='string'||t.trim().length<15)||!e.name);
+  expect(weak.map(e=>e.id)).toEqual([]);
 });
 
 test('adaptation : effort récent seulement, aucune hausse automatique et règles de douleur conservées',()=>{

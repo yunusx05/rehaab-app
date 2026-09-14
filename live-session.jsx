@@ -86,7 +86,16 @@ function PTSession({data,update,go,notify}) {
     if(!effort){setError('Choisis ton ressenti de 1 à 10.');return;}
     const session=PT.finishDraft(draft,{effort:Number(effort),liked,notes});
     if(session.error){setError(session.error);return;}
-    saved.current=true;update(s=>({...s,sessions:s.sessions.some(x=>x.id===session.id)?s.sessions:[...s.sessions,session],draft:null}));go('history',session.id);
+    saved.current=true;
+    // Une séance de programme avance le suivi ; une séance libre ne touche jamais au programme.
+    update(s=>{
+      const next={...s,sessions:s.sessions.some(x=>x.id===session.id)?s.sessions:[...s.sessions,session],draft:null};
+      const PP=window.PersonalPrograms;
+      if(PP&&session.programInstanceId&&s.program&&s.program.id===session.programInstanceId&&s.program.status==='active')
+        next.program=PP.markCompleted(s.program,{week:session.programWeekIndex,day:session.programDay,sessionId:session.id,date:session.date,partial:session.partial});
+      return next;
+    });
+    go('history',session.id);
   };
   const addRound=()=>{
     setDraft(d=>{const entries={...d.entries};d.exercises.forEach(e=>entries[e.id]=[...entries[e.id],PT.newRows({...e,sets:1})[0]]);
