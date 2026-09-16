@@ -24,8 +24,10 @@
   const upper = ['shoulder','elbow','wrist','back'];
   const lower = ['hip','knee','ankle','back'];
   const catalog = [];
+  const legacyExercises = [];
   function ex(id,name,kind,pattern,needs,body,instructions,options={}) {
-    catalog.push({id,name,kind,pattern,needs,regions:body,instructions,level:1,impact:false,measure:'reps',sets:3,min:8,max:12,rest:75,seconds:40,weighted:false,...options});
+    const target=kind==='basket'?legacyExercises:catalog;
+    target.push({id,name,kind,pattern,needs,regions:body,instructions,level:1,impact:false,measure:'reps',sets:3,min:8,max:12,rest:75,seconds:40,weighted:false,...options});
   }
   ex('pushup','Pompes','strength','push',['bodyweight'],upper,['Aligne tête, bassin et talons.','Descends avec contrôle, puis repousse sans perdre cet alignement.'],{media:'Pushups',min:6});
   ex('wall-pushup','Pompes au mur','strength','push',['bodyweight'],upper,['Mains au mur à hauteur de poitrine.','Recule les pieds à une distance confortable et fléchis les coudes sans cambrer.'],{min:10,max:15});
@@ -78,17 +80,6 @@
   ex('landing','Réception contrôlée · petit saut','plyo','jump',['bodyweight'],lower,['Uniquement si tu pratiques déjà les sauts sans symptôme.','Fais un petit saut vertical, réceptionne doucement et stabilise avant de recommencer.'],{measure:'contacts',impact:true,level:2,min:3,max:5,rest:90});
   ex('pogo','Petits rebonds de cheville','plyo','jump',['bodyweight'],lower,['Petits rebonds, posture stable, contacts maîtrisés.','Arrête dès que les réceptions se dégradent ; pas de course au nombre de sauts.'],{measure:'contacts',impact:true,level:2,min:6,max:10,rest:90});
   ex('lateral-hop','Petit saut latéral et stabilisation','plyo','jump',['court'],lower,['Petit déplacement latéral, réception stable sur deux pieds.','Marque un arrêt entre les sauts. La qualité compte davantage que la distance.'],{measure:'contacts',impact:true,level:2,min:3,max:5,rest:90});
-  ex('dribble','Dribble de contrôle','basket','handle',['ball'],['wrist','elbow','shoulder','hip','knee','back'],['Sur place, alterne main droite et main gauche.','Garde progressivement le regard devant toi sans perdre le contrôle.'],{measure:'seconds',seconds:40,rest:30});
-  ex('weak-hand','Dribble · main non dominante','basket','handle',['ball'],['wrist','elbow','shoulder','hip','knee','back'],['Commence lentement avec ta main non dominante.','Change la hauteur du rebond sans accélérer au détriment du contrôle.'],{measure:'seconds',seconds:40,rest:30});
-  ex('crossover','Changements de main sur place','basket','handle',['ball'],['wrist','elbow','shoulder','hip','knee','back'],['Alterne les mains devant toi, pieds stables.','Augmente la fluidité avant la vitesse. Note les pertes de balle.'],{measure:'seconds',seconds:40,rest:30});
-  ex('form-shoot','Tir proche du panier','basket','shoot',['ball','hoop'],upper.concat(lower),['Choisis un repère proche et conserve-le pour comparer tes séances.','Garde une routine identique. Compte les tentatives et les réussites.'],{measure:'shots',min:10,max:10,seconds:120,rest:45});
-  ex('free-throw','Lancers francs','basket','shoot',['ball','hoop'],upper.concat(lower),['Même placement et même routine sur chaque tir.','Saisis réussites et tentatives, sans modifier la distance pendant le bloc.'],{measure:'shots',min:10,max:10,seconds:120,rest:45});
-  ex('spot-shoot','Tir à un repère fixe','basket','shoot',['ball','hoop','court'],upper.concat(lower),['Choisis un seul repère et note sa distance.','Garde le même type de tir pour que le résultat soit comparable.'],{measure:'shots',min:10,max:10,seconds:150,rest:45});
-  ex('layup','Finition · main non dominante','basket','finish',['ball','hoop','court'],upper.concat(lower),['Approche lente, appuis maîtrisés, finition avec la main non dominante.','Reviens en marchant entre les tentatives.'],{measure:'shots',impact:true,level:2,min:6,max:6,seconds:120,rest:60});
-  ex('pivot','Pivots et protection du ballon','basket','footwork',['ball','court'],upper.concat(lower),['Choisis un pied de pivot, tourne lentement sans le déplacer.','Protège le ballon et alterne le pied de pivot au bloc suivant.'],{measure:'seconds',seconds:30,rest:40});
-  ex('defense','Pas défensifs contrôlés','basket','footwork',['court'],lower,['Petit trajet latéral dégagé.','Déplace-toi sans croiser les pieds, avec une amplitude maîtrisée.'],{measure:'seconds',seconds:25,rest:45,level:2});
-  ex('reaction','Dribble sur signal sonore','basket','react',['ball'],['wrist','elbow','shoulder','hip','knee','back'],['Au signal « droite » ou « gauche », change de main.','Reste sur place. Ajuste la cadence au contrôle du ballon.'],{measure:'seconds',seconds:40,rest:40,audio:true});
-  ex('pass','Passes à deux','basket','react',['ball','partner','court'],upper.concat(lower),['À distance confortable, passe à hauteur de poitrine.','Le partenaire indique la main cible. Privilégie la précision.'],{measure:'seconds',seconds:45,rest:30});
   ex('incline','Développé incliné · haltères','strength','push',['dumbbells','bench'],upper,['Banc légèrement incliné, pieds stables.','Descends avec contrôle et conserve une marge de répétitions.'],{weighted:'dumbbells'});
   ex('overhead-triceps','Extension triceps au-dessus de la tête','strength','arms',['dumbbells'],['shoulder','elbow','wrist','back'],['Tiens un haltère à deux mains, en position stable.','Fléchis puis tends les coudes sans cambrer ; ne force pas l’amplitude.'],{weighted:'dumbbells',singleLoad:true});
   ex('copenhagen','Copenhagen sur genou','strength','core',['bench'],['shoulder','elbow','back','hip','knee'],['Genou supérieur en appui sur un banc stable, avant-bras au sol.','Soulève doucement le bassin. Exercice exigeant : ne pas utiliser pour tester une douleur à l’aine.'],{level:2,measure:'seconds',seconds:20,unilateral:true,floor:true});
@@ -240,6 +231,8 @@
   ex('wrist-mob','Mobilité des poignets','mobility','mobility',['bodyweight'],['wrist','elbow'],['À quatre pattes ou à genoux, mains posées au sol.','Fais lentement basculer le poids d’avant en arrière, sans douleur.'],{floor:true,measure:'seconds',seconds:40,rest:15});
   ex('hip-circles','Cercles de hanche','mobility','mobility',['bodyweight'],['hip','knee','back'],['En appui sur une jambe, main sur un support.','Dessine des cercles lents avec le genou levé, dans les deux sens.'],{unilateral:true,measure:'seconds',seconds:30,rest:20});
 
+  ex('defense','Pas défensifs contrôlés','basket','footwork',['court'],lower,['Petit trajet latéral dégagé.','Déplace-toi sans croiser les pieds, avec une amplitude maîtrisée.'],{measure:'seconds',seconds:25,rest:45,level:2});
+
   const clone = value => JSON.parse(JSON.stringify(value));
   const uid = () => typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,10)}`;
   const dateKey = (date=new Date()) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
@@ -254,6 +247,7 @@
   function validateState(value) {
     assert(value && typeof value==='object' && !Array.isArray(value) && value.version===VERSION,'Version de sauvegarde non reconnue.');
     const s=clone(value); const base=initialState();
+    if(s.checkIn?.focus==='basket')s.checkIn.focus='mixed';
     assert(s.profile && typeof s.profile==='object' && !Array.isArray(s.profile),'Profil invalide.');
     for(const key of ['sessions','symptoms','events','measurements','customExercises','savedWorkouts','owned']) assert(Array.isArray(s[key]),`Données invalides : ${key}.`);
     assert(s.sessions.length<20000 && s.customExercises.length<500 && s.events.length<10000,'Sauvegarde trop volumineuse.');
@@ -353,6 +347,7 @@
     return total;
   }
   function generate(state,check=state.checkIn,{random=Math.random,exclude=[],pinned=[],now=dateKey()}={}) {
+    if(check.focus==='basket')check={...check,focus:'mixed'};
     const ctx=context(state,check,now), format=chooseFormat(check,ctx);
     if(ctx.active.blocked) return {error:'Douleur importante ou signe inhabituel : la génération est suspendue. Demande un avis médical avant de reprendre.'};
     const pool=allExercises(state).filter(e=>allowed(e,state,check,ctx) && !exclude.includes(e.id));
@@ -372,7 +367,7 @@
     };
     candidates=candidates.map(e=>({e,score:score(e)})).sort((a,b)=>b.score-a.score).map(x=>x.e);
     const count=check.focus==='cardio'?1:Math.max(1,Math.min(check.focus==='plyo'?3:5,Math.floor(check.minutes/7)));
-    const selected=pinned.filter(e=>allowed(e,state,check,ctx)).map(e=>({...e,pinned:true}));
+    const selected=pinned.filter(e=>e.kind!=='basket' && allowed(e,state,check,ctx)).map(e=>({...e,pinned:true}));
     while(selected.length<count && candidates.length){
       const candidate=candidates.find(e=>!selected.some(x=>x.id===e.id) && (!selected.some(x=>x.pattern===e.pattern)||check.focus==='basket'||check.focus==='core'||check.focus==='mobility'||check.focus==='plyo')) || candidates.find(e=>!selected.some(x=>x.id===e.id));
       if(!candidate) break;
@@ -407,7 +402,7 @@
     const mapping={p2a1:['db-squat','bb-squat','goblet','squat'],p2a2:week>8?['rdl']:['deadlift','rdl','kb-deadlift'],p2a3:['pogo'],p2a4:['copenhagen','side-plank'],b2a3:['landing'],p3a3:['landing'],p2b1:week>8?['incline']:['db-press','bb-press','floor-press'],p2b2:['bb-row','db-row','band-row','cable-row'],p2b3:['db-shoulder'],p2b4:['carry'],b2b4:['carry'],p2b5:['lateral'],p2b6:['curl'],p2b7:['overhead-triceps','triceps'],p2c1:['db-lunge','reverse-lunge'],p2c2:['pushup'],b2c2:['pushup'],p2c3:['kb-swing'],p2c4:['band-shuffle','defense'],p2d1:['incline','db-press'],p2d2:['db-row','bb-row','band-row'],p2d3:['lateral'],p2d4:['curl'],p2dc1:['halo'],p2dc2:['pallof'],p2dc3:['breath'],p2d5:['bike-interval','bike'],p3c4:['bike-interval','bike']};
     const exercises=[],changes=[];
     source.supersets.forEach((group,groupIndex)=>group.exercises.forEach(original=>{
-      const candidate=(mapping[original.id]||[]).map(id=>catalog.find(e=>e.id===id)).find(e=>e && allowed(e,state,check,ctx));
+      const candidate=(mapping[original.id]||[]).map(id=>(catalog.find(e=>e.id===id)||legacyExercises.find(e=>e.id===id))).find(e=>e && allowed(e,state,check,ctx));
       if(!candidate) {changes.push(`${original.name} : écarté (matériel, niveau ou contraintes).`);return;}
       const p=makePrescription(candidate,'superset',check.minutes,ctx);
       const volume=original.volume.replace(/×/g,'x'),sets=volume.match(/^(\d+)\s*x/i),reps=volume.match(/(?:x\s*|^)(\d+)(?:-(\d+))?/i);

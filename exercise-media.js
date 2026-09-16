@@ -298,36 +298,6 @@ window.RehaabMedia = {
     "frames": "generated/lateral-hop",
     "generated": true
   },
-  "dribble": {
-    "card": "media/cards/dribble.jpg",
-    "frames": "generated/dribble",
-    "generated": true
-  },
-  "weak-hand": {
-    "card": "media/cards/weak-hand.jpg",
-    "frames": "generated/weak-hand",
-    "generated": true
-  },
-  "crossover": {
-    "card": "media/cards/crossover.jpg",
-    "frames": "generated/crossover",
-    "generated": true
-  },
-  "form-shoot": {
-    "card": "media/cards/form-shoot.jpg"
-  },
-  "layup": {
-    "card": "media/cards/layup.jpg"
-  },
-  "pivot": {
-    "card": "media/cards/pivot.jpg"
-  },
-  "reaction": {
-    "card": "media/cards/reaction.jpg"
-  },
-  "pass": {
-    "card": "media/cards/pass.jpg"
-  },
   "band-shuffle": {
     "card": "media/cards/band-shuffle.jpg",
     "frames": "generated/band-shuffle",
@@ -378,16 +348,6 @@ window.RehaabMedia = {
     "frames": "generated/breath",
     "generated": true
   },
-  "free-throw": {
-    "card": "media/cards/free-throw.jpg",
-    "frames": "generated/free-throw",
-    "generated": true
-  },
-  "spot-shoot": {
-    "card": "media/cards/spot-shoot.jpg",
-    "frames": "generated/spot-shoot",
-    "generated": true
-  },
   "defense": {
     "card": "media/cards/defense.jpg",
     "frames": "generated/defense",
@@ -410,5 +370,55 @@ window.RehaabMedia = {
     "muscles": [
       "hamstrings"
     ]
+  },
+  "bird-dog": {
+    "card": "media/cards/bird-dog.jpg",
+    "frames": "generated/bird-dog",
+    "generated": true
+  },
+  "front-raise": {
+    "card": "media/cards/front-raise.jpg",
+    "frames": "generated/front-raise",
+    "generated": true
+  },
+  "knee-pushup": {
+    "card": "media/cards/knee-pushup.jpg",
+    "frames": "generated/knee-pushup",
+    "generated": true
+  },
+  "decline-pushup": {
+    "card": "media/cards/decline-pushup.jpg",
+    "frames": "generated/decline-pushup",
+    "generated": true
+  },
+  "wide-pushup": {
+    "card": "media/cards/wide-pushup.jpg",
+    "frames": "generated/wide-pushup",
+    "generated": true
+  },
+  "tempo-pushup": {
+    "card": "media/cards/tempo-pushup.jpg",
+    "frames": "generated/tempo-pushup",
+    "generated": true
+  },
+  "scap-pushup": {
+    "card": "media/cards/scap-pushup.jpg",
+    "frames": "generated/scap-pushup",
+    "generated": true
+  },
+  "pike-pushup": {
+    "card": "media/cards/pike-pushup.jpg",
+    "frames": "generated/pike-pushup",
+    "generated": true
+  },
+  "band-pushup": {
+    "card": "media/cards/band-pushup.jpg",
+    "frames": "generated/band-pushup",
+    "generated": true
+  },
+  "band-press": {
+    "card": "media/cards/band-press.jpg",
+    "frames": "generated/band-press",
+    "generated": true
   }
 };
