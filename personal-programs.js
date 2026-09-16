@@ -141,6 +141,49 @@
   ];
   const familyById = id => families.find(f => f.id === id) || null;
 
+  /* Check-in de forme avant une séance de programme.
+     Objectif : proposer une version tenable un jour creux plutôt que laisser la séance être sautée.
+     Rien n'augmente jamais automatiquement : une bonne forme rend seulement la séance prévue intégrale. */
+  const READINESS_QUESTIONS = [
+    {id:'energy', label:'Ton énergie, là, maintenant ?', options:[
+      {value:0, label:'À plat'}, {value:1, label:'Moyenne'}, {value:2, label:'En forme'}]},
+    {id:'sleep', label:'La nuit dernière ?', options:[
+      {value:0, label:'Mauvaise'}, {value:1, label:'Correcte'}, {value:2, label:'Bonne'}]},
+    {id:'soreness', label:'Courbatures ou raideurs ?', options:[
+      {value:0, label:'Beaucoup'}, {value:1, label:'Un peu'}, {value:2, label:'Aucune'}]}
+  ];
+
+  const READINESS_LEVELS = [
+    {id:'spent', label:'Réserve basse', minutesFactor:0.55, restShift:20, maxExercises:3, energy:'low',
+     note:'Version courte : les mouvements repères sont gardés, les accessoires et une partie des séries sautent. Une séance courte enregistrée vaut mieux qu’une séance sautée.'},
+    {id:'low', label:'Forme moyenne', minutesFactor:0.75, restShift:15, maxExercises:4, energy:'low',
+     note:'Volume réduit et repos allongés. Les charges ne montent pas aujourd’hui ; la technique passe avant.'},
+    {id:'normal', label:'Forme correcte', minutesFactor:1, restShift:0, maxExercises:null, energy:'normal',
+     note:'Séance prévue, telle qu’elle est écrite dans le programme.'},
+    {id:'high', label:'Bonne forme', minutesFactor:1, restShift:0, maxExercises:null, energy:'high',
+     note:'Séance complète. Aucune charge n’est augmentée automatiquement : c’est toi qui décides de charger ou non.'}
+  ];
+  const readinessById = id => READINESS_LEVELS.find(l => l.id === id) || READINESS_LEVELS[2];
+
+  // Somme des trois réponses (0 à 6) ramenée à un niveau. Score inconnu ou partiel : on ne dégrade rien.
+  function readinessLevel(answers) {
+    const values = READINESS_QUESTIONS.map(q => {
+      const v = Number(answers && answers[q.id]);
+      return Number.isFinite(v) && v >= 0 && v <= 2 ? v : null;
+    });
+    if (values.some(v => v === null)) return {...readinessById('normal'), score:null, complete:false};
+    const score = values.reduce((n, v) => n + v, 0);
+    const id = score <= 1 ? 'spent' : score <= 3 ? 'low' : score <= 5 ? 'normal' : 'high';
+    return {...readinessById(id), score, complete:true, answers:{...answers}};
+  }
+
+  // Durée réellement tenable aujourd'hui : jamais au-dessus de ce que la personne annonce, jamais sous 10 minutes.
+  function readinessMinutes(level, programMinutes, availableMinutes) {
+    const planned = PT.bounded(programMinutes, 10, 180) ? Number(programMinutes) : 30;
+    const available = PT.bounded(availableMinutes, 5, 180) ? Number(availableMinutes) : planned;
+    return Math.max(10, Math.min(planned, available, Math.round(planned * level.minutesFactor)));
+  }
+
   function checkFor(state, config, overrides = {}) {
     const base = state.checkIn || {};
     return {
@@ -197,7 +240,7 @@
     const dose = family.dosage[slotDef.role] || family.dosage.accessory;
     const p = PT.makePrescription(exercise, family.format, Number(check.minutes) || 30, ctx);
     p.sets = Math.max(1, Math.min(6, dose.sets + phase.setShift + (ctx.low ? -1 : 0)));
-    p.rest = Math.max(15, Math.min(240, dose.rest + phase.restShift));
+    p.rest = Math.max(15, Math.min(240, dose.rest + phase.restShift + (check.readiness?.restShift || 0)));
     if (p.measure === 'reps' || p.measure === 'contacts') {
       const min = Math.max(1, dose.reps[0] + phase.repShift);
       const max = Math.max(min, dose.reps[1] + phase.repShift);
@@ -230,6 +273,16 @@
       used.push(chosen.id);
       exercises.push(prescribe(chosen, slotDef, family, phase, check, ctx));
     });
+    const cap = check.readiness?.maxExercises;
+    if (cap && exercises.length > cap) {
+      // Les mouvements repères passent en premier : les charges restent comparables d'une semaine à l'autre.
+      const ordered = exercises.filter(e => e.slotRole === 'anchor').concat(exercises.filter(e => e.slotRole !== 'anchor'));
+      const kept = ordered.slice(0, cap);
+      const dropped = exercises.filter(e => !kept.includes(e));
+      if (dropped.length) changes.push(`Version allégée : ${dropped.map(e => e.name).join(', ')} mis de côté pour aujourd’hui.`);
+      exercises.length = 0;
+      exercises.push(...kept);
+    }
     return {exercises, changes, phase, template, family};
   }
 
@@ -285,6 +338,16 @@
     };
   }
 
+  // Check de séance issu du check-in : le niveau de forme pilote la durée, le repos et l'énergie transmise au moteur.
+  function checkForSession(state, program, {answers = null, minutes = null} = {}) {
+    const level = readinessLevel(answers || {});
+    return checkFor(state, program, {
+      minutes: readinessMinutes(level, program.minutes, minutes),
+      energy: level.energy,
+      readiness: level
+    });
+  }
+
   function sessionPlan(program, week, dayKey, state, check = checkFor(state, program)) {
     const ctx = PT.context(state, check);
     if (ctx.active.blocked) return {error:'Une douleur importante ou un signe inhabituel empêche de lancer une séance. Demande un avis médical.'};
@@ -315,12 +378,14 @@
       resolved.phase.note,
       ...resolved.changes
     ];
-    if (ctx.low) reasons.push('Contexte de fatigue ou de reprise : volume réduit, aucune hausse automatique de charge.');
+    if (check.readiness && check.readiness.id !== 'normal') reasons.push(`Check-in du jour : ${check.readiness.label.toLowerCase()}. ${check.readiness.note}`);
+    else if (ctx.low) reasons.push('Contexte de fatigue ou de reprise : volume réduit, aucune hausse automatique de charge.');
     if (ctx.active.active.length) reasons.push('Les mouvements sollicitant les zones signalées sont écartés. Cela ne garantit pas l’absence de douleur.');
     return {
       id: PT.uid(), title: `${resolved.family.short} · ${resolved.template.name}`, source:'program-plan',
       programInstanceId: program.id, programFamily: program.familyId, programWeekIndex: week, programDay: dayKey,
       focus: resolved.family.focus, format: resolved.family.format, exercises, check: PT.clone(check), reasons,
+      readiness: check.readiness ? PT.clone(check.readiness) : null,
       warmupSeconds, estimatedMinutes: Math.ceil((warmupSeconds + 60 + PT.estimateSeconds(exercises, resolved.family.format)) / 60),
       status:'preview', entries:{}, createdAt: new Date().toISOString()
     };
@@ -386,6 +451,7 @@
   }
 
   return {VERSION, WEEK_CHOICES, DAY_CHOICES, MINUTE_CHOICES, families, familyById, phases, phaseFor, rotation, checkFor,
+    READINESS_QUESTIONS, READINESS_LEVELS, readinessById, readinessLevel, readinessMinutes, checkForSession,
     candidates, compatibility, createProgram, sessionPlan, weekPreview, progressOf, totalSessions, markCompleted,
     pause, resume, archive, validateProgram};
 });

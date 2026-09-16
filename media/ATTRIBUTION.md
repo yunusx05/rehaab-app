@@ -2,7 +2,15 @@
 
 Les deux images de position utilisées par la bibliothèque proviennent du dépôt [free-exercise-db](https://github.com/yuhonas/free-exercise-db), distribué sous licence Unlicense au moment de l’intégration. Les chemins sont résolus localement sous `media/<nom>/0.jpg` et `media/<nom>/1.jpg` lorsqu’ils sont disponibles.
 
+Le 16 septembre 2026, 61 exercices supplémentaires ont été illustrés depuis cette même banque, avant toute génération par IA : chercher une photo réelle du bon mouvement passe désormais avant de générer une image. Les correspondances sont relues à la main dans `scripts/free-media-map.json` et reproduites par `scripts/fetch-free-media.cjs` ; `scripts/match-free-media.cjs` propose les pistes, il ne décide pas. Une entrée n’est retenue que si la banque montre exactement le même mouvement et le même matériel. Les 70 exercices écartés sont listés avec leur motif dans le même fichier, sous `_rejected` : ce sont eux, et eux seuls, qui relèvent d’une génération IA. Motifs récurrents : variante différente (prise, appui, charge), mouvement inverse, ou absence pure et simple de l’exercice dans la banque.
+
 35 exercices disposent de photos de posture embarquées. La boucle alterne deux photos de départ et d’arrivée ; ce n’est pas une vidéo continue. La photo de fléchisseur de hanche debout précédemment référencée a été écartée, car la consigne décrit une variante à genou.
+
+## Images uniques wger
+
+Quatre exercices absents de free-exercise-db sont illustrés par une image wger sous **CC BY-SA 4.0**, relue une par une le 16 septembre 2026 : touches d’épaule en planche, montées de genoux, jumping jacks et hip thrust à l’haltère. Ces images ne montrent qu’une seule vue : elles s’affichent en illustration statique, pas en boucle deux positions. Leur crédit est porté par chaque entrée d’`exercise-media.js`.
+
+Douze candidates wger ont été examinées, huit écartées : quatre montrent une femme, une est une capture d’écran de vidéo avec la barre de lecture visible, une un montage de quatre panneaux mêlant deux mouvements, deux une variante différente (kettlebell au lieu du poids du corps, machine assise au lieu de debout à l’élastique). Les motifs sont dans `scripts/free-media-map.json`, sous `_rejected_wger`. Le fond wger contient des visuels féminins : chaque image doit être ouverte avant d’être retenue, le nom de l’exercice ne suffit pas.
 
 ## Vidéos en boucle
 

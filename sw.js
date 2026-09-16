@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v18-gemini-lot2';
+const CACHE = 'rehaab-v19-checkin-media';
 const PRECACHE = [
   './',
   './index.html',

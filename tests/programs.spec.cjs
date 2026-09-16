@@ -277,6 +277,12 @@ test('programme : créer avec haltères, lancer une séance, l’enregistrer et 
   await expect(page.getByText('Semaine 1 sur 8')).toBeVisible();
 
   await page.getByRole('button',{name:/Lancer cette séance/}).first().click();
+  // Le check-in de forme précède désormais toute séance de programme.
+  await expect(page.getByRole('heading',{name:/Comment tu te sens/})).toBeVisible();
+  await page.getByRole('button',{name:'En forme',exact:true}).click();
+  await page.getByRole('button',{name:'Bonne',exact:true}).click();
+  await page.getByRole('button',{name:'Aucune',exact:true}).click();
+  await page.getByRole('button',{name:/Voir ma séance du jour/}).click();
   await expect(page.locator('.visual-preview')).toBeVisible();
   const draft=await state(page);
   expect(draft.draft.programInstanceId).toBe(draft.program.id);
@@ -367,4 +373,87 @@ test('programme : le raccourci d’accueil mène au programme et le clavier suff
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading',{name:'Mon programme.'})).toBeVisible();
   await noOverflow(page);
+});
+
+/* ---------- Check-in de forme avant séance ---------- */
+
+test('check-in : le score détermine le niveau, une réponse manquante ne dégrade rien',()=>{
+  expect(PP.readinessLevel({energy:0,sleep:0,soreness:0}).id).toBe('spent');
+  expect(PP.readinessLevel({energy:1,sleep:1,soreness:1}).id).toBe('low');
+  expect(PP.readinessLevel({energy:2,sleep:1,soreness:1}).id).toBe('normal');
+  expect(PP.readinessLevel({energy:2,sleep:2,soreness:2}).id).toBe('high');
+  const partial=PP.readinessLevel({energy:0});
+  expect(partial.id).toBe('normal');expect(partial.complete).toBe(false);
+  expect(PP.readinessLevel({energy:9,sleep:2,soreness:2}).complete).toBe(false);
+});
+
+test('check-in : la durée ne dépasse ni le programme ni le temps annoncé, et reste au-dessus de 10 min',()=>{
+  const spent=PP.readinessById('spent'),normal=PP.readinessById('normal');
+  expect(PP.readinessMinutes(normal,45,60)).toBe(45);
+  expect(PP.readinessMinutes(normal,45,20)).toBe(20);
+  expect(PP.readinessMinutes(spent,45,60)).toBe(25);
+  expect(PP.readinessMinutes(spent,15,60)).toBe(10);
+});
+
+test('check-in : réserve basse allège la séance sans perdre les mouvements repères',()=>{
+  const data=withProgram({minutes:45});
+  const full=PP.sessionPlan(data.program,1,data.program.days[0],data,
+    PP.checkForSession(data,data.program,{answers:{energy:2,sleep:2,soreness:2},minutes:60}));
+  const light=PP.sessionPlan(data.program,1,data.program.days[0],data,
+    PP.checkForSession(data,data.program,{answers:{energy:0,sleep:0,soreness:0},minutes:60}));
+  expect(full.error).toBeUndefined();expect(light.error).toBeUndefined();
+  expect(light.exercises.length).toBeLessThanOrEqual(full.exercises.length);
+  expect(light.exercises.length).toBeLessThanOrEqual(3);
+  expect(light.estimatedMinutes).toBeLessThanOrEqual(full.estimatedMinutes);
+  expect(light.exercises[0].rest).toBeGreaterThan(full.exercises[0].rest);
+  // Les mouvements repères de la séance complète survivent à la version courte.
+  const anchors=full.exercises.filter(e=>e.slotRole==='anchor').map(e=>e.id);
+  anchors.forEach(id=>expect(light.exercises.some(e=>e.id===id)).toBe(true));
+  expect(light.readiness.id).toBe('spent');
+  expect(light.reasons.some(r=>r.includes('Check-in du jour'))).toBe(true);
+});
+
+test('check-in : aucune charge ni série ajoutée quand la forme est bonne',()=>{
+  const data=withProgram({minutes:45});
+  const normal=PP.sessionPlan(data.program,1,data.program.days[0],data,
+    PP.checkForSession(data,data.program,{answers:{energy:2,sleep:1,soreness:1},minutes:45}));
+  const high=PP.sessionPlan(data.program,1,data.program.days[0],data,
+    PP.checkForSession(data,data.program,{answers:{energy:2,sleep:2,soreness:2},minutes:45}));
+  expect(high.exercises.length).toBe(normal.exercises.length);
+  high.exercises.forEach((e,i)=>{
+    expect(e.sets).toBeLessThanOrEqual(normal.exercises[i].sets);
+    expect(e.targetMax).toBeLessThanOrEqual(normal.exercises[i].targetMax||e.targetMax);
+  });
+});
+
+test('check-in : lancer une séance de programme passe par l’écran de forme',async({page})=>{
+  const data=withProgram({minutes:30});
+  await seed(page,data,'program');
+  await page.getByRole('button',{name:/Lancer cette séance/}).first().click();
+  await expect(page.getByRole('heading',{name:/Comment tu te sens/})).toBeVisible();
+  await noOverflow(page);
+  // Tant que les trois questions ne sont pas répondues, on ne part pas.
+  await expect(page.getByRole('button',{name:/Voir ma séance du jour/})).toBeDisabled();
+  await page.getByRole('button',{name:'À plat',exact:true}).click();
+  await page.getByRole('button',{name:'Mauvaise',exact:true}).click();
+  await page.getByRole('button',{name:'Beaucoup',exact:true}).click();
+  await expect(page.getByText('Réserve basse')).toBeVisible();
+  await page.getByRole('button',{name:/Voir ma séance du jour/}).click();
+  await expect(page.getByRole('button',{name:/Démarrer la séance/})).toBeVisible();
+  const saved=await state(page);
+  expect(saved.draft.readiness.id).toBe('spent');
+  // Le check-in du jour ne s'installe pas dans les préférences durables.
+  expect(saved.checkIn.readiness).toBeUndefined();
+  expect(saved.draft.exercises.length).toBeLessThanOrEqual(3);
+});
+
+test('check-in : reporter la séance ne touche ni au programme ni au brouillon',async({page})=>{
+  const data=withProgram({minutes:30});
+  await seed(page,data,'program');
+  await page.getByRole('button',{name:/Lancer cette séance/}).first().click();
+  await page.getByRole('button',{name:/Pas aujourd’hui/}).click();
+  await expect(page.getByRole('heading',{name:'Mon programme.'})).toBeVisible();
+  const saved=await state(page);
+  expect(saved.draft).toBeNull();
+  expect(saved.program.completed).toEqual([]);
 });

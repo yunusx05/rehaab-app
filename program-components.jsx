@@ -124,13 +124,12 @@ function PTProgramHome({data,update,go,notify}) {
   const preview = PP.weekPreview(program, shownWeek, data);
   const paused = program.status === 'paused';
 
+  // Le lancement passe toujours par le check-in de forme : c'est lui qui fixe la version du jour.
   const launch = dayKey => {
     if (data.draft?.status === 'active' && confirmLaunch !== dayKey) { setConfirmLaunch(dayKey); return; }
-    const plan = PP.sessionPlan(program, shownWeek, dayKey, data);
-    if (plan.error) { setError(plan.error); return; }
-    update(s => ({...s, checkIn:{...s.checkIn, ...plan.check}, draft: plan}));
     setConfirmLaunch(null);
-    go('preview');
+    setError('');
+    go('program-checkin', `${shownWeek}:${dayKey}`);
   };
 
   return <><PTPageHead onBack={() => go('today')} eyebrow={family?.label} title="Mon programme.">
@@ -282,5 +281,67 @@ function PTNutrition({data,update,go,notify}) {
           : <p className="fine">Ajoute au moins deux pesées pour voir une tendance.</p>}
         <p className="fine">Saisis tes pesées depuis <button className="text-button" onClick={() => go('profile')}>mon profil</button>, section « Mes mesures au fil du temps ». Observe la tendance sur plusieurs semaines, pas une pesée isolée.</p>
       </section>
+    </div></>;
+}
+
+// Check-in de forme avant chaque séance de programme : la séance s'adapte, elle ne se saute pas.
+function PTProgramCheckIn({data,update,go,notify,id}) {
+  const program = data.program;
+  const [rawWeek,dayKey] = String(id || '').split(':');
+  const week = Math.max(1, Math.min(Number(rawWeek) || 1, Number(program?.weeks) || 1));
+  const [answers,setAnswers] = usePTState({});
+  const [minutes,setMinutes] = usePTState(Number(program?.minutes) || 30);
+  const [error,setError] = usePTState('');
+
+  if (!program || program.status === 'archived' || !program.days.includes(dayKey))
+    return <><PTPageHead onBack={() => go('program')} title="Séance introuvable."/>
+      <PTButton primary onClick={() => go('program')}>Revenir à mon programme</PTButton></>;
+
+  const family = PP.familyById(program.familyId);
+  const dayName = family?.days.find(d => d.key === dayKey)?.name || dayKey;
+  const answered = PP.READINESS_QUESTIONS.every(q => answers[q.id] !== undefined);
+  const level = PP.readinessLevel(answers);
+  const check = PP.checkForSession(data, program, {answers, minutes});
+  const preview = answered ? PP.sessionPlan(program, week, dayKey, data, check) : null;
+
+  const launch = () => {
+    const plan = PP.sessionPlan(program, week, dayKey, data, check);
+    if (plan.error) { setError(plan.error); return; }
+    // Le check-in du jour vit avec la séance, jamais dans les préférences durables.
+    const persisted = Object.assign({}, plan.check);
+    delete persisted.readiness;
+    update(s => ({...s, checkIn:{...s.checkIn, ...persisted}, draft: plan}));
+    go('preview');
+  };
+
+  return <><PTPageHead onBack={() => go('program')} eyebrow={`${family?.short || ''} · semaine ${week} · ${dayName}`} title="Comment tu te sens, là ?">
+      Trois questions. La séance se cale sur ta forme du jour ; elle ne se juge pas.
+    </PTPageHead>
+    <div className="stack-lg">
+      {PP.READINESS_QUESTIONS.map(q => <section className="stack-sm" key={q.id}>
+        <h3>{q.label}</h3>
+        <PTChoices columns={3} options={q.options} value={answers[q.id]} onChange={v => setAnswers(a => ({...a, [q.id]: v}))}/>
+      </section>)}
+
+      <section className="stack-sm"><h3>Combien de temps tu as devant toi ?</h3>
+        <PTChips value={Number(minutes)} options={[10,15,20,30,45,60].map(v => ({value:v, label:`${v} min`}))} onChange={setMinutes}/>
+        <p className="fine">La séance ne dépassera ni ce temps, ni la durée prévue au programme.</p>
+      </section>
+
+      {answered && <section className="card stack">
+        <div className="topline"><strong>{level.label}</strong><span className="caption">~{PP.readinessMinutes(level, program.minutes, minutes)} min</span></div>
+        <p className="fine">{level.note}</p>
+        {preview && !preview.error && <>
+          <p className="caption">{preview.exercises.length} mouvement{preview.exercises.length > 1 ? 's' : ''} · ~{preview.estimatedMinutes} min</p>
+          <ul className="reason-list">{preview.exercises.map(e => <li key={e.id}>{e.name} · {ptDoseLabel(e)}</li>)}</ul>
+        </>}
+        {preview?.error && <p className="error" role="alert">{preview.error}</p>}
+      </section>}
+
+      {error && <p className="error" role="alert">{error}</p>}
+      <PTButton primary disabled={!answered || !!preview?.error} onClick={launch}>Voir ma séance du jour<PTIcon name="arrow" size={18}/></PTButton>
+      {!answered && <p className="fine">Réponds aux trois questions pour voir la séance adaptée.</p>}
+      <button className="text-button" onClick={() => {notify('Séance repoussée. Rien n’est perdu : le programme t’attend.'); go('program');}}>Pas aujourd’hui, je reviendrai</button>
+      <p className="fine">Un jour creux ne casse pas un programme. Une séance courte enregistrée compte autant qu’une séance complète dans ton suivi.</p>
     </div></>;
 }

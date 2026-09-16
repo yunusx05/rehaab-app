@@ -1,0 +1,6400 @@
+{
+  "generatedAt": "2026-09-16T07:21:28.588Z",
+  "missing": 131,
+  "report": [
+    {
+      "id": "incline-pushup",
+      "name": "Pompes mains surélevées",
+      "pattern": "push",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "diamond-pushup",
+      "name": "Pompes prise serrée",
+      "pattern": "arms",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "name": "Close-Grip Push-Up off of a Dumbbell",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Incline_Push-Up_Close-Grip",
+          "name": "Incline Push-Up Close-Grip",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Incline_Push-Up_Reverse_Grip",
+          "name": "Incline Push-Up Reverse Grip",
+          "equipment": "body only",
+          "muscles": [
+            "chest"
+          ],
+          "score": 18
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "cable-press",
+      "name": "Développé poitrine · poulie",
+      "pattern": "push",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Cable_Chest_Press",
+          "name": "Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Incline_Cable_Chest_Press",
+          "name": "Incline Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Standing_Cable_Chest_Press",
+          "name": "Standing Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 38
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "db-fly",
+      "name": "Écartés · haltères",
+      "pattern": "push",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Decline_Dumbbell_Flyes",
+          "name": "Decline Dumbbell Flyes",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Dumbbell_Flyes",
+          "name": "Dumbbell Flyes",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Incline_Dumbbell_Flyes",
+          "name": "Incline Dumbbell Flyes",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "cable-fly",
+      "name": "Écartés · poulie",
+      "pattern": "push",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Cable_Rear_Delt_Fly",
+          "name": "Cable Rear Delt Fly",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Flat_Bench_Cable_Flyes",
+          "name": "Flat Bench Cable Flyes",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Incline_Cable_Flye",
+          "name": "Incline Cable Flye",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "bb-ohp",
+      "name": "Développé militaire · barre",
+      "pattern": "push",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Barbell_Guillotine_Bench_Press",
+          "name": "Barbell Guillotine Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Incline Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "kb-press",
+      "name": "Développé épaules · kettlebell",
+      "pattern": "push",
+      "needs": [
+        "kettlebell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternating_Kettlebell_Press",
+          "name": "Alternating Kettlebell Press",
+          "equipment": "kettlebells",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Double_Kettlebell_Push_Press",
+          "name": "Double Kettlebell Push Press",
+          "equipment": "kettlebells",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Extended_Range_One-Arm_Kettlebell_Floor_Press",
+          "name": "Extended Range One-Arm Kettlebell Floor Press",
+          "equipment": "kettlebells",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "arnold-press",
+      "name": "Développé rotatif · haltères",
+      "pattern": "push",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Arnold_Dumbbell_Press",
+          "name": "Arnold Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Close-Grip_Dumbbell_Press",
+          "name": "Close-Grip Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Decline_Dumbbell_Bench_Press",
+          "name": "Decline Dumbbell Bench Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "band-ohp",
+      "name": "Développé épaules · élastique",
+      "pattern": "push",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Shoulder_Press_-_With_Bands",
+          "name": "Shoulder Press - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Bench_Press_-_With_Bands",
+          "name": "Bench Press - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "push-press",
+      "name": "Développé avec impulsion · haltères",
+      "pattern": "push",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Arnold_Dumbbell_Press",
+          "name": "Arnold Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Calf_Raise_On_A_Dumbbell",
+          "name": "Calf Raise On A Dumbbell",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Close-Grip_Dumbbell_Press",
+          "name": "Close-Grip Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 24
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "band-lateral",
+      "name": "Élévations latérales · élastique",
+      "pattern": "push",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Lateral_Raise_-_With_Bands",
+          "name": "Lateral Raise - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "close-grip-press",
+      "name": "Développé couché prise serrée",
+      "pattern": "arms",
+      "needs": [
+        "barbell",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Incline Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Close-Grip_Barbell_Bench_Press",
+          "name": "Close-Grip Barbell Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 24
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "chinup",
+      "name": "Tractions supination",
+      "pattern": "pull",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Leg_Pull-In",
+          "name": "Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "neutral-pullup",
+      "name": "Tractions prise neutre",
+      "pattern": "pull",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Wide-Grip_Rear_Pull-Up",
+          "name": "Wide-Grip Rear Pull-Up",
+          "equipment": "body only",
+          "muscles": [
+            "lats"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "name": "Close-Grip Push-Up off of a Dumbbell",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "inverted-row",
+      "name": "Rowing inversé sous barre",
+      "pattern": "pull",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Leg_Pull-In",
+          "name": "Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "scap-pullup",
+      "name": "Tractions scapulaires",
+      "pattern": "pull",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Leg_Pull-In",
+          "name": "Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "dead-hang",
+      "name": "Suspension à la barre",
+      "pattern": "pull",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "V-Bar_Pullup",
+          "name": "V-Bar Pullup",
+          "equipment": "body only",
+          "muscles": [
+            "lats"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "bb-row-underhand",
+      "name": "Rowing supination · barre",
+      "pattern": "pull",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Rear_Delt_Row",
+          "name": "Barbell Rear Delt Row",
+          "equipment": "barbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Bent_Over_Barbell_Row",
+          "name": "Bent Over Barbell Row",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Bent_Over_One-Arm_Long_Bar_Row",
+          "name": "Bent Over One-Arm Long Bar Row",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "kb-row",
+      "name": "Rowing · kettlebell",
+      "pattern": "pull",
+      "needs": [
+        "kettlebell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternating_Kettlebell_Row",
+          "name": "Alternating Kettlebell Row",
+          "equipment": "kettlebells",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 28
+        },
+        {
+          "id": "One-Arm_Kettlebell_Row",
+          "name": "One-Arm Kettlebell Row",
+          "equipment": "kettlebells",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Two-Arm_Kettlebell_Row",
+          "name": "Two-Arm Kettlebell Row",
+          "equipment": "kettlebells",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "chest-supported-row",
+      "name": "Rowing buste appuyé",
+      "pattern": "pull",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Bent_Over_Two-Dumbbell_Row",
+          "name": "Bent Over Two-Dumbbell Row",
+          "equipment": "dumbbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Bent_Over_Two-Dumbbell_Row_With_Palms_In",
+          "name": "Bent Over Two-Dumbbell Row With Palms In",
+          "equipment": "dumbbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "band-pulldown",
+      "name": "Tirage vertical · élastique",
+      "pattern": "pull",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "cable-row-single",
+      "name": "Tirage horizontal un bras · poulie",
+      "pattern": "pull",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternating_Cable_Shoulder_Press",
+          "name": "Alternating Cable Shoulder Press",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "name": "Bosu Ball Cable Crunch With Side Bends",
+          "equipment": "cable",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Cable_Chest_Press",
+          "name": "Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "facepull",
+      "name": "Face pull · élastique",
+      "pattern": "pull",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Band_Pull_Apart",
+          "name": "Band Pull Apart",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Rack_Pull_with_Bands",
+          "name": "Rack Pull with Bands",
+          "equipment": "barbell",
+          "muscles": [
+            "lower back"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "facepull-cable",
+      "name": "Face pull · poulie",
+      "pattern": "pull",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Face_Pull",
+          "name": "Face Pull",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "One-Arm_High-Pulley_Cable_Side_Bends",
+          "name": "One-Arm High-Pulley Cable Side Bends",
+          "equipment": "cable",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Seated_One-arm_Cable_Pulley_Rows",
+          "name": "Seated One-arm Cable Pulley Rows",
+          "equipment": "cable",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "band-pullapart",
+      "name": "Écartés · élastique",
+      "pattern": "pull",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "rear-delt-fly",
+      "name": "Oiseau · haltères",
+      "pattern": "pull",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Arnold_Dumbbell_Press",
+          "name": "Arnold Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Bent-Arm_Dumbbell_Pullover",
+          "name": "Bent-Arm Dumbbell Pullover",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "db-pullover",
+      "name": "Pull-over · haltère",
+      "pattern": "pull",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Arm_Dumbbell_Pullover",
+          "name": "Bent-Arm Dumbbell Pullover",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+          "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Bent_Over_Two-Dumbbell_Row",
+          "name": "Bent Over Two-Dumbbell Row",
+          "equipment": "dumbbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "straight-arm-pulldown",
+      "name": "Pull-over bras tendus · poulie",
+      "pattern": "pull",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent_Over_Low-Pulley_Side_Lateral",
+          "name": "Bent Over Low-Pulley Side Lateral",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 22
+        },
+        {
+          "id": "Cable_Rope_Overhead_Triceps_Extension",
+          "name": "Cable Rope Overhead Triceps Extension",
+          "equipment": "cable",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 22
+        },
+        {
+          "id": "One-Arm_High-Pulley_Cable_Side_Bends",
+          "name": "One-Arm High-Pulley Cable Side Bends",
+          "equipment": "cable",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 22
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "shrug",
+      "name": "Haussements d’épaules · haltères",
+      "pattern": "pull",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Dumbbell_Incline_Shoulder_Raise",
+          "name": "Dumbbell Incline Shoulder Raise",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_One-Arm_Shoulder_Press",
+          "name": "Dumbbell One-Arm Shoulder Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Shoulder_Press",
+          "name": "Dumbbell Shoulder Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "bb-shrug",
+      "name": "Haussements d’épaules · barre",
+      "pattern": "pull",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Incline_Shoulder_Raise",
+          "name": "Barbell Incline Shoulder Raise",
+          "equipment": "barbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Barbell_Shoulder_Press",
+          "name": "Barbell Shoulder Press",
+          "equipment": "barbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Barbell_Ab_Rollout",
+          "name": "Barbell Ab Rollout",
+          "equipment": "barbell",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "box-squat",
+      "name": "Squat sur banc",
+      "pattern": "squat",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Dumbbell_Squat_To_A_Bench",
+          "name": "Dumbbell Squat To A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Front_Barbell_Squat_To_A_Bench",
+          "name": "Front Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "split-squat",
+      "name": "Fente statique",
+      "pattern": "squat",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crossover_Reverse_Lunge",
+          "name": "Crossover Reverse Lunge",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "bulgarian",
+      "name": "Fente bulgare",
+      "pattern": "squat",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "db-bulgarian",
+      "name": "Fente bulgare · haltères",
+      "pattern": "squat",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Dumbbell_Lunges",
+          "name": "Dumbbell Lunges",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Rear_Lunge",
+          "name": "Dumbbell Rear Lunge",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "front-squat",
+      "name": "Squat avant · barre",
+      "pattern": "squat",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Front_Barbell_Squat_To_A_Bench",
+          "name": "Front Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Barbell_Full_Squat",
+          "name": "Barbell Full Squat",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "kb-front-squat",
+      "name": "Squat frontal · kettlebell",
+      "pattern": "squat",
+      "needs": [
+        "kettlebell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Front_Squats_With_Two_Kettlebells",
+          "name": "Front Squats With Two Kettlebells",
+          "equipment": "kettlebells",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Kettlebell_Pistol_Squat",
+          "name": "Kettlebell Pistol Squat",
+          "equipment": "kettlebells",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Kettlebell_Turkish_Get-Up_Squat_style",
+          "name": "Kettlebell Turkish Get-Up (Squat style)",
+          "equipment": "kettlebells",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "goblet-db",
+      "name": "Goblet squat · haltère",
+      "pattern": "squat",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Dumbbell_Squat",
+          "name": "Dumbbell Squat",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Squat_To_A_Bench",
+          "name": "Dumbbell Squat To A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Plie_Dumbbell_Squat",
+          "name": "Plie Dumbbell Squat",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "lateral-lunge",
+      "name": "Fente latérale",
+      "pattern": "squat",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crossover_Reverse_Lunge",
+          "name": "Crossover Reverse Lunge",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Lateral_Bound",
+          "name": "Lateral Bound",
+          "equipment": "body only",
+          "muscles": [
+            "adductors"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "cossack",
+      "name": "Squat cosaque",
+      "pattern": "squat",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Squat",
+          "name": "Bodyweight Squat",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Dancers_Stretch",
+          "name": "Dancer's Stretch",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "curtsy-lunge",
+      "name": "Fente croisée",
+      "pattern": "squat",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crossover_Reverse_Lunge",
+          "name": "Crossover Reverse Lunge",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Barbell_Lunge",
+          "name": "Barbell Lunge",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "step-up",
+      "name": "Montée sur banc",
+      "pattern": "squat",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Guillotine_Bench_Press",
+          "name": "Barbell Guillotine Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Incline Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "db-step-up",
+      "name": "Montée sur banc · haltères",
+      "pattern": "squat",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+          "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Decline_Dumbbell_Bench_Press",
+          "name": "Decline Dumbbell Bench Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Bench_Press",
+          "name": "Dumbbell Bench Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "walking-lunge",
+      "name": "Fentes marchées",
+      "pattern": "squat",
+      "needs": [
+        "court"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "wall-sit",
+      "name": "Chaise au mur",
+      "pattern": "squat",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "band-squat",
+      "name": "Squat avec élastique",
+      "pattern": "squat",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Box_Squat_with_Bands",
+          "name": "Box Squat with Bands",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Squat_with_Bands",
+          "name": "Squat with Bands",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Squats_-_With_Bands",
+          "name": "Squats - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "assisted-pistol",
+      "name": "Squat sur une jambe assis-debout",
+      "pattern": "squat",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Conans_Wheel",
+          "name": "Conan's Wheel",
+          "equipment": "other",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 18
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "legpress-single",
+      "name": "Presse à jambes · une jambe",
+      "pattern": "squat",
+      "needs": [
+        "legpress"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Calf_Press_On_The_Leg_Press_Machine",
+          "name": "Calf Press On The Leg Press Machine",
+          "equipment": "machine",
+          "muscles": [
+            "calves"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Leg-Over_Floor_Press",
+          "name": "Leg-Over Floor Press",
+          "equipment": "kettlebells",
+          "muscles": [
+            "chest"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Leg_Press",
+          "name": "Leg Press",
+          "equipment": "machine",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "single-rdl",
+      "name": "Soulevé de terre une jambe",
+      "pattern": "hinge",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Kettlebell_One-Legged_Deadlift",
+          "name": "Kettlebell One-Legged Deadlift",
+          "equipment": "kettlebells",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Smith_Machine_Stiff-Legged_Deadlift",
+          "name": "Smith Machine Stiff-Legged Deadlift",
+          "equipment": "machine",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Stiff-Legged_Barbell_Deadlift",
+          "name": "Stiff-Legged Barbell Deadlift",
+          "equipment": "barbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "db-single-rdl",
+      "name": "Soulevé de terre une jambe · haltère",
+      "pattern": "hinge",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Stiff-Legged_Dumbbell_Deadlift",
+          "name": "Stiff-Legged Dumbbell Deadlift",
+          "equipment": "dumbbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 36
+        },
+        {
+          "id": "Dumbbell_Seated_One-Leg_Calf_Raise",
+          "name": "Dumbbell Seated One-Leg Calf Raise",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "bb-rdl",
+      "name": "Soulevé de terre roumain · barre",
+      "pattern": "hinge",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Deadlift",
+          "name": "Barbell Deadlift",
+          "equipment": "barbell",
+          "muscles": [
+            "lower back"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Stiff-Legged_Barbell_Deadlift",
+          "name": "Stiff-Legged Barbell Deadlift",
+          "equipment": "barbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 24
+        },
+        {
+          "id": "T-Bar_Row_with_Handle",
+          "name": "T-Bar Row with Handle",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 24
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "kb-rdl",
+      "name": "Soulevé de terre roumain · kettlebell",
+      "pattern": "hinge",
+      "needs": [
+        "kettlebell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Kettlebell_Dead_Clean",
+          "name": "Kettlebell Dead Clean",
+          "equipment": "kettlebells",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Kettlebell_One-Legged_Deadlift",
+          "name": "Kettlebell One-Legged Deadlift",
+          "equipment": "kettlebells",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Advanced_Kettlebell_Windmill",
+          "name": "Advanced Kettlebell Windmill",
+          "equipment": "kettlebells",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "sumo-deadlift",
+      "name": "Soulevé de terre sumo",
+      "pattern": "hinge",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Reverse_Band_Sumo_Deadlift",
+          "name": "Reverse Band Sumo Deadlift",
+          "equipment": "barbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Sumo_Deadlift",
+          "name": "Sumo Deadlift",
+          "equipment": "barbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Sumo_Deadlift_with_Bands",
+          "name": "Sumo Deadlift with Bands",
+          "equipment": "barbell",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "good-morning",
+      "name": "Bonjour · barre",
+      "pattern": "hinge",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Ab_Rollout",
+          "name": "Barbell Ab Rollout",
+          "equipment": "barbell",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Ab_Rollout_-_On_Knees",
+          "name": "Barbell Ab Rollout - On Knees",
+          "equipment": "barbell",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "band-hinge",
+      "name": "Tirage entre les jambes · élastique",
+      "pattern": "hinge",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "hip-thrust",
+      "name": "Hip thrust au banc",
+      "pattern": "hinge",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Guillotine_Bench_Press",
+          "name": "Barbell Guillotine Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Incline Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "db-hip-thrust",
+      "name": "Hip thrust · haltère",
+      "pattern": "hinge",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Arnold_Dumbbell_Press",
+          "name": "Arnold Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Bent-Arm_Dumbbell_Pullover",
+          "name": "Bent-Arm Dumbbell Pullover",
+          "equipment": "dumbbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "bb-hip-thrust",
+      "name": "Hip thrust · barre",
+      "pattern": "hinge",
+      "needs": [
+        "barbell",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Hip_Thrust",
+          "name": "Barbell Hip Thrust",
+          "equipment": "barbell",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 28
+        },
+        {
+          "id": "T-Bar_Row_with_Handle",
+          "name": "T-Bar Row with Handle",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Barbell_Ab_Rollout",
+          "name": "Barbell Ab Rollout",
+          "equipment": "barbell",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "single-bridge",
+      "name": "Pont fessier une jambe",
+      "pattern": "hinge",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Single_Leg_Glute_Bridge",
+          "name": "Single Leg Glute Bridge",
+          "equipment": "body only",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Alternate_Leg_Diagonal_Bound",
+          "name": "Alternate Leg Diagonal Bound",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Butt_Lift_Bridge",
+          "name": "Butt Lift (Bridge)",
+          "equipment": "body only",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "glute-kickback",
+      "name": "Extension de hanche · élastique",
+      "pattern": "hinge",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Hip_Extension_with_Bands",
+          "name": "Hip Extension with Bands",
+          "equipment": "bands",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Band_Hip_Adductions",
+          "name": "Band Hip Adductions",
+          "equipment": "bands",
+          "muscles": [
+            "adductors"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Hip_Flexion_with_Band",
+          "name": "Hip Flexion with Band",
+          "equipment": "bands",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "back-extension",
+      "name": "Extension du dos au banc",
+      "pattern": "hinge",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Barbell_Guillotine_Bench_Press",
+          "name": "Barbell Guillotine Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Incline Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "nordic-assisted",
+      "name": "Flexion nordique assistée",
+      "pattern": "hinge",
+      "needs": [
+        "partner",
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "name": "Palms-Down Dumbbell Wrist Curl Over A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Palms-Down_Wrist_Curl_Over_A_Bench",
+          "name": "Palms-Down Wrist Curl Over A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+          "name": "Palms-Up Barbell Wrist Curl Over A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "single-calf",
+      "name": "Montées sur pointes une jambe",
+      "pattern": "calf",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Lying_Leg_Raise",
+          "name": "Flat Bench Lying Leg Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Front_Leg_Raises",
+          "name": "Front Leg Raises",
+          "equipment": "body only",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 18
+        },
+        {
+          "id": "Hanging_Leg_Raise",
+          "name": "Hanging Leg Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 18
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "db-calf",
+      "name": "Montées sur pointes · haltères",
+      "pattern": "calf",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench",
+          "name": "Bent Over Dumbbell Rear Delt Raise With Head On Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Calf_Raise_On_A_Dumbbell",
+          "name": "Calf Raise On A Dumbbell",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Incline_Shoulder_Raise",
+          "name": "Dumbbell Incline Shoulder Raise",
+          "equipment": "dumbbell",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "seated-calf",
+      "name": "Mollets assis · haltères",
+      "pattern": "calf",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Dumbbell_Seated_One-Leg_Calf_Raise",
+          "name": "Dumbbell Seated One-Leg Calf Raise",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Calf_Raise_On_A_Dumbbell",
+          "name": "Calf Raise On A Dumbbell",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Seated_Box_Jump",
+          "name": "Dumbbell Seated Box Jump",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "calf-hold",
+      "name": "Maintien sur pointes",
+      "pattern": "calf",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Chest_Push_from_3_point_stance",
+          "name": "Chest Push from 3 point stance",
+          "equipment": "medicine ball",
+          "muscles": [
+            "chest"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "tibialis",
+      "name": "Relevés de pointes",
+      "pattern": "calf",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Chest_Push_from_3_point_stance",
+          "name": "Chest Push from 3 point stance",
+          "equipment": "medicine ball",
+          "muscles": [
+            "chest"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "bb-curl",
+      "name": "Curl · barre",
+      "pattern": "arms",
+      "needs": [
+        "barbell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Curl",
+          "name": "Barbell Curl",
+          "equipment": "barbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Barbell_Curls_Lying_Against_An_Incline",
+          "name": "Barbell Curls Lying Against An Incline",
+          "equipment": "barbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Close-Grip_EZ_Bar_Curl",
+          "name": "Close-Grip EZ Bar Curl",
+          "equipment": "barbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "incline-curl",
+      "name": "Curl incliné · haltères",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Dumbbell_Prone_Incline_Curl",
+          "name": "Dumbbell Prone Incline Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Flexor_Incline_Dumbbell_Curls",
+          "name": "Flexor Incline Dumbbell Curls",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 38
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "concentration-curl",
+      "name": "Curl concentré",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Hammer_Curl",
+          "name": "Alternate Hammer Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Concentration_Curls",
+          "name": "Concentration Curls",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "reverse-curl",
+      "name": "Curl prise pronation",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Hammer_Curl",
+          "name": "Alternate Hammer Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Alternate_Incline_Dumbbell_Curl",
+          "name": "Alternate Incline Dumbbell Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Close-Grip_Dumbbell_Press",
+          "name": "Close-Grip Dumbbell Press",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "band-curl",
+      "name": "Curl · élastique",
+      "pattern": "arms",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "cable-curl",
+      "name": "Curl · poulie",
+      "pattern": "arms",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Cable_Hammer_Curls_-_Rope_Attachment",
+          "name": "Cable Hammer Curls - Rope Attachment",
+          "equipment": "cable",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Cable_Preacher_Curl",
+          "name": "Cable Preacher Curl",
+          "equipment": "cable",
+          "muscles": [
+            "biceps"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Cable_Wrist_Curl",
+          "name": "Cable Wrist Curl",
+          "equipment": "cable",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "skullcrusher",
+      "name": "Extension triceps allongé",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells",
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Lying_Dumbbell_Tricep_Extension",
+          "name": "Lying Dumbbell Tricep Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Decline_Dumbbell_Triceps_Extension",
+          "name": "Decline Dumbbell Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_One-Arm_Triceps_Extension",
+          "name": "Dumbbell One-Arm Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "db-kickback",
+      "name": "Extension triceps arrière",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Decline_Dumbbell_Triceps_Extension",
+          "name": "Decline Dumbbell Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_One-Arm_Triceps_Extension",
+          "name": "Dumbbell One-Arm Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Dumbbell_Tricep_Extension_-Pronated_Grip",
+          "name": "Dumbbell Tricep Extension -Pronated Grip",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "cable-triceps",
+      "name": "Extension triceps · poulie",
+      "pattern": "arms",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Cable_Incline_Triceps_Extension",
+          "name": "Cable Incline Triceps Extension",
+          "equipment": "cable",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Cable_Lying_Triceps_Extension",
+          "name": "Cable Lying Triceps Extension",
+          "equipment": "cable",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 38
+        },
+        {
+          "id": "Cable_One_Arm_Tricep_Extension",
+          "name": "Cable One Arm Tricep Extension",
+          "equipment": "cable",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 38
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "wrist-curl",
+      "name": "Flexion des poignets",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Palms-Down_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "name": "Palms-Down Dumbbell Wrist Curl Over A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Palms-Up_Dumbbell_Wrist_Curl_Over_A_Bench",
+          "name": "Palms-Up Dumbbell Wrist Curl Over A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 28
+        },
+        {
+          "id": "Seated_Dumbbell_Palms-Down_Wrist_Curl",
+          "name": "Seated Dumbbell Palms-Down Wrist Curl",
+          "equipment": "dumbbell",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 28
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "wrist-extension",
+      "name": "Extension des poignets",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Decline_Dumbbell_Triceps_Extension",
+          "name": "Decline Dumbbell Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Dumbbell_One-Arm_Triceps_Extension",
+          "name": "Dumbbell One-Arm Triceps Extension",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Dumbbell_Tricep_Extension_-Pronated_Grip",
+          "name": "Dumbbell Tricep Extension -Pronated Grip",
+          "equipment": "dumbbell",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "grip-hold",
+      "name": "Maintien de charge",
+      "pattern": "arms",
+      "needs": [
+        "dumbbells"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "hollow-hold",
+      "name": "Position creuse",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Push-Ups_-_Close_Triceps_Position",
+          "name": "Push-Ups - Close Triceps Position",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Pushups_Close_and_Wide_Hand_Positions",
+          "name": "Pushups (Close and Wide Hand Positions)",
+          "equipment": "body only",
+          "muscles": [
+            "chest"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Bottoms-Up_Clean_From_The_Hang_Position",
+          "name": "Bottoms-Up Clean From The Hang Position",
+          "equipment": "kettlebells",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "plank-shoulder-tap",
+      "name": "Planche avec touches d’épaule",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Push_Up_to_Side_Plank",
+          "name": "Push Up to Side Plank",
+          "equipment": "body only",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 10
+        },
+        {
+          "id": "Dumbbell_Squat_To_A_Bench",
+          "name": "Dumbbell Squat To A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 10
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "plank-reach",
+      "name": "Planche avec bras tendu",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "name": "Close-Grip Push-Up off of a Dumbbell",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 4
+        },
+        {
+          "id": "Plank",
+          "name": "Plank",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 4
+        },
+        {
+          "id": "Push_Up_to_Side_Plank",
+          "name": "Push Up to Side Plank",
+          "equipment": "body only",
+          "muscles": [
+            "chest"
+          ],
+          "score": 4
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "side-plank-full",
+      "name": "Gainage latéral jambes tendues",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Single-Leg_Lateral_Hop",
+          "name": "Single-Leg Lateral Hop",
+          "equipment": "other",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 10
+        },
+        {
+          "id": "Alternate_Leg_Diagonal_Bound",
+          "name": "Alternate Leg Diagonal Bound",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 4
+        },
+        {
+          "id": "Crunch_-_Legs_On_Exercise_Ball",
+          "name": "Crunch - Legs On Exercise Ball",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 4
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "side-plank-lift",
+      "name": "Gainage latéral avec montées de bassin",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Knee_Hip_Raise",
+          "name": "Bent-Knee Hip Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Cable_Seated_Lateral_Raise",
+          "name": "Cable Seated Lateral Raise",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Calf_Raise_On_A_Dumbbell",
+          "name": "Calf Raise On A Dumbbell",
+          "equipment": "dumbbell",
+          "muscles": [
+            "calves"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 50
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 50
+        }
+      ]
+    },
+    {
+      "id": "bear-hold",
+      "name": "Position de l’ours",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Push-Ups_-_Close_Triceps_Position",
+          "name": "Push-Ups - Close Triceps Position",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Pushups_Close_and_Wide_Hand_Positions",
+          "name": "Pushups (Close and Wide Hand Positions)",
+          "equipment": "body only",
+          "muscles": [
+            "chest"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Bottoms-Up_Clean_From_The_Hang_Position",
+          "name": "Bottoms-Up Clean From The Hang Position",
+          "equipment": "kettlebells",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "bear-crawl",
+      "name": "Déplacement de l’ours",
+      "pattern": "core",
+      "needs": [
+        "court"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "leg-raise",
+      "name": "Relevés de jambes au sol",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Leg_Diagonal_Bound",
+          "name": "Alternate Leg Diagonal Bound",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crunch_-_Legs_On_Exercise_Ball",
+          "name": "Crunch - Legs On Exercise Ball",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Double_Leg_Butt_Kick",
+          "name": "Double Leg Butt Kick",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "reverse-crunch",
+      "name": "Enroulement inversé",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Leg_Pull-In",
+          "name": "Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "hanging-knee-raise",
+      "name": "Relevés de genoux suspendu",
+      "pattern": "core",
+      "needs": [
+        "pullup"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Knee_Hip_Raise",
+          "name": "Bent-Knee Hip Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Elbow_to_Knee",
+          "name": "Elbow to Knee",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Knee_Circles",
+          "name": "Knee Circles",
+          "equipment": "body only",
+          "muscles": [
+            "calves"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "russian-twist",
+      "name": "Rotations assises · kettlebell",
+      "pattern": "core",
+      "needs": [
+        "kettlebell"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Advanced_Kettlebell_Windmill",
+          "name": "Advanced Kettlebell Windmill",
+          "equipment": "kettlebells",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Alternating_Kettlebell_Press",
+          "name": "Alternating Kettlebell Press",
+          "equipment": "kettlebells",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Alternating_Kettlebell_Row",
+          "name": "Alternating Kettlebell Row",
+          "equipment": "kettlebells",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "cable-crunch",
+      "name": "Enroulement à la poulie",
+      "pattern": "core",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternating_Cable_Shoulder_Press",
+          "name": "Alternating Cable Shoulder Press",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Bosu_Ball_Cable_Crunch_With_Side_Bends",
+          "name": "Bosu Ball Cable Crunch With Side Bends",
+          "equipment": "cable",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Cable_Chest_Press",
+          "name": "Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "pallof-cable",
+      "name": "Pallof press · poulie",
+      "pattern": "core",
+      "needs": [
+        "cable"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternating_Cable_Shoulder_Press",
+          "name": "Alternating Cable Shoulder Press",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Cable_Chest_Press",
+          "name": "Cable Chest Press",
+          "equipment": "cable",
+          "muscles": [
+            "chest"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Cable_Shoulder_Press",
+          "name": "Cable Shoulder Press",
+          "equipment": "cable",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "suitcase-carry",
+      "name": "Portée valise",
+      "pattern": "core",
+      "needs": [
+        "dumbbells",
+        "court"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "overhead-carry",
+      "name": "Portée bras au-dessus de la tête",
+      "pattern": "core",
+      "needs": [
+        "dumbbells",
+        "court"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "single-leg-stand",
+      "name": "Équilibre sur une jambe",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Leg_Diagonal_Bound",
+          "name": "Alternate Leg Diagonal Bound",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crunch_-_Legs_On_Exercise_Ball",
+          "name": "Crunch - Legs On Exercise Ball",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Double_Leg_Butt_Kick",
+          "name": "Double Leg Butt Kick",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "single-leg-eyes",
+      "name": "Équilibre sur une jambe, yeux fermés",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Alternate_Leg_Diagonal_Bound",
+          "name": "Alternate Leg Diagonal Bound",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 4
+        },
+        {
+          "id": "Crunch_-_Legs_On_Exercise_Ball",
+          "name": "Crunch - Legs On Exercise Ball",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 4
+        },
+        {
+          "id": "Double_Leg_Butt_Kick",
+          "name": "Double Leg Butt Kick",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 4
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "single-leg-reach",
+      "name": "Équilibre avec touche au sol",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Dumbbell_Squat_To_A_Bench",
+          "name": "Dumbbell Squat To A Bench",
+          "equipment": "dumbbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Front_Barbell_Squat_To_A_Bench",
+          "name": "Front Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "tandem-stand",
+      "name": "Équilibre pieds alignés",
+      "pattern": "core",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "name": "Close-Grip Push-Up off of a Dumbbell",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "heel-toe-walk",
+      "name": "Marche pied devant pied",
+      "pattern": "core",
+      "needs": [
+        "court"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Trail_Running_Walking",
+          "name": "Trail Running/Walking",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "airplane",
+      "name": "Balance de l’avion",
+      "pattern": "hinge",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Close-Grip_Push-Up_off_of_a_Dumbbell",
+          "name": "Close-Grip Push-Up off of a Dumbbell",
+          "equipment": "body only",
+          "muscles": [
+            "triceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Balance_Board",
+          "name": "Balance Board",
+          "equipment": "other",
+          "muscles": [
+            "calves"
+          ],
+          "score": 2
+        },
+        {
+          "id": "Barbell_Squat_To_A_Bench",
+          "name": "Barbell Squat To A Bench",
+          "equipment": "barbell",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "monster-walk",
+      "name": "Marche du monstre · élastique",
+      "pattern": "squat",
+      "needs": [
+        "bands",
+        "court"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "clamshell",
+      "name": "Coquille · élastique",
+      "pattern": "hinge",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        },
+        {
+          "id": "Band_Good_Morning_Pull_Through",
+          "name": "Band Good Morning (Pull Through)",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 16
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "hip-abduction",
+      "name": "Abduction de hanche debout · élastique",
+      "pattern": "hinge",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Band_Hip_Adductions",
+          "name": "Band Hip Adductions",
+          "equipment": "bands",
+          "muscles": [
+            "adductors"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Hip_Extension_with_Bands",
+          "name": "Hip Extension with Bands",
+          "equipment": "bands",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Hip_Flexion_with_Band",
+          "name": "Hip Flexion with Band",
+          "equipment": "bands",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 24
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "jumping-jack",
+      "name": "Jumping jacks",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bench_Jump",
+          "name": "Bench Jump",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Freehand_Jump_Squat",
+          "name": "Freehand Jump Squat",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Knee_Tuck_Jump",
+          "name": "Knee Tuck Jump",
+          "equipment": "body only",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "high-knees",
+      "name": "Montées de genoux",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Knee_Hip_Raise",
+          "name": "Bent-Knee Hip Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 20
+        },
+        {
+          "id": "Step-up_with_Knee_Raise",
+          "name": "Step-up with Knee Raise",
+          "equipment": "body only",
+          "muscles": [
+            "glutes"
+          ],
+          "score": 20
+        },
+        {
+          "id": "Knee_Hip_Raise_On_Parallel_Bars",
+          "name": "Knee/Hip Raise On Parallel Bars",
+          "equipment": "other",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "mountain-climber",
+      "name": "Grimpeur",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "squat-thrust",
+      "name": "Squat thrust",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Squat",
+          "name": "Bodyweight Squat",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Dancers_Stretch",
+          "name": "Dancer's Stretch",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "burpee-nojump",
+      "name": "Burpee sans saut",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bench_Jump",
+          "name": "Bench Jump",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Dancers_Stretch",
+          "name": "Dancer's Stretch",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "burpee",
+      "name": "Burpee complet",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "skater",
+      "name": "Pas du patineur",
+      "pattern": "cardio",
+      "needs": [
+        "court"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "shadow-box",
+      "name": "Boxe dans le vide",
+      "pattern": "cardio",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "V-Bar_Pullup",
+          "name": "V-Bar Pullup",
+          "equipment": "body only",
+          "muscles": [
+            "lats"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "stair",
+      "name": "Montées de marches",
+      "pattern": "cardio",
+      "needs": [
+        "outdoor"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Knee_Hip_Raise",
+          "name": "Bent-Knee Hip Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Flat_Bench_Lying_Leg_Raise",
+          "name": "Flat Bench Lying Leg Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Floor_Glute-Ham_Raise",
+          "name": "Floor Glute-Ham Raise",
+          "equipment": null,
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "walk-hill",
+      "name": "Marche rapide en côte",
+      "pattern": "cardio",
+      "needs": [
+        "outdoor"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Trail_Running_Walking",
+          "name": "Trail Running/Walking",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "run-interval",
+      "name": "Course · fractionné court",
+      "pattern": "cardio",
+      "needs": [
+        "outdoor"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "rower-interval",
+      "name": "Rameur · intervalles",
+      "pattern": "cardio",
+      "needs": [
+        "rower"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Flat_Bench_Leg_Pull-In",
+          "name": "Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Leg_Pull-In",
+          "name": "Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Seated_Flat_Bench_Leg_Pull-In",
+          "name": "Seated Flat Bench Leg Pull-In",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "box-jump-step",
+      "name": "Saut sur banc, descente marchée",
+      "pattern": "jump",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bench_Jump",
+          "name": "Bench Jump",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 24
+        },
+        {
+          "id": "Barbell_Bench_Press_-_Medium_Grip",
+          "name": "Barbell Bench Press - Medium Grip",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Barbell_Guillotine_Bench_Press",
+          "name": "Barbell Guillotine Bench Press",
+          "equipment": "barbell",
+          "muscles": [
+            "chest"
+          ],
+          "score": 12
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "broad-jump",
+      "name": "Saut horizontal",
+      "pattern": "jump",
+      "needs": [
+        "court"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bench_Jump",
+          "name": "Bench Jump",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Freehand_Jump_Squat",
+          "name": "Freehand Jump Squat",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Knee_Tuck_Jump",
+          "name": "Knee Tuck Jump",
+          "equipment": "body only",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "split-jump",
+      "name": "Fente sautée",
+      "pattern": "jump",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Crossover_Reverse_Lunge",
+          "name": "Crossover Reverse Lunge",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "depth-drop",
+      "name": "Descente et réception",
+      "pattern": "jump",
+      "needs": [
+        "bench"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "worlds-greatest",
+      "name": "Étirement complet en fente",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "All_Fours_Quad_Stretch",
+          "name": "All Fours Quad Stretch",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Bodyweight_Walking_Lunge",
+          "name": "Bodyweight Walking Lunge",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Calf_Stretch_Elbows_Against_Wall",
+          "name": "Calf Stretch Elbows Against Wall",
+          "equipment": null,
+          "muscles": [
+            "calves"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "hip-90-90",
+      "name": "Rotation de hanches assis",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Seated_Barbell_Twist",
+          "name": "Seated Barbell Twist",
+          "equipment": "barbell",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 12
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Dancers_Stretch",
+          "name": "Dancer's Stretch",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "childs-pose",
+      "name": "Posture de l’enfant",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "downdog",
+      "name": "Chien tête en bas",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Lying_T-Bar_Row",
+          "name": "Lying T-Bar Row",
+          "equipment": "machine",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 2
+        },
+        {
+          "id": "T-Bar_Row_with_Handle",
+          "name": "T-Bar Row with Handle",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "pigeon",
+      "name": "Posture du pigeon",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "deep-squat-hold",
+      "name": "Maintien en squat profond",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bodyweight_Squat",
+          "name": "Bodyweight Squat",
+          "equipment": "body only",
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Childs_Pose",
+          "name": "Child's Pose",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Dancers_Stretch",
+          "name": "Dancer's Stretch",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "calf-stretch",
+      "name": "Étirement du mollet au mur",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Calf_Stretch_Elbows_Against_Wall",
+          "name": "Calf Stretch Elbows Against Wall",
+          "equipment": null,
+          "muscles": [
+            "calves"
+          ],
+          "score": 20
+        },
+        {
+          "id": "Calf_Stretch_Hands_Against_Wall",
+          "name": "Calf Stretch Hands Against Wall",
+          "equipment": null,
+          "muscles": [
+            "calves"
+          ],
+          "score": 20
+        },
+        {
+          "id": "Seated_Calf_Stretch",
+          "name": "Seated Calf Stretch",
+          "equipment": null,
+          "muscles": [
+            "calves"
+          ],
+          "score": 20
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "doorway-chest",
+      "name": "Ouverture de poitrine à l’encadrement",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Chin_To_Chest_Stretch",
+          "name": "Chin To Chest Stretch",
+          "equipment": null,
+          "muscles": [
+            "neck"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Dynamic_Chest_Stretch",
+          "name": "Dynamic Chest Stretch",
+          "equipment": null,
+          "muscles": [
+            "chest"
+          ],
+          "score": 6
+        },
+        {
+          "id": "Hug_Knees_To_Chest",
+          "name": "Hug Knees To Chest",
+          "equipment": null,
+          "muscles": [
+            "lower back"
+          ],
+          "score": 6
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 30
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 30
+        }
+      ]
+    },
+    {
+      "id": "band-dislocate",
+      "name": "Passages d’épaules · élastique",
+      "pattern": "mobility",
+      "needs": [
+        "bands"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Shoulder_Press_-_With_Bands",
+          "name": "Shoulder Press - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 26
+        },
+        {
+          "id": "Back_Flyes_-_With_Bands",
+          "name": "Back Flyes - With Bands",
+          "equipment": "bands",
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 14
+        },
+        {
+          "id": "Band_Good_Morning",
+          "name": "Band Good Morning",
+          "equipment": "bands",
+          "muscles": [
+            "hamstrings"
+          ],
+          "score": 14
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "quad-rotation",
+      "name": "Rotation thoracique à quatre pattes",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Lying_T-Bar_Row",
+          "name": "Lying T-Bar Row",
+          "equipment": "machine",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 10
+        },
+        {
+          "id": "T-Bar_Row_with_Handle",
+          "name": "T-Bar Row with Handle",
+          "equipment": "barbell",
+          "muscles": [
+            "middle back"
+          ],
+          "score": 10
+        },
+        {
+          "id": "Russian_Twist",
+          "name": "Russian Twist",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 4
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 40
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 40
+        }
+      ]
+    },
+    {
+      "id": "neck-mob",
+      "name": "Mobilité du cou",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 10
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 10
+        }
+      ]
+    },
+    {
+      "id": "wrist-mob",
+      "name": "Mobilité des poignets",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Side_Wrist_Pull",
+          "name": "Side Wrist Pull",
+          "equipment": null,
+          "muscles": [
+            "shoulders"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Wrist_Circles",
+          "name": "Wrist Circles",
+          "equipment": "body only",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Cable_Wrist_Curl",
+          "name": "Cable Wrist Curl",
+          "equipment": "cable",
+          "muscles": [
+            "forearms"
+          ],
+          "score": 2
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    },
+    {
+      "id": "hip-circles",
+      "name": "Cercles de hanche",
+      "pattern": "mobility",
+      "needs": [
+        "bodyweight"
+      ],
+      "photoCandidates": [
+        {
+          "id": "Bent-Knee_Hip_Raise",
+          "name": "Bent-Knee Hip Raise",
+          "equipment": "body only",
+          "muscles": [
+            "abdominals"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Hip_Circles_prone",
+          "name": "Hip Circles (prone)",
+          "equipment": "body only",
+          "muscles": [
+            "abductors"
+          ],
+          "score": 8
+        },
+        {
+          "id": "Kneeling_Hip_Flexor",
+          "name": "Kneeling Hip Flexor",
+          "equipment": null,
+          "muscles": [
+            "quadriceps"
+          ],
+          "score": 8
+        }
+      ],
+      "videoCandidates": [
+        {
+          "videoId": 1,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/512/fff4c294-93f0-4926-b3a2-bf59ad4afaa5.MOV",
+          "author": "Goulart",
+          "score": 20
+        },
+        {
+          "videoId": 2,
+          "name": "",
+          "url": "https://wger.de/media/exercise-video/507/307e7276-a14d-4ea0-b579-f5b0dbc6f5af.MOV",
+          "author": "Goulart",
+          "score": 20
+        }
+      ]
+    }
+  ]
+}
