@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v19-checkin-media';
+const CACHE = 'rehaab-v25-hanche';
 const PRECACHE = [
   './',
   './index.html',
@@ -11,10 +11,14 @@ const PRECACHE = [
   './personal.css',
   './live-session.css',
   './sport.css',
+  './basket.css',
   './personal-app.jsx',
   './visual-components.jsx',
   './sport-components.jsx',
   './program-components.jsx',
+  './player-components.jsx',
+  './pathway-components.jsx',
+  './qi-components.jsx',
   './live-session.jsx',
   './exercise-media.js',
   './vendor/gsap.min.js',
@@ -232,6 +236,9 @@ const PRECACHE = [
   './personal-engine.js',
   './personal-programs.js',
   './personal-nutrition.js',
+  './player-profile.js',
+  './basket-pathway.js',
+  './basket-qi.js',
   './program-data.js',
   './media/ATTRIBUTION.md',
   'https://unpkg.com/react@18/umd/react.production.min.js',

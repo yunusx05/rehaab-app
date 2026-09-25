@@ -230,6 +230,20 @@
   ex('neck-mob','Mobilité du cou','mobility','mobility',['bodyweight'],['neck','shoulder'],['Assis ou debout, épaules relâchées.','Tourne et incline lentement la tête dans une amplitude indolore.'],{measure:'seconds',seconds:40,rest:15});
   ex('wrist-mob','Mobilité des poignets','mobility','mobility',['bodyweight'],['wrist','elbow'],['À quatre pattes ou à genoux, mains posées au sol.','Fais lentement basculer le poids d’avant en arrière, sans douleur.'],{floor:true,measure:'seconds',seconds:40,rest:15});
   ex('hip-circles','Cercles de hanche','mobility','mobility',['bodyweight'],['hip','knee','back'],['En appui sur une jambe, main sur un support.','Dessine des cercles lents avec le genou levé, dans les deux sens.'],{unilateral:true,measure:'seconds',seconds:30,rest:20});
+  // Parcours retour au jeu : renforcement du genou, vitesse, freinage et changements de direction.
+  ex('tke','Extension terminale du genou · élastique','strength','squat',['bands'],['knee'],['Élastique ancré bas, passé derrière le genou.','Genou légèrement fléchi, tends-le complètement en serrant la cuisse et tiens 2 s.'],{unilateral:true,min:12,max:15,rest:45});
+  ex('spanish-squat','Squat espagnol · élastique','strength','squat',['bands'],['knee','hip'],['Élastique solide ancré derrière les genoux, tibias verticaux.','Assieds-toi en arrière jusqu’à un angle sans douleur et tiens la position.'],{measure:'seconds',sets:4,seconds:40,rest:60});
+  ex('iso-split','Fente isométrique','strength','squat',['bodyweight'],['knee','hip'],['Position de fente, buste droit, genou arrière au-dessus du sol.','Descends à un angle confortable et tiens sans bouger.'],{unilateral:true,measure:'seconds',seconds:30,rest:45});
+  ex('step-down','Descente contrôlée sur marche','strength','squat',['bodyweight'],['knee','hip','ankle'],['Debout sur une marche basse, sur une jambe.','Descends l’autre talon en 3 s, genou aligné avec le pied, puis remonte.'],{unilateral:true,min:6,max:10,rest:60});
+  ex('wall-drill','Posture d’accélération au mur','plyo','footwork',['bodyweight'],['hip','knee','ankle'],['Mains au mur, corps incliné en ligne droite, sur l’avant des pieds.','Monte un genou, puis alterne en rythme sans casser l’alignement.'],{measure:'seconds',seconds:20,rest:40,min:3,max:4});
+  ex('accel-10','Accélérations 10 m','plyo','footwork',['court'],['hip','knee','ankle'],['Départ à deux appuis, buste penché vers l’avant.','Pousse fort sur 10 m puis décélère progressivement sur 5 m. Marche pour revenir.'],{impact:true,min:4,max:6,rest:90});
+  ex('sprint-20','Sprint 20 m progressif','plyo','footwork',['court'],['hip','knee','ankle'],['Monte en vitesse sur 10 m, tiens 10 m à l’intensité prévue.','Freine sur 10 m au moins. Arrête dès qu’un arrière de cuisse tire.'],{impact:true,level:2,min:3,max:5,rest:120});
+  ex('crossover-start','Départ croisé latéral','plyo','footwork',['court'],['hip','knee','ankle'],['Position défensive basse.','Ouvre la hanche, croise le pied et accélère sur 5 m. Alterne les côtés.'],{impact:true,level:2,min:4,max:6,rest:75});
+  ex('shuttle-5105','Navette 5-10-5','plyo','footwork',['court'],['hip','knee','ankle'],['Trois plots espacés de 5 m.','5 m d’un côté, 10 m de l’autre, 5 m retour. Freine bas, touche la ligne.'],{impact:true,level:2,min:3,max:4,rest:120});
+  ex('decel-stick','Freinage en trois appuis','plyo','footwork',['court'],['hip','knee','ankle'],['Accélère sur 5 m.','Freine en trois appuis courts et tiens la position basse 2 s, genoux alignés.'],{impact:true,level:2,measure:'contacts',min:4,max:6,rest:90});
+  ex('lateral-bound-stick','Bond latéral stabilisé','plyo','jump',['bodyweight'],['hip','knee','ankle'],['Pousse latéralement sur une jambe.','Réceptionne sur l’autre et tiens 2 s sans que le genou rentre.'],{impact:true,level:2,unilateral:true,measure:'contacts',min:4,max:6,rest:90});
+  ex('adductor-squeeze','Serrage des adducteurs','strength','core',['bodyweight'],['hip'],['Allongé sur le dos, genoux fléchis, poings ou coussin serré entre les genoux.','Serre progressivement jusqu’à un effort sans douleur, tiens, puis relâche doucement.'],{floor:true,measure:'seconds',sets:4,seconds:20,rest:30});
+  ex('single-hop-stick','Saut une jambe, réception tenue','plyo','jump',['bodyweight'],['hip','knee','ankle'],['Sur une jambe, saute vers l’avant à distance modérée.','Réceptionne sur la même jambe et tiens 2 s, genou au-dessus du pied.'],{impact:true,level:2,unilateral:true,measure:'contacts',min:4,max:6,rest:90});
 
   ex('defense','Pas défensifs contrôlés','basket','footwork',['court'],lower,['Petit trajet latéral dégagé.','Déplace-toi sans croiser les pieds, avec une amplitude maîtrisée.'],{measure:'seconds',seconds:25,rest:45,level:2});
 
@@ -241,7 +255,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,qi:{answers:[],cards:{},reviews:[],rest:true}};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -279,6 +293,14 @@
     }
     const nutrition=globals.PersonalNutrition||tryRequire('./personal-nutrition.js');
     s.nutrition=nutrition?nutrition.validateNutrition(s.nutrition):(s.nutrition&&typeof s.nutrition==='object'&&!Array.isArray(s.nutrition)?s.nutrition:null);
+    // Lot « profil joueur » : poste, parcours retour au jeu et QI basket, absents des anciennes sauvegardes.
+    const player=globals.PlayerProfile||tryRequire('./player-profile.js');
+    s.player=s.player&&player?player.validatePlayer(s.player):null;
+    const pathway=globals.BasketPathway||tryRequire('./basket-pathway.js');
+    s.pathway=s.pathway&&pathway?pathway.validatePathway(s.pathway):null;
+    s.pathwayArchive=Array.isArray(s.pathwayArchive)&&pathway?s.pathwayArchive.slice(-10).map(x=>{try{return {...pathway.validatePathway(x),stoppedAt:typeof x.stoppedAt==='string'?x.stoppedAt:null};}catch(e){return null;}}).filter(Boolean):[];
+    const qi=globals.BasketQI||tryRequire('./basket-qi.js');
+    s.qi=qi?qi.validateQi(s.qi):base.qi;
     return {...base,...s,profile:{...base.profile,...s.profile}};
   }
   function validateEntries(entries) {
@@ -295,24 +317,29 @@
     const active=activeSymptoms(state);
     return {blocked:active.some(s=>s.redFlags || Number(s.severity)>=7),active,regions:[...new Set(active.map(s=>s.region))]};
   }
+  // Profil joueur renseigné : une zone douloureuse garde les mouvements qu'elle tolère (renforcement) au lieu d'être exclue en bloc.
+  function tolerance(state) {if(!state.player||!state.player.position) return null;const g=typeof globalThis!=='undefined'?globalThis:{};return g.PlayerProfile||tryRequire('./player-profile.js');}
   function context(state, check=state.checkIn, now=dateKey()) {
-    const recent=state.sessions.filter(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2);
+    // guided : étape du parcours basket. Ses critères de passage tiennent lieu de feu vert pour les impacts et la reprise.
+    const guided=Number(check&&check.guided)||0,tol=tolerance(state);
+    const recent=state.sessions.filter(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=(guided?1:2));
     const upcoming=state.events.filter(e=>!e.completed && dayDiff(e.date,now)>=0 && dayDiff(e.date,now)<=1 && ['match','club'].includes(e.type));
     const active=safety(state);
     const recentLegs=recent.some(s=>s.focus==='basket' || s.source==='external' && ['match','club'].includes(s.eventType) || s.exercises.some(e=>['squat','hinge','jump'].includes(e.pattern) && (s.entries[e.id]||[]).some(r=>r.done)));
     const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
-    const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning';
+    const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning' && !guided;
     const hardRecently=recent.some(s=>Number(s.effort)>=8);
     const low=check.energy==='low' || returning || hardRecently || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
-    return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 || upcoming.length>0 || recentLegs || low || !state.profile.impactReady || state.profile.experience==='beginner'};
+    return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
   }
   function allowed(exercise,state,check=state.checkIn,ctx=context(state,check)) {
     if(ctx.active.blocked) return false;
     if(!exercise.needs.every(id=>id==='bodyweight'||check.equipment.includes(id))) return false;
-    if(exercise.regions.some(r=>ctx.active.regions.includes(r))) return false;
+    const tol=tolerance(state);
+    if(tol?!tol.tolerates(exercise,ctx.active.active):exercise.regions.some(r=>ctx.active.regions.includes(r))) return false;
     if(exercise.impact && (ctx.avoidImpact || check.constraints.includes('no-impact') || check.constraints.includes('quiet'))) return false;
     if(exercise.floor && check.constraints.includes('no-floor')) return false;
-    if(exercise.level>1 && state.profile.experience==='beginner') return false;
+    if(exercise.level>1 && state.profile.experience==='beginner' && !(Number(check&&check.guided)>=2)) return false;
     if(exercise.needsSafety && !state.profile.safeties) return false;
     if(state.preferences.avoids.includes(exercise.id)) return false;
     if(ctx.low && ['bike-interval','defense'].includes(exercise.id)) return false;

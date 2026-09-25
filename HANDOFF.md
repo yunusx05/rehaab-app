@@ -108,3 +108,33 @@ Un push Git n'est pas un déploiement vérifié : rien n'a été déployé.
 **Fichiers personnels à ne jamais indexer ni supprimer** : les 4 captures non suivies de `ui inspiration-fonction/`.
 
 **Mémoire projet** : pour Rehaab, les visuels générés ne montrent que des hommes, jamais de femmes. Sans objet dans ce lot puisqu'aucun média n'a été produit.
+
+## Lot 3 — Profil joueur, parcours « Retour au jeu », QI basket (25/09/2026, branche `feature/profil-joueur-qi`, non commité)
+
+Demande : app centrée sur la préparation physique basket et le QI basket, sans technique terrain. Garder l’existant, garder les programmes séparés (liberté de ne pas les suivre), développer le programme basket en étapes pour une reprise après deux ans sans jouer.
+
+| Fichier | Rôle |
+| --- | --- |
+| `player-profile.js` | Poste, profil de jeu, priorités athlétiques, tolérance aux douleurs (genou, cheville), `dailyBody`, thèmes QI par poste. |
+| `basket-pathway.js` | Parcours en 5 étapes (Fondations → Force → Puissance → Vitesse → Retour au jeu), bâti sur les 3 blocs d’origine. Passage par critères (volume de séances + tests + absence de douleur), paliers de jeu à l’étape 5, séances courtes (`quick`). |
+| `basket-qi.js` | 33 lectures dessinées, 9 placements, 10 fins de match (règles FIBA), 33 cartes en répétition espacée, guide pick & roll, grille d’analyse de match, question de repos. |
+| `player-components.jsx`, `pathway-components.jsx`, `qi-components.jsx`, `basket.css` | Écrans. Routes : `player`, `pathway`, `pathway-test/<id>`, `qi`, `qi-run/<mode>`, `qi-cards`, `qi-pnr`, `qi-review`. |
+
+- **Moteur** : avec un profil joueur, `allowed()` garde les mouvements qu’une zone douloureuse tolère au lieu de l’exclure en bloc. Sans profil, règle d’origine inchangée. `check.guided` (étape du parcours) laisse le parcours doser impacts et reprise ; le même contrôle s’applique pendant la séance.
+- 12 exercices ajoutés (catalogue : 212). Programme basket d’origine et `fromProgram` inchangés (test de non-régression sur 144 configurations).
+- Navigation : Aujourd’hui · Corps · QI · Progression · Profil. La bibliothèque est dans Corps.
+- `sw.js` : cache `rehaab-v20-joueur-qi`, nouveaux fichiers ajoutés au précache.
+- Vérifié : 68 tests Playwright passés (dont `tests/basket-return.spec.cjs`), aucun débordement à 320 et 390 px sur les nouveaux écrans, aucune erreur console.
+- Non vérifié : aucune source externe consultée pour les repères de test (conventions d’entraînement courantes, affichées comme telles dans l’app). Rien n’a été déployé.
+
+### Suite du lot 3 (25/09/2026)
+
+- **QI animé** : `court` = position de départ, `anim` = images jouées avant la décision (les choix apparaissent à l'arrêt sur image), `solution` = bonne lecture rejouable après la réponse. Images définies dans l'objet `motion` de `basket-qi.js` ; transitions CSS sur `transform` (px = unités du terrain). Mouvement réduit : position finale directe.
+- **QI défensif** : 5 thèmes ajoutés (porteur, pick & roll, sans ballon, repli, poste). Lectures du jour : une en attaque, une en défense, plus un placement ou une fin de match. Totaux : 46 lectures (29 animées), 12 placements, 12 fins de match, 38 cartes.
+- **Modes** : « Lire en défense », « Décision rapide » (5 s, dépassement compté comme une erreur).
+- **Profil joueur** : 3 profils de jeu au maximum.
+- **Annulation visible** : bouton « Annuler » en haut de la séance en direct, « Annuler la séance en cours » sur l'accueil et l'aperçu, « Arrêter le parcours » (archivé dans `pathwayArchive`, reprenable), « Arrêter ce programme ». Le bloc d'accueil « Mon programme / Juste 8 minutes » est supprimé.
+- « Une autre proposition » n'apparaît plus pour une séance du parcours ou une séance courte (elle la remplaçait par une séance libre).
+- `sw.js` : cache `rehaab-v24-qi-anime`. **Changer la version à chaque modification de fichier précaché**, sinon l'ancienne interface reste servie.
+- Vérifié : 71 tests Playwright passés.
+- Tri par tolérance étendu à la **hanche / aine** (rotation, grande flexion, écart et impacts écartés ; fessiers, gainage, isométrie gardés), avec l'exercice « Serrage des adducteurs » (catalogue : 213). Les autres zones (épaule, dos, cou…) gardent l'exclusion d'origine. `sw.js` : `rehaab-v25-hanche`. 72 tests passés.

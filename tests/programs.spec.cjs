@@ -329,8 +329,8 @@ test('programme : archiver conserve l’avancement et permet de reprendre',async
   const data=withProgram();
   data.program=PP.markCompleted(data.program,{week:1,day:data.program.days[0],sessionId:'a',date:PT.dateKey()});
   await seed(page,data,'program');
-  await page.getByRole('button',{name:'Archiver ce programme'}).click();
-  await page.getByRole('button',{name:'Confirmer l’archivage'}).click();
+  await page.getByRole('button',{name:'Arrêter ce programme'}).click();
+  await page.getByRole('button',{name:'Oui, arrêter ce programme'}).click();
   await expect(page.getByRole('heading',{name:'Mes programmes.'})).toBeVisible();
   const archived=await state(page);
   expect(archived.program).toBe(null);
@@ -365,10 +365,12 @@ test('nutrition : l’écran affiche une estimation, ses hypothèses et refuse u
   expect((await state(page)).nutrition.goal).toBe('lose');
 });
 
-test('programme : le raccourci d’accueil mène au programme et le clavier suffit',async({page})=>{
+test('programme : accessible depuis l’onglet Corps, séparé du parcours, au clavier',async({page})=>{
   await seed(page,withProgram(),'today');
-  const shortcut=page.locator('.home-shortcuts button').first();
-  await expect(shortcut).toContainText('semaine 1/8');
+  // Le raccourci d'accueil a été retiré à la demande : le programme reste rangé dans Corps.
+  await expect(page.locator('.home-shortcuts')).toHaveCount(0);
+  await page.getByRole('button',{name:'Corps',exact:true}).click();
+  const shortcut=page.getByRole('button',{name:/Mes autres programmes/});
   await shortcut.focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading',{name:'Mon programme.'})).toBeVisible();

@@ -187,10 +187,10 @@ function PTProgramHome({data,update,go,notify}) {
           <button className="home-action" onClick={() => go('nutrition')}><PTIcon name="chart"/><span><strong>Mes repères caloriques</strong><small>Estimation indicative, jamais une prescription.</small></span><PTIcon name="arrow" size={18}/></button>
         </div>
         {confirmArchive
-          ? <div className="notice warning stack"><p>Archiver ce programme ? Il restera consultable et reprenable ; les séances enregistrées restent dans ton historique.</p>
-              <PTButton danger onClick={() => {update(s => ({...s, program:null, programArchive:[...(s.programArchive||[]), PP.archive(s.program)].slice(-20)})); notify('Programme archivé.'); go('program');}}>Confirmer l’archivage</PTButton>
+          ? <div className="notice warning stack"><p>Arrêter ce programme ? Il est archivé : tu pourras le reprendre plus tard, et les séances enregistrées restent dans ton historique.</p>
+              <PTButton danger onClick={() => {update(s => ({...s, program:null, programArchive:[...(s.programArchive||[]), PP.archive(s.program)].slice(-20)})); notify('Programme archivé.'); go('program');}}>Oui, arrêter ce programme</PTButton>
               <PTButton quiet onClick={() => setConfirmArchive(false)}>Annuler</PTButton></div>
-          : <PTButton quiet onClick={() => setConfirmArchive(true)}>Archiver ce programme</PTButton>}
+          : <PTButton danger onClick={() => setConfirmArchive(true)}><PTIcon name="close" size={18}/>Arrêter ce programme</PTButton>}
       </section>
     </div></>;
 }

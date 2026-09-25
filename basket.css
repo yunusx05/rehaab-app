@@ -1,0 +1,123 @@
+/* Profil joueur, parcours retour au jeu, QI basket. Reprend les jetons de sport.css. */
+.bottom-nav{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:360px){.nav-button{font-size:.58rem}}
+
+/* Accueil : le corps et l'esprit */
+.body-mind{display:grid;gap:12px}
+.body-card,.mind-card,.player-invite{display:grid;gap:.55rem;padding:1.2rem;border-radius:24px;background:var(--surface);box-shadow:inset 0 0 0 4px #ffffff03;min-width:0}
+.body-card{background:linear-gradient(160deg,#c3e65a1a,#c3e65a05 55%),var(--surface)}
+.body-card h2,.mind-card h2,.player-invite h2{margin:0;max-width:none}
+.player-invite h2{font-size:clamp(2.2rem,11vw,3.2rem);line-height:.9}
+.player-invite h2 em{color:var(--accent)}
+.body-card .button-row,.mind-card .button-row{margin-top:.35rem}
+@media(min-width:760px){.body-mind{grid-template-columns:1fr 1fr}}
+
+/* Rail Quick Workout : tuile quiz sans photo */
+.quiz-tile-court{display:grid;place-items:center;height:155px;color:var(--accent);background:radial-gradient(circle at 50% 40%,#c3e65a22,transparent 65%),#1f2220}
+@media(min-width:900px){.quiz-tile-court{height:175px}}
+
+/* Parcours */
+.step-list{list-style:none;display:grid;gap:2px;padding:0;margin:0}
+.step-list li{display:flex;align-items:center;gap:.85rem;padding:.8rem .2rem;border-top:1px solid var(--line);color:var(--sub)}
+.step-list li strong{display:block;color:var(--text);font-size:.92rem}
+.step-list li small{display:block;font-size:.74rem;color:var(--muted);margin-top:.15rem;line-height:1.4}
+.step-num{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--raised);font-weight:800;font-size:.8rem;color:var(--sub);font-variant-numeric:tabular-nums}
+.step-list li.is-current .step-num{background:var(--accent);color:#141611}
+.step-list li.is-done .step-num{background:#c3e65a26;color:var(--accent)}
+.pathway-track{margin-bottom:0}
+.pathway-day.is-done{opacity:.8}
+.pathway-day.is-done .exercise-number{color:var(--accent)}
+.dose-list{list-style:none;padding:0;margin:0;display:grid}
+.dose-list li{display:flex;justify-content:space-between;gap:.75rem;padding:.5rem 0;border-top:1px solid var(--line);font-size:.83rem;min-width:0}
+.dose-list li span{min-width:0;overflow-wrap:anywhere}
+.dose-list li small{flex:none;max-width:48%;text-align:right;color:var(--muted);font-size:.72rem;font-variant-numeric:tabular-nums}
+.criteria-list{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.criteria-list li{display:flex;align-items:center;gap:.75rem;padding:.75rem .2rem;border-top:1px solid var(--line);min-width:0}
+.criteria-list li>div{flex:1;min-width:0}
+.criteria-list li strong{display:block;font-size:.86rem}
+.criteria-list li small{display:block;font-size:.74rem;color:var(--muted);margin-top:.15rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.criteria-mark{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--raised);color:var(--muted)}
+.criteria-list li.is-ok .criteria-mark{background:#c3e65a24;color:var(--accent)}
+.criteria-list .chip{flex:none}
+
+/* Terrain */
+.court-wrap{position:relative;border-radius:18px;background:#1a1d1b;padding:8px;box-shadow:inset 0 0 0 1px var(--line)}
+.court{display:block;width:100%;height:auto;aspect-ratio:100/94;color:var(--accent);touch-action:manipulation}
+.court-wrap.is-tappable .court{cursor:crosshair}
+.court-lines rect,.court-lines circle,.court-lines path{fill:none;stroke:#ffffff2e;stroke-width:.5}
+.court-move{fill:none;stroke:var(--accent);stroke-width:.8;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.court-move.is-pass{stroke-dasharray:1.6 1.4;stroke:#f6f7f2}
+.court-move.is-pass{color:#f6f7f2}
+.court-move path{fill:none;stroke:var(--accent);stroke-width:.8}
+.court-off circle{fill:var(--accent)}
+.court-off text,.court-you text{fill:#141611;font-size:4px;font-weight:800;text-anchor:middle;font-family:'Cabinet Grotesk',sans-serif}
+.court-ball{fill:none;stroke:#f6f7f2;stroke-width:.6;pointer-events:none}
+.court-def path{fill:none;stroke:#e7ece6;stroke-width:.9;stroke-linecap:round}
+.court-def text{fill:#a9afaa;font-size:3.2px;font-weight:700;font-family:'Cabinet Grotesk',sans-serif}
+.court-target{fill:#c3e65a1f;stroke:var(--accent);stroke-width:.5;stroke-dasharray:1.5 1}
+.court-you circle{fill:#f6f7f2}
+.court-wrap.is-hidden .court-lines{opacity:.5}
+.court-hidden-label{position:absolute;inset:auto 0 45% 0;text-align:center;font-size:.78rem;color:var(--sub);pointer-events:none}
+
+/* Questions */
+.qi-prompt{font-size:1rem;line-height:1.5;color:var(--text)}
+.qi-choices{display:grid;gap:8px}
+.qi-choice{min-height:52px;padding:.8rem 1rem;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);text-align:left;font:inherit;font-size:.88rem;line-height:1.4;transition:transform 140ms var(--ease-sport),background 200ms var(--ease-sport),border-color 200ms var(--ease-sport)}
+.qi-choice:active:not(:disabled){transform:scale(.98)}
+.qi-choice:disabled{cursor:default}
+.qi-choice.is-right{border-color:var(--accent);background:#c3e65a1c}
+.qi-choice.is-wrong{border-color:#ffb1a1;background:#ffb1a114}
+.qi-choice.is-dim{opacity:.5}
+.qi-feedback{display:grid;gap:.45rem;padding:1rem;border-radius:14px;background:var(--surface);border-left:0;box-shadow:inset 0 0 0 1px var(--line)}
+.qi-feedback.is-right strong{color:var(--accent)}
+.qi-feedback.is-wrong strong{color:#ffb1a1}
+.qi-feedback p{font-size:.85rem;line-height:1.55;color:var(--sub)}
+.qi-feedback .qi-lesson{color:var(--text)}
+.scoreboard{display:flex;align-items:center;gap:.7rem;padding:1rem 1.1rem;border-radius:16px;background:#0c0d0c;color:var(--accent);font-variant-numeric:tabular-nums;box-shadow:inset 0 0 0 1px #c3e65a33}
+.scoreboard strong{font-size:.95rem;letter-spacing:.02em;color:var(--text)}
+
+/* Accueil QI */
+.mode-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mode-tile{display:grid;gap:.35rem;align-content:start;min-height:108px;padding:1rem;border-radius:18px;border:0;background:var(--surface);color:var(--text);text-align:left;font:inherit;transition:transform 140ms var(--ease-sport)}
+.mode-tile svg{color:var(--accent)}
+.mode-tile strong{font-size:.9rem}
+.mode-tile small{font-size:.74rem;color:var(--muted);line-height:1.4}
+.mode-tile:active{transform:scale(.98)}
+@media(min-width:760px){.mode-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.mastery-row{display:grid;grid-template-columns:minmax(0,1fr) 72px auto;align-items:center;gap:.8rem;width:100%;padding:.75rem .2rem;border:0;border-top:1px solid var(--line);background:none;color:var(--text);text-align:left;font:inherit}
+.mastery-row strong{display:block;font-size:.86rem}
+.mastery-row small{display:block;font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.mastery-bar{height:4px;border-radius:4px;background:var(--raised);overflow:hidden}
+.mastery-bar i{display:block;height:100%;background:var(--accent);transform-origin:left;transition:transform 240ms var(--ease-sport)}
+.flash-card{display:grid;gap:.8rem;min-height:170px;align-content:center;padding:1.4rem;border-radius:22px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.flash-card p{font-size:1.05rem;line-height:1.55}
+.pnr-guide{display:grid;gap:2px;margin:0}
+.pnr-guide div{padding:.8rem .2rem;border-top:1px solid var(--line)}
+.pnr-guide dt{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.pnr-guide dd{margin:.3rem 0 0;font-size:.88rem;line-height:1.5}
+
+/* Question pendant le repos */
+.rest-question{display:grid;gap:.6rem;margin-top:1rem;padding:1rem;border-radius:18px;background:#ffffff08;text-align:left}
+.rest-question p{font-size:.88rem;line-height:1.5}
+.rest-question .qi-choice{min-height:46px;font-size:.84rem}
+
+@media(prefers-reduced-motion:reduce){.qi-choice,.mode-tile,.mastery-bar i{transition:none}}
+
+/* Annulation : visible, sans être confondue avec l'action principale */
+.btn.danger{border:1px solid #ffb1a18c;background:#ffb1a10d;color:#ffb1a1;font-weight:700}
+.btn.danger:active{transform:scale(.98)}
+.live-cancel{display:inline-flex;align-items:center;gap:.3rem;min-height:44px;padding:0 .85rem;border-radius:22px;border:1px solid #ffb1a18c;background:#ffb1a114;color:#ffb1a1;font:inherit;font-size:.78rem;font-weight:700}
+.live-cancel[aria-expanded=true]{background:#ffb1a126}
+.live-cancel-confirm{margin-bottom:1rem}
+
+/* Terrain animé : les joueurs glissent d'une position à l'autre, le ballon suit la passe */
+.court-off,.court-def,.court-ball{transition:transform 820ms var(--ease-sport)}
+.court-move{animation:court-in 260ms var(--ease-sport) both}
+@keyframes court-in{from{opacity:0}to{opacity:.9}}
+.court-controls{display:flex;justify-content:space-between;align-items:center;gap:.6rem;min-height:44px}
+.court-controls .text-button{display:inline-flex;align-items:center;gap:.35rem;flex:none}
+.court-controls .caption{min-width:0}
+.speed-bar{position:relative;display:flex;align-items:center;height:30px;border-radius:15px;background:var(--raised);overflow:hidden}
+.speed-bar i{position:absolute;inset:0;background:#c3e65a38;transform-origin:left;transition:transform 1s linear}
+.speed-bar span{position:relative;margin-left:auto;padding:0 .8rem;font-size:.8rem;font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent)}
+@media(prefers-reduced-motion:reduce){.court-off,.court-def,.court-ball,.speed-bar i{transition:none}.court-move{animation:none}}

@@ -93,6 +93,9 @@ function PTSession({data,update,go,notify}) {
       const PP=window.PersonalPrograms;
       if(PP&&session.programInstanceId&&s.program&&s.program.id===session.programInstanceId&&s.program.status==='active')
         next.program=PP.markCompleted(s.program,{week:session.programWeekIndex,day:session.programDay,sessionId:session.id,date:session.date,partial:session.partial});
+      const BP=window.BasketPathway;
+      if(BP&&session.pathwayId&&s.pathway&&s.pathway.id===session.pathwayId&&s.pathway.step===session.pathwayStep)
+        next.pathway=BP.markCompleted(s.pathway,{step:session.pathwayStep,week:session.pathwayWeek,day:session.pathwayDay,sessionId:session.id,date:session.date,partial:session.partial});
       return next;
     });
     go('history',session.id);
@@ -120,7 +123,8 @@ function PTSession({data,update,go,notify}) {
   // Moving between sets never validates or discards a result: saving still requires the result sheet.
   const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
   return <div className={`live-session phase-${phase}`}>
-    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div></header>
+    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div><button className="live-cancel" aria-expanded={abandon} onClick={()=>setAbandon(!abandon)}><PTIcon name="close" size={16}/>Annuler</button></header>
+    {abandon&&<div className="notice warning stack-sm live-cancel-confirm" role="alert"><p>Annuler la séance sans enregistrer ? Les séries faites seront perdues.</p><PTButton danger onClick={()=>{update(s=>({...s,draft:null}));go('today');}}>Oui, annuler sans enregistrer</PTButton><PTButton quiet onClick={()=>setAbandon(false)}>Garder ma séance</PTButton></div>}
     <div className="live-progress" aria-label={`${completed} séries validées sur ${total}`}>{steps.map((s,i)=><span key={`${s.id}-${s.set}`} className={draft.entries[s.id][s.set].done?'done':i===cursor?'current':''}/>)}</div>
     {phase!=='warmup'&&<div className="live-step"><span>Exercice <b>{exerciseIndex+1}</b> / {draft.exercises.length}</span><span>Série <b>{step.set+1}</b> / {exercise.sets}</span></div>}
     <div className="live-visual">{phase==='warmup'?<div className="warmup-visual"><PTIcon name="body" size={80}/><span>On réveille le corps.</span></div>:<PTDemo key={exercise.id} exercise={exercise}/>}</div>
@@ -136,6 +140,7 @@ function PTSession({data,update,go,notify}) {
       <p className="live-coach" aria-live="polite"><PTIcon name={phase==='rest'?'heart':'spark'} size={17}/>{coach}</p>
       {blocked||!permitted?<div className="notice warning">{blocked?'Séance suspendue : fais le point sur la douleur signalée.':'Ce mouvement ne convient plus à tes contraintes actuelles.'}</div>:null}
       {phase==='rest'&&<span className="caption">{timerLeft>0?'Le repos reste disponible jusqu’au bout.':'Récupération terminée.'}</span>}
+      {phase==='rest'&&typeof PTRestQuestion==='function'&&<PTRestQuestion key={cursor} seed={cursor} data={data} update={update}/>}
       {phase==='work'&&exercise.unilateral&&exercise.measure==='seconds'&&<PTButton quiet disabled={paused} onClick={()=>setDraft(d=>({...d,timer:makeTimer(exercise.seconds,'Autre côté','work'),stageElapsed:0,stageStarted:Date.now()}))}>Minuter l’autre côté<PTIcon name="refresh" size={18}/></PTButton>}
       {phase==='work'&&exercise.audio&&<PTAudioCue/>}
       {draft.blockTimer&&draft.format!=='amrap'&&<span className="caption">Bloc {draft.format.toUpperCase()} · {timeLabel(remaining(draft.blockTimer))}</span>}
@@ -147,8 +152,8 @@ function PTSession({data,update,go,notify}) {
       {!blocked&&!permitted&&<PTButton quiet onClick={()=>{const next=steps.findIndex((s,i)=>i>cursor&&PT.allowed(draft.exercises.find(e=>e.id===s.id),data,draft.check));if(next<0)review();else setDraft(d=>({...d,cursor:next,timer:null,stageElapsed:0,stageStarted:null}));}}>Passer à un mouvement compatible</PTButton>}
       <details className="disclosure"><summary>Options de séance</summary><div className="stack"><PTButton quiet onClick={review}>Terminer ici</PTButton><details className="disclosure"><summary>Voir les séries / corriger un résultat</summary><div className="set-history">{steps.map((s,i)=><button key={`${s.id}-${s.set}`} className={`${draft.entries[s.id][s.set].done?'done ':''}${i===cursor?'current':''}`} aria-label={`${draft.exercises.find(e=>e.id===s.id).name}, série ${s.set+1}`} onClick={()=>{setDraft(d=>({...d,cursor:i,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);}}>{i+1}{draft.entries[s.id][s.set].done?' ✓':''}</button>)}</div></details>
         <PTButton quiet onClick={()=>{setDraft(d=>{const entries={};const exercises=d.exercises.map(e=>{const rows=d.entries[e.id],done=rows.filter(r=>r.done),pending=rows.find(r=>!r.done&&!r.pain);entries[e.id]=pending?[...done,pending]:done;return {...e,sets:entries[e.id].length};}).filter(e=>e.sets);if(!exercises.length)return d;const sequence=PT.schedule(exercises,d.format),next=sequence.findIndex(s=>!entries[s.id][s.set].done);return {...d,entries,exercises,cursor:Math.max(0,next),timer:null,stageElapsed:0,stageStarted:paused?null:Date.now(),shortened:true};});notify('Une série restante par exercice. Tes résultats sont conservés.');}}>Raccourcir la fin · 10 min</PTButton>
-        {abandon?<div className="notice warning stack"><p>Abandonner sans enregistrer ?</p><PTButton danger onClick={()=>{update(s=>({...s,draft:null}));go('today');}}>Abandonner sans enregistrer</PTButton><PTButton quiet onClick={()=>setAbandon(false)}>Garder ma séance</PTButton></div>:<button className="text-button" onClick={()=>setAbandon(true)}>Abandonner le brouillon</button>}
       </div></details>
+      {!abandon&&<PTButton danger onClick={()=>{setAbandon(true);window.scrollTo(0,0);}}><PTIcon name="close" size={18}/>Annuler la séance</PTButton>}
     </div>
     <footer className="live-dock"><div className="dock-caption"><span>{phase==='rest'?'À suivre':phase==='warmup'?'Prépare-toi':`${completed}/${total} séries validées`}</span><button className="text-button" onClick={reportPain}>Une douleur ?</button></div><PTButton primary onClick={mainAction}><PTIcon name={paused?'play':phase==='work'?'check':'arrow'} size={22}/>{actionLabel}</PTButton></footer>
     {logging&&<PTSetSheet exercise={exercise} row={row} onChange={updateRow} onClose={()=>setLogging(false)} onSave={advance} error={error}/>}

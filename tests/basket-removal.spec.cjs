@@ -8,7 +8,7 @@ const previous=baseline.module.exports;
 require('../program-data.js');
 
 test('catalogue sans basket et ancien focus compatible',()=>{
-  expect(PT.catalog).toHaveLength(200);
+  expect(PT.catalog).toHaveLength(213);
   expect(PT.catalog.some(e=>e.kind==='basket')).toBe(false);
   const state=PT.initialState();state.checkIn.focus='basket';
   expect(PT.validateState(state).checkIn.focus).toBe('mixed');

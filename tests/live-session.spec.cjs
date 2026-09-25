@@ -10,7 +10,7 @@ function fixture({timed=false,format='classic'}={}){
 }
 async function seed(page,data,route='session'){
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('test-seeded','1');}}, {data,key:PT.STORAGE_KEY});
-  await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible();
+  await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
 }
 async function state(page){return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
 async function noOverflow(page){expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}

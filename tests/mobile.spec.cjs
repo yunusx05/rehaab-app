@@ -19,7 +19,8 @@ for (const size of sizes) {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
     await page.reload();
-    await expect(page.locator('.brand')).toHaveText('Rehaab.');
+    // Le premier rendu compile tout le JSX via Babel dans le navigateur : laisser le temps au montage.
+    await expect(page.locator('.brand')).toHaveText('Rehaab.',{timeout:20000});
     await expect(page.getByRole('heading', { name: 'Un cap. De la liberté.' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
 
