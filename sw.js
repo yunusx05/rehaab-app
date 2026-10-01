@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v27-illus';
+const CACHE = 'rehaab-v28-icone';
 const PRECACHE = [
   './',
   './index.html',

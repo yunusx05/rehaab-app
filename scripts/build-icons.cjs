@@ -3,13 +3,13 @@ const fs = require('node:fs');
 const {chromium} = require('@playwright/test');
 
 // The mark without its rounded frame, so iOS and Android can apply their own mask.
-const mark = fs.readFileSync('favicon.svg', 'utf8').match(/<path[\s\S]*?\/>\s*<rect[\s\S]*?\/>/)[0];
-const svg = (size, scale) => `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 64 64"><rect width="64" height="64" fill="#080908"/><g transform="translate(32 32) scale(${scale}) translate(-35 -33.5)">${mark}</g></svg>`;
+const mark = fs.readFileSync('favicon.svg', 'utf8').match(/<g id="mark">[\s\S]*<\/g>\s*<\/svg>/)[0].replace(/<\/svg>$/, '');
+const svg = (size, scale) => `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 64 64"><rect width="64" height="64" fill="#080908"/><g transform="translate(32 32) scale(${scale}) translate(-32 -32)">${mark}</g></svg>`;
 const icons = [
-  {file: 'apple-touch-icon.png', size: 180, scale: 1},
-  {file: 'icon-192.png', size: 192, scale: 1},
-  {file: 'icon-512.png', size: 512, scale: 1},
-  {file: 'icon-maskable-512.png', size: 512, scale: .8} // Keeps the mark inside the 80 % safe zone.
+  {file: 'apple-touch-icon.png', size: 180, scale: 1.1},
+  {file: 'icon-192.png', size: 192, scale: 1.1},
+  {file: 'icon-512.png', size: 512, scale: 1.1},
+  {file: 'icon-maskable-512.png', size: 512, scale: .85} // Keeps the mark inside the 80 % safe zone.
 ];
 
 (async () => {
