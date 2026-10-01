@@ -169,3 +169,11 @@ Le dépôt contient un lot non commité pour ajouter des protocoles Quick Rehab 
 - `tests/rehab-warmup.spec.cjs` couvre les règles du moteur et les parcours principaux. Des captures d’écran locales existent dans `test-results/`; elles ne constituent pas à elles seules une validation complète de la suite.
 - **À faire avant livraison :** exécuter la suite Playwright complète, corriger les échecs éventuels et vérifier les nouveaux écrans à petite largeur et hors ligne. Aucun test complet n’a été lancé pendant la reprise présente. Rien n’a été déployé.
 - État Git de la reprise : changements locaux sur `main`, non commités. Les quatre captures personnelles de `ui inspiration-fonction/` restent hors indexation.
+
+## Lot 5 (01/10/2026) : Quick Rehab, Warm Up, matériel, images
+- Nouveaux : `rehab-warmup.js` (protocoles, questionnaire, crédit de temps), `rehab-components.jsx` (rails, écran `#rehab`, bandeau de déduction), `REHAB-SOURCES.md`.
+- Matériel : `vest` (gilet lesté) et `sliders` (disques slide). 28 exercices ajoutés (catalogue : 262).
+- Déduction du temps : proposée dans l'aperçu (« Retirer X min ? »), jamais automatique. Un warm-up remplace l'échauffement intégré.
+- Images : `scripts/generate-media-lot5.cjs` (génère), `scripts/media-contact-sheet.cjs` (relecture), `scripts/install-generated-media.cjs` (installe). 39 paires installées, 6 écartées car quasi identiques.
+- Reste : 63 exercices sans image. Le compte fal est verrouillé (`TOP_UP`) : après recharge, relancer `node scripts/generate-media-lot5.cjs` (reprend où il s'est arrêté), puis la planche, puis l'installation. Plafond du registre : 22 € (`limit_eur`).
+- Cache du service worker : `rehaab-v29-rehab`.
