@@ -193,3 +193,11 @@ Le dépôt contient un lot non commité pour ajouter des protocoles Quick Rehab 
 - `personal-app.jsx` : la section « Mon matériel & mes vrais paliers de charge » du Profil était un `<details>` replié ; ouverte par défaut. Les 21 équipements s'y affichent, gilet lesté et disques slide compris.
 - Rappel : dans la préparation de séance, `PTEquipment` n'affiche que le matériel possédé ; le reste est derrière « Autre matériel disponible aujourd'hui ». Le gilet et les disques n'apparaissent donc en séance qu'une fois cochés dans le Profil.
 - Tests : suite complète au vert (89).
+
+## Lot 8 (01/10/2026) : visuels manquants et poids du service worker
+- **Quick Rehab** : les 7 zones ont une icône de silhouette avec un point sur la zone (`ptZone` dans `personal-app.jsx`), à la place du ballon de basket pour le poignet et de l'haltère pour l'épaule. Cinq vignettes pointaient vers des exercices restés sans image (`adductor-squeeze`, `band-er`, `defensive-slide`, `skip-a`) : repointées vers des exercices illustrés.
+- **Accueil QI** : un pictogramme de demi-terrain par thème (`PTQiGlyph`, 19 situations), attaque en cercles, défense en croix, déplacement en flèche accent.
+- **Parcours** : une photo par étape dans `media/pathway/`, générée par `scripts/generate-pathway-media.cjs`.
+- **Service worker** : `PRECACHE` ne contenait plus que des images (613 entrées, 31 Mo, toutes demandées en parallèle à l'installation). Séparé en `PRECACHE` (socle + polices + vidéos, 142 fichiers, 18,3 Mo, attendu) et `PRECACHE_MEDIA` (471 illustrations, 13 Mo, rempli par lots de 12 après l'activation, jamais attendu). `scripts/install-generated-media.cjs` écrit désormais dans `PRECACHE_MEDIA`.
+- Ce préchargement massif rendait l'app lente à prendre la main et faisait échouer des tests longs par dépassement de délai. Cause corrigée plutôt que délais rallongés.
+- Cache : `rehaab-v32-visuels`. Tests : 89 au vert, deux passes consécutives.

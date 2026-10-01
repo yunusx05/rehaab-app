@@ -24,5 +24,6 @@ for(const id of ids){
 fs.writeFileSync(mediaFile,'window.RehaabMedia = '+JSON.stringify(media,null,2)+';\n');
 const swFile=path.join(root,'sw.js');let sw=fs.readFileSync(swFile,'utf8');
 const lines=installed.flatMap(id=>[`./media/cards/${id}.jpg`,`./media/generated/${id}/0.jpg`,`./media/generated/${id}/1.jpg`]).filter(l=>!sw.includes(`'${l}'`));
-if(lines.length){const end=sw.indexOf('\n];');sw=sw.slice(0,end)+',\n'+lines.map(l=>`  '${l}'`).join(',\n')+sw.slice(end);fs.writeFileSync(swFile,sw);}
+// Les illustrations vont dans PRECACHE_MEDIA : rempli en arrière-plan, jamais attendu à l'installation.
+if(lines.length){const from=sw.indexOf('const PRECACHE_MEDIA = [');const end=sw.indexOf('\n];',from);sw=sw.slice(0,end)+',\n'+lines.map(l=>`  '${l}'`).join(',\n')+sw.slice(end);fs.writeFileSync(swFile,sw);}
 console.log('INSTALLES',installed.length,'| précache +',lines.length);
