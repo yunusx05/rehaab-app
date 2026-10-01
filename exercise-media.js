@@ -906,5 +906,230 @@ window.RehaabMedia = {
     "card": "media/cards/active-slr.jpg",
     "frames": "generated/active-slr",
     "generated": true
+  },
+  "vest-pushup": {
+    "card": "media/cards/vest-pushup.jpg",
+    "frames": "generated/vest-pushup",
+    "generated": true
+  },
+  "slider-ham-curl": {
+    "card": "media/cards/slider-ham-curl.jpg",
+    "frames": "generated/slider-ham-curl",
+    "generated": true
+  },
+  "spanish-squat": {
+    "card": "media/cards/spanish-squat.jpg",
+    "frames": "generated/spanish-squat",
+    "generated": true
+  },
+  "cable-fly": {
+    "card": "media/cards/cable-fly.jpg",
+    "frames": "generated/cable-fly",
+    "generated": true
+  },
+  "push-press": {
+    "card": "media/cards/push-press.jpg",
+    "frames": "generated/push-press",
+    "generated": true
+  },
+  "diamond-pushup": {
+    "card": "media/cards/diamond-pushup.jpg",
+    "frames": "generated/diamond-pushup",
+    "generated": true
+  },
+  "kb-press": {
+    "card": "media/cards/kb-press.jpg",
+    "frames": "generated/kb-press",
+    "generated": true
+  },
+  "neutral-pullup": {
+    "card": "media/cards/neutral-pullup.jpg",
+    "frames": "generated/neutral-pullup",
+    "generated": true
+  },
+  "dead-hang": {
+    "card": "media/cards/dead-hang.jpg",
+    "frames": "generated/dead-hang",
+    "generated": true
+  },
+  "bb-row-underhand": {
+    "card": "media/cards/bb-row-underhand.jpg",
+    "frames": "generated/bb-row-underhand",
+    "generated": true
+  },
+  "kb-row": {
+    "card": "media/cards/kb-row.jpg",
+    "frames": "generated/kb-row",
+    "generated": true
+  },
+  "chest-supported-row": {
+    "card": "media/cards/chest-supported-row.jpg",
+    "frames": "generated/chest-supported-row",
+    "generated": true
+  },
+  "cable-row-single": {
+    "card": "media/cards/cable-row-single.jpg",
+    "frames": "generated/cable-row-single",
+    "generated": true
+  },
+  "facepull": {
+    "card": "media/cards/facepull.jpg",
+    "frames": "generated/facepull",
+    "generated": true
+  },
+  "shrug": {
+    "card": "media/cards/shrug.jpg",
+    "frames": "generated/shrug",
+    "generated": true
+  },
+  "bulgarian": {
+    "card": "media/cards/bulgarian.jpg",
+    "frames": "generated/bulgarian",
+    "generated": true
+  },
+  "lateral-lunge": {
+    "card": "media/cards/lateral-lunge.jpg",
+    "frames": "generated/lateral-lunge",
+    "generated": true
+  },
+  "cossack": {
+    "card": "media/cards/cossack.jpg",
+    "frames": "generated/cossack",
+    "generated": true
+  },
+  "curtsy-lunge": {
+    "card": "media/cards/curtsy-lunge.jpg",
+    "frames": "generated/curtsy-lunge",
+    "generated": true
+  },
+  "wall-sit": {
+    "card": "media/cards/wall-sit.jpg",
+    "frames": "generated/wall-sit",
+    "generated": true
+  },
+  "band-squat": {
+    "card": "media/cards/band-squat.jpg",
+    "frames": "generated/band-squat",
+    "generated": true
+  },
+  "assisted-pistol": {
+    "card": "media/cards/assisted-pistol.jpg",
+    "frames": "generated/assisted-pistol",
+    "generated": true
+  },
+  "legpress-single": {
+    "card": "media/cards/legpress-single.jpg",
+    "frames": "generated/legpress-single",
+    "generated": true
+  },
+  "single-rdl": {
+    "card": "media/cards/single-rdl.jpg",
+    "frames": "generated/single-rdl",
+    "generated": true
+  },
+  "kb-rdl": {
+    "card": "media/cards/kb-rdl.jpg",
+    "frames": "generated/kb-rdl",
+    "generated": true
+  },
+  "band-hinge": {
+    "card": "media/cards/band-hinge.jpg",
+    "frames": "generated/band-hinge",
+    "generated": true
+  },
+  "hip-thrust": {
+    "card": "media/cards/hip-thrust.jpg",
+    "frames": "generated/hip-thrust",
+    "generated": true
+  },
+  "nordic-assisted": {
+    "card": "media/cards/nordic-assisted.jpg",
+    "frames": "generated/nordic-assisted",
+    "generated": true
+  },
+  "db-calf": {
+    "card": "media/cards/db-calf.jpg",
+    "frames": "generated/db-calf",
+    "generated": true
+  },
+  "calf-hold": {
+    "card": "media/cards/calf-hold.jpg",
+    "frames": "generated/calf-hold",
+    "generated": true
+  },
+  "band-curl": {
+    "card": "media/cards/band-curl.jpg",
+    "frames": "generated/band-curl",
+    "generated": true
+  },
+  "db-kickback": {
+    "card": "media/cards/db-kickback.jpg",
+    "frames": "generated/db-kickback",
+    "generated": true
+  },
+  "grip-hold": {
+    "card": "media/cards/grip-hold.jpg",
+    "frames": "generated/grip-hold",
+    "generated": true
+  },
+  "hollow-hold": {
+    "card": "media/cards/hollow-hold.jpg",
+    "frames": "generated/hollow-hold",
+    "generated": true
+  },
+  "plank-reach": {
+    "card": "media/cards/plank-reach.jpg",
+    "frames": "generated/plank-reach",
+    "generated": true
+  },
+  "side-plank-lift": {
+    "card": "media/cards/side-plank-lift.jpg",
+    "frames": "generated/side-plank-lift",
+    "generated": true
+  },
+  "bear-hold": {
+    "card": "media/cards/bear-hold.jpg",
+    "frames": "generated/bear-hold",
+    "generated": true
+  },
+  "bear-crawl": {
+    "card": "media/cards/bear-crawl.jpg",
+    "frames": "generated/bear-crawl",
+    "generated": true
+  },
+  "leg-raise": {
+    "card": "media/cards/leg-raise.jpg",
+    "frames": "generated/leg-raise",
+    "generated": true
+  },
+  "cable-crunch": {
+    "card": "media/cards/cable-crunch.jpg",
+    "frames": "generated/cable-crunch",
+    "generated": true
+  },
+  "suitcase-carry": {
+    "card": "media/cards/suitcase-carry.jpg",
+    "frames": "generated/suitcase-carry",
+    "generated": true
+  },
+  "overhead-carry": {
+    "card": "media/cards/overhead-carry.jpg",
+    "frames": "generated/overhead-carry",
+    "generated": true
+  },
+  "single-leg-stand": {
+    "card": "media/cards/single-leg-stand.jpg",
+    "frames": "generated/single-leg-stand",
+    "generated": true
+  },
+  "single-leg-eyes": {
+    "card": "media/cards/single-leg-eyes.jpg",
+    "frames": "generated/single-leg-eyes",
+    "generated": true
+  },
+  "single-leg-reach": {
+    "card": "media/cards/single-leg-reach.jpg",
+    "frames": "generated/single-leg-reach",
+    "generated": true
   }
 };

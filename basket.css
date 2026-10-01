@@ -16,6 +16,10 @@
 .quiz-tile-court{display:grid;place-items:center;height:155px;color:var(--accent);background:radial-gradient(circle at 50% 40%,#c3e65a22,transparent 65%),#1f2220}
 @media(min-width:900px){.quiz-tile-court{height:175px}}
 
+/* Le CTA du questionnaire reste dans le flux pour laisser visibles les sources. */
+.rehab-launch{padding-top:.5rem}
+.rehab-launch>.btn{width:100%;min-height:58px;border-radius:40px;background:var(--accent);border-color:var(--accent);color:#1b2310;font-size:1rem;font-weight:700}
+
 /* Parcours */
 .step-list{list-style:none;display:grid;gap:2px;padding:0;margin:0}
 .step-list li{display:flex;align-items:center;gap:.85rem;padding:.8rem .2rem;border-top:1px solid var(--line);color:var(--sub)}

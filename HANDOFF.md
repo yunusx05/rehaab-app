@@ -155,3 +155,17 @@ Demande : questions sur l'état physique (explosivité, gainage, mobilité, saut
 - `sw.js` : `rehaab-v26-bilan`. Vérifié : 77 tests Playwright passés, sans débordement à 320 et 390 px.
 - Sources consultées : revue des tests en basket (PMC8008295), JSCR 2018 « Power testing in basketball », NBA Combine (PMC6820507). Aucune norme fiable pour un joueur de club : sauts et sprints servent de référence personnelle ; plank 60 s et pompes 20 sont des repères d'entraînement courants, affichés comme tels.
 - Piège : le test `QI … décision rapide chronométrée` peut dépasser 30 s sous charge dans la suite complète ; il passe seul.
+
+## Lot 5 — Quick Rehab et Warm Up (01/10/2026, reprise en cours)
+
+Le dépôt contient un lot non commité pour ajouter des protocoles Quick Rehab et des échauffements basket. Les fichiers principaux sont `rehab-warmup.js` (protocoles, filtrage, progression et calcul du crédit), `rehab-components.jsx` (questionnaire et écrans) et `REHAB-SOURCES.md` (références déclarées). L’entrée et le précache hors ligne sont raccordés dans `index.html` et `sw.js` (`rehaab-v30-rehab-cta`).
+
+- Questionnaire pour les zones répertoriées, repérage de signes d’alerte, séances filtrées par douleurs et matériel ; un relevé de douleur après une séance de rehab règle le niveau proposé la fois suivante.
+- Cinq échauffements basket. Les appuis et sauts sont conservés pour l’échauffement, mais retirés si le filtre de douleur les interdit.
+- Les séances Quick Rehab et Warm Up peuvent être prises en compte dans la durée d’une séance sportive du même jour. L’ajustement conserve les mouvements épinglés et garde un plancher de 10 minutes.
+- Le bouton du questionnaire reste dans le flux de la page afin de ne pas masquer les références en bas de l’écran.
+- Le catalogue passe à 262 exercices ; deux équipements sont ajoutés : gilet lesté et disques glissants. Le gilet n’est pas proposé pour les sauts.
+- **Images lot 5 :** 45 paires complètes ont été installées dans `media/generated/`, déclarées dans `exercise-media.js` et ajoutées au précache. Les planches locales ont été relues. Le journal externe indique 4,55 $ suivis ; les appels suivants ont échoué en `403 TOP_UP`. Il reste 63 exercices sans illustration. Le budget maximum configuré dans le script est 22 € ; aucune autre génération payante n’a été lancée pendant la reprise.
+- `tests/rehab-warmup.spec.cjs` couvre les règles du moteur et les parcours principaux. Des captures d’écran locales existent dans `test-results/`; elles ne constituent pas à elles seules une validation complète de la suite.
+- **À faire avant livraison :** exécuter la suite Playwright complète, corriger les échecs éventuels et vérifier les nouveaux écrans à petite largeur et hors ligne. Aucun test complet n’a été lancé pendant la reprise présente. Rien n’a été déployé.
+- État Git de la reprise : changements locaux sur `main`, non commités. Les quatre captures personnelles de `ui inspiration-fonction/` restent hors indexation.

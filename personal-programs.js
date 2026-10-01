@@ -302,7 +302,7 @@
     }));
     const issues = [];
     if (missing.size) issues.push(`Sans mouvement disponible pour : ${[...missing].join(', ')}. Ces créneaux seront sautés tant que le matériel ou les contraintes ne changent pas.`);
-    if (family.preferWeighted && !config.equipment.some(id => ['dumbbells','kettlebell','barbell','cable','legpress','legcurl','legextension'].includes(id)))
+    if (family.preferWeighted && !config.equipment.some(id => ['dumbbells','kettlebell','barbell','vest','cable','legpress','legcurl','legextension'].includes(id)))
       issues.push('Ce programme est pensé pour des charges : sans matériel chargé, la progression reposera surtout sur les répétitions.');
     if (Number(config.minutes) < 20 && ['bulk','force','hybrid'].includes(family.id))
       issues.push('Moins de 20 minutes : certaines séances seront raccourcies et perdront des accessoires.');

@@ -16,7 +16,8 @@
     ['legextension','Leg extension','machine'], ['legcurl','Leg curl','machine'],
     ['bike','Vélo','bike'], ['rower','Rameur','machine'], ['rope','Corde à sauter','band'],
     ['ball','Ballon','basket'], ['hoop','Panier','basket'], ['court','Terrain / espace','court'],
-    ['outdoor','Parcours extérieur','run'], ['partner','Partenaire','body']
+    ['outdoor','Parcours extérieur','run'], ['partner','Partenaire','body'],
+    ['vest','Gilet lesté','vest'], ['sliders','Disques slide','slider']
   ].map(([id,label,icon])=>({id,label,icon}));
   const regions = {neck:'Cou',shoulder:'Épaule',elbow:'Coude',wrist:'Poignet',back:'Dos',hip:'Hanche / aine',knee:'Genou',ankle:'Cheville / pied'};
   const patterns = {push:'Poussée',pull:'Tirage',squat:'Jambes · flexion',hinge:'Chaîne postérieure',core:'Gainage',calf:'Mollets',arms:'Bras',mobility:'Mobilité',cardio:'Cardio',shoot:'Tir',handle:'Dribble',finish:'Finition',footwork:'Appuis',react:'Réaction',jump:'Sauts'};
@@ -267,6 +268,39 @@
   ex('couch-stretch','Étirement du canapé','mobility','mobility',['bodyweight'],['hip','knee','back'],['Un genou au sol contre un mur ou un canapé, le cou-de-pied appuyé derrière toi.','Redresse le buste et serre le fessier, sans cambrer. Étirement franc à l’avant de la cuisse, jamais douloureux au genou.'],{floor:true,unilateral:true,measure:'seconds',seconds:45,rest:20});
   ex('active-slr','Lever de jambe tendue actif','mobility','mobility',['bodyweight'],['hip','back'],['Allongé sur le dos, une jambe tendue au sol, pointe relevée.','Monte l’autre jambe tendue le plus haut possible sans plier le genou ni décoller le bassin, puis redescends lentement.'],{floor:true,unilateral:true,min:8,max:10,rest:30});
 
+  // Gilet lesté : charge sur les mouvements au poids du corps, jamais sur les sauts (tendons).
+  ex('vest-pushup','Pompes · gilet lesté','strength','push',['vest'],upper,['Gilet bien serré, corps gainé de la tête aux talons.','Descends poitrine près du sol en 2 s, puis repousse sans creuser le dos.'],{weighted:'vest',singleLoad:true,min:6,max:12});
+  ex('vest-pullup','Tractions · gilet lesté','strength','pull',['vest','pullup'],upper,['Seulement si tu fais déjà 8 tractions propres sans gilet.','Monte le menton au-dessus de la barre, redescends bras tendus en contrôlant.'],{weighted:'vest',singleLoad:true,level:2,min:3,max:8,rest:120});
+  ex('vest-split-squat','Fente fixe · gilet lesté','strength','squat',['vest'],lower,['Pieds décalés, buste droit, gilet serré.','Descends le genou arrière près du sol, genou avant au-dessus du pied, puis remonte.'],{weighted:'vest',singleLoad:true,unilateral:true,min:6,max:10,rest:75});
+  ex('vest-step-up','Montée sur banc · gilet lesté','strength','squat',['vest','bench'],lower,['Pied entier posé sur un banc ou une marche stable.','Pousse sur la jambe du haut sans t’aider de celle du bas, redescends lentement.'],{weighted:'vest',singleLoad:true,unilateral:true,min:6,max:10,rest:75});
+  ex('vest-calf','Mollets debout · gilet lesté','strength','calf',['vest'],['ankle','knee'],['Avant des pieds sur une marche, une main sur un appui.','Monte haut en 1 s, tiens 1 s, redescends le talon sous la marche en 3 s.'],{weighted:'vest',singleLoad:true,min:10,max:15,rest:60});
+  ex('vest-march','Marche rapide · gilet lesté','cardio','cardio',['vest'],['hip','knee','ankle'],['Gilet serré, buste grand, pas rapides.','Garde un rythme où tu peux encore parler par phrases courtes.'],{weighted:'vest',singleLoad:true,measure:'seconds',sets:1,seconds:600,rest:60});
+  // Disques slide : glisser sur parquet ou carrelage, sans impact.
+  ex('slider-ham-curl','Leg curl au sol · disques','strength','hinge',['sliders'],['hip','knee','back'],['Allongé sur le dos, talons sur les disques, bassin levé.','Ramène les talons vers les fesses sans laisser tomber le bassin, puis repousse lentement.'],{floor:true,min:6,max:10,rest:75});
+  ex('slider-lateral-lunge','Fente latérale glissée · disques','strength','squat',['sliders'],['hip','knee'],['Un pied sur le disque, l’autre bien à plat.','Glisse le pied sur le côté en t’asseyant sur la jambe d’appui, genou au-dessus du pied, puis ramène.'],{unilateral:true,min:6,max:10,rest:60});
+  ex('slider-reverse-lunge','Fente arrière glissée · disques','strength','squat',['sliders'],['hip','knee'],['Pied arrière sur le disque, buste droit.','Glisse le pied vers l’arrière en descendant, puis ramène-le en poussant sur le talon avant.'],{unilateral:true,min:6,max:10,rest:60});
+  ex('slider-climber','Mountain climber glissé · disques','strength','core',['sliders'],['shoulder','wrist','hip','back'],['Position de pompe, pieds sur les disques.','Ramène un genou vers la poitrine puis l’autre, en glissant, bassin stable.'],{floor:true,measure:'seconds',seconds:30,rest:45});
+  ex('slider-adductor','Glissé des adducteurs · disques','strength','squat',['sliders'],['hip','knee'],['Debout, un pied sur le disque, mains sur les hanches.','Écarte le pied sur le côté puis ramène-le en serrant l’intérieur de cuisse. Amplitude sans douleur à l’aine.'],{unilateral:true,min:6,max:10,rest:60});
+  ex('slider-bodysaw','Body saw · disques','strength','core',['sliders'],['shoulder','back'],['Gainage sur les avant-bras, pieds sur les disques.','Glisse le corps d’avant en arrière de quelques centimètres sans creuser le dos.'],{floor:true,level:2,measure:'seconds',seconds:25,rest:45});
+  // Quick Rehab : protocoles publiés (épaule, Achille, dos, doigts, cou, cheville).
+  ex('band-er','Rotation externe · élastique','strength','pull',['bands'],['shoulder','elbow'],['Élastique à hauteur de taille, serviette roulée entre coude et côtes.','Tourne l’avant-bras vers l’extérieur en gardant le coude collé, reviens en 3 s.'],{unilateral:true,min:10,max:15,rest:45});
+  ex('er-iso','Rotation externe isométrique au mur','strength','pull',['bodyweight'],['shoulder','elbow'],['Debout de profil contre un mur, coude plié à 90° collé au corps.','Pousse le dos de la main contre le mur sans bouger, à un effort sans douleur, et tiens.'],{unilateral:true,measure:'seconds',sets:4,seconds:30,rest:30});
+  ex('wall-slide','Glissé des bras au mur','mobility','mobility',['bodyweight'],['shoulder','back'],['Dos et avant-bras contre le mur, coudes à hauteur d’épaules.','Fais glisser les bras vers le haut sans décoller les lombaires, puis redescends en serrant les omoplates.'],{min:8,max:12,rest:30});
+  ex('curl-up','Curl-up McGill','strength','core',['bodyweight'],['back'],['Allongé, une jambe pliée, mains sous le bas du dos pour garder sa courbe.','Décolle à peine tête et épaules en bloc, tiens 8 à 10 s, repose. Le cou ne bouge pas.'],{floor:true,min:5,max:8,rest:30});
+  ex('heel-drop-ecc','Descente du talon excentrique','strength','calf',['bodyweight'],['ankle','knee'],['Avant du pied sur une marche, monte sur les deux pieds.','Retire un pied et redescends le talon sous la marche sur l’autre jambe en 3 à 4 s.'],{unilateral:true,min:10,max:15,rest:60});
+  ex('finger-ext','Ouverture des doigts · élastique','strength','arms',['bands'],['wrist','elbow'],['Petit élastique autour des doigts et du pouce réunis.','Écarte les doigts au maximum contre l’élastique, tiens 1 s, referme lentement.'],{min:15,max:25,rest:30});
+  ex('chin-tuck','Rentrer le menton','mobility','mobility',['bodyweight'],['neck'],['Assis ou dos au mur, regard droit devant.','Recule le menton comme pour faire un double menton, tiens 5 s, relâche. La tête ne s’incline pas.'],{min:8,max:12,rest:20});
+  ex('wrist-iso','Poignet isométrique contre la main','strength','arms',['bodyweight'],['wrist','elbow'],['Avant-bras posé sur la cuisse, paume vers le sol, poing fermé.','Pousse le dos de la main vers le haut contre ton autre main, sans bouger, à un effort sans douleur.'],{unilateral:true,measure:'seconds',sets:4,seconds:30,rest:30});
+  ex('towel-grip','Essorage de serviette','strength','arms',['bodyweight'],['wrist','elbow'],['Serviette roulée tenue à deux mains devant toi, coudes près du corps.','Tords-la lentement dans un sens puis dans l’autre, comme pour l’essorer, sans douleur au coude.'],{min:8,max:12,rest:30});
+  ex('ankle-alphabet','Alphabet de la cheville','mobility','mobility',['bodyweight'],['ankle'],['Assis, jambe tendue, talon posé ou pied dans le vide.','Dessine les lettres de l’alphabet avec le gros orteil, dans une amplitude indolore.'],{unilateral:true,measure:'seconds',seconds:40,rest:15});
+  // Warm Up basket : préparation au mouvement et appuis (SHRed, FIFA 11+, RAMP).
+  ex('jog-court','Footing de terrain','cardio','cardio',['bodyweight'],['hip','knee','ankle'],['Footing léger d’un bout à l’autre du terrain ou sur place.','Augmente un peu l’allure à chaque aller, sans jamais forcer.'],{measure:'seconds',sets:1,seconds:120,rest:15});
+  ex('lateral-shuffle','Pas chassés latéraux','plyo','footwork',['bodyweight'],['hip','knee','ankle'],['Position basse, pieds largeur d’épaules, buste droit.','Pas chassés rapides sans que les pieds se touchent, aller-retour sur la largeur de la raquette.'],{measure:'seconds',seconds:20,rest:20});
+  ex('carioca','Carioca (pas croisés)','plyo','footwork',['bodyweight'],['hip','knee','ankle','back'],['Déplacement latéral, épaules face à l’avant.','Croise le pied arrière devant puis derrière, en tournant les hanches, sur l’avant des pieds.'],{measure:'seconds',seconds:20,rest:20});
+  ex('backpedal','Course arrière','plyo','footwork',['bodyweight'],['hip','knee','ankle'],['Buste légèrement penché vers l’avant, appuis sur l’avant du pied.','Recule à petits pas rapides, bras actifs, sans te redresser.'],{measure:'seconds',seconds:20,rest:20});
+  ex('skip-a','Montées de genoux sautillées','plyo','footwork',['bodyweight'],['hip','knee','ankle'],['Sautillé léger, genou qui monte à hauteur de hanche.','Pied qui retombe sous le bassin, contacts courts, bras coordonnés.'],{measure:'seconds',seconds:20,rest:20});
+  ex('defensive-slide','Glissés défensifs avec freinage','plyo','footwork',['bodyweight'],['hip','knee','ankle'],['Position défensive basse, mains actives.','Trois glissés d’un côté, freine sur la jambe extérieure genou aligné, repars de l’autre côté.'],{measure:'seconds',seconds:20,rest:25});
+
   ex('defense','Pas défensifs contrôlés','basket','footwork',['court'],lower,['Petit trajet latéral dégagé.','Déplace-toi sans croiser les pieds, avec une amplitude maîtrisée.'],{measure:'seconds',seconds:25,rest:45,level:2});
 
   const clone = value => JSON.parse(JSON.stringify(value));
@@ -277,7 +311,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true}};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]}};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -326,6 +360,9 @@
     s.athletic=s.athletic&&athletic?athletic.validateAthletic(s.athletic):null;
     const qi=globals.BasketQI||tryRequire('./basket-qi.js');
     s.qi=qi?qi.validateQi(s.qi):base.qi;
+    // Lot « Quick Rehab » : niveaux et ressenti par protocole, absents des anciennes sauvegardes.
+    const rehab=globals.RehabWarmup||tryRequire('./rehab-warmup.js');
+    s.rehab=rehab?rehab.validateRehab(s.rehab):base.rehab;
     return {...base,...s,profile:{...base.profile,...s.profile}};
   }
   function validateEntries(entries) {
@@ -355,13 +392,17 @@
     const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning' && !guided;
     const hardRecently=recent.some(s=>Number(s.effort)>=8);
     const low=check.energy==='low' || returning || hardRecently || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
+    // Warm Up basket : les appuis et petits sauts font partie de l'échauffement, même la veille ou le jour d'un match ; seule une douleur les retire.
+    if(check&&check.warmup) return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:false,avoidImpact:active.active.length>0 && !tol};
     return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
   }
   function allowed(exercise,state,check=state.checkIn,ctx=context(state,check)) {
     if(ctx.active.blocked) return false;
     if(!exercise.needs.every(id=>id==='bodyweight'||check.equipment.includes(id))) return false;
     const tol=tolerance(state);
-    if(tol?!tol.tolerates(exercise,ctx.active.active):exercise.regions.some(r=>ctx.active.regions.includes(r))) return false;
+    // Quick Rehab : la zone ciblée suit son protocole ; les autres douleurs gardent la règle habituelle.
+    const pains=check&&check.rehabRegion?ctx.active.active.filter(p=>p.region!==check.rehabRegion):ctx.active.active;
+    if(tol?!tol.tolerates(exercise,pains):exercise.regions.some(r=>pains.some(p=>p.region===r))) return false;
     if(exercise.impact && (ctx.avoidImpact || check.constraints.includes('no-impact') || check.constraints.includes('quiet'))) return false;
     if(exercise.floor && check.constraints.includes('no-floor')) return false;
     if(exercise.level>1 && state.profile.experience==='beginner' && !(Number(check&&check.guided)>=2)) return false;
