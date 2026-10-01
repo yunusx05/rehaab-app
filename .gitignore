@@ -31,3 +31,6 @@ build/
 
 # Vercel
 .vercel
+
+# Captures personnelles d' inspiration, hors du dépôt
+ui inspiration-fonction/
