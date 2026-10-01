@@ -186,3 +186,10 @@ Le dépôt contient un lot non commité pour ajouter des protocoles Quick Rehab 
 - Coût : 6,67 $ sur ce lot, 10,47 $ cumulés au registre (plafond 22 €).
 - Cache du service worker : `rehaab-v31-media`.
 - Tests : suite Playwright complète au vert (89). Le test « séance : action fixe… » échouait avant ce lot par manque de temps, pas par un bug : `test.setTimeout(90000)` et un délai de 20 s sur « Reprendre la séance ».
+
+## Lot 7 (01/10/2026) : retrouver le matériel et le catalogue
+- Signalé : « je ne vois plus la liste des exos dispo et le matériel ». Les deux existaient mais étaient devenus inatteignables.
+- `pathway-components.jsx` : « Tous les exercices » n'était rendu que dans le bloc « Gérer le parcours », donc invisible tant qu'aucun parcours n'était démarré. Ajouté à l'écran d'intro, avec « Mon matériel ».
+- `personal-app.jsx` : la section « Mon matériel & mes vrais paliers de charge » du Profil était un `<details>` replié ; ouverte par défaut. Les 21 équipements s'y affichent, gilet lesté et disques slide compris.
+- Rappel : dans la préparation de séance, `PTEquipment` n'affiche que le matériel possédé ; le reste est derrière « Autre matériel disponible aujourd'hui ». Le gilet et les disques n'apparaissent donc en séance qu'une fois cochés dans le Profil.
+- Tests : suite complète au vert (89).
