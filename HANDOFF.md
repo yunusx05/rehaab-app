@@ -148,7 +148,8 @@ Demande : questions sur l'état physique (explosivité, gainage, mobilité, saut
 | `athletic-profile.js` | 10 questions, 9 tests propres + 10 tests du parcours réutilisés, niveaux par qualité, asymétries, priorités (besoin × poste/profil), étape conseillée (plafond 3, 2 après plus d'un an sans jouer), créneau « point faible » par étape, bloc kiné, recopie des mesures dans le parcours. |
 | `assessment-components.jsx` | Route `bilan` : ressenti → tests facultatifs → résultat et « Appliquer à mon parcours ». |
 
-- Catalogue : 213 → **234 exercices** (premier pas, détente, réactivité, freinage, tendons, pied, mobilité), sans illustration.
+- Catalogue : 213 → **234 exercices** (premier pas, détente, réactivité, freinage, tendons, pied, mobilité).
+- Illustrations (1er octobre) : 20 des 21 nouveaux exercices ont 2 positions générées (Nano Banana 2 Lite puis édition, `scripts/generate-media-lot4.cjs`, ~2,6 $ sur fal), affichées en boucle comme les autres (`media/generated/<id>`, carte = position d'arrivée, précachées, cache `rehaab-v27-illus`). Chaque paire a été contrôlée à l'œil ; 8 ont été régénérées. `foot-doming` reste sans image : le creux de la voûte ne se voit pas d'une image à l'autre. Test : `athletic-assessment.spec.cjs` vérifie fichiers et précache.
 - Parcours : avec un bilan, un **bloc kiné** ouvre chaque séance (douleur, puis mobilité qui manque, puis tendons de la séance ; au moins un mouvement gardé en 30 min) et un **créneau point faible** suit les mouvements clés, sans doubler un créneau du jour. **Sans bilan, les séances sont identiques à avant** (1 890 configurations comparées) ; seul le rôle « renfort » s'appelle maintenant « kiné ».
 - Séances courtes : « Premier pas » (sans départ chronométré avant l'étape 3) et « Mon bloc kiné ».
 - `sw.js` : `rehaab-v26-bilan`. Vérifié : 77 tests Playwright passés, sans débordement à 320 et 390 px.

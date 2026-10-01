@@ -111,3 +111,15 @@ test('bilan dans l’app : répondre, passer les tests, lancer le parcours',asyn
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });
+
+test('illustrations des exercices du bilan : deux positions présentes et précachées',()=>{
+  const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.join(__dirname,'..');
+  const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
+  const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+  const ids=['a-march','a-skip','knee-drive-iso','psoas-march','falling-start','split-start','drop-step-start','band-resisted-start','vertical-jump','snap-down','drop-jump','single-pogo','approach-jump','single-leg-vertical','db-jump','lateral-decel','slant-squat','reverse-nordic','couch-stretch','active-slr'];
+  for(const id of ids){
+    const m=sandbox.window.RehaabMedia[id];
+    expect(m&&m.generated,id).toBeTruthy();
+    for(const f of [m.card,`media/${m.frames}/0.jpg`,`media/${m.frames}/1.jpg`]){expect(fs.existsSync(path.join(root,f)),f).toBe(true);expect(sw.includes(`./${f}`),f).toBe(true);}
+  }
+});

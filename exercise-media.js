@@ -806,5 +806,105 @@ window.RehaabMedia = {
     "card": "media/cards/defense.jpg",
     "frames": "generated/defense",
     "generated": true
+  },
+  "a-march": {
+    "card": "media/cards/a-march.jpg",
+    "frames": "generated/a-march",
+    "generated": true
+  },
+  "psoas-march": {
+    "card": "media/cards/psoas-march.jpg",
+    "frames": "generated/psoas-march",
+    "generated": true
+  },
+  "falling-start": {
+    "card": "media/cards/falling-start.jpg",
+    "frames": "generated/falling-start",
+    "generated": true
+  },
+  "split-start": {
+    "card": "media/cards/split-start.jpg",
+    "frames": "generated/split-start",
+    "generated": true
+  },
+  "drop-step-start": {
+    "card": "media/cards/drop-step-start.jpg",
+    "frames": "generated/drop-step-start",
+    "generated": true
+  },
+  "band-resisted-start": {
+    "card": "media/cards/band-resisted-start.jpg",
+    "frames": "generated/band-resisted-start",
+    "generated": true
+  },
+  "snap-down": {
+    "card": "media/cards/snap-down.jpg",
+    "frames": "generated/snap-down",
+    "generated": true
+  },
+  "single-pogo": {
+    "card": "media/cards/single-pogo.jpg",
+    "frames": "generated/single-pogo",
+    "generated": true
+  },
+  "single-leg-vertical": {
+    "card": "media/cards/single-leg-vertical.jpg",
+    "frames": "generated/single-leg-vertical",
+    "generated": true
+  },
+  "slant-squat": {
+    "card": "media/cards/slant-squat.jpg",
+    "frames": "generated/slant-squat",
+    "generated": true
+  },
+  "a-skip": {
+    "card": "media/cards/a-skip.jpg",
+    "frames": "generated/a-skip",
+    "generated": true
+  },
+  "knee-drive-iso": {
+    "card": "media/cards/knee-drive-iso.jpg",
+    "frames": "generated/knee-drive-iso",
+    "generated": true
+  },
+  "vertical-jump": {
+    "card": "media/cards/vertical-jump.jpg",
+    "frames": "generated/vertical-jump",
+    "generated": true
+  },
+  "drop-jump": {
+    "card": "media/cards/drop-jump.jpg",
+    "frames": "generated/drop-jump",
+    "generated": true
+  },
+  "approach-jump": {
+    "card": "media/cards/approach-jump.jpg",
+    "frames": "generated/approach-jump",
+    "generated": true
+  },
+  "db-jump": {
+    "card": "media/cards/db-jump.jpg",
+    "frames": "generated/db-jump",
+    "generated": true
+  },
+  "lateral-decel": {
+    "card": "media/cards/lateral-decel.jpg",
+    "frames": "generated/lateral-decel",
+    "generated": true
+  },
+  "reverse-nordic": {
+    "card": "media/cards/reverse-nordic.jpg",
+    "frames": "generated/reverse-nordic",
+    "generated": true
+  },
+  "couch-stretch": {
+    "card": "media/cards/couch-stretch.jpg",
+    "frames": "generated/couch-stretch",
+    "generated": true
+  },
+  "active-slr": {
+    "card": "media/cards/active-slr.jpg",
+    "frames": "generated/active-slr",
+    "generated": true
   }
 };
