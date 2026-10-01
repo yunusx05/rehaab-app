@@ -150,13 +150,13 @@
   ];
 
   const zones = [
-    {id:'knee',label:'Genou',icon:'body',thumb:'spanish-squat'},
-    {id:'foot',label:'Cheville, pied, mollet',icon:'run',thumb:'calf-hold'},
-    {id:'hip',label:'Hanche, aine, cuisse',icon:'body',thumb:'adductor-squeeze'},
-    {id:'back',label:'Dos',icon:'body',thumb:'bird-dog'},
-    {id:'shoulder',label:'Épaule',icon:'weight',thumb:'band-er'},
-    {id:'hand',label:'Poignet, doigts, coude',icon:'basket',thumb:'wrist-mob'},
-    {id:'neck',label:'Cou',icon:'body',thumb:'chin-tuck'}
+    {id:'knee',label:'Genou',icon:'knee',thumb:'spanish-squat'},
+    {id:'foot',label:'Cheville, pied, mollet',icon:'ankle',thumb:'calf-hold'},
+    {id:'hip',label:'Hanche, aine, cuisse',icon:'hip',thumb:'hip-abduction'},
+    {id:'back',label:'Dos',icon:'spine',thumb:'bird-dog'},
+    {id:'shoulder',label:'Épaule',icon:'shoulder',thumb:'er-iso'},
+    {id:'hand',label:'Poignet, doigts, coude',icon:'wrist',thumb:'wrist-mob'},
+    {id:'neck',label:'Cou',icon:'neck',thumb:'chin-tuck'}
   ];
   const zoneOfRegion = {knee:'knee',ankle:'foot',hip:'hip',back:'back',shoulder:'shoulder',wrist:'hand',elbow:'hand',neck:'neck'};
   // Endroit précis : chaque réponse renvoie vers un protocole.
@@ -251,13 +251,13 @@
   const warmups = [
     {id:'practice',title:'Avant entraînement',minutes:10,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm'],
       blocks:[['jog-court',90],['carioca',20],['skip-a',20],['worlds-greatest',30],['monster-walk',30],['single-leg-reach',30],['snap-down',20],['pogo',20],['defensive-slide',20]]},
-    {id:'match',title:'Avant match',minutes:15,thumb:'defensive-slide',sources:['shred','fifaBasket','ankleWarm'],
+    {id:'match',title:'Avant match',minutes:15,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm'],
       blocks:[['jog-court',120],['carioca',20],['backpedal',20],['skip-a',20],['worlds-greatest',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['single-leg-reach',30],['pogo',20],['snap-down',20],['defensive-slide',20],['accel-10',20],['crossover-start',20],['approach-jump',20]]},
-    {id:'express',title:'Express',minutes:6,thumb:'skip-a',sources:['shred','fifa'],
+    {id:'express',title:'Express',minutes:6,thumb:'worlds-greatest',sources:['shred','fifa'],
       blocks:[['jog-court',60],['worlds-greatest',30],['lateral-shuffle',20],['skip-a',20],['pogo',20],['defensive-slide',20]]},
     {id:'legs',title:'Avant jambes ou sauts',minutes:8,thumb:'monster-walk',sources:['fifa','backman'],
       blocks:[['jog-court',90],['hip-circles',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['squat',30],['snap-down',20],['pogo',20]]},
-    {id:'shoot',title:'Avant shoot',minutes:6,thumb:'band-er',sources:['kuhn','orthoShoulder'],
+    {id:'shoot',title:'Avant shoot',minutes:6,thumb:'band-dislocate',sources:['kuhn','orthoShoulder'],
       blocks:[['thoracic',30],['wall-slide',30],['band-er',30],['band-pullapart',30],['scap-pushup',30],['wrist-mob',30],['finger-ext',20]]}
   ];
   // Repli quand un mouvement n'est pas possible (matériel, douleur, impacts).

@@ -7,6 +7,9 @@ const shortDate = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR
 const timeLabel = seconds => `${Math.floor(Math.max(0,seconds)/60)}:${String(Math.floor(Math.max(0,seconds)%60)).padStart(2,'0')}`;
 const loadUnit = ex => ex.weighted==='dumbbells'&&!ex.singleLoad?'kg par haltère':ex.weighted==='barbell'?'kg, barre comprise':ex.weighted==='kettlebell'?'kg par kettlebell':ex.weighted==='vest'?'kg de gilet':'kg affichés';
 const toggleId = (list,id) => list.includes(id)?list.filter(x=>x!==id):[...list,id];
+// Zones du corps : une même silhouette pour toutes, un point plein sur la zone concernée. Lisible à 22 px, là où un membre isolé ne l'est pas.
+const ptZoneBody=<g opacity=".34"><circle cx="12" cy="3.4" r="1.9"/><path d="M12 5.3v7.4M12 7.4 8.2 11.2M12 7.4l3.8 3.8M12 12.7 9.4 20m2.6-7.3L14.6 20"/></g>;
+const ptZone=(x,y)=><>{ptZoneBody}<circle cx={x} cy={y} r="2.6" fill="currentColor" stroke="none"/></>;
 function PTIcon({name,size=22}) {
   const paths={
     pause:<path d="M8 5v14M16 5v14"/>,copy:<><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></>,
@@ -31,7 +34,9 @@ function PTIcon({name,size=22}) {
     book:<><path d="M3 4h7l2 2 2-2h7v16h-7l-2 1-2-1H3zM12 6v15"/></>,clock:<><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></>,
     refresh:<><path d="M20 9a8 8 0 1 0 0 7M20 3v6h-6"/></>,close:<path d="m6 6 12 12M6 18 18 6"/>,
     vest:<><path d="M8 3 4 6v15h7V9L8 3zm8 0 4 3v15h-7V9l3-6zM8 3c1 2 3 3 4 3s3-1 4-3"/><path d="M5 13h5m4 0h5"/></>,
-    slider:<><ellipse cx="7" cy="16" rx="5" ry="2.2"/><ellipse cx="17" cy="16" rx="5" ry="2.2"/><path d="M5 10h4m6 0h4M7 7v3m10-3v3"/></>
+    slider:<><ellipse cx="7" cy="16" rx="5" ry="2.2"/><ellipse cx="17" cy="16" rx="5" ry="2.2"/><path d="M5 10h4m6 0h4M7 7v3m10-3v3"/></>,
+    knee:ptZone(10.6,16.5),ankle:ptZone(9.4,19.8),hip:ptZone(12,12.8),spine:ptZone(12,9.4),
+    shoulder:ptZone(13.9,9.2),wrist:ptZone(15.8,11.2),neck:ptZone(12,5.6)
   };
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]||paths.body}</svg>;
 }
