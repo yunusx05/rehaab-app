@@ -138,3 +138,19 @@ Demande : app centrée sur la préparation physique basket et le QI basket, sans
 - `sw.js` : cache `rehaab-v24-qi-anime`. **Changer la version à chaque modification de fichier précaché**, sinon l'ancienne interface reste servie.
 - Vérifié : 71 tests Playwright passés.
 - Tri par tolérance étendu à la **hanche / aine** (rotation, grande flexion, écart et impacts écartés ; fessiers, gainage, isométrie gardés), avec l'exercice « Serrage des adducteurs » (catalogue : 213). Les autres zones (épaule, dos, cou…) gardent l'exclusion d'origine. `sw.js` : `rehaab-v25-hanche`. 72 tests passés.
+
+## Lot 4 — Bilan athlétique (01/10/2026)
+
+Demande : questions sur l'état physique (explosivité, gainage, mobilité, sauts…), programme adapté aux faiblesses, partie kiné, retour en forme (premier pas du slasher, etc.).
+
+| Fichier | Rôle |
+| --- | --- |
+| `athletic-profile.js` | 10 questions, 9 tests propres + 10 tests du parcours réutilisés, niveaux par qualité, asymétries, priorités (besoin × poste/profil), étape conseillée (plafond 3, 2 après plus d'un an sans jouer), créneau « point faible » par étape, bloc kiné, recopie des mesures dans le parcours. |
+| `assessment-components.jsx` | Route `bilan` : ressenti → tests facultatifs → résultat et « Appliquer à mon parcours ». |
+
+- Catalogue : 213 → **234 exercices** (premier pas, détente, réactivité, freinage, tendons, pied, mobilité), sans illustration.
+- Parcours : avec un bilan, un **bloc kiné** ouvre chaque séance (douleur, puis mobilité qui manque, puis tendons de la séance ; au moins un mouvement gardé en 30 min) et un **créneau point faible** suit les mouvements clés, sans doubler un créneau du jour. **Sans bilan, les séances sont identiques à avant** (1 890 configurations comparées) ; seul le rôle « renfort » s'appelle maintenant « kiné ».
+- Séances courtes : « Premier pas » (sans départ chronométré avant l'étape 3) et « Mon bloc kiné ».
+- `sw.js` : `rehaab-v26-bilan`. Vérifié : 77 tests Playwright passés, sans débordement à 320 et 390 px.
+- Sources consultées : revue des tests en basket (PMC8008295), JSCR 2018 « Power testing in basketball », NBA Combine (PMC6820507). Aucune norme fiable pour un joueur de club : sauts et sprints servent de référence personnelle ; plank 60 s et pompes 20 sont des repères d'entraînement courants, affichés comme tels.
+- Piège : le test `QI … décision rapide chronométrée` peut dépasser 30 s sous charge dans la suite complète ; il passe seul.

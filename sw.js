@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v25-hanche';
+const CACHE = 'rehaab-v26-bilan';
 const PRECACHE = [
   './',
   './index.html',
@@ -17,6 +17,7 @@ const PRECACHE = [
   './sport-components.jsx',
   './program-components.jsx',
   './player-components.jsx',
+  './assessment-components.jsx',
   './pathway-components.jsx',
   './qi-components.jsx',
   './live-session.jsx',
@@ -237,6 +238,7 @@ const PRECACHE = [
   './personal-programs.js',
   './personal-nutrition.js',
   './player-profile.js',
+  './athletic-profile.js',
   './basket-pathway.js',
   './basket-qi.js',
   './program-data.js',

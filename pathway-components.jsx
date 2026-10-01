@@ -2,7 +2,8 @@
 const ptRoleLabel = role => role ? role.charAt(0).toUpperCase() + role.slice(1) : '';
 
 function PTPathwayIntro({data,update,go}) {
-  const [start,setStart] = usePTState(1);
+  const advice = data.athletic?.date ? AP.recommendedStart(data) : null;
+  const [start,setStart] = usePTState(advice ? advice.step : 1);
   const hasPlayer = !!data.player?.position;
   return <><PTPageHead onBack={() => go('today')} eyebrow="Parcours basket" title="Retour au jeu.">
       Cinq étapes pour revenir sur le terrain sans te blesser. On avance quand le corps a validé les critères, pas quand le calendrier le dit.
@@ -15,11 +16,13 @@ function PTPathwayIntro({data,update,go}) {
           <div><strong>{s.name}</strong><small>{s.minWeeks} semaines minimum{s.base ? ` · ${s.base}` : ''}</small></div>
         </li>)}
       </ol>
+      {hasPlayer && !advice && <PTAssessmentSummary data={data} go={go}/>}
       <section className="stack-sm"><h3>Par où commencer ?</h3>
         <PTChips value={start} onChange={setStart} options={BP.steps.map(s => ({value:s.id, label:`Étape ${s.id}`}))}/>
+        {advice && <p className="notice">Ton bilan conseille l’étape {advice.step}. {advice.reason}</p>}
         <p className="fine">{start === 1 ? 'Après une longue pause, l’étape 1 est la bonne porte d’entrée, même si tu te sens en forme : les tendons ont besoin de plus de temps que les muscles.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.'}</p>
       </section>
-      <PTButton primary onClick={() => update(s => ({...s, pathway: BP.create({startStep:start})}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
+      <PTButton primary onClick={() => update(s => ({...s, pathway: AP.seedPathwayTests(BP.create({startStep:start}), s.athletic)}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
       {(data.pathwayArchive || []).slice(-1).map(old => <button key={old.id} className="home-action" onClick={() => update(s => {const {stoppedAt, ...kept} = old; return {...s, pathway: BP.validatePathway(kept), pathwayArchive: (s.pathwayArchive || []).filter(x => x.id !== old.id)};})}><PTIcon name="refresh"/><span><strong>Reprendre mon parcours arrêté</strong><small>Étape {old.step} · {BP.stepById(old.step)?.name}, arrêté le {shortDate(old.stoppedAt)}</small></span><PTIcon name="arrow" size={18}/></button>)}
       <div className="home-options">
         <button className="home-action" onClick={() => go('program')}><PTIcon name="book"/><span><strong>Mes autres programmes</strong><small>Shred, force, hybride… Toujours séparés du parcours.</small></span><PTIcon name="arrow" size={18}/></button>
@@ -55,6 +58,7 @@ function PTPathway({data,update,go,notify}) {
         <span className="mini-progress"><i style={{transform:`scaleX(${Math.min(1, status.sessions / status.needed)})`}}/></span>
         <p className="fine">Trois séances par semaine{step.days.length === 2 ? ' (deux à cette étape)' : ''}, dans l’ordre que tu veux. Laisse au moins un jour entre deux séances de jambes.</p>
       </section>
+      <PTAssessmentSummary data={data} go={go}/>
       <details className="disclosure"><summary>Les règles de cette étape</summary><div><ul className="reason-list">{step.rules.map(r => <li key={r}>{r}</li>)}</ul></div></details>
 
       <section className="stack">
@@ -121,38 +125,49 @@ function PTPathwayLadder({data,update,go,notify}) {
   </section>;
 }
 
+// Saisie d'une mesure, partagée par le parcours et le bilan athlétique.
+const ptBlankTest = {left:'', right:'', value:'', best:'', last:''};
+function ptTestValues(t, form) {
+  const num = v => v !== '' && Number.isFinite(Number(v)) && Number(v) >= 0 && Number(v) < 10000;
+  if (t.unit === 'check') return {values: t.sides ? {left: form.left === true, right: form.right === true} : {value: form.value === true}};
+  if (t.unit === 'rsa') return !num(form.best) || !num(form.last) || Number(form.best) <= 0 ? {error: 'Indique le meilleur et le dernier temps.'} : {values: {best: Number(form.best), last: Number(form.last)}};
+  if (t.sides) return !num(form.left) || !num(form.right) ? {error: 'Indique une valeur pour chaque côté.'} : {values: {left: Number(form.left), right: Number(form.right)}};
+  return !num(form.value) ? {error: 'Indique une valeur.'} : {values: {value: Number(form.value)}};
+}
+function PTTestForm({test: t, form, set}) {
+  const unit = t.unit === 'check' || t.unit === 'rsa' ? '' : ` (${t.unit})`;
+  return <>
+    {t.unit === 'check' && <div className="stack-sm">
+      {t.sides ? ['left','right'].map(side => <label key={side} className="check-label"><input type="checkbox" checked={form[side] === true} onChange={e => set(side, e.target.checked)}/>{side === 'left' ? 'Jambe gauche' : 'Jambe droite'} : réussi proprement, sans douleur</label>)
+        : <label className="check-label"><input type="checkbox" checked={form.value === true} onChange={e => set('value', e.target.checked)}/>Réussi proprement, sans douleur</label>}
+    </div>}
+    {t.unit === 'rsa' && <div className="form-grid"><PTField label="Meilleur sprint (s)" type="number" step="0.01" inputMode="decimal" value={form.best} onChange={e => set('best', e.target.value)}/><PTField label="Dernier sprint (s)" type="number" step="0.01" inputMode="decimal" value={form.last} onChange={e => set('last', e.target.value)}/></div>}
+    {!['check','rsa'].includes(t.unit) && (t.sides
+      ? <div className="form-grid"><PTField label={`Gauche${unit}`} type="number" step="0.1" inputMode="decimal" value={form.left} onChange={e => set('left', e.target.value)}/><PTField label={`Droite${unit}`} type="number" step="0.1" inputMode="decimal" value={form.right} onChange={e => set('right', e.target.value)}/></div>
+      : <PTField label={`Résultat${unit}`} type="number" step="0.01" inputMode="decimal" value={form.value} onChange={e => set('value', e.target.value)}/>)}
+  </>;
+}
+
 function PTPathwayTest({data,update,go,notify,id}) {
   const t = BP.tests[id], p = data.pathway;
-  const [form,setForm] = usePTState({left:'', right:'', value:'', best:'', last:''});
+  const [form,setForm] = usePTState(ptBlankTest);
   const [error,setError] = usePTState('');
   if (!t || !p) return <><PTPageHead onBack={() => go('pathway')} title="Test introuvable."/><PTButton primary onClick={() => go('pathway')}>Revenir au parcours</PTButton></>;
   const history = (p.tests[id] || []).slice().reverse();
   const set = (k,v) => setForm(f => ({...f, [k]: v}));
-  const num = v => v !== '' && Number.isFinite(Number(v)) && Number(v) >= 0 && Number(v) < 10000;
   const save = () => {
-    let values;
-    if (t.unit === 'check') values = t.sides ? {left: form.left === true, right: form.right === true} : {value: form.value === true};
-    else if (t.unit === 'rsa') { if (!num(form.best) || !num(form.last) || Number(form.best) <= 0) { setError('Indique le meilleur et le dernier temps.'); return; } values = {best: Number(form.best), last: Number(form.last)}; }
-    else if (t.sides) { if (!num(form.left) || !num(form.right)) { setError('Indique une valeur pour chaque côté.'); return; } values = {left: Number(form.left), right: Number(form.right)}; }
-    else { if (!num(form.value)) { setError('Indique une valeur.'); return; } values = {value: Number(form.value)}; }
+    const {values, error} = ptTestValues(t, form);
+    if (error) { setError(error); return; }
     update(s => ({...s, pathway: BP.recordTest(s.pathway, id, values)}));
     const result = BP.evaluate(id, {...values}, BP.recordTest(p, id, values));
     notify(result.ok ? 'Critère validé.' : 'Mesure enregistrée. Pas encore le repère : on continue.');
     go('pathway');
   };
-  const unit = t.unit === 'check' || t.unit === 'rsa' ? '' : ` (${t.unit})`;
   return <><PTPageHead onBack={() => go('pathway')} eyebrow="Critère de passage" title={`${t.label}.`}>{t.why}</PTPageHead>
     <div className="stack-lg">
       <ol className="instruction-list">{t.how.map(line => <li key={line}>{line}</li>)}</ol>
       {t.target && <p className="notice">Repère : {t.target}.</p>}
-      {t.unit === 'check' && <div className="stack-sm">
-        {t.sides ? ['left','right'].map(side => <label key={side} className="check-label"><input type="checkbox" checked={form[side] === true} onChange={e => set(side, e.target.checked)}/>{side === 'left' ? 'Jambe gauche' : 'Jambe droite'} : réussi proprement, sans douleur</label>)
-          : <label className="check-label"><input type="checkbox" checked={form.value === true} onChange={e => set('value', e.target.checked)}/>Réussi proprement, sans douleur</label>}
-      </div>}
-      {t.unit === 'rsa' && <div className="form-grid"><PTField label="Meilleur sprint (s)" type="number" step="0.01" inputMode="decimal" value={form.best} onChange={e => set('best', e.target.value)}/><PTField label="Dernier sprint (s)" type="number" step="0.01" inputMode="decimal" value={form.last} onChange={e => set('last', e.target.value)}/></div>}
-      {!['check','rsa'].includes(t.unit) && (t.sides
-        ? <div className="form-grid"><PTField label={`Gauche${unit}`} type="number" step="0.1" inputMode="decimal" value={form.left} onChange={e => set('left', e.target.value)}/><PTField label={`Droite${unit}`} type="number" step="0.1" inputMode="decimal" value={form.right} onChange={e => set('right', e.target.value)}/></div>
-        : <PTField label={`Résultat${unit}`} type="number" step="0.01" inputMode="decimal" value={form.value} onChange={e => set('value', e.target.value)}/>)}
+      <PTTestForm test={t} form={form} set={set}/>
       {error && <p className="error" role="alert">{error}</p>}
       <PTButton primary onClick={save}>Enregistrer la mesure<PTIcon name="check" size={18}/></PTButton>
       {history.length > 0 && <section className="stack-sm"><h3>Mesures précédentes</h3>

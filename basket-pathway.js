@@ -191,13 +191,17 @@
     return m?{sets:Number(m[1]),min:Number(m[2]),max:Number(m[3]||m[2])}:{sets:3,min:8,max:12};
   }
 
-  // Résout une séance du parcours contre le catalogue réel : matériel, niveau, douleurs, poste.
+  // Module du bilan athlétique, facultatif : sans lui (ou sans bilan), les séances restent celles d'avant.
+  function athleticLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.AthleticProfile) return g.AthleticProfile;try{return typeof require==='function'?require('./athletic-profile.js'):null;}catch(e){return null;}}
+
+  // Résout une séance du parcours contre le catalogue réel : matériel, niveau, douleurs, poste, bilan athlétique.
   function sessionPlan(PT,PP,state,p,dayKey,{minutes}={}) {
     const step=stepById(p.step),day=step&&step.days.find(d=>d.key===dayKey);
     if(!day) return {error:'Séance introuvable dans cette étape.'};
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical avant de reprendre.'};
     const pains=safety.active, player=state.player||{}, g=group(player.position);
+    const AP=state.athletic?athleticLib():null, athletic=AP?state.athletic:null;
     const week=weekOf(p);
     // guided : le moteur laisse le parcours doser les impacts et la reprise, étape par étape. Le même contrôle s'applique pendant la séance.
     const check={...state.checkIn,equipment:state.owned,focus:'muscle',format:'classic',minutes:minutes||60,date:today(),guided:p.step};
@@ -205,27 +209,46 @@
     const usable=e=>e&&PT.allowed(e,state,check,ctx)&&(!PP||PP.tolerates(e,pains));
     const all=PT.allExercises(state), find=id=>all.find(e=>e.id===id);
     const exercises=[],changes=[];
-    day.slots.forEach((slot,i)=>{
+    // Un créneau facultatif (point faible du bilan) disparaît sans repli ni message s'il n'a aucun candidat compatible.
+    const resolve=(slot,key)=>{
       const ids=(slot.pos&&slot.pos[g])||slot.ids;
       let chosen=ids.map(find).find(e=>usable(e)&&!exercises.some(x=>x.id===e.id));
+      if(!chosen&&slot.optional) return null;
       // Zone douloureuse : un créneau d'impact devient du travail de hanche ou de cheville toléré.
       if(!chosen&&pains.length){chosen=painFallback[slot.role]?.map(find).find(e=>usable(e)&&!exercises.some(x=>x.id===e.id));if(chosen){chosen={...chosen,fallback:true};changes.push(`${slot.role} : ${chosen.name} à la place des impacts, le temps que la zone se calme.`);}}
       if(!chosen&&find(ids[0])){chosen=(patternFallback[find(ids[0]).pattern]||[]).map(find).find(e=>usable(e)&&!exercises.some(x=>x.id===e.id));if(chosen)changes.push(`${find(ids[0]).name} → ${chosen.name} (sans le matériel prévu).`);}
-      else if(chosen&&!chosen.fallback&&chosen.id!==ids[0]&&find(ids[0]))changes.push(`${find(ids[0]).name} → ${chosen.name}.`);
-      if(!chosen){changes.push(find(ids[0])?.pattern==='pull'&&!state.owned.some(id=>['bands','pullup','cable','dumbbells','kettlebell','barbell'].includes(id))?'Tirage : un élastique ou une barre de traction est nécessaire, rien ne le remplace au poids du corps.':`${slot.role} : aucun mouvement compatible aujourd’hui (matériel, douleur ou contexte).`);return;}
-      const idx=doseIndex(week,slot.doses.length),dose=parseDose(slot.doses[idx]);
+      else if(chosen&&!chosen.fallback&&!slot.optional&&chosen.id!==ids[0]&&find(ids[0]))changes.push(`${find(ids[0]).name} → ${chosen.name}.`);
+      if(!chosen){changes.push(find(ids[0])?.pattern==='pull'&&!state.owned.some(id=>['bands','pullup','cable','dumbbells','kettlebell','barbell'].includes(id))?'Tirage : un élastique ou une barre de traction est nécessaire, rien ne le remplace au poids du corps.':`${slot.role} : aucun mouvement compatible aujourd’hui (matériel, douleur ou contexte).`);return null;}
       const {fallback,...base}=chosen;
-      const e={...PT.makePrescription(base,'classic',check.minutes,ctx),sets:dose.sets,pathwayRole:slot.role,key:i<3};
-      if(chosen.fallback){e.sets=Math.min(3,dose.sets);if(chosen.kind==='cardio'){e.sets=1;e.seconds=Math.min(e.seconds,480);}}
-      else if(chosen.measure==='seconds') e.seconds=slot.secs?slot.secs[idx]:chosen.seconds;
+      const d=slot.dosesFor?slot.dosesFor(base):slot;
+      const idx=doseIndex(week,d.doses.length),dose=parseDose(d.doses[idx]);
+      const e={...PT.makePrescription(base,'classic',check.minutes,ctx),sets:dose.sets,pathwayRole:slot.role,key};
+      if(fallback){e.sets=Math.min(3,dose.sets);if(chosen.kind==='cardio'){e.sets=1;e.seconds=Math.min(e.seconds,480);}}
+      else if(chosen.measure==='seconds') e.seconds=d.secs?d.secs[idx]:chosen.seconds;
+      else if(slot.dosesFor&&chosen.kind==='cardio'&&d.secs) e.seconds=d.secs[idx];
       else if(dose.max>1){e.targetMin=dose.min;e.targetMax=dose.max;}
-      if(ctx.upcoming.length&&chosen.impact){changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return;}
-      exercises.push(e);
-    });
-    // Zone douloureuse : un exercice de renforcement ciblé en tête, toléré par la zone.
-    if(PP&&pains.length){
+      if(ctx.upcoming.length&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
+      return e;
+    };
+    day.slots.forEach((slot,i)=>{const e=resolve(slot,i<3);if(e)exercises.push(e);});
+    // Point faible du bilan : un créneau de plus, adapté à l'étape, juste après les mouvements clés.
+    let focusNote=null;
+    if(athletic){
+      const planned=day.slots.flatMap(s=>s.ids.concat(...Object.values(s.pos||{})));
+      for(const focus of AP.focusSlots(athletic,player,step.id,day.key,planned)){
+        const e=resolve(focus,true);
+        if(e){exercises.splice(Math.min(3,exercises.length),0,e);focusNote=`${focus.level===0?'Point faible':'Priorité'} de ton bilan · ${focus.label.toLowerCase()} : ${e.name}.`;break;}
+      }
+    }
+    // Bloc kiné en tête. Sans bilan : renforcement de la zone douloureuse seul, comme avant.
+    let kineNote=null;
+    if(athletic){
+      const items=AP.kineBlock(state,{step:step.id,day:day.key,pains,count:AP.kineCount(state,minutes),available:id=>usable(find(id))&&!exercises.some(x=>x.id===id),present:id=>exercises.some(x=>x.id===id)});
+      items.slice().reverse().forEach(x=>exercises.unshift({...PT.makePrescription(find(x.id),'classic',check.minutes,ctx),sets:x.source==='mobility'?2:3,pathwayRole:'kiné',kineSource:x.source,key:x.source==='pain'||x===items[0]}));
+      if(items.length) kineNote=`Bloc kiné (${items.length} mouvement${items.length>1?'s':''}) : ${[...new Set(items.map(x=>x.why))].join(', ')}. Il ne remplace pas l’avis d’un kiné.`;
+    } else if(PP&&pains.length){
       const rehabIds=PP.rehabBlock(pains,id=>usable(find(id))&&!exercises.some(x=>x.id===id),1);
-      rehabIds.forEach(id=>{exercises.unshift({...PT.makePrescription(find(id),'classic',check.minutes,ctx),pathwayRole:'renfort',key:true});changes.unshift(`${find(id).name} ajouté pour la zone signalée.`);});
+      rehabIds.forEach(id=>{exercises.unshift({...PT.makePrescription(find(id),'classic',check.minutes,ctx),pathwayRole:'kiné',kineSource:'pain',key:true});changes.unshift(`${find(id).name} ajouté pour la zone signalée.`);});
     }
     if(!exercises.length) return {error:'Aucun mouvement de cette séance n’est compatible aujourd’hui. Adapte ton matériel ou choisis une autre séance.'};
     const budget=minutes?minutes*60-360:Infinity;
@@ -235,6 +258,8 @@
     const reasons=[`Étape ${step.id} · ${step.name}, semaine ${week}${week>step.minWeeks?' (consolidation)':''}.`];
     if(deload) reasons.push('Semaine allégée : moins de séries pour assimiler le travail.');
     if(player.position) reasons.push(`Variantes choisies pour ton poste (${PP?PP.positions[player.position]?.label:player.position}).`);
+    if(kineNote&&exercises.some(e=>e.pathwayRole==='kiné')) reasons.push(kineNote);
+    if(focusNote&&exercises.some(e=>['point faible','priorité'].includes(e.pathwayRole))) reasons.push(focusNote);
     if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
     reasons.push(...step.rules);
     return {id:uid(),title:`${step.short} · ${day.name}`,source:'pathway',pathwayId:p.id,pathwayStep:step.id,pathwayWeek:week,pathwayDay:day.key,focus:'muscle',format:'classic',exercises,check,reasons:reasons.concat(changes),warmupSeconds:300,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
@@ -324,7 +349,11 @@
     {id:'ankles',title:'Chevilles réactives',minutes:8,icon:'spark',ids:[['ankle-mob'],['single-leg-eyes','single-leg-stand'],['calf-hold'],['pogo','calf']]},
     {id:'antirot',title:'Gainage anti-rotation',minutes:10,icon:'weight',ids:[['pallof','pallof-cable'],['side-plank'],['bird-dog'],['suitcase-carry','deadbug']]},
     {id:'prematch',title:'Activation avant match',minutes:12,icon:'spark',ids:[['hip-circles'],['monster-walk','hip-abduction'],['wall-drill'],['pogo','calf'],['landing']]},
-    {id:'recovery',title:'Récup lendemain de match',minutes:15,icon:'heart',ids:[['bike','march','walk'],['cat'],['hip-flexor'],['hamstring'],['calf-stretch'],['breath']]}
+    {id:'recovery',title:'Récup lendemain de match',minutes:15,icon:'heart',ids:[['bike','march','walk'],['cat'],['hip-flexor'],['hamstring'],['calf-stretch'],['breath']]},
+    // Départs chronométrés seulement à partir de l'étape 3 du parcours : avant, le premier pas se prépare sans sprint.
+    {id:'first-step',title:'Premier pas',minutes:12,icon:'spark',impactFromStep:3,ids:[['wall-drill'],['a-march'],['knee-drive-iso'],['falling-start','split-start','psoas-march'],['psoas-march','single-bridge']]},
+    // Construite depuis le bilan athlétique et les douleurs ; liste générique sans bilan.
+    {id:'kine',title:'Mon bloc kiné',minutes:15,icon:'heart',ids:[['ankle-mob'],['couch-stretch','hip-flexor'],['spanish-squat','wall-sit'],['calf-hold'],['foot-doming','tibialis'],['active-slr','hamstring']]}
   ];
   function quickPlan(PT,PP,state,id) {
     const q=quick.find(x=>x.id===id); if(!q) return {error:'Séance introuvable.'};
@@ -332,15 +361,22 @@
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
     const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes:q.minutes,date:today(),guided:1};
     const ctx=PT.context(state,check), all=PT.allExercises(state);
+    const noImpact=q.impactFromStep&&(state.pathway?.step||1)<q.impactFromStep;
+    const ok=x=>x&&PT.allowed(x,state,check,ctx)&&(!PP||PP.tolerates(x,safety.active))&&!(noImpact&&x.impact);
+    const AP=q.id==='kine'?athleticLib():null;
+    const kine=AP?AP.kineBlock(state,{day:'all',count:6,pains:safety.active,available:id=>ok(all.find(y=>y.id===id))}):[];
     const exercises=[];
-    q.ids.forEach(options=>{
-      const e=options.map(x=>all.find(y=>y.id===x)).find(x=>x&&PT.allowed(x,state,check,ctx)&&(!PP||PP.tolerates(x,safety.active))&&!exercises.some(y=>y.id===x.id));
+    kine.map(x=>[x.id]).concat(q.ids).forEach(options=>{
+      const e=options.map(x=>all.find(y=>y.id===x)).find(x=>ok(x)&&!exercises.some(y=>y.id===x.id));
       if(e) exercises.push({...PT.makePrescription(e,'classic',q.minutes,ctx),sets:2,rest:Math.min(e.rest,40)});
     });
     if(exercises[0]&&exercises[0].kind==='cardio'){exercises[0].sets=1;exercises[0].seconds=300;}
     while(PT.estimateSeconds(exercises,'classic')>q.minutes*60&&exercises.length>2) exercises.pop();
     if(!exercises.length) return {error:'Aucun mouvement compatible avec ton matériel et tes douleurs actuelles.'};
-    return {id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons:['Séance courte à la carte, hors parcours : elle ne fait pas avancer ton programme.'],warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()};
+    const reasons=['Séance courte à la carte, hors parcours : elle ne fait pas avancer ton programme.'];
+    if(kine.length) reasons.push(`Construite depuis ton bilan : ${[...new Set(kine.map(x=>x.why))].join(', ')}. Elle ne remplace pas l’avis d’un kiné.`);
+    if(noImpact) reasons.push('Pas de départ chronométré avant l’étape 3 du parcours : on prépare le premier pas sans sprint.');
+    return {id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,markCompleted,latest,evaluate,gate,advance,stepBack,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};

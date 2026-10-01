@@ -30,8 +30,9 @@ function PTPlayerProfile({data,update,go,notify}) {
       owned,checkIn:{...s.checkIn,equipment:owned},
       symptoms:[...s.symptoms.map(x=>x.active&&!keptIds.includes(x.id)?{...x,active:false,resolvedAt:PT.dateKey()}:x).filter(x=>!keptIds.includes(x.id)),...pains]
     }));
-    notify('Profil joueur enregistré. Ta séance et tes lectures du jour sont recalculées.');
-    go(data.pathway?'today':'pathway');
+    // Premier profil : le bilan physique vient juste après, pour que le parcours parte de l'état réel du corps.
+    notify(data.athletic?'Profil joueur enregistré. Ta séance et tes lectures du jour sont recalculées.':'Profil joueur enregistré. Dernière étape : ton bilan physique.');
+    go(data.athletic?(data.pathway?'today':'pathway'):'bilan');
   };
   const blocked=pains.some(p=>p.redFlags||Number(p.severity)>=7);
   return <div>
@@ -89,6 +90,9 @@ function PTBodyMind({data,update,go,notify}) {
   } else {
     body=<><span className="training-kicker">Le corps</span><h2>Retour au jeu</h2><p className="fine">Cinq étapes, des critères de passage, adaptées à ton poste. {player.layoff==='long'?'Recommandé après ta longue pause.':''}</p><div className="button-row"><PTButton primary onClick={()=>go('pathway')}>Découvrir<PTIcon name="arrow" size={18}/></PTButton><PTButton quiet onClick={()=>launch(JP.dailyBody(PT,data,{minutes:30}))}>Séance du jour</PTButton></div></>;
   }
+  const athletic=data.athletic;
+  if(!athletic?.date) body=<>{body}<button className="text-button" onClick={()=>go('bilan')}>Faire mon bilan physique · 10 min →</button></>;
+  else if(!apFresh(athletic)) body=<>{body}<button className="text-button" onClick={()=>go('bilan')}>Refaire mon bilan : 4 semaines sont passées →</button></>;
   const rank=JP.qiThemes(player),daily=QI.dailySet(data.qi,player,rank),left=daily.items.length-daily.done;
   return <div className="body-mind sport-reveal">
     <section className="body-card">{body}</section>
