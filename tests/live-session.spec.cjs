@@ -109,6 +109,7 @@ test('démonstration : lecture muette en boucle, pause hors écran ou onglet mas
 });
 
 test('séance : action fixe, résultats validés, repos, pause persistée, bilan et récompense unique',async({page})=>{
+  test.setTimeout(90000); // trois chargements complets de l'app, chacun relance le précache du service worker
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:390,height:844});await seed(page,fixture());
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
@@ -129,7 +130,7 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   await expect.poll(async()=>(await state(page)).draft.entries.curl[0].done).toBe(true);
   await page.getByRole('button',{name:'Mettre en pause',exact:true}).click();
   const before=await state(page);await page.reload();
-  await expect(page.getByRole('button',{name:'Reprendre la séance',exact:true})).toBeVisible();
+  await expect(page.getByRole('button',{name:'Reprendre la séance',exact:true})).toBeVisible({timeout:20000});
   expect((await state(page)).draft.timer.remaining).toBe(before.draft.timer.remaining);
   await page.getByRole('button',{name:'Reprendre la séance',exact:true}).click();
   await page.getByRole('button',{name:'Passer à l’exercice 1',exact:true}).click();

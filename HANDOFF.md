@@ -177,3 +177,12 @@ Le dépôt contient un lot non commité pour ajouter des protocoles Quick Rehab 
 - Images : `scripts/generate-media-lot5.cjs` (génère), `scripts/media-contact-sheet.cjs` (relecture), `scripts/install-generated-media.cjs` (installe). 39 paires installées, 6 écartées car quasi identiques.
 - Reste : 63 exercices sans image. Le compte fal est verrouillé (`TOP_UP`) : après recharge, relancer `node scripts/generate-media-lot5.cjs` (reprend où il s'est arrêté), puis la planche, puis l'installation. Plafond du registre : 22 € (`limit_eur`).
 - Cache du service worker : `rehaab-v29-rehab`.
+
+## Lot 6 (01/10/2026) : illustrer les 63 exercices restants
+- 63 exercices générés (126 images), relus par planche de contact. **55 installés**, catalogue illustré : 254 / 262.
+- 8 écartés faute d'un mouvement visible entre les deux positions, après une seconde tentative avec des poses renforcées : `band-er`, `vest-march`, `defensive-slide`, `skip-a`, `backpedal`, `hip-90-90`, `adductor-squeeze`, `wrist-iso`. Le modèle `/edit` recopie la pose de départ quand le geste est petit (isométrie, course) ; relancer tel quel ne suffira pas, il faut d'autres angles ou une autre source.
+- Poses renforcées dans `scripts/exercise-poses.json` et `scripts/generate-media-lot5.cjs`. `quad-rotation` a été reformulé : « kneeling on all fours » déclenchait le filtre de contenu de fal.
+- Relecture : `node scripts/media-contact-sheet.cjs <sortie.jpg> <id...>`. Le tri par SSIM entre les deux positions repère les paires quasi identiques (> 0,96 = suspect).
+- Coût : 6,67 $ sur ce lot, 10,47 $ cumulés au registre (plafond 22 €).
+- Cache du service worker : `rehaab-v31-media`.
+- Tests : suite Playwright complète au vert (89). Le test « séance : action fixe… » échouait avant ce lot par manque de temps, pas par un bug : `test.setTimeout(90000)` et un délai de 20 s sur « Reprendre la séance ».

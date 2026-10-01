@@ -1131,5 +1131,280 @@ window.RehaabMedia = {
     "card": "media/cards/single-leg-reach.jpg",
     "frames": "generated/single-leg-reach",
     "generated": true
+  },
+  "tandem-stand": {
+    "card": "media/cards/tandem-stand.jpg",
+    "frames": "generated/tandem-stand",
+    "generated": true
+  },
+  "heel-toe-walk": {
+    "card": "media/cards/heel-toe-walk.jpg",
+    "frames": "generated/heel-toe-walk",
+    "generated": true
+  },
+  "airplane": {
+    "card": "media/cards/airplane.jpg",
+    "frames": "generated/airplane",
+    "generated": true
+  },
+  "clamshell": {
+    "card": "media/cards/clamshell.jpg",
+    "frames": "generated/clamshell",
+    "generated": true
+  },
+  "hip-abduction": {
+    "card": "media/cards/hip-abduction.jpg",
+    "frames": "generated/hip-abduction",
+    "generated": true
+  },
+  "squat-thrust": {
+    "card": "media/cards/squat-thrust.jpg",
+    "frames": "generated/squat-thrust",
+    "generated": true
+  },
+  "burpee-nojump": {
+    "card": "media/cards/burpee-nojump.jpg",
+    "frames": "generated/burpee-nojump",
+    "generated": true
+  },
+  "burpee": {
+    "card": "media/cards/burpee.jpg",
+    "frames": "generated/burpee",
+    "generated": true
+  },
+  "skater": {
+    "card": "media/cards/skater.jpg",
+    "frames": "generated/skater",
+    "generated": true
+  },
+  "shadow-box": {
+    "card": "media/cards/shadow-box.jpg",
+    "frames": "generated/shadow-box",
+    "generated": true
+  },
+  "stair": {
+    "card": "media/cards/stair.jpg",
+    "frames": "generated/stair",
+    "generated": true
+  },
+  "walk-hill": {
+    "card": "media/cards/walk-hill.jpg",
+    "frames": "generated/walk-hill",
+    "generated": true
+  },
+  "run-interval": {
+    "card": "media/cards/run-interval.jpg",
+    "frames": "generated/run-interval",
+    "generated": true
+  },
+  "rower-interval": {
+    "card": "media/cards/rower-interval.jpg",
+    "frames": "generated/rower-interval",
+    "generated": true
+  },
+  "depth-drop": {
+    "card": "media/cards/depth-drop.jpg",
+    "frames": "generated/depth-drop",
+    "generated": true
+  },
+  "worlds-greatest": {
+    "card": "media/cards/worlds-greatest.jpg",
+    "frames": "generated/worlds-greatest",
+    "generated": true
+  },
+  "downdog": {
+    "card": "media/cards/downdog.jpg",
+    "frames": "generated/downdog",
+    "generated": true
+  },
+  "pigeon": {
+    "card": "media/cards/pigeon.jpg",
+    "frames": "generated/pigeon",
+    "generated": true
+  },
+  "deep-squat-hold": {
+    "card": "media/cards/deep-squat-hold.jpg",
+    "frames": "generated/deep-squat-hold",
+    "generated": true
+  },
+  "doorway-chest": {
+    "card": "media/cards/doorway-chest.jpg",
+    "frames": "generated/doorway-chest",
+    "generated": true
+  },
+  "band-dislocate": {
+    "card": "media/cards/band-dislocate.jpg",
+    "frames": "generated/band-dislocate",
+    "generated": true
+  },
+  "quad-rotation": {
+    "card": "media/cards/quad-rotation.jpg",
+    "frames": "generated/quad-rotation",
+    "generated": true
+  },
+  "wrist-mob": {
+    "card": "media/cards/wrist-mob.jpg",
+    "frames": "generated/wrist-mob",
+    "generated": true
+  },
+  "tke": {
+    "card": "media/cards/tke.jpg",
+    "frames": "generated/tke",
+    "generated": true
+  },
+  "iso-split": {
+    "card": "media/cards/iso-split.jpg",
+    "frames": "generated/iso-split",
+    "generated": true
+  },
+  "step-down": {
+    "card": "media/cards/step-down.jpg",
+    "frames": "generated/step-down",
+    "generated": true
+  },
+  "wall-drill": {
+    "card": "media/cards/wall-drill.jpg",
+    "frames": "generated/wall-drill",
+    "generated": true
+  },
+  "accel-10": {
+    "card": "media/cards/accel-10.jpg",
+    "frames": "generated/accel-10",
+    "generated": true
+  },
+  "sprint-20": {
+    "card": "media/cards/sprint-20.jpg",
+    "frames": "generated/sprint-20",
+    "generated": true
+  },
+  "crossover-start": {
+    "card": "media/cards/crossover-start.jpg",
+    "frames": "generated/crossover-start",
+    "generated": true
+  },
+  "shuttle-5105": {
+    "card": "media/cards/shuttle-5105.jpg",
+    "frames": "generated/shuttle-5105",
+    "generated": true
+  },
+  "decel-stick": {
+    "card": "media/cards/decel-stick.jpg",
+    "frames": "generated/decel-stick",
+    "generated": true
+  },
+  "lateral-bound-stick": {
+    "card": "media/cards/lateral-bound-stick.jpg",
+    "frames": "generated/lateral-bound-stick",
+    "generated": true
+  },
+  "single-hop-stick": {
+    "card": "media/cards/single-hop-stick.jpg",
+    "frames": "generated/single-hop-stick",
+    "generated": true
+  },
+  "foot-doming": {
+    "card": "media/cards/foot-doming.jpg",
+    "frames": "generated/foot-doming",
+    "generated": true
+  },
+  "vest-pullup": {
+    "card": "media/cards/vest-pullup.jpg",
+    "frames": "generated/vest-pullup",
+    "generated": true
+  },
+  "vest-split-squat": {
+    "card": "media/cards/vest-split-squat.jpg",
+    "frames": "generated/vest-split-squat",
+    "generated": true
+  },
+  "vest-step-up": {
+    "card": "media/cards/vest-step-up.jpg",
+    "frames": "generated/vest-step-up",
+    "generated": true
+  },
+  "vest-calf": {
+    "card": "media/cards/vest-calf.jpg",
+    "frames": "generated/vest-calf",
+    "generated": true
+  },
+  "slider-lateral-lunge": {
+    "card": "media/cards/slider-lateral-lunge.jpg",
+    "frames": "generated/slider-lateral-lunge",
+    "generated": true
+  },
+  "slider-reverse-lunge": {
+    "card": "media/cards/slider-reverse-lunge.jpg",
+    "frames": "generated/slider-reverse-lunge",
+    "generated": true
+  },
+  "slider-climber": {
+    "card": "media/cards/slider-climber.jpg",
+    "frames": "generated/slider-climber",
+    "generated": true
+  },
+  "slider-adductor": {
+    "card": "media/cards/slider-adductor.jpg",
+    "frames": "generated/slider-adductor",
+    "generated": true
+  },
+  "slider-bodysaw": {
+    "card": "media/cards/slider-bodysaw.jpg",
+    "frames": "generated/slider-bodysaw",
+    "generated": true
+  },
+  "er-iso": {
+    "card": "media/cards/er-iso.jpg",
+    "frames": "generated/er-iso",
+    "generated": true
+  },
+  "wall-slide": {
+    "card": "media/cards/wall-slide.jpg",
+    "frames": "generated/wall-slide",
+    "generated": true
+  },
+  "curl-up": {
+    "card": "media/cards/curl-up.jpg",
+    "frames": "generated/curl-up",
+    "generated": true
+  },
+  "heel-drop-ecc": {
+    "card": "media/cards/heel-drop-ecc.jpg",
+    "frames": "generated/heel-drop-ecc",
+    "generated": true
+  },
+  "finger-ext": {
+    "card": "media/cards/finger-ext.jpg",
+    "frames": "generated/finger-ext",
+    "generated": true
+  },
+  "chin-tuck": {
+    "card": "media/cards/chin-tuck.jpg",
+    "frames": "generated/chin-tuck",
+    "generated": true
+  },
+  "towel-grip": {
+    "card": "media/cards/towel-grip.jpg",
+    "frames": "generated/towel-grip",
+    "generated": true
+  },
+  "ankle-alphabet": {
+    "card": "media/cards/ankle-alphabet.jpg",
+    "frames": "generated/ankle-alphabet",
+    "generated": true
+  },
+  "jog-court": {
+    "card": "media/cards/jog-court.jpg",
+    "frames": "generated/jog-court",
+    "generated": true
+  },
+  "lateral-shuffle": {
+    "card": "media/cards/lateral-shuffle.jpg",
+    "frames": "generated/lateral-shuffle",
+    "generated": true
+  },
+  "carioca": {
+    "card": "media/cards/carioca.jpg",
+    "frames": "generated/carioca",
+    "generated": true
   }
 };
