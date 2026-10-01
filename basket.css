@@ -88,9 +88,18 @@
 .mode-tile small{font-size:.74rem;color:var(--muted);line-height:1.4}
 .mode-tile:active{transform:scale(.98)}
 @media(min-width:760px){.mode-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.mastery-row{display:grid;grid-template-columns:minmax(0,1fr) 72px auto;align-items:center;gap:.8rem;width:100%;padding:.75rem .2rem;border:0;border-top:1px solid var(--line);background:none;color:var(--text);text-align:left;font:inherit}
+.mastery-row{display:grid;grid-template-columns:46px minmax(0,1fr) 52px auto;align-items:center;gap:.8rem;width:100%;padding:.75rem .2rem;border:0;border-top:1px solid var(--line);background:none;color:var(--text);text-align:left;font:inherit}
 .mastery-row strong{display:block;font-size:.86rem}
 .mastery-row small{display:block;font-size:.72rem;color:var(--muted);margin-top:.15rem}
+/* Pictogramme de thème QI : demi-terrain discret, repères de la situation en avant. */
+.qi-glyph{display:block;width:46px;height:40px;color:var(--text)}
+.qi-glyph svg{width:100%;height:100%;display:block}
+.qi-glyph .g-court{opacity:.3}
+.qi-glyph .g-off{fill:none}
+.qi-glyph .g-def,.qi-glyph .g-move{stroke-width:1.6}
+.qi-glyph .g-move{stroke:var(--accent)}
+.qi-glyph marker path{fill:var(--accent)}
+.qi-glyph .g-screen{stroke-width:2.4}
 .mastery-bar{height:4px;border-radius:4px;background:var(--raised);overflow:hidden}
 .mastery-bar i{display:block;height:100%;background:var(--accent);transform-origin:left;transition:transform 240ms var(--ease-sport)}
 .flash-card{display:grid;gap:.8rem;min-height:170px;align-content:center;padding:1.4rem;border-radius:22px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}

@@ -1,4 +1,38 @@
 /* QI basket : terrain animé, lectures de jeu, placements, fins de match, cartes, guide pick & roll, analyse de match. */
+// Pictogramme de thème : le même demi-terrain pour tous, un ou deux repères pour la situation.
+// Panier en haut, attaque en cercles pleins, défense en croix, déplacement en flèche.
+const ptGlyphO = (x,y,k) => <circle key={k} cx={x} cy={y} r="2.4" className="g-off"/>;
+const ptGlyphX = (x,y,k) => <path key={k} d={`M${x-2.2} ${y-2.2}l4.4 4.4M${x+2.2} ${y-2.2}l-4.4 4.4`} className="g-def"/>;
+const ptGlyphA = (x1,y1,x2,y2,k) => <path key={k} d={`M${x1} ${y1}L${x2} ${y2}`} className="g-move" markerEnd="url(#glyph-head)"/>;
+const ptGlyphScreen = (x,y,k) => <path key={k} d={`M${x-3} ${y}h6`} className="g-screen"/>;
+const ptQiGlyphs = {
+  'pnr-handler':  [ptGlyphO(10,23,1), ptGlyphScreen(14,18,2), ptGlyphA(11,21,19,14,3)],
+  'pnr-screener': [ptGlyphO(14,19,1), ptGlyphScreen(14,15,2), ptGlyphA(15,21,17,11,3)],
+  'post':         [ptGlyphO(11,13,1), ptGlyphA(13,12,16,8,2)],
+  'cuts':         [ptGlyphO(27,17,1), ptGlyphA(25,16,19,9,2)],
+  'offball':      [ptGlyphO(6,22,1), ptGlyphA(7,20,12,13,2)],
+  'spacing':      [ptGlyphO(5,20,1), ptGlyphO(13,24,2), ptGlyphO(21,24,3), ptGlyphO(29,20,4), ptGlyphO(17,12,5)],
+  'transition':   [ptGlyphO(17,26,1), ptGlyphA(17,24,17,10,2)],
+  'finishing-reads': [ptGlyphO(17,20,1), ptGlyphX(13,12,2), ptGlyphX(21,12,3), ptGlyphA(17,18,17,10,4)],
+  'press-break':  [ptGlyphO(10,25,1), ptGlyphX(14,20,2), ptGlyphX(21,20,3), ptGlyphA(12,24,20,14,4)],
+  'rebound':      [ptGlyphO(12,12,1), ptGlyphX(22,12,2), ptGlyphA(17,14,17,8,3)],
+  'tempo':        [<circle key="1" cx="17" cy="17" r="7" className="g-off"/>, <path key="2" d="M17 12v5l3.5 2" className="g-move"/>],
+  'help-defense': [ptGlyphX(26,17,1), ptGlyphO(14,15,2), ptGlyphA(24,16,18,12,3)],
+  'closeout':     [ptGlyphO(28,20,1), ptGlyphX(19,13,2), ptGlyphA(21,14,26,19,3)],
+  'rim-protection': [ptGlyphX(17,11,1), ptGlyphO(26,19,2), ptGlyphA(24,18,19,12,3)],
+  'on-ball':      [ptGlyphO(17,23,1), ptGlyphX(17,17,2)],
+  'pnr-defense':  [ptGlyphO(11,22,1), ptGlyphScreen(15,18,2), ptGlyphX(13,18,3), ptGlyphX(18,16,4)],
+  'off-ball-defense': [ptGlyphO(28,20,1), ptGlyphX(21,16,2), ptGlyphO(10,22,3)],
+  'transition-defense': [ptGlyphX(17,10,1), ptGlyphA(17,12,17,25,2)],
+  'post-defense': [ptGlyphO(12,13,1), ptGlyphX(16,13,2)]
+};
+function PTQiGlyph({theme}) {
+  return <span className="qi-glyph" aria-hidden="true"><svg viewBox="0 0 34 30" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+    <defs><marker id="glyph-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor" stroke="none"/></marker></defs>
+    <g className="g-court"><rect x="1" y="1" width="32" height="28" rx="3"/><path d="M5 1v6a12.5 12.5 0 0 0 24 0V1"/><path d="M14 1v5h6V1"/><circle cx="17" cy="6.4" r="1.3"/></g>
+    {ptQiGlyphs[theme] || null}
+  </svg></span>;
+}
 function ptZigzag(x1,y1,x2,y2) {
   const len = Math.hypot(x2 - x1, y2 - y1) || 1, n = Math.max(3, Math.floor(len / 4)), ux = (x2 - x1) / len, uy = (y2 - y1) / len;
   let d = `M${x1} ${y1}`;
@@ -196,7 +230,7 @@ function PTQiHome({data,update,go}) {
     {id:'review',title:'Analyse de match',hint:'Cinq minutes après ton match.',icon:'chart',route:['qi-review']}
   ];
   const row = t => {const m = QI.mastery(qi, t);
-    return <button key={t} className="mastery-row" onClick={() => go('qi-run', `theme-${t}`)}><span><strong>{QI.themes[t]}</strong><small>{m.count ? `${Math.round(m.ratio * 100)} % sur les dernières` : mine.includes(t) ? 'Prioritaire pour ton poste' : 'Pas encore travaillé'}</small></span><span className="mastery-bar"><i style={{transform:`scaleX(${m.ratio || 0})`}}/></span><PTIcon name="arrow" size={16}/></button>;};
+    return <button key={t} className="mastery-row" onClick={() => go('qi-run', `theme-${t}`)}><PTQiGlyph theme={t}/><span><strong>{QI.themes[t]}</strong><small>{m.count ? `${Math.round(m.ratio * 100)} % sur les dernières` : mine.includes(t) ? 'Prioritaire pour ton poste' : 'Pas encore travaillé'}</small></span><span className="mastery-bar"><i style={{transform:`scaleX(${m.ratio || 0})`}}/></span><PTIcon name="arrow" size={16}/></button>;};
   const section = (label, list) => {const first = list.filter(t => mine.includes(t)), rest = list.filter(t => !mine.includes(t));
     return <section className="stack-sm"><h2>{label}</h2>{(first.length ? first : rest.slice(0, 4)).map(row)}
       {first.length > 0 && rest.length > 0 && <details className="disclosure"><summary>Autres thèmes</summary><div className="stack-sm">{rest.map(row)}</div></details>}</section>;};
