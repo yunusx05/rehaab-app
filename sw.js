@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v35-insights';
+const CACHE = 'rehaab-v36-video';
 const PRECACHE = [
   './',
   './index.html',
@@ -20,6 +20,7 @@ const PRECACHE = [
   './compiled/assessment-components.js',
   './compiled/pathway-components.js',
   './compiled/qi-components.js',
+  './compiled/video-qi-components.js',
   './compiled/insight-components.js',
   './compiled/live-session.js',
   './exercise-media.js',

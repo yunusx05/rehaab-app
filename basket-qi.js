@@ -363,13 +363,87 @@
   const today = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
   const addDays = (key,n) => { const d=new Date(`${key}T12:00:00`); d.setDate(d.getDate()+n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 
-  function initialQi() { return {answers:[],cards:{},reviews:[],rest:true}; }
+  // Vidéos de vrais matchs : lues dans le lecteur YouTube intégré, jamais copiées ni hébergées par l'app.
+  // Un extrait = début, instant de pause (la décision), fin (la suite de l'action), une question et ses choix.
+  // Instants vérifiés image par image (début, pause juste avant la décision, fin après l'issue).
+  const preston = 'Jason Preston, « Pick & Roll Reads Pros See That You Don’t » (NCAA, Ohio)';
+  const videoClips = [
+    {id:'v-preston-hedge',yt:'LdSe_auBuhg',start:7,pause:21,end:28.8,theme:'pnr-handler',title:'Deux défenseurs sur toi',
+      prompt:'Le grand monte sur toi avec ton défenseur. Que fais-tu ?',
+      choices:[{text:'Sauter et ressortir vers le coéquipier libre en haut',ok:true,why:'Deux défenseurs sur le ballon : derrière, c’est 4 contre 3. Le défenseur d’aide n’est pas resté, la passe part vers le haut.'},
+        {text:'Tirer en suspension au-dessus des deux',ok:false,why:'Tir contesté par deux joueurs : la pire option quand un coéquipier est libre.'},
+        {text:'Dribbler entre les deux défenseurs',ok:false,why:'Pas d’espace entre eux : perte de balle quasi assurée.'}],
+      lesson:'Prise à deux = un coéquipier libre. Regarde d’un côté, passe de l’autre.',source:preston},
+    {id:'v-preston-roll',yt:'LdSe_auBuhg',start:64.5,pause:80,end:89,theme:'pnr-handler',title:'Le roll que personne ne surveille',
+      prompt:'Ton grand roule vers le cercle. Que fais-tu ?',
+      choices:[{text:'Passer au grand qui roule',ok:true,why:'Aucun défenseur ne regarde le roll et les autres sont occupés côté opposé : couloir ouvert jusqu’au cercle.'},
+        {text:'Ressortir vers l’aile',ok:false,why:'Tu rends le ballon alors que l’avantage est déjà créé au cercle.'},
+        {text:'Tirer à mi-distance',ok:false,why:'Tir moyen alors qu’un panier facile est ouvert.'}],
+      lesson:'Avant de sortir de l’écran, regarde qui peut aider sur le roll. Personne ? Passe-lui.',source:preston},
+    {id:'v-preston-drive',yt:'LdSe_auBuhg',start:103.5,pause:117,end:127,theme:'pnr-handler',title:'Le grand te tourne le dos',
+      prompt:'Le grand adverse se replace après l’écran. Que fais-tu ?',
+      choices:[{text:'Attaquer le cercle tout de suite',ok:true,why:'En se replaçant, le grand tourne le dos au porteur : il ne peut plus contester la pénétration.'},
+        {text:'Passer au grand qui roule',ok:false,why:'Deux défenseurs sont entre vous : la passe peut être interceptée.'},
+        {text:'Ressortir et relancer le jeu',ok:false,why:'Tu laisses passer l’avantage que la défense vient de t’offrir.'}],
+      lesson:'Regarde les épaules du défenseur de l’écranteur : s’il te tourne le dos, attaque.',source:preston},
+    {id:'v-preston-corner',yt:'LdSe_auBuhg',start:281.5,pause:324,end:329.2,theme:'pnr-handler',title:'L’aide vient du coin',
+      prompt:'Tu as dépassé ton défenseur et ton grand est au cercle. Que fais-tu ?',
+      choices:[{text:'Passer au shooteur du coin',ok:true,why:'Le défenseur du coin descend aider sur le grand : le coin est laissé seul.'},
+        {text:'Lober le grand',ok:false,why:'L’aide est arrivée sur lui : le lob devient contesté.'},
+        {text:'Finir seul au cercle',ok:false,why:'Deux défenseurs t’attendent près du cercle.'}],
+      lesson:'Quand l’aide descend du coin, le coin est ouvert. Joue lentement pour voir qui aide.',source:preston}
+  ];
+  const ytId = /^[A-Za-z0-9_-]{11}$/;
+  // Accepte un identifiant, youtu.be, watch?v=, shorts/, embed/ et live/. Le paramètre t= ou start= sert de début proposé.
+  function parseYouTube(input) {
+    const s=String(input||'').trim();
+    if(ytId.test(s)) return {id:s,start:0};
+    let url;try{url=new URL(s);}catch(e){return null;}
+    if(!/(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/.test(url.hostname)) return null;
+    const path=url.pathname.split('/').filter(Boolean);
+    const id=url.hostname.endsWith('youtu.be')?path[0]:url.searchParams.get('v')||(['shorts','embed','live'].includes(path[0])?path[1]:null);
+    if(!ytId.test(id||'')) return null;
+    const t=url.searchParams.get('t')||url.searchParams.get('start')||'';
+    const m=String(t).match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/);
+    const start=m?(Number(m[1]||0)*3600+Number(m[2]||0)*60+Number(m[3]||0)):0;
+    return {id,start};
+  }
+  const sec = x => Number.isFinite(Number(x))&&Number(x)>=0&&Number(x)<36000;
+  function validateClip(v) {
+    if(!v||typeof v!=='object'||typeof v.id!=='string'||!ytId.test(v.yt||'')) return null;
+    if(!sec(v.start)||!sec(v.pause)||!sec(v.end)||!(Number(v.start)<Number(v.pause)&&Number(v.pause)<Number(v.end))) return null;
+    const choices=Array.isArray(v.choices)?v.choices.filter(x=>x&&typeof x.text==='string'&&x.text.trim()).slice(0,4).map(x=>({text:x.text.trim().slice(0,120),ok:!!x.ok,why:typeof x.why==='string'?x.why.slice(0,400):''})):[];
+    if(choices.length<2||choices.filter(x=>x.ok).length!==1) return null;
+    const str=(x,n)=>typeof x==='string'?x.trim().slice(0,n):'';
+    return {id:v.id.slice(0,40),yt:v.yt,start:Number(v.start),pause:Number(v.pause),end:Number(v.end),theme:themes[v.theme]?v.theme:'pnr-handler',title:str(v.title,80)||'Extrait de match',prompt:str(v.prompt,200)||'Que doit faire le porteur ?',choices,lesson:str(v.lesson,400),source:str(v.source,120),own:v.own!==false};
+  }
+  function clipError(v) {
+    if(!ytId.test(v.yt||'')) return 'Colle un lien YouTube valide.';
+    if(!(Number(v.start)<Number(v.pause)&&Number(v.pause)<Number(v.end))) return 'Marque le début, puis la pause, puis la fin, dans cet ordre.';
+    const filled=(v.choices||[]).filter(x=>x.text&&x.text.trim());
+    if(filled.length<2) return 'Écris au moins deux réponses.';
+    if(filled.filter(x=>x.ok).length!==1) return 'Coche une seule bonne réponse.';
+    return '';
+  }
+  function videoPool(qi,theme=null) {
+    const all=videoClips.map(x=>({...x,own:false})).concat(qi.clips||[]).filter(x=>!theme||x.theme===theme);
+    return order(all,qi,[]);
+  }
+  function saveClip(qi,clip) {
+    const clean=validateClip({...clip,own:true});if(!clean) return qi;
+    const list=(qi.clips||[]).filter(x=>x.id!==clean.id);
+    return {...qi,clips:[...list,clean].slice(-200)};
+  }
+  function removeClip(qi,id) { return {...qi,clips:(qi.clips||[]).filter(x=>x.id!==id)}; }
+
+  function initialQi() { return {answers:[],cards:{},reviews:[],clips:[],rest:true}; }
   function validateQi(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return initialQi();
     const answers=Array.isArray(v.answers)?v.answers.filter(a=>a&&typeof a.id==='string'&&typeof a.correct==='boolean').slice(-3000):[];
     const cards=v.cards&&typeof v.cards==='object'&&!Array.isArray(v.cards)?Object.fromEntries(Object.entries(v.cards).filter(([k,c])=>vocab.some(x=>x.id===k)&&c&&Number(c.box)>=1&&Number(c.box)<=5)):{};
     const reviews=Array.isArray(v.reviews)?v.reviews.filter(r=>r&&typeof r.id==='string'&&typeof r.date==='string').slice(-300):[];
-    return {answers,cards,reviews,rest:v.rest!==false};
+    const clips=Array.isArray(v.clips)?v.clips.map(validateClip).filter(Boolean).slice(-200):[];
+    return {answers,cards,reviews,clips,rest:v.rest!==false};
   }
   function record(qi,{id,mode,theme,correct},now=today()) {
     return {...qi,answers:[...qi.answers,{id,mode,theme,correct:!!correct,date:now}].slice(-3000)};
@@ -440,5 +514,5 @@
     return n;
   }
 
-  return {themes,defenseThemes,sideOf,spots,quiz,place,clutch,vocab,pnrGuide,review,group,fits,initialQi,validateQi,record,mastery,dailySet,pool,dueCards,gradeCard,restQuestion,hitTarget,addReview,streak};
+  return {videoClips,parseYouTube,validateClip,clipError,videoPool,saveClip,removeClip,themes,defenseThemes,sideOf,spots,quiz,place,clutch,vocab,pnrGuide,review,group,fits,initialQi,validateQi,record,mastery,dailySet,pool,dueCards,gradeCard,restQuestion,hitTarget,addReview,streak};
 });

@@ -593,6 +593,12 @@ function PTQiHome({
   const attack = ordered.filter(t => !QI.defenseThemes.includes(t)),
     defense = ordered.filter(t => QI.defenseThemes.includes(t));
   const modes = [{
+    id: 'video',
+    title: 'Vrais matchs',
+    hint: 'Pause au moment de décider.',
+    icon: 'play',
+    route: ['qi-video']
+  }, {
     id: 'quiz',
     title: 'Lire le jeu',
     hint: 'Situations animées, une décision.',
