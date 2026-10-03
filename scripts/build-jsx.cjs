@@ -5,12 +5,14 @@ const fs=require('fs'),path=require('path');
 const Babel=require('../vendor/babel.min.js');
 const root=path.join(__dirname,'..'),out=path.join(root,'compiled'),check=process.argv.includes('--check');
 const files=fs.readdirSync(root).filter(f=>f.endsWith('.jsx'));
+// Git convertit les fins de ligne à l'extraction sous Windows : la vérification compare le contenu, pas les CRLF.
+const plain=s=>s.replace(/\r/g,'');
 if(!check)fs.mkdirSync(out,{recursive:true});
 let stale=[];
 for(const file of files){
   const code=Babel.transform(fs.readFileSync(path.join(root,file),'utf8'),{presets:['react'],filename:file,sourceType:'script',compact:false}).code;
   const target=path.join(out,file.replace(/\.jsx$/,'.js'));
-  if(check){if(!fs.existsSync(target)||fs.readFileSync(target,'utf8')!==code)stale.push(file);}
+  if(check){if(!fs.existsSync(target)||plain(fs.readFileSync(target,'utf8'))!==plain(code))stale.push(file);}
   else fs.writeFileSync(target,code);
 }
 if(check&&stale.length){console.error('compiled/ obsolète, lance npm run build : '+stale.join(', '));process.exit(1);}
