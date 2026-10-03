@@ -45,14 +45,16 @@
   // Tests propres au bilan. Ceux du parcours (BasketPathway.tests) sont réutilisés tels quels, sans copie.
   // Repères d'entraînement courants, pas des normes : aucune norme fiable n'existe pour un joueur de club.
   const ownTests = {
-    vertical:{label:'Saut vertical debout',unit:'cm',sides:false,track:true,impact:true,target:'pas de seuil : c’est ta référence de détente',how:['De profil contre un mur, bras tendu vers le haut : marque le point le plus haut atteint debout.','Sans élan, fléchis et saute en touchant le mur le plus haut possible.','Hauteur = marque du saut moins marque debout. Garde le meilleur de trois essais.'],why:'Ta référence de détente : elle se compare à chaque nouveau bilan, pas à celle des autres.'},
+    vertical:{label:'Saut vertical debout',unit:'cm',sides:false,track:true,impact:true,video:'jump',target:'pas de seuil : c’est ta référence de détente',how:['De profil contre un mur, bras tendu vers le haut : marque le point le plus haut atteint debout.','Sans élan, fléchis et saute en touchant le mur le plus haut possible.','Hauteur = marque du saut moins marque debout. Garde le meilleur de trois essais.'],why:'Ta référence de détente : elle se compare à chaque nouveau bilan, pas à celle des autres.'},
     broad:{label:'Saut en longueur sans élan',unit:'cm',sides:false,track:true,impact:true,target:'pas de seuil : c’est ta référence de poussée',how:['Pieds derrière une ligne, bras libres.','Saute le plus loin possible et tiens la réception.','Mesure de la ligne au talon le plus proche. Meilleur de trois essais.'],why:'La poussée vers l’avant : c’est elle qui lance le premier pas.'},
-    sprint5:{label:'Sprint 5 m chronométré',unit:'s',sides:false,track:true,impact:true,target:'pas de seuil : c’est ta référence de premier pas',how:['Départ arrêté, deux appuis, pied avant sur la ligne.','Filme de côté au ralenti ou fais chronométrer : du premier mouvement au passage du buste à 5 m.','Meilleur de deux essais, récupération complète.'],why:'Le premier pas fait la différence en un contre un. Un chrono au téléphone est approximatif : compare-toi à toi-même.'},
+    sprint5:{label:'Sprint 5 m chronométré',unit:'s',sides:false,track:true,lower:true,impact:true,video:'sprint',target:'pas de seuil : c’est ta référence de premier pas',how:['Départ arrêté, deux appuis, pied avant sur la ligne.','Filme de côté au ralenti ou fais chronométrer : du premier mouvement au passage du buste à 5 m.','Meilleur de deux essais, récupération complète.'],why:'Le premier pas fait la différence en un contre un. Un chrono au téléphone est approximatif : compare-toi à toi-même.'},
     plank:{label:'Planche ventrale',unit:'s',sides:false,min:60,target:'60 s en gardant l’alignement',how:['Sur les avant-bras, corps aligné des épaules aux talons.','Chrono jusqu’à ce que le bassin tombe ou monte.'],why:'Le tronc transmet la force des jambes au tir et au contact.'},
     pushups:{label:'Pompes, amplitude complète',unit:'rép.',sides:false,min:20,target:'20 pompes propres',how:['Corps gainé, poitrine à un poing du sol à chaque répétition.','Compte jusqu’à ce que l’alignement ou l’amplitude se perde.'],why:'La force du haut du corps pour tenir le contact.'},
     deepsquat:{label:'Squat profond talons au sol',unit:'check',sides:false,how:['Pieds largeur d’épaules, bras tendus devant toi.','Descends le plus bas possible et tiens 5 s, talons au sol, buste plutôt droit.'],why:'Chevilles et hanches assez mobiles pour se baisser en défense et amortir.'},
     thomas:{label:'Test de Thomas (avant de hanche)',unit:'check',sides:true,how:['Assis au bord d’un banc ou d’un lit, allonge-toi en ramenant un genou contre la poitrine.','Réussi si l’autre cuisse reste posée à plat, genou plié vers le bas. Si elle se soulève, ce côté est raide.'],why:'Un avant de hanche raide raccourcit la foulée et charge le bas du dos.'},
     aslr:{label:'Jambe tendue levée',unit:'check',sides:true,how:['Allongé sur le dos, jambes tendues, pointes relevées.','Monte une jambe sans plier le genou ni décoller l’autre : réussi si la cheville dépasse le milieu de la cuisse opposée.'],why:'Des arrières de cuisse souples protègent des claquages en sprint.'},
+    rsi:{label:'Rebond réactif (RSI)',unit:'RSI',sides:false,track:true,impact:true,video:'rsi',target:'pas de seuil : c’est ta référence d’explosivité',how:['Téléphone posé au sol à 2 m, de profil, ralenti activé (120 ou 240 i/s).','Saute d’une marche basse (20-30 cm), et rebondis le plus haut possible en touchant le sol le moins longtemps possible.','Dans l’outil vidéo, marque l’arrivée au sol, le décollage, puis la réception : l’app calcule hauteur ÷ temps de contact.'],why:'L’explosivité utile au basket : sauter haut sans rester collé au sol (rebond, contre, deuxième saut).'},
+    run17:{label:'Navettes « 17 » · souffle basket',unit:'s',sides:false,track:true,lower:true,impact:true,video:'sprint',target:'pas de seuil : c’est ta référence de souffle',how:['Deux lignes à 15 m, la largeur d’un terrain.','Enchaîne 17 traversées sans t’arrêter, en touchant chaque ligne du pied. Chrono.','Récupère 2 min et refais-le. Note la moyenne des deux.'],why:'L’effort d’un match : sprinter, freiner, relancer, encore et encore. La 2e course montre ta capacité à récupérer.'},
     pogoq:{label:'Rebonds de cheville · 20 s',unit:'check',sides:false,impact:true,how:['Petits rebonds sur place pendant 20 s, genoux presque tendus.','Réussi si les contacts restent courts, silencieux et réguliers jusqu’au bout, sans douleur.'],why:'La raideur utile de la cheville : c’est le ressort de tes appuis.'}
   };
   const sharedIds = ['hop','sprint10','shuttle','landingq','calf','balance','bridge','splitsquat','sideplank','kneewall'];
@@ -60,11 +62,12 @@
   // Qualités renseignées par chaque test. Les tests « suivis » (sauts, sprints) n'ont pas de seuil : ils servent de référence.
   const testQualities = {vertical:['vertical'],broad:['vertical'],sprint5:['firststep'],sprint10:['firststep'],shuttle:['decel'],hop:['balance','strength'],
     pogoq:['reactive'],landingq:['reactive','decel'],calf:['reactive','strength'],balance:['balance'],bridge:['strength'],splitsquat:['strength','decel'],
-    plank:['core'],sideplank:['core'],pushups:['contact'],kneewall:['mobility'],deepsquat:['mobility'],thomas:['mobility'],aslr:['mobility']};
+    plank:['core'],sideplank:['core'],pushups:['contact'],rsi:['reactive'],run17:['endurance'],kneewall:['mobility'],deepsquat:['mobility'],thomas:['mobility'],aslr:['mobility']};
   const groups = [
     {id:'jump',label:'Détente',tests:['vertical','broad','hop']},
     {id:'speed',label:'Premier pas & appuis',tests:['sprint5','sprint10','shuttle']},
-    {id:'ankle',label:'Chevilles & réceptions',tests:['pogoq','landingq','calf','balance']},
+    {id:'ankle',label:'Chevilles & réceptions',tests:['rsi','pogoq','landingq','calf','balance']},
+    {id:'engine',label:'Souffle basket',tests:['run17']},
     {id:'strength',label:'Force & contrôle',tests:['bridge','splitsquat','pushups']},
     {id:'core',label:'Gainage',tests:['plank','sideplank']},
     {id:'mobility',label:'Mobilité',tests:['kneewall','deepsquat','thomas','aslr']}
@@ -90,6 +93,17 @@
     return {ok:Number(record.value)>=t.min,detail:`${record.value} ${t.unit}`};
   }
   const isTracked = id => { const t=allTests()[id]; return !!(t&&t.track); };
+  // Tests suivis (sauts, sprints, souffle) : pas de norme, seulement ta tendance. Une baisse de plus de 5 % par rapport à ton
+  // meilleur résultat précédent en fait une qualité à retravailler ; égaler ou battre ce repère la valide.
+  function trend(id,list) {
+    const t=allTests()[id]; if(!t||!t.track||!list||list.length<2) return null;
+    const last=Number(list[list.length-1].value), prev=list.slice(0,-1).map(r=>Number(r.value)).filter(Number.isFinite);
+    if(!Number.isFinite(last)||!prev.length) return null;
+    const lower=t.lower||t.unit==='s', best=lower?Math.min(...prev):Math.max(...prev);
+    if(!best) return null;
+    const change=Math.round((lower?best-last:last-best)/best*1000)/10;
+    return {best,last,change,ok:change>=-5};
+  }
 
   // Sauts maximaux, sprints et navettes : seulement sans douleur des membres inférieurs.
   function lowerPains(state) { return (state.symptoms||[]).filter(s=>s.active&&['knee','ankle','hip','back'].includes(s.region)&&(Number(s.severity)>=3||s.redFlags)); }
@@ -116,7 +130,12 @@
     });
     Object.keys(testQualities).forEach(id=>{
       const record=latest(a,id);
-      if(!record||!defs[id]||isTracked(id)) return;
+      if(!record||!defs[id]) return;
+      if(isTracked(id)) {
+        const tr=trend(id,a.tests[id]);
+        if(tr) testQualities[id].forEach(q=>(tr.ok?out[q].passed:out[q].failed).push({id,label:defs[id].label,detail:`${tr.last} ${defs[id].unit} (${tr.change>=0?'+':''}${tr.change} % vs ton meilleur)`}));
+        return;
+      }
       const r=evaluate(id,record,a.tests[id]);
       testQualities[id].forEach(q=>(r.ok?out[q].passed:out[q].failed).push({id,label:defs[id].label,detail:r.detail}));
       const t=defs[id];
@@ -254,7 +273,7 @@
   function finalize(a,now=today()) {
     const res=assess(a).qualities, levels={}, values={};
     Object.values(res).forEach(q=>levels[q.id]=q.level);
-    ['vertical','broad','sprint5','sprint10'].forEach(id=>{const r=latest(a,id);if(r&&r.value!==undefined) values[id]=Number(r.value);});
+    ['vertical','broad','sprint5','sprint10','rsi','run17'].forEach(id=>{const r=latest(a,id);if(r&&r.value!==undefined) values[id]=Number(r.value);});
     const history=(a.history||[]).filter(h=>h.date!==now).concat({date:now,levels,values}).slice(-12);
     return {...a,date:now,history};
   }
@@ -269,7 +288,8 @@
     if(t.unit==='check') return t.sides?{left:r.left===true,right:r.right===true,date:r.date}:{value:r.value===true,date:r.date};
     if(t.unit==='rsa') return num(r.best)&&num(r.last)?{best:Number(r.best),last:Number(r.last),date:r.date}:null;
     if(t.sides) return num(r.left)&&num(r.right)?{left:Number(r.left),right:Number(r.right),date:r.date}:null;
-    return num(r.value)?{value:Number(r.value),date:r.date}:null;
+    // method : « video » quand la valeur vient de l'analyse image par image (plus fiable que le mur ou le chrono à la main).
+    return num(r.value)?{value:Number(r.value),date:r.date,...(r.method==='video'?{method:'video'}:{})}:null;
   }
   // Tolérant : garde seulement ce qui est connu et borné.
   function validateAthletic(v) {
@@ -295,5 +315,5 @@
   }
   function answered(a) { return questions.filter(q=>!q.optional).every(q=>a.answers[q.id]!==undefined); }
 
-  return {qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
+  return {trend,qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
 });

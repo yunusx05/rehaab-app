@@ -16,7 +16,8 @@ async function seed(page,data,route){
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('test-seeded','1');}},{data,key:PT.STORAGE_KEY});
   await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
 }
-async function state(page){return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
+// L'app regroupe ses écritures (250 ms) : on attend la sauvegarde avant de la lire.
+async function state(page){await page.waitForTimeout(300);return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
 async function noOverflow(page){expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}
 
 test('matériel : gilet lesté et disques slide disponibles et sauvegardables',()=>{

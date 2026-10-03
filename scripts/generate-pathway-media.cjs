@@ -2,10 +2,10 @@
 // Usage : node scripts/generate-pathway-media.cjs [id ...]
 const fs=require('node:fs');
 const path=require('node:path');
-const output="C:/Users/Anton/Desktop/WORKS/generation d'image IA";
-const skill='C:/Users/Anton/.claude/skills/generate';
+const output=require('./fal-key.cjs').generationsDir;
+const {falKey,skillDir:skill}=require('./fal-key.cjs');
 const ledgerFile=path.join(output,'rehaab_media_lot_2026-10-01b.json');
-const key=fs.readFileSync(path.join(skill,'.env'),'utf8').match(/^FAL_KEY=(.*)$/m)?.[1].trim().replace(/^['"]|['"]$/g,'');
+const key=falKey();
 if(!key)throw Error('FAL_KEY absente');
 const headers={Authorization:'Key '+key,'Content-Type':'application/json'};
 const ledger=JSON.parse(fs.readFileSync(ledgerFile,'utf8'));

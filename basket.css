@@ -159,3 +159,27 @@
 .test-card .caption.is-ok{color:var(--accent)}
 .role-tag{display:inline-block;margin-top:.3rem;padding:.12rem .5rem;border-radius:999px;background:#c3e65a1f;color:var(--accent);font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 .body-card .text-button{justify-self:start;min-height:44px;font-size:.8rem}
+/* Carte du jour, charge d'entraînement, courbes et mesure vidéo */
+.today-plan{display:grid;gap:.7rem;padding:1.2rem;border-radius:24px;background:linear-gradient(160deg,#c3e65a1f,#c3e65a05 60%),var(--surface)}
+.today-plan h2{margin:0}
+.today-plan.kind-rest,.today-plan.kind-light{background:linear-gradient(160deg,#7fb6ff1c,#7fb6ff05 60%),var(--surface)}
+.today-plan.kind-blocked,.today-plan.kind-rehab{background:linear-gradient(160deg,#f0b44c22,#f0b44c05 60%),var(--surface)}
+.load-gauge{display:grid;gap:.35rem}
+.load-track{position:relative;display:flex;height:10px;border-radius:10px;overflow:visible}
+.load-track span{height:100%}
+.load-track .z-low{background:#7fb6ff55;border-radius:10px 0 0 10px}.load-track .z-stable{background:var(--accent)}.load-track .z-rising{background:#f0b44c}.load-track .z-spike{background:#e5655a;border-radius:0 10px 10px 0}
+.load-track i{position:absolute;top:-4px;width:4px;height:18px;margin-left:-2px;border-radius:2px;background:var(--text,#fff);box-shadow:0 0 0 2px #0008}
+.load-weeks{display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem;align-items:end;height:110px}
+.load-weeks>div{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:.3rem;height:100%;min-width:0}
+.load-weeks span{width:70%;border-radius:6px 6px 2px 2px;background:var(--line)}
+.load-weeks .current span{background:var(--accent)}
+.load-weeks small{font-size:.68rem;color:var(--muted);white-space:nowrap}
+.lift-curves svg{width:100%;height:auto;overflow:visible}
+.lift-curves polyline{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.lift-curves circle{fill:var(--surface);stroke:var(--accent);stroke-width:2}
+.video-measure video{width:100%;max-height:60vh;border-radius:16px;background:#000}
+.file-button{position:relative;overflow:hidden}
+.file-button input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.frame-controls{display:flex;align-items:center;justify-content:center;gap:.5rem}
+.frame-controls .num{min-width:6.5ch;text-align:center}
+.mark-list{display:flex;flex-wrap:wrap;gap:.4rem}

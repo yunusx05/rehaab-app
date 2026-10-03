@@ -73,6 +73,7 @@ function PTAssessmentTest({test:t,draft,keep}) {
     <p className="fine">{t.why}</p>
     <ol className="instruction-list">{t.how.map(line => <li key={line}>{line}</li>)}</ol>
     {t.target && <p className="fine">Repère : {t.target}.</p>}
+    {(t.video||t.id==='sprint10')&&typeof PTVideoMeasure==='function'&&<details className="disclosure"><summary>Mesurer avec une vidéo au ralenti</summary><PTVideoMeasure mode={t.video||'sprint'} onResult={value=>{keep(AP.recordTest(draft,t.id,{value,method:'video'}));setError('');}}/></details>}
     <PTTestForm test={t} form={form} set={set}/>
     {error && <p className="error" role="alert">{error}</p>}
     <PTButton onClick={save}>{last ? 'Remesurer' : 'Enregistrer'}<PTIcon name="check" size={18}/></PTButton>

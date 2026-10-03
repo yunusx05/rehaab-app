@@ -47,6 +47,7 @@ function PTPlayerProfile({data,update,go,notify}) {
       {step===0&&<div className="stack-sm"><h3>Période</h3><PTChips value={player.season} onChange={v=>set('season',v)} options={[{value:'off',label:'Intersaison'},{value:'pre',label:'Présaison'},{value:'in',label:'En saison'}]}/></div>}
 
       {step===1&&<div className="choice-grid">{Object.entries(JP.archetypes).map(([id,a])=><button type="button" className="choice" key={id} aria-pressed={player.archetypes.includes(id)} onClick={()=>toggleArchetype(id)}>{a.label}<small>{a.hint}</small></button>)}</div>}
+      {step===1&&<div className="stack-sm"><h3>Tes objectifs physiques</h3><p className="fine">Trois au maximum. Ils orientent tes séances et les tests à suivre.</p><PTChips multi value={player.goals||[]} onChange={v=>set('goals',v.slice(-3))} options={JP.goals.map(g=>({value:g.id,label:g.label}))}/></div>}
       {step===1&&player.position&&<p className="fine">Priorités physiques calculées : {JP.priorities(player).slice(0,3).map(q=>q.label.toLowerCase()).join(', ')}.</p>}
 
       {step===2&&<>

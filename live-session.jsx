@@ -1,13 +1,14 @@
 /* Action mode reuses the existing prescriptions, validation, history and safety rules. */
-function PTSetSheet({exercise,row,onChange,onSave,onClose,error}) {
+function PTSetSheet({exercise,row,onChange,onSave,onQuick,onClose,error}) {
   const dialog=usePTRef(null);
   usePTEffect(()=>{const el=dialog.current;el.showModal();return()=>el.close();},[]);
   return <dialog className="set-sheet" ref={dialog} onCancel={e=>{e.preventDefault();onClose();}}>
     <div className="sheet-handle"/>
     <div className="topline"><div><div className="eyebrow">Ta série, en un geste</div><h2>Ce que tu as fait.</h2></div><button className="icon-button" aria-label="Fermer la saisie" onClick={onClose}><PTIcon name="close"/></button></div>
-    <PTRowInputs exercise={exercise} row={row} onChange={onChange}/>
+    {onQuick&&<PTButton primary onClick={onQuick}><PTIcon name="check" size={20}/>Fait comme prévu</PTButton>}
+    <div className="stack"><PTRowInputs exercise={exercise} row={row} onChange={onChange}/>
     {error&&<p className="error" role="alert">{error}</p>}
-    <PTButton primary onClick={onSave}><PTIcon name="check" size={20}/>Valider cette série</PTButton>
+    <PTButton onClick={()=>onSave()}><PTIcon name="check" size={20}/>Valider cette série</PTButton></div>
   </dialog>;
 }
 
@@ -36,7 +37,18 @@ function PTSession({data,update,go,notify}) {
   },[]);
   const remaining=timer=>timer?(timer.endAt?Math.max(0,Math.min(timer.remaining??Infinity,Math.ceil((timer.endAt-tick)/1000))):timer.remaining):0;
   const timerLeft=remaining(draft?.timer);
-  usePTEffect(()=>{if(draft?.timer?.endAt&&timerLeft===0&&fired.current!==draft.timer.id){fired.current=draft.timer.id;ptBeep();}},[timerLeft,draft?.timer?.id]);
+  const [voice,setVoice]=usePTState(()=>{try{return localStorage.getItem('rh_voice')==='1';}catch(e){return false;}});
+  const spoken=usePTRef('');
+  // Une annonce par étape (clé phase + série + minuteur). Placé avant les retours anticipés : l'ordre des hooks ne change jamais.
+  usePTEffect(()=>{
+    if(!voice||!draft||draft.status!=='active'||!draft.clockStarted||draft.reviewing||finishing||!draft.warmupDone)return;
+    const ph=draft.timer?.kind==='rest'?'rest':'work',st=PT.schedule(draft.exercises,draft.format),c=Math.min(draft.cursor||0,st.length-1),s=st[c];
+    const ex=s&&draft.exercises.find(e=>e.id===s.id);if(!ex)return;
+    const key=`${ph}-${c}-${draft.timer?.id||''}`;if(spoken.current===key)return;spoken.current=key;
+    // Pendant le repos, le curseur pointe déjà sur la série suivante.
+    ptSay(ph==='rest'?`Repos ${draft.timer.duration} secondes. Prochain : ${ex.name}.`:`${ex.name}. Série ${s.set+1} sur ${ex.sets}.`);
+  },[voice,draft?.warmupDone,draft?.timer?.id,draft?.cursor,draft?.clockStarted,finishing]);
+  usePTEffect(()=>{if(draft?.timer?.endAt&&timerLeft===0&&fired.current!==draft.timer.id){fired.current=draft.timer.id;ptBeep();if(voice)ptSay('Repos terminé.');}},[timerLeft,draft?.timer?.id]);
   if(!draft||draft.status!=='active')return <><PTPageHead title="Prêt à bouger ?"/><PTButton primary onClick={()=>go('today')}>Revenir à aujourd’hui</PTButton></>;
   const setDraft=fn=>update(s=>({...s,draft:s.draft?fn(s.draft):null}));
   const steps=PT.schedule(draft.exercises,draft.format),cursor=Math.min(draft.cursor||0,Math.max(0,steps.length-1)),step=steps[cursor];
@@ -67,9 +79,10 @@ function PTSession({data,update,go,notify}) {
     if(exercise.measure==='seconds'&&!exercise.unilateral&&!row.seconds&&draft.stageStarted&&stageElapsed>=1)updateRow({...row,seconds:String(Math.min(exercise.seconds,Math.floor(stageElapsed)))});
     setLogging(true);
   };
-  const advance=()=>{
-    const problem=PT.validateRow(row,exercise);if(problem){setError(problem);return;}
-    const entries={...draft.entries,[exercise.id]:draft.entries[exercise.id].map((r,i)=>i===step.set?{...r,done:true}:r)};
+  const advance=override=>{
+    const current=override||row;
+    const problem=PT.validateRow(current,exercise);if(problem){if(override)updateRow(override);setError(problem);return;}
+    const entries={...draft.entries,[exercise.id]:draft.entries[exercise.id].map((r,i)=>i===step.set?{...current,done:true}:r)};
     // Revisited/edited sets must never hide uncompleted steps earlier in the schedule.
     let next=steps.findIndex((s,i)=>i>cursor&&!entries[s.id][s.set].done&&!entries[s.id][s.set].pain);
     if(next<0)next=steps.findIndex(s=>!entries[s.id][s.set].done&&!entries[s.id][s.set].pain);
@@ -80,6 +93,13 @@ function PTSession({data,update,go,notify}) {
     setLogging(false);setError('');if(!row.done){try{navigator.vibrate?.(40);}catch(e){}}
     if(done&&!['amrap','emom'].includes(draft.format))setFinishing(true);
     window.scrollTo(0,0);
+  };
+  // Série « comme prévu » : bas de la fourchette, charge préremplie, marge laissée vide (aucune hausse de charge n'en est déduite).
+  const quickRow=()=>{
+    const target=String(exercise.targetMin||exercise.min||'');
+    if(exercise.measure==='seconds')return {...row,seconds:row.seconds||String(exercise.seconds)};
+    if(exercise.measure==='reps'||exercise.measure==='contacts')return {...row,...(exercise.unilateral?{left:row.left||target,right:row.right||target}:{reps:row.reps||target}),weight:row.weight||String(PT.loadAdvice(exercise,data,draft.check)?.value??''),result:'passed',rir:''};
+    return null;
   };
   const finish=()=>{
     if(saved.current)return;
@@ -128,6 +148,7 @@ function PTSession({data,update,go,notify}) {
   const nextIndex=steps.findIndex((s,i)=>i>cursor&&!draft.entries[s.id][s.set].done&&!draft.entries[s.id][s.set].pain);
   const upcoming=phase==='warmup'?{step,exercise}:nextIndex<0?null:{step:steps[nextIndex],exercise:draft.exercises.find(e=>e.id===steps[nextIndex].id)};
   // Moving between sets never validates or discards a result: saving still requires the result sheet.
+  const toggleVoice=()=>{const next=!voice;setVoice(next);try{localStorage.setItem('rh_voice',next?'1':'0');}catch(e){}if(next)ptSay('Annonces vocales activées.');else window.speechSynthesis?.cancel();};
   const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
   return <div className={`live-session phase-${phase}`}>
     <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div><button className="live-cancel" aria-expanded={abandon} onClick={()=>setAbandon(!abandon)}><PTIcon name="close" size={16}/>Annuler</button></header>
@@ -153,6 +174,7 @@ function PTSession({data,update,go,notify}) {
       {draft.blockTimer&&draft.format!=='amrap'&&<span className="caption">Bloc {draft.format.toUpperCase()} · {timeLabel(remaining(draft.blockTimer))}</span>}
     </section>
     <div className="live-extras">
+      {'speechSynthesis' in window&&<PTButton quiet aria-pressed={voice} onClick={toggleVoice}><PTIcon name="spark" size={18}/>{voice?'Couper les annonces vocales':'Activer les annonces vocales'}</PTButton>}
       {phase==='warmup'&&<button className="text-button" onClick={()=>{setDraft(d=>({...d,warmupSkipped:true}));beginWork();}}>Je l’ai déjà fait avant d’ouvrir l’app</button>}
       {phase==='work'&&<details className="disclosure"><summary>Posture & charge</summary><div className="stack"><ol className="instruction-list">{exercise.instructions.map((line,i)=><li key={i}>{line}</li>)}</ol>{PT.loadAdvice(exercise,data,draft.check)&&<p className="fine">{PT.loadAdvice(exercise,data,draft.check).text}</p>}</div></details>}
       {allDone&&['amrap','emom'].includes(draft.format)&&<PTButton quiet disabled={paused||blocked} onClick={addRound}>Ajouter un tour<PTIcon name="plus" size={18}/></PTButton>}
@@ -163,6 +185,6 @@ function PTSession({data,update,go,notify}) {
       {!abandon&&<PTButton danger onClick={()=>{setAbandon(true);window.scrollTo(0,0);}}><PTIcon name="close" size={18}/>Annuler la séance</PTButton>}
     </div>
     <footer className="live-dock"><div className="dock-caption"><span>{phase==='rest'?'À suivre':phase==='warmup'?'Prépare-toi':`${completed}/${total} séries validées`}</span><button className="text-button" onClick={reportPain}>Une douleur ?</button></div><PTButton primary onClick={mainAction}><PTIcon name={paused?'play':phase==='work'?'check':'arrow'} size={22}/>{actionLabel}</PTButton></footer>
-    {logging&&<PTSetSheet exercise={exercise} row={row} onChange={updateRow} onClose={()=>setLogging(false)} onSave={advance} error={error}/>}
+    {logging&&<PTSetSheet exercise={exercise} row={row} onChange={updateRow} onClose={()=>setLogging(false)} onSave={()=>advance()} onQuick={quickRow()&&!row.done?()=>advance(quickRow()):null} error={error}/>}
   </div>;
 }

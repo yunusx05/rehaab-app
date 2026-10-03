@@ -1,0 +1,17 @@
+# Fichiers internes : jamais publiés sur le site
+*.md
+!media/ATTRIBUTION.md
+scripts/
+tests/
+test-results/
+playwright-report/
+.playwright-mcp/
+.impeccable/
+.claude/
+*.cjs
+*.jsx
+deploy.sh
+package.json
+package-lock.json
+media/cards/prompts.json
+media/free-media-candidates.json

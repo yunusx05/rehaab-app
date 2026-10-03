@@ -391,10 +391,12 @@
     const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
     const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning' && !guided;
     const hardRecently=recent.some(s=>Number(s.effort)>=8);
-    const low=check.energy==='low' || returning || hardRecently || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
+    // Pic de charge (7 jours > 1,5 × la moyenne) : même allègement qu'après un effort élevé.
+    const loadSpike=trainingLoad(state,now).zone==='spike';
+    const low=check.energy==='low' || returning || hardRecently || loadSpike || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
     // Warm Up basket : les appuis et petits sauts font partie de l'échauffement, même la veille ou le jour d'un match ; seule une douleur les retire.
-    if(check&&check.warmup) return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:false,avoidImpact:active.active.length>0 && !tol};
-    return {now,recent,upcoming,active,low,returning,hardRecently,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
+    if(check&&check.warmup) return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:false,avoidImpact:active.active.length>0 && !tol};
+    return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
   }
   function allowed(exercise,state,check=state.checkIn,ctx=context(state,check)) {
     if(ctx.active.blocked) return false;
@@ -444,7 +446,8 @@
     const ctx=context(state,check,now), format=chooseFormat(check,ctx);
     if(ctx.active.blocked) return {error:'Douleur importante ou signe inhabituel : la génération est suspendue. Demande un avis médical avant de reprendre.'};
     const pool=allExercises(state).filter(e=>allowed(e,state,check,ctx) && !exclude.includes(e.id));
-    let kinds=check.focus==='basket'?['basket']:check.focus==='mobility'?['mobility']:check.focus==='plyo'?['plyo']:check.focus==='cardio'?['cardio']:check.focus==='mixed'?['strength','cardio']:['strength'];
+    // focus 'basket' est déjà converti en 'mixed' plus haut : le basket a son propre parcours.
+    let kinds=check.focus==='mobility'?['mobility']:check.focus==='plyo'?['plyo']:check.focus==='cardio'?['cardio']:check.focus==='mixed'?['strength','cardio']:['strength'];
     let candidates=pool.filter(e=>kinds.includes(e.kind) && (check.focus!=='core' || e.pattern==='core'));
     const counts=exposure(state,14,now);
     const last=state.sessions[state.sessions.length-1];
@@ -454,7 +457,6 @@
       if(state.preferences.anchors.includes(e.id)) n+=4;
       n+=Math.max(0,4-(counts[e.pattern]||0))*.5;
       if(ctx.protectLegs && ['squat','hinge','calf'].includes(e.pattern)) n-=8;
-      if(check.focus==='basket' && e.pattern===check.basketSkill) n+=6;
       if(last && last.exercises.some(x=>x.id===e.id) && !state.preferences.anchors.includes(e.id)) n-=check.novelty==='familiar'?0:2;
       return n;
     };
@@ -462,7 +464,7 @@
     const count=check.focus==='cardio'?1:Math.max(1,Math.min(check.focus==='plyo'?3:5,Math.floor(check.minutes/7)));
     const selected=pinned.filter(e=>e.kind!=='basket' && allowed(e,state,check,ctx)).map(e=>({...e,pinned:true}));
     while(selected.length<count && candidates.length){
-      const candidate=candidates.find(e=>!selected.some(x=>x.id===e.id) && (!selected.some(x=>x.pattern===e.pattern)||check.focus==='basket'||check.focus==='core'||check.focus==='mobility'||check.focus==='plyo')) || candidates.find(e=>!selected.some(x=>x.id===e.id));
+      const candidate=candidates.find(e=>!selected.some(x=>x.id===e.id) && (!selected.some(x=>x.pattern===e.pattern)||check.focus==='core'||check.focus==='mobility'||check.focus==='plyo')) || candidates.find(e=>!selected.some(x=>x.id===e.id));
       if(!candidate) break;
       selected.push(makePrescription(candidate,format,Number(check.minutes),ctx));
       candidates=candidates.filter(e=>e.id!==candidate.id);
@@ -480,7 +482,7 @@
     const reasons=[`${equipment.filter(e=>check.equipment.includes(e.id)).map(e=>e.label).join(', ')||'Poids du corps'}.`];
     if(ctx.upcoming.length) reasons.push(`${ctx.upcoming[0].title} approche : priorité à la fraîcheur, pas aux impacts.`);
     else if(ctx.protectLegs) reasons.push('Les jambes ont déjà travaillé récemment : impacts écartés et priorité aux autres mouvements.');
-    if(ctx.low) reasons.push(ctx.returning?'Reprise : moins de volume, aucune hausse automatique de charge.':ctx.hardRecently?'Effort élevé récemment : volume allégé et format contrôlé.':'Énergie basse : séance allégée, sans HIIT imposé.');
+    if(ctx.low) reasons.push(ctx.returning?'Reprise : moins de volume, aucune hausse automatique de charge.':ctx.hardRecently?'Effort élevé récemment : volume allégé et format contrôlé.':ctx.loadSpike?'Pic de charge sur 7 jours : volume allégé, le temps que le corps absorbe.':'Énergie basse : séance allégée, sans HIIT imposé.');
     if(ctx.active.active.length) reasons.push('Les mouvements sollicitant les zones signalées sont écartés. Cela ne garantit pas l’absence de douleur.');
     if(format!==check.format && check.format!=='auto' && ['muscle','mixed','core'].includes(check.focus)) reasons.push('Le format demandé a été remplacé par des séries contrôlées compte tenu du contexte.');
     return {id:uid(),title:titles[check.focus],source:'generated',focus:check.focus,format,exercises:selected,check:clone(check),reasons,warmupSeconds,blockSeconds:['amrap','emom'].includes(format)?Math.floor(budget/60)*60:null,estimatedMinutes:Math.ceil((warmupSeconds+60+(['amrap','emom'].includes(format)?Math.floor(budget/60)*60:estimateSeconds(selected,format)))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
@@ -587,7 +589,63 @@
     const start=dateKey(monday),sessions=state.sessions.filter(s=>s.date>=start && s.date<=now);
     return {sessions:sessions.length,minutes:Math.round(sessions.reduce((n,s)=>n+s.minutes,0)),target:Number(state.profile.weeklyTarget)||3,exposure:exposure(state,14,now)};
   }
+  // Charge d'entraînement (méthode sRPE de Foster) : minutes × effort ressenti, séances et matchs confondus.
+  // Aiguë = 7 derniers jours ; chronique = moyenne hebdomadaire des 28 derniers jours. Repère de dosage, pas un prédicteur de blessure.
+  function trainingLoad(state,now=dateKey()) {
+    const past=state.sessions.filter(s=>dayDiff(now,s.date)>=0);
+    const load=s=>Math.max(0,Number(s.minutes)||0)*(bounded(s.effort,1,10)?Number(s.effort):5);
+    const sum=(from,to)=>past.filter(s=>dayDiff(now,s.date)>=from && dayDiff(now,s.date)<to).reduce((n,s)=>n+load(s),0);
+    const acute=Math.round(sum(0,7)),chronic=Math.round(sum(0,28)/4);
+    const first=past.reduce((min,s)=>!min||s.date<min?s.date:min,null);
+    const history=first?dayDiff(now,first):0;
+    const weeks=Array.from({length:6},(_,i)=>({week:i,load:Math.round(sum(i*7,i*7+7))})).reverse();
+    const estimated=past.some(s=>dayDiff(now,s.date)<28 && !bounded(s.effort,1,10));
+    if(history<21 || chronic<=0) {
+      // Calibration : pas encore de moyenne fiable ; seul un doublement d'une semaine sur l'autre est signalé.
+      const prev=sum(7,14),jump=prev>0 && acute>prev*2 && acute-prev>=150;
+      return {acute,chronic,ratio:null,zone:jump?'rising':'calibration',history,weeks,estimated};
+    }
+    const ratio=Math.round(acute/chronic*100)/100;
+    return {acute,chronic,ratio,zone:ratio>1.5?'spike':ratio>1.3?'rising':ratio<.8?'low':'stable',history,weeks,estimated};
+  }
+  const loadZones={calibration:'Calibration',low:'Sous ta moyenne',stable:'Zone stable',rising:'En hausse',spike:'Pic de charge'};
+  // Séries d'un mouvement dans le temps : meilleure série par séance (charge, reps, charge × reps, 1RM estimée par Epley).
+  function liftHistory(state,exerciseId) {
+    return state.sessions.filter(s=>(s.entries[exerciseId]||[]).some(r=>r.done && !r.pain)).sort((a,b)=>a.date.localeCompare(b.date)||String(a.completedAt).localeCompare(String(b.completedAt))).map(s=>{
+      const e=s.exercises.find(x=>x.id===exerciseId)||{};
+      const rows=s.entries[exerciseId].filter(r=>r.done && !r.pain).map(r=>{const reps=e.unilateral?Math.min(Number(r.left)||0,Number(r.right)||0):Number(r.reps)||0,weight=Number(r.weight)||0;return {reps,weight,volume:Math.round(reps*weight*10)/10,e1rm:weight&&reps?Math.round(weight*(1+Math.min(reps,12)/30)*10)/10:0};});
+      const best=rows.reduce((b,r)=>r.e1rm>b.e1rm||r.e1rm===b.e1rm && r.reps>b.reps?r:b,rows[0]);
+      return {date:s.date,sessionId:s.id,...best,sets:rows.length,total:Math.round(rows.reduce((n,r)=>n+r.volume,0))};
+    });
+  }
+  // Mouvements suivis : exercices avec charge et répétitions apparus au moins deux fois, les plus fréquents d'abord.
+  function trackedLifts(state) {
+    const counts={},names={};
+    state.sessions.forEach(s=>s.exercises.forEach(e=>{if(e.weighted && e.measure==='reps' && (s.entries[e.id]||[]).some(r=>r.done && !r.pain && Number(r.weight)>0)){counts[e.id]=(counts[e.id]||0)+1;names[e.id]=e.name;}}));
+    return Object.keys(counts).filter(id=>counts[id]>=2).sort((a,b)=>counts[b]-counts[a]).map(id=>({id,name:names[id],sessions:counts[id]}));
+  }
+  // « Qu'est-ce que je fais aujourd'hui ? » : une seule réponse, dans l'ordre de prudence. Les écrans gardent le dernier mot.
+  function todayPlan(state,now=dateKey()) {
+    const active=safety(state),load=trainingLoad(state,now);
+    const todays=state.sessions.filter(s=>s.date===now);
+    const eventsOn=d=>state.events.filter(e=>!e.completed && e.date===d && ['match','club'].includes(e.type));
+    const tomorrow=(()=>{const d=new Date(`${now}T12:00:00`);d.setDate(d.getDate()+1);return dateKey(d);})();
+    const yesterdayHard=state.sessions.some(s=>dayDiff(now,s.date)===1 && Number(s.effort)>=8);
+    const worse=state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
+    const week=weeklySummary(state,now);
+    if(active.blocked) return {kind:'blocked',title:'Fais le point sur ta douleur.',why:['Une douleur forte ou un signe inhabituel est signalé : pas de séance tant qu’il est actif.'],action:'symptoms',load};
+    if(eventsOn(now).length) {const ev=eventsOn(now)[0];return {kind:'match',title:ev.type==='match'?'Jour de match : échauffe-toi.':'Entraînement ce soir : arrive prêt.',why:[`${ev.title} aujourd’hui : pas de musculation des jambes, un échauffement de 10 min suffit.`],action:'warmup',load};}
+    if(active.active.length) return {kind:'rehab',title:'Soigne la zone qui gêne.',why:[`${active.regions.map(r=>regions[r]).join(', ')} : un protocole court et progressif passe avant une séance complète.`],action:'rehab',region:active.regions[0],load};
+    if(todays.length) return {kind:'rest',title:'C’est fait pour aujourd’hui.',why:[`${todays.length>1?`${todays.length} activités`:'Une activité'} déjà enregistrée${todays.length>1?'s':''} aujourd’hui. La progression se fait aussi pendant la récupération.`],action:'mobility',load};
+    if(load.zone==='spike') return {kind:'rest',title:'Récupération active.',why:[`Ta charge des 7 derniers jours est ${String(load.ratio).replace('.',',')} fois ta moyenne : on laisse le corps absorber.`,'10 min de mobilité, pas d’intensité.'],action:'mobility',load};
+    if(worse) return {kind:'rest',title:'Récupération active.',why:['Une gêne a augmenté après une séance récente : on lève le pied 48 h.'],action:'mobility',load};
+    if(yesterdayHard) return {kind:'light',title:'Une séance légère.',why:['Effort élevé hier : volume réduit et pas d’impacts aujourd’hui.'],action:'session',load};
+    if(eventsOn(tomorrow).length) return {kind:'light',title:'Veille de match : haut du corps et gainage.',why:[`${eventsOn(tomorrow)[0].title} demain : les jambes restent fraîches.`],action:'session',load};
+    if(week.sessions>=week.target) return {kind:'rest',title:'Objectif de la semaine atteint.',why:[`${week.sessions} séances sur ${week.target} : repos ou mobilité. Une séance de plus reste possible si tu te sens frais.`],action:'mobility',load};
+    const plan=state.pathway&&state.pathway.status!=='archived'?'pathway':state.program&&state.program.status==='active'?'program':'session';
+    return {kind:'train',title:plan==='pathway'?'Ta séance du parcours t’attend.':plan==='program'?'Ta séance du programme t’attend.':'Feu vert pour t’entraîner.',why:[load.zone==='low'?'Ta charge récente est sous ta moyenne : tu peux reprendre le rythme, sans rattraper d’un coup.':load.zone==='rising'?'Charge en hausse : garde une intensité maîtrisée.':'Pas de douleur, pas de match proche : séance normale.'],action:plan,load};
+  }
   function exportBundle(state,legacy={}) {return {app:'Rehaab',exportedAt:new Date().toISOString(),state:validateState(state),legacy};}
   function importBundle(raw) {const bundle=JSON.parse(raw);assert(bundle.app==='Rehaab','Ce fichier n’est pas une sauvegarde Rehaab récente.');return {state:validateState(bundle.state),legacy:bundle.legacy && typeof bundle.legacy==='object'?bundle.legacy:{}};}
-  return {VERSION,STORAGE_KEY,equipment,regions,patterns,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,exportBundle,importBundle,estimateSeconds,makePrescription};
+  return {VERSION,STORAGE_KEY,equipment,regions,patterns,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,trainingLoad,loadZones,liftHistory,trackedLifts,todayPlan,exportBundle,importBundle,estimateSeconds,makePrescription};
 });

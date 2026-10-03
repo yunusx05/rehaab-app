@@ -1,0 +1,103 @@
+const {test,expect}=require('@playwright/test');
+const PT=require('../personal-engine.js');
+const AP=require('../athletic-profile.js');
+
+const NOW='2026-10-03';
+const day=n=>{const d=new Date(`${NOW}T12:00:00`);d.setDate(d.getDate()-n);return PT.dateKey(d);};
+const activity=(n,minutes,effort)=>({id:PT.uid(),date:day(n),title:'Match',source:'external',eventType:'match',focus:'basket',format:'external',minutes,effort,entries:{},exercises:[],completedAt:`${day(n)}T20:00:00.000Z`,partial:false,nextDay:'same',nextDayPending:false});
+function base(){const data=PT.initialState();data.profile.onboarded=true;data.profile.name='Test';data.profile.experience='regular';data.owned=['bodyweight','dumbbells','bench'];data.checkIn.equipment=data.owned;return data;}
+function regular(){const data=base();for(let n=35;n>=8;n-=3)data.sessions.push(activity(n,45,5));return data;}
+async function seed(page,data,route='today'){
+  await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('test-seeded','1');}},{data,key:PT.STORAGE_KEY});
+  await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
+}
+async function state(page){await page.waitForTimeout(300);return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
+
+test('charge : calibration, zone stable puis pic qui allège la séance',()=>{
+  const fresh=base();fresh.sessions.push(activity(2,60,6));
+  expect(PT.trainingLoad(fresh,NOW).zone).toBe('calibration');
+  const data=regular();data.sessions.push(activity(3,45,5),activity(6,45,5));
+  expect(PT.trainingLoad(data,NOW).zone).toBe('stable');
+  data.sessions.push(activity(1,90,9),activity(2,90,8),activity(4,90,8));
+  const load=PT.trainingLoad(data,NOW);
+  expect(load.zone).toBe('spike');expect(load.ratio).toBeGreaterThan(1.5);
+  expect(PT.context(data,data.checkIn,NOW).loadSpike).toBe(true);
+  expect(PT.todayPlan(data,NOW).action).toBe('mobility');
+});
+
+test('aujourd’hui : douleur bloquante, match, douleur active puis feu vert',()=>{
+  const data=regular();
+  expect(PT.todayPlan(data,NOW).kind).toBe('train');
+  data.events.push({id:'m',title:'Match du samedi',type:'match',date:NOW,minutes:60,effort:5,completed:false});
+  expect(PT.todayPlan(data,NOW).kind).toBe('match');
+  data.symptoms.push({id:'s',region:'knee',side:'right',severity:4,onset:'new',redFlags:false,note:'',date:NOW,active:true,followups:[]});
+  expect(PT.todayPlan(data,NOW).kind).toBe('match');
+  data.events=[];expect(PT.todayPlan(data,NOW).kind).toBe('rehab');
+  data.symptoms[0].severity=8;expect(PT.todayPlan(data,NOW).kind).toBe('blocked');
+});
+
+test('bilan : les tests suivis comptent par tendance, sprint plus court = mieux',()=>{
+  let a=AP.create();
+  a=AP.recordTest(a,'rsi',{value:1.6},'2026-09-01');a=AP.recordTest(a,'rsi',{value:1.4},'2026-10-01');
+  a=AP.recordTest(a,'run17',{value:62},'2026-09-01');a=AP.recordTest(a,'run17',{value:59},'2026-10-01');
+  const q=AP.assess(a).qualities;
+  expect(q.reactive.level).toBe(0);expect(q.endurance.level).toBe(1);
+  expect(AP.validateAthletic({tests:{vertical:[{value:41.2,date:NOW,method:'video'}]}}).tests.vertical[0].method).toBe('video');
+});
+
+test('accueil : une seule réponse pour aujourd’hui, avec la jauge de charge',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  const data=regular();data.sessions.push(activity(1,90,9),activity(2,90,8),activity(4,90,8));
+  // Les dates du test sont relatives au 3 octobre : on les recale sur aujourd'hui.
+  const shift=PT.dayDiff(PT.dateKey(),NOW);data.sessions.forEach(s=>{const d=new Date(`${s.date}T12:00:00`);d.setDate(d.getDate()+shift);s.date=PT.dateKey(d);});
+  await seed(page,data);
+  const card=page.locator('.today-plan');
+  await expect(card.getByRole('heading',{name:'Récupération active.'})).toBeVisible();
+  await expect(card.getByRole('img',{name:/fois ta moyenne/})).toBeVisible();
+  await page.screenshot({path:'test-results/accueil-aujourdhui.png'});
+  await card.getByRole('button',{name:/10 min de mobilité/}).click();
+  await expect.poll(async()=>(await state(page)).draft?.focus).toBe('mobility');
+});
+
+test('séance : « Fait comme prévu » valide la série sans marge, donc sans hausse de charge',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  const data=base();const e=PT.makePrescription(PT.catalog.find(x=>x.id==='curl'),'classic',30,PT.context(data));e.sets=2;
+  data.draft=PT.startDraft({id:'quick',title:'Rapide',exercises:[e],format:'classic',focus:'muscle',source:'generated',check:data.checkIn,warmupSeconds:60,entries:{},status:'preview',reasons:[]},data);
+  data.draft.entries.curl.forEach(r=>r.weight='10');
+  await seed(page,data,'session');
+  await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
+  await page.getByRole('button',{name:'Terminé',exact:true}).click();
+  await page.getByRole('button',{name:'Fait comme prévu'}).click();
+  await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Repos/);
+  const row=(await state(page)).draft.entries.curl[0];
+  expect(row).toMatchObject({done:true,result:'passed',rir:'',reps:String(e.targetMin),weight:'10'});
+});
+
+test('progression : courbe du mouvement repère et charge des 6 semaines',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  const data=base();const e=PT.makePrescription(PT.catalog.find(x=>x.id==='curl'),'classic',30,PT.context(data));
+  [[20,8,8],[13,9,8],[6,10,8]].forEach(([n,weight,reps])=>data.sessions.push({id:PT.uid(),date:PT.dateKey(new Date(Date.now()-n*864e5)),title:'Bras',source:'generated',focus:'muscle',format:'classic',minutes:30,effort:6,exercises:[e],entries:{curl:[{...PT.newRows({sets:1})[0],done:true,reps:String(reps),weight:String(weight),result:'passed'}]},completedAt:new Date().toISOString(),partial:false,nextDay:'same',nextDayPending:false}));
+  await seed(page,data,'progress');
+  await expect(page.locator('.load-weeks > div')).toHaveCount(6);
+  await page.getByRole('button',{name:'Physique',exact:true}).click();
+  await expect(page.locator('.lift-curves circle')).toHaveCount(3);
+  await expect(page.locator('.lift-curves')).toContainText('+26 %');
+  await page.locator('.lift-curves').screenshot({path:'test-results/courbe-mouvement.png'});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+test('mesure vidéo : hauteur = g·t²/8, RSI et chrono, ralenti pris en compte',async({page})=>{
+  await seed(page,base());
+  const r=await page.evaluate(()=>({
+    jump:ptVideoResult('jump',[1.000,1.500],1),
+    slow:ptVideoResult('jump',[1.000,3.000],4),
+    rsi:ptVideoResult('rsi',[0,0.2,0.65],1),
+    sprint:ptVideoResult('sprint',[0.5,2.35],1),
+    bad:ptVideoResult('jump',[2,1],1)
+  }));
+  expect(r.jump.value).toBe(30.7);   // 9,81 × 0,5² / 8 = 0,3066 m
+  expect(r.slow.value).toBe(30.7);   // 2 s à la lecture ÷ 4 = 0,5 s réelles
+  expect(r.rsi.value).toBe(1.24);    // 0,248 m / 0,2 s
+  expect(r.sprint.value).toBe(1.85);
+  expect(r.bad.error).toBeTruthy();
+});

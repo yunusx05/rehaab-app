@@ -34,3 +34,6 @@ build/
 
 # Captures personnelles d' inspiration, hors du dépôt
 ui inspiration-fonction/
+
+# Journaux de session Playwright MCP
+.playwright-mcp/

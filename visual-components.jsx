@@ -11,7 +11,7 @@ function ptKindIcon(e){return {strength:'weight',basket:'basket',cardio:'run',mo
 function PTThumbnail({exercise:e}){
   const m=window.RehaabMedia?.[e.id];
   // Cards stay still and fill their frame; videos are reserved for the exercise demonstration.
-  const sources=[m?.card,m?.poster,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean);
+  const sources=[m?.card,m?.poster,m?.frames&&`media/${m.frames}/0.webp`].filter(Boolean);
   const [attempt,setAttempt]=usePTState(0),src=sources[attempt];
   usePTEffect(()=>setAttempt(0),[e.id]);
   return <span className={`movement-thumb${src?' has-image':''}`}>{src?<img loading="lazy" decoding="async" src={src} alt="" onError={()=>setAttempt(a=>a+1)}/>:<PTIcon name={ptKindIcon(e)} size={38}/>}<span className="thumb-type"><PTIcon name={m?.video?'play':m?.frames?'body':ptKindIcon(e)} size={13}/>{m?.video?'Vidéo':m?.frames?'Positions':e.kind==='basket'?'Technique':'Repères'}</span></span>;

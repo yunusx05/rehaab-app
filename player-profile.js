@@ -23,6 +23,8 @@
     rebondeur:{label:'Rebondeur',hint:'Box-out, second effort, contacts.',qualities:{vertical:2,contact:2,strength:1},qi:['rebound']},
     stretch:{label:'Intérieur shooteur',hint:'Pick & pop, espace pour les autres.',qualities:{endurance:1,strength:1},qi:['pnr-screener','spacing']}
   };
+  const goals = [{id:'vertical',label:'Sauter plus haut'},{id:'speed',label:'Être plus rapide'},{id:'strength',label:'Être plus fort'},{id:'endurance',label:'Tenir tout le match'},{id:'injury',label:'Ne plus me blesser'}];
+  const goalQualities = {vertical:{vertical:3,reactive:1},speed:{firststep:3,speed:2},strength:{strength:3,unilateral:1},endurance:{endurance:3},injury:{ankle:2,decel:2,hip:1}};
   const qualityLabels = {decel:'Freinage',lateral:'Déplacements latéraux',ankle:'Chevilles réactives',unilateral:'Force sur une jambe',reactive:'Réactivité',speed:'Vitesse',antirot:'Gainage anti-rotation',endurance:'Tenir l’effort',vertical:'Détente',strength:'Force de base',contact:'Solidité au contact',hip:'Stabilité de hanche',shoulder:'Stabilité d’épaule',firststep:'Premier pas',mobility:'Mobilité',core:'Gainage'};
 
   // Étiquettes posées sur les exercices existants du catalogue (aucun identifiant modifié).
@@ -104,6 +106,8 @@
     const add=q=>Object.entries(q||{}).forEach(([k,v])=>total[k]=(total[k]||0)+v);
     add(positions[player.position]?.qualities);
     (player.archetypes||[]).forEach(a=>add(archetypes[a]?.qualities));
+    // Objectifs choisis par le joueur : ils pèsent autant qu'un profil de jeu.
+    (player.goals||[]).forEach(g=>add(goalQualities[g]));
     const AP=athletic&&athleticLib();
     if(AP) add(AP.weights(athletic));
     return Object.entries(total).sort((a,b)=>b[1]-a[1]).map(([id,weight])=>({id,weight,label:qualityLabels[id]}));
@@ -186,5 +190,5 @@
     };
   }
 
-  return {positions,archetypes,qualityLabels,tags,load,tolerates,priorities,bonus,rehabBlock,dailyBody,qiThemes,validatePlayer};
+  return {positions,archetypes,qualityLabels,tags,load,tolerates,goals,priorities,bonus,rehabBlock,dailyBody,qiThemes,validatePlayer};
 });

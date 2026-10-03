@@ -12,7 +12,7 @@ function PTPathwayIntro({data,update,go}) {
       {!hasPlayer && <div className="notice warning stack-sm"><p>Renseigne d’abord ton poste et tes douleurs : les séances s’adaptent à ton profil.</p><PTButton onClick={() => go('player')}>Créer mon profil joueur<PTIcon name="arrow" size={18}/></PTButton></div>}
       <ol className="step-list">
         {BP.steps.map(s => <li key={s.id} className={start === s.id ? 'is-current' : ''}>
-          <span className="step-thumb"><img src={`media/pathway/${s.id}.jpg`} alt="" loading="lazy" decoding="async"/><i className="step-num">{s.id}</i></span>
+          <span className="step-thumb"><img src={`media/pathway/${s.id}.webp`} alt="" loading="lazy" decoding="async"/><i className="step-num">{s.id}</i></span>
           <div><strong>{s.name}</strong><small>{s.minWeeks} semaines minimum{s.base ? ` · ${s.base}` : ''}</small></div>
         </li>)}
       </ol>

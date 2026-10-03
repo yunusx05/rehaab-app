@@ -4,12 +4,16 @@
   "description": "Application de réathlétisation et de préparation basket sur 14 semaines",
   "main": "index.html",
   "scripts": {
-    "start": "serve .",
-    "test:mobile": "playwright test"
+    "build": "node scripts/build-jsx.cjs",
+    "start": "node scripts/build-jsx.cjs && serve .",
+    "test": "node scripts/build-jsx.cjs && playwright test",
+    "test:mobile": "playwright test",
+    "check:build": "node scripts/build-jsx.cjs --check"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "sharp": "^0.35.5"
   },
   "keywords": [
     "fitness",

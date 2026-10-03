@@ -101,6 +101,7 @@ test('bilan dans l’app : répondre, passer les tests, lancer le parcours',asyn
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.getByRole('button',{name:/Lancer le parcours à l’étape 1/}).click();
   await expect(page.getByRole('heading',{name:'Fondations.'})).toBeVisible();
+  await page.waitForTimeout(300);
   const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);
   expect(saved.pathway.step).toBe(1);expect(saved.athletic.date).toBeTruthy();expect(saved.athletic.tests.kneewall).toHaveLength(1);
   await expect(page.locator('.dose-list small',{hasText:'Kiné'}).first()).toBeVisible();
@@ -120,6 +121,6 @@ test('illustrations des exercices du bilan : deux positions présentes et préca
   for(const id of ids){
     const m=sandbox.window.RehaabMedia[id];
     expect(m&&m.generated,id).toBeTruthy();
-    for(const f of [m.card,`media/${m.frames}/0.jpg`,`media/${m.frames}/1.jpg`]){expect(fs.existsSync(path.join(root,f)),f).toBe(true);expect(sw.includes(`./${f}`),f).toBe(true);}
+    for(const f of [m.card,`media/${m.frames}/0.webp`,`media/${m.frames}/1.webp`]){expect(fs.existsSync(path.join(root,f)),f).toBe(true);expect(sw.includes(`./${f}`),f).toBe(true);}
   }
 });

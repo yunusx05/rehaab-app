@@ -12,7 +12,8 @@ async function seed(page,data,route='session'){
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('test-seeded','1');}}, {data,key:PT.STORAGE_KEY});
   await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
 }
-async function state(page){return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
+// L'app regroupe ses écritures (250 ms) : on attend la sauvegarde avant de la lire.
+async function state(page){await page.waitForTimeout(300);return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
 async function noOverflow(page){expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}
 async function setVisibility(page,value){await page.evaluate(value=>{Object.defineProperty(document,'visibilityState',{value,configurable:true});document.dispatchEvent(new Event('visibilitychange'));},value);}
 // A muscle zone groups both body sides, so its bounding-box centre can fall on another zone: tap a point inside one side.
@@ -224,7 +225,7 @@ test('médias : chaque média déclaré pointe vers un fichier existant',()=>{
   const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
   const declared=PT.catalog.filter(e=>sandbox.window.RehaabMedia[e.id]);
   expect(declared.length).toBeGreaterThan(50);
-  const missing=declared.filter(e=>{const m=sandbox.window.RehaabMedia[e.id];return ![m?.video,m?.poster,m?.card,m?.frames&&`media/${m.frames}/0.jpg`].filter(Boolean).some(p=>fs.existsSync(path.join(root,p)));}).map(e=>e.id);
+  const missing=declared.filter(e=>{const m=sandbox.window.RehaabMedia[e.id];return ![m?.video,m?.poster,m?.card,m?.frames&&`media/${m.frames}/0.webp`].filter(Boolean).some(p=>fs.existsSync(path.join(root,p)));}).map(e=>e.id);
   expect(missing).toEqual([]);
 });
 
@@ -254,7 +255,7 @@ test('hors connexion : catalogue, sauvegarde et lecture partielle des vidéos em
   await page.evaluate(()=>navigator.serviceWorker.ready);
   await expect.poll(()=>page.evaluate(()=>!!navigator.serviceWorker.controller)).toBe(true);
   await expect.poll(()=>page.evaluate(async()=>!!(await caches.match('/media/videos/curl.mp4'))),{timeout:30000}).toBe(true);
-  await expect.poll(()=>page.evaluate(async()=>!!(await caches.match('/sport-components.jsx'))&&!!(await caches.match('/media/fonts/cabinet-500.woff2')))).toBe(true);
+  await expect.poll(()=>page.evaluate(async()=>!!(await caches.match('/compiled/sport-components.js'))&&!!(await caches.match('/media/fonts/cabinet-500.woff2')))).toBe(true);
   await context.setOffline(true);await page.reload();
   await expect(page.getByRole('heading',{name:/mouvements/i})).toBeVisible();
   await page.getByLabel('Rechercher un exercice').fill('marteau');await page.locator('.library-tile>.home-action').click();

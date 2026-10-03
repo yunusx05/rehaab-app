@@ -3,7 +3,7 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const {execFileSync}=require('node:child_process');
-const output="C:/Users/Anton/Desktop/WORKS/generation d'image IA";
+const output=require('./fal-key.cjs').generationsDir;
 const ledger=JSON.parse(fs.readFileSync(path.join(output,'rehaab_media_lot_2026-10-01b.json'),'utf8'));
 const [out,...ids]=process.argv.slice(2);
 const files=[];
