@@ -109,3 +109,15 @@ test('raccourci Corps : « Mesurer ma détente » ouvre directement les tests, m
   await expect(page.getByRole('heading',{name:'Tes tests.'})).toBeVisible();
   await expect(page.getByText('Saut vertical debout').first()).toBeVisible();
 });
+
+test('repères de départ : la première mesure compte, puis repère atteint et pas de recul',()=>{
+  const mk=(id,values)=>{const a=AP.create();a.tests={[id]:values.map(value=>({value,date:NOW}))};return AP.assess(a).qualities;};
+  expect(mk('vertical',[38]).vertical.level).toBe(0);
+  expect(mk('vertical',[38]).vertical.failed[0].detail).toContain('pas encore atteint');
+  expect(mk('vertical',[50]).vertical.level).toBe(1);
+  expect(mk('vertical',[50,46]).vertical.level).toBe(0);
+  expect(mk('vertical',[38,42]).vertical.level).toBe(0);
+  expect(mk('sprint5',[1.1]).firststep.level).toBe(1);
+  expect(mk('sprint5',[1.4]).firststep.level).toBe(0);
+  expect(AP.meetsBase('run17',62)).toBe(true);
+});
