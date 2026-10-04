@@ -9,6 +9,7 @@ function PTPathwayIntro({data,update,go}) {
       Cinq étapes pour revenir sur le terrain sans te blesser. On avance quand le corps a validé les critères, pas quand le calendrier le dit.
     </PTPageHead>
     <div className="stack-lg">
+      <button className="home-action is-featured" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
       {!hasPlayer && <div className="notice warning stack-sm"><p>Renseigne d’abord ton poste et tes douleurs : les séances s’adaptent à ton profil.</p><PTButton onClick={() => go('player')}>Créer mon profil joueur<PTIcon name="arrow" size={18}/></PTButton></div>}
       <ol className="step-list">
         {BP.steps.map(s => <li key={s.id} className={start === s.id ? 'is-current' : ''}>
@@ -25,7 +26,6 @@ function PTPathwayIntro({data,update,go}) {
       <PTButton primary onClick={() => update(s => ({...s, pathway: AP.seedPathwayTests(BP.create({startStep:start}), s.athletic)}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
       {(data.pathwayArchive || []).slice(-1).map(old => <button key={old.id} className="home-action" onClick={() => update(s => {const {stoppedAt, ...kept} = old; return {...s, pathway: BP.validatePathway(kept), pathwayArchive: (s.pathwayArchive || []).filter(x => x.id !== old.id)};})}><PTIcon name="refresh"/><span><strong>Reprendre mon parcours arrêté</strong><small>Étape {old.step} · {BP.stepById(old.step)?.name}, arrêté le {shortDate(old.stoppedAt)}</small></span><PTIcon name="arrow" size={18}/></button>)}
       <div className="home-options">
-        <button className="home-action" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={() => go('library')}><PTIcon name="weight"/><span><strong>Tous les exercices</strong><small>Le catalogue complet, filtrable par matériel.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={() => go('profile')}><PTIcon name="bench"/><span><strong>Mon matériel</strong><small>{data.owned.length} équipement{data.owned.length > 1 ? 's' : ''} · gilet lesté et disques slide disponibles.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={() => go('program')}><PTIcon name="book"/><span><strong>Mes autres programmes</strong><small>Shred, force, hybride… Toujours séparés du parcours.</small></span><PTIcon name="arrow" size={18}/></button>
@@ -55,6 +55,7 @@ function PTPathway({data,update,go,notify}) {
 
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
+      <button className="home-action is-featured" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
       <div className="step-track pathway-track">{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
       <section className="card stack-sm">
         <div className="topline"><strong>Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''}</strong><span className="caption">{status.sessions} / {status.needed} séances</span></div>
@@ -99,7 +100,6 @@ function PTPathway({data,update,go,notify}) {
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
           <button className="home-action" onClick={() => go('player')}><PTIcon name="basket"/><span><strong>Mon profil joueur</strong><small>Poste, douleurs, matériel.</small></span><PTIcon name="arrow" size={18}/></button>
-          <button className="home-action" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
           <button className="home-action" onClick={() => go('library')}><PTIcon name="weight"/><span><strong>Tous les exercices</strong><small>Le catalogue complet.</small></span><PTIcon name="arrow" size={18}/></button>
           <button className="home-action" onClick={() => go('program')}><PTIcon name="book"/><span><strong>Mes autres programmes</strong><small>Séparés du parcours, à suivre ou non.</small></span><PTIcon name="arrow" size={18}/></button>
         </div>

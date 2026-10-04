@@ -1,4 +1,4 @@
-/* QI basket sur de vrais matchs : lecteur YouTube intégré, ou lecteur natif quand l'extrait pointe vers un fichier (file),
+/* QI basket sur de vrais matchs : extraits hébergés par l'app (clips/) lus par le lecteur natif, ou lecteur YouTube pour ceux qu'on ajoute,
    pause au moment de la décision,
    réponse chronométrée, puis la suite de l'action. Réutilise PTQiChoices / PTQiFeedback de qi-components.jsx. */
 const PT_CLIP_SECONDS = 6;
@@ -97,7 +97,8 @@ function usePTYouTube(videoId, start = 0, controls = false) {
 }
 
 // Extrait hébergé par l'app (clips/) : même interface que le lecteur YouTube, pour un seul code de déroulé.
-function usePTFileVideo(src) {
+// Le fichier commence à clip.start de la vidéo d'origine : offset recale les instants.
+function usePTFileVideo(src, offset = 0) {
   const host = usePTRef(null),
     player = usePTRef(null);
   const [ready, setReady] = usePTState(false),
@@ -122,9 +123,9 @@ function usePTFileVideo(src) {
     v.addEventListener('error', () => setError(navigator.onLine === false ? 'offline' : 'file'));
     host.current.replaceChildren(v);
     player.current = {
-      getCurrentTime: () => v.currentTime,
+      getCurrentTime: () => v.currentTime + offset,
       seekTo: t => {
-        v.currentTime = t;
+        v.currentTime = Math.max(0, t - offset);
       },
       playVideo: () => {
         v.play().catch(() => {});
@@ -159,7 +160,7 @@ function PTQiVideoItem({
   onAnswer
 }) {
   const yt = usePTYouTube(clip.file ? null : clip.yt, clip.start),
-    file = usePTFileVideo(clip.file);
+    file = usePTFileVideo(clip.file, clip.start);
   const {
     host,
     player,
@@ -433,7 +434,7 @@ function PTQiVideoHome({
     onClick: () => setRemove(c.id)
   }, "Retirer"))))), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Les vid\xE9os restent sur YouTube : l\u2019app ne les copie pas et ne les h\xE9berge pas. Certaines cha\xEEnes interdisent la lecture int\xE9gr\xE9e ; l\u2019app le signale et propose de l\u2019ouvrir sur YouTube.")));
+  }, "Les extraits de base sont gard\xE9s sur le t\xE9l\xE9phone apr\xE8s la premi\xE8re lecture. Ceux que tu ajoutes passent par YouTube : certaines cha\xEEnes interdisent la lecture int\xE9gr\xE9e, l\u2019app le signale et propose de l\u2019ouvrir sur YouTube.")));
 }
 const ptBlankClip = () => ({
   id: `clip-${Date.now().toString(36)}`,

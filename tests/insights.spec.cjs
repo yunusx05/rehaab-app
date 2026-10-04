@@ -103,7 +103,7 @@ test('mesure vidéo : hauteur = g·t²/8, RSI et chrono, ralenti pris en compte'
 });
 
 test('raccourci Corps : « Mesurer ma détente » ouvre directement les tests, même bilan déjà fait',async({page})=>{
-  const data=base();data.athletic={...AP.create(),date:NOW};
+  const data=base();data.athletic={...AP.create(),date:NOW};data.player={...(data.player||{}),position:'meneur'};
   await seed(page,data,'pathway');
   await page.getByRole('button',{name:/Mesurer ma détente et mes tests/}).click();
   await expect(page.getByRole('heading',{name:'Tes tests.'})).toBeVisible();

@@ -94,3 +94,15 @@ test('éditeur : coller un lien, marquer trois instants, enregistrer',async({pag
   expect(saved[0].choices).toHaveLength(2);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+
+test('extrait de base : fichier hébergé, pause à l’instant d’origine recalé sur le début de l’extrait',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await seed(page,base(),'qi-video-run/v-preston-hedge');
+  await expect(page.locator('.qi-video-host video')).toHaveAttribute('src','clips/v-preston-hedge.mp4');
+  await page.getByRole('button',{name:'Lancer l’action'}).click();
+  // Pause d'origine à 21 s, extrait commencé à 7 s : la vidéo doit s'arrêter à 14 s du fichier.
+  await page.evaluate(()=>{document.querySelector('.qi-video-host video').currentTime=13.7;});
+  await expect(page.getByRole('timer')).toContainText('s pour choisir',{timeout:6000});
+  expect(await page.evaluate(()=>Math.round(document.querySelector('.qi-video-host video').currentTime))).toBe(14);
+  expect(errors).toEqual([]);
+});

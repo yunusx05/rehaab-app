@@ -203,3 +203,6 @@
 .clip-marker small{color:var(--muted)}
 .button-row.tight{gap:.35rem;flex-wrap:nowrap}
 .clip-choice{display:grid;gap:.4rem;padding:.7rem;border-radius:14px;background:var(--surface)}
+
+/* Raccourci mis en avant (onglet Corps : mesurer sa détente) */
+.home-action.is-featured{border:2px solid var(--accent)}

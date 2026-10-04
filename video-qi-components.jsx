@@ -1,4 +1,4 @@
-/* QI basket sur de vrais matchs : lecteur YouTube intégré, ou lecteur natif quand l'extrait pointe vers un fichier (file),
+/* QI basket sur de vrais matchs : extraits hébergés par l'app (clips/) lus par le lecteur natif, ou lecteur YouTube pour ceux qu'on ajoute,
    pause au moment de la décision,
    réponse chronométrée, puis la suite de l'action. Réutilise PTQiChoices / PTQiFeedback de qi-components.jsx. */
 const PT_CLIP_SECONDS = 6;
@@ -41,7 +41,8 @@ function usePTYouTube(videoId, start = 0, controls = false) {
 }
 
 // Extrait hébergé par l'app (clips/) : même interface que le lecteur YouTube, pour un seul code de déroulé.
-function usePTFileVideo(src) {
+// Le fichier commence à clip.start de la vidéo d'origine : offset recale les instants.
+function usePTFileVideo(src, offset = 0) {
   const host = usePTRef(null), player = usePTRef(null);
   const [ready, setReady] = usePTState(false), [error, setError] = usePTState(null);
   usePTEffect(() => {
@@ -53,7 +54,7 @@ function usePTFileVideo(src) {
     v.addEventListener('loadeddata', () => setReady(true), {once: true});
     v.addEventListener('error', () => setError(navigator.onLine === false ? 'offline' : 'file'));
     host.current.replaceChildren(v);
-    player.current = {getCurrentTime: () => v.currentTime, seekTo: t => { v.currentTime = t; }, playVideo: () => { v.play().catch(() => {}); }, pauseVideo: () => v.pause(),
+    player.current = {getCurrentTime: () => v.currentTime + offset, seekTo: t => { v.currentTime = Math.max(0, t - offset); }, playVideo: () => { v.play().catch(() => {}); }, pauseVideo: () => v.pause(),
       mute: () => { v.muted = true; }, unMute: () => { v.muted = false; }, setPlaybackRate: r => { v.playbackRate = r; }};
     return () => { v.pause(); v.removeAttribute('src'); v.load(); player.current = null; };
   }, [src]);
@@ -61,7 +62,7 @@ function usePTFileVideo(src) {
 }
 
 function PTQiVideoItem({clip, onAnswer}) {
-  const yt = usePTYouTube(clip.file ? null : clip.yt, clip.start), file = usePTFileVideo(clip.file);
+  const yt = usePTYouTube(clip.file ? null : clip.yt, clip.start), file = usePTFileVideo(clip.file, clip.start);
   const {host, player, ready, error} = clip.file ? file : yt;
   const [phase, setPhase] = usePTState('idle'), [picked, setPicked] = usePTState(null), [left, setLeft] = usePTState(PT_CLIP_SECONDS), [sound, setSound] = usePTState(false);
   const phaseRef = usePTRef(phase); phaseRef.current = phase;
@@ -143,7 +144,7 @@ function PTQiVideoHome({data, update, go, notify}) {
         <button className="clip-open" onClick={() => go('qi-video-run', c.id)}><img src={c.file ? c.file.replace(/\.mp4$/, '.webp') : `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`} alt="" loading="lazy"/><span><strong>{c.title}</strong><small>{QI.themes[c.theme]}{done.has(c.id) ? ' · bien lu' : ''}{c.own ? '' : ' · de base'}</small></span></button>
         {c.own && <div className="clip-actions"><button className="text-button" onClick={() => go('qi-video-edit', c.id)}>Modifier</button>{remove === c.id ? <button className="text-button danger-text" onClick={() => { update(s => ({...s, qi: QI.removeClip(s.qi, c.id)})); setRemove(null); notify('Extrait retiré.'); }}>Confirmer</button> : <button className="text-button" onClick={() => setRemove(c.id)}>Retirer</button>}</div>}
       </article>)}</section>}
-      <p className="fine">Les vidéos restent sur YouTube : l’app ne les copie pas et ne les héberge pas. Certaines chaînes interdisent la lecture intégrée ; l’app le signale et propose de l’ouvrir sur YouTube.</p>
+      <p className="fine">Les extraits de base sont gardés sur le téléphone après la première lecture. Ceux que tu ajoutes passent par YouTube : certaines chaînes interdisent la lecture intégrée, l’app le signale et propose de l’ouvrir sur YouTube.</p>
     </div></>;
 }
 

@@ -38,5 +38,3 @@ ui inspiration-fonction/
 # Journaux de session Playwright MCP
 .playwright-mcp/
 
-# Extraits vidéo découpés en local : jamais publiés
-clips/
