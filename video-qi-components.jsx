@@ -1,4 +1,5 @@
-/* QI basket sur de vrais matchs : lecteur YouTube intégré (rien n'est copié ni hébergé), pause au moment de la décision,
+/* QI basket sur de vrais matchs : lecteur YouTube intégré, ou lecteur natif quand l'extrait pointe vers un fichier (file),
+   pause au moment de la décision,
    réponse chronométrée, puis la suite de l'action. Réutilise PTQiChoices / PTQiFeedback de qi-components.jsx. */
 const PT_CLIP_SECONDS = 6;
 
@@ -16,7 +17,7 @@ function ptYouTube() {
   });
   return ptYtPromise;
 }
-const ptYtErrors = {2:'Lien vidéo invalide.',5:'Cette vidéo ne peut pas être lue ici.',100:'Vidéo introuvable ou privée.',101:'La chaîne interdit la lecture hors de YouTube.',150:'La chaîne interdit la lecture hors de YouTube.',offline:'Pas de connexion : les vidéos YouTube demandent Internet.'};
+const ptYtErrors = {2:'Lien vidéo invalide.',5:'Cette vidéo ne peut pas être lue ici.',100:'Vidéo introuvable ou privée.',101:'La chaîne interdit la lecture hors de YouTube.',150:'La chaîne interdit la lecture hors de YouTube.',offline:'Pas de connexion : cette vidéo n’est pas encore enregistrée sur le téléphone.',file:'Extrait introuvable.'};
 const ptClock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}.${Math.floor((s % 1) * 10)}`;
 const ptYtWatch = (id, start) => `https://www.youtube.com/watch?v=${id}&t=${Math.floor(start)}s`;
 
@@ -39,8 +40,29 @@ function usePTYouTube(videoId, start = 0, controls = false) {
   return {host, player, ready, error};
 }
 
+// Extrait hébergé par l'app (clips/) : même interface que le lecteur YouTube, pour un seul code de déroulé.
+function usePTFileVideo(src) {
+  const host = usePTRef(null), player = usePTRef(null);
+  const [ready, setReady] = usePTState(false), [error, setError] = usePTState(null);
+  usePTEffect(() => {
+    if (!src || !host.current) return;
+    setReady(false); setError(null);
+    const v = document.createElement('video');
+    Object.assign(v, {src, muted: true, playsInline: true, preload: 'auto', poster: src.replace(/\.mp4$/, '.webp')});
+    v.setAttribute('playsinline', ''); v.setAttribute('aria-label', 'Extrait de match');
+    v.addEventListener('loadeddata', () => setReady(true), {once: true});
+    v.addEventListener('error', () => setError(navigator.onLine === false ? 'offline' : 'file'));
+    host.current.replaceChildren(v);
+    player.current = {getCurrentTime: () => v.currentTime, seekTo: t => { v.currentTime = t; }, playVideo: () => { v.play().catch(() => {}); }, pauseVideo: () => v.pause(),
+      mute: () => { v.muted = true; }, unMute: () => { v.muted = false; }, setPlaybackRate: r => { v.playbackRate = r; }};
+    return () => { v.pause(); v.removeAttribute('src'); v.load(); player.current = null; };
+  }, [src]);
+  return {host, player, ready, error};
+}
+
 function PTQiVideoItem({clip, onAnswer}) {
-  const {host, player, ready, error} = usePTYouTube(clip.yt, clip.start);
+  const yt = usePTYouTube(clip.file ? null : clip.yt, clip.start), file = usePTFileVideo(clip.file);
+  const {host, player, ready, error} = clip.file ? file : yt;
   const [phase, setPhase] = usePTState('idle'), [picked, setPicked] = usePTState(null), [left, setLeft] = usePTState(PT_CLIP_SECONDS), [sound, setSound] = usePTState(false);
   const phaseRef = usePTRef(phase); phaseRef.current = phase;
   const deadline = usePTRef(0);
@@ -71,7 +93,7 @@ function PTQiVideoItem({clip, onAnswer}) {
       {phase === 'question' && <div className="qi-video-freeze" aria-hidden="true"><span>Pause</span><strong>{left}</strong></div>}
       {!ready && !error && <div className="qi-video-cover"><span className="caption">Chargement de la vidéo…</span></div>}
     </div>
-    {error ? <div className="notice warning stack-sm"><p>{ptYtErrors[error] || 'Vidéo indisponible.'}</p><a className="text-button" href={ptYtWatch(clip.yt, clip.start)} target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube</a><PTButton quiet onClick={() => onAnswer(null)}>Passer cet extrait</PTButton></div>
+    {error ? <div className="notice warning stack-sm"><p>{ptYtErrors[error] || 'Vidéo indisponible.'}</p><a className="text-button" href={ptYtWatch(clip.yt, clip.at ?? clip.start)} target="_blank" rel="noopener noreferrer">Ouvrir sur YouTube</a><PTButton quiet onClick={() => onAnswer(null)}>Passer cet extrait</PTButton></div>
     : <>
       <p className="qi-prompt">{clip.prompt}</p>
       {phase === 'idle' && <PTButton primary disabled={!ready} onClick={() => start()}><PTIcon name="play" size={20}/>Lancer l’action</PTButton>}
@@ -118,7 +140,7 @@ function PTQiVideoHome({data, update, go, notify}) {
         {pool.length > 0 && <PTButton primary onClick={() => go('qi-video-run')}>Lancer {Math.min(5, pool.length)} extrait{pool.length > 1 ? 's' : ''}<PTIcon name="play" size={18}/></PTButton>}
         <PTButton quiet onClick={() => go('qi-video-edit')}><PTIcon name="plus" size={18}/>Ajouter un extrait</PTButton></section>
       {pool.length > 0 && <section className="stack-sm"><h2>Les extraits</h2>{pool.map(c => <article key={c.id} className="clip-row">
-        <button className="clip-open" onClick={() => go('qi-video-run', c.id)}><img src={`https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`} alt="" loading="lazy"/><span><strong>{c.title}</strong><small>{QI.themes[c.theme]}{done.has(c.id) ? ' · bien lu' : ''}{c.own ? '' : ' · de base'}</small></span></button>
+        <button className="clip-open" onClick={() => go('qi-video-run', c.id)}><img src={c.file ? c.file.replace(/\.mp4$/, '.webp') : `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`} alt="" loading="lazy"/><span><strong>{c.title}</strong><small>{QI.themes[c.theme]}{done.has(c.id) ? ' · bien lu' : ''}{c.own ? '' : ' · de base'}</small></span></button>
         {c.own && <div className="clip-actions"><button className="text-button" onClick={() => go('qi-video-edit', c.id)}>Modifier</button>{remove === c.id ? <button className="text-button danger-text" onClick={() => { update(s => ({...s, qi: QI.removeClip(s.qi, c.id)})); setRemove(null); notify('Extrait retiré.'); }}>Confirmer</button> : <button className="text-button" onClick={() => setRemove(c.id)}>Retirer</button>}</div>}
       </article>)}</section>}
       <p className="fine">Les vidéos restent sur YouTube : l’app ne les copie pas et ne les héberge pas. Certaines chaînes interdisent la lecture intégrée ; l’app le signale et propose de l’ouvrir sur YouTube.</p>

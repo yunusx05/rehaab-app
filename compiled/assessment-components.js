@@ -8,9 +8,11 @@ function PTAssessment({
   data,
   update,
   go,
-  notify
+  notify,
+  id
 }) {
-  const [step, setStep] = usePTState(0);
+  // bilan/tests ouvre directement les tests terrain (détente, RSI, sprint…), sans repasser par le questionnaire.
+  const [step, setStep] = usePTState(id === 'tests' ? 1 : 0);
   const [draft, setDraft] = usePTState(() => AP.validateAthletic(data.athletic) || AP.create());
   // Chaque réponse et chaque mesure est gardée tout de suite : rien n'est perdu si le bilan est interrompu.
   const keep = next => {
@@ -80,7 +82,8 @@ function PTAssessment({
   }))), step === 1 && /*#__PURE__*/React.createElement(PTAssessmentTests, {
     data: data,
     draft: draft,
-    keep: keep
+    keep: keep,
+    open: id === 'tests' ? 'jump' : null
   }), step === 2 && /*#__PURE__*/React.createElement(PTAssessmentResult, {
     data: data,
     draft: draft,
@@ -103,7 +106,8 @@ function PTAssessment({
 function PTAssessmentTests({
   data,
   draft,
-  keep
+  keep,
+  open
 }) {
   const groups = AP.testGroups(data);
   const hidden = groups.some(g => g.tests.some(t => t.hidden));
@@ -119,7 +123,8 @@ function PTAssessmentTests({
     const measured = visible.filter(t => AP.latest(draft, t.id)).length;
     return /*#__PURE__*/React.createElement("details", {
       key: g.id,
-      className: "disclosure test-group"
+      className: "disclosure test-group",
+      open: g.id === open || undefined
     }, /*#__PURE__*/React.createElement("summary", null, g.label, " \xB7 ", measured, " / ", visible.length), /*#__PURE__*/React.createElement("div", {
       className: "stack"
     }, visible.map(t => /*#__PURE__*/React.createElement(PTAssessmentTest, {

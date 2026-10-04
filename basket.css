@@ -185,7 +185,7 @@
 .mark-list{display:flex;flex-wrap:wrap;gap:.4rem}
 /* QI sur vrais matchs : lecteur YouTube intégré */
 .qi-video-frame{position:relative;aspect-ratio:16/9;width:100%;border-radius:18px;overflow:hidden;background:#000}
-.qi-video-host,.qi-video-host>div,.qi-video-host iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.qi-video-host,.qi-video-host>div,.qi-video-host iframe,.qi-video-host video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:contain}
 .qi-video-frame:not(.editor) .qi-video-host{pointer-events:none}
 .qi-video-cover{position:absolute;inset:0;display:grid;place-items:center;background:#000}
 .qi-video-freeze{position:absolute;top:.6rem;right:.6rem;display:flex;align-items:center;gap:.5rem;padding:.35rem .7rem;border-radius:30px;background:#000c;color:#fff;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}

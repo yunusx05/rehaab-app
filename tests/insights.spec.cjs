@@ -101,3 +101,11 @@ test('mesure vidéo : hauteur = g·t²/8, RSI et chrono, ralenti pris en compte'
   expect(r.sprint.value).toBe(1.85);
   expect(r.bad.error).toBeTruthy();
 });
+
+test('raccourci Corps : « Mesurer ma détente » ouvre directement les tests, même bilan déjà fait',async({page})=>{
+  const data=base();data.athletic={...AP.create(),date:NOW};
+  await seed(page,data,'pathway');
+  await page.getByRole('button',{name:/Mesurer ma détente et mes tests/}).click();
+  await expect(page.getByRole('heading',{name:'Tes tests.'})).toBeVisible();
+  await expect(page.getByText('Saut vertical debout').first()).toBeVisible();
+});

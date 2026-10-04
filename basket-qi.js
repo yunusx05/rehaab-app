@@ -364,6 +364,7 @@
   const addDays = (key,n) => { const d=new Date(`${key}T12:00:00`); d.setDate(d.getDate()+n); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 
   // Vidéos de vrais matchs : lues dans le lecteur YouTube intégré, jamais copiées ni hébergées par l'app.
+  // Un extrait peut aussi pointer vers un fichier local (file) : le lecteur natif prend alors le relais.
   // Un extrait = début, instant de pause (la décision), fin (la suite de l'action), une question et ses choix.
   // Instants vérifiés image par image (début, pause juste avant la décision, fin après l'issue).
   const preston = 'Jason Preston, « Pick & Roll Reads Pros See That You Don’t » (NCAA, Ohio)';
@@ -391,7 +392,38 @@
       choices:[{text:'Passer au shooteur du coin',ok:true,why:'Le défenseur du coin descend aider sur le grand : le coin est laissé seul.'},
         {text:'Lober le grand',ok:false,why:'L’aide est arrivée sur lui : le lob devient contesté.'},
         {text:'Finir seul au cercle',ok:false,why:'Deux défenseurs t’attendent près du cercle.'}],
-      lesson:'Quand l’aide descend du coin, le coin est ouvert. Joue lentement pour voir qui aide.',source:preston}
+      lesson:'Quand l’aide descend du coin, le coin est ouvert. Joue lentement pour voir qui aide.',source:preston},
+    // Analyses The Film Room (NCAA), lues dans le lecteur YouTube. Pause posée juste avant que l'analyste fige l'image et dessine la réponse.
+    {id:'v-tag-steal',yt:'wD-ZfgEeC3M',start:58.5,pause:62.5,end:69.3,theme:'pnr-defense',title:'Le grand roule, tu es côté faible',
+      prompt:'Texas Tech en blanc. Tu défends côté opposé, près de la ligne de fond. Le grand adverse roule vers le cercle. Que fais-tu ?',
+      choices:[{text:'Descendre gêner le rouleur, puis revenir sur ton joueur',ok:true,why:'Pendant l’écran, deux défenseurs sont sur le porteur : personne ne tient le rouleur. Tu le gênes le temps que ton grand revienne.'},
+        {text:'Aller chercher l’interception sur le porteur',ok:false,why:'C’est ce qu’il a fait : il arrive en retard, le rouleur est seul et marque.'},
+        {text:'Rester collé à ton joueur',ok:false,why:'Le rouleur a un couloir libre jusqu’au cercle.'}],
+      lesson:'Côté faible pendant un pick & roll : ton travail, c’est le rouleur. Gêne-le, puis reviens.',source:'The Film Room, « Tagging: A Key to Ballscreen Defense »'},
+    {id:'v-tag-lift',yt:'wD-ZfgEeC3M',start:184.2,pause:188.6,end:196.5,theme:'pnr-defense',title:'Ton joueur s’écarte',
+      prompt:'Indiana en blanc. Tu es le grand dans la raquette. Pendant le pick & roll, ton joueur s’écarte vers l’extérieur. Que fais-tu ?',
+      choices:[{text:'Rester dans la raquette pour gêner le rouleur',ok:true,why:'Le rouleur est le danger immédiat. Ton joueur s’éloigne du cercle : tu as le temps de revenir sur lui.'},
+        {text:'Suivre ton joueur',ok:false,why:'C’est ce qu’il a fait : plus personne dans la raquette, panier facile.'},
+        {text:'Sortir sur le porteur',ok:false,why:'Il est déjà pris par deux défenseurs.'}],
+      lesson:'Sache avant l’action qui doit gêner le rouleur. Si c’est toi, ne suis pas ton joueur qui s’écarte.',source:'The Film Room, « Tagging: A Key to Ballscreen Defense »'},
+    {id:'v-stunt',yt:'k3xLsmeQ8Qk',start:44.5,pause:56.6,end:67.5,theme:'help-defense',title:'Deux défenseurs sur un',
+      prompt:'Duke en blanc. Deux défenseurs sont sur le même joueur, donc un attaquant est libre. Tu es le défenseur le plus proche quand le ballon ressort. Que fais-tu ?',
+      choices:[{text:'Feinter vers le ballon, puis revenir sur ton joueur',ok:true,why:'La feinte fait hésiter le receveur le temps que ton coéquipier revienne sur lui.'},
+        {text:'Rester collé à ton joueur',ok:false,why:'Le receveur a le temps de tirer ou d’attaquer.'},
+        {text:'Sortir complètement sur le receveur',ok:false,why:'Ton joueur se retrouve seul : tu déplaces juste le problème.'}],
+      lesson:'Quand un coéquipier revient sur son joueur, fais-lui gagner une seconde : feinte, puis retour.',source:'The Film Room, « Breaking Down the Defensive Stunt »'},
+    {id:'v-drive-kick',yt:'00yI9CC024o',start:135.2,pause:142.6,end:148.5,theme:'finishing-reads',title:'L’aide du premier défenseur',
+      prompt:'Caroline du Nord en bleu clair. Tu pénètres et le défenseur le plus proche quitte son joueur pour t’aider. Que fais-tu ?',
+      choices:[{text:'T’arrêter et ressortir vers son joueur',ok:true,why:'Il ne peut pas aider et revenir à temps : ton coéquipier a un tir en rythme.'},
+        {text:'Continuer jusqu’au cercle',ok:false,why:'Le deuxième rideau t’attend sous le panier.'},
+        {text:'Tirer en déséquilibre dans la raquette',ok:false,why:'Tir difficile alors qu’un coéquipier est libre.'}],
+      lesson:'En pénétration, regarde le premier défenseur : s’il aide, ressors vers son joueur.',source:'The Film Room, « Are You Reading Defenders When You Drive? »'},
+    {id:'v-drive-dump',yt:'00yI9CC024o',start:244,pause:258.5,end:262.5,theme:'finishing-reads',title:'Le grand vient contrer',
+      prompt:'Caroline du Nord en bleu clair. Le défenseur du coin a aidé et le grand vient contrer. Que fais-tu ?',
+      choices:[{text:'Lâcher le ballon : au grand près du cercle ou au coin',ok:true,why:'Deux défenseurs sont sur toi : le grand et le coin sont libres.'},
+        {text:'Monter quand même au panier',ok:false,why:'C’est ce qu’il a fait : contré.'},
+        {text:'Ressortir vers le haut pour relancer',ok:false,why:'Tu laisses passer deux passes faciles.'}],
+      lesson:'Les grands veulent contrer : anticipe la passe à leur joueur.',source:'The Film Room, « Are You Reading Defenders When You Drive? »'}
   ];
   const ytId = /^[A-Za-z0-9_-]{11}$/;
   // Accepte un identifiant, youtu.be, watch?v=, shorts/, embed/ et live/. Le paramètre t= ou start= sert de début proposé.

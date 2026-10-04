@@ -85,6 +85,14 @@ function PTPathwayIntro({
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go('bilan', 'tests')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "chart"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mesurer ma d\xE9tente et mes tests"), /*#__PURE__*/React.createElement("small", null, "Saut vertical, RSI, sprint : avec un mur, un m\xE8tre ou une vid\xE9o au ralenti.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('library')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "weight"
@@ -307,6 +315,14 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "basket"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, "Poste, douleurs, mat\xE9riel.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('bilan', 'tests')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "chart"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mesurer ma d\xE9tente et mes tests"), /*#__PURE__*/React.createElement("small", null, "Saut vertical, RSI, sprint : avec un mur, un m\xE8tre ou une vid\xE9o au ralenti.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })), /*#__PURE__*/React.createElement("button", {

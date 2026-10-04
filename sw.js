@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v36-video';
+const CACHE = 'rehaab-v37-clips';
 const PRECACHE = [
   './',
   './index.html',
@@ -619,6 +619,7 @@ const PRECACHE_MEDIA = [
   './media/pathway/4.webp',
   './media/pathway/5.webp'
 ];
+const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.
 const CACHEABLE_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 // Le code de l'app (HTML, JS, CSS, manifeste) : réseau d'abord, pour ne jamais mélanger deux versions après un déploiement.
@@ -671,7 +672,14 @@ self.addEventListener('fetch', e => {
   if (e.request.headers.has('range') && /\.(mp4|webm)$/i.test(url.pathname)) {
     e.respondWith((async () => {
       const cached = await caches.match(e.request.url);
-      if (!cached || cached.status !== 200) return fetch(e.request);
+      if (!cached || cached.status !== 200) {
+        // Extraits du QI vidéo : la première lecture passe par le réseau, le fichier entier est gardé pour les suivantes.
+        if (sameOrigin && url.pathname.startsWith('/clips/') && !clipFetches.has(url.href)) {
+          clipFetches.add(url.href);
+          e.waitUntil(fetch(url.href).then(res => res.ok ? caches.open(CACHE).then(c => c.put(url.href, res)) : null).catch(() => {}).finally(() => clipFetches.delete(url.href)));
+        }
+        return fetch(e.request);
+      }
       const buffer = await cached.arrayBuffer(), size = buffer.byteLength;
       const range = /^bytes=(\d*)-(\d*)$/.exec(e.request.headers.get('range'));
       if (!range || (!range[1] && !range[2])) return new Response(null, {status:416,headers:{'Content-Range':`bytes */${size}`}});

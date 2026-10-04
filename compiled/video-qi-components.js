@@ -1,4 +1,5 @@
-/* QI basket sur de vrais matchs : lecteur YouTube intégré (rien n'est copié ni hébergé), pause au moment de la décision,
+/* QI basket sur de vrais matchs : lecteur YouTube intégré, ou lecteur natif quand l'extrait pointe vers un fichier (file),
+   pause au moment de la décision,
    réponse chronométrée, puis la suite de l'action. Réutilise PTQiChoices / PTQiFeedback de qi-components.jsx. */
 const PT_CLIP_SECONDS = 6;
 
@@ -28,7 +29,8 @@ const ptYtErrors = {
   100: 'Vidéo introuvable ou privée.',
   101: 'La chaîne interdit la lecture hors de YouTube.',
   150: 'La chaîne interdit la lecture hors de YouTube.',
-  offline: 'Pas de connexion : les vidéos YouTube demandent Internet.'
+  offline: 'Pas de connexion : cette vidéo n’est pas encore enregistrée sur le téléphone.',
+  file: 'Extrait introuvable.'
 };
 const ptClock = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}.${Math.floor(s % 1 * 10)}`;
 const ptYtWatch = (id, start) => `https://www.youtube.com/watch?v=${id}&t=${Math.floor(start)}s`;
@@ -93,16 +95,77 @@ function usePTYouTube(videoId, start = 0, controls = false) {
     error
   };
 }
+
+// Extrait hébergé par l'app (clips/) : même interface que le lecteur YouTube, pour un seul code de déroulé.
+function usePTFileVideo(src) {
+  const host = usePTRef(null),
+    player = usePTRef(null);
+  const [ready, setReady] = usePTState(false),
+    [error, setError] = usePTState(null);
+  usePTEffect(() => {
+    if (!src || !host.current) return;
+    setReady(false);
+    setError(null);
+    const v = document.createElement('video');
+    Object.assign(v, {
+      src,
+      muted: true,
+      playsInline: true,
+      preload: 'auto',
+      poster: src.replace(/\.mp4$/, '.webp')
+    });
+    v.setAttribute('playsinline', '');
+    v.setAttribute('aria-label', 'Extrait de match');
+    v.addEventListener('loadeddata', () => setReady(true), {
+      once: true
+    });
+    v.addEventListener('error', () => setError(navigator.onLine === false ? 'offline' : 'file'));
+    host.current.replaceChildren(v);
+    player.current = {
+      getCurrentTime: () => v.currentTime,
+      seekTo: t => {
+        v.currentTime = t;
+      },
+      playVideo: () => {
+        v.play().catch(() => {});
+      },
+      pauseVideo: () => v.pause(),
+      mute: () => {
+        v.muted = true;
+      },
+      unMute: () => {
+        v.muted = false;
+      },
+      setPlaybackRate: r => {
+        v.playbackRate = r;
+      }
+    };
+    return () => {
+      v.pause();
+      v.removeAttribute('src');
+      v.load();
+      player.current = null;
+    };
+  }, [src]);
+  return {
+    host,
+    player,
+    ready,
+    error
+  };
+}
 function PTQiVideoItem({
   clip,
   onAnswer
 }) {
+  const yt = usePTYouTube(clip.file ? null : clip.yt, clip.start),
+    file = usePTFileVideo(clip.file);
   const {
     host,
     player,
     ready,
     error
-  } = usePTYouTube(clip.yt, clip.start);
+  } = clip.file ? file : yt;
   const [phase, setPhase] = usePTState('idle'),
     [picked, setPicked] = usePTState(null),
     [left, setLeft] = usePTState(PT_CLIP_SECONDS),
@@ -179,7 +242,7 @@ function PTQiVideoItem({
     className: "notice warning stack-sm"
   }, /*#__PURE__*/React.createElement("p", null, ptYtErrors[error] || 'Vidéo indisponible.'), /*#__PURE__*/React.createElement("a", {
     className: "text-button",
-    href: ptYtWatch(clip.yt, clip.start),
+    href: ptYtWatch(clip.yt, clip.at ?? clip.start),
     target: "_blank",
     rel: "noopener noreferrer"
   }, "Ouvrir sur YouTube"), /*#__PURE__*/React.createElement(PTButton, {
@@ -347,7 +410,7 @@ function PTQiVideoHome({
     className: "clip-open",
     onClick: () => go('qi-video-run', c.id)
   }, /*#__PURE__*/React.createElement("img", {
-    src: `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`,
+    src: c.file ? c.file.replace(/\.mp4$/, '.webp') : `https://i.ytimg.com/vi/${c.yt}/mqdefault.jpg`,
     alt: "",
     loading: "lazy"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, c.title), /*#__PURE__*/React.createElement("small", null, QI.themes[c.theme], done.has(c.id) ? ' · bien lu' : '', c.own ? '' : ' · de base'))), c.own && /*#__PURE__*/React.createElement("div", {

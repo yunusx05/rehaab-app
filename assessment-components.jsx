@@ -5,8 +5,9 @@ const apLevelClass = level => level === null ? 'is-unknown' : ['is-low','is-mid'
 const ptRoleTag = e => e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? 'Priorité du bilan' : null;
 const apFresh = a => !!(a && a.date) && PT.dayDiff(PT.dateKey(), a.date) <= 28;
 
-function PTAssessment({data,update,go,notify}) {
-  const [step,setStep] = usePTState(0);
+function PTAssessment({data,update,go,notify,id}) {
+  // bilan/tests ouvre directement les tests terrain (détente, RSI, sprint…), sans repasser par le questionnaire.
+  const [step,setStep] = usePTState(id === 'tests' ? 1 : 0);
   const [draft,setDraft] = usePTState(() => AP.validateAthletic(data.athletic) || AP.create());
   // Chaque réponse et chaque mesure est gardée tout de suite : rien n'est perdu si le bilan est interrompu.
   const keep = next => { setDraft(next); update(s => ({...s, athletic: next})); };
@@ -28,7 +29,7 @@ function PTAssessment({data,update,go,notify}) {
           ? <PTChips multi value={draft.answers[q.id] || []} onChange={v => answer(q.id, v)} options={q.options.map(([value,label]) => ({value, label}))}/>
           : <PTChoices value={draft.answers[q.id]} onChange={v => answer(q.id, v)} options={q.options.map(([value,label]) => ({value, label}))}/>}
       </section>)}
-      {step === 1 && <PTAssessmentTests data={data} draft={draft} keep={keep}/>}
+      {step === 1 && <PTAssessmentTests data={data} draft={draft} keep={keep} open={id === 'tests' ? 'jump' : null}/>}
       {step === 2 && <PTAssessmentResult data={data} draft={draft} update={update} go={go} notify={notify}/>}
       {step < 2 && <div className="button-row">
         {!steps[step].valid && <p className="fine">Réponds à chaque question pour continuer.</p>}
@@ -38,7 +39,7 @@ function PTAssessment({data,update,go,notify}) {
   </div>;
 }
 
-function PTAssessmentTests({data,draft,keep}) {
+function PTAssessmentTests({data,draft,keep,open}) {
   const groups = AP.testGroups(data);
   const hidden = groups.some(g => g.tests.some(t => t.hidden));
   return <div className="stack">
@@ -48,7 +49,7 @@ function PTAssessmentTests({data,draft,keep}) {
       const visible = g.tests.filter(t => !t.hidden);
       if (!visible.length) return null;
       const measured = visible.filter(t => AP.latest(draft, t.id)).length;
-      return <details key={g.id} className="disclosure test-group">
+      return <details key={g.id} className="disclosure test-group" open={g.id === open || undefined}>
         <summary>{g.label} · {measured} / {visible.length}</summary>
         <div className="stack">{visible.map(t => <PTAssessmentTest key={t.id} test={t} draft={draft} keep={keep}/>)}</div>
       </details>;

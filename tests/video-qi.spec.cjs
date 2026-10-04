@@ -47,6 +47,22 @@ test('vrais matchs : pause à l’instant de décision, réponse enregistrée, p
   expect(errors).toEqual([]);
 });
 
+test('extrait en fichier : vidéo native, pause à l’instant de décision, sans lecteur YouTube',async({page})=>{
+  const errors=[],youtube=[];page.on('pageerror',e=>errors.push(e.message));
+  page.on('request',r=>{if(/youtube|ytimg/.test(r.url()))youtube.push(r.url());});
+  await page.setViewportSize({width:390,height:844});
+  await seed(page,base(),'qi');
+  // Vidéo synthétique (mire de test) : les extraits de base passent par YouTube, le lecteur natif reste prêt.
+  await page.evaluate(c=>{window.BasketQI.videoClips.push(c);location.hash='qi-video-run/clip-file';},{...clip,id:'clip-file',file:'tests/fixtures/clip.mp4',start:0,pause:3,end:6});
+  await expect(page.locator('.qi-video-host video')).toHaveAttribute('src','tests/fixtures/clip.mp4');
+  await page.getByRole('button',{name:'Lancer l’action'}).click();
+  await expect(page.getByRole('timer')).toContainText('s pour choisir',{timeout:8000});
+  expect(await page.evaluate(()=>{const v=document.querySelector('.qi-video-host video');return {paused:v.paused,t:Math.round(v.currentTime)};})).toEqual({paused:true,t:3});
+  await page.getByRole('button',{name:'Passer au coin'}).click();
+  await expect(page.locator('.qi-feedback.is-right')).toBeVisible();
+  expect(youtube).toEqual([]);expect(errors).toEqual([]);
+});
+
 test('vrais matchs : sans réponse avant la fin du chrono, c’est compté comme raté',async({page})=>{
   await page.clock.install();
   const data=base();data.qi=QI.saveClip(data.qi,clip);
