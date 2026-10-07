@@ -75,7 +75,17 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/rehab-components.js"></script>
 <script src="compiled/personal-app.js"></script>
 <script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});}
+// Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
+window.REHAAB_VERSION='v38-refonte';
+if('serviceWorker' in navigator){window.addEventListener('load',function(){
+  // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
+  // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.
+  var reloaded=false,hadController=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){if(!hadController||reloaded||location.hash.indexOf('#session')===0)return;reloaded=true;window.location.reload();});
+  navigator.serviceWorker.register('sw.js').then(function(reg){
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')reg.update().catch(function(){});});
+  }).catch(function(){});
+});}
 </script>
 <!-- Rehaab v2 — 14 semaines -->
 </body>

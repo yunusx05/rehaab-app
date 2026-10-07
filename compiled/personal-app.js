@@ -2437,9 +2437,43 @@ function PTProfile({
     href: "media/ATTRIBUTION.md",
     target: "_blank",
     rel: "noreferrer"
-  }, "les attributions"), ". Vid\xE9os : Goulart / wger, CC BY-SA 4.0, cr\xE9dits d\xE9taill\xE9s dans les attributions."), /*#__PURE__*/React.createElement("p", {
-    className: "caption"
-  }, "Rehaab \xB7 \xE9dition personnelle 2026.09")))));
+  }, "les attributions"), ". Vid\xE9os : Goulart / wger, CC BY-SA 4.0, cr\xE9dits d\xE9taill\xE9s dans les attributions."))), /*#__PURE__*/React.createElement(PTAppVersion, null)));
+}
+// Même numéro sur le téléphone et l’ordi = même version. Le cache actif dit ce que le service worker sert réellement.
+function PTAppVersion() {
+  const [cache, setCache] = usePTState(''),
+    [checking, setChecking] = usePTState(false);
+  const version = window.REHAAB_VERSION || '?';
+  const read = () => {
+    try {
+      caches.keys().then(keys => setCache(keys.filter(k => k.startsWith('rehaab-')).map(k => k.replace('rehaab-', '')).join(', ') || 'aucun')).catch(() => {});
+    } catch (e) {}
+  };
+  usePTEffect(read, []);
+  const refresh = async () => {
+    setChecking(true);
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      await reg?.update();
+    } catch (e) {}
+    setTimeout(() => window.location.reload(), 600);
+  };
+  const stale = cache && cache !== 'aucun' && cache.split(', ').every(c => c !== version);
+  return /*#__PURE__*/React.createElement("section", {
+    className: "card stack-sm app-version"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Version de l\u2019app"), /*#__PURE__*/React.createElement("strong", null, version)), cache && /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Cache hors connexion : ", cache), stale && /*#__PURE__*/React.createElement("p", {
+    className: "notice warning"
+  }, "Une ancienne version est encore en m\xE9moire sur cet appareil."), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    disabled: checking,
+    onClick: refresh
+  }, checking ? 'Vérification…' : 'Chercher une mise à jour'));
 }
 function PTWeightPlot({
   values
