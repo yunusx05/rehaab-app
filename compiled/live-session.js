@@ -55,6 +55,14 @@ function PTSetSheet({
     size: 20
   }), "Valider cette s\xE9rie")));
 }
+
+// Objectif d'une série sans chrono : « 10–15 répétitions », « 8 répétitions / côté », « 10 tirs ».
+const ptRepsGoal = e => {
+  const lo = e.targetMin || e.min,
+    hi = e.targetMax || e.max,
+    n = lo === hi ? `${hi}` : `${lo}–${hi}`;
+  return e.measure === 'shots' ? `${n} tirs` : e.measure === 'contacts' ? `${n} contacts` : `${n} répétitions${e.unilateral ? ' / côté' : ''}`;
+};
 function PTSession({
   data,
   update,
@@ -72,7 +80,7 @@ function PTSession({
     [painAfter, setPainAfter] = usePTState(null),
     [abandon, setAbandon] = usePTState(false);
   const wake = usePTRef(null),
-    fired = usePTRef(null),
+    fired = usePTRef(new Set()),
     saved = usePTRef(false);
   const running = !!(draft?.status === 'active' && !finishing && (draft.clockStarted || draft.stageStarted || draft.timer?.endAt || draft.blockTimer?.endAt));
   const anchor = usePTRef(0);
@@ -145,36 +153,18 @@ function PTSession({
   }, []);
   const remaining = timer => timer ? timer.endAt ? Math.max(0, Math.min(timer.remaining ?? Infinity, Math.ceil((timer.endAt - tick) / 1000))) : timer.remaining : 0;
   const timerLeft = remaining(draft?.timer);
-  const [voice, setVoice] = usePTState(() => {
-    try {
-      return localStorage.getItem('rh_voice') === '1';
-    } catch (e) {
-      return false;
-    }
-  });
-  const spoken = usePTRef('');
-  // Une annonce par étape (clé phase + série + minuteur). Placé avant les retours anticipés : l'ordre des hooks ne change jamais.
+  // Bips de chaque chrono (échauffement, travail, repos) : départ, 3-2-1, fin. Chaque signal ne sonne qu'une fois ; rien en pause.
+  // Placé avant les retours anticipés : l'ordre des hooks ne change jamais.
   usePTEffect(() => {
-    if (!voice || !draft || draft.status !== 'active' || !draft.clockStarted || draft.reviewing || finishing || !draft.warmupDone) return;
-    const ph = draft.timer?.kind === 'rest' ? 'rest' : 'work',
-      st = PT.schedule(draft.exercises, draft.format),
-      c = Math.min(draft.cursor || 0, st.length - 1),
-      s = st[c];
-    const ex = s && draft.exercises.find(e => e.id === s.id);
-    if (!ex) return;
-    const key = `${ph}-${c}-${draft.timer?.id || ''}`;
-    if (spoken.current === key) return;
-    spoken.current = key;
-    // Pendant le repos, le curseur pointe déjà sur la série suivante.
-    ptSay(ph === 'rest' ? `Repos ${draft.timer.duration} secondes. Prochain : ${ex.name}.` : `${ex.name}. Série ${s.set + 1} sur ${ex.sets}.`);
-  }, [voice, draft?.warmupDone, draft?.timer?.id, draft?.cursor, draft?.clockStarted, finishing]);
-  usePTEffect(() => {
-    if (draft?.timer?.endAt && timerLeft === 0 && fired.current !== draft.timer.id) {
-      fired.current = draft.timer.id;
-      ptBeep();
-      if (voice) ptSay('Repos terminé.');
-    }
-  }, [timerLeft, draft?.timer?.id]);
+    const t = draft?.timer;
+    if (!t || !t.endAt || finishing || draft.reviewing) return;
+    const fire = (key, type) => {
+      if (fired.current.has(key)) return;
+      fired.current.add(key);
+      ptCue(type);
+    };
+    if (timerLeft === 0) fire(`${t.id}-end`, 'end');else if (timerLeft <= 3 && timerLeft < t.duration) fire(`${t.id}-${timerLeft}`, 'tick');else if (timerLeft >= t.duration - 1) fire(`${t.id}-start`, 'start');
+  }, [timerLeft, draft?.timer?.id, draft?.timer?.endAt, finishing]);
   if (!draft || draft.status !== 'active') return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     title: "Pr\xEAt \xE0 bouger ?"
   }), /*#__PURE__*/React.createElement(PTButton, {
@@ -237,6 +227,7 @@ function PTSession({
       timer: exercise.measure === 'seconds' ? makeTimer(exercise.seconds, 'Temps de travail', 'work') : null,
       blockTimer: d.blockTimer || (d.blockSeconds ? makeTimer(d.blockSeconds, `Bloc ${d.format.toUpperCase()}`, 'block') : null)
     }));
+    if (exercise.measure !== 'seconds') ptCue('start');
     window.scrollTo(0, 0);
   };
   const pause = () => setDraft(d => ({
@@ -310,7 +301,7 @@ function PTSession({
     let next = steps.findIndex((s, i) => i > cursor && !entries[s.id][s.set].done && !entries[s.id][s.set].pain);
     if (next < 0) next = steps.findIndex(s => !entries[s.id][s.set].done && !entries[s.id][s.set].pain);
     const done = next < 0;
-    const rest = draft.format === 'emom' ? Math.max(0, 60 - Math.floor(stageElapsed)) : step.rest;
+    const rest = draft.format === 'emom' ? Math.max(0, 60 - Math.floor(stageElapsed)) : step.rest > 0 ? step.rest : exercise.rest > 0 ? exercise.rest : 60;
     setDraft(d => ({
       ...d,
       entries,
@@ -562,7 +553,7 @@ function PTSession({
     }
     openLog();
   };
-  const actionLabel = paused ? 'Reprendre la séance' : blocked || !permitted ? 'Voir mes douleurs' : phase === 'warmup' ? 'Échauffement effectué' : phase === 'rest' ? `Passer à l’exercice ${exerciseIndex + 1}` : allDone ? 'Terminer la séance' : 'Terminé';
+  const actionLabel = paused ? 'Reprendre la séance' : blocked || !permitted ? 'Voir mes douleurs' : phase === 'warmup' ? 'Échauffement effectué' : phase === 'rest' ? timerLeft > 0 ? 'Passer le repos' : 'Commencer la série' : allDone ? 'Terminer la séance' : 'Terminé';
   const nextIndex = steps.findIndex((s, i) => i > cursor && !draft.entries[s.id][s.set].done && !draft.entries[s.id][s.set].pain);
   const upcoming = phase === 'warmup' ? {
     step,
@@ -572,13 +563,38 @@ function PTSession({
     exercise: draft.exercises.find(e => e.id === steps[nextIndex].id)
   };
   // Moving between sets never validates or discards a result: saving still requires the result sheet.
-  const toggleVoice = () => {
-    const next = !voice;
-    setVoice(next);
-    try {
-      localStorage.setItem('rh_voice', next ? '1' : '0');
-    } catch (e) {}
-    if (next) ptSay('Annonces vocales activées.');else window.speechSynthesis?.cancel();
+  const adjustRest = delta => setDraft(d => {
+    const t = d.timer;
+    if (!t || t.kind !== 'rest') return d;
+    const left = Math.max(5, (t.endAt ? Math.ceil((t.endAt - Date.now()) / 1000) : t.remaining) + delta);
+    return {
+      ...d,
+      timer: {
+        ...t,
+        duration: Math.max(t.duration, left),
+        remaining: left,
+        endAt: t.endAt ? Date.now() + left * 1000 : null
+      }
+    };
+  });
+  // Position : exercice n sur N, série a sur b, et une barre par exercice découpée en séries.
+  const exerciseSets = draft.exercises.map(e => ({
+    e,
+    rows: draft.entries[e.id] || []
+  }));
+  const restNext = phase === 'rest' ? {
+    exercise,
+    step
+  } : null;
+  // Un exercice chronométré repart avec son chrono plein (gelé si la séance est en pause).
+  const workTimer = index => {
+    const e = draft.exercises.find(x => x.id === steps[index]?.id);
+    if (!e || e.measure !== 'seconds') return null;
+    const t = makeTimer(e.seconds, 'Temps de travail', 'work');
+    return paused ? {
+      ...t,
+      endAt: null
+    } : t;
   };
   const jump = index => {
     setError('');
@@ -586,7 +602,7 @@ function PTSession({
     setDraft(d => ({
       ...d,
       cursor: index,
-      timer: null,
+      timer: workTimer(index),
       stageElapsed: 0,
       stageStarted: paused ? null : Date.now()
     }));
@@ -602,11 +618,17 @@ function PTSession({
     onClick: () => go('today')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "back"
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "live-position"
+  }, phase === 'warmup' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
     className: "eyebrow"
   }, /*#__PURE__*/React.createElement("span", {
     className: `live-dot${paused ? ' paused' : ''}`
-  }), "S\xE9ance en direct"), /*#__PURE__*/React.createElement("strong", null, timeLabel(elapsed), /*#__PURE__*/React.createElement("span", null, " \xB7 ", PT.formats[draft.format]))), /*#__PURE__*/React.createElement("button", {
+  }), "Avant de commencer"), /*#__PURE__*/React.createElement("strong", null, "\xC9chauffement")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `live-dot${paused ? ' paused' : ''}`
+  }), "Exercice ", exerciseIndex + 1, " sur ", draft.exercises.length), /*#__PURE__*/React.createElement("strong", null, "S\xE9rie ", step.set + 1, " sur ", exercise.sets))), /*#__PURE__*/React.createElement("button", {
     className: "live-cancel",
     "aria-expanded": abandon,
     onClick: () => setAbandon(!abandon)
@@ -631,12 +653,64 @@ function PTSession({
   }, "Garder ma s\xE9ance")), /*#__PURE__*/React.createElement("div", {
     className: "live-progress",
     "aria-label": `${completed} séries validées sur ${total}`
-  }, steps.map((s, i) => /*#__PURE__*/React.createElement("span", {
-    key: `${s.id}-${s.set}`,
-    className: draft.entries[s.id][s.set].done ? 'done' : i === cursor ? 'current' : ''
-  }))), phase !== 'warmup' && /*#__PURE__*/React.createElement("div", {
-    className: "live-step"
-  }, /*#__PURE__*/React.createElement("span", null, "Exercice ", /*#__PURE__*/React.createElement("b", null, exerciseIndex + 1), " / ", draft.exercises.length), /*#__PURE__*/React.createElement("span", null, "S\xE9rie ", /*#__PURE__*/React.createElement("b", null, step.set + 1), " / ", exercise.sets)), /*#__PURE__*/React.createElement("div", {
+  }, exerciseSets.map(({
+    e,
+    rows
+  }, i) => /*#__PURE__*/React.createElement("span", {
+    key: e.id,
+    className: `ex-seg${phase !== 'warmup' && i === exerciseIndex ? ' current' : ''}`
+  }, rows.map((r, k) => /*#__PURE__*/React.createElement("i", {
+    key: k,
+    className: r.done ? 'done' : phase !== 'warmup' && i === exerciseIndex && k === step.set ? 'now' : ''
+  }))))), phase === 'rest' ? /*#__PURE__*/React.createElement("section", {
+    className: "rest-screen",
+    "aria-live": "polite"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "rest-label"
+  }, timerLeft > 0 ? 'Repos' : 'Repos terminé'), /*#__PURE__*/React.createElement("div", {
+    className: `live-timer rest-timer${paused ? ' paused' : ''}`,
+    role: "timer",
+    "aria-label": `Repos : ${timeLabel(timerLeft)}`
+  }, /*#__PURE__*/React.createElement("svg", {
+    viewBox: "0 0 220 150",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("path", {
+    className: "dial-track",
+    d: "M30 131 A94 94 0 1 1 190 131",
+    pathLength: "100"
+  }), /*#__PURE__*/React.createElement("path", {
+    className: "dial-value",
+    d: "M30 131 A94 94 0 1 1 190 131",
+    pathLength: "100",
+    strokeDasharray: `${Math.min(100, timerLeft / (draft.timer.duration || 1) * 100)} 100`
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, paused ? 'En pause' : timerLeft > 0 ? 'Souffle, relâche les épaules' : 'C’est reparti'), /*#__PURE__*/React.createElement("strong", null, timeLabel(timerLeft)))), /*#__PURE__*/React.createElement("div", {
+    className: "rest-adjust"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => adjustRest(-15),
+    disabled: paused || timerLeft <= 5
+  }, "\u221215 s"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "transport-pause",
+    "aria-label": paused ? 'Reprendre le chrono' : 'Mettre en pause',
+    onClick: pause
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: paused ? 'play' : 'pause',
+    size: 22
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => adjustRest(15),
+    disabled: paused
+  }, "+15 s")), /*#__PURE__*/React.createElement("div", {
+    className: "next-up rest-next"
+  }, /*#__PURE__*/React.createElement(PTThumbnail, {
+    exercise: restNext.exercise
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "Ensuite \xB7 exercice ", exerciseIndex + 1, " sur ", draft.exercises.length), /*#__PURE__*/React.createElement("strong", null, restNext.exercise.name), /*#__PURE__*/React.createElement("small", null, "S\xE9rie ", restNext.step.set + 1, " sur ", restNext.exercise.sets))), typeof PTRestQuestion === 'function' && /*#__PURE__*/React.createElement(PTRestQuestion, {
+    key: cursor,
+    seed: cursor,
+    data: data,
+    update: update
+  })) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "live-visual"
   }, phase === 'warmup' ? /*#__PURE__*/React.createElement("div", {
     className: "warmup-visual"
@@ -652,7 +726,10 @@ function PTSession({
     className: "live-heading"
   }, /*#__PURE__*/React.createElement("div", {
     className: "eyebrow"
-  }, phase === 'warmup' ? 'Échauffement' : phase === 'rest' ? 'À suivre' : PT.patterns[exercise.pattern]), /*#__PURE__*/React.createElement("h1", null, phase === 'warmup' ? 'On y va doucement.' : exercise.name)), /*#__PURE__*/React.createElement("div", {
+  }, phase === 'warmup' ? 'Échauffement' : phase === 'rest' ? 'À suivre' : PT.patterns[exercise.pattern]), /*#__PURE__*/React.createElement("h1", null, phase === 'warmup' ? 'On y va doucement.' : exercise.name)), phase === 'work' && !activeTimer && exercise.measure !== 'seconds' ? /*#__PURE__*/React.createElement("div", {
+    className: "live-target",
+    "aria-label": `Objectif : ${ptRepsGoal(exercise)}`
+  }, /*#__PURE__*/React.createElement("strong", null, ptRepsGoal(exercise).split(' ')[0]), /*#__PURE__*/React.createElement("span", null, ptRepsGoal(exercise).split(' ').slice(1).join(' '))) : /*#__PURE__*/React.createElement("div", {
     className: `live-timer${paused ? ' paused' : ''}`,
     role: "timer",
     "aria-label": `${phase === 'rest' ? 'Repos' : phase === 'warmup' ? 'Échauffement' : 'Travail'} : ${timeLabel(shownTime)}`
@@ -719,14 +796,7 @@ function PTSession({
     size: 17
   }), coach), blocked || !permitted ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning"
-  }, blocked ? 'Séance suspendue : fais le point sur la douleur signalée.' : 'Ce mouvement ne convient plus à tes contraintes actuelles.') : null, phase === 'rest' && /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, timerLeft > 0 ? 'Le repos reste disponible jusqu’au bout.' : 'Récupération terminée.'), phase === 'rest' && typeof PTRestQuestion === 'function' && /*#__PURE__*/React.createElement(PTRestQuestion, {
-    key: cursor,
-    seed: cursor,
-    data: data,
-    update: update
-  }), phase === 'work' && exercise.unilateral && exercise.measure === 'seconds' && /*#__PURE__*/React.createElement(PTButton, {
+  }, blocked ? 'Séance suspendue : fais le point sur la douleur signalée.' : 'Ce mouvement ne convient plus à tes contraintes actuelles.') : null, phase === 'work' && exercise.unilateral && exercise.measure === 'seconds' && /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     disabled: paused,
     onClick: () => setDraft(d => ({
@@ -740,16 +810,9 @@ function PTSession({
     size: 18
   })), phase === 'work' && exercise.audio && /*#__PURE__*/React.createElement(PTAudioCue, null), draft.blockTimer && draft.format !== 'amrap' && /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, "Bloc ", draft.format.toUpperCase(), " \xB7 ", timeLabel(remaining(draft.blockTimer)))), /*#__PURE__*/React.createElement("div", {
+  }, "Bloc ", draft.format.toUpperCase(), " \xB7 ", timeLabel(remaining(draft.blockTimer))))), /*#__PURE__*/React.createElement("div", {
     className: "live-extras"
-  }, 'speechSynthesis' in window && /*#__PURE__*/React.createElement(PTButton, {
-    quiet: true,
-    "aria-pressed": voice,
-    onClick: toggleVoice
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "spark",
-    size: 18
-  }), voice ? 'Couper les annonces vocales' : 'Activer les annonces vocales'), phase === 'warmup' && /*#__PURE__*/React.createElement("button", {
+  }, phase === 'warmup' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => {
       setDraft(d => ({
@@ -802,16 +865,7 @@ function PTSession({
     key: `${s.id}-${s.set}`,
     className: `${draft.entries[s.id][s.set].done ? 'done ' : ''}${i === cursor ? 'current' : ''}`,
     "aria-label": `${draft.exercises.find(e => e.id === s.id).name}, série ${s.set + 1}`,
-    onClick: () => {
-      setDraft(d => ({
-        ...d,
-        cursor: i,
-        timer: null,
-        stageElapsed: 0,
-        stageStarted: paused ? null : Date.now()
-      }));
-      window.scrollTo(0, 0);
-    }
+    onClick: () => jump(i)
   }, i + 1, draft.entries[s.id][s.set].done ? ' ✓' : '')))), /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: () => {
@@ -856,7 +910,7 @@ function PTSession({
     className: "live-dock"
   }, /*#__PURE__*/React.createElement("div", {
     className: "dock-caption"
-  }, /*#__PURE__*/React.createElement("span", null, phase === 'rest' ? 'À suivre' : phase === 'warmup' ? 'Prépare-toi' : `${completed}/${total} séries validées`), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", null, phase === 'rest' ? 'Repos en cours' : phase === 'warmup' ? 'Prépare-toi' : `${completed}/${total} séries validées`), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: reportPain
   }, "Une douleur ?")), /*#__PURE__*/React.createElement(PTButton, {

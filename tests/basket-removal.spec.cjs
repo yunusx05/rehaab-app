@@ -17,7 +17,8 @@ test('catalogue sans basket et ancien focus compatible',()=>{
 });
 
 test('programme original identique sur 144 configurations',()=>{
-  const clean=result=>{const {id,createdAt,...rest}=result;return rest;};
+  // Les consignes ont été réécrites en phrases courtes : on compare tout le reste (mouvements, doses, ordre).
+  const clean=result=>{const {id,createdAt,...rest}=result;return {...rest,exercises:(rest.exercises||[]).map(({instructions,...e})=>e)};};
   for(let week=1;week<=12;week++){
     for(const letter of Object.keys(global.RehaabProgram.blocks[Math.floor((week-1)/4)])){
       for(const owned of [['bodyweight'],PT.equipment.map(e=>e.id),['bodyweight','court']]){

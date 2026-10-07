@@ -25,7 +25,8 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   await page.setViewportSize({width:390,height:844});await seed(page,fixture());
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
   await expect(page.getByText('Exercice',{exact:false}).first()).toBeVisible();
-  await expect(page.getByRole('timer')).toBeVisible();
+  // Série en répétitions : l'objectif s'affiche en grand, pas un chrono qui monte.
+  await expect(page.locator('.live-target')).toContainText('répétitions');
   await expect(page.locator('.bottom-nav')).toBeHidden();
   const primary=page.getByRole('button',{name:'Terminé',exact:true});
   const box=await primary.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(844);
@@ -38,13 +39,16 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   await page.getByLabel('Combien de répétitions aurais-tu encore pu faire ?').selectOption('2');
   await page.getByRole('button',{name:'Valider cette série'}).click();
   await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Repos/);
+  // Le repos a son propre écran : on sait qu'on récupère et ce qui vient ensuite.
+  await expect(page.locator('.rest-screen')).toContainText('Repos');
+  await expect(page.locator('.rest-next')).toContainText('Série 2 sur 2');
   await expect.poll(async()=>(await state(page)).draft.entries.curl[0].done).toBe(true);
   await page.getByRole('button',{name:'Mettre en pause',exact:true}).click();
   const before=await state(page);await page.reload();
   await expect(page.getByRole('button',{name:'Reprendre la séance',exact:true})).toBeVisible({timeout:20000});
   expect((await state(page)).draft.timer.remaining).toBe(before.draft.timer.remaining);
   await page.getByRole('button',{name:'Reprendre la séance',exact:true}).click();
-  await page.getByRole('button',{name:'Passer à l’exercice 1',exact:true}).click();
+  await page.getByRole('button',{name:'Passer le repos',exact:true}).click();
   await primary.click();
   await page.getByLabel('Répétitions réalisées').fill('10');await page.getByLabel(/Charge \(/).fill('7.5');
   await page.getByRole('button',{name:'Oui, de justesse',exact:true}).click();await page.getByRole('button',{name:'Valider cette série'}).click();
@@ -62,19 +66,19 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
 
 test('séance : précédent, suivant et exercice à venir sans valider de résultat',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.setViewportSize({width:390,height:844});await seed(page,fixture());
+  await page.setViewportSize({width:390,height:844});await seed(page,fixture({timed:true}));
   await expect(page.locator('.next-up')).toContainText('Pour commencer');
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
-  await expect(page.locator('.live-step')).toContainText('Série 1 / 2');
+  await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await expect(page.getByRole('button',{name:'Série précédente'})).toBeDisabled();
   await expect(page.locator('.next-up')).toContainText('Série 2 / 2');
   await page.getByRole('button',{name:'Passer cette série'}).click();
-  await expect(page.locator('.live-step')).toContainText('Série 2 / 2');
+  await expect(page.locator('.live-position')).toContainText('Série 2 sur 2');
   await expect(page.getByRole('button',{name:'Passer cette série'})).toBeDisabled();
   await expect(page.locator('.next-up')).toHaveCount(0);
-  const skipped=await state(page);expect(skipped.draft.cursor).toBe(1);expect(skipped.draft.entries.curl.every(r=>!r.done)).toBe(true);
+  const skipped=await state(page);expect(skipped.draft.cursor).toBe(1);expect(skipped.draft.entries.plank.every(r=>!r.done)).toBe(true);
   await page.getByRole('button',{name:'Série précédente'}).click();
-  await expect(page.locator('.live-step')).toContainText('Série 1 / 2');
+  await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await page.getByRole('button',{name:'Mettre en pause',exact:true}).click();
   const shown=await page.getByRole('timer').getAttribute('aria-label');
   await page.waitForTimeout(1600);
@@ -161,4 +165,46 @@ test('rejouer un favori réinitialise le bilan et les chronos sans toucher au pr
   const next=PT.startDraft(prior,data);
   expect(next.reviewing).toBe(false);expect(next.blockTimer).toBeNull();expect(next.stageElapsed).toBe(0);expect(next.timer.kind).toBe('warmup');
   expect(next.exercises.map(e=>e.id)).toEqual(prior.exercises.map(e=>e.id));expect(data.programWeek).toBe(1);
+});
+
+test('séance : position, écran de repos réglable, bips de chrono et plus de mode vocal',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.addInitScript(()=>{
+    // Espion audio : chaque bip crée un oscillateur, on relève sa fréquence.
+    window.__tones=[];const Real=window.AudioContext;
+    window.AudioContext=class extends Real{createOscillator(){const o=super.createOscillator();const start=o.start.bind(o);o.start=(...a)=>{window.__tones.push(o.frequency.value);return start(...a);};return o;}};
+  });
+  await page.setViewportSize({width:390,height:844});
+  const data=fixture({timed:true});data.draft.exercises[0].seconds=4;data.draft.exercises[0].rest=30;
+  await seed(page,data);
+  await expect(page.getByText(/annonces vocales/i)).toHaveCount(0);
+  await expect(page.locator('.live-position')).toContainText('Échauffement');
+  await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
+  await expect(page.locator('.live-position')).toContainText('Exercice 1 sur 1');
+  await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
+  await expect(page.locator('.live-progress .ex-seg.current i')).toHaveCount(2);
+  // Chrono de travail de 4 s : bip de départ (880 Hz), 3-2-1 (660 Hz), fin (990 puis 1320 Hz).
+  await expect.poll(()=>page.evaluate(()=>window.__tones.join(',')),{timeout:8000}).toContain('660,660,660,990,1320');
+  expect(await page.evaluate(()=>window.__tones[0])).toBe(880);
+  await page.getByRole('button',{name:'Terminé',exact:true}).click();
+  await page.getByRole('button',{name:'Fait comme prévu'}).click();
+  const rest=page.locator('.rest-screen');
+  await expect(rest).toBeVisible();
+  await expect(page.locator('.live-command')).toHaveCount(0);
+  const seconds=async()=>{const [m,s]=(await rest.getByRole('timer').locator('strong').textContent()).split(':').map(Number);return m*60+s;};
+  const before=await seconds();
+  await rest.getByRole('button',{name:'+15 s'}).click();
+  expect(await seconds()).toBeGreaterThanOrEqual(before+14);
+  await rest.getByRole('button',{name:'−15 s'}).click();await rest.getByRole('button',{name:'−15 s'}).click();
+  expect(await seconds()).toBeLessThanOrEqual(before-14);
+  await page.screenshot({path:'test-results/seance-repos.png'});
+  await page.getByRole('button',{name:'Passer le repos',exact:true}).click();
+  await expect(page.locator('.rest-screen')).toHaveCount(0);
+  await expect(page.locator('.live-position')).toContainText('Série 2 sur 2');
+  await noOverflow(page);expect(errors).toEqual([]);
+});
+
+test('consignes : 3 étapes maximum, 12 mots maximum par étape',()=>{
+  const long=PT.catalog.filter(e=>e.instructions.length>3||e.instructions.some(l=>l.split(/\s+/).length>12)).map(e=>e.id);
+  expect(long).toEqual([]);
 });

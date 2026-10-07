@@ -109,17 +109,16 @@ function ptAudioContext() {
   return ptAudio;
 }
 ['pointerdown','keydown'].forEach(type=>window.addEventListener(type,()=>ptAudioContext(),{capture:true,passive:true}));
-function ptBeep() {
-  try{const ctx=ptAudioContext();if(ctx){const oscillator=ctx.createOscillator(),gain=ctx.createGain();oscillator.connect(gain);gain.connect(ctx.destination);gain.gain.value=.08;oscillator.frequency.value=660;oscillator.start();oscillator.stop(ctx.currentTime+.18);}}catch(e){}
-  try{navigator.vibrate?.(100);}catch(e){}
-}
-function ptSay(text) {
-  try{if(!('speechSynthesis'in window))return;const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}catch(e){}
+// Signaux sonores des chronos. start : départ (long, aigu) · tick : 3-2-1 (court) · end : fin (deux notes) · left/right : côté demandé.
+const ptCueTones={start:[[880,.35]],tick:[[660,.12]],end:[[990,.22],[1320,.4]],left:[[440,.25]],right:[[880,.25]]};
+function ptCue(type='end') {
+  try{const ctx=ptAudioContext();if(ctx){let at=ctx.currentTime;(ptCueTones[type]||ptCueTones.end).forEach(([freq,len])=>{const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='square';osc.frequency.value=freq;osc.connect(gain);gain.connect(ctx.destination);gain.gain.setValueAtTime(.0001,at);gain.gain.exponentialRampToValueAtTime(.18,at+.01);gain.gain.setValueAtTime(.18,at+len-.03);gain.gain.exponentialRampToValueAtTime(.0001,at+len);osc.start(at);osc.stop(at+len);at+=len+.06;});}}catch(e){}
+  try{navigator.vibrate?.(type==='tick'?40:type==='end'?[120,60,200]:100);}catch(e){}
 }
 function PTAudioCue() {
   const [active,setActive]=usePTState(false),[cue,setCue]=usePTState('À ton rythme');
-  usePTEffect(()=>{if(!active)return;const id=setInterval(()=>{const next=Math.random()<.5?'Droite':'Gauche';setCue(next);if('speechSynthesis'in window){const utter=new SpeechSynthesisUtterance(next);utter.lang='fr-FR';utter.rate=.9;window.speechSynthesis.cancel();window.speechSynthesis.speak(utter);}else ptBeep();},6000);return()=>{clearInterval(id);window.speechSynthesis?.cancel();};},[active]);
-  return <div className="stack-sm"><div className="audio-cue" aria-live="polite">{cue}</div><PTButton quiet onClick={()=>setActive(!active)}>{active?'Arrêter les signaux':'Lancer les signaux · toutes les 6 s'}</PTButton></div>;
+  usePTEffect(()=>{if(!active)return;const id=setInterval(()=>{const right=Math.random()<.5;setCue(right?'Droite':'Gauche');ptCue(right?'right':'left');},6000);return()=>clearInterval(id);},[active]);
+  return <div className="stack-sm"><div className="audio-cue" aria-live="polite">{cue}</div><p className="fine">Bip aigu : droite. Bip grave : gauche.</p><PTButton quiet onClick={()=>setActive(!active)}>{active?'Arrêter les signaux':'Lancer les signaux · toutes les 6 s'}</PTButton></div>;
 }
 function PTRowInputs({exercise:e,row,onChange}) {
   const field=(key,label,opts={})=><PTField label={label} type="number" inputMode="decimal" min="0" max="10000" step="1" value={row[key]??''} onChange={ev=>onChange({...row,[key]:ev.target.value})} {...opts}/>;

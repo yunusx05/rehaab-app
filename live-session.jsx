@@ -12,11 +12,13 @@ function PTSetSheet({exercise,row,onChange,onSave,onQuick,onClose,error}) {
   </dialog>;
 }
 
+// Objectif d'une série sans chrono : « 10–15 répétitions », « 8 répétitions / côté », « 10 tirs ».
+const ptRepsGoal=e=>{const lo=e.targetMin||e.min,hi=e.targetMax||e.max,n=lo===hi?`${hi}`:`${lo}–${hi}`;return e.measure==='shots'?`${n} tirs`:e.measure==='contacts'?`${n} contacts`:`${n} répétitions${e.unilateral?' / côté':''}`;};
 function PTSession({data,update,go,notify}) {
   const draft=data.draft;
   const [tick,setTick]=usePTState(Date.now()),[logging,setLogging]=usePTState(false),[error,setError]=usePTState('');
   const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[painAfter,setPainAfter]=usePTState(null),[abandon,setAbandon]=usePTState(false);
-  const wake=usePTRef(null),fired=usePTRef(null),saved=usePTRef(false);
+  const wake=usePTRef(null),fired=usePTRef(new Set()),saved=usePTRef(false);
   const running=!!(draft?.status==='active'&&!finishing&&(draft.clockStarted||draft.stageStarted||draft.timer?.endAt||draft.blockTimer?.endAt));
   const anchor=usePTRef(0);anchor.current=draft?.timer?.endAt||draft?.blockTimer?.endAt||draft?.stageStarted||draft?.clockStarted||0;
   // Timestamps remain the source of truth; one render per second, aligned on the active timer's boundaries, and none while paused.
@@ -37,18 +39,15 @@ function PTSession({data,update,go,notify}) {
   },[]);
   const remaining=timer=>timer?(timer.endAt?Math.max(0,Math.min(timer.remaining??Infinity,Math.ceil((timer.endAt-tick)/1000))):timer.remaining):0;
   const timerLeft=remaining(draft?.timer);
-  const [voice,setVoice]=usePTState(()=>{try{return localStorage.getItem('rh_voice')==='1';}catch(e){return false;}});
-  const spoken=usePTRef('');
-  // Une annonce par étape (clé phase + série + minuteur). Placé avant les retours anticipés : l'ordre des hooks ne change jamais.
+  // Bips de chaque chrono (échauffement, travail, repos) : départ, 3-2-1, fin. Chaque signal ne sonne qu'une fois ; rien en pause.
+  // Placé avant les retours anticipés : l'ordre des hooks ne change jamais.
   usePTEffect(()=>{
-    if(!voice||!draft||draft.status!=='active'||!draft.clockStarted||draft.reviewing||finishing||!draft.warmupDone)return;
-    const ph=draft.timer?.kind==='rest'?'rest':'work',st=PT.schedule(draft.exercises,draft.format),c=Math.min(draft.cursor||0,st.length-1),s=st[c];
-    const ex=s&&draft.exercises.find(e=>e.id===s.id);if(!ex)return;
-    const key=`${ph}-${c}-${draft.timer?.id||''}`;if(spoken.current===key)return;spoken.current=key;
-    // Pendant le repos, le curseur pointe déjà sur la série suivante.
-    ptSay(ph==='rest'?`Repos ${draft.timer.duration} secondes. Prochain : ${ex.name}.`:`${ex.name}. Série ${s.set+1} sur ${ex.sets}.`);
-  },[voice,draft?.warmupDone,draft?.timer?.id,draft?.cursor,draft?.clockStarted,finishing]);
-  usePTEffect(()=>{if(draft?.timer?.endAt&&timerLeft===0&&fired.current!==draft.timer.id){fired.current=draft.timer.id;ptBeep();if(voice)ptSay('Repos terminé.');}},[timerLeft,draft?.timer?.id]);
+    const t=draft?.timer;if(!t||!t.endAt||finishing||draft.reviewing)return;
+    const fire=(key,type)=>{if(fired.current.has(key))return;fired.current.add(key);ptCue(type);};
+    if(timerLeft===0)fire(`${t.id}-end`,'end');
+    else if(timerLeft<=3&&timerLeft<t.duration)fire(`${t.id}-${timerLeft}`,'tick');
+    else if(timerLeft>=t.duration-1)fire(`${t.id}-start`,'start');
+  },[timerLeft,draft?.timer?.id,draft?.timer?.endAt,finishing]);
   if(!draft||draft.status!=='active')return <><PTPageHead title="Prêt à bouger ?"/><PTButton primary onClick={()=>go('today')}>Revenir à aujourd’hui</PTButton></>;
   const setDraft=fn=>update(s=>({...s,draft:s.draft?fn(s.draft):null}));
   const steps=PT.schedule(draft.exercises,draft.format),cursor=Math.min(draft.cursor||0,Math.max(0,steps.length-1)),step=steps[cursor];
@@ -68,6 +67,7 @@ function PTSession({data,update,go,notify}) {
     setDraft(d=>({...d,warmupDone:true,clockStarted:d.clockStarted||Date.now(),stageElapsed:0,stageStarted:Date.now(),
       timer:exercise.measure==='seconds'?makeTimer(exercise.seconds,'Temps de travail','work'):null,
       blockTimer:d.blockTimer||(d.blockSeconds?makeTimer(d.blockSeconds,`Bloc ${d.format.toUpperCase()}`,'block'):null)}));
+    if(exercise.measure!=='seconds')ptCue('start');
     window.scrollTo(0,0);
   };
   const pause=()=>setDraft(d=>({...d,elapsedBase:elapsed,clockStarted:paused?Date.now():null,stageElapsed,stageStarted:paused?Date.now():null,timer:paused?thaw(d.timer):freeze(d.timer),blockTimer:paused?thaw(d.blockTimer):freeze(d.blockTimer)}));
@@ -87,7 +87,7 @@ function PTSession({data,update,go,notify}) {
     let next=steps.findIndex((s,i)=>i>cursor&&!entries[s.id][s.set].done&&!entries[s.id][s.set].pain);
     if(next<0)next=steps.findIndex(s=>!entries[s.id][s.set].done&&!entries[s.id][s.set].pain);
     const done=next<0;
-    const rest=draft.format==='emom'?Math.max(0,60-Math.floor(stageElapsed)):step.rest;
+    const rest=draft.format==='emom'?Math.max(0,60-Math.floor(stageElapsed)):step.rest>0?step.rest:exercise.rest>0?exercise.rest:60;
     setDraft(d=>({...d,entries,cursor:done?cursor:next,timer:done?null:makeTimer(rest,'Récupération','rest'),stageElapsed:0,stageStarted:Date.now(),
       ...(done&&!['amrap','emom'].includes(draft.format)?{reviewing:true,elapsedBase:elapsed,clockStarted:null,stageStarted:null,blockTimer:freeze(d.blockTimer)}:{})}));
     setLogging(false);setError('');if(!row.done){try{navigator.vibrate?.(40);}catch(e){}}
@@ -141,47 +141,58 @@ function PTSession({data,update,go,notify}) {
   const shownTime=activeTimer?remaining(activeTimer):phase==='warmup'?draft.warmupSeconds:stageElapsed;
   const coach=paused?'À ton rythme. Reprends quand tu veux.':phase==='warmup'?'Des gestes faciles. On se met en mouvement.':phase==='rest'?(timerLeft===0?'Prêt pour la suite ?':'Souffle. Relâche les épaules.'):allDone?'Toutes les séries sont validées.':activeTimer&&remaining(activeTimer)===0?'Temps écoulé. Confirme ce que tu as fait.':exercise.instructions[0];
   const mainAction=()=>{if(paused){pause();return;}if(blocked||!permitted){go('symptoms');return;}if(phase==='warmup'||phase==='rest'){beginWork();return;}if(allDone){review();return;}openLog();};
-  const actionLabel=paused?'Reprendre la séance':blocked||!permitted?'Voir mes douleurs':phase==='warmup'?'Échauffement effectué':phase==='rest'?`Passer à l’exercice ${exerciseIndex+1}`:allDone?'Terminer la séance':'Terminé';
+  const actionLabel=paused?'Reprendre la séance':blocked||!permitted?'Voir mes douleurs':phase==='warmup'?'Échauffement effectué':phase==='rest'?(timerLeft>0?'Passer le repos':'Commencer la série'):allDone?'Terminer la séance':'Terminé';
   const nextIndex=steps.findIndex((s,i)=>i>cursor&&!draft.entries[s.id][s.set].done&&!draft.entries[s.id][s.set].pain);
   const upcoming=phase==='warmup'?{step,exercise}:nextIndex<0?null:{step:steps[nextIndex],exercise:draft.exercises.find(e=>e.id===steps[nextIndex].id)};
   // Moving between sets never validates or discards a result: saving still requires the result sheet.
-  const toggleVoice=()=>{const next=!voice;setVoice(next);try{localStorage.setItem('rh_voice',next?'1':'0');}catch(e){}if(next)ptSay('Annonces vocales activées.');else window.speechSynthesis?.cancel();};
-  const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
+  const adjustRest=delta=>setDraft(d=>{const t=d.timer;if(!t||t.kind!=='rest')return d;const left=Math.max(5,(t.endAt?Math.ceil((t.endAt-Date.now())/1000):t.remaining)+delta);return {...d,timer:{...t,duration:Math.max(t.duration,left),remaining:left,endAt:t.endAt?Date.now()+left*1000:null}};});
+  // Position : exercice n sur N, série a sur b, et une barre par exercice découpée en séries.
+  const exerciseSets=draft.exercises.map(e=>({e,rows:draft.entries[e.id]||[]}));
+  const restNext=phase==='rest'?{exercise,step}:null;
+  // Un exercice chronométré repart avec son chrono plein (gelé si la séance est en pause).
+  const workTimer=index=>{const e=draft.exercises.find(x=>x.id===steps[index]?.id);if(!e||e.measure!=='seconds')return null;const t=makeTimer(e.seconds,'Temps de travail','work');return paused?{...t,endAt:null}:t;};
+  const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:workTimer(index),stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
   return <div className={`live-session phase-${phase}`}>
-    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Séance en direct</span><strong>{timeLabel(elapsed)}<span> · {PT.formats[draft.format]}</span></strong></div><button className="live-cancel" aria-expanded={abandon} onClick={()=>setAbandon(!abandon)}><PTIcon name="close" size={16}/>Annuler</button></header>
+    <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div className="live-position">{phase==='warmup'?<><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Avant de commencer</span><strong>Échauffement</strong></>:<><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Exercice {exerciseIndex+1} sur {draft.exercises.length}</span><strong>Série {step.set+1} sur {exercise.sets}</strong></>}</div><button className="live-cancel" aria-expanded={abandon} onClick={()=>setAbandon(!abandon)}><PTIcon name="close" size={16}/>Annuler</button></header>
     {abandon&&<div className="notice warning stack-sm live-cancel-confirm" role="alert"><p>Annuler la séance sans enregistrer ? Les séries faites seront perdues.</p><PTButton danger onClick={()=>{update(s=>({...s,draft:null}));go('today');}}>Oui, annuler sans enregistrer</PTButton><PTButton quiet onClick={()=>setAbandon(false)}>Garder ma séance</PTButton></div>}
-    <div className="live-progress" aria-label={`${completed} séries validées sur ${total}`}>{steps.map((s,i)=><span key={`${s.id}-${s.set}`} className={draft.entries[s.id][s.set].done?'done':i===cursor?'current':''}/>)}</div>
-    {phase!=='warmup'&&<div className="live-step"><span>Exercice <b>{exerciseIndex+1}</b> / {draft.exercises.length}</span><span>Série <b>{step.set+1}</b> / {exercise.sets}</span></div>}
+    <div className="live-progress" aria-label={`${completed} séries validées sur ${total}`}>{exerciseSets.map(({e,rows},i)=><span key={e.id} className={`ex-seg${phase!=='warmup'&&i===exerciseIndex?' current':''}`}>{rows.map((r,k)=><i key={k} className={r.done?'done':phase!=='warmup'&&i===exerciseIndex&&k===step.set?'now':''}/>)}</span>)}</div>
+    {phase==='rest'?<section className="rest-screen" aria-live="polite">
+      <span className="rest-label">{timerLeft>0?'Repos':'Repos terminé'}</span>
+      <div className={`live-timer rest-timer${paused?' paused':''}`} role="timer" aria-label={`Repos : ${timeLabel(timerLeft)}`}>
+        <svg viewBox="0 0 220 150" aria-hidden="true"><path className="dial-track" d="M30 131 A94 94 0 1 1 190 131" pathLength="100"/><path className="dial-value" d="M30 131 A94 94 0 1 1 190 131" pathLength="100" strokeDasharray={`${Math.min(100,timerLeft/(draft.timer.duration||1)*100)} 100`}/></svg>
+        <div><small>{paused?'En pause':timerLeft>0?'Souffle, relâche les épaules':'C’est reparti'}</small><strong>{timeLabel(timerLeft)}</strong></div>
+      </div>
+      <div className="rest-adjust"><button type="button" onClick={()=>adjustRest(-15)} disabled={paused||timerLeft<=5}>−15 s</button><button type="button" className="transport-pause" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'} size={22}/></button><button type="button" onClick={()=>adjustRest(15)} disabled={paused}>+15 s</button></div>
+      <div className="next-up rest-next"><PTThumbnail exercise={restNext.exercise}/><div><small>Ensuite · exercice {exerciseIndex+1} sur {draft.exercises.length}</small><strong>{restNext.exercise.name}</strong><small>Série {restNext.step.set+1} sur {restNext.exercise.sets}</small></div></div>
+      {typeof PTRestQuestion==='function'&&<PTRestQuestion key={cursor} seed={cursor} data={data} update={update}/>}
+    </section>:<>
     <div className="live-visual">{phase==='warmup'?<div className="warmup-visual"><PTIcon name="body" size={80}/><span>On réveille le corps.</span></div>:<PTDemo key={exercise.id} exercise={exercise}/>}</div>
     <section className="live-command">
       <div className="live-heading"><div className="eyebrow">{phase==='warmup'?'Échauffement':phase==='rest'?'À suivre':PT.patterns[exercise.pattern]}</div><h1>{phase==='warmup'?'On y va doucement.':exercise.name}</h1></div>
-      <div className={`live-timer${paused?' paused':''}`} role="timer" aria-label={`${phase==='rest'?'Repos':phase==='warmup'?'Échauffement':'Travail'} : ${timeLabel(shownTime)}`}>
+      {phase==='work'&&!activeTimer&&exercise.measure!=='seconds'?<div className="live-target" aria-label={`Objectif : ${ptRepsGoal(exercise)}`}><strong>{ptRepsGoal(exercise).split(' ')[0]}</strong><span>{ptRepsGoal(exercise).split(' ').slice(1).join(' ')}</span></div>:<div className={`live-timer${paused?' paused':''}`} role="timer" aria-label={`${phase==='rest'?'Repos':phase==='warmup'?'Échauffement':'Travail'} : ${timeLabel(shownTime)}`}>
         <svg viewBox="0 0 220 150" aria-hidden="true"><path className="dial-track" d="M30 131 A94 94 0 1 1 190 131" pathLength="100"/><path className="dial-value" d="M30 131 A94 94 0 1 1 190 131" pathLength="100" strokeDasharray={`${activeTimer?Math.min(100,shownTime/(activeTimer.duration||1)*100):100} 100`}/></svg>
         <div><small>{paused?'En pause':phase==='rest'?'Repos':activeTimer?'Temps restant':'Temps de série'}</small><strong>{timeLabel(shownTime)}</strong></div>
-      </div>
+      </div>}
       <div className="session-transport">{phase!=='warmup'&&<button type="button" aria-label="Série précédente" disabled={cursor===0} onClick={()=>jump(cursor-1)}><PTIcon name="back" size={20}/></button>}<button type="button" className="transport-pause" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'} size={24}/></button>{phase!=='warmup'&&<button type="button" aria-label={phase==='rest'?'Terminer le repos':'Passer cette série'} disabled={phase==='rest'?paused:nextIndex<0} onClick={()=>{if(phase!=='rest'){jump(nextIndex);return;}if(blocked||!permitted){go('symptoms');return;}beginWork();}}><PTIcon name="arrow" size={20}/></button>}</div>
       {phase!=='warmup'&&<PTExerciseMetrics exercise={exercise} weight={row.weight||PT.loadAdvice(exercise,data,draft.check)?.value}/>}
       {upcoming&&<div className="next-up"><PTThumbnail exercise={upcoming.exercise}/><div><small>{phase==='warmup'?'Pour commencer':'Ensuite'}</small><strong>{upcoming.exercise.name}</strong><small>Série {upcoming.step.set+1} / {upcoming.exercise.sets}</small></div></div>}
       <p className="live-coach" aria-live="polite"><PTIcon name={phase==='rest'?'heart':'spark'} size={17}/>{coach}</p>
       {blocked||!permitted?<div className="notice warning">{blocked?'Séance suspendue : fais le point sur la douleur signalée.':'Ce mouvement ne convient plus à tes contraintes actuelles.'}</div>:null}
-      {phase==='rest'&&<span className="caption">{timerLeft>0?'Le repos reste disponible jusqu’au bout.':'Récupération terminée.'}</span>}
-      {phase==='rest'&&typeof PTRestQuestion==='function'&&<PTRestQuestion key={cursor} seed={cursor} data={data} update={update}/>}
       {phase==='work'&&exercise.unilateral&&exercise.measure==='seconds'&&<PTButton quiet disabled={paused} onClick={()=>setDraft(d=>({...d,timer:makeTimer(exercise.seconds,'Autre côté','work'),stageElapsed:0,stageStarted:Date.now()}))}>Minuter l’autre côté<PTIcon name="refresh" size={18}/></PTButton>}
       {phase==='work'&&exercise.audio&&<PTAudioCue/>}
       {draft.blockTimer&&draft.format!=='amrap'&&<span className="caption">Bloc {draft.format.toUpperCase()} · {timeLabel(remaining(draft.blockTimer))}</span>}
-    </section>
+    </section></>}
     <div className="live-extras">
-      {'speechSynthesis' in window&&<PTButton quiet aria-pressed={voice} onClick={toggleVoice}><PTIcon name="spark" size={18}/>{voice?'Couper les annonces vocales':'Activer les annonces vocales'}</PTButton>}
       {phase==='warmup'&&<button className="text-button" onClick={()=>{setDraft(d=>({...d,warmupSkipped:true}));beginWork();}}>Je l’ai déjà fait avant d’ouvrir l’app</button>}
       {phase==='work'&&<details className="disclosure"><summary>Posture & charge</summary><div className="stack"><ol className="instruction-list">{exercise.instructions.map((line,i)=><li key={i}>{line}</li>)}</ol>{PT.loadAdvice(exercise,data,draft.check)&&<p className="fine">{PT.loadAdvice(exercise,data,draft.check).text}</p>}</div></details>}
       {allDone&&['amrap','emom'].includes(draft.format)&&<PTButton quiet disabled={paused||blocked} onClick={addRound}>Ajouter un tour<PTIcon name="plus" size={18}/></PTButton>}
       {!blocked&&!permitted&&<PTButton quiet onClick={()=>{const next=steps.findIndex((s,i)=>i>cursor&&PT.allowed(draft.exercises.find(e=>e.id===s.id),data,draft.check));if(next<0)review();else setDraft(d=>({...d,cursor:next,timer:null,stageElapsed:0,stageStarted:null}));}}>Passer à un mouvement compatible</PTButton>}
-      <details className="disclosure"><summary>Options de séance</summary><div className="stack"><PTButton quiet onClick={review}>Terminer ici</PTButton><details className="disclosure"><summary>Voir les séries / corriger un résultat</summary><div className="set-history">{steps.map((s,i)=><button key={`${s.id}-${s.set}`} className={`${draft.entries[s.id][s.set].done?'done ':''}${i===cursor?'current':''}`} aria-label={`${draft.exercises.find(e=>e.id===s.id).name}, série ${s.set+1}`} onClick={()=>{setDraft(d=>({...d,cursor:i,timer:null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);}}>{i+1}{draft.entries[s.id][s.set].done?' ✓':''}</button>)}</div></details>
+      <details className="disclosure"><summary>Options de séance</summary><div className="stack"><PTButton quiet onClick={review}>Terminer ici</PTButton><details className="disclosure"><summary>Voir les séries / corriger un résultat</summary><div className="set-history">{steps.map((s,i)=><button key={`${s.id}-${s.set}`} className={`${draft.entries[s.id][s.set].done?'done ':''}${i===cursor?'current':''}`} aria-label={`${draft.exercises.find(e=>e.id===s.id).name}, série ${s.set+1}`} onClick={()=>jump(i)}>{i+1}{draft.entries[s.id][s.set].done?' ✓':''}</button>)}</div></details>
         <PTButton quiet onClick={()=>{setDraft(d=>{const entries={};const exercises=d.exercises.map(e=>{const rows=d.entries[e.id],done=rows.filter(r=>r.done),pending=rows.find(r=>!r.done&&!r.pain);entries[e.id]=pending?[...done,pending]:done;return {...e,sets:entries[e.id].length};}).filter(e=>e.sets);if(!exercises.length)return d;const sequence=PT.schedule(exercises,d.format),next=sequence.findIndex(s=>!entries[s.id][s.set].done);return {...d,entries,exercises,cursor:Math.max(0,next),timer:null,stageElapsed:0,stageStarted:paused?null:Date.now(),shortened:true};});notify('Une série restante par exercice. Tes résultats sont conservés.');}}>Raccourcir la fin · 10 min</PTButton>
       </div></details>
       {!abandon&&<PTButton danger onClick={()=>{setAbandon(true);window.scrollTo(0,0);}}><PTIcon name="close" size={18}/>Annuler la séance</PTButton>}
     </div>
-    <footer className="live-dock"><div className="dock-caption"><span>{phase==='rest'?'À suivre':phase==='warmup'?'Prépare-toi':`${completed}/${total} séries validées`}</span><button className="text-button" onClick={reportPain}>Une douleur ?</button></div><PTButton primary onClick={mainAction}><PTIcon name={paused?'play':phase==='work'?'check':'arrow'} size={22}/>{actionLabel}</PTButton></footer>
+    <footer className="live-dock"><div className="dock-caption"><span>{phase==='rest'?'Repos en cours':phase==='warmup'?'Prépare-toi':`${completed}/${total} séries validées`}</span><button className="text-button" onClick={reportPain}>Une douleur ?</button></div><PTButton primary onClick={mainAction}><PTIcon name={paused?'play':phase==='work'?'check':'arrow'} size={22}/>{actionLabel}</PTButton></footer>
     {logging&&<PTSetSheet exercise={exercise} row={row} onChange={updateRow} onClose={()=>setLogging(false)} onSave={()=>advance()} onQuick={quickRow()&&!row.done?()=>advance(quickRow()):null} error={error}/>}
   </div>;
 }

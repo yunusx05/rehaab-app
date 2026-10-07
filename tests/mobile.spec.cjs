@@ -37,7 +37,7 @@ for (const size of sizes) {
     await expect(page.getByRole('button', { name: 'Échauffement effectué' })).toBeVisible();
     await page.getByRole('button', { name: 'Échauffement effectué' }).click();
     await expect(page.getByRole('button', { name: 'Terminé', exact: true })).toBeVisible();
-    await expect(page.getByRole('timer')).toBeVisible();
+    await expect(page.locator('.live-target, [role="timer"]').first()).toBeVisible();
     await expect(page.getByRole('button', { name: 'Mettre en pause', exact: true })).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.screenshot({ path: `test-results/seance-${size.width}.png` });
