@@ -185,3 +185,25 @@ test('bibliothèque : tous les exercices retrouvés depuis le parcours, filtre p
   await expect(page.getByRole('button',{name:/Tous les exercices/})).toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('coach : veille de match, il choisit la muscu et l’app protège les jambes',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  const PP=require('../personal-programs.js');
+  const data=player();data.owned=[...home,'pullup'];data.checkIn.equipment=data.owned;
+  data.program=PP.createProgram(data,{familyId:'basket',weeks:8,daysPerWeek:3,minutes:45,equipment:data.owned}).program;
+  let sent=null;
+  await page.route('**/api/coach',async route=>{sent=route.request().postDataJSON();await route.fulfill(coachAnswer({decision:'light',target:'muscu',avoidImpact:true,why:'Match demain : haut du corps.'}));});
+  await seed(page,data,'coach');
+  await checkin(page,{pain:false});
+  await page.locator('.coach-q',{hasText:'Basket prévu bientôt ?'}).getByRole('button',{name:'Demain',exact:true}).click();
+  await page.getByRole('button',{name:/Envoyer au coach/}).click();
+  expect(sent.context.muscu.program).toContain('Basket');
+  expect(sent.context.week.weeklyTarget).toBeGreaterThan(0);
+  await page.getByRole('button',{name:/Appliquer à ma séance/}).click();
+  await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
+  const saved=await state(page);
+  expect(saved.draft.source).toBe('program-plan');
+  expect(saved.draft.exercises.some(e=>e.impact)).toBe(false);
+  expect(errors).toEqual([]);
+});

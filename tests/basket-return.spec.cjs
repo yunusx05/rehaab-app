@@ -97,8 +97,8 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await page.setViewportSize({width:390,height:844});
   const data=player({pains:[{region:'knee',severity:2}]});data.pathway=BP.create();
   await seed(page,data,'today');
-  // Une gêne active passe avant le parcours : la séance du jour propose le protocole de soin.
-  await expect(page.locator('.today-plan')).toContainText('Soigne la zone qui gêne.');
+  // Une gêne active ne remplace plus le parcours : le soin de la zone est intégré à la séance du jour.
+  await expect(page.locator('.today-plan')).toContainText('soin intégré');
   await page.getByRole('button',{name:'Parcours',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Fondations.'})).toBeVisible();
   await noOverflow(page);
@@ -106,7 +106,8 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   const draft=(await state(page)).draft;
   expect(draft.source).toBe('pathway');expect(draft.pathwayStep).toBe(1);
-  expect(draft.exercises.every(e=>JP.tolerates(e,data.symptoms))).toBe(true);
+  expect(draft.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>JP.tolerates(e,data.symptoms))).toBe(true);
+  expect(draft.exercises[0].pathwayRole).toBe('soin');
   // Séance réduite à un exercice déjà validé pour aller droit à l'enregistrement.
   const done=PT.startDraft({...draft,exercises:[draft.exercises.find(e=>e.measure==='reps')].map(e=>({...e,sets:1}))},data);
   done.status='active';done.warmupDone=true;

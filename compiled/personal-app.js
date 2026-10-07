@@ -2274,7 +2274,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan', 'library'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
     const screens = {
@@ -2300,7 +2300,11 @@ function PersonalApp() {
       history: PTHistory,
       profile: PTProfile,
       coach: PTCoach,
-      library: PTLibrary
+      library: PTLibrary,
+      program: PTProgramHome,
+      'program-new': PTProgramCatalog,
+      'program-checkin': PTProgramCheckIn,
+      'basket-profile': PTBasketProfile
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

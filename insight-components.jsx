@@ -17,6 +17,8 @@ function PTTodayPlan({data,update,go,notify}) {
   let next=null;
   if(p&&BP){const step=BP.stepById(p.step),status=BP.weekStatus(p),day=step.days.find(d=>d.key===status.next);if(day)next={step,status,day,plan:BP.sessionPlan(PT,JP,data,p,day.key)};}
   const ready=next&&!next.plan.error;
+  const PPR=window.PersonalPrograms,prog=data.program&&data.program.status==='active'?data.program:null;
+  const muscu=PPR&&prog?{progress:PPR.progressOf(prog),family:PPR.familyById(prog.familyId)}:null;
   const RW=window.RehabWarmup;
   const actions={
     symptoms:['Faire le point',()=>go('symptoms')],
@@ -24,13 +26,16 @@ function PTTodayPlan({data,update,go,notify}) {
     rehab:['Trouver mon protocole',()=>go('rehab')],
     mobility:['10 min de mobilité',()=>quick('mobility',15)],
     session:[plan.kind==='light'?'Séance légère · 20 min':'Préparer ma séance',()=>plan.kind!=='light'&&data.player?.position&&JP?launch(JP.dailyBody(PT,data,{minutes:30})):quick('muscle',plan.kind==='light'?20:30)],
-    pathway:[ready?'Préparer ma séance':'Ouvrir mon parcours',()=>ready?launch(next.plan):go('pathway')]
+    pathway:[ready?'Préparer ma séance':'Ouvrir mon parcours',()=>ready?launch(next.plan):go('pathway')],
+    // Programme muscu : le check-in de forme du programme fixe la version du jour (jambes protégées si la semaine l'exige).
+    program:[muscu?'Préparer ma séance muscu':'Créer ma muscu',()=>muscu?go('program-checkin',`${muscu.progress.currentWeek}:${muscu.progress.nextDay}`):go('program-new')]
   };
   const [label,run]=actions[plan.action]||actions.session;
   const showPathway=plan.action==='pathway'&&next;
   return <section className={`today-plan kind-${plan.kind} sport-reveal`} aria-labelledby="today-plan-title">
     <span className="eyebrow">Ta séance du jour</span>
     <h2 id="today-plan-title">{showPathway?next.day.name:plan.title}</h2>
+    {plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
     {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
     <ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul>
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>

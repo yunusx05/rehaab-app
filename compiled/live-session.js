@@ -410,6 +410,15 @@ function PTSession({
         });
         next.rehab = rehab;
       }
+      // Une séance du programme muscu avance son suivi ; une séance libre ne touche jamais au programme.
+      const PPL = window.PersonalPrograms;
+      if (PPL && session.programInstanceId && s.program && s.program.id === session.programInstanceId && s.program.status === 'active') next.program = PPL.markCompleted(s.program, {
+        week: session.programWeekIndex,
+        day: session.programDay,
+        sessionId: session.id,
+        date: session.date,
+        partial: session.partial
+      });
       const BP = window.BasketPathway;
       if (BP && session.pathwayId && s.pathway && s.pathway.id === session.pathwayId && s.pathway.step === session.pathwayStep) next.pathway = BP.markCompleted(s.pathway, {
         step: session.pathwayStep,

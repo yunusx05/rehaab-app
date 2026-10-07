@@ -58,6 +58,9 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="basket-qi.js"></script>
 <script src="exercise-media.js"></script>
 <script src="rehab-warmup.js"></script>
+<script src="basket-profile.js"></script>
+<script src="training-load.js"></script>
+<script src="personal-programs.js"></script>
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="compiled/visual-components.js"></script>
@@ -72,10 +75,12 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/rehab-components.js"></script>
 <script src="compiled/coach-components.js"></script>
 <script src="compiled/library-components.js"></script>
+<script src="compiled/program-components.js"></script>
+<script src="compiled/court-components.js"></script>
 <script src="compiled/personal-app.js"></script>
 <script>
 // Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
-window.REHAAB_VERSION='v42-soin';
+window.REHAAB_VERSION='v43-muscu-basket';
 if('serviceWorker' in navigator){window.addEventListener('load',function(){
   // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
   // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.

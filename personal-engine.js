@@ -365,6 +365,9 @@
     // Lot « Quick Rehab » : niveaux et ressenti par protocole, absents des anciennes sauvegardes.
     const rehab=globals.RehabWarmup||tryRequire('./rehab-warmup.js');
     s.rehab=rehab?rehab.validateRehab(s.rehab):base.rehab;
+    // Questionnaire « Mon jeu » : absent des anciennes sauvegardes, nettoyé plutôt que rejeté.
+    const court=globals.BasketProfile||tryRequire('./basket-profile.js');
+    s.basketProfile=court?court.validate(s.basketProfile):(s.basketProfile&&typeof s.basketProfile==='object'?s.basketProfile:null);
     return {...base,...s,profile:{...base.profile,...s.profile}};
   }
   function validateEntries(entries) {
@@ -635,17 +638,26 @@
     const yesterdayHard=state.sessions.some(s=>dayDiff(now,s.date)===1 && Number(s.effort)>=8);
     const worse=state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
     const week=weeklySummary(state,now);
+    // Charge commune (club déclaré dans « Mon jeu », parcours, programme muscu) : absente = règles d'origine.
+    const globals=typeof globalThis!=='undefined'?globalThis:{},TL=globals.TrainingLoad||tryRequire('./training-load.js'),tl=TL?TL.day(state,now):null;
+    const program=state.program&&state.program.status==='active',pathway=state.pathway&&state.pathway.status!=='archived';
+    // Avec un parcours, un programme ou un profil joueur, le soin de la zone est intégré à la séance : plus besoin de l'envoyer ailleurs.
+    const cared=active.active.length>0&&(pathway||program||!!(state.player&&state.player.position));
+    const careWhy=cared?[`${active.regions.map(r=>regions[r]).join(', ')} : soin intégré à ta séance, on calme la zone au début et on la renforce à la fin.`]:[];
     if(active.blocked) return {kind:'blocked',title:'Fais le point sur ta douleur.',why:['Une douleur forte ou un signe inhabituel est signalé : pas de séance tant qu’il est actif.'],action:'symptoms',load};
+    if(!eventsOn(now).length&&tl&&tl.club.today.match) return {kind:'match',title:'Jour de match : échauffe-toi.',why:['Match aujourd’hui (ton calendrier « Mon jeu ») : pas de musculation, un échauffement de 10 à 15 min suffit.'],action:'warmup',load};
     if(eventsOn(now).length) {const ev=eventsOn(now)[0];return {kind:'match',title:ev.type==='match'?'Jour de match : échauffe-toi.':'Entraînement ce soir : arrive prêt.',why:[`${ev.title} aujourd’hui : pas de musculation des jambes, un échauffement de 10 min suffit.`],action:'warmup',load};}
-    if(active.active.length) return {kind:'rehab',title:'Soigne la zone qui gêne.',why:[`${active.regions.map(r=>regions[r]).join(', ')} : un protocole court et progressif passe avant une séance complète.`],action:'rehab',region:active.regions[0],load};
+    if(active.active.length&&!cared) return {kind:'rehab',title:'Soigne la zone qui gêne.',why:[`${active.regions.map(r=>regions[r]).join(', ')} : un protocole court et progressif passe avant une séance complète.`],action:'rehab',region:active.regions[0],load};
+    if(todays.length&&tl&&tl.primary==='muscu'&&tl.pathwayToday) return {kind:'light',title:'Complément muscu : haut du corps.',why:[...tl.notes,...careWhy],action:'program',load};
     if(todays.length) return {kind:'rest',title:'C’est fait pour aujourd’hui.',why:[`${todays.length>1?`${todays.length} activités`:'Une activité'} déjà enregistrée${todays.length>1?'s':''} aujourd’hui. La progression se fait aussi pendant la récupération.`],action:'mobility',load};
     if(load.zone==='spike') return {kind:'rest',title:'Récupération active.',why:[`Ta charge des 7 derniers jours est ${String(load.ratio).replace('.',',')} fois ta moyenne : on laisse le corps absorber.`,'10 min de mobilité, pas d’intensité.'],action:'mobility',load};
     if(worse) return {kind:'rest',title:'Récupération active.',why:['Une gêne a augmenté après une séance récente : on lève le pied 48 h.'],action:'mobility',load};
     if(yesterdayHard) return {kind:'light',title:'Une séance légère.',why:['Effort élevé hier : volume réduit et pas d’impacts aujourd’hui.'],action:'session',load};
-    if(eventsOn(tomorrow).length) return {kind:'light',title:'Veille de match : haut du corps et gainage.',why:[`${eventsOn(tomorrow)[0].title} demain : les jambes restent fraîches.`],action:'session',load};
+    if(eventsOn(tomorrow).length||tl&&tl.club.tomorrow.match) return {kind:'light',title:'Veille de match : haut du corps et gainage.',why:[`${eventsOn(tomorrow)[0]?eventsOn(tomorrow)[0].title:'Match'} demain : les jambes restent fraîches.`,...careWhy],action:program?'program':'session',load};
     if(week.sessions>=week.target) return {kind:'rest',title:'Objectif de la semaine atteint.',why:[`${week.sessions} séances sur ${week.target} : repos ou mobilité. Une séance de plus reste possible si tu te sens frais.`],action:'mobility',load};
-    const plan=state.pathway&&state.pathway.status!=='archived'?'pathway':'session';
-    return {kind:'train',title:plan==='pathway'?'Ta séance du parcours t’attend.':plan==='program'?'Ta séance du programme t’attend.':'Feu vert pour t’entraîner.',why:[load.zone==='low'?'Ta charge récente est sous ta moyenne : tu peux reprendre le rythme, sans rattraper d’un coup.':load.zone==='rising'?'Charge en hausse : garde une intensité maîtrisée.':'Pas de douleur, pas de match proche : séance normale.'],action:plan,load};
+    const plan=tl&&tl.primary==='muscu'&&program?'program':pathway?'pathway':program?'program':'session';
+    const clubWhy=tl&&tl.club.today.practice?['Entraînement au club ce soir : séance courte, sans jambes lourdes.']:[];
+    return {kind:'train',title:plan==='pathway'?'Ta séance du parcours t’attend.':plan==='program'?'Ta séance du programme t’attend.':'Feu vert pour t’entraîner.',why:[load.zone==='low'?'Ta charge récente est sous ta moyenne : tu peux reprendre le rythme, sans rattraper d’un coup.':load.zone==='rising'?'Charge en hausse : garde une intensité maîtrisée.':(cared?'Pas de match proche : séance prévue, avec le soin.':'Pas de douleur, pas de match proche : séance normale.'),...clubWhy,...careWhy],action:plan,load};
   }
   function exportBundle(state,legacy={}) {return {app:'Rehaab',exportedAt:new Date().toISOString(),state:validateState(state),legacy};}
   function importBundle(raw) {const bundle=JSON.parse(raw);assert(bundle.app==='Rehaab','Ce fichier n’est pas une sauvegarde Rehaab récente.');return {state:validateState(bundle.state),legacy:bundle.legacy && typeof bundle.legacy==='object'?bundle.legacy:{}};}

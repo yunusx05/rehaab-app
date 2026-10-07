@@ -118,6 +118,10 @@ function PTSession({data,update,go,notify}) {
       // Quick Rehab : la douleur après la séance règle le niveau du protocole.
       if(RWL&&session.source==='rehab'&&session.protocolId){const r=RWL.record(s.rehab,{protocolId:session.protocolId,level:session.rehabLevel,painAfter:session.painAfter,sessionId:session.id,date:session.date},s.sessions);next.rehab=r.rehab;levelChange=r.change;}
       if(RWL&&cares.length&&painAfter!=null){let rehab=s.rehab;cares.forEach(([protocolId,level])=>{const r=RWL.record(rehab,{protocolId,level,painAfter,sessionId:session.id,date:session.date},s.sessions);rehab=r.rehab;if(r.change)levelChange=r.change;});next.rehab=rehab;}
+      // Une séance du programme muscu avance son suivi ; une séance libre ne touche jamais au programme.
+      const PPL=window.PersonalPrograms;
+      if(PPL&&session.programInstanceId&&s.program&&s.program.id===session.programInstanceId&&s.program.status==='active')
+        next.program=PPL.markCompleted(s.program,{week:session.programWeekIndex,day:session.programDay,sessionId:session.id,date:session.date,partial:session.partial});
       const BP=window.BasketPathway;
       if(BP&&session.pathwayId&&s.pathway&&s.pathway.id===session.pathwayId&&s.pathway.step===session.pathwayStep)
         next.pathway=BP.markCompleted(s.pathway,{step:session.pathwayStep,week:session.pathwayWeek,day:session.pathwayDay,sessionId:session.id,date:session.date,partial:session.partial});

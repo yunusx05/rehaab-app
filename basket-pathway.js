@@ -193,6 +193,7 @@
 
   // Module du bilan athlétique, facultatif : sans lui (ou sans bilan), les séances restent celles d'avant.
   function athleticLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.AthleticProfile) return g.AthleticProfile;try{return typeof require==='function'?require('./athletic-profile.js'):null;}catch(e){return null;}}
+  function courtLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.BasketProfile) return g.BasketProfile;try{return typeof require==='function'?require('./basket-profile.js'):null;}catch(e){return null;}}
   function rehabLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.RehabWarmup) return g.RehabWarmup;try{return typeof require==='function'?require('./rehab-warmup.js'):null;}catch(e){return null;}}
 
   // Résout une séance du parcours contre le catalogue réel : matériel, niveau, douleurs, poste, bilan athlétique.
@@ -201,12 +202,15 @@
     if(!day) return {error:'Séance introuvable dans cette étape.'};
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical avant de reprendre.'};
-    const pains=safety.active, player=state.player||{}, g=group(player.position);
+    const pains=safety.active, player={...(state.player||{}),court:state.basketProfile||null}, g=group(player.position);
     const AP=state.athletic?athleticLib():null, athletic=AP?state.athletic:null;
     const week=weekOf(p);
     // guided : le moteur laisse le parcours doser les impacts et la reprise, étape par étape. Le même contrôle s'applique pendant la séance.
     const check={...state.checkIn,equipment:state.owned,focus:'muscle',format:'classic',minutes:minutes||60,date:today(),guided:p.step};
     const ctx=PT.context(state,check);
+    // Calendrier du club (« Mon jeu ») : un match aujourd'hui ou demain retire les impacts, comme un événement saisi.
+    const TLib=(typeof globalThis!=='undefined'&&globalThis.TrainingLoad)||(()=>{try{return typeof require==='function'?require('./training-load.js'):null;}catch(e){return null;}})();
+    const tl=TLib&&state.basketProfile?TLib.day(state,check.date):null,clubSoon=!!(tl&&(tl.club.today.match||tl.club.tomorrow.match));
     const usable=e=>e&&PT.allowed(e,state,check,ctx)&&(!PP||PP.tolerates(e,pains));
     const all=PT.allExercises(state), find=id=>all.find(e=>e.id===id);
     const exercises=[],changes=[];
@@ -228,7 +232,7 @@
       else if(chosen.measure==='seconds') e.seconds=d.secs?d.secs[idx]:chosen.seconds;
       else if(slot.dosesFor&&chosen.kind==='cardio'&&d.secs) e.seconds=d.secs[idx];
       else if(dose.max>1){e.targetMin=dose.min;e.targetMax=dose.max;}
-      if(ctx.upcoming.length&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
+      if((ctx.upcoming.length||clubSoon)&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
       return e;
     };
     day.slots.forEach((slot,i)=>{const e=resolve(slot,i<3);if(e)exercises.push(e);});
@@ -239,6 +243,18 @@
       for(const focus of AP.focusSlots(athletic,player,step.id,day.key,planned)){
         const e=resolve(focus,true);
         if(e){exercises.splice(Math.min(3,exercises.length),0,e);focusNote=`${focus.level===0?'Point faible':'Priorité'} de ton bilan · ${focus.label.toLowerCase()} : ${e.name}.`;break;}
+      }
+    }
+    // Sans point faible du bilan : la première faiblesse du questionnaire « Mon jeu » prend ce créneau.
+    const C=!focusNote&&player.court?courtLib():null,APL=C?athleticLib():null;
+    if(C&&APL&&C.complete(player.court)){
+      const toAP={firststep:'firststep',speed:'firststep',vertical:'vertical',reactive:'reactive',decel:'decel',lateral:'decel',unilateral:'strength',strength:'strength',ankle:'balance',hip:'balance',core:'core',antirot:'core',contact:'contact',shoulder:'contact',endurance:'endurance'};
+      const planned=day.slots.flatMap(s=>s.ids.concat(...Object.values(s.pos||{}))),stage=Math.min(4,Math.max(1,Number(step.id)))-1;
+      const wanted=[...new Set(Object.entries(C.weights(player.court)).filter(([,v])=>v>0).sort((a,b)=>b[1]-a[1]).map(([q])=>toAP[q]).filter(Boolean))];
+      for(const q of wanted){
+        if(!APL.qualities[q]||!APL.qualities[q].days.includes(day.key)||!APL.focusLists[q]) continue;
+        const e=resolve({role:'priorité',ids:APL.focusLists[q][stage].filter(id=>!planned.includes(id)),optional:true,dosesFor:APL.dosesFor},true);
+        if(e){e.courtFocus=true;exercises.splice(Math.min(3,exercises.length),0,e);focusNote=`Priorité terrain (questionnaire « Mon jeu ») · ${APL.qualities[q].label.toLowerCase()} : ${e.name}.`;break;}
       }
     }
     // Soin de la zone douloureuse : protocole complet (calmer en tête, renforcer en fin) au lieu d'un seul mouvement.
@@ -257,7 +273,8 @@
     }
     if(cared){const kept=RW.withCare(exercises,care);exercises.length=0;exercises.push(...kept);}
     if(!exercises.length) return {error:'Aucun mouvement de cette séance n’est compatible aujourd’hui. Adapte ton matériel ou choisis une autre séance.'};
-    const budget=minutes?minutes*60-360:Infinity;
+    // Sans durée choisie, le soin ne doit pas allonger la séance au-delà d'une heure.
+    const budget=minutes?minutes*60-360:cared?60*60-360:Infinity;
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>!e.key)) exercises.splice(exercises.map(e=>e.key).lastIndexOf(false),1);
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>e.sets>2)) {const e=[...exercises].reverse().find(x=>x.sets>2);e.sets--;}
     // Le soin prend du temps : c'est le travail secondaire qui sort, jamais le soin ni les trois premiers mouvements de la séance.

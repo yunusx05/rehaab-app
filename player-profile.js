@@ -101,6 +101,7 @@
   }
   // Bilan athlétique facultatif : ses points faibles s'ajoutent aux qualités du poste et du profil de jeu.
   function athleticLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.AthleticProfile) return g.AthleticProfile;try{return typeof require==='function'?require('./athletic-profile.js'):null;}catch(e){return null;}}
+  function courtLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.BasketProfile) return g.BasketProfile;try{return typeof require==='function'?require('./basket-profile.js'):null;}catch(e){return null;}}
   function rehabLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.RehabWarmup) return g.RehabWarmup;try{return typeof require==='function'?require('./rehab-warmup.js'):null;}catch(e){return null;}}
   function priorities(player,athletic) {
     const total={};
@@ -111,6 +112,9 @@
     (player.goals||[]).forEach(g=>add(goalQualities[g]));
     const AP=athletic&&athleticLib();
     if(AP) add(AP.weights(athletic));
+    // Questionnaire « Mon jeu » : ce que le joueur vit sur le terrain (passé par player.court).
+    const C=player.court&&courtLib();
+    if(C) add(C.weights(player.court));
     return Object.entries(total).sort((a,b)=>b[1]-a[1]).map(([id,weight])=>({id,weight,label:qualityLabels[id]}));
   }
   function bonus(e,player,athletic) {
@@ -132,7 +136,7 @@
   function dailyBody(PT,state,{minutes,random}={}) {
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance générée. Demande un avis médical avant de reprendre.'};
-    const player=state.player||{};
+    const player={...(state.player||{}),court:state.basketProfile||null};
     const pains=safety.active;
     const check={...state.checkIn,focus:'muscle',minutes:minutes||state.checkIn.minutes};
     const shadow={...state,symptoms:[],preferences:{likes:[],avoids:[],anchors:[]}};

@@ -93,6 +93,22 @@ function PTPathwayIntro({
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go(data.program && data.program.status !== 'archived' ? 'program' : 'program-new')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "weight"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma muscu"), /*#__PURE__*/React.createElement("small", null, data.program && data.program.status !== 'archived' && window.PersonalPrograms ? `${window.PersonalPrograms.familyById(data.program.familyId)?.short || 'Programme'} · semaine ${window.PersonalPrograms.progressOf(data.program).currentWeek}/${data.program.weeks}` : 'Programme à côté du parcours, sans le doubler.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('basket-profile')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "basket"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon jeu"), /*#__PURE__*/React.createElement("small", null, window.BasketProfile?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Questionnaire terrain : forces, faiblesses, club.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('library')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "book"
@@ -299,6 +315,22 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "back"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go(data.program && data.program.status !== 'archived' ? 'program' : 'program-new')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "weight"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma muscu"), /*#__PURE__*/React.createElement("small", null, data.program && data.program.status !== 'archived' && window.PersonalPrograms ? `${window.PersonalPrograms.familyById(data.program.familyId)?.short || 'Programme'} · semaine ${window.PersonalPrograms.progressOf(data.program).currentWeek}/${data.program.weeks}` : 'Programme à côté du parcours, sans le doubler.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('basket-profile')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "basket"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon jeu"), /*#__PURE__*/React.createElement("small", null, window.BasketProfile?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Questionnaire terrain : forces, faiblesses, club.')), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })), /*#__PURE__*/React.createElement("button", {

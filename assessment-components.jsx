@@ -2,7 +2,7 @@
 const AP = window.AthleticProfile;
 const apLevelClass = level => level === null ? 'is-unknown' : ['is-low','is-mid','is-high'][level];
 // Étiquette affichée dans l'aperçu de séance pour le bloc kiné et le créneau du bilan.
-const ptRoleTag = e => e.pathwayRole === 'soin' ? (e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer') : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? 'Priorité du bilan' : null;
+const ptRoleTag = e => e.pathwayRole === 'soin' ? (e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer') : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? (e.courtFocus ? 'Priorité terrain' : 'Priorité du bilan') : null;
 const apFresh = a => !!(a && a.date) && PT.dayDiff(PT.dateKey(), a.date) <= 28;
 
 function PTAssessment({data,update,go,notify,id}) {

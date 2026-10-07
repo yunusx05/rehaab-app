@@ -6,7 +6,7 @@ const COACH_DECISIONS={normal:'Séance prévue',light:'Séance allégée',mobili
 const ptCoachRegion=id=>COACH_ZONES.find(z=>z.id===id)?.region||id;
 // Zone du bilan → protocole de soin le plus probable quand la zone le dit déjà (mollet, arrière de cuisse, bras).
 const COACH_PROTOCOL={calf:'achilles',hamstring:'hamstring',quad:'knee-pfp',arm:'elbow'};
-const ptCoachPains=c=>c.zones.map(z=>({region:ptCoachRegion(z),severity:c.painLevel,protocol:COACH_PROTOCOL[z]||''}));
+const ptCoachPains=(c,plan)=>c.zones.map(z=>{const region=ptCoachRegion(z),RW=window.RehabWarmup,chosen=plan?.rehabProtocol&&RW?.byId(plan.rehabProtocol);return {region,severity:c.painLevel,protocol:chosen&&RW.zoneOfRegion[region]===chosen.zone?chosen.id:COACH_PROTOCOL[z]||''};});
 const ptCoachLabel=(list,v)=>list.find(o=>o.value===v)?.label||'';
 const ptCoachBlank=()=>({form:null,sleep:null,soreness:null,pain:null,zones:[],painLevel:3,redFlags:false,basketYesterday:null,basketIntensity:null,basketSoon:null,minutes:30,note:''});
 // Une entrée enregistrée par une version précédente peut manquer de champs : on la complète avant tout affichage.
@@ -23,6 +23,18 @@ function ptCoachSummary(c){
   return `Bilan du jour : forme ${c.form}/5 (${ptCoachLabel(COACH_FORM,c.form)}) ; sommeil ${sleep} ; courbatures ${sore} ; douleur : ${pain} ; basket hier : ${yesterday} ; basket prévu : ${soon} ; temps dispo ${c.minutes} min.${c.note.trim()?` Note : ${c.note.trim()}`:''}`;
 }
 
+// Semaine commune (club déclaré, séances de l'app) et conseil du jour calculé par l'app.
+function ptCoachWeek(data){
+  const TL=window.TrainingLoad;if(!TL)return null;
+  const d=TL.day(data),names=['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche'];
+  return {advice:d.primary,protectLegs:d.protectLegs,notes:d.notes,appSessions7d:d.appWeek,clubDays7d:d.clubWeek,weeklyTarget:d.target,next7:TL.week(data).map(x=>({day:names[x.weekday],match:x.match,practice:x.practice}))};
+}
+function ptCoachMuscu(data){
+  const PP=window.PersonalPrograms,p=data.program;
+  if(!PP||!p||p.status!=='active')return null;
+  const pr=PP.progressOf(p),f=PP.familyById(p.familyId);
+  return {program:f?.label,week:`${pr.currentWeek}/${p.weeks}`,nextSession:f?.days.find(d=>d.key===pr.nextDay)?.name,sessionsPerWeek:p.days.length};
+}
 // Ce que le coach doit savoir : profil, parcours, séance prévue, 14 derniers jours de l'app et du club.
 function ptCoachContext(data){
   const today=PT.dateKey(),BP=window.BasketPathway,JP=window.PlayerProfile,p=data.pathway;
@@ -37,14 +49,21 @@ function ptCoachContext(data){
     recentSessions:data.sessions.filter(s=>PT.dayDiff(today,s.date)>=0&&PT.dayDiff(today,s.date)<=14).sort((a,b)=>b.date.localeCompare(a.date)).map(s=>({daysAgo:PT.dayDiff(today,s.date),title:s.title,type:s.source,minutes:Math.round(s.minutes),effort:s.effort||null,partial:!!s.partial,painAfter:s.painAfter??null,exercises:(s.exercises||[]).slice(0,10).map(e=>e.name)})),
     basketEvents:data.events.filter(e=>Math.abs(PT.dayDiff(today,e.date))<=3).map(e=>({daysFromToday:-PT.dayDiff(today,e.date),title:e.title,type:e.type,done:!!e.completed})),
     activePains:PT.activeSymptoms(data).map(s=>({zone:PT.regions[s.region],severity:s.severity})),
-    previousCheckins:(data.coachLog||[]).slice(-6).map(x=>({date:x.date,form:x.checkin?.form,decision:x.plan?.decision,applied:!!x.applied}))
+    previousCheckins:(data.coachLog||[]).slice(-6).map(x=>({date:x.date,form:x.checkin?.form,decision:x.plan?.decision,applied:!!x.applied})),
+    court:window.BasketProfile?.summary(data.basketProfile)||null,
+    week:ptCoachWeek(data),
+    muscu:ptCoachMuscu(data),
+    care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.LEVELS[level]||level}))
   };
 }
 
 // Repli hors connexion : mêmes principes que le coach, en règles simples.
-function ptCoachLocal(c){
+function ptCoachLocal(c,data){
   const regions=c.pain==='yes'?[...new Set(c.zones.map(ptCoachRegion))]:[];
-  const plan={decision:'normal',intensity:'normal',setsFactor:1,restFactor:1,minutes:c.minutes,avoidRegions:regions,avoidImpact:false,rehabRegion:'',why:''};
+  // Parcours ou muscu : la charge commune de la semaine tranche ; un match proche envoie vers la muscu (haut du corps).
+  const day=data&&window.TrainingLoad?window.TrainingLoad.day(data):null,hasMuscu=data?.program?.status==='active';
+  const target=hasMuscu&&(day?.primary==='muscu'||c.basketSoon!=='none')?'muscu':'pathway';
+  const plan={decision:'normal',intensity:'normal',setsFactor:1,restFactor:1,minutes:c.minutes,avoidRegions:regions,avoidImpact:false,rehabRegion:'',rehabProtocol:'',target,why:''};
   const tired=c.form<=2||c.sleep==='bad'||c.soreness==='strong'||(c.basketYesterday!=='none'&&c.basketIntensity==='hard');
   if(c.pain==='yes'&&(c.painLevel>=7||c.redFlags))Object.assign(plan,{decision:'rest',why:'Douleur forte ou signe inhabituel.'});
   else if(c.pain==='yes'&&c.painLevel>=4)Object.assign(plan,{decision:'rehab',rehabRegion:regions[0]||'',why:'Douleur modérée : le soin passe avant.'});
@@ -84,8 +103,10 @@ function ptCoachApply({data,update,go,notify},entry){
   let base;
   if(plan.decision==='mobility')base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,check.minutes)});
   else{
-    const BP=window.BasketPathway,p=data.pathway;
-    if(p&&BP){const step=BP.stepById(p.step),day=step.days.find(d=>d.key===BP.weekStatus(p).next);if(day)base=BP.sessionPlan(PT,JP,state,p,day.key,{minutes:check.minutes});}
+    const BP=window.BasketPathway,p=data.pathway,PP=window.PersonalPrograms,prog=data.program?.status==='active'?data.program:null;
+    // Le coach peut choisir la muscu (veille de match, parcours déjà fait…) : séance du programme, jambes protégées si besoin.
+    if(plan.target==='muscu'&&prog&&PP){const pr=PP.progressOf(prog);base=PP.sessionPlan(prog,pr.currentWeek,pr.nextDay,state,PP.checkFor(state,prog,{minutes:Math.min(prog.minutes,check.minutes),energy:check.energy}));}
+    if((!base||base.error)&&p&&BP){const step=BP.stepById(p.step),day=step.days.find(d=>d.key===BP.weekStatus(p).next);if(day)base=BP.sessionPlan(PT,JP,state,p,day.key,{minutes:check.minutes});}
     if((!base||base.error)&&data.player?.position&&JP)base=JP.dailyBody(PT,state,{minutes:check.minutes});
     if(!base||base.error)base=PT.generate(state,{...check,focus:'muscle'});
   }
@@ -102,7 +123,7 @@ function ptCoachApply({data,update,go,notify},entry){
   exercises=exercises.map(e=>e.pathwayRole==='soin'?e:({...e,sets:Math.max(1,Math.round(e.sets*(plan.setsFactor||1))),rest:Math.round((e.rest||60)*(plan.restFactor||1))}));
   // Douleurs du bilan coach pas encore soignées dans la séance : on ajoute leur protocole (calmer en tête, renforcer en fin).
   const covered=new Set(exercises.filter(e=>e.pathwayRole==='soin').map(e=>e.careRegion));
-  const pains=c.pain==='yes'&&!c.redFlags&&c.painLevel<7?ptCoachPains(c).filter(p=>!covered.has(p.region)):[];
+  const pains=c.pain==='yes'&&!c.redFlags&&c.painLevel<7?ptCoachPains(c,plan).filter(p=>!covered.has(p.region)):[];
   const care=RW&&pains.length?RW.careBlock(PT,JP,state,{pains,check,minutes:check.minutes,exclude:exercises.map(e=>e.id)}):null;
   if(care&&(care.head.length||care.tail.length)){
     exercises=RW.withCare(exercises,care);
@@ -136,7 +157,7 @@ function PTCoach({data,update,go,notify}){
     setBusy(true);setError('');
     const messages=[{role:'user',text:ptCoachSummary(c)}];
     let answer;
-    try{answer=await ptCoachAsk(data,messages);}catch(e){if(e.config)setError(e.message);answer=ptCoachLocal(c);}
+    try{answer=await ptCoachAsk(data,messages);}catch(e){if(e.config)setError(e.message);answer=ptCoachLocal(c,data);}
     const plan=ptCoachGuard(answer.plan,c);
     const item={id:PT.uid(),date:PT.dateKey(),checkin:c,plan,offline:!!answer.offline,messages:[...messages,{role:'coach',text:answer.message,questions:answer.questions||[]}],applied:false};
     save(log=>[...log.filter(x=>x.date!==item.date),item]);setRedo(false);setBusy(false);

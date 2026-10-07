@@ -67,6 +67,12 @@ function PTTodayPlan({
     };
   }
   const ready = next && !next.plan.error;
+  const PPR = window.PersonalPrograms,
+    prog = data.program && data.program.status === 'active' ? data.program : null;
+  const muscu = PPR && prog ? {
+    progress: PPR.progressOf(prog),
+    family: PPR.familyById(prog.familyId)
+  } : null;
   const RW = window.RehabWarmup;
   const actions = {
     symptoms: ['Faire le point', () => go('symptoms')],
@@ -81,7 +87,9 @@ function PTTodayPlan({
     session: [plan.kind === 'light' ? 'Séance légère · 20 min' : 'Préparer ma séance', () => plan.kind !== 'light' && data.player?.position && JP ? launch(JP.dailyBody(PT, data, {
       minutes: 30
     })) : quick('muscle', plan.kind === 'light' ? 20 : 30)],
-    pathway: [ready ? 'Préparer ma séance' : 'Ouvrir mon parcours', () => ready ? launch(next.plan) : go('pathway')]
+    pathway: [ready ? 'Préparer ma séance' : 'Ouvrir mon parcours', () => ready ? launch(next.plan) : go('pathway')],
+    // Programme muscu : le check-in de forme du programme fixe la version du jour (jambes protégées si la semaine l'exige).
+    program: [muscu ? 'Préparer ma séance muscu' : 'Créer ma muscu', () => muscu ? go('program-checkin', `${muscu.progress.currentWeek}:${muscu.progress.nextDay}`) : go('program-new')]
   };
   const [label, run] = actions[plan.action] || actions.session;
   const showPathway = plan.action === 'pathway' && next;
@@ -92,7 +100,9 @@ function PTTodayPlan({
     className: "eyebrow"
   }, "Ta s\xE9ance du jour"), /*#__PURE__*/React.createElement("h2", {
     id: "today-plan-title"
-  }, showPathway ? next.day.name : plan.title), showPathway && /*#__PURE__*/React.createElement("p", {
+  }, showPathway ? next.day.name : plan.title), plan.action === 'program' && muscu && /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, muscu.family?.short, " \xB7 semaine ", muscu.progress.currentWeek, "/", prog.weeks, " \xB7 ", muscu.family?.days.find(d => d.key === muscu.progress.nextDay)?.name), showPathway && /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, "\xC9tape ", next.step.id, " \xB7 ", next.step.name, " \xB7 semaine ", next.status.week, ready ? ` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices` : ''), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
