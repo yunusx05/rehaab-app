@@ -341,6 +341,8 @@
     } else s.trash=[];
     if(s.programArchive!==undefined && s.programArchive!==null) assert(Array.isArray(s.programArchive) && s.programArchive.length<200,'Archive de programmes invalide.');
     else s.programArchive=[];
+    // Bilans du coach : simple journal, tronqué et nettoyé plutôt que rejeté.
+    s.coachLog=Array.isArray(s.coachLog)?s.coachLog.filter(x=>x && typeof x==='object' && typeof x.id==='string' && isoDay(x.date) && x.plan && typeof x.plan==='object' && Array.isArray(x.messages)).slice(-60):[];
     const globals=typeof globalThis!=='undefined'?globalThis:{};
     const programs=globals.PersonalPrograms||tryRequire('./personal-programs.js');
     if(programs) {

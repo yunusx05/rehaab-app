@@ -391,7 +391,10 @@ function PTDemo({
   return /*#__PURE__*/React.createElement("div", {
     className: "movement-demo"
   }, unavailable, /*#__PURE__*/React.createElement("div", {
-    className: `demo${!play ? ' paused' : ''}${frame === 1 ? ' show-end' : ''}`
+    className: `demo${!play ? ' paused' : ''}${frame === 1 ? ' show-end' : ''}${primary && media?.poster ? ' has-backdrop' : ''}`,
+    style: primary && media?.poster ? {
+      '--backdrop': `url(${media.poster})`
+    } : undefined
   }, primary ? /*#__PURE__*/React.createElement("video", {
     key: attempt,
     ref: video,
@@ -2225,7 +2228,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
     const screens = {
@@ -2249,7 +2252,8 @@ function PersonalApp() {
       'qi-review': PTQiReview,
       rehab: PTRehabQuiz,
       history: PTHistory,
-      profile: PTProfile
+      profile: PTProfile,
+      coach: PTCoach
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({
@@ -2293,6 +2297,10 @@ function PersonalApp() {
     id: 'pathway',
     label: 'Parcours',
     icon: 'weight'
+  }, {
+    id: 'coach',
+    label: 'Coach',
+    icon: 'spark'
   }, {
     id: 'qi',
     label: 'QI',
