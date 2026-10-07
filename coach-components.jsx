@@ -4,9 +4,15 @@ const COACH_ZONES=[{id:'knee',label:'Genou'},{id:'ankle',label:'Cheville / pied'
 const COACH_FORM=[{value:1,label:'Épuisé'},{value:2,label:'Fatigué'},{value:3,label:'Correct'},{value:4,label:'En forme'},{value:5,label:'Au top'}];
 const COACH_DECISIONS={normal:'Séance prévue',light:'Séance allégée',mobility:'Mobilité douce',rehab:'Soin de la zone',rest:'Repos'};
 const ptCoachRegion=id=>COACH_ZONES.find(z=>z.id===id)?.region||id;
+// Zone du bilan → protocole de soin le plus probable quand la zone le dit déjà (mollet, arrière de cuisse, bras).
+const COACH_PROTOCOL={calf:'achilles',hamstring:'hamstring',quad:'knee-pfp',arm:'elbow'};
+const ptCoachPains=c=>c.zones.map(z=>({region:ptCoachRegion(z),severity:c.painLevel,protocol:COACH_PROTOCOL[z]||''}));
 const ptCoachLabel=(list,v)=>list.find(o=>o.value===v)?.label||'';
 const ptCoachBlank=()=>({form:null,sleep:null,soreness:null,pain:null,zones:[],painLevel:3,redFlags:false,basketYesterday:null,basketIntensity:null,basketSoon:null,minutes:30,note:''});
-const ptCoachToday=data=>[...(data.coachLog||[])].reverse().find(x=>x.date===PT.dateKey());
+// Une entrée enregistrée par une version précédente peut manquer de champs : on la complète avant tout affichage.
+const ptCoachPlan=p=>({decision:'light',intensity:'reduced',setsFactor:1,restFactor:1,minutes:null,avoidImpact:false,rehabRegion:'',why:'',...(p||{}),avoidRegions:Array.isArray(p?.avoidRegions)?p.avoidRegions:[]});
+const ptCoachEntry=x=>x&&({...x,plan:ptCoachPlan(x.plan),checkin:{...ptCoachBlank(),...(x.checkin||{}),zones:Array.isArray(x.checkin?.zones)?x.checkin.zones:[]},messages:(Array.isArray(x.messages)?x.messages:[]).filter(m=>m&&typeof m.text==='string').map(m=>({...m,questions:Array.isArray(m.questions)?m.questions:[]}))});
+const ptCoachToday=data=>ptCoachEntry([...(data.coachLog||[])].reverse().find(x=>x.date===PT.dateKey()));
 
 // Bilan en une phrase lisible : c'est aussi le premier message envoyé au coach.
 function ptCoachSummary(c){
@@ -72,25 +78,40 @@ function ptCoachApply({data,update,go,notify},entry){
   const state={...data,checkIn:check};
   const mark=()=>update(s=>({...s,checkIn:check,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));
   if(plan.decision==='rest'){mark();notify('Repos aujourd’hui. Ton bilan est enregistré.');go('today');return;}
-  if(plan.decision==='rehab'){mark();const RW=window.RehabWarmup,region=plan.rehabRegion||plan.avoidRegions[0];go('rehab',RW&&region?RW.zoneOfRegion[region]:undefined);return;}
+  const RW=window.RehabWarmup,JP=window.PlayerProfile;
+  // Douleur vive (4/10 et plus) : le protocole de soin seul. En dessous : la séance continue, avec le soin intégré.
+  if(plan.decision==='rehab'&&!(c.pain==='yes'&&c.painLevel<4)){mark();const region=plan.rehabRegion||plan.avoidRegions[0];go('rehab',RW&&region?RW.zoneOfRegion[region]:undefined);return;}
   let base;
   if(plan.decision==='mobility')base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,check.minutes)});
   else{
-    const BP=window.BasketPathway,JP=window.PlayerProfile,p=data.pathway;
-    if(p&&BP){const step=BP.stepById(p.step),day=step.days.find(d=>d.key===BP.weekStatus(p).next);if(day)base=BP.sessionPlan(PT,JP,state,p,day.key);}
+    const BP=window.BasketPathway,p=data.pathway;
+    if(p&&BP){const step=BP.stepById(p.step),day=step.days.find(d=>d.key===BP.weekStatus(p).next);if(day)base=BP.sessionPlan(PT,JP,state,p,day.key,{minutes:check.minutes});}
     if((!base||base.error)&&data.player?.position&&JP)base=JP.dailyBody(PT,state,{minutes:check.minutes});
     if(!base||base.error)base=PT.generate(state,{...check,focus:'muscle'});
   }
   if(!base||base.error){notify(base?.error||'Aucune séance possible aujourd’hui.');return;}
   const avoid=new Set(plan.avoidRegions||[]);
-  let exercises=base.exercises.filter(e=>!(e.regions||[]).some(r=>avoid.has(r))&&!(plan.avoidImpact&&e.impact));
-  if(exercises.length<2&&plan.decision!=='mobility'){
+  // Le soin cible justement la zone épargnée : il échappe au filtre, le reste de la séance non.
+  const spared=e=>e.pathwayRole==='soin'||!(e.regions||[]).some(r=>avoid.has(r))&&!(plan.avoidImpact&&e.impact);
+  let exercises=base.exercises.filter(spared);
+  if(exercises.filter(e=>e.pathwayRole!=='soin').length<2&&plan.decision!=='mobility'){
     const mobility=PT.generate(state,{...check,focus:'mobility',minutes:15});
     if(mobility.error){notify('Trop de zones à épargner : repos ou soin aujourd’hui.');return;}
-    base=mobility;exercises=mobility.exercises.filter(e=>!(e.regions||[]).some(r=>avoid.has(r)));
+    base=mobility;exercises=[...exercises.filter(e=>e.pathwayRole==='soin'),...mobility.exercises.filter(e=>!(e.regions||[]).some(r=>avoid.has(r)))];
   }
-  exercises=exercises.map(e=>({...e,sets:Math.max(1,Math.round(e.sets*(plan.setsFactor||1))),rest:Math.round((e.rest||60)*(plan.restFactor||1))}));
-  const draft={...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons:[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(base.reasons||[])]};
+  exercises=exercises.map(e=>e.pathwayRole==='soin'?e:({...e,sets:Math.max(1,Math.round(e.sets*(plan.setsFactor||1))),rest:Math.round((e.rest||60)*(plan.restFactor||1))}));
+  // Douleurs du bilan coach pas encore soignées dans la séance : on ajoute leur protocole (calmer en tête, renforcer en fin).
+  const covered=new Set(exercises.filter(e=>e.pathwayRole==='soin').map(e=>e.careRegion));
+  const pains=c.pain==='yes'&&!c.redFlags&&c.painLevel<7?ptCoachPains(c).filter(p=>!covered.has(p.region)):[];
+  const care=RW&&pains.length?RW.careBlock(PT,JP,state,{pains,check,minutes:check.minutes,exclude:exercises.map(e=>e.id)}):null;
+  if(care&&(care.head.length||care.tail.length)){
+    exercises=RW.withCare(exercises,care);
+    const main=()=>exercises.filter(e=>e.pathwayRole!=='soin'&&!e.pinned);
+    const total=()=>PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60;
+    while(total()>check.minutes*60&&main().length>2)exercises.splice(exercises.indexOf(main().pop()),1);
+  }
+  const reasons=[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(care?.note&&exercises.some(e=>e.pathwayRole==='soin')?[care.note]:[]),...(base.reasons||[])];
+  const draft={...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60)/60)};
   update(s=>({...s,checkIn:check,draft,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');
 }
 
@@ -135,9 +156,9 @@ function PTCoach({data,update,go,notify}){
     return <><PTPageHead eyebrow="Coach · bilan du jour" title="Ton plan du jour."/><div className="stack-lg">
       <div className="coach-thread" aria-live="polite">{entry.messages.map((m,i)=><div key={i} className={`bubble ${m.role}`}>{m.role==='user'&&i===0?<><small>Ton bilan</small>{m.text.replace(/^Bilan du jour : /,'')}</>:m.text}{m.questions?.length>0&&<ul>{m.questions.map(q=><li key={q}>{q}</li>)}</ul>}</div>)}</div>
       <section className={`coach-plan decision-${entry.plan.decision}`}><span className="eyebrow">Décision</span><h2>{COACH_DECISIONS[entry.plan.decision]}</h2><p className="fine">{entry.plan.why}</p>
-        <ul className="reason-list">{entry.plan.decision!=='rest'&&entry.plan.setsFactor<1&&<li>Séries réduites ({Math.round(entry.plan.setsFactor*100)} %)</li>}{entry.plan.restFactor>1&&<li>Repos allongé</li>}{entry.plan.avoidRegions.length>0&&<li>Zones épargnées : {entry.plan.avoidRegions.map(r=>PT.regions[r]).join(', ')}</li>}{entry.plan.avoidImpact&&<li>Pas de sauts ni d’impacts</li>}</ul>
+        <ul className="reason-list">{entry.plan.decision!=='rest'&&entry.plan.setsFactor<1&&<li>Séries réduites ({Math.round(entry.plan.setsFactor*100)} %)</li>}{entry.plan.restFactor>1&&<li>Repos allongé</li>}{entry.plan.avoidRegions.length>0&&<li>Zones épargnées : {entry.plan.avoidRegions.map(r=>PT.regions[r]).join(', ')}</li>}{entry.plan.avoidImpact&&<li>Pas de sauts ni d’impacts</li>}{!['rest','mobility'].includes(entry.plan.decision)&&entry.checkin.pain==='yes'&&!entry.checkin.redFlags&&entry.checkin.painLevel<(entry.plan.decision==='rehab'?4:7)&&<li>Soin intégré : on calme la zone en début de séance, on la renforce à la fin</li>}</ul>
         {entry.applied?<p className="fine">Appliqué à ta séance du jour.</p>:null}
-        <PTButton primary onClick={()=>ptCoachApply({data,update,go,notify},entry)}>{entry.plan.decision==='rest'?'OK, repos aujourd’hui':entry.plan.decision==='rehab'?'Ouvrir le soin':'Appliquer à ma séance'}<PTIcon name="arrow" size={18}/></PTButton>
+        <PTButton primary onClick={()=>ptCoachApply({data,update,go,notify},entry)}>{entry.plan.decision==='rest'?'OK, repos aujourd’hui':entry.plan.decision==='rehab'&&!(entry.checkin.pain==='yes'&&entry.checkin.painLevel<4)?'Ouvrir le soin':'Appliquer à ma séance'}<PTIcon name="arrow" size={18}/></PTButton>
         {entry.checkin.pain==='yes'&&<button className="text-button" onClick={()=>go('symptoms')}>Enregistrer cette douleur dans mon suivi →</button>}
       </section>
       {entry.offline?<p className="notice">Réponse hors ligne. Reconnecte-toi pour parler au coach.</p>:<div className="coach-input"><PTField label="Répondre au coach" value={draft} maxLength="600" onChange={e=>setDraft(e.target.value)} placeholder={last?.questions?.[0]||'Une précision, une question…'}/><PTButton disabled={busy||!draft.trim()} onClick={reply}>{busy?'Le coach réfléchit…':'Envoyer'}</PTButton></div>}

@@ -58,7 +58,8 @@ test('parcours avec bilan : point faible adapté à l’étape, bloc kiné, séc
     expect(plan.error,`${step.id}${day.key}`).toBeUndefined();
     expect(plan.exercises.filter(e=>!PT.allowed(e,d,plan.check)||!JP.tolerates(e,d.symptoms)).map(e=>e.id)).toEqual([]);
     expect(new Set(plan.exercises.map(e=>e.id)).size).toBe(plan.exercises.length);
-    expect(plan.exercises.some(e=>e.pathwayRole==='kiné')).toBe(true);
+    // Avec une douleur, le soin intégré tient la place du mouvement « douleur » du bloc kiné.
+    expect(plan.exercises.some(e=>['kiné','soin'].includes(e.pathwayRole))).toBe(true);
     if(step.id===1)expect(plan.exercises.filter(e=>e.impact&&!['landing','pogo'].includes(e.id)).map(e=>e.id)).toEqual([]);
     if(pains.length)expect(plan.exercises.some(e=>e.id==='reverse-nordic'||e.impact&&['knee','ankle'].includes(pains[0].region))).toBe(false);
   }

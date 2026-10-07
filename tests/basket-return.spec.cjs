@@ -199,8 +199,9 @@ test('douleur de hanche / aine : renforcement ciblé au lieu d’une séance vid
   const data=player({pains:[{region:'hip',severity:5},{region:'knee',severity:4}]});
   const plan=BP.sessionPlan(PT,JP,data,BP.create(),'A');
   expect(plan.exercises.length).toBeGreaterThanOrEqual(5);
-  expect(plan.exercises[0].id).toBe('adductor-squeeze');
-  expect(plan.exercises.every(e=>JP.tolerates(e,data.symptoms)&&PT.allowed(e,data,plan.check))).toBe(true);
+  // Le soin de la zone ouvre la séance ; hors soin, tout est toléré par la hanche et le genou.
+  expect(plan.exercises[0].pathwayRole).toBe('soin');
+  expect(plan.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>JP.tolerates(e,data.symptoms)&&PT.allowed(e,data,plan.check))).toBe(true);
   expect(plan.exercises.some(e=>['pigeon','cossack','hip-90-90','deep-squat-hold','bulgarian'].includes(e.id))).toBe(false);
   expect(new Set(plan.exercises.map(e=>e.id)).size).toBe(plan.exercises.length);
 });

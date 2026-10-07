@@ -71,10 +71,11 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/live-session.js"></script>
 <script src="compiled/rehab-components.js"></script>
 <script src="compiled/coach-components.js"></script>
+<script src="compiled/library-components.js"></script>
 <script src="compiled/personal-app.js"></script>
 <script>
 // Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
-window.REHAAB_VERSION='v41-videos';
+window.REHAAB_VERSION='v42-soin';
 if('serviceWorker' in navigator){window.addEventListener('load',function(){
   // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
   // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.

@@ -101,6 +101,7 @@
   }
   // Bilan athlétique facultatif : ses points faibles s'ajoutent aux qualités du poste et du profil de jeu.
   function athleticLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.AthleticProfile) return g.AthleticProfile;try{return typeof require==='function'?require('./athletic-profile.js'):null;}catch(e){return null;}}
+  function rehabLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.RehabWarmup) return g.RehabWarmup;try{return typeof require==='function'?require('./rehab-warmup.js'):null;}catch(e){return null;}}
   function priorities(player,athletic) {
     const total={};
     const add=q=>Object.entries(q||{}).forEach(([k,v])=>total[k]=(total[k]||0)+v);
@@ -140,9 +141,11 @@
     const pool=PT.allExercises(state).filter(usable);
     const athletic=state.athletic||null, AP=athletic&&athleticLib();
     const ranked=pool.filter(e=>e.kind==='strength').map(e=>({id:e.id,score:bonus(e,player,athletic)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
-    // Avec un bilan : bloc kiné complet (douleur, mobilité qui manque, tendons). Sans bilan : renforcement de la zone douloureuse seul.
-    const kine=AP?AP.kineBlock(state,{day:'all',available:id=>pool.some(e=>e.id===id),count:minutes>=30||!minutes?2:1,pains}):null;
-    const rehabIds=kine?kine.map(x=>x.id):rehabBlock(pains,id=>pool.some(e=>e.id===id),minutes>=30||!minutes?2:1);
+    // Douleur : le protocole de soin complet est ajouté après génération (calmer en tête, renforcer en fin).
+    const RW=pains.length?rehabLib():null;
+    // Avec un bilan : bloc kiné complet (mobilité qui manque, tendons ; la douleur passe par le soin). Sans bilan ni soin : renforcement de la zone douloureuse seul.
+    const kine=AP?AP.kineBlock(state,{day:'all',available:id=>pool.some(e=>e.id===id),count:minutes>=30||!minutes?2:1,pains:RW?[]:pains}):null;
+    const rehabIds=kine?kine.map(x=>x.id):RW?[]:rehabBlock(pains,id=>pool.some(e=>e.id===id),minutes>=30||!minutes?2:1);
     const wantsPower=['meneur','ailier','pivot'].includes(player.position)||(player.archetypes||[]).some(a=>['athlete','slasher','rebondeur'].includes(a));
     const power=pains.some(p=>['knee','ankle'].includes(p.region)) && wantsPower?hipPower.filter(id=>pool.some(e=>e.id===id)).slice(0,1):[];
     const pinned=rehabIds.concat(power).map(id=>PT.makePrescription(pool.find(e=>e.id===id),'classic',check.minutes,ctx));
@@ -153,6 +156,15 @@
     };
     const plan=PT.generate(shadow,check,{pinned,random});
     if(plan.error) return plan;
+    const care=RW?RW.careBlock(PT,{tolerates},state,{pains,check,minutes:check.minutes,exclude:plan.exercises.map(e=>e.id)}):null;
+    if(care&&(care.head.length||care.tail.length)){
+      plan.exercises=RW.withCare(plan.exercises,care);
+      const budget=(check.minutes||30)*60,main=()=>plan.exercises.filter(e=>e.pathwayRole!=='soin'&&!e.pinned);
+      const total=()=>(plan.warmupSeconds||0)+60+(['amrap','emom'].includes(plan.format)&&plan.blockSeconds?plan.blockSeconds:PT.estimateSeconds(plan.exercises,plan.format));
+      while(total()>budget&&main().length>2) plan.exercises.splice(plan.exercises.indexOf(main().pop()),1);
+      while(total()>budget&&plan.exercises.some(e=>e.sets>2)) {const e=[...plan.exercises].reverse().find(x=>x.sets>2);e.sets-=1;}
+      plan.estimatedMinutes=Math.ceil(total()/60);
+    }
     const top=priorities(player,athletic).slice(0,3).map(p=>p.label.toLowerCase());
     const reasons=[];
     if(positions[player.position]) reasons.push(`${positions[player.position].label} : priorité ${top.join(', ')}.`);
@@ -163,11 +175,12 @@
         ?`Douleur ${label} ${p.severity}/10 : seulement des mouvements peu chargés pour la zone, renforcement isométrique en tête.`
         :`Gêne ${label} ${p.severity}/10 : impacts et flexions profondes écartés, renforcement ciblé en tête.`);
     });
+    if(care&&care.note&&plan.exercises.some(e=>e.pathwayRole==='soin')) reasons.push(care.note);
     if(kine&&kine.some(x=>x.source!=='pain')) reasons.push(`Bloc kiné : ${[...new Set(kine.map(x=>x.why))].join(', ')}.`);
     if(plan.exercises.some(e=>power.includes(e.id)))
       reasons.push('Explosivité sans impact : montée rapide des hanches (swing, hip thrust) plutôt que des sauts, le temps que la zone se calme.');
     reasons.push('Arrête un mouvement qui réveille la douleur. Ce plan ne remplace pas l’avis d’un kiné.');
-    return {...plan,title:'Le corps',exercises:plan.exercises.map(e=>({...e,role:rehabIds.includes(e.id)?(kine&&kine.find(x=>x.id===e.id).source!=='pain'?'kine':'rehab'):'performance'})),reasons};
+    return {...plan,title:'Le corps',exercises:plan.exercises.map(e=>e.pathwayRole==='soin'?e:({...e,role:rehabIds.includes(e.id)?(kine&&kine.find(x=>x.id===e.id).source!=='pain'?'kine':'rehab'):'performance'})),reasons};
   }
 
   // Côté « Esprit » : thèmes de QI basket du jour, pondérés par poste puis profil.

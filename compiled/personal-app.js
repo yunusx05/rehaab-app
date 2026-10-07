@@ -1311,7 +1311,11 @@ function PTSymptoms({
     key: id,
     className: "choice",
     "aria-pressed": form.region === id,
-    onClick: () => set('region', id)
+    onClick: () => setForm(f => ({
+      ...f,
+      region: id,
+      protocol: ''
+    }))
   }, label))), /*#__PURE__*/React.createElement(PTChips, {
     value: form.side,
     onChange: v => set('side', v),
@@ -1328,7 +1332,18 @@ function PTSymptoms({
       value: 'center',
       label: 'Centre'
     }]
-  }), /*#__PURE__*/React.createElement(PTField, {
+  }), window.RehabWarmup && (window.RehabWarmup.where[window.RehabWarmup.zoneOfRegion[form.region]] || []).length > 1 && /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "O\xF9 pr\xE9cis\xE9ment ? Le soin int\xE9gr\xE9 \xE0 tes s\xE9ances suit ce choix."), /*#__PURE__*/React.createElement(PTChips, {
+    value: form.protocol || 'unknown',
+    onChange: v => set('protocol', v),
+    options: window.RehabWarmup.where[window.RehabWarmup.zoneOfRegion[form.region]].map(([value, label]) => ({
+      value,
+      label
+    }))
+  })), /*#__PURE__*/React.createElement(PTField, {
     label: `Intensité ressentie : ${form.severity} / 10`,
     hint: "Ce chiffre seul ne d\xE9termine pas si un exercice est s\xFBr."
   }, /*#__PURE__*/React.createElement("input", {
@@ -1867,6 +1882,14 @@ function PTProfile({
     size: 18
   })), /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go('library')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "book"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('symptoms')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "pain"
@@ -2108,29 +2131,52 @@ function PTAppVersion() {
     onClick: refresh
   }, checking ? 'Vérification…' : 'Chercher une mise à jour'));
 }
+// L'erreur est gardée (rh_last_error) et affichée : sans elle, impossible de savoir ce qui a cassé sur l'appareil.
+// Retour à l'accueil sans recharger : un rechargement dans un aperçu en iframe est bloqué par la politique du site.
 class PTErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false
+      error: null,
+      key: 0
     };
   }
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(error) {
     return {
-      error: true
+      error: String(error?.message || error || 'Erreur inconnue')
     };
+  }
+  componentDidCatch(error, info) {
+    try {
+      localStorage.setItem('rh_last_error', JSON.stringify({
+        message: String(error?.message || error),
+        stack: String(error?.stack || '').slice(0, 1500),
+        component: String(info?.componentStack || '').slice(0, 1500),
+        route: window.location.hash,
+        version: window.REHAAB_VERSION || '',
+        date: new Date().toISOString()
+      }));
+    } catch (e) {}
+    console.error('[Rehaab]', error);
   }
   render() {
     if (this.state.error) return /*#__PURE__*/React.createElement("div", {
       className: "loading"
-    }, /*#__PURE__*/React.createElement("strong", null, "Rehaab."), /*#__PURE__*/React.createElement("p", null, "L\u2019\xE9cran n\u2019a pas pu s\u2019ouvrir. Tes donn\xE9es locales n\u2019ont pas \xE9t\xE9 supprim\xE9es."), /*#__PURE__*/React.createElement("button", {
+    }, /*#__PURE__*/React.createElement("strong", null, "Rehaab."), /*#__PURE__*/React.createElement("p", null, "L\u2019\xE9cran n\u2019a pas pu s\u2019ouvrir. Tes donn\xE9es locales n\u2019ont pas \xE9t\xE9 supprim\xE9es."), /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, "D\xE9tail : ", this.state.error), /*#__PURE__*/React.createElement("button", {
       className: "btn",
       onClick: () => {
         window.location.hash = '#today';
-        window.location.reload();
+        this.setState(s => ({
+          error: null,
+          key: s.key + 1
+        }));
       }
-    }, "Recharger l\u2019application"));
-    return this.props.children;
+    }, "Revenir \xE0 l\u2019accueil"));
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: this.state.key
+    }, this.props.children);
   }
 }
 function PersonalApp() {
@@ -2228,7 +2274,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan', 'library'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
     const screens = {
@@ -2253,7 +2299,8 @@ function PersonalApp() {
       rehab: PTRehabQuiz,
       history: PTHistory,
       profile: PTProfile,
-      coach: PTCoach
+      coach: PTCoach,
+      library: PTLibrary
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

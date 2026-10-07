@@ -367,7 +367,9 @@ function PTSession({
       setError(finished.error);
       return;
     }
-    const session = draft.source === 'rehab' ? {
+    // Soin intégré à une autre séance : la douleur après (facultative) fait aussi progresser son protocole.
+    const cares = draft.source === 'rehab' ? [] : [...new Map(draft.exercises.filter(e => e.pathwayRole === 'soin' && e.careProtocol).map(e => [e.careProtocol, e.careLevel || 0])).entries()];
+    const session = draft.source === 'rehab' || cares.length && painAfter != null ? {
       ...finished,
       painAfter
     } : finished;
@@ -393,6 +395,21 @@ function PTSession({
         next.rehab = r.rehab;
         levelChange = r.change;
       }
+      if (RWL && cares.length && painAfter != null) {
+        let rehab = s.rehab;
+        cares.forEach(([protocolId, level]) => {
+          const r = RWL.record(rehab, {
+            protocolId,
+            level,
+            painAfter,
+            sessionId: session.id,
+            date: session.date
+          }, s.sessions);
+          rehab = r.rehab;
+          if (r.change) levelChange = r.change;
+        });
+        next.rehab = rehab;
+      }
       const BP = window.BasketPathway;
       if (BP && session.pathwayId && s.pathway && s.pathway.id === session.pathwayId && s.pathway.step === session.pathwayStep) next.pathway = BP.markCompleted(s.pathway, {
         step: session.pathwayStep,
@@ -404,6 +421,7 @@ function PTSession({
       });
       return next;
     });
+    if (cares.length && levelChange) setTimeout(() => notify(levelChange > 0 ? 'Soin bien toléré deux fois : il passe au niveau suivant.' : 'Douleur trop forte : le soin redescend d’un niveau.'), 0);
     if (RWL && ['rehab', 'warmup'].includes(session.source)) {
       const level = session.source !== 'rehab' ? '' : levelChange > 0 ? 'Bien toléré deux fois : prochain niveau débloqué. ' : levelChange < 0 ? 'Douleur trop forte : on redescend d’un niveau. ' : '';
       setTimeout(() => notify(`${level}Ta prochaine séance du parcours te proposera de retirer ce temps.`), 0);
@@ -478,6 +496,9 @@ function PTSession({
   }, /*#__PURE__*/React.createElement("span", null, "Tr\xE8s facile"), /*#__PURE__*/React.createElement("span", null, "Maximal")), effort && /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, Number(effort) >= 8 ? 'Bien reçu. Les prochaines propositions seront allégées.' : 'Bien reçu. Ce ressenti accompagnera tes résultats.')), draft.source === 'rehab' && typeof PTRehabPainAfter === 'function' && /*#__PURE__*/React.createElement(PTRehabPainAfter, {
+    value: painAfter,
+    onChange: setPainAfter
+  }), draft.source !== 'rehab' && draft.exercises.some(e => e.pathwayRole === 'soin') && typeof PTRehabPainAfter === 'function' && /*#__PURE__*/React.createElement(PTRehabPainAfter, {
     value: painAfter,
     onChange: setPainAfter
   }), /*#__PURE__*/React.createElement(PTChoices, {

@@ -107,7 +107,9 @@ function PTSession({data,update,go,notify}) {
     if(draft.source==='rehab'&&painAfter==null){setError('Indique ta douleur sur la zone, de 0 à 10.');return;}
     const finished=PT.finishDraft(draft,{effort:Number(effort),liked,notes});
     if(finished.error){setError(finished.error);return;}
-    const session=draft.source==='rehab'?{...finished,painAfter}:finished;
+    // Soin intégré à une autre séance : la douleur après (facultative) fait aussi progresser son protocole.
+    const cares=draft.source==='rehab'?[]:[...new Map(draft.exercises.filter(e=>e.pathwayRole==='soin'&&e.careProtocol).map(e=>[e.careProtocol,e.careLevel||0])).entries()];
+    const session=draft.source==='rehab'||(cares.length&&painAfter!=null)?{...finished,painAfter}:finished;
     const RWL=window.RehabWarmup;let levelChange=0;
     saved.current=true;
     // Une séance du parcours avance le suivi ; une séance libre ne touche jamais au parcours.
@@ -115,11 +117,13 @@ function PTSession({data,update,go,notify}) {
       const next={...s,sessions:s.sessions.some(x=>x.id===session.id)?s.sessions:[...s.sessions,session],draft:null};
       // Quick Rehab : la douleur après la séance règle le niveau du protocole.
       if(RWL&&session.source==='rehab'&&session.protocolId){const r=RWL.record(s.rehab,{protocolId:session.protocolId,level:session.rehabLevel,painAfter:session.painAfter,sessionId:session.id,date:session.date},s.sessions);next.rehab=r.rehab;levelChange=r.change;}
+      if(RWL&&cares.length&&painAfter!=null){let rehab=s.rehab;cares.forEach(([protocolId,level])=>{const r=RWL.record(rehab,{protocolId,level,painAfter,sessionId:session.id,date:session.date},s.sessions);rehab=r.rehab;if(r.change)levelChange=r.change;});next.rehab=rehab;}
       const BP=window.BasketPathway;
       if(BP&&session.pathwayId&&s.pathway&&s.pathway.id===session.pathwayId&&s.pathway.step===session.pathwayStep)
         next.pathway=BP.markCompleted(s.pathway,{step:session.pathwayStep,week:session.pathwayWeek,day:session.pathwayDay,sessionId:session.id,date:session.date,partial:session.partial});
       return next;
     });
+    if(cares.length&&levelChange)setTimeout(()=>notify(levelChange>0?'Soin bien toléré deux fois : il passe au niveau suivant.':'Douleur trop forte : le soin redescend d’un niveau.'),0);
     if(RWL&&['rehab','warmup'].includes(session.source)){const level=session.source!=='rehab'?'':levelChange>0?'Bien toléré deux fois : prochain niveau débloqué. ':levelChange<0?'Douleur trop forte : on redescend d’un niveau. ':'';setTimeout(()=>notify(`${level}Ta prochaine séance du parcours te proposera de retirer ce temps.`),0);}
     go('history',session.id);
   };
@@ -131,6 +135,7 @@ function PTSession({data,update,go,notify}) {
     <div className="stack-lg"><div className="finish-symbol"><PTIcon name="check" size={42}/></div><div className="stats-row"><div className="stat"><strong>{completed}</strong><small>séries validées</small></div><div className="stat"><strong>{timeLabel(elapsed)}</strong><small>temps réel</small></div><div className="stat"><strong>{completed<total?'Partiel':'Fait'}</strong><small>à ton rythme</small></div></div>
       <section className="effort-picker stack"><h2>C’était comment ?</h2><div className="effort-scale" role="group" aria-label="Effort global de 1 à 10">{[1,2,3,4,5,6,7,8,9,10].map(n=><button key={n} aria-label={`Effort ${n} sur 10`} aria-pressed={Number(effort)===n} onClick={()=>setEffort(String(n))}>{n}</button>)}</div><div className="topline caption"><span>Très facile</span><span>Maximal</span></div>{effort&&<p className="fine">{Number(effort)>=8?'Bien reçu. Les prochaines propositions seront allégées.':'Bien reçu. Ce ressenti accompagnera tes résultats.'}</p>}</section>
       {draft.source==='rehab'&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
+      {draft.source!=='rehab'&&draft.exercises.some(e=>e.pathwayRole==='soin')&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
       <PTChoices value={liked} onChange={setLiked} options={[{value:true,label:'À refaire',icon:'heart'},{value:false,label:'Autre chose',icon:'shuffle'}]}/>
       {['amrap','emom'].includes(draft.format)&&<div className="form-grid"><PTField label={draft.format==='amrap'?'Tours réalisés':'Minutes de travail validées'} type="number" min="0" value={draft.rounds||''} onChange={e=>setDraft(d=>({...d,rounds:e.target.value}))}/><PTField label="Reps supplémentaires" type="number" min="0" value={draft.extraReps||''} onChange={e=>setDraft(d=>({...d,extraReps:e.target.value}))}/></div>}
       <details className="disclosure"><summary>Ajouter une note</summary><PTField label="Pour la prochaine fois"><textarea maxLength="1000" value={notes} onChange={e=>setNotes(e.target.value)}/></PTField></details>

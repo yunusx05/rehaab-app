@@ -193,6 +193,7 @@
 
   // Module du bilan athlétique, facultatif : sans lui (ou sans bilan), les séances restent celles d'avant.
   function athleticLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.AthleticProfile) return g.AthleticProfile;try{return typeof require==='function'?require('./athletic-profile.js'):null;}catch(e){return null;}}
+  function rehabLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.RehabWarmup) return g.RehabWarmup;try{return typeof require==='function'?require('./rehab-warmup.js'):null;}catch(e){return null;}}
 
   // Résout une séance du parcours contre le catalogue réel : matériel, niveau, douleurs, poste, bilan athlétique.
   function sessionPlan(PT,PP,state,p,dayKey,{minutes}={}) {
@@ -240,24 +241,32 @@
         if(e){exercises.splice(Math.min(3,exercises.length),0,e);focusNote=`${focus.level===0?'Point faible':'Priorité'} de ton bilan · ${focus.label.toLowerCase()} : ${e.name}.`;break;}
       }
     }
+    // Soin de la zone douloureuse : protocole complet (calmer en tête, renforcer en fin) au lieu d'un seul mouvement.
+    const RW=pains.length?rehabLib():null;
+    const care=RW?RW.careBlock(PT,PP,state,{pains,check,minutes:minutes||60,exclude:exercises.map(e=>e.id)}):null;
+    const cared=!!(care&&(care.head.length||care.tail.length));
     // Bloc kiné en tête. Sans bilan : renforcement de la zone douloureuse seul, comme avant.
     let kineNote=null;
     if(athletic){
-      const items=AP.kineBlock(state,{step:step.id,day:day.key,pains,count:AP.kineCount(state,minutes),available:id=>usable(find(id))&&!exercises.some(x=>x.id===id),present:id=>exercises.some(x=>x.id===id)});
+      const items=AP.kineBlock(state,{step:step.id,day:day.key,pains:cared?[]:pains,count:AP.kineCount(state,minutes),available:id=>usable(find(id))&&!exercises.some(x=>x.id===id)&&!(cared&&[...care.head,...care.tail].some(x=>x.id===id)),present:id=>exercises.some(x=>x.id===id)});
       items.slice().reverse().forEach(x=>exercises.unshift({...PT.makePrescription(find(x.id),'classic',check.minutes,ctx),sets:x.source==='mobility'?2:3,pathwayRole:'kiné',kineSource:x.source,key:x.source==='pain'||x===items[0]}));
       if(items.length) kineNote=`Bloc kiné (${items.length} mouvement${items.length>1?'s':''}) : ${[...new Set(items.map(x=>x.why))].join(', ')}. Il ne remplace pas l’avis d’un kiné.`;
-    } else if(PP&&pains.length){
+    } else if(PP&&pains.length&&!cared){
       const rehabIds=PP.rehabBlock(pains,id=>usable(find(id))&&!exercises.some(x=>x.id===id),1);
       rehabIds.forEach(id=>{exercises.unshift({...PT.makePrescription(find(id),'classic',check.minutes,ctx),pathwayRole:'kiné',kineSource:'pain',key:true});changes.unshift(`${find(id).name} ajouté pour la zone signalée.`);});
     }
+    if(cared){const kept=RW.withCare(exercises,care);exercises.length=0;exercises.push(...kept);}
     if(!exercises.length) return {error:'Aucun mouvement de cette séance n’est compatible aujourd’hui. Adapte ton matériel ou choisis une autre séance.'};
     const budget=minutes?minutes*60-360:Infinity;
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>!e.key)) exercises.splice(exercises.map(e=>e.key).lastIndexOf(false),1);
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>e.sets>2)) {const e=[...exercises].reverse().find(x=>x.sets>2);e.sets--;}
+    // Le soin prend du temps : c'est le travail secondaire qui sort, jamais le soin ni les trois premiers mouvements de la séance.
+    if(cared){const main=()=>exercises.filter(e=>e.pathwayRole!=='soin');while(PT.estimateSeconds(exercises,'classic')>budget&&main().length>3){const drop=main().slice(3).pop();exercises.splice(exercises.indexOf(drop),1);changes.push(`${drop.name} : retiré aujourd’hui pour laisser la place au soin.`);}}
     const deload=doseIndex(week,4)===3;
     const reasons=[`Étape ${step.id} · ${step.name}, semaine ${week}${week>step.minWeeks?' (consolidation)':''}.`];
     if(deload) reasons.push('Semaine allégée : moins de séries pour assimiler le travail.');
     if(player.position) reasons.push(`Variantes choisies pour ton poste (${PP?PP.positions[player.position]?.label:player.position}).`);
+    if(cared&&exercises.some(e=>e.pathwayRole==='soin')) reasons.push(care.note);
     if(kineNote&&exercises.some(e=>e.pathwayRole==='kiné')) reasons.push(kineNote);
     if(focusNote&&exercises.some(e=>['point faible','priorité'].includes(e.pathwayRole))) reasons.push(focusNote);
     if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');

@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v41-videos';
+const CACHE = 'rehaab-v42-soin';
 const PRECACHE = [
   './',
   './index.html',
@@ -26,6 +26,7 @@ const PRECACHE = [
   './rehab-warmup.js',
   './compiled/rehab-components.js',
   './compiled/coach-components.js',
+  './compiled/library-components.js',
   './vendor/gsap.min.js',
   './vendor/ScrollTrigger.min.js',
   './media/fonts/cabinet.css',

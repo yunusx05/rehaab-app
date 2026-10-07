@@ -26,6 +26,7 @@ function PTPathwayIntro({data,update,go}) {
       <PTButton primary onClick={() => update(s => ({...s, pathway: AP.seedPathwayTests(BP.create({startStep:start}), s.athletic)}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
       {(data.pathwayArchive || []).slice(-1).map(old => <button key={old.id} className="home-action" onClick={() => update(s => {const {stoppedAt, ...kept} = old; return {...s, pathway: BP.validatePathway(kept), pathwayArchive: (s.pathwayArchive || []).filter(x => x.id !== old.id)};})}><PTIcon name="refresh"/><span><strong>Reprendre mon parcours arrêté</strong><small>Étape {old.step} · {BP.stepById(old.step)?.name}, arrêté le {shortDate(old.stoppedAt)}</small></span><PTIcon name="arrow" size={18}/></button>)}
       <div className="home-options">
+        <button className="home-action" onClick={() => go('library')}><PTIcon name="book"/><span><strong>Tous les exercices</strong><small>{PT.allExercises(data).length} mouvements, filtrables par muscle, matériel et zone de soin.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={() => go('profile')}><PTIcon name="bench"/><span><strong>Mon matériel</strong><small>{data.owned.length} équipement{data.owned.length > 1 ? 's' : ''} · gilet lesté et disques slide disponibles.</small></span><PTIcon name="arrow" size={18}/></button>
       </div>
     </div></>;
@@ -96,6 +97,7 @@ function PTPathway({data,update,go,notify}) {
       <section className="stack"><h3>Gérer le parcours</h3>
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
+          <button className="home-action" onClick={() => go('library')}><PTIcon name="book"/><span><strong>Tous les exercices</strong><small>{PT.allExercises(data).length} mouvements, filtrables par muscle, matériel et zone de soin.</small></span><PTIcon name="arrow" size={18}/></button>
           <button className="home-action" onClick={() => go('player')}><PTIcon name="basket"/><span><strong>Mon profil joueur</strong><small>Poste, douleurs, matériel.</small></span><PTIcon name="arrow" size={18}/></button>
         </div>
         {stopping

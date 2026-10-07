@@ -247,6 +247,72 @@
     return {id:uid(),title:`Rehab · ${protocol.title}`,source:'rehab',protocolId:protocol.id,rehabLevel:level,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
+  // Protocole suivi pour une zone : l'endroit précisé dans le signalement, sinon le dernier fait dans l'app,
+  // sinon les déclencheurs. Genou sans précision : devant du genou (isométriques), la douleur la plus fréquente en sport de saut.
+  function protocolFor(state,pain) {
+    const zone=zoneOfRegion[pain.region];if(!zone) return null;
+    if(pain.protocol&&byId(pain.protocol)&&byId(pain.protocol).zone===zone) return byId(pain.protocol);
+    const log=(state.rehab&&state.rehab.log)||[];
+    const last=[...log].reverse().find(x=>byId(x.protocolId)&&byId(x.protocolId).zone===zone);
+    if(last) return byId(last.protocolId);
+    if(zone==='knee'&&!(pain.triggers||[]).length) return byId('knee-pfp');
+    return byId(guessProtocol(zone,pain.triggers||[]));
+  }
+  // Même règle que pick() : douleur 4+ = Calmer, 3 = Renforcer au plus, sinon le niveau atteint dans le protocole.
+  function careLevel(state,protocolId,severity) {
+    const saved=Number(state.rehab&&state.rehab.levels&&state.rehab.levels[protocolId]);
+    let level=Number.isFinite(saved)?saved:0;
+    if(severity>=4) level=0; else if(severity===3) level=Math.min(level,1);
+    return level;
+  }
+  // Soin intégré à une séance (parcours, séance du joueur, programme, coach) : on ne se contente plus d'écarter la zone.
+  // Calmer en tête (isométriques, charge légère), renforcer en fin. Rien au-delà de 6/10 ni avec un signe inhabituel.
+  // pains : [{region, severity, triggers?, redFlags?}] ; check : le check-in de la séance hôte ; exclude : ids déjà dans la séance.
+  function careBlock(PT,JP,state,{pains,check,minutes=45,exclude=[]}={}) {
+    const list=(pains||(state.symptoms||[]).filter(s=>s.active)).filter(p=>p&&zoneOfRegion[p.region]&&Number(p.severity)<7&&!p.redFlags)
+      .sort((a,b)=>Number(b.severity)-Number(a.severity));
+    const head=[],tail=[],used=new Set(exclude),done=new Set(),notes=[];
+    const cap=minutes&&minutes<=20?2:minutes&&minutes<=35?3:4;
+    const all=PT.allExercises(state);
+    for(const pain of list) {
+      if(head.length+tail.length>=cap) break;
+      const protocol=protocolFor(state,pain);
+      if(!protocol||done.has(protocol.id)) continue;
+      done.add(protocol.id);
+      const severity=Number(pain.severity)||0,level=careLevel(state,protocol.id,severity);
+      const hostCheck={...(check||state.checkIn),equipment:state.owned,focus:'mobility',format:'classic',date:today(),guided:level+1,rehabRegion:protocol.region};
+      const ctx=PT.context(state,hostCheck);
+      const others=list.filter(p=>p.region!==protocol.region);
+      const ok=x=>x&&!used.has(x.id)&&PT.allowed(x,state,hostCheck,ctx)&&(!JP||JP.tolerates(x,others));
+      const take=(slot,phase)=>{
+        if(head.length+tail.length>=cap) return false;
+        const s=Array.isArray(slot)?{ids:slot}:slot;
+        const e=s.ids.map(id=>all.find(y=>y.id===id)).find(ok);
+        if(!e) return false;
+        used.add(e.id);
+        const p={...PT.makePrescription(e,'classic',minutes||45,ctx),sets:Math.min(s.sets||3,phase==='calm'?5:3),rest:s.rest||Math.min(e.rest,45),role:'rehab',pathwayRole:'soin',carePhase:phase,careProtocol:protocol.id,careLevel:level,careRegion:protocol.region,key:true};
+        if(s.seconds) p.seconds=s.seconds;
+        if(s.min) {p.min=p.targetMin=s.min;p.max=p.targetMax=s.max||s.min;}
+        (phase==='calm'?head:tail).push(p);
+        return true;
+      };
+      // Calmer : le début du niveau 1 (2 mouvements si la douleur est encore vive, 1 sinon).
+      const calm=protocol.levels[0];
+      let n=0;for(const slot of calm){if(n>=(level===0?2:1))break;if(take(slot,'calm'))n++;}
+      // Renforcer : la suite du niveau atteint (au moins le niveau 1 « Calmer » quand la douleur est vive).
+      const strong=level===0?calm.slice(2):protocol.levels[level];
+      let m=0;for(const slot of strong){if(m>=2)break;if(take(slot,'strength'))m++;}
+      if(n||m) notes.push(`${protocol.title} · ${LEVELS[level].toLowerCase()}`);
+    }
+    return {head,tail,protocols:[...done],note:notes.length?`Soin intégré (${notes.join(' ; ')}) : on calme la zone en début de séance et on la renforce en fin. Douleur tolérée pendant l’effort : 2/10 au maximum. Ça ne remplace pas l’avis d’un kiné.`:null};
+  }
+  // Place le soin dans une liste d'exercices : calmer devant, renforcer derrière, sans doublon.
+  function withCare(exercises,care) {
+    if(!care||(!care.head.length&&!care.tail.length)) return exercises;
+    const ids=new Set([...care.head,...care.tail].map(e=>e.id));
+    return [...care.head,...exercises.filter(e=>!ids.has(e.id)),...care.tail];
+  }
+
   // Échauffements basket : structure SHRed / FIFA 11+ / RAMP (élever, mobiliser, activer, potentialiser).
   const warmups = [
     {id:'practice',title:'Avant entraînement',minutes:10,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm'],
@@ -341,5 +407,5 @@
     return {rehab:{levels:{...r.levels,[protocolId]:next},log:log.slice(-300)},level:next,change};
   }
 
-  return {LEVELS,levelHints,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,warmups,warmupPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
+  return {LEVELS,levelHints,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,protocolFor,careLevel,careBlock,withCare,warmups,warmupPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
 });

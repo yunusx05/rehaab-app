@@ -93,6 +93,14 @@ function PTPathwayIntro({
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go('library')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "book"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements, filtrables par muscle, mat\xE9riel et zone de soin.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('profile')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "bench"
@@ -291,6 +299,14 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "back"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('library')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "book"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements, filtrables par muscle, mat\xE9riel et zone de soin.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })), /*#__PURE__*/React.createElement("button", {
