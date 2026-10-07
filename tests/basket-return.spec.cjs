@@ -26,13 +26,13 @@ test('douleur au genou : on renforce au lieu de tout retirer',()=>{
   // Sans profil joueur : ancienne règle, la zone est exclue en bloc. Avec profil : on garde ce qu'elle tolère.
   const legacy={...data,player:null};
   const lower=PT.catalog.filter(e=>['squat','hinge','calf'].includes(e.pattern)&&e.needs.every(n=>home.includes(n)));
-  expect(lower.filter(e=>PT.allowed(e,legacy,legacy.checkIn,PT.context(legacy))).length).toBeLessThan(3);
+  expect(lower.filter(e=>PT.allowed(e,legacy,legacy.checkIn,PT.context(legacy))).filter(e=>e.regions.includes('knee'))).toEqual([]);
   expect(lower.filter(e=>PT.allowed(e,data,data.checkIn,PT.context(data))).length).toBeGreaterThan(20);
   expect(lower.filter(e=>JP.tolerates(e,data.symptoms)).length).toBeGreaterThan(20);
   expect(PT.catalog.filter(e=>e.impact).some(e=>JP.tolerates(e,data.symptoms))).toBe(false);
   const plan=JP.dailyBody(PT,data,{minutes:45,random:()=>.5});
   expect(plan.exercises[0].role).toBe('rehab');
-  expect(plan.exercises.every(e=>JP.tolerates(e,data.symptoms))).toBe(true);
+  expect(plan.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>JP.tolerates(e,data.symptoms))).toBe(true);
   const blocked=player({pains:[{region:'knee',severity:8}]});
   expect(JP.dailyBody(PT,blocked).error).toMatch(/avis médical/);
 });

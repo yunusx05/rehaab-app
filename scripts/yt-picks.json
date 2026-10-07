@@ -1669,5 +1669,192 @@
   "quality": 5,
   "size": 174731,
   "query": "standing calf raise on step heel drop"
+ },
+ "cossack-kb": {
+  "videoId": "fj8uShygQDU",
+  "duration": 19,
+  "title": "Goblet Cossack Squat",
+  "start": 8,
+  "seen": "kettlebell goblet cossack squat",
+  "quality": 5,
+  "size": 142709,
+  "query": "kettlebell goblet cossack squat demonstration"
+ },
+ "loaded-pigeon": {
+  "videoId": "pNBa49KZxn4",
+  "duration": 21,
+  "title": "Kettlebell \"Loaded Pigeon\" for Hip Mobility",
+  "start": 6,
+  "seen": "weighted pigeon stretch dumbbell hip mobility",
+  "quality": 4,
+  "size": 90246,
+  "query": "weighted pigeon stretch dumbbell hip mobility"
+ },
+ "atg-split-squat": {
+  "videoId": "ILOxJcrRagY",
+  "duration": 57,
+  "title": "ATG Split Squat",
+  "start": 26,
+  "seen": "ATG split squat",
+  "quality": 5,
+  "size": 123306,
+  "query": "ATG split squat knee over toe exercise demonstration"
+ },
+ "hip-90-90-liftoff": {
+  "videoId": "9CqHJFJhOOw",
+  "duration": 68,
+  "title": "90/90 w/Lift Off and Iso Hold - Hip Health and Stability",
+  "start": 45,
+  "seen": "90/90 hip lift off mobility drill",
+  "quality": 4,
+  "size": 147742,
+  "query": "90/90 hip lift off mobility drill"
+ },
+ "band-eversion": {
+  "rejected": [
+   "xfrncpP5ONQ",
+   "QFgPY6oJWcA",
+   "50YDq8_OA_w",
+   "wJXzCKIjaT4"
+  ]
+ },
+ "band-inversion": {
+  "videoId": "3O9RlKY_rZw",
+  "duration": 65,
+  "title": "Ankle Bands (PF/EV/INV/DF) - Exercise",
+  "start": 30,
+  "seen": "resistance band ankle inversion exercise",
+  "quality": 4,
+  "size": 84579,
+  "query": "resistance band ankle inversion exercise"
+ },
+ "shin-box": {
+  "videoId": "g1gpV1FkfQc",
+  "duration": 149,
+  "title": "Shin-Box Hip Mobility - The Right Way",
+  "start": 104,
+  "seen": "shin box hip mobility exercise",
+  "quality": 5,
+  "size": 126636,
+  "query": "shin box hip mobility exercise"
+ },
+ "sl-balance-perturb": {
+  "videoId": "Iz2EC1AeqmM",
+  "duration": 13,
+  "title": "Single leg stance with ball toss",
+  "start": 6,
+  "seen": "single leg balance ball toss ankle exercise",
+  "quality": 5,
+  "size": 128019,
+  "query": "single leg balance ball toss ankle exercise"
+ },
+ "star-hop-stick": {
+  "videoId": "O_kr45acXRQ",
+  "duration": 8,
+  "title": "Controlled Multi-Directional Single Leg Hopping",
+  "start": 1,
+  "seen": "single leg hop and stick multidirectional",
+  "quality": 5,
+  "size": 124118,
+  "query": "single leg hop and stick multidirectional"
+ },
+ "patrick-step-up": {
+  "videoId": "16AjEFQADvI",
+  "duration": 20,
+  "title": "How To Do A Patrick Step-up by ATG (Exercise Demonstration)",
+  "start": 8,
+  "seen": "patrick step up knee exercise",
+  "quality": 5,
+  "size": 131601,
+  "query": "patrick step up knee exercise"
+ },
+ "lateral-step-down": {
+  "videoId": "_r_vsI64pyw",
+  "duration": 20,
+  "title": "Lateral Step Down",
+  "start": 8,
+  "seen": "lateral step down knee exercise",
+  "quality": 5,
+  "size": 78251,
+  "query": "lateral step down knee exercise"
+ },
+ "bent-knee-calf": {
+  "videoId": "-XXAgK7rqGM",
+  "duration": 18,
+  "title": "Eccentric Bent Knee Calf Raises Soleus on a Step",
+  "start": 4,
+  "seen": "bent knee calf raise soleus raise standing",
+  "quality": 5,
+  "size": 87559,
+  "query": "bent knee calf raise soleus raise standing"
+ },
+ "srdl-row": {
+  "rejected": [
+   "lI8-igvsnVQ",
+   "Ejq_HWd3CIs",
+   "z6DHB9VNFuA",
+   "d_5V7WR2d-Y"
+  ]
+ },
+ "reverse-walk": {
+  "videoId": "BGoW1IQ4y2E",
+  "duration": 66,
+  "title": "Rebuild Your Knees With Backwards Walking & Tib Raises",
+  "start": 46,
+  "seen": "backward walking knee exercise",
+  "quality": 5,
+  "size": 301772,
+  "query": "backward walking knee exercise",
+  "refused": true
+ },
+ "side-lying-adduction": {
+  "videoId": "-X3sDsQ4QhI",
+  "duration": 13,
+  "title": "Side Lying Hip Adduction",
+  "start": 1,
+  "seen": "side lying hip adduction",
+  "quality": 5,
+  "size": 166016,
+  "query": "side lying hip adduction exercise"
+ },
+ "heel-walk": {
+  "videoId": "_d3DsL9UBZI",
+  "duration": 12,
+  "title": "Heel Walks | Shin",
+  "start": 2,
+  "seen": "heel walks exercise shin",
+  "quality": 5,
+  "size": 121149,
+  "query": "heel walks exercise shin"
+ },
+ "rdl-hold": {
+  "videoId": "-qtZ9shPGv4",
+  "duration": 36,
+  "title": "Isometric Dumbbell RDL",
+  "start": 15,
+  "seen": "romanian deadlift isometric hold bottom stretch dumbbells",
+  "quality": 5,
+  "size": 185802,
+  "query": "romanian deadlift isometric hold bottom stretch dumbbells"
+ },
+ "lateral-line-hops": {
+  "videoId": "2f4UOzRgHWA",
+  "duration": 25,
+  "title": "Basic Plyometrics to Improve Bone Health: Single Leg Lateral Line Hops",
+  "start": 4,
+  "seen": "single leg lateral line hops",
+  "quality": 5,
+  "size": 140736,
+  "query": "lateral line hops ankle plyometric"
+ },
+ "loaded-calf-stretch": {
+  "videoId": "t4FG2VQ_lGU",
+  "duration": 85,
+  "title": "Eccentric Achilles loading / stretching",
+  "start": 40,
+  "seen": "calf stretch on step heel drop hold",
+  "quality": 5,
+  "size": 66284,
+  "query": "calf stretch on step heel drop hold"
  }
 }

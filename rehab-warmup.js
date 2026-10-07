@@ -54,7 +54,7 @@
     {id:'knee-pfp',zone:'knee',region:'knee',title:'Devant du genou, autour de la rotule',short:'Escaliers, assis longtemps, squats',sources:['pfp','fifaBasket'],
       levels:[
         [['tke','wall-sit'],['clamshell','hip-abduction'],['single-bridge','bridge'],{ids:['wall-sit','iso-split'],sets:3,seconds:30},['side-plank']],
-        [['hip-abduction','monster-walk','clamshell'],['step-down','box-squat'],['box-squat','squat'],['tke'],['side-plank-full','side-plank']],
+        [['hip-abduction','monster-walk','clamshell'],['lateral-step-down','step-down','box-squat'],['patrick-step-up','box-squat','squat'],['tke'],['side-plank-full','side-plank']],
         [['split-squat','slider-reverse-lunge','step-down'],['step-down'],['single-leg-reach','single-leg-stand'],['lateral-bound-stick','single-leg-reach'],['monster-walk','hip-abduction']]
       ]},
     {id:'knee-control',zone:'knee',region:'knee',title:'Genou qui rentre à la réception',short:'Prévention des entorses du genou et du LCA',sources:['fifaBasket','fifa','shred'],
@@ -66,19 +66,19 @@
     {id:'ankle-sprain',zone:'foot',region:'ankle',title:'Entorse de cheville (récente ou à répétition)',short:'Torsion sur un pied, cheville qui lâche',sources:['mckeon','eils','plisky','ankleWarm'],
       levels:[
         [['ankle-alphabet','ankle-mob'],['seated-calf','calf-hold'],['tibialis'],['single-leg-stand','tandem-stand'],['foot-doming']],
-        [['single-leg-eyes','single-leg-stand'],['calf','single-calf'],['single-leg-reach'],['heel-toe-walk'],['tibialis']],
-        [['single-calf','calf'],['pogo','single-leg-reach'],['lateral-bound-stick','single-leg-eyes'],['single-hop-stick','heel-toe-walk'],['defensive-slide','lateral-shuffle']]
+        [['single-leg-eyes','single-leg-stand'],['calf','single-calf'],['band-eversion','single-leg-reach'],['sl-balance-perturb','heel-toe-walk'],['band-inversion','tibialis']],
+        [['single-calf','calf'],['pogo','single-leg-reach'],['star-hop-stick','lateral-bound-stick','single-leg-eyes'],['single-hop-stick','heel-toe-walk'],['defensive-slide','lateral-shuffle']]
       ]},
     {id:'ankle-stiff',zone:'foot',region:'ankle',title:'Cheville raide',short:'Genou qui n’avance pas au-dessus du pied',sources:['backman','ankleWarm'],
       levels:[
         [['ankle-mob'],['calf-stretch'],['ankle-alphabet'],['tibialis']],
-        [['ankle-mob'],['slant-squat','squat'],['calf','seated-calf'],['deep-squat-hold','calf-stretch']],
-        [['ankle-mob'],['single-calf','calf'],['pogo','calf'],['deep-squat-hold','calf-stretch']]
+        [['ankle-mob'],['slant-squat','squat'],['calf','seated-calf'],['loaded-calf-stretch','deep-squat-hold','calf-stretch']],
+        [['ankle-mob'],['single-calf','calf'],['pogo','calf'],['atg-split-squat','deep-squat-hold','calf-stretch']]
       ]},
     {id:'achilles',zone:'foot',region:'ankle',title:'Tendon d’Achille et mollet',short:'Derrière le talon, raide le matin',sources:['alfredson','silbernagel'],
       levels:[
         [{ids:['calf-hold','seated-calf'],sets:5,seconds:45,rest:60},['seated-calf'],['foot-doming','tibialis'],['tibialis']],
-        [{ids:['calf','seated-calf'],sets:3,min:12,max:15},{ids:['heel-drop-ecc','calf'],sets:3,min:12,max:15},['seated-calf'],['tibialis']],
+        [{ids:['calf','seated-calf'],sets:3,min:12,max:15},{ids:['heel-drop-ecc','calf'],sets:3,min:12,max:15},['bent-knee-calf','seated-calf'],['tibialis']],
         [['single-calf','vest-calf','calf'],['heel-drop-ecc'],['pogo','calf'],['single-pogo','single-calf']]
       ]},
     {id:'plantar',zone:'foot',region:'ankle',title:'Dessous du pied et talon',short:'Douleur au premier pas du matin',sources:['rathleff','silbernagel'],
@@ -90,12 +90,12 @@
     {id:'shin',zone:'foot',region:'ankle',title:'Tibia (périostite)',short:'Long de l’intérieur du tibia, en courant',sources:['ankleWarm','silbernagel'],
       levels:[
         [['tibialis'],['seated-calf'],['foot-doming'],['calf-hold']],
-        [['calf'],['tibialis'],['heel-toe-walk'],['single-leg-stand']],
+        [['calf'],['tibialis'],['heel-walk','heel-toe-walk'],['single-leg-stand']],
         [['single-calf','calf'],['tibialis'],['pogo','heel-toe-walk'],['single-leg-reach']]
       ]},
     {id:'groin',zone:'hip',region:'hip',title:'Aine et adducteurs',short:'Intérieur de cuisse, en changeant de direction',sources:['holmich','copenhagen'],
       levels:[
-        [{ids:['adductor-squeeze'],sets:5,seconds:20,rest:30},['bridge'],['side-plank'],['deadbug']],
+        [{ids:['adductor-squeeze'],sets:5,seconds:20,rest:30},['bridge'],['side-lying-adduction','side-plank'],['deadbug']],
         [['adductor-squeeze'],['copenhagen','side-plank'],['single-bridge'],['slider-adductor','side-plank-full'],['deadbug','bird-dog']],
         [['copenhagen','side-plank-full'],['slider-lateral-lunge','lateral-lunge'],['lateral-shuffle','monster-walk'],['lateral-bound-stick','single-leg-reach'],['crossover-start','defensive-slide']]
       ]},
@@ -114,7 +114,7 @@
     {id:'hamstring',zone:'hip',region:'hip',title:'Arrière de cuisse (ischios)',short:'Tiraillement en sprintant ou en se penchant',sources:['nordic','fifaBasket'],
       levels:[
         [{ids:['bridge','single-bridge'],sets:3,seconds:30},['active-slr'],['slider-ham-curl','single-bridge'],['bird-dog']],
-        [['nordic-assisted','slider-ham-curl','single-bridge'],['single-rdl','band-hinge'],['slider-ham-curl','single-bridge'],['active-slr']],
+        [['nordic-assisted','slider-ham-curl','single-bridge'],['single-rdl','band-hinge'],['slider-ham-curl','single-bridge'],['rdl-hold','active-slr']],
         [['nordic-assisted','slider-ham-curl'],['single-rdl'],['skip-a','a-march'],['accel-10','wall-drill']]
       ]},
     {id:'low-back',zone:'back',region:'back',title:'Bas du dos',short:'Après les contacts, les sauts ou assis longtemps',sources:['mcgill','fifa'],

@@ -2028,5 +2028,101 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/backpedal.webp",
     "credit": "YouTube · Tempo backpedal drill",
     "source": "https://www.youtube.com/watch?v=8H3CRZQTRY4&t=8s"
+  },
+  "cossack-kb": {
+    "video": "media/videos/yt/cossack-kb.mp4",
+    "poster": "media/videos/yt/cossack-kb.webp",
+    "credit": "YouTube · Goblet Cossack Squat",
+    "source": "https://www.youtube.com/watch?v=fj8uShygQDU&t=8s"
+  },
+  "loaded-pigeon": {
+    "video": "media/videos/yt/loaded-pigeon.mp4",
+    "poster": "media/videos/yt/loaded-pigeon.webp",
+    "credit": "YouTube · Kettlebell \"Loaded Pigeon\" for Hip Mobility",
+    "source": "https://www.youtube.com/watch?v=pNBa49KZxn4&t=6s"
+  },
+  "atg-split-squat": {
+    "video": "media/videos/yt/atg-split-squat.mp4",
+    "poster": "media/videos/yt/atg-split-squat.webp",
+    "credit": "YouTube · ATG Split Squat",
+    "source": "https://www.youtube.com/watch?v=ILOxJcrRagY&t=26s"
+  },
+  "hip-90-90-liftoff": {
+    "video": "media/videos/yt/hip-90-90-liftoff.mp4",
+    "poster": "media/videos/yt/hip-90-90-liftoff.webp",
+    "credit": "YouTube · 90/90 w/Lift Off and Iso Hold - Hip Health and Stability",
+    "source": "https://www.youtube.com/watch?v=9CqHJFJhOOw&t=45s"
+  },
+  "band-inversion": {
+    "video": "media/videos/yt/band-inversion.mp4",
+    "poster": "media/videos/yt/band-inversion.webp",
+    "credit": "YouTube · Ankle Bands (PF/EV/INV/DF) - Exercise",
+    "source": "https://www.youtube.com/watch?v=3O9RlKY_rZw&t=30s"
+  },
+  "shin-box": {
+    "video": "media/videos/yt/shin-box.mp4",
+    "poster": "media/videos/yt/shin-box.webp",
+    "credit": "YouTube · Shin-Box Hip Mobility - The Right Way",
+    "source": "https://www.youtube.com/watch?v=g1gpV1FkfQc&t=104s"
+  },
+  "sl-balance-perturb": {
+    "video": "media/videos/yt/sl-balance-perturb.mp4",
+    "poster": "media/videos/yt/sl-balance-perturb.webp",
+    "credit": "YouTube · Single leg stance with ball toss",
+    "source": "https://www.youtube.com/watch?v=Iz2EC1AeqmM&t=6s"
+  },
+  "star-hop-stick": {
+    "video": "media/videos/yt/star-hop-stick.mp4",
+    "poster": "media/videos/yt/star-hop-stick.webp",
+    "credit": "YouTube · Controlled Multi-Directional Single Leg Hopping",
+    "source": "https://www.youtube.com/watch?v=O_kr45acXRQ&t=1s"
+  },
+  "patrick-step-up": {
+    "video": "media/videos/yt/patrick-step-up.mp4",
+    "poster": "media/videos/yt/patrick-step-up.webp",
+    "credit": "YouTube · How To Do A Patrick Step-up by ATG (Exercise Demonstration)",
+    "source": "https://www.youtube.com/watch?v=16AjEFQADvI&t=8s"
+  },
+  "lateral-step-down": {
+    "video": "media/videos/yt/lateral-step-down.mp4",
+    "poster": "media/videos/yt/lateral-step-down.webp",
+    "credit": "YouTube · Lateral Step Down",
+    "source": "https://www.youtube.com/watch?v=_r_vsI64pyw&t=8s"
+  },
+  "bent-knee-calf": {
+    "video": "media/videos/yt/bent-knee-calf.mp4",
+    "poster": "media/videos/yt/bent-knee-calf.webp",
+    "credit": "YouTube · Eccentric Bent Knee Calf Raises Soleus on a Step",
+    "source": "https://www.youtube.com/watch?v=-XXAgK7rqGM&t=4s"
+  },
+  "side-lying-adduction": {
+    "video": "media/videos/yt/side-lying-adduction.mp4",
+    "poster": "media/videos/yt/side-lying-adduction.webp",
+    "credit": "YouTube · Side Lying Hip Adduction",
+    "source": "https://www.youtube.com/watch?v=-X3sDsQ4QhI&t=1s"
+  },
+  "heel-walk": {
+    "video": "media/videos/yt/heel-walk.mp4",
+    "poster": "media/videos/yt/heel-walk.webp",
+    "credit": "YouTube · Heel Walks | Shin",
+    "source": "https://www.youtube.com/watch?v=_d3DsL9UBZI&t=2s"
+  },
+  "rdl-hold": {
+    "video": "media/videos/yt/rdl-hold.mp4",
+    "poster": "media/videos/yt/rdl-hold.webp",
+    "credit": "YouTube · Isometric Dumbbell RDL",
+    "source": "https://www.youtube.com/watch?v=-qtZ9shPGv4&t=15s"
+  },
+  "lateral-line-hops": {
+    "video": "media/videos/yt/lateral-line-hops.mp4",
+    "poster": "media/videos/yt/lateral-line-hops.webp",
+    "credit": "YouTube · Basic Plyometrics to Improve Bone Health: Single Leg Lateral Line Hops",
+    "source": "https://www.youtube.com/watch?v=2f4UOzRgHWA&t=4s"
+  },
+  "loaded-calf-stretch": {
+    "video": "media/videos/yt/loaded-calf-stretch.mp4",
+    "poster": "media/videos/yt/loaded-calf-stretch.webp",
+    "credit": "YouTube · Eccentric Achilles loading / stretching",
+    "source": "https://www.youtube.com/watch?v=t4FG2VQ_lGU&t=40s"
   }
 };
