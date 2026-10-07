@@ -2124,5 +2124,185 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/loaded-calf-stretch.webp",
     "credit": "YouTube · Eccentric Achilles loading / stretching",
     "source": "https://www.youtube.com/watch?v=t4FG2VQ_lGU&t=40s"
+  },
+  "sk-pound": {
+    "video": "media/videos/yt/sk-pound.mp4",
+    "poster": "media/videos/yt/sk-pound.webp",
+    "credit": "YouTube · Basketball Drill  Pound, In-N-Out, V-Dribble Between - Ball-Handling Mastery | Basketball Training",
+    "source": "https://www.youtube.com/watch?v=lS7k76k74VI&t=12s"
+  },
+  "sk-cross-stand": {
+    "video": "media/videos/yt/sk-cross-stand.mp4",
+    "poster": "media/videos/yt/sk-cross-stand.webp",
+    "credit": "YouTube · Stationary Crossover & Between the Legs (Beginner Dribble Moves)",
+    "source": "https://www.youtube.com/watch?v=h7s31K0kPh4&t=27s"
+  },
+  "sk-eyes-up": {
+    "video": "media/videos/yt/sk-eyes-up.mp4",
+    "poster": "media/videos/yt/sk-eyes-up.webp",
+    "credit": "YouTube · Basketball Heads Up Dribbling Drill",
+    "source": "https://www.youtube.com/watch?v=pv21L8RMJ_M&t=41s"
+  },
+  "sk-figure8": {
+    "video": "media/videos/yt/sk-figure8.mp4",
+    "poster": "media/videos/yt/sk-figure8.webp",
+    "credit": "YouTube · Figure 8 Dribble (Beginner Ball Handling)",
+    "source": "https://www.youtube.com/watch?v=-vafClV92A4&t=21s"
+  },
+  "sk-btl-stand": {
+    "video": "media/videos/yt/sk-btl-stand.mp4",
+    "poster": "media/videos/yt/sk-btl-stand.webp",
+    "credit": "YouTube · Stationary Crossover & Between the Legs (Beginner Dribble Moves)",
+    "source": "https://www.youtube.com/watch?v=h7s31K0kPh4&t=28s"
+  },
+  "sk-btb-stand": {
+    "video": "media/videos/yt/sk-btb-stand.mp4",
+    "poster": "media/videos/yt/sk-btb-stand.webp",
+    "credit": "YouTube · How to Dribble a Basketball BEHIND YOUR BACK [Step-By-Step For Beginners]",
+    "source": "https://www.youtube.com/watch?v=Ze9QKvjZxYQ&t=51s"
+  },
+  "sk-combo": {
+    "video": "media/videos/yt/sk-combo.mp4",
+    "poster": "media/videos/yt/sk-combo.webp",
+    "credit": "YouTube · BETWEEN THE LEGS BEHIND THE BACK DRILL",
+    "source": "https://www.youtube.com/watch?v=H8cUjRita3w&t=10s"
+  },
+  "sk-tennis": {
+    "video": "media/videos/yt/sk-tennis.mp4",
+    "poster": "media/videos/yt/sk-tennis.webp",
+    "credit": "YouTube · Basketball Drills - Tennis Ball Dribbling Variations",
+    "source": "https://www.youtube.com/watch?v=oT0evMvGTl4&t=9s"
+  },
+  "sk-pressure": {
+    "video": "media/videos/yt/sk-pressure.mp4",
+    "poster": "media/videos/yt/sk-pressure.webp",
+    "credit": "YouTube · How To Bring The Ball Up Court As A Point Guard! Effective Way To Handle Pressure!",
+    "source": "https://www.youtube.com/watch?v=qNFvxLgBbUQ&t=33s"
+  },
+  "sk-snatch": {
+    "video": "media/videos/yt/sk-snatch.mp4",
+    "poster": "media/videos/yt/sk-snatch.webp",
+    "credit": "YouTube · Snatchback Dribbling Drill Ball Handling | NBA Kobe Workout DWade Speed Streetball | Dre Baldwin",
+    "source": "https://www.youtube.com/watch?v=pwUDY1c8iQk&t=11s"
+  },
+  "sk-hesi-cross": {
+    "video": "media/videos/yt/sk-hesi-cross.mp4",
+    "poster": "media/videos/yt/sk-hesi-cross.webp",
+    "credit": "YouTube · NBA Crossover Drill: Step-By-Step Tutorial | Slow Motion Explanation & Tips | Dre Baldwin",
+    "source": "https://www.youtube.com/watch?v=fvXFeCAS3ds&t=3s"
+  },
+  "sk-zigzag": {
+    "video": "media/videos/yt/sk-zigzag.mp4",
+    "poster": "media/videos/yt/sk-zigzag.webp",
+    "credit": "YouTube · Full Court Zig Zag Slides",
+    "source": "https://www.youtube.com/watch?v=NPBXuAd9JQs&t=4s"
+  },
+  "sk-form": {
+    "video": "media/videos/yt/sk-form.mp4",
+    "poster": "media/videos/yt/sk-form.webp",
+    "credit": "YouTube · One Hand Form Shot | Basketball Drills",
+    "source": "https://www.youtube.com/watch?v=Z60IxHevLAs&t=36s"
+  },
+  "sk-spin": {
+    "video": "media/videos/yt/sk-spin.mp4",
+    "poster": "media/videos/yt/sk-spin.webp",
+    "credit": "YouTube · How To Perfect the Spin Move: Basketball Moves Mastery",
+    "source": "https://www.youtube.com/watch?v=Ug3uvtnC8KI&t=283s"
+  },
+  "sk-relocate": {
+    "video": "media/videos/yt/sk-relocate.mp4",
+    "poster": "media/videos/yt/sk-relocate.webp",
+    "credit": "YouTube · NBA Shooting Drills: Relocation with John Townsend",
+    "source": "https://www.youtube.com/watch?v=u26gG3oAXKo&t=169s"
+  },
+  "sk-stepback": {
+    "video": "media/videos/yt/sk-stepback.mp4",
+    "poster": "media/videos/yt/sk-stepback.webp",
+    "credit": "YouTube · 4 UNSTOPPABLE Step Back Moves for INSANE Separation | Basketball Shooting Tips",
+    "source": "https://www.youtube.com/watch?v=eSER3JvKb1g&t=133s"
+  },
+  "sk-sidestep": {
+    "video": "media/videos/yt/sk-sidestep.mp4",
+    "poster": "media/videos/yt/sk-sidestep.webp",
+    "credit": "YouTube · How To Dribble Side-Step Tutorial - Basketball Skills and Drills",
+    "source": "https://www.youtube.com/watch?v=4FGgYiZpj6A&t=40s"
+  },
+  "sk-pullup-speed": {
+    "video": "media/videos/yt/sk-pullup-speed.mp4",
+    "poster": "media/videos/yt/sk-pullup-speed.webp",
+    "credit": "YouTube · Pull-up Jumper Drill improve your shot!",
+    "source": "https://www.youtube.com/watch?v=HzIha-nTHw4&t=15s"
+  },
+  "sk-mikan": {
+    "video": "media/videos/yt/sk-mikan.mp4",
+    "poster": "media/videos/yt/sk-mikan.webp",
+    "credit": "YouTube · Quick & Easy Introduction To The Mikan Drill For Beginners",
+    "source": "https://www.youtube.com/watch?v=_VcY9M49JAs&t=38s"
+  },
+  "sk-wall-shot": {
+    "video": "media/videos/yt/sk-wall-shot.mp4",
+    "poster": "media/videos/yt/sk-wall-shot.webp",
+    "credit": "YouTube · Best Shooting Drills WITHOUT a Hoop | Basketball Shooting Drills for Kids",
+    "source": "https://www.youtube.com/watch?v=OxdVkiKLKIE&t=39s"
+  },
+  "sk-lying-form": {
+    "video": "media/videos/yt/sk-lying-form.mp4",
+    "poster": "media/videos/yt/sk-lying-form.webp",
+    "credit": "YouTube · NEVER do These Popular Basketball Shooting Drills | Basketball Shooting Drills for Beginners",
+    "source": "https://www.youtube.com/watch?v=5vZn2ZsNn0g&t=50s"
+  },
+  "sk-layup2": {
+    "video": "media/videos/yt/sk-layup2.mp4",
+    "poster": "media/videos/yt/sk-layup2.webp",
+    "credit": "YouTube · The Mikan Drill",
+    "source": "https://www.youtube.com/watch?v=CmFOj0nhUN8&t=9s"
+  },
+  "sk-power": {
+    "video": "media/videos/yt/sk-power.mp4",
+    "poster": "media/videos/yt/sk-power.webp",
+    "credit": "YouTube · Mikan Drill off 2 feet - Power reverse",
+    "source": "https://www.youtube.com/watch?v=AU8Ilz2iYEs&t=30s"
+  },
+  "sk-euro": {
+    "video": "media/videos/yt/sk-euro.mp4",
+    "poster": "media/videos/yt/sk-euro.webp",
+    "credit": "YouTube · MASTER The EURO STEP! NBA Skills Coach Finally Reveals His Step By Step Process",
+    "source": "https://www.youtube.com/watch?v=OPAp7Ro3Xk4&t=6s"
+  },
+  "sk-reverse": {
+    "video": "media/videos/yt/sk-reverse.mp4",
+    "poster": "media/videos/yt/sk-reverse.webp",
+    "credit": "YouTube · Baseline 2 Feet  Reverse Layup Right Hand | Basketball | Finishing | Playbook",
+    "source": "https://www.youtube.com/watch?v=I7F5ElUHdGI&t=1s"
+  },
+  "sk-contact": {
+    "video": "media/videos/yt/sk-contact.mp4",
+    "poster": "media/videos/yt/sk-contact.webp",
+    "credit": "YouTube · Finish Drill with Blocking Pad  ( BASKETBALL ) NO DAYS OFF - SEBASTIAN TEJADA",
+    "source": "https://www.youtube.com/watch?v=X4gLTAvPa44&t=30s"
+  },
+  "sk-jab": {
+    "video": "media/videos/yt/sk-jab.mp4",
+    "poster": "media/videos/yt/sk-jab.webp",
+    "credit": "YouTube · Triple Threat Step Through:Between the Legs Jab",
+    "source": "https://www.youtube.com/watch?v=q9PRy_gVlv8&t=3s"
+  },
+  "sk-rose": {
+    "video": "media/videos/yt/sk-rose.mp4",
+    "poster": "media/videos/yt/sk-rose.webp",
+    "credit": "YouTube · Basketball explosive layup drill with heavy ball",
+    "source": "https://www.youtube.com/watch?v=qFYecDIbwnY&t=71s"
+  },
+  "sk-pivots": {
+    "video": "media/videos/yt/sk-pivots.mp4",
+    "poster": "media/videos/yt/sk-pivots.webp",
+    "credit": "YouTube · How To Forward Pivot and Reverse Pivot For Basketball Players",
+    "source": "https://www.youtube.com/watch?v=nXSfqBcqRN4&t=21s"
+  },
+  "sk-shot-fake": {
+    "video": "media/videos/yt/sk-shot-fake.mp4",
+    "poster": "media/videos/yt/sk-shot-fake.webp",
+    "credit": "YouTube · Fundamentals Of The Shot Fake",
+    "source": "https://www.youtube.com/watch?v=Uv323KLwytA&t=58s"
   }
 };

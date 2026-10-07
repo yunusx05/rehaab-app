@@ -1856,5 +1856,444 @@
   "quality": 5,
   "size": 66284,
   "query": "calf stretch on step heel drop hold"
+ },
+ "sk-pound": {
+  "videoId": "lS7k76k74VI",
+  "duration": 19,
+  "title": "Basketball Drill  Pound, In-N-Out, V-Dribble Between - Ball-Handling Mastery | Basketball Training",
+  "start": 12,
+  "seen": "pound dribble drill basketball one hand",
+  "quality": 5,
+  "size": 123136,
+  "query": "pound dribble drill basketball one hand"
+ },
+ "sk-low-fast": {
+  "videoId": "o4d8IZqyZhc",
+  "duration": 238,
+  "title": "A Dribbling Drill that Promotes Staying Low! - Basketball 2016 #59",
+  "start": 103,
+  "seen": "low fast dribble drill basketball",
+  "quality": 5,
+  "size": 123773,
+  "query": "low fast dribble drill basketball",
+  "refused": true
+ },
+ "sk-cross-stand": {
+  "videoId": "h7s31K0kPh4",
+  "duration": 70,
+  "title": "Stationary Crossover & Between the Legs (Beginner Dribble Moves)",
+  "start": 27,
+  "seen": "stationary crossover dribble drill",
+  "quality": 5,
+  "size": 278180,
+  "query": "stationary crossover dribble drill"
+ },
+ "sk-100": {
+  "videoId": "K1vAmgLhfRw",
+  "duration": 337,
+  "title": "The Best 2 Ball Dribbling Drills (D1 Point Guard)",
+  "start": 65,
+  "seen": "basketball dribbling drill",
+  "quality": 5,
+  "size": 152427,
+  "query": "100 dribbles each hand basketball drill",
+  "refused": true
+ },
+ "sk-eyes-up": {
+  "videoId": "pv21L8RMJ_M",
+  "duration": 66,
+  "title": "Basketball Heads Up Dribbling Drill",
+  "start": 41,
+  "seen": "dribbling without looking at the ball drill eyes up",
+  "quality": 4,
+  "size": 114238,
+  "query": "dribbling without looking at the ball drill eyes up"
+ },
+ "sk-figure8": {
+  "videoId": "-vafClV92A4",
+  "duration": 57,
+  "title": "Figure 8 Dribble (Beginner Ball Handling)",
+  "start": 21,
+  "seen": "figure 8 ball handling drill around legs",
+  "quality": 5,
+  "size": 289810,
+  "query": "figure 8 ball handling drill around legs"
+ },
+ "sk-btl-stand": {
+  "videoId": "h7s31K0kPh4",
+  "duration": 70,
+  "title": "Stationary Crossover & Between the Legs (Beginner Dribble Moves)",
+  "start": 28,
+  "seen": "between the legs stationary dribble drill",
+  "quality": 5,
+  "size": 276174,
+  "query": "between the legs stationary dribble drill"
+ },
+ "sk-btb-stand": {
+  "videoId": "Ze9QKvjZxYQ",
+  "duration": 418,
+  "title": "How to Dribble a Basketball BEHIND YOUR BACK [Step-By-Step For Beginners]",
+  "start": 51,
+  "seen": "behind the back stationary dribble drill",
+  "quality": 5,
+  "size": 159304,
+  "query": "behind the back stationary dribble drill"
+ },
+ "sk-combo": {
+  "videoId": "H8cUjRita3w",
+  "duration": 30,
+  "title": "BETWEEN THE LEGS BEHIND THE BACK DRILL",
+  "start": 10,
+  "seen": "between the legs behind the back dribble drill",
+  "quality": 5,
+  "size": 108597,
+  "query": "crossover between the legs behind the back combo dribble drill"
+ },
+ "sk-tennis": {
+  "videoId": "oT0evMvGTl4",
+  "duration": 25,
+  "title": "Basketball Drills - Tennis Ball Dribbling Variations",
+  "start": 9,
+  "seen": "tennis ball dribble drill basketball",
+  "quality": 4,
+  "size": 338546,
+  "query": "tennis ball dribble drill basketball"
+ },
+ "sk-pressure": {
+  "videoId": "qNFvxLgBbUQ",
+  "duration": 51,
+  "title": "How To Bring The Ball Up Court As A Point Guard! Effective Way To Handle Pressure!",
+  "start": 33,
+  "seen": "dribbling under pressure drill basketball",
+  "quality": 5,
+  "size": 321094,
+  "query": "dribbling under pressure drill basketball"
+ },
+ "sk-weak-court": {
+  "rejected": [
+   "zmHcuu6ugeg",
+   "UCSg5eSnUfQ",
+   "yiUoBqtlCqg",
+   "Q9GhaXd18hE"
+  ]
+ },
+ "sk-snatch": {
+  "videoId": "pwUDY1c8iQk",
+  "duration": 32,
+  "title": "Snatchback Dribbling Drill Ball Handling | NBA Kobe Workout DWade Speed Streetball | Dre Baldwin",
+  "start": 11,
+  "seen": "snatch back dribble move drill",
+  "quality": 4,
+  "size": 167641,
+  "query": "snatch back dribble move drill"
+ },
+ "sk-hesi-cross": {
+  "videoId": "fvXFeCAS3ds",
+  "duration": 33,
+  "title": "NBA Crossover Drill: Step-By-Step Tutorial | Slow Motion Explanation & Tips | Dre Baldwin",
+  "start": 3,
+  "seen": "hesitation crossover drill basketball",
+  "quality": 4,
+  "size": 76827,
+  "query": "hesitation crossover drill basketball"
+ },
+ "sk-zigzag": {
+  "videoId": "NPBXuAd9JQs",
+  "duration": 19,
+  "title": "Full Court Zig Zag Slides",
+  "start": 4,
+  "seen": "zig zag dribble drill full court",
+  "quality": 5,
+  "size": 118121,
+  "query": "zig zag dribble drill full court"
+ },
+ "sk-form": {
+  "videoId": "Z60IxHevLAs",
+  "duration": 55,
+  "title": "One Hand Form Shot | Basketball Drills",
+  "start": 36,
+  "seen": "form shooting drill close to basket one hand",
+  "quality": 4,
+  "size": 183405,
+  "query": "form shooting drill close to basket one hand"
+ },
+ "sk-spin": {
+  "videoId": "Ug3uvtnC8KI",
+  "duration": 355,
+  "title": "How To Perfect the Spin Move: Basketball Moves Mastery",
+  "start": 283,
+  "seen": "spin move basketball drill",
+  "quality": 4,
+  "size": 172750,
+  "query": "spin move basketball drill"
+ },
+ "sk-ft": {
+  "rejected": [
+   "as2VcbjxIVg",
+   "-qySIh0H1Ug",
+   "L-FsEoMqZU8",
+   "00faEIjInkc"
+  ]
+ },
+ "sk-pullup1": {
+  "videoId": "JExhyUuVqVA",
+  "duration": 15,
+  "title": "1 Dribble Pull-ups",
+  "start": 7,
+  "seen": "one dribble pull up jumper drill",
+  "quality": 4,
+  "size": 262517,
+  "query": "one dribble pull up jumper drill",
+  "refused": true
+ },
+ "sk-catch-mid": {
+  "videoId": "jOQaGagaFZc",
+  "duration": 261,
+  "title": "Catch and Shoot [Mid-Range] (Team): Goalrilla G Trainer Basketball Drill",
+  "start": 15,
+  "seen": "catch and shoot mid range self pass drill",
+  "quality": 4,
+  "size": 198965,
+  "query": "catch and shoot mid range self pass drill",
+  "refused": true
+ },
+ "sk-catch-3": {
+  "videoId": "r6plGsE7gO0",
+  "duration": 51,
+  "title": "Shooting Drill for Catch & Shoot | HoopStudy Basketball",
+  "start": 35,
+  "seen": "catch and shoot three point drill",
+  "quality": 5,
+  "size": 202289,
+  "query": "catch and shoot three point drill",
+  "refused": true
+ },
+ "sk-relocate": {
+  "videoId": "u26gG3oAXKo",
+  "duration": 224,
+  "title": "NBA Shooting Drills: Relocation with John Townsend",
+  "start": 169,
+  "seen": "relocation shooting drill basketball",
+  "quality": 5,
+  "size": 172719,
+  "query": "relocation shooting drill basketball"
+ },
+ "sk-ft-tired": {
+  "rejected": [
+   "gHmoP7Rpogk",
+   "OcjmoZHUB4o",
+   "tb4KnoS8cXg",
+   "TXRGIMIFEls"
+  ]
+ },
+ "sk-stepback": {
+  "videoId": "eSER3JvKb1g",
+  "duration": 412,
+  "title": "4 UNSTOPPABLE Step Back Moves for INSANE Separation | Basketball Shooting Tips",
+  "start": 133,
+  "seen": "step back three drill",
+  "quality": 4,
+  "size": 231483,
+  "query": "step back three drill"
+ },
+ "sk-sidestep": {
+  "videoId": "4FGgYiZpj6A",
+  "duration": 82,
+  "title": "How To Dribble Side-Step Tutorial - Basketball Skills and Drills",
+  "start": 40,
+  "seen": "side step three pointer drill",
+  "quality": 5,
+  "size": 181572,
+  "query": "side step three pointer drill"
+ },
+ "sk-pullup-speed": {
+  "videoId": "HzIha-nTHw4",
+  "duration": 23,
+  "title": "Pull-up Jumper Drill improve your shot!",
+  "start": 15,
+  "seen": "game speed pull up jumper drill",
+  "quality": 5,
+  "size": 259728,
+  "query": "game speed pull up jumper drill"
+ },
+ "sk-around3": {
+  "rejected": [
+   "uNAOI7bYCVs",
+   "BmF18A8sytM",
+   "KCYAeuepnNw",
+   "t2ylGIvgvHE"
+  ]
+ },
+ "sk-mikan-rev": {
+  "rejected": []
+ },
+ "sk-mikan": {
+  "videoId": "_VcY9M49JAs",
+  "duration": 54,
+  "title": "Quick & Easy Introduction To The Mikan Drill For Beginners",
+  "start": 38,
+  "seen": "mikan drill basketball",
+  "quality": 5,
+  "size": 169882,
+  "query": "mikan drill basketball"
+ },
+ "sk-wall-shot": {
+  "videoId": "OxdVkiKLKIE",
+  "duration": 383,
+  "title": "Best Shooting Drills WITHOUT a Hoop | Basketball Shooting Drills for Kids",
+  "start": 39,
+  "seen": "wall shooting form drill basketball",
+  "quality": 5,
+  "size": 172525,
+  "query": "wall shooting form drill basketball"
+ },
+ "sk-lying-form": {
+  "videoId": "5vZn2ZsNn0g",
+  "duration": 310,
+  "title": "NEVER do These Popular Basketball Shooting Drills | Basketball Shooting Drills for Beginners",
+  "start": 50,
+  "seen": "lying down form shooting drill basketball",
+  "quality": 5,
+  "size": 251440,
+  "query": "lying down form shooting drill basketball"
+ },
+ "sk-layup2": {
+  "videoId": "CmFOj0nhUN8",
+  "duration": 21,
+  "title": "The Mikan Drill",
+  "start": 9,
+  "seen": "right hand left hand layup drill",
+  "quality": 5,
+  "size": 117125,
+  "query": "right hand left hand layup drill"
+ },
+ "sk-power": {
+  "videoId": "AU8Ilz2iYEs",
+  "duration": 42,
+  "title": "Mikan Drill off 2 feet - Power reverse",
+  "start": 30,
+  "seen": "power layup two feet drill",
+  "quality": 5,
+  "size": 146445,
+  "query": "power layup two feet drill"
+ },
+ "sk-floater": {
+  "videoId": "d2tpyrd2CtA",
+  "duration": 78,
+  "title": "Floater Drill | Basketball Handling Tutorials | Jr. NBA at Home",
+  "start": 33,
+  "seen": "floater drill basketball",
+  "quality": 4,
+  "size": 320357,
+  "query": "floater drill basketball",
+  "refused": true
+ },
+ "sk-weak-finish": {
+  "videoId": "n7RNBlG3seA",
+  "duration": 80,
+  "title": "SLAM x BODYARMOR Basketball Training Drills: Weak Hand Finishing",
+  "start": 20,
+  "seen": "weak hand finishing drill basketball",
+  "quality": 5,
+  "size": 122002,
+  "query": "weak hand finishing drill basketball",
+  "refused": true
+ },
+ "sk-euro": {
+  "videoId": "OPAp7Ro3Xk4",
+  "duration": 215,
+  "title": "MASTER The EURO STEP! NBA Skills Coach Finally Reveals His Step By Step Process",
+  "start": 6,
+  "seen": "euro step layup drill",
+  "quality": 5,
+  "size": 277832,
+  "query": "euro step layup drill"
+ },
+ "sk-reverse": {
+  "videoId": "I7F5ElUHdGI",
+  "duration": 31,
+  "title": "Baseline 2 Feet  Reverse Layup Right Hand | Basketball | Finishing | Playbook",
+  "start": 1,
+  "seen": "reverse layup drill baseline",
+  "quality": 5,
+  "size": 201176,
+  "query": "reverse layup drill baseline"
+ },
+ "sk-finish-feet": {
+  "rejected": [
+   "nhHYu_iZvHg",
+   "LHV1Yt4pcTo",
+   "hp6hO_iSzQU",
+   "OPAp7Ro3Xk4"
+  ]
+ },
+ "sk-contact": {
+  "videoId": "X4gLTAvPa44",
+  "duration": 62,
+  "title": "Finish Drill with Blocking Pad  ( BASKETBALL ) NO DAYS OFF - SEBASTIAN TEJADA",
+  "start": 30,
+  "seen": "finishing through contact pad drill basketball",
+  "quality": 4,
+  "size": 264781,
+  "query": "finishing through contact pad drill basketball"
+ },
+ "sk-jab": {
+  "videoId": "q9PRy_gVlv8",
+  "duration": 17,
+  "title": "Triple Threat Step Through:Between the Legs Jab",
+  "start": 3,
+  "seen": "jab step drill triple threat",
+  "quality": 5,
+  "size": 245881,
+  "query": "jab step drill triple threat"
+ },
+ "sk-rose": {
+  "videoId": "qFYecDIbwnY",
+  "duration": 115,
+  "title": "Basketball explosive layup drill with heavy ball",
+  "start": 71,
+  "seen": "explosive one foot finish layup drill",
+  "quality": 4,
+  "size": 185935,
+  "query": "explosive one foot finish layup drill"
+ },
+ "sk-pivots": {
+  "videoId": "nXSfqBcqRN4",
+  "duration": 71,
+  "title": "How To Forward Pivot and Reverse Pivot For Basketball Players",
+  "start": 21,
+  "seen": "front pivot reverse pivot drill basketball",
+  "quality": 5,
+  "size": 295992,
+  "query": "front pivot reverse pivot drill basketball"
+ },
+ "sk-shot-fake": {
+  "videoId": "Uv323KLwytA",
+  "duration": 72,
+  "title": "Fundamentals Of The Shot Fake",
+  "start": 58,
+  "seen": "shot fake and drive drill",
+  "quality": 5,
+  "size": 185584,
+  "query": "shot fake and drive drill"
+ },
+ "sk-jump-stop": {
+  "rejected": [
+   "v2Hyl6q6jwc",
+   "bscEcF95EA8",
+   "qan-CH6gYZo",
+   "rgeVFdKjmPA"
+  ]
+ },
+ "sk-rip": {
+  "videoId": "Pc89DY6_o1Y",
+  "duration": 12,
+  "title": "DRIVE Basketball Drills: Floater",
+  "start": 1,
+  "seen": "rip through drive drill basketball",
+  "quality": 4,
+  "size": 140586,
+  "query": "rip through drive drill basketball",
+  "refused": true
  }
 }

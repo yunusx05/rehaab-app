@@ -227,3 +227,14 @@ Demande : l'app évitait seulement les zones douloureuses au lieu de les soigner
 - **Démos** : 17 trouvées par Gemini sur 19, relues sur planche : 16 installées. Sans démo : `band-eversion`, `srdl-row` (rien de validé), `reverse-walk` (refusée à la relecture : plusieurs personnes, mouvement peu lisible).
 - Cache `rehaab-v44-gbg`. Tests : `care-block.spec.cjs`, `programs.spec.cjs` (restauré, sans nutrition), coach et bibliothèque ajoutés. Suite complète : 103 tests, au vert sauf des dépassements de délai isolés (tests longs qui passent seuls en ~5 s).
 - Rien n'a été déployé ni poussé.
+
+## Lot 11 (08/10/2026) : skills basket — branche `feature/soin-muscu-basket`
+Demande : programme de skills basket (dribble façon Kyrie, explosivité et finition façon Rose, tir façon Curry) avec questionnaire, paliers, séances seules et blocs reliés à la muscu et au footing ; un seul écosystème.
+
+- **Module** `basket-skills.js` (`BasketSkills`) : 4 domaines (maniement, tir, finition, appuis), 3 paliers, 17 points du questionnaire, tests de tir facultatifs (lancers /20, mi-distance /25) qui corrigent le palier du tir. 45 exercices `kind:'skill'`, hors du catalogue physique, visibles dans la bibliothèque (onglet Basket).
+- **Écrans** (`skills-components.jsx`) : routes `skills` (« Mes skills. ») et `skills-quiz` (« Où en es-tu ? »). Case « J'ai un panier aujourd'hui » (`skills.hoopDate`) : sans panier, aucun exercice au panier ; avec panier, tirs et lancers francs en fin de séance.
+- **Écosystème** : `SK.block` ajoute un bloc après la muscu haut du corps (maniement + tir), après le footing (finition) et après les jambes (sans sauts ni changements de direction). Rien les jours de club ou de match (`TrainingLoad.day().skills`). `todayPlan` propose une séance skills quand le physique est fait ou à éviter, jamais le jour de match. Le coach peut choisir `target:'skills'` (version légère si le corps doit récupérer).
+- **Progression** : tirs notés (réussis/tentés) et ressenti en fin de séance → `SK.record` : deux « facile » ou ≥ 70 % → palier suivant ; deux « dur » ou < 35 % → palier précédent.
+- **Démos** : 37 trouvées par Gemini sur 45, relues sur planche, 29 installées. Refusées à la relecture : `sk-100` (deux ballons), `sk-floater` (tir allongé au sol), `sk-rip` (montre un floater), `sk-catch-3`, `sk-catch-mid`, `sk-low-fast`, `sk-weak-finish`, `sk-pullup1` (plans de groupe, lointains ou sombres). Sans vidéo validée : `sk-weak-court`, `sk-ft`, `sk-ft-tired`, `sk-around3`, `sk-mikan-rev`, `sk-finish-feet`, `sk-jump-stop`.
+- Cache `rehaab-v46-skills-videos`. Tests : `skills.spec.cjs` (9). Suite complète : 112 réussis, 3 ignorés.
+- Rien n'a été déployé ni poussé.
