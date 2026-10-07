@@ -6,7 +6,7 @@ const dir=path.join(__dirname,'..','media','videos','yt');
 const ids=only.length?only:fs.readdirSync(dir).filter(f=>f.endsWith('.mp4')).map(f=>f.slice(0,-4)).sort();
 const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'sheet-'));
 const rows=ids.map((id,i)=>{const row=path.join(tmp,`${i}.png`);
-  execFileSync('ffmpeg',['-y','-loglevel','error','-i',path.join(dir,`${id}.mp4`),'-vf',`fps=1,scale=-2:150,pad=267:150:(ow-iw)/2:0:black,tile=6x1,pad=iw+220:ih:220:0:0x202020,drawtext=fontfile='C\\:/Windows/Fonts/arial.ttf':text='${id}':x=10:y=65:fontsize=22:fontcolor=white`,'-frames:v','1',row]);return row;});
+  execFileSync('ffmpeg',['-y','-loglevel','error','-i',path.join(dir,`${id}.mp4`),'-vf',`fps=1,scale=267:150:force_original_aspect_ratio=decrease,pad=267:150:(ow-iw)/2:(oh-ih)/2:black,tile=6x1,pad=iw+220:ih:220:0:0x202020,drawtext=fontfile='C\\:/Windows/Fonts/arial.ttf':text='${id}':x=10:y=65:fontsize=22:fontcolor=white`,'-frames:v','1',row]);return row;});
 const inputs=rows.flatMap(r=>['-i',r]);
 execFileSync('ffmpeg',['-y','-loglevel','error',...inputs,'-filter_complex',rows.length>1?`vstack=inputs=${rows.length}`:'null',outFile]);
 console.log(outFile);

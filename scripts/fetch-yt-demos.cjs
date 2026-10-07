@@ -18,7 +18,7 @@ const save=()=>fs.writeFileSync(picksFile,JSON.stringify(picks,null,1)+'\n');
 
 async function locate(id,videoId){
   const key=process.env.GEMINI_API_KEY;if(!key)throw new Error('GEMINI_API_KEY manquante');
-  const text=`Exercise expected: ${queries[id]}. Watch the video. Find the best ${CLIP}-second window where a person clearly and continuously performs THIS exact exercise (whole body visible, several repetitions, no talking head, no text-only screen, no slow motion). Answer JSON only: {"match":true|false,"start":seconds,"end":seconds,"exercise_seen":"short description","quality":1-5}. match=false if the exercise shown is a different one or a variation with different equipment, or if the person performing it is a woman (male performers only).`;
+  const text=`Exercise expected: ${queries[id]}. Watch the video. Find the best ${CLIP}-second window where a person clearly and continuously performs THIS exact exercise (whole body visible and large in the frame (at least half of the frame height, not a distant figure), several repetitions, no talking head, no text-only screen, no TV broadcast, no slow motion). Answer JSON only: {"match":true|false,"start":seconds,"end":seconds,"exercise_seen":"short description","quality":1-5}. match=false if the exercise shown is a different one or a variation with different equipment, or if any woman is visible anywhere in the window, including background people, posters or thumbnails (male performers only).`;
   const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${process.env.GEMINI_MODEL||'gemini-3.6-flash'}:generateContent?key=${key}`,{method:'POST',headers:{'content-type':'application/json'},
     body:JSON.stringify({contents:[{parts:[{file_data:{file_uri:`https://www.youtube.com/watch?v=${videoId}`}},{text}]}],generationConfig:{responseMimeType:'application/json',mediaResolution:'MEDIA_RESOLUTION_LOW'}})});
   const j=await res.json(),answer=j.candidates?.[0]?.content?.parts?.find(p=>p.text)?.text;
@@ -47,10 +47,11 @@ async function search(id){
 async function fetchClip(id,pick){
   const start=pick.start??0,src=path.join(raw,`${id}.mp4`);
   if(fs.existsSync(src))fs.unlinkSync(src);
-  await run('yt-dlp',['--no-warnings','--no-playlist','-f','bv*[height<=720][ext=mp4]/bv*[height<=720]/b[height<=720]','--download-sections',`*${start}-${start+CLIP+1}`,'--force-keyframes-at-cuts','--remux-video','mp4','-o',src,`https://www.youtube.com/watch?v=${pick.videoId}`]);
+  // Vidéo entière en 480p puis découpe locale : le téléchargement partiel de YouTube renvoie parfois un fichier sans image.
+  await run('yt-dlp',['--no-warnings','--no-playlist','-f','bv*[height<=480][ext=mp4]/bv*[height<=480]/b[height<=480]/b','--remux-video','mp4','-o',src,`https://www.youtube.com/watch?v=${pick.videoId}`]);
   const mp4=path.join(out,`${id}.mp4`),poster=path.join(out,`${id}.webp`);
   // Muet, 480 px sur le grand côté, images clés rapprochées pour une boucle sans saut.
-  await run('ffmpeg',['-y','-loglevel','error','-i',src,'-t',String(CLIP),'-an','-vf','scale=w=480:h=480:force_original_aspect_ratio=decrease:force_divisible_by=2,fps=30','-c:v','libx264','-profile:v','main','-preset','slow','-crf','28','-g','30','-pix_fmt','yuv420p','-movflags','+faststart',mp4]);
+  await run('ffmpeg',['-y','-loglevel','error','-ss',String(start),'-i',src,'-t',String(CLIP),'-an','-vf','scale=w=480:h=480:force_original_aspect_ratio=decrease:force_divisible_by=2,fps=30','-c:v','libx264','-profile:v','main','-preset','slow','-crf','28','-g','30','-pix_fmt','yuv420p','-movflags','+faststart',mp4]);
   await run('ffmpeg',['-y','-loglevel','error','-ss','2','-i',mp4,'-frames:v','1','-q:v','70',poster]);
   fs.unlinkSync(src);
   return {...pick,start,size:fs.statSync(mp4).size};
