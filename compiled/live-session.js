@@ -78,6 +78,7 @@ function PTSession({
     [liked, setLiked] = usePTState(null),
     [notes, setNotes] = usePTState(''),
     [painAfter, setPainAfter] = usePTState(null),
+    [skillRatings, setSkillRatings] = usePTState({}),
     [abandon, setAbandon] = usePTState(false);
   const wake = usePTRef(null),
     fired = usePTRef(new Set()),
@@ -374,7 +375,8 @@ function PTSession({
       painAfter
     } : finished;
     const RWL = window.RehabWarmup;
-    let levelChange = 0;
+    let levelChange = 0,
+      skillChanges = [];
     saved.current = true;
     // Une séance du parcours avance le suivi ; une séance libre ne touche jamais au parcours.
     update(s => {
@@ -419,6 +421,13 @@ function PTSession({
         date: session.date,
         partial: session.partial
       });
+      // Skills basket : tirs notés et ressenti font évoluer les paliers.
+      const SKL = window.BasketSkills;
+      if (SKL && session.exercises.some(e => e.skillArea)) {
+        const r = SKL.record(s.skills, session, skillRatings);
+        next.skills = r.skills;
+        skillChanges = r.changes;
+      }
       const BP = window.BasketPathway;
       if (BP && session.pathwayId && s.pathway && s.pathway.id === session.pathwayId && s.pathway.step === session.pathwayStep) next.pathway = BP.markCompleted(s.pathway, {
         step: session.pathwayStep,
@@ -430,6 +439,7 @@ function PTSession({
       });
       return next;
     });
+    if (skillChanges.length && window.BasketSkills) setTimeout(() => notify(skillChanges.map(c => `${window.BasketSkills.areas[c.area].short} : palier ${c.dir > 0 ? 'suivant débloqué' : 'précédent, on consolide'}`).join(' · ')), 0);
     if (cares.length && levelChange) setTimeout(() => notify(levelChange > 0 ? 'Soin bien toléré deux fois : il passe au niveau suivant.' : 'Douleur trop forte : le soin redescend d’un niveau.'), 0);
     if (RWL && ['rehab', 'warmup'].includes(session.source)) {
       const level = session.source !== 'rehab' ? '' : levelChange > 0 ? 'Bien toléré deux fois : prochain niveau débloqué. ' : levelChange < 0 ? 'Douleur trop forte : on redescend d’un niveau. ' : '';
@@ -510,6 +520,10 @@ function PTSession({
   }), draft.source !== 'rehab' && draft.exercises.some(e => e.pathwayRole === 'soin') && typeof PTRehabPainAfter === 'function' && /*#__PURE__*/React.createElement(PTRehabPainAfter, {
     value: painAfter,
     onChange: setPainAfter
+  }), typeof PTSkillsRating === 'function' && /*#__PURE__*/React.createElement(PTSkillsRating, {
+    draft: draft,
+    value: skillRatings,
+    onChange: setSkillRatings
   }), /*#__PURE__*/React.createElement(PTChoices, {
     value: liked,
     onChange: setLiked,

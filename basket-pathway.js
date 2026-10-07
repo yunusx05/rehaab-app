@@ -197,7 +197,18 @@
   function rehabLib() {const g=typeof globalThis!=='undefined'?globalThis:{};if(g.RehabWarmup) return g.RehabWarmup;try{return typeof require==='function'?require('./rehab-warmup.js'):null;}catch(e){return null;}}
 
   // Résout une séance du parcours contre le catalogue réel : matériel, niveau, douleurs, poste, bilan athlétique.
-  function sessionPlan(PT,PP,state,p,dayKey,{minutes}={}) {
+  // Bloc skills basket ajouté après la séance (programme skills actif), sauf jour de club ou de match.
+  function withSkills(PT,state,plan,date){
+    const g=typeof globalThis!=='undefined'?globalThis:{};
+    const lib=n=>g[n]||(()=>{try{return typeof require==='function'?require(n==='BasketSkills'?'./basket-skills.js':'./training-load.js'):null;}catch(e){return null;}})();
+    const SK=lib('BasketSkills'),TLs=lib('TrainingLoad');
+    if(!SK||!plan||plan.error||!state.skills) return plan;
+    const day=TLs?TLs.day(state,date):null;
+    if(day&&(day.club.today.any)) return plan;
+    return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date});
+  }
+  function sessionPlan(PT,PP,state,p,dayKey,opts={}) {return withSkills(PT,state,sessionPlanCore(PT,PP,state,p,dayKey,opts));}
+  function sessionPlanCore(PT,PP,state,p,dayKey,{minutes}={}) {
     const step=stepById(p.step),day=step&&step.days.find(d=>d.key===dayKey);
     if(!day) return {error:'Séance introuvable dans cette étape.'};
     const safety=PT.safety(state);

@@ -70,7 +70,8 @@ function PTLibrary({
   const normalize = text => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase('fr');
   const careIds = ptCareIds(care),
     RW = window.RehabWarmup;
-  const items = PT.allExercises(data).filter(e => (muscle === 'all' || ptMuscles(e).includes(muscle)) && (equipment === 'all' || e.needs.includes(equipment)) && (!careIds || careIds.has(e.id)) && (kind === 'all' || kind === 'liked' && data.preferences.likes.includes(e.id) || kind === 'owned' && e.needs.every(n => n === 'bodyweight' || data.owned.includes(n)) || kind === 'basket' && ['shoot', 'handle', 'finish', 'footwork', 'react', 'jump'].includes(e.pattern) || e.kind === kind) && normalize(e.name).includes(normalize(query)));
+  const all = [...PT.allExercises(data), ...(window.BasketSkills?.drills || [])];
+  const items = all.filter(e => (muscle === 'all' || ptMuscles(e).includes(muscle)) && (equipment === 'all' || e.needs.includes(equipment)) && (!careIds || careIds.has(e.id)) && (kind === 'all' || kind === 'liked' && data.preferences.likes.includes(e.id) || kind === 'owned' && e.needs.every(n => n === 'bodyweight' || data.owned.includes(n)) || kind === 'basket' && (e.kind === 'skill' || ['react'].includes(e.pattern)) || e.kind === kind) && normalize(e.name).includes(normalize(query)));
   const set = (k, v) => setCustom(c => ({
     ...c,
     [k]: v
@@ -120,7 +121,7 @@ function PTLibrary({
     className: "library-view"
   }, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => history.length > 1 ? history.back() : go('pathway'),
-    eyebrow: `${PT.allExercises(data).length} exercices`,
+    eyebrow: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} exercices`,
     title: "Tous les exercices."
   }), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"

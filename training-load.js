@@ -45,12 +45,16 @@
     const pathwayToday=todays.some(s=>s.source==='pathway'), muscuToday=todays.some(s=>s.source==='program-plan');
     const program=state.program&&state.program.status==='active'?state.program:null;
     const pathway=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
+    // Skills basket : programme à part, compté séparément (ses séances ne sont pas des séances physiques).
+    const sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
+    const skillsWeek=sessions.filter(s=>s.source==='skills').length,skillsToday=todays.some(s=>s.source==='skills');
+    const skillsDue=!!sk&&!skillsToday&&skillsWeek<sk.perWeek;
     const notes=[];
     let primary='pathway', protectLegs=false, maxMinutes=null;
 
     if(today.match){primary='rest';protectLegs=true;notes.push('Match aujourd’hui : pas de séance, seulement l’échauffement avant le match.');}
-    else if(yesterday.match){primary='recovery';protectLegs=true;notes.push('Lendemain de match : récupération, mobilité et soins.');}
-    else if(appWeek>=target){primary='recovery';notes.push(`${appWeek} séances dans l’app ces 7 derniers jours pour un objectif de ${target} : on récupère.`);}
+    else if(yesterday.match){primary=skillsDue?'skills':'recovery';protectLegs=true;notes.push(skillsDue?'Lendemain de match : séance skills légère (tir, dribble sur place), pas de travail physique.':'Lendemain de match : récupération, mobilité et soins.');}
+    else if(appWeek>=target){primary=skillsDue&&!today.practice?'skills':'recovery';notes.push(`${appWeek} séances physiques ces 7 derniers jours pour un objectif de ${target} : ${primary==='skills'?'place aux skills, sans charge physique':'on récupère'}.`);}
     else {
       if(tomorrow.match){protectLegs=true;notes.push('Match demain : pas de jambes lourdes ni de sauts aujourd’hui.');}
       if(legsRecent){protectLegs=true;notes.push('Jambes déjà chargées dans les dernières 24 h.');}
@@ -61,10 +65,14 @@
       else if(protectLegs&&program) primary='muscu';
       else if(pathway) primary='pathway';
       else if(program) primary='muscu';
+      else if(skillsDue&&!today.practice) primary='skills';
       else primary='session';
     }
     if(clubWeek>=3&&appWeek+clubWeek>=target+3) notes.push(`Semaine chargée : ${clubWeek} jours de club et ${appWeek} séances dans l’app.`);
-    return {date:now,primary,protectLegs,maxMinutes,notes,club:{yesterday,today,tomorrow},appWeek,clubWeek,target,pathwayToday,muscuToday};
+    // Séance skills du jour : aucune le jour d'un match ou d'un entraînement au club (le basket y est déjà) ;
+    // légère quand les jambes doivent rester fraîches ; sinon complète. « blocks » : seulement les blocs ajoutés aux autres séances.
+    const skills=!sk?'none':today.match||today.practice?'none':!skillsDue?'blocks':protectLegs||yesterday.match?'light':'full';
+    return {date:now,primary,protectLegs,maxMinutes,notes,skills,skillsWeek,club:{yesterday,today,tomorrow},appWeek,clubWeek,target,pathwayToday,muscuToday};
   }
 
   // Programme muscu : retire ce qui charge les jambes quand elles doivent rester fraîches.

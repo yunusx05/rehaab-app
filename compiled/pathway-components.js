@@ -101,6 +101,14 @@ function PTPathwayIntro({
     size: 18
   })), /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go('skills')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "court"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes skills basket"), /*#__PURE__*/React.createElement("small", null, window.BasketSkills?.complete(data.skills) ? window.BasketSkills.summary(data.skills) : 'Dribble, tir, finition : questionnaire puis programme à ton niveau.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('basket-profile')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "basket"
@@ -112,7 +120,7 @@ function PTPathwayIntro({
     onClick: () => go('library')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements, filtrables par muscle, mat\xE9riel et zone de soin.")), /*#__PURE__*/React.createElement(PTIcon, {
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0), " exercices, filtrables par muscle, mat\xE9riel, soin et skills basket.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })), /*#__PURE__*/React.createElement("button", {
@@ -323,6 +331,14 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "weight"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma muscu"), /*#__PURE__*/React.createElement("small", null, data.program && data.program.status !== 'archived' && window.PersonalPrograms ? `${window.PersonalPrograms.familyById(data.program.familyId)?.short || 'Programme'} · semaine ${window.PersonalPrograms.progressOf(data.program).currentWeek}/${data.program.weeks}` : 'Programme à côté du parcours, sans le doubler.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('skills')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "court"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes skills basket"), /*#__PURE__*/React.createElement("small", null, window.BasketSkills?.complete(data.skills) ? window.BasketSkills.summary(data.skills) : 'Dribble, tir, finition : questionnaire puis programme à ton niveau.')), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })), /*#__PURE__*/React.createElement("button", {

@@ -389,6 +389,9 @@
     // Questionnaire « Mon jeu » : absent des anciennes sauvegardes, nettoyé plutôt que rejeté.
     const court=globals.BasketProfile||tryRequire('./basket-profile.js');
     s.basketProfile=court?court.validate(s.basketProfile):(s.basketProfile&&typeof s.basketProfile==='object'?s.basketProfile:null);
+    // Skills basket : questionnaire, paliers, programme et journal, absents des anciennes sauvegardes.
+    const skillsLib=globals.BasketSkills||tryRequire('./basket-skills.js');
+    s.skills=s.skills&&skillsLib?skillsLib.validate(s.skills):(s.skills&&typeof s.skills==='object'?s.skills:null);
     return {...base,...s,profile:{...base.profile,...s.profile}};
   }
   function validateEntries(entries) {
@@ -675,6 +678,7 @@
     if(worse) return {kind:'rest',title:'Récupération active.',why:['Une gêne a augmenté après une séance récente : on lève le pied 48 h.'],action:'mobility',load};
     if(yesterdayHard) return {kind:'light',title:'Une séance légère.',why:['Effort élevé hier : volume réduit et pas d’impacts aujourd’hui.'],action:'session',load};
     if(eventsOn(tomorrow).length||tl&&tl.club.tomorrow.match) return {kind:'light',title:'Veille de match : haut du corps et gainage.',why:[`${eventsOn(tomorrow)[0]?eventsOn(tomorrow)[0].title:'Match'} demain : les jambes restent fraîches.`,...careWhy],action:program?'program':'session',load};
+    if(tl&&tl.primary==='skills') return {kind:'train',title:'Séance skills basket.',why:[...tl.notes,tl.skills==='light'?'Version légère : tir et dribble sur place, sans saut.':'Ton point faible d’abord, au panier si tu en as un aujourd’hui.',...careWhy],action:'skills',light:tl.skills==='light',load};
     if(week.sessions>=week.target) return {kind:'rest',title:'Objectif de la semaine atteint.',why:[`${week.sessions} séances sur ${week.target} : repos ou mobilité. Une séance de plus reste possible si tu te sens frais.`],action:'mobility',load};
     const plan=tl&&tl.primary==='muscu'&&program?'program':pathway?'pathway':program?'program':'session';
     const clubWhy=tl&&tl.club.today.practice?['Entraînement au club ce soir : séance courte, sans jambes lourdes.']:[];

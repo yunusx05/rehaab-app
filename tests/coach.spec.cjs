@@ -174,7 +174,7 @@ test('bibliothèque : tous les exercices retrouvés depuis le parcours, filtre p
   await page.getByRole('button',{name:/Tous les exercices/}).click();
   await expect(page.getByRole('heading',{name:'Tous les exercices.'})).toBeVisible();
   const total=Number((await page.locator('.library-count').innerText()).match(/\d+/)[0]);
-  expect(total).toBe(PT.catalog.length);
+  expect(total).toBe(PT.catalog.length+require('../basket-skills.js').drills.length);
   await page.getByLabel('Soin d’une zone').selectOption('knee');
   const knee=Number((await page.locator('.library-count').innerText()).match(/\d+/)[0]);
   expect(knee).toBeGreaterThan(5);expect(knee).toBeLessThan(total);

@@ -862,7 +862,7 @@ function PTPreview({
   return /*#__PURE__*/React.createElement("div", {
     className: "visual-preview"
   }, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : ['quick', 'rehab', 'warmup'].includes(plan.source) ? 'today' : 'prepare'),
+    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup'].includes(plan.source) ? 'today' : 'prepare'),
     eyebrow: "Ta proposition",
     title: plan.title
   }), /*#__PURE__*/React.createElement("div", {
@@ -871,6 +871,10 @@ function PTPreview({
     data: data,
     update: update,
     notify: notify
+  }), typeof PTSkillsHoop === 'function' && /*#__PURE__*/React.createElement(PTSkillsHoop, {
+    data: data,
+    update: update,
+    plan: plan
   }), plan.creditApplied && /*#__PURE__*/React.createElement("p", {
     className: "notice"
   }, "Ajust\xE9e : ", plan.creditApplied.saved, " min retir\xE9es, d\xE9j\xE0 faites aujourd\u2019hui (", plan.creditApplied.labels.join(' + '), ")."), /*#__PURE__*/React.createElement("div", {
@@ -1020,7 +1024,7 @@ function PTPreview({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "play",
     size: 22
-  }), "D\xE9marrer la s\xE9ance")), !['program', 'pathway', 'quick', 'rehab', 'warmup'].includes(plan.source) && /*#__PURE__*/React.createElement(PTButton, {
+  }), "D\xE9marrer la s\xE9ance")), !['program', 'program-plan', 'pathway', 'quick', 'rehab', 'warmup', 'skills'].includes(plan.source) && /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: reroll
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -2274,7 +2278,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
     const screens = {
@@ -2304,7 +2308,9 @@ function PersonalApp() {
       program: PTProgramHome,
       'program-new': PTProgramCatalog,
       'program-checkin': PTProgramCheckIn,
-      'basket-profile': PTBasketProfile
+      'basket-profile': PTBasketProfile,
+      skills: PTSkillsHome,
+      'skills-quiz': PTSkillsQuiz
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

@@ -385,7 +385,20 @@
     });
   }
 
+  // Bloc skills basket ajouté après la séance (programme skills actif), sauf jour de club ou de match.
+  function withSkills(PT,state,plan,date){
+    const g=typeof globalThis!=='undefined'?globalThis:{};
+    const lib=n=>g[n]||(()=>{try{return typeof require==='function'?require(n==='BasketSkills'?'./basket-skills.js':'./training-load.js'):null;}catch(e){return null;}})();
+    const SK=lib('BasketSkills'),TLs=lib('TrainingLoad');
+    if(!SK||!plan||plan.error||!state.skills) return plan;
+    const day=TLs?TLs.day(state,date):null;
+    if(day&&(day.club.today.any)) return plan;
+    return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date});
+  }
   function sessionPlan(program, week, dayKey, state, check = checkFor(state, program)) {
+    return withSkills(PT, state, sessionPlanCore(program, week, dayKey, state, check), check.date);
+  }
+  function sessionPlanCore(program, week, dayKey, state, check) {
     check = {...check};
     const ctx = PT.context(state, check);
     if (ctx.active.blocked) return {error:'Une douleur importante ou un signe inhabituel empêche de lancer une séance. Demande un avis médical.'};

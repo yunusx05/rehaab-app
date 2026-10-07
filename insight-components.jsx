@@ -28,6 +28,7 @@ function PTTodayPlan({data,update,go,notify}) {
     session:[plan.kind==='light'?'Séance légère · 20 min':'Préparer ma séance',()=>plan.kind!=='light'&&data.player?.position&&JP?launch(JP.dailyBody(PT,data,{minutes:30})):quick('muscle',plan.kind==='light'?20:30)],
     pathway:[ready?'Préparer ma séance':'Ouvrir mon parcours',()=>ready?launch(next.plan):go('pathway')],
     // Programme muscu : le check-in de forme du programme fixe la version du jour (jambes protégées si la semaine l'exige).
+    skills:['Lancer ma séance skills',()=>typeof ptSkillsLaunch==='function'?ptSkillsLaunch({data,update,go,notify},{light:!!plan.light}):go('skills')],
     program:[muscu?'Préparer ma séance muscu':'Créer ma muscu',()=>muscu?go('program-checkin',`${muscu.progress.currentWeek}:${muscu.progress.nextDay}`):go('program-new')]
   };
   const [label,run]=actions[plan.action]||actions.session;

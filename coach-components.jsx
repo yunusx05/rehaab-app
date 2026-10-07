@@ -51,6 +51,7 @@ function ptCoachContext(data){
     activePains:PT.activeSymptoms(data).map(s=>({zone:PT.regions[s.region],severity:s.severity})),
     previousCheckins:(data.coachLog||[]).slice(-6).map(x=>({date:x.date,form:x.checkin?.form,decision:x.plan?.decision,applied:!!x.applied})),
     court:window.BasketProfile?.summary(data.basketProfile)||null,
+    skills:window.BasketSkills?.summary(data.skills)||null,
     week:ptCoachWeek(data),
     muscu:ptCoachMuscu(data),
     care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.LEVELS[level]||level}))
@@ -104,6 +105,8 @@ function ptCoachApply({data,update,go,notify},entry){
   if(plan.decision==='mobility')base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,check.minutes)});
   else{
     const BP=window.BasketPathway,p=data.pathway,PP=window.PersonalPrograms,prog=data.program?.status==='active'?data.program:null;
+    // Séance skills : légère si le corps doit récupérer (sauts et changements de direction retirés).
+    if(plan.target==='skills'&&window.BasketSkills?.complete(data.skills)){const sk=window.BasketSkills.session(PT,state,{minutes:check.minutes,light:plan.avoidImpact||plan.intensity==='reduced'});if(!sk.error){update(s=>({...s,checkIn:check,draft:{...sk,coach:{decision:plan.decision,why:plan.why},reasons:[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...sk.reasons]},coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');return;}}
     // Le coach peut choisir la muscu (veille de match, parcours déjà fait…) : séance du programme, jambes protégées si besoin.
     if(plan.target==='muscu'&&prog&&PP){const pr=PP.progressOf(prog);base=PP.sessionPlan(prog,pr.currentWeek,pr.nextDay,state,PP.checkFor(state,prog,{minutes:Math.min(prog.minutes,check.minutes),energy:check.energy}));}
     if((!base||base.error)&&p&&BP){const step=BP.stepById(p.step),day=step.days.find(d=>d.key===BP.weekStatus(p).next);if(day)base=BP.sessionPlan(PT,JP,state,p,day.key,{minutes:check.minutes});}

@@ -17,7 +17,7 @@ const ptRepsGoal=e=>{const lo=e.targetMin||e.min,hi=e.targetMax||e.max,n=lo===hi
 function PTSession({data,update,go,notify}) {
   const draft=data.draft;
   const [tick,setTick]=usePTState(Date.now()),[logging,setLogging]=usePTState(false),[error,setError]=usePTState('');
-  const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[painAfter,setPainAfter]=usePTState(null),[abandon,setAbandon]=usePTState(false);
+  const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[painAfter,setPainAfter]=usePTState(null),[skillRatings,setSkillRatings]=usePTState({}),[abandon,setAbandon]=usePTState(false);
   const wake=usePTRef(null),fired=usePTRef(new Set()),saved=usePTRef(false);
   const running=!!(draft?.status==='active'&&!finishing&&(draft.clockStarted||draft.stageStarted||draft.timer?.endAt||draft.blockTimer?.endAt));
   const anchor=usePTRef(0);anchor.current=draft?.timer?.endAt||draft?.blockTimer?.endAt||draft?.stageStarted||draft?.clockStarted||0;
@@ -110,7 +110,7 @@ function PTSession({data,update,go,notify}) {
     // Soin intégré à une autre séance : la douleur après (facultative) fait aussi progresser son protocole.
     const cares=draft.source==='rehab'?[]:[...new Map(draft.exercises.filter(e=>e.pathwayRole==='soin'&&e.careProtocol).map(e=>[e.careProtocol,e.careLevel||0])).entries()];
     const session=draft.source==='rehab'||(cares.length&&painAfter!=null)?{...finished,painAfter}:finished;
-    const RWL=window.RehabWarmup;let levelChange=0;
+    const RWL=window.RehabWarmup;let levelChange=0,skillChanges=[];
     saved.current=true;
     // Une séance du parcours avance le suivi ; une séance libre ne touche jamais au parcours.
     update(s=>{
@@ -122,11 +122,15 @@ function PTSession({data,update,go,notify}) {
       const PPL=window.PersonalPrograms;
       if(PPL&&session.programInstanceId&&s.program&&s.program.id===session.programInstanceId&&s.program.status==='active')
         next.program=PPL.markCompleted(s.program,{week:session.programWeekIndex,day:session.programDay,sessionId:session.id,date:session.date,partial:session.partial});
+      // Skills basket : tirs notés et ressenti font évoluer les paliers.
+      const SKL=window.BasketSkills;
+      if(SKL&&session.exercises.some(e=>e.skillArea)){const r=SKL.record(s.skills,session,skillRatings);next.skills=r.skills;skillChanges=r.changes;}
       const BP=window.BasketPathway;
       if(BP&&session.pathwayId&&s.pathway&&s.pathway.id===session.pathwayId&&s.pathway.step===session.pathwayStep)
         next.pathway=BP.markCompleted(s.pathway,{step:session.pathwayStep,week:session.pathwayWeek,day:session.pathwayDay,sessionId:session.id,date:session.date,partial:session.partial});
       return next;
     });
+    if(skillChanges.length&&window.BasketSkills)setTimeout(()=>notify(skillChanges.map(c=>`${window.BasketSkills.areas[c.area].short} : palier ${c.dir>0?'suivant débloqué':'précédent, on consolide'}`).join(' · ')),0);
     if(cares.length&&levelChange)setTimeout(()=>notify(levelChange>0?'Soin bien toléré deux fois : il passe au niveau suivant.':'Douleur trop forte : le soin redescend d’un niveau.'),0);
     if(RWL&&['rehab','warmup'].includes(session.source)){const level=session.source!=='rehab'?'':levelChange>0?'Bien toléré deux fois : prochain niveau débloqué. ':levelChange<0?'Douleur trop forte : on redescend d’un niveau. ':'';setTimeout(()=>notify(`${level}Ta prochaine séance du parcours te proposera de retirer ce temps.`),0);}
     go('history',session.id);
@@ -140,6 +144,7 @@ function PTSession({data,update,go,notify}) {
       <section className="effort-picker stack"><h2>C’était comment ?</h2><div className="effort-scale" role="group" aria-label="Effort global de 1 à 10">{[1,2,3,4,5,6,7,8,9,10].map(n=><button key={n} aria-label={`Effort ${n} sur 10`} aria-pressed={Number(effort)===n} onClick={()=>setEffort(String(n))}>{n}</button>)}</div><div className="topline caption"><span>Très facile</span><span>Maximal</span></div>{effort&&<p className="fine">{Number(effort)>=8?'Bien reçu. Les prochaines propositions seront allégées.':'Bien reçu. Ce ressenti accompagnera tes résultats.'}</p>}</section>
       {draft.source==='rehab'&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
       {draft.source!=='rehab'&&draft.exercises.some(e=>e.pathwayRole==='soin')&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
+      {typeof PTSkillsRating==='function'&&<PTSkillsRating draft={draft} value={skillRatings} onChange={setSkillRatings}/>}
       <PTChoices value={liked} onChange={setLiked} options={[{value:true,label:'À refaire',icon:'heart'},{value:false,label:'Autre chose',icon:'shuffle'}]}/>
       {['amrap','emom'].includes(draft.format)&&<div className="form-grid"><PTField label={draft.format==='amrap'?'Tours réalisés':'Minutes de travail validées'} type="number" min="0" value={draft.rounds||''} onChange={e=>setDraft(d=>({...d,rounds:e.target.value}))}/><PTField label="Reps supplémentaires" type="number" min="0" value={draft.extraReps||''} onChange={e=>setDraft(d=>({...d,extraReps:e.target.value}))}/></div>}
       <details className="disclosure"><summary>Ajouter une note</summary><PTField label="Pour la prochaine fois"><textarea maxLength="1000" value={notes} onChange={e=>setNotes(e.target.value)}/></PTField></details>
