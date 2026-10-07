@@ -13,7 +13,7 @@ function player(){
   return data;
 }
 async function seed(page,data,route){
-  await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));localStorage.setItem('rh_coach_token','secret');sessionStorage.setItem('test-seeded','1');}},{data,key:PT.STORAGE_KEY});
+  await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('test-seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('test-seeded','1');}},{data,key:PT.STORAGE_KEY});
   await page.goto('/#'+route);await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
 }
 async function state(page){await page.waitForTimeout(300);return page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);}
@@ -51,7 +51,6 @@ test('coach : bilan envoyé avec l’historique, séance allégée appliquée sa
   await expect(page.locator('.bubble.coach')).toContainText('on allège');
   await expect(page.locator('.bubble.coach')).toContainText('pendant le match');
   // Le coach reçoit le bilan en clair et la séance faite hier dans l'app.
-  expect(sent.token).toBe('secret');
   expect(sent.messages[0].text).toContain('genou à 4/10');
   expect(sent.context.recentSessions[0]).toMatchObject({daysAgo:1,title:'Fondations · Force',effort:7});
   expect(sent.context.plannedSession.exercises.length).toBeGreaterThan(0);

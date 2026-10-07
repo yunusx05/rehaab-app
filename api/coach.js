@@ -1,5 +1,6 @@
 // Coach Rehaab : fonction Vercel qui interroge Gemini avec le bilan du jour et l'historique de l'app.
-// Variables d'environnement (Vercel) : GEMINI_API_KEY (obligatoire), COACH_TOKEN (obligatoire : protège ton quota), GEMINI_MODEL (facultatif).
+// Variables d'environnement (Vercel) : GEMINI_API_KEY (obligatoire), GEMINI_MODEL (facultatif).
+// Pas de code d'accès (choix assumé pour un usage perso) : l'adresse est publique, mais chaque requête reste bornée en taille.
 // La clé ne quitte jamais le serveur. L'app n'envoie que le résumé nécessaire, et ne stocke rien ici.
 const MODEL_DEFAULT = 'gemini-3.6-flash';
 
@@ -47,12 +48,11 @@ const clamp = (n, lo, hi, d) => Number.isFinite(Number(n)) ? Math.min(hi, Math.m
 module.exports = async (req, res) => {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') { res.status(405).json({error: 'Méthode non autorisée.'}); return; }
-  const key = process.env.GEMINI_API_KEY, token = process.env.COACH_TOKEN;
-  if (!key || !token) { res.status(503).json({error: 'Coach non configuré : ajoute GEMINI_API_KEY et COACH_TOKEN dans Vercel.'}); return; }
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) { res.status(503).json({error: 'Coach non configuré : ajoute GEMINI_API_KEY dans Vercel.'}); return; }
   let body = req.body;
   if (typeof body === 'string') { try { body = JSON.parse(body); } catch (e) { body = null; } }
   if (!body || typeof body !== 'object') { res.status(400).json({error: 'Requête illisible.'}); return; }
-  if (body.token !== token) { res.status(401).json({error: 'Code d’accès du coach incorrect. Vérifie-le dans Profil.'}); return; }
   const messages = Array.isArray(body.messages) ? body.messages.slice(-16) : [];
   const context = JSON.stringify(body.context || {}).slice(0, 24000);
   if (!messages.length || messages.some(m => typeof m?.text !== 'string' || m.text.length > 4000)) { res.status(400).json({error: 'Message invalide.'}); return; }

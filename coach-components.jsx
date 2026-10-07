@@ -7,7 +7,6 @@ const ptCoachRegion=id=>COACH_ZONES.find(z=>z.id===id)?.region||id;
 const ptCoachLabel=(list,v)=>list.find(o=>o.value===v)?.label||'';
 const ptCoachBlank=()=>({form:null,sleep:null,soreness:null,pain:null,zones:[],painLevel:3,redFlags:false,basketYesterday:null,basketIntensity:null,basketSoon:null,minutes:30,note:''});
 const ptCoachToday=data=>[...(data.coachLog||[])].reverse().find(x=>x.date===PT.dateKey());
-const ptCoachToken=()=>{try{return localStorage.getItem('rh_coach_token')||'';}catch(e){return '';}};
 
 // Bilan en une phrase lisible : c'est aussi le premier message envoyé au coach.
 function ptCoachSummary(c){
@@ -59,11 +58,9 @@ function ptCoachGuard(plan,c){
 }
 
 async function ptCoachAsk(data,messages){
-  const token=ptCoachToken();
-  if(!token)throw Object.assign(new Error('Ajoute ton code d’accès du coach (réglages en bas de l’écran).'),{config:true});
-  const res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({token,messages,context:ptCoachContext(data)})});
+  const res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages,context:ptCoachContext(data)})});
   const json=await res.json().catch(()=>({}));
-  if(!res.ok)throw Object.assign(new Error(json.error||'Le coach ne répond pas.'),{config:res.status===401||res.status===503});
+  if(!res.ok)throw Object.assign(new Error(json.error||'Le coach ne répond pas.'),{config:res.status===503});
   return json;
 }
 
@@ -101,11 +98,6 @@ function PTCoachCard({data,go}){
   const entry=ptCoachToday(data);
   if(entry)return <button className="coach-card done sport-reveal" onClick={()=>go('coach')}><span className="coach-avatar"><PTIcon name="spark" size={20}/></span><span><small>Bilan du jour fait · {COACH_DECISIONS[entry.plan?.decision]||'en cours'}</small><strong>{entry.plan?.why||'Voir la réponse du coach'}</strong></span><PTIcon name="arrow" size={18}/></button>;
   return <section className="coach-card sport-reveal"><span className="eyebrow">Coach</span><h2>Comment tu te sens aujourd’hui ?</h2><p className="fine">30 secondes de questions, et ta séance s’adapte à ton état.</p><PTButton primary onClick={()=>go('coach')}>Faire mon bilan<PTIcon name="arrow" size={18}/></PTButton></section>;
-}
-
-function PTCoachSettings(){
-  const [token,setToken]=usePTState(ptCoachToken()),[saved,setSaved]=usePTState(false);
-  return <details className="disclosure"><summary>Réglages du coach</summary><div className="stack"><PTField label="Code d’accès du coach" type="password" autoComplete="off" value={token} onChange={e=>{setToken(e.target.value);setSaved(false);}} hint="Le même code que COACH_TOKEN dans Vercel. Gardé sur cet appareil uniquement."/><PTButton onClick={()=>{try{localStorage.setItem('rh_coach_token',token.trim());setSaved(true);}catch(e){}}}>Enregistrer le code</PTButton>{saved&&<p className="fine" role="status">Code enregistré sur cet appareil.</p>}</div></details>;
 }
 
 // Une question du bilan (défini hors du rendu : un composant recréé à chaque frappe ferait perdre le curseur).
@@ -151,7 +143,6 @@ function PTCoach({data,update,go,notify}){
       {entry.offline?<p className="notice">Réponse hors ligne. Reconnecte-toi pour parler au coach.</p>:<div className="coach-input"><PTField label="Répondre au coach" value={draft} maxLength="600" onChange={e=>setDraft(e.target.value)} placeholder={last?.questions?.[0]||'Une précision, une question…'}/><PTButton disabled={busy||!draft.trim()} onClick={reply}>{busy?'Le coach réfléchit…':'Envoyer'}</PTButton></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       <PTButton quiet onClick={()=>{setC(entry.checkin);setRedo(true);}}>Refaire mon bilan</PTButton>
-      <PTCoachSettings/>
     </div></>;
   }
   return <><PTPageHead eyebrow="Coach · bilan du jour" title="Comment tu te sens ?">Réponds en quelques touches. Le coach sait déjà ce que tu as fait dans l’app.</PTPageHead><div className="stack-lg coach-form">
@@ -170,6 +161,5 @@ function PTCoach({data,update,go,notify}){
     {error&&<p className="error" role="alert">{error}</p>}
     <PTButton primary disabled={busy} onClick={send}>{busy?'Le coach réfléchit…':'Envoyer au coach'}<PTIcon name="arrow" size={18}/></PTButton>
     {redo&&<PTButton quiet onClick={()=>setRedo(false)}>Revenir à la réponse du coach</PTButton>}
-    <PTCoachSettings/>
   </div></>;
 }

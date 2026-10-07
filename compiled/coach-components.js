@@ -78,13 +78,6 @@ const ptCoachBlank = () => ({
   note: ''
 });
 const ptCoachToday = data => [...(data.coachLog || [])].reverse().find(x => x.date === PT.dateKey());
-const ptCoachToken = () => {
-  try {
-    return localStorage.getItem('rh_coach_token') || '';
-  } catch (e) {
-    return '';
-  }
-};
 
 // Bilan en une phrase lisible : c'est aussi le premier message envoyé au coach.
 function ptCoachSummary(c) {
@@ -245,24 +238,19 @@ function ptCoachGuard(plan, c) {
   return safe;
 }
 async function ptCoachAsk(data, messages) {
-  const token = ptCoachToken();
-  if (!token) throw Object.assign(new Error('Ajoute ton code d’accès du coach (réglages en bas de l’écran).'), {
-    config: true
-  });
   const res = await fetch('/api/coach', {
     method: 'POST',
     headers: {
       'content-type': 'application/json'
     },
     body: JSON.stringify({
-      token,
       messages,
       context: ptCoachContext(data)
     })
   });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw Object.assign(new Error(json.error || 'Le coach ne répond pas.'), {
-    config: res.status === 401 || res.status === 503
+    config: res.status === 503
   });
   return json;
 }
@@ -412,35 +400,6 @@ function PTCoachCard({
     name: "arrow",
     size: 18
   })));
-}
-function PTCoachSettings() {
-  const [token, setToken] = usePTState(ptCoachToken()),
-    [saved, setSaved] = usePTState(false);
-  return /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "R\xE9glages du coach"), /*#__PURE__*/React.createElement("div", {
-    className: "stack"
-  }, /*#__PURE__*/React.createElement(PTField, {
-    label: "Code d\u2019acc\xE8s du coach",
-    type: "password",
-    autoComplete: "off",
-    value: token,
-    onChange: e => {
-      setToken(e.target.value);
-      setSaved(false);
-    },
-    hint: "Le m\xEAme code que COACH_TOKEN dans Vercel. Gard\xE9 sur cet appareil uniquement."
-  }), /*#__PURE__*/React.createElement(PTButton, {
-    onClick: () => {
-      try {
-        localStorage.setItem('rh_coach_token', token.trim());
-        setSaved(true);
-      } catch (e) {}
-    }
-  }, "Enregistrer le code"), saved && /*#__PURE__*/React.createElement("p", {
-    className: "fine",
-    role: "status"
-  }, "Code enregistr\xE9 sur cet appareil.")));
 }
 
 // Une question du bilan (défini hors du rendu : un composant recréé à chaque frappe ferait perdre le curseur).
@@ -605,7 +564,7 @@ function PTCoach({
         setC(entry.checkin);
         setRedo(true);
       }
-    }, "Refaire mon bilan"), /*#__PURE__*/React.createElement(PTCoachSettings, null)));
+    }, "Refaire mon bilan")));
   }
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     eyebrow: "Coach \xB7 bilan du jour",
@@ -756,5 +715,5 @@ function PTCoach({
   })), redo && /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: () => setRedo(false)
-  }, "Revenir \xE0 la r\xE9ponse du coach"), /*#__PURE__*/React.createElement(PTCoachSettings, null)));
+  }, "Revenir \xE0 la r\xE9ponse du coach")));
 }
