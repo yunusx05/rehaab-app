@@ -286,12 +286,9 @@ function PTPlayerProfile({
 }
 function PTBodyMind({
   data,
-  update,
-  go,
-  notify
+  go
 }) {
-  const player = data.player || {},
-    p = data.pathway;
+  const player = data.player || {};
   if (!player.position) return /*#__PURE__*/React.createElement("section", {
     className: "player-invite sport-reveal"
   }, /*#__PURE__*/React.createElement("span", {
@@ -305,85 +302,14 @@ function PTBodyMind({
     name: "arrow",
     size: 18
   })));
-  const launch = plan => {
-    if (plan.error) {
-      notify(plan.error);
-      return;
-    }
-    if (data.draft?.status === 'active') {
-      go('session');
-      notify('Une séance est déjà en cours : termine-la ou abandonne-la avant d’en lancer une autre.');
-      return;
-    }
-    update(s => ({
-      ...s,
-      draft: plan
-    }));
-    go('preview');
-  };
-  let body;
-  if (p) {
-    const step = BP.stepById(p.step),
-      status = BP.weekStatus(p),
-      day = step.days.find(d => d.key === status.next),
-      plan = BP.sessionPlan(PT, JP, data, p, day.key);
-    body = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "training-kicker"
-    }, "Le corps \xB7 \xE9tape ", step.id, "/", BP.steps.length), /*#__PURE__*/React.createElement("h2", null, day.name), /*#__PURE__*/React.createElement("p", {
-      className: "fine"
-    }, step.name, " \xB7 semaine ", status.week, " \xB7 ", plan.error ? 'indisponible aujourd’hui' : `~${plan.estimatedMinutes} min, ${plan.exercises.length} mouvements`), /*#__PURE__*/React.createElement("div", {
-      className: "button-row"
-    }, /*#__PURE__*/React.createElement(PTButton, {
-      primary: true,
-      disabled: !!plan.error,
-      onClick: () => launch(plan)
-    }, "Pr\xE9parer", /*#__PURE__*/React.createElement(PTIcon, {
-      name: "arrow",
-      size: 18
-    })), /*#__PURE__*/React.createElement(PTButton, {
-      quiet: true,
-      onClick: () => go('pathway')
-    }, "Le parcours")));
-  } else {
-    body = /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
-      className: "training-kicker"
-    }, "Le corps"), /*#__PURE__*/React.createElement("h2", null, "Retour au jeu"), /*#__PURE__*/React.createElement("p", {
-      className: "fine"
-    }, "Cinq \xE9tapes, des crit\xE8res de passage, adapt\xE9es \xE0 ton poste. ", player.layoff === 'long' ? 'Recommandé après ta longue pause.' : ''), /*#__PURE__*/React.createElement("div", {
-      className: "button-row"
-    }, /*#__PURE__*/React.createElement(PTButton, {
-      primary: true,
-      onClick: () => go('pathway')
-    }, "D\xE9couvrir", /*#__PURE__*/React.createElement(PTIcon, {
-      name: "arrow",
-      size: 18
-    })), /*#__PURE__*/React.createElement(PTButton, {
-      quiet: true,
-      onClick: () => launch(JP.dailyBody(PT, data, {
-        minutes: 30
-      }))
-    }, "S\xE9ance du jour")));
-  }
-  const athletic = data.athletic;
-  if (!athletic?.date) body = /*#__PURE__*/React.createElement(React.Fragment, null, body, /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('bilan')
-  }, "Faire mon bilan physique \xB7 10 min \u2192"));else if (!apFresh(athletic)) body = /*#__PURE__*/React.createElement(React.Fragment, null, body, /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('bilan')
-  }, "Refaire mon bilan : 4 semaines sont pass\xE9es \u2192"));
   const rank = JP.qiThemes(player),
     daily = QI.dailySet(data.qi, player, rank),
     left = daily.items.length - daily.done;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "body-mind sport-reveal"
-  }, /*#__PURE__*/React.createElement("section", {
-    className: "body-card"
-  }, body), /*#__PURE__*/React.createElement("section", {
-    className: "mind-card"
+  return /*#__PURE__*/React.createElement("section", {
+    className: "mind-card sport-reveal"
   }, /*#__PURE__*/React.createElement("span", {
     className: "training-kicker"
-  }, "L\u2019esprit \xB7 QI basket"), /*#__PURE__*/React.createElement("h2", null, left ? `${left} lecture${left > 1 ? 's' : ''} du jour` : 'Lectures faites'), /*#__PURE__*/React.createElement("p", {
+  }, "QI basket du jour"), /*#__PURE__*/React.createElement("h2", null, left ? `${left} lecture${left > 1 ? 's' : ''} du jour` : 'Lectures faites'), /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, daily.items.map(x => QI.themes[x.item.theme]).filter((v, i, a) => a.indexOf(v) === i).join(' · ')), /*#__PURE__*/React.createElement("div", {
     className: "button-row"
@@ -394,73 +320,7 @@ function PTBodyMind({
   }, left ? 'Lire le jeu' : 'Refaire', /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })), /*#__PURE__*/React.createElement(PTButton, {
-    quiet: true,
-    onClick: () => go('qi')
-  }, "Tout le QI"))));
-}
-function PTQuickRail({
-  data,
-  update,
-  go,
-  notify
-}) {
-  const start = id => {
-    if (data.draft?.status === 'active') {
-      go('session');
-      notify('Ta séance en cours est conservée.');
-      return;
-    }
-    const plan = BP.quickPlan(PT, JP, data, id);
-    if (plan.error) {
-      notify(plan.error);
-      return;
-    }
-    update(s => ({
-      ...s,
-      draft: plan
-    }));
-    go('preview');
-  };
-  const thumb = q => PT.catalog.find(e => e.id === q.ids[0][0]);
-  return /*#__PURE__*/React.createElement("section", {
-    className: "scroll-reveal"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "QUICK WORKOUT"), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "\xC0 toi de choisir")), /*#__PURE__*/React.createElement("div", {
-    className: "workout-rail"
-  }, BP.quick.map(q => /*#__PURE__*/React.createElement("button", {
-    key: q.id,
-    className: "preset-workout",
-    onClick: () => start(q.id)
-  }, /*#__PURE__*/React.createElement(PTThumbnail, {
-    exercise: thumb(q)
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "preset-info"
-  }, /*#__PURE__*/React.createElement("small", null, q.minutes, " min"), /*#__PURE__*/React.createElement("strong", null, q.title), /*#__PURE__*/React.createElement("span", {
-    className: "preset-play"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "play",
-    size: 17
-  }))))), /*#__PURE__*/React.createElement("button", {
-    className: "preset-workout quiz-tile",
-    onClick: () => go('qi-run', 'quiz')
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "quiz-tile-court",
-    "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "court",
-    size: 44
-  })), /*#__PURE__*/React.createElement("span", {
-    className: "preset-info"
-  }, /*#__PURE__*/React.createElement("small", null, "5 min"), /*#__PURE__*/React.createElement("strong", null, "Quiz tactique rapide"), /*#__PURE__*/React.createElement("span", {
-    className: "preset-play"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "play",
-    size: 17
-  }))))));
+  }))));
 }
 
 // Annuler la séance en cours : visible partout où une séance attend, toujours avec confirmation.

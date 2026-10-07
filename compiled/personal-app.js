@@ -1518,243 +1518,6 @@ function PTEvent({
     onClick: () => setRemove(true)
   }, "Retirer du calendrier"))));
 }
-function PTProgram({
-  data,
-  update,
-  go,
-  notify
-}) {
-  const week = data.programWeek,
-    block = Math.floor((week - 1) / 4),
-    weekIn = (week - 1) % 4 + 1,
-    program = window.RehaabProgram,
-    [confirm, setConfirm] = usePTState(null),
-    [error, setError] = usePTState('');
-  const launch = letter => {
-    if (data.draft?.status === 'active' && confirm !== letter) {
-      setConfirm(letter);
-      return;
-    }
-    const check = {
-      ...data.checkIn,
-      equipment: data.owned,
-      format: 'superset',
-      focus: 'muscle',
-      date: PT.dateKey()
-    };
-    const plan = PT.fromProgram(program, week, letter, data, check);
-    if (plan.error) {
-      setError(plan.error);
-      return;
-    }
-    update(s => ({
-      ...s,
-      draft: plan
-    }));
-    go('preview');
-  };
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go('program'),
-    eyebrow: "Programme basket d\u2019origine",
-    title: "Mon programme basket."
-  }, "Tes trois blocs d\u2019origine. Les mouvements et les charges sont r\xE9\xE9valu\xE9s selon le mat\xE9riel et les contraintes actuelles."), /*#__PURE__*/React.createElement("div", {
-    className: "stack-lg"
-  }, /*#__PURE__*/React.createElement(PTField, {
-    label: "Bloc"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: block,
-    onChange: e => update(s => ({
-      ...s,
-      programWeek: Number(e.target.value) * 4 + 1
-    }))
-  }, program.names.map((name, i) => /*#__PURE__*/React.createElement("option", {
-    key: name,
-    value: i
-  }, i + 1, ". ", name)))), /*#__PURE__*/React.createElement(PTChips, {
-    value: weekIn,
-    options: [1, 2, 3, 4].map(v => ({
-      value: v,
-      label: `Semaine ${v}`
-    })),
-    onChange: v => update(s => ({
-      ...s,
-      programWeek: block * 4 + v
-    }))
-  }), /*#__PURE__*/React.createElement("p", {
-    className: "notice"
-  }, "Changer de semaine n\u2019augmente aucune charge et ne valide aucune s\xE9ance. Tu gardes la main sur ton rythme."), /*#__PURE__*/React.createElement("div", {
-    className: "program-block"
-  }, Object.entries(program.blocks[block]).map(([letter, source]) => {
-    const done = data.sessions.filter(s => s.programWeek === week && s.programLetter === letter);
-    return /*#__PURE__*/React.createElement("div", {
-      key: letter,
-      className: "card stack"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "exercise-summary"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "exercise-number"
-    }, letter), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, source.sub), /*#__PURE__*/React.createElement("p", null, source.duration, source.optional ? ' · optionnelle' : ''))), done.length > 0 && /*#__PURE__*/React.createElement("p", {
-      className: "fine"
-    }, "Derni\xE8re trace : ", shortDate(done[done.length - 1].date), done[done.length - 1].partial ? ' · partielle' : ''), /*#__PURE__*/React.createElement("details", {
-      className: "disclosure"
-    }, /*#__PURE__*/React.createElement("summary", null, "Exercices du programme d\u2019origine"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
-      className: "reason-list"
-    }, source.supersets.flatMap(g => g.exercises).map(e => /*#__PURE__*/React.createElement("li", {
-      key: e.id
-    }, e.name, " \xB7 ", e.volume))), /*#__PURE__*/React.createElement("p", {
-      className: "fine"
-    }, "Cette liste est conserv\xE9e comme r\xE9f\xE9rence, pas comme autorisation m\xE9dicale de r\xE9aliser les exercices."))), confirm === letter && /*#__PURE__*/React.createElement("p", {
-      className: "notice warning"
-    }, "Une s\xE9ance est en cours. Continuer abandonnera son brouillon. Enregistre-la d\u2019abord si tu souhaites conserver ses s\xE9ries."), /*#__PURE__*/React.createElement(PTButton, {
-      onClick: () => launch(letter)
-    }, confirm === letter ? 'Abandonner le brouillon et préparer' : 'Préparer cette séance'));
-  })), error && /*#__PURE__*/React.createElement("p", {
-    role: "alert",
-    className: "error"
-  }, error), /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('profile')
-  }, "Actualiser mon mat\xE9riel et mon niveau \u2192")));
-}
-function PTProgress({
-  data,
-  go,
-  notify
-}) {
-  const [tab, setTab] = usePTState('overview'),
-    summary = PT.weeklySummary(data),
-    counts = summary.exposure;
-  const sessions = [...data.sessions].sort((a, b) => b.date.localeCompare(a.date) || String(b.completedAt).localeCompare(String(a.completedAt)));
-  const muscleKeys = ['push', 'pull', 'squat', 'hinge', 'core', 'calf', 'arms'];
-  const max = Math.max(1, ...muscleKeys.map(k => counts[k] || 0));
-  const latestExercises = [...new Map(sessions.flatMap(s => s.exercises.filter(e => e.weighted && e.measure === 'reps').map(e => [e.id, e]))).values()];
-  const shotRows = sessions.flatMap(s => s.exercises.filter(e => e.measure === 'shots').map(e => {
-    const rows = (s.entries[e.id] || []).filter(r => r.done && !r.pain);
-    return {
-      id: s.id,
-      name: e.name,
-      date: s.date,
-      location: [...new Set(rows.map(r => r.location || 'repère non précisé'))].join(', '),
-      made: rows.reduce((n, r) => n + Number(r.made || 0), 0),
-      attempts: rows.reduce((n, r) => n + Number(r.attempts || 0), 0)
-    };
-  })).filter(r => r.attempts > 0);
-  const differences = sessions.flatMap(s => s.exercises.filter(e => e.unilateral && e.measure === 'reps').flatMap(e => (s.entries[e.id] || []).filter(r => r.done && !r.pain && Number(r.left) !== Number(r.right)).map(r => ({
-    name: e.name,
-    left: r.left,
-    right: r.right,
-    weight: r.weight,
-    date: s.date
-  })))).slice(0, 4);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
-    eyebrow: "Des faits, pas un score invent\xE9",
-    title: "Voir ce qui avance."
-  }, "La r\xE9gularit\xE9, tes r\xE9sultats et ce qui m\xE9rite davantage d\u2019attention."), /*#__PURE__*/React.createElement("div", {
-    className: "stack-lg"
-  }, /*#__PURE__*/React.createElement(PTRewards, {
-    data: data,
-    notify: notify
-  }), /*#__PURE__*/React.createElement(PTAdaptation, {
-    data: data
-  }), /*#__PURE__*/React.createElement(PTChips, {
-    value: tab,
-    onChange: setTab,
-    options: [{
-      value: 'overview',
-      label: 'Vue d’ensemble'
-    }, {
-      value: 'physical',
-      label: 'Physique'
-    }, {
-      value: 'basket',
-      label: 'Basket'
-    }]
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "stats-row"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, summary.sessions), /*#__PURE__*/React.createElement("small", null, "s\xE9ances cette semaine")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, summary.minutes), /*#__PURE__*/React.createElement("small", null, "minutes enregistr\xE9es")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, data.sessions.length), /*#__PURE__*/React.createElement("small", null, "s\xE9ances au total"))), tab === 'overview' && typeof PTLoadHistory === 'function' && /*#__PURE__*/React.createElement(PTLoadHistory, {
-    data: data
-  }), tab === 'physical' && typeof PTLiftCurves === 'function' && /*#__PURE__*/React.createElement(PTLiftCurves, {
-    data: data
-  }), tab !== 'basket' && /*#__PURE__*/React.createElement("section", {
-    className: "card"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "card-header"
-  }, /*#__PURE__*/React.createElement("h3", null, "R\xE9partition des mouvements"), /*#__PURE__*/React.createElement("small", null, "14 jours")), muscleKeys.map(k => /*#__PURE__*/React.createElement("div", {
-    className: "balance-row",
-    key: k
-  }, /*#__PURE__*/React.createElement("span", null, PT.patterns[k]), /*#__PURE__*/React.createElement("div", {
-    className: "balance-bar"
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      width: `${(counts[k] || 0) / max * 100}%`
-    }
-  })), /*#__PURE__*/React.createElement("span", {
-    className: "num"
-  }, counts[k] || 0))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "S\xE9ries r\xE9ellement enregistr\xE9es, hors douleur. Peu entra\xEEn\xE9 ne veut pas dire faible. Ce n\u2019est pas une mesure de force musculaire ni de r\xE9cup\xE9ration.")), tab === 'physical' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", null, /*#__PURE__*/React.createElement("h2", null, "Mes rep\xE8res de charge"), latestExercises.length ? latestExercises.map(e => {
-    const advice = PT.loadAdvice(e, data, {
-      ...data.checkIn,
-      equipment: data.owned
-    });
-    return /*#__PURE__*/React.createElement("div", {
-      key: e.id,
-      className: "history-row"
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, advice?.text || 'Pas encore assez de résultats comparables.')));
-  }) : /*#__PURE__*/React.createElement("p", {
-    className: "empty"
-  }, "Enregistre tes s\xE9ries, tes r\xE9p\xE9titions et ton ressenti. L\u2019app proposera une hausse seulement lorsque les r\xE9sultats la justifient.")), differences.length > 0 && /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("h3", null, "\xC0 observer entre les c\xF4t\xE9s"), differences.map((d, i) => /*#__PURE__*/React.createElement("p", {
-    key: i,
-    className: "fine"
-  }, d.name, " \xB7 ", shortDate(d.date), " : gauche ", d.left, ", droite ", d.right, d.weight ? ` à ${d.weight} kg` : '', ".")), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "\xC9carts observ\xE9s, pas un diagnostic de d\xE9s\xE9quilibre. Compare plusieurs s\xE9ances avec la m\xEAme technique et la m\xEAme charge."))), tab === 'basket' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("h3", null, "Ton jeu, geste par geste"), ['shoot', 'handle', 'finish', 'footwork', 'react'].map(k => /*#__PURE__*/React.createElement("div", {
-    className: "topline",
-    key: k
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, PT.patterns[k]), /*#__PURE__*/React.createElement("span", {
-    className: "num"
-  }, counts[k] || 0, " blocs"))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Sur 14 jours. Chaque comp\xE9tence avance s\xE9par\xE9ment ; une bonne d\xE9tente ne prouve pas la ma\xEEtrise des appuis ou du tir.")), /*#__PURE__*/React.createElement("section", null, /*#__PURE__*/React.createElement("h2", null, "Mes rep\xE8res au tir"), shotRows.length ? shotRows.slice(0, 12).map((r, i) => /*#__PURE__*/React.createElement("button", {
-    key: i,
-    className: "history-row",
-    onClick: () => go('history', r.id)
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, r.name, " \xB7 ", r.made, "/", r.attempts), /*#__PURE__*/React.createElement("small", null, shortDate(r.date), " \xB7 ", r.location)), /*#__PURE__*/React.createElement("span", {
-    className: "num"
-  }, Math.round(r.made / r.attempts * 100), " %"))) : /*#__PURE__*/React.createElement("p", {
-    className: "empty"
-  }, "Commence par un bloc de tirs \xE0 un rep\xE8re fixe. R\xE9ussites, tentatives et emplacement resteront ensemble, sans m\xE9langer des exercices diff\xE9rents.")), /*#__PURE__*/React.createElement("p", {
-    className: "notice"
-  }, "Pour comparer deux scores, conserve le m\xEAme exercice et le m\xEAme rep\xE8re. Les signaux al\xE9atoires entra\xEEnent la r\xE9action ; ils ne mesurent pas ton temps de r\xE9action.")), /*#__PURE__*/React.createElement("section", null, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "Mon historique"), /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('event')
-  }, "Ajouter une activit\xE9")), sessions.length ? sessions.map(s => /*#__PURE__*/React.createElement("button", {
-    className: "history-row",
-    key: s.id,
-    onClick: () => go('history', s.id)
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "history-date"
-  }, shortDate(s.date)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, s.title), /*#__PURE__*/React.createElement("small", null, Math.round(s.minutes), " min \xB7 ", focusLabels[s.focus] || 'Activité', s.partial ? ' · partielle' : '', s.effort ? ` · effort ${s.effort}/10` : '')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 17
-  }))) : /*#__PURE__*/React.createElement("p", {
-    className: "empty"
-  }, "Ta premi\xE8re s\xE9ance appara\xEEtra ici. Ton ancien historique est conserv\xE9 dans Profil \u2192 Donn\xE9es."))));
-}
 function PTHistory({
   data,
   update,
@@ -1769,8 +1532,8 @@ function PTHistory({
   if (!session) return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     title: "S\xE9ance introuvable."
   }), /*#__PURE__*/React.createElement(PTButton, {
-    onClick: () => go('progress')
-  }, "Voir mon historique"));
+    onClick: () => go('today')
+  }, "Retour \xE0 l\u2019accueil"));
   const updateSession = fn => update(s => ({
     ...s,
     sessions: s.sessions.map(x => x.id === id ? fn(x) : x)
@@ -1796,7 +1559,7 @@ function PTHistory({
     notify('Séance ajoutée à tes favoris.');
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go('progress'),
+    onBack: () => go('today'),
     eyebrow: shortDate(session.date),
     title: session.title
   }), /*#__PURE__*/React.createElement("div", {
@@ -1985,10 +1748,6 @@ function PTProfile({
     [owned, setOwned] = usePTState(data.owned),
     [loads, setLoads] = usePTState(Object.fromEntries(Object.entries(data.loads).map(([k, v]) => [k, v.join(', ')]))),
     [error, setError] = usePTState(''),
-    [measure, setMeasure] = usePTState({
-      weight: '',
-      waist: ''
-    }),
     [pendingImport, setPendingImport] = usePTState(null),
     [showLegacy, setShowLegacy] = usePTState(false);
   const set = (k, v) => setForm(p => ({
@@ -2046,31 +1805,6 @@ function PTProfile({
     setError('');
     notify('Profil actualisé. Ton objectif reste celui que tu as choisi.');
   };
-  const addMeasure = () => {
-    if (measure.weight === '' && measure.waist === '' || measure.weight !== '' && !PT.bounded(measure.weight, 30, 350) || measure.waist !== '' && !PT.bounded(measure.waist, 30, 300)) {
-      setError('Renseigne au moins une mesure valide.');
-      return;
-    }
-    update(s => ({
-      ...s,
-      profile: {
-        ...s.profile,
-        weight: measure.weight || s.profile.weight
-      },
-      measurements: [...s.measurements, {
-        id: PT.uid(),
-        date: PT.dateKey(),
-        ...measure
-      }]
-    }));
-    if (measure.weight) set('weight', measure.weight);
-    setMeasure({
-      weight: '',
-      waist: ''
-    });
-    setError('');
-    notify('Mesure ajoutée. Un changement de poids ne change pas ton objectif sans toi.');
-  };
   const exportData = () => {
     try {
       ptDownload(`rehaab-${PT.dateKey()}.json`, JSON.stringify(PT.exportBundle(data, legacy), null, 2));
@@ -2114,27 +1848,30 @@ function PTProfile({
       setError('Restauration impossible : vérifie l’espace disponible. Les données actuelles sont conservées.');
     }
   };
-  const weightSeries = data.measurements.filter(m => PT.bounded(m.weight, 1, 350));
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
-    eyebrow: "Tes rep\xE8res, pas des \xE9tiquettes",
     title: "Mon profil."
-  }, "Ce que l\u2019app doit conna\xEEtre, et ce que tu veux garder sous contr\xF4le."), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
-  }, /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("h3", null, "Mon cap du moment"), /*#__PURE__*/React.createElement(PTField, {
-    label: "Objectif principal"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: form.goal,
-    onChange: e => set('goal', e.target.value)
-  }, Object.entries(goalLabels).map(([value, label]) => /*#__PURE__*/React.createElement("option", {
-    key: value,
-    value: value
-  }, label)))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Ton objectif reste stable tant que tu ne le modifies pas. Le poids sert de rep\xE8re, pas de d\xE9cision automatique.")), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure",
-    open: true
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "home-options"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('player')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "basket"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, data.player?.position ? `${window.PlayerProfile.positions[data.player.position].label}${data.player.archetypes.length ? ' · ' + data.player.archetypes.map(a => window.PlayerProfile.archetypes[a].label).join(', ') : ''}` : 'Poste, profil de jeu, douleurs, matériel')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('symptoms')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "pain"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes douleurs du moment"), /*#__PURE__*/React.createElement("small", null, PT.activeSymptoms(data).length, " signalement", PT.activeSymptoms(data).length > 1 ? 's' : '', " actif", PT.activeSymptoms(data).length > 1 ? 's' : '')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Mes informations & mon niveau"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement(PTField, {
@@ -2198,24 +1935,7 @@ function PTProfile({
     value: "regular"
   }, "Je joue r\xE9guli\xE8rement"), /*#__PURE__*/React.createElement("option", {
     value: "advanced"
-  }, "Pratique exp\xE9riment\xE9e"))), /*#__PURE__*/React.createElement(PTField, {
-    label: "Comment je d\xE9cris mon physique (facultatif)"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: form.bodyContext || '',
-    onChange: e => set('bodyContext', e.target.value)
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "Sans \xE9tiquette"), /*#__PURE__*/React.createElement("option", {
-    value: "slim"
-  }, "Plut\xF4t mince, je veux construire du muscle"), /*#__PURE__*/React.createElement("option", {
-    value: "recomposition"
-  }, "Peu de muscle, silhouette \xE0 faire \xE9voluer"), /*#__PURE__*/React.createElement("option", {
-    value: "muscular"
-  }, "D\xE9j\xE0 muscl\xE9, je veux progresser"), /*#__PURE__*/React.createElement("option", {
-    value: "lighter"
-  }, "Je veux \xEAtre plus l\xE9ger et plus mobile"))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Description personnelle, pas une mesure de masse grasse. Aucune silhouette ou photo ne permet ici de pr\xE9dire un \xAB six-pack \xBB."), /*#__PURE__*/React.createElement("label", {
+  }, "Pratique exp\xE9riment\xE9e"))), /*#__PURE__*/React.createElement("label", {
     className: "check-label"
   }, /*#__PURE__*/React.createElement("input", {
     type: "checkbox",
@@ -2230,8 +1950,7 @@ function PTProfile({
     checked: form.safeties,
     onChange: e => set('safeties', e.target.checked)
   }), "J\u2019ai un rack avec s\xE9curit\xE9s adapt\xE9es ou un pareur pour les mouvements \xE0 la barre."))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure",
-    open: true
+    className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Mon mat\xE9riel & mes vrais paliers de charge"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement(PTEquipment, {
@@ -2258,86 +1977,7 @@ function PTProfile({
   }, error), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: save
-  }, "Enregistrer mon profil"), /*#__PURE__*/React.createElement("div", {
-    className: "home-options"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('player')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, data.player?.position ? `${window.PlayerProfile.positions[data.player.position].label}${data.player.archetypes.length ? ' · ' + data.player.archetypes.map(a => window.PlayerProfile.archetypes[a].label).join(', ') : ''}` : 'Poste, profil de jeu, douleurs, matériel')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('symptoms')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "pain"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes douleurs du moment"), /*#__PURE__*/React.createElement("small", null, PT.activeSymptoms(data).length, " signalement", PT.activeSymptoms(data).length > 1 ? 's' : '', " actif", PT.activeSymptoms(data).length > 1 ? 's' : '')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('library')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma biblioth\xE8que d\u2019exercices"), /*#__PURE__*/React.createElement("small", null, "D\xE9mos, favoris, mouvements rep\xE8res et exercices personnels.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  }))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Mes mesures au fil du temps"), /*#__PURE__*/React.createElement("div", {
-    className: "stack"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "form-grid"
-  }, /*#__PURE__*/React.createElement(PTField, {
-    label: "Nouveau poids (kg)",
-    type: "number",
-    step: "0.1",
-    value: measure.weight,
-    onChange: e => setMeasure(m => ({
-      ...m,
-      weight: e.target.value
-    }))
-  }), /*#__PURE__*/React.createElement(PTField, {
-    label: "Tour de taille (cm)",
-    type: "number",
-    step: "0.1",
-    value: measure.waist,
-    onChange: e => setMeasure(m => ({
-      ...m,
-      waist: e.target.value
-    }))
-  })), /*#__PURE__*/React.createElement(PTButton, {
-    onClick: addMeasure
-  }, "Ajouter cette mesure"), weightSeries.length > 1 && /*#__PURE__*/React.createElement(PTWeightPlot, {
-    values: weightSeries
-  }), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Observe la tendance, pas une pes\xE9e isol\xE9e. Ces mesures ne calculent ni masse grasse ni \xE9tat de sant\xE9."), [...data.measurements].reverse().map((m, i) => /*#__PURE__*/React.createElement("p", {
-    className: "fine",
-    key: m.id || i
-  }, shortDate(m.date), " \xB7 ", m.weight ? `${m.weight} kg` : '', m.waist ? ` · taille ${m.waist} cm` : '')))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Mes s\xE9ances favorites"), /*#__PURE__*/React.createElement("div", {
-    className: "stack"
-  }, data.savedWorkouts.length ? data.savedWorkouts.map(w => /*#__PURE__*/React.createElement("div", {
-    className: "topline",
-    key: w.id
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, w.name), /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => {
-      update(s => ({
-        ...s,
-        savedWorkouts: s.savedWorkouts.filter(x => x.id !== w.id)
-      }));
-      notify('Retirée des favoris. La séance reste dans l’historique.');
-    }
-  }, "Retirer"))) : /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Apr\xE8s une s\xE9ance, choisis \xAB Garder cette s\xE9ance \xE0 refaire \xBB."))), /*#__PURE__*/React.createElement("details", {
+  }, "Enregistrer mon profil"), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Mes donn\xE9es & sauvegardes"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
@@ -2415,29 +2055,19 @@ function PTProfile({
     }))
   }, "Restaurer")))))), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Comment l\u2019app prend ses d\xE9cisions"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("summary", null, "Cr\xE9dits des images et vid\xE9os"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Le moteur utilise des r\xE8gles explicites, pas une IA qui invente des s\xE9ances. Le mat\xE9riel, l\u2019exp\xE9rience, les signalements, les efforts r\xE9cents et les \xE9v\xE9nements proches passent avant la vari\xE9t\xE9."), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "En musculation : r\xE9p\xE9titions, technique d\xE9clar\xE9e, marge restante, r\xE9gularit\xE9 des r\xE9sultats et paliers disponibles. En basket : blocs techniques et tirs r\xE9ellement compt\xE9s. En pliom\xE9trie : contacts et contr\xF4le, sans hausse automatique des impacts."), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Les principes g\xE9n\xE9raux s\u2019appuient sur ", /*#__PURE__*/React.createElement("a", {
-    href: "https://acsm.org/resistance-training-guidelines-update-2026/",
-    target: "_blank",
-    rel: "noreferrer"
-  }, "les recommandations ACSM 2026 pour les adultes en bonne sant\xE9"), ". Le moteur ne prescrit pas de r\xE9\xE9ducation."), /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, "Photos de posture : ", /*#__PURE__*/React.createElement("a", {
     href: "https://github.com/yuhonas/free-exercise-db",
     target: "_blank",
     rel: "noreferrer"
-  }, "free-exercise-db"), ", distribution d\xE9clar\xE9e Unlicense. Cr\xE9dit et version dans ", /*#__PURE__*/React.createElement("a", {
+  }, "free-exercise-db"), ". D\xE9tail des sources dans ", /*#__PURE__*/React.createElement("a", {
     href: "media/ATTRIBUTION.md",
     target: "_blank",
     rel: "noreferrer"
-  }, "les attributions"), ". Vid\xE9os : Goulart / wger, CC BY-SA 4.0, cr\xE9dits d\xE9taill\xE9s dans les attributions."))), /*#__PURE__*/React.createElement(PTAppVersion, null)));
+  }, "les attributions"), "."))), /*#__PURE__*/React.createElement(PTAppVersion, null)));
 }
 // Même numéro sur le téléphone et l’ordi = même version. Le cache actif dit ce que le service worker sert réellement.
 function PTAppVersion() {
@@ -2474,336 +2104,6 @@ function PTAppVersion() {
     disabled: checking,
     onClick: refresh
   }, checking ? 'Vérification…' : 'Chercher une mise à jour'));
-}
-function PTWeightPlot({
-  values
-}) {
-  const nums = values.map(x => Number(x.weight)),
-    min = Math.min(...nums) - 1,
-    max = Math.max(...nums) + 1;
-  const points = nums.map((n, i) => `${12 + i / (nums.length - 1) * 296},${70 - (n - min) / (max - min) * 55}`).join(' ');
-  return /*#__PURE__*/React.createElement("svg", {
-    viewBox: "0 0 320 90",
-    className: "plot",
-    role: "img",
-    "aria-label": `Évolution du poids : ${nums[0]} à ${nums[nums.length - 1]} kilogrammes`
-  }, /*#__PURE__*/React.createElement("line", {
-    x1: "10",
-    x2: "310",
-    y1: "72",
-    y2: "72",
-    stroke: "var(--line)"
-  }), /*#__PURE__*/React.createElement("polyline", {
-    points: points,
-    fill: "none",
-    stroke: "var(--accent)",
-    strokeWidth: "2"
-  }), /*#__PURE__*/React.createElement("text", {
-    x: "12",
-    y: "88"
-  }, shortDate(values[0].date)), /*#__PURE__*/React.createElement("text", {
-    x: "308",
-    y: "88",
-    textAnchor: "end"
-  }, shortDate(values[values.length - 1].date)));
-}
-function PTLibrary({
-  data,
-  update,
-  go,
-  notify
-}) {
-  const [query, setQuery] = usePTState(''),
-    [kind, setKind] = usePTState('all'),
-    [open, setOpen] = usePTState(null),
-    [adding, setAdding] = usePTState(false),
-    [error, setError] = usePTState('');
-  const [muscle, setMuscle] = usePTState('all'),
-    [equipment, setEquipment] = usePTState('all');
-  const [custom, setCustom] = usePTState({
-    name: '',
-    kind: 'strength',
-    pattern: 'push',
-    needs: ['bodyweight'],
-    regions: [],
-    instructions: '',
-    measure: 'reps',
-    min: 8,
-    max: 12,
-    seconds: 30,
-    rest: 60,
-    weighted: false,
-    impact: false,
-    level: 1
-  });
-  const normalize = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('fr');
-  const items = PT.allExercises(data).filter(e => (muscle === 'all' || ptMuscles(e).includes(muscle)) && (equipment === 'all' || e.needs.includes(equipment)) && (kind === 'all' || kind === 'liked' && data.preferences.likes.includes(e.id) || e.kind === kind) && normalize(e.name).includes(normalize(query)));
-  const set = (k, v) => setCustom(c => ({
-    ...c,
-    [k]: v
-  }));
-  const add = () => {
-    if (!custom.name.trim() || !custom.instructions.trim() || !custom.regions.length) {
-      setError('Ajoute un nom, des consignes et les zones sollicitées.');
-      return;
-    }
-    const exercise = {
-      ...custom,
-      id: `custom-${PT.uid()}`,
-      name: custom.name.trim(),
-      instructions: custom.instructions.split('\n').filter(Boolean),
-      min: Number(custom.min),
-      max: Number(custom.max),
-      sets: 3,
-      seconds: Number(custom.seconds),
-      rest: Number(custom.rest)
-    };
-    try {
-      PT.validateState({
-        ...data,
-        customExercises: [...data.customExercises, exercise]
-      });
-    } catch (e) {
-      setError(e.message);
-      return;
-    }
-    update(s => ({
-      ...s,
-      customExercises: [...s.customExercises, exercise]
-    }));
-    setAdding(false);
-    setError('');
-    notify('Exercice personnel ajouté au catalogue.');
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "library-view"
-  }, /*#__PURE__*/React.createElement(PTPageHead, {
-    title: "Les mouvements."
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "stack-lg"
-  }, /*#__PURE__*/React.createElement(PTMuscleExplorer, {
-    value: muscle,
-    onChange: v => {
-      setMuscle(v);
-      setOpen(null);
-    }
-  }), /*#__PURE__*/React.createElement(PTField, {
-    label: "Rechercher un exercice",
-    type: "search",
-    value: query,
-    onChange: e => setQuery(e.target.value),
-    placeholder: "Rowing, squat, cheville\u2026"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "muscle-tabs",
-    role: "group",
-    "aria-label": "Type d\u2019exercice"
-  }, [['all', 'Tous'], ['liked', 'Favoris'], ['strength', 'Force'], ['cardio', 'Cardio'], ['plyo', 'Pliométrie'], ['mobility', 'Mobilité']].map(([value, label]) => /*#__PURE__*/React.createElement("button", {
-    key: value,
-    "aria-pressed": kind === value,
-    onClick: () => {
-      setKind(value);
-      setOpen(null);
-    }
-  }, label))), /*#__PURE__*/React.createElement(PTField, {
-    label: "Mat\xE9riel"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: equipment,
-    onChange: e => {
-      setEquipment(e.target.value);
-      setOpen(null);
-    }
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "all"
-  }, "Tout le mat\xE9riel"), PT.equipment.map(e => /*#__PURE__*/React.createElement("option", {
-    key: e.id,
-    value: e.id
-  }, e.label)))), adding && /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("h2", null, "Mon mouvement personnel"), /*#__PURE__*/React.createElement(PTField, {
-    label: "Nom",
-    value: custom.name,
-    maxLength: "120",
-    onChange: e => set('name', e.target.value)
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "form-grid"
-  }, /*#__PURE__*/React.createElement(PTField, {
-    label: "Famille"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: custom.kind,
-    onChange: e => set('kind', e.target.value)
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "strength"
-  }, "Musculation"), /*#__PURE__*/React.createElement("option", {
-    value: "basket"
-  }, "Basket"), /*#__PURE__*/React.createElement("option", {
-    value: "cardio"
-  }, "Cardio"), /*#__PURE__*/React.createElement("option", {
-    value: "mobility"
-  }, "Mobilit\xE9"), /*#__PURE__*/React.createElement("option", {
-    value: "plyo"
-  }, "Pliom\xE9trie"))), /*#__PURE__*/React.createElement(PTField, {
-    label: "Mouvement travaill\xE9"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: custom.pattern,
-    onChange: e => set('pattern', e.target.value)
-  }, Object.entries(PT.patterns).map(([v, label]) => /*#__PURE__*/React.createElement("option", {
-    key: v,
-    value: v
-  }, label))))), /*#__PURE__*/React.createElement(PTField, {
-    label: "Consignes \xB7 une par ligne"
-  }, /*#__PURE__*/React.createElement("textarea", {
-    value: custom.instructions,
-    maxLength: "2000",
-    onChange: e => set('instructions', e.target.value)
-  })), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Mat\xE9riel n\xE9cessaire"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PTEquipment, {
-    inventory: true,
-    selected: custom.needs,
-    onChange: v => set('needs', v)
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "stack-sm"
-  }, /*#__PURE__*/React.createElement("h3", null, "Zones sollicit\xE9es"), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "S\xE9lectionne aussi les articulations d\u2019appui. Ce marquage permet le filtre de douleur ; il ne garantit pas la s\xE9curit\xE9."), /*#__PURE__*/React.createElement(PTChips, {
-    multi: true,
-    value: custom.regions,
-    options: Object.entries(PT.regions).map(([value, label]) => ({
-      value,
-      label
-    })),
-    onChange: v => set('regions', v)
-  })), /*#__PURE__*/React.createElement(PTField, {
-    label: "Mesure"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: custom.measure,
-    onChange: e => set('measure', e.target.value)
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "reps"
-  }, "R\xE9p\xE9titions"), /*#__PURE__*/React.createElement("option", {
-    value: "seconds"
-  }, "Secondes"), /*#__PURE__*/React.createElement("option", {
-    value: "shots"
-  }, "Tirs r\xE9ussis / tent\xE9s"), /*#__PURE__*/React.createElement("option", {
-    value: "contacts"
-  }, "Contacts de saut"))), /*#__PURE__*/React.createElement("div", {
-    className: "form-grid"
-  }, /*#__PURE__*/React.createElement(PTField, {
-    label: "R\xE9p\xE9titions min.",
-    type: "number",
-    min: "1",
-    max: "100",
-    value: custom.min,
-    onChange: e => set('min', e.target.value)
-  }), /*#__PURE__*/React.createElement(PTField, {
-    label: "R\xE9p\xE9titions max.",
-    type: "number",
-    min: "1",
-    max: "100",
-    value: custom.max,
-    onChange: e => set('max', e.target.value)
-  }), /*#__PURE__*/React.createElement(PTField, {
-    label: "Travail (secondes)",
-    type: "number",
-    min: "1",
-    max: "3600",
-    value: custom.seconds,
-    onChange: e => set('seconds', e.target.value)
-  }), /*#__PURE__*/React.createElement(PTField, {
-    label: "Repos (secondes)",
-    type: "number",
-    min: "0",
-    max: "600",
-    value: custom.rest,
-    onChange: e => set('rest', e.target.value)
-  })), /*#__PURE__*/React.createElement(PTField, {
-    label: "Charge suivie"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: custom.weighted || '',
-    onChange: e => set('weighted', e.target.value || false)
-  }, /*#__PURE__*/React.createElement("option", {
-    value: ""
-  }, "Pas de charge chiffr\xE9e"), PT.equipment.filter(e => ['dumbbells', 'kettlebell', 'barbell', 'vest', 'cable', 'legpress', 'legextension', 'legcurl'].includes(e.id)).map(e => /*#__PURE__*/React.createElement("option", {
-    key: e.id,
-    value: e.id
-  }, e.label)))), /*#__PURE__*/React.createElement("label", {
-    className: "check-label"
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "checkbox",
-    checked: custom.impact,
-    onChange: e => set('impact', e.target.checked)
-  }), "Cet exercice comporte des sauts ou des impacts."), error && /*#__PURE__*/React.createElement("p", {
-    role: "alert",
-    className: "error"
-  }, error), /*#__PURE__*/React.createElement(PTButton, {
-    primary: true,
-    onClick: add
-  }, "Ajouter \xE0 ma biblioth\xE8que")), /*#__PURE__*/React.createElement("div", {
-    className: "library-toolbar"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "icon-button",
-    "aria-label": adding ? 'Fermer l’ajout' : 'Ajouter mon exercice',
-    onClick: () => setAdding(!adding)
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "plus",
-    size: 18
-  })), /*#__PURE__*/React.createElement("span", {
-    className: "library-count",
-    role: "status"
-  }, items.length, " mouvements"), (query || muscle !== 'all' || equipment !== 'all' || kind !== 'all') && /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => {
-      setQuery('');
-      setMuscle('all');
-      setEquipment('all');
-      setKind('all');
-      setOpen(null);
-    }
-  }, "Effacer les filtres")), /*#__PURE__*/React.createElement("div", {
-    className: "exercise-library-grid"
-  }, items.map(e => /*#__PURE__*/React.createElement("article", {
-    className: `exercise-item library-tile${open === e.id ? ' expanded' : ''}`,
-    key: e.id
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => {
-      setOpen(open === e.id ? null : e.id);
-    },
-    "aria-expanded": open === e.id
-  }, /*#__PURE__*/React.createElement(PTThumbnail, {
-    exercise: e
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, PT.patterns[e.pattern], " \xB7 ", e.needs.filter(id => id !== 'bodyweight').map(id => PT.equipment.find(x => x.id === id)?.label).join(', ') || 'Poids du corps', data.preferences.avoids.includes(e.id) ? ' · écarté des propositions' : '')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 16
-  })), open === e.id && /*#__PURE__*/React.createElement("div", {
-    className: "stack"
-  }, /*#__PURE__*/React.createElement(PTExerciseDetails, {
-    exercise: e
-  }), /*#__PURE__*/React.createElement(PTChips, {
-    multi: true,
-    value: [...(data.preferences.likes.includes(e.id) ? ['like'] : []), ...(data.preferences.anchors.includes(e.id) ? ['anchor'] : []), ...(data.preferences.avoids.includes(e.id) ? ['avoid'] : [])],
-    options: [{
-      value: 'like',
-      label: 'J’aime'
-    }, {
-      value: 'anchor',
-      label: 'Mouvement repère'
-    }, {
-      value: 'avoid',
-      label: 'Ne plus proposer'
-    }],
-    onChange: values => update(s => ({
-      ...s,
-      preferences: {
-        ...s.preferences,
-        likes: values.includes('like') ? [...new Set([...s.preferences.likes, e.id])] : s.preferences.likes.filter(id => id !== e.id),
-        anchors: values.includes('anchor') ? [...new Set([...s.preferences.anchors, e.id])] : s.preferences.anchors.filter(id => id !== e.id),
-        avoids: values.includes('avoid') ? [...new Set([...s.preferences.avoids, e.id])] : s.preferences.avoids.filter(id => id !== e.id)
-      }
-    }))
-  }))))), !items.length && /*#__PURE__*/React.createElement("p", {
-    className: "empty"
-  }, "Aucun r\xE9sultat. Essaie un autre mot ou ajoute ton propre exercice.")));
 }
 class PTErrorBoundary extends React.Component {
   constructor(props) {
@@ -2925,7 +2225,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = route === 'progress' || route === 'history' ? 'progress' : ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'program-legacy'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : 'today';
   let content;
   if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
     const screens = {
@@ -2935,11 +2235,6 @@ function PersonalApp() {
       session: PTSession,
       symptoms: PTSymptoms,
       event: PTEvent,
-      program: PTProgramHome,
-      'program-new': PTProgramCatalog,
-      'program-checkin': PTProgramCheckIn,
-      'program-legacy': PTProgram,
-      nutrition: PTNutrition,
       player: PTPlayerProfile,
       bilan: PTAssessment,
       pathway: PTPathway,
@@ -2953,10 +2248,8 @@ function PersonalApp() {
       'qi-pnr': PTQiPnr,
       'qi-review': PTQiReview,
       rehab: PTRehabQuiz,
-      progress: PTProgress,
       history: PTHistory,
-      profile: PTProfile,
-      library: PTLibrary
+      profile: PTProfile
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({
@@ -2998,16 +2291,12 @@ function PersonalApp() {
     icon: 'today'
   }, {
     id: 'pathway',
-    label: 'Corps',
+    label: 'Parcours',
     icon: 'weight'
   }, {
     id: 'qi',
     label: 'QI',
     icon: 'court'
-  }, {
-    id: 'progress',
-    label: 'Progression',
-    icon: 'chart'
   }, {
     id: 'profile',
     label: 'Profil',

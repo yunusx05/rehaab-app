@@ -10,6 +10,8 @@ const ptMuscleLabels = {
   calves: 'Mollets',
   core: 'Abdominaux'
 };
+// Dose affichée dans les listes de séance : « 3 × 8–10 », « 3 × 30 s », « 3 × 10 tirs ».
+const ptDoseLabel = e => e.measure === 'seconds' ? `${e.sets} × ${e.seconds} s` : e.measure === 'shots' ? `${e.sets} × ${e.targetMax || e.max} tirs` : `${e.sets} × ${e.targetMin === e.targetMax ? e.targetMax : `${e.targetMin}–${e.targetMax}`}${e.unilateral ? ' / côté' : ''}`;
 function ptMuscles(e) {
   const source = window.RehaabMedia?.[e.id]?.muscles;
   const translate = {
@@ -195,22 +197,4 @@ function PTRewards({
     name: "copy",
     size: 16
   }), "Copier mon bilan pour mes amis")));
-}
-function PTAdaptation({
-  data
-}) {
-  const latest = [...data.sessions].sort((a, b) => b.date.localeCompare(a.date) || String(b.completedAt).localeCompare(String(a.completedAt)))[0];
-  if (!latest?.effort) return null;
-  const recent = PT.dayDiff(PT.dateKey(), latest.date) >= 0 && PT.dayDiff(PT.dateKey(), latest.date) <= 2;
-  const hard = Number(latest.effort) >= 8 && recent;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "adaptation-note"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "small-icon"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: hard ? 'heart' : 'chart',
-    size: 22
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, hard ? 'La suite sera plus douce' : 'Ton ressenti est enregistré'), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, hard ? 'Effort élevé récemment : volume réduit et format contrôlé.' : `Dernière séance : ${latest.effort}/10. Les hausses de charge restent liées à tes séries et à ta technique.`)));
 }

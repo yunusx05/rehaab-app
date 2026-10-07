@@ -97,8 +97,9 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await page.setViewportSize({width:390,height:844});
   const data=player({pains:[{region:'knee',severity:2}]});data.pathway=BP.create();
   await seed(page,data,'today');
-  await expect(page.getByText('Le corps · étape 1/5')).toBeVisible();
-  await page.getByRole('button',{name:'Corps',exact:true}).click();
+  // Une gêne active passe avant le parcours : la séance du jour propose le protocole de soin.
+  await expect(page.locator('.today-plan')).toContainText('Soigne la zone qui gêne.');
+  await page.getByRole('button',{name:'Parcours',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Fondations.'})).toBeVisible();
   await noOverflow(page);
   await page.getByRole('button',{name:/Préparer cette séance/}).first().click();
@@ -202,4 +203,19 @@ test('douleur de hanche / aine : renforcement ciblé au lieu d’une séance vid
   expect(plan.exercises.every(e=>JP.tolerates(e,data.symptoms)&&PT.allowed(e,data,plan.check))).toBe(true);
   expect(plan.exercises.some(e=>['pigeon','cossack','hip-90-90','deep-squat-hold','bulgarian'].includes(e.id))).toBe(false);
   expect(new Set(plan.exercises.map(e=>e.id)).size).toBe(plan.exercises.length);
+});
+
+test('accueil allégé : la séance du jour lance directement la séance du parcours',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  const data=player();data.pathway=BP.create();
+  await seed(page,data,'today');
+  const card=page.locator('.today-plan');
+  await expect(card).toContainText('Étape 1 · Fondations');
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Parcours','QI','Profil']);
+  await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
+  await card.getByRole('button',{name:/Préparer ma séance/}).click();
+  await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
+  expect((await state(page)).draft.source).toBe('pathway');
+  await noOverflow(page);expect(errors).toEqual([]);
 });

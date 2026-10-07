@@ -1,71 +1,40 @@
-/* Carte « Aujourd’hui », charge d’entraînement, courbes par mouvement et mesure vidéo au ralenti. Réutilise les composants de personal-app.jsx. */
-
-// Jauge : ratio 7 jours / moyenne 4 semaines, de 0 à 2. Zones 0,8 – 1,3 – 1,5 comme dans PT.trainingLoad.
-function PTLoadGauge({load}) {
-  if(load.zone==='calibration'||load.ratio==null) return <p className="fine load-calibration">Calibration de ta charge : {Math.min(load.history,21)} jour{load.history>1?'s':''} d’historique sur 21. Enregistre aussi tes matchs et entraînements de club.</p>;
-  const pos=Math.min(100,load.ratio/2*100);
-  return <div className="load-gauge" role="img" aria-label={`Charge : ${String(load.ratio).replace('.',',')} fois ta moyenne, ${PT.loadZones[load.zone].toLowerCase()}`}>
-    <div className="load-track"><span className="z-low" style={{width:'40%'}}/><span className="z-stable" style={{width:'25%'}}/><span className="z-rising" style={{width:'10%'}}/><span className="z-spike" style={{width:'25%'}}/><i style={{left:`${pos}%`}}/></div>
-    <div className="topline caption"><span>{PT.loadZones[load.zone]}</span><span className="num">× {String(load.ratio).replace('.',',')}</span></div>
-  </div>;
-}
+/* Carte « Ta séance du jour » et mesure vidéo au ralenti. Réutilise les composants de personal-app.jsx. */
 
 function PTTodayPlan({data,update,go,notify}) {
-  const plan=PT.todayPlan(data);
+  const plan=PT.todayPlan(data),BP=window.BasketPathway,JP=window.PlayerProfile,p=data.pathway;
+  const launch=draft=>{
+    if(data.draft?.status==='active'){go('session');notify('Ta séance en cours est conservée.');return;}
+    if(!draft||draft.error){notify(draft?.error||'Séance indisponible aujourd’hui.');return;}
+    update(s=>({...s,draft}));go('preview');
+  };
   const quick=(focus,minutes)=>{
     if(data.draft?.status==='active'){go('session');notify('Ta séance en cours est conservée.');return;}
     const check={...data.checkIn,date:PT.dateKey(),equipment:data.owned,minutes,focus,motivation:'normal',energy:data.checkIn.date===PT.dateKey()?data.checkIn.energy:'normal'};
     const draft=PT.generate(data,check);if(draft.error){notify(draft.error);return;}
     update(s=>({...s,checkIn:check,draft}));go('preview');
   };
+  // Séance du parcours : la prochaine séance prévue de la semaine, lancée directement.
+  let next=null;
+  if(p&&BP){const step=BP.stepById(p.step),status=BP.weekStatus(p),day=step.days.find(d=>d.key===status.next);if(day)next={step,status,day,plan:BP.sessionPlan(PT,JP,data,p,day.key)};}
+  const ready=next&&!next.plan.error;
   const RW=window.RehabWarmup;
   const actions={
     symptoms:['Faire le point',()=>go('symptoms')],
-    warmup:['Lancer l’échauffement',()=>RW&&typeof rwLaunch==='function'?rwLaunch({data,update,go,notify},s=>RW.warmupPlan(PT,window.PlayerProfile,s,RW.warmups[0].id)):go('today')],
+    warmup:['Lancer l’échauffement',()=>RW&&typeof rwLaunch==='function'?rwLaunch({data,update,go,notify},s=>RW.warmupPlan(PT,JP,s,RW.warmups[0].id)):go('today')],
     rehab:['Trouver mon protocole',()=>go('rehab')],
     mobility:['10 min de mobilité',()=>quick('mobility',15)],
-    session:[plan.kind==='light'?'Séance légère · 20 min':'Préparer ma séance',()=>quick('muscle',plan.kind==='light'?20:30)],
-    pathway:['Ouvrir mon parcours',()=>go('pathway')],
-    program:['Ouvrir mon programme',()=>go('program')]
+    session:[plan.kind==='light'?'Séance légère · 20 min':'Préparer ma séance',()=>plan.kind!=='light'&&data.player?.position&&JP?launch(JP.dailyBody(PT,data,{minutes:30})):quick('muscle',plan.kind==='light'?20:30)],
+    pathway:[ready?'Préparer ma séance':'Ouvrir mon parcours',()=>ready?launch(next.plan):go('pathway')]
   };
   const [label,run]=actions[plan.action]||actions.session;
+  const showPathway=plan.action==='pathway'&&next;
   return <section className={`today-plan kind-${plan.kind} sport-reveal`} aria-labelledby="today-plan-title">
-    <span className="eyebrow">Aujourd’hui, pour toi</span>
-    <h2 id="today-plan-title">{plan.title}</h2>
+    <span className="eyebrow">Ta séance du jour</span>
+    <h2 id="today-plan-title">{showPathway?next.day.name:plan.title}</h2>
+    {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
     <ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul>
-    <PTLoadGauge load={plan.load}/>
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
-  </section>;
-}
-
-// Charge des 6 dernières semaines : barres simples, la semaine en cours à droite.
-function PTLoadHistory({data}) {
-  const load=PT.trainingLoad(data),max=Math.max(1,...load.weeks.map(w=>w.load));
-  return <section className="card stack">
-    <div className="card-header"><h3>Charge d’entraînement</h3><small>minutes × effort</small></div>
-    <div className="load-weeks">{load.weeks.map(w=><div key={w.week} className={w.week===0?'current':''}><span style={{height:`${Math.max(3,w.load/max*100)}%`}}/><small>{w.week===0?'Cette sem.':`S-${w.week}`}</small></div>)}</div>
-    <PTLoadGauge load={load}/>
-    <p className="fine">Repère de dosage : évite qu’une semaine dépasse nettement ta moyenne. Ce n’est pas une prédiction de blessure.{load.estimated?' Certaines activités sans effort noté comptent pour 5/10.':''}</p>
-  </section>;
-}
-
-// Courbe par mouvement repère : 1RM estimée (Epley) séance après séance, plus la meilleure série réelle.
-function PTLiftCurves({data}) {
-  const lifts=PT.trackedLifts(data),[id,setId]=usePTState(lifts[0]?.id||null);
-  if(!lifts.length) return <section className="card stack"><h3>Mes courbes de progression</h3><p className="empty">Enregistre au moins deux séances avec charge sur le même mouvement pour voir sa courbe.</p></section>;
-  const current=lifts.find(l=>l.id===id)||lifts[0],points=PT.liftHistory(data,current.id).filter(p=>p.e1rm>0);
-  const values=points.map(p=>p.e1rm),lo=Math.min(...values),hi=Math.max(...values),span=Math.max(1,hi-lo);
-  const W=300,H=120,x=i=>points.length<2?W/2:12+i*(W-24)/(points.length-1),y=v=>H-14-(v-lo)/span*(H-30);
-  const first=points[0],last=points[points.length-1],delta=first&&last?Math.round((last.e1rm-first.e1rm)/first.e1rm*100):0;
-  return <section className="card stack lift-curves">
-    <div className="card-header"><h3>Mes courbes de progression</h3><small>{points.length} séances</small></div>
-    <PTField label="Mouvement"><select value={current.id} onChange={e=>setId(e.target.value)}>{lifts.map(l=><option key={l.id} value={l.id}>{l.name}</option>)}</select></PTField>
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${current.name} : de ${first.e1rm} à ${last.e1rm} kg estimés`}>
-      <polyline points={points.map((p,i)=>`${x(i)},${y(p.e1rm)}`).join(' ')}/>
-      {points.map((p,i)=><circle key={p.sessionId} cx={x(i)} cy={y(p.e1rm)} r="3.5"><title>{`${shortDate(p.date)} · ${p.weight} kg × ${p.reps}`}</title></circle>)}
-    </svg>
-    <div className="stats-row"><div className="stat"><strong>{last.weight}<small> kg</small></strong><small>× {last.reps} · dernière</small></div><div className="stat"><strong>{last.e1rm}</strong><small>max estimé (kg)</small></div><div className="stat"><strong>{delta>0?'+':''}{delta} %</strong><small>depuis le début</small></div></div>
-    <p className="fine">Max estimé à partir de ta meilleure série (formule d’Epley). Ce n’est pas une charge à tenter : il sert seulement à comparer tes séances entre elles.</p>
+    {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
   </section>;
 }
 

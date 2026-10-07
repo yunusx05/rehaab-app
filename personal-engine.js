@@ -642,7 +642,7 @@
     if(yesterdayHard) return {kind:'light',title:'Une séance légère.',why:['Effort élevé hier : volume réduit et pas d’impacts aujourd’hui.'],action:'session',load};
     if(eventsOn(tomorrow).length) return {kind:'light',title:'Veille de match : haut du corps et gainage.',why:[`${eventsOn(tomorrow)[0].title} demain : les jambes restent fraîches.`],action:'session',load};
     if(week.sessions>=week.target) return {kind:'rest',title:'Objectif de la semaine atteint.',why:[`${week.sessions} séances sur ${week.target} : repos ou mobilité. Une séance de plus reste possible si tu te sens frais.`],action:'mobility',load};
-    const plan=state.pathway&&state.pathway.status!=='archived'?'pathway':state.program&&state.program.status==='active'?'program':'session';
+    const plan=state.pathway&&state.pathway.status!=='archived'?'pathway':'session';
     return {kind:'train',title:plan==='pathway'?'Ta séance du parcours t’attend.':plan==='program'?'Ta séance du programme t’attend.':'Feu vert pour t’entraîner.',why:[load.zone==='low'?'Ta charge récente est sous ta moyenne : tu peux reprendre le rythme, sans rattraper d’un coup.':load.zone==='rising'?'Charge en hausse : garde une intensité maîtrisée.':'Pas de douleur, pas de match proche : séance normale.'],action:plan,load};
   }
   function exportBundle(state,legacy={}) {return {app:'Rehaab',exportedAt:new Date().toISOString(),state:validateState(state),legacy};}

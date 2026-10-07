@@ -28,13 +28,9 @@ for (const size of sizes) {
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'C’est parti' }).click();
     await expect(page.getByRole('heading', { name: /À toi de jouer/i })).toBeVisible();
-    await expect(page.locator('.training-hero img')).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.screenshot({ path: `test-results/accueil-${size.width}.png`, fullPage: true });
-    await page.getByRole('button', { name: 'Trouver ma séance' }).click();
-    await page.getByRole('button', { name: 'Continuer' }).click();
-    await page.getByRole('button', { name: 'Continuer' }).click();
-    await page.getByRole('button', { name: 'Propose-moi une séance' }).click();
+    await page.locator('.today-plan').getByRole('button', { name: /Préparer ma séance/ }).click();
     await expect(page.getByRole('button', { name: 'Démarrer la séance' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.getByRole('button', { name: 'Démarrer la séance' }).click();

@@ -110,20 +110,17 @@ function PTSession({data,update,go,notify}) {
     const session=draft.source==='rehab'?{...finished,painAfter}:finished;
     const RWL=window.RehabWarmup;let levelChange=0;
     saved.current=true;
-    // Une séance de programme avance le suivi ; une séance libre ne touche jamais au programme.
+    // Une séance du parcours avance le suivi ; une séance libre ne touche jamais au parcours.
     update(s=>{
       const next={...s,sessions:s.sessions.some(x=>x.id===session.id)?s.sessions:[...s.sessions,session],draft:null};
       // Quick Rehab : la douleur après la séance règle le niveau du protocole.
       if(RWL&&session.source==='rehab'&&session.protocolId){const r=RWL.record(s.rehab,{protocolId:session.protocolId,level:session.rehabLevel,painAfter:session.painAfter,sessionId:session.id,date:session.date},s.sessions);next.rehab=r.rehab;levelChange=r.change;}
-      const PP=window.PersonalPrograms;
-      if(PP&&session.programInstanceId&&s.program&&s.program.id===session.programInstanceId&&s.program.status==='active')
-        next.program=PP.markCompleted(s.program,{week:session.programWeekIndex,day:session.programDay,sessionId:session.id,date:session.date,partial:session.partial});
       const BP=window.BasketPathway;
       if(BP&&session.pathwayId&&s.pathway&&s.pathway.id===session.pathwayId&&s.pathway.step===session.pathwayStep)
         next.pathway=BP.markCompleted(s.pathway,{step:session.pathwayStep,week:session.pathwayWeek,day:session.pathwayDay,sessionId:session.id,date:session.date,partial:session.partial});
       return next;
     });
-    if(RWL&&['rehab','warmup'].includes(session.source)){const level=session.source!=='rehab'?'':levelChange>0?'Bien toléré deux fois : prochain niveau débloqué. ':levelChange<0?'Douleur trop forte : on redescend d’un niveau. ':'';setTimeout(()=>notify(`${level}Ta prochaine séance du programme te proposera de retirer ce temps.`),0);}
+    if(RWL&&['rehab','warmup'].includes(session.source)){const level=session.source!=='rehab'?'':levelChange>0?'Bien toléré deux fois : prochain niveau débloqué. ':levelChange<0?'Douleur trop forte : on redescend d’un niveau. ':'';setTimeout(()=>notify(`${level}Ta prochaine séance du parcours te proposera de retirer ce temps.`),0);}
     go('history',session.id);
   };
   const addRound=()=>{

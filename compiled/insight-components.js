@@ -1,56 +1,31 @@
-/* Carte « Aujourd’hui », charge d’entraînement, courbes par mouvement et mesure vidéo au ralenti. Réutilise les composants de personal-app.jsx. */
+/* Carte « Ta séance du jour » et mesure vidéo au ralenti. Réutilise les composants de personal-app.jsx. */
 
-// Jauge : ratio 7 jours / moyenne 4 semaines, de 0 à 2. Zones 0,8 – 1,3 – 1,5 comme dans PT.trainingLoad.
-function PTLoadGauge({
-  load
-}) {
-  if (load.zone === 'calibration' || load.ratio == null) return /*#__PURE__*/React.createElement("p", {
-    className: "fine load-calibration"
-  }, "Calibration de ta charge : ", Math.min(load.history, 21), " jour", load.history > 1 ? 's' : '', " d\u2019historique sur 21. Enregistre aussi tes matchs et entra\xEEnements de club.");
-  const pos = Math.min(100, load.ratio / 2 * 100);
-  return /*#__PURE__*/React.createElement("div", {
-    className: "load-gauge",
-    role: "img",
-    "aria-label": `Charge : ${String(load.ratio).replace('.', ',')} fois ta moyenne, ${PT.loadZones[load.zone].toLowerCase()}`
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "load-track"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "z-low",
-    style: {
-      width: '40%'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "z-stable",
-    style: {
-      width: '25%'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "z-rising",
-    style: {
-      width: '10%'
-    }
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "z-spike",
-    style: {
-      width: '25%'
-    }
-  }), /*#__PURE__*/React.createElement("i", {
-    style: {
-      left: `${pos}%`
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "topline caption"
-  }, /*#__PURE__*/React.createElement("span", null, PT.loadZones[load.zone]), /*#__PURE__*/React.createElement("span", {
-    className: "num"
-  }, "\xD7 ", String(load.ratio).replace('.', ','))));
-}
 function PTTodayPlan({
   data,
   update,
   go,
   notify
 }) {
-  const plan = PT.todayPlan(data);
+  const plan = PT.todayPlan(data),
+    BP = window.BasketPathway,
+    JP = window.PlayerProfile,
+    p = data.pathway;
+  const launch = draft => {
+    if (data.draft?.status === 'active') {
+      go('session');
+      notify('Ta séance en cours est conservée.');
+      return;
+    }
+    if (!draft || draft.error) {
+      notify(draft?.error || 'Séance indisponible aujourd’hui.');
+      return;
+    }
+    update(s => ({
+      ...s,
+      draft
+    }));
+    go('preview');
+  };
   const quick = (focus, minutes) => {
     if (data.draft?.status === 'active') {
       go('session');
@@ -78,6 +53,20 @@ function PTTodayPlan({
     }));
     go('preview');
   };
+  // Séance du parcours : la prochaine séance prévue de la semaine, lancée directement.
+  let next = null;
+  if (p && BP) {
+    const step = BP.stepById(p.step),
+      status = BP.weekStatus(p),
+      day = step.days.find(d => d.key === status.next);
+    if (day) next = {
+      step,
+      status,
+      day,
+      plan: BP.sessionPlan(PT, JP, data, p, day.key)
+    };
+  }
+  const ready = next && !next.plan.error;
   const RW = window.RehabWarmup;
   const actions = {
     symptoms: ['Faire le point', () => go('symptoms')],
@@ -86,120 +75,39 @@ function PTTodayPlan({
       update,
       go,
       notify
-    }, s => RW.warmupPlan(PT, window.PlayerProfile, s, RW.warmups[0].id)) : go('today')],
+    }, s => RW.warmupPlan(PT, JP, s, RW.warmups[0].id)) : go('today')],
     rehab: ['Trouver mon protocole', () => go('rehab')],
     mobility: ['10 min de mobilité', () => quick('mobility', 15)],
-    session: [plan.kind === 'light' ? 'Séance légère · 20 min' : 'Préparer ma séance', () => quick('muscle', plan.kind === 'light' ? 20 : 30)],
-    pathway: ['Ouvrir mon parcours', () => go('pathway')],
-    program: ['Ouvrir mon programme', () => go('program')]
+    session: [plan.kind === 'light' ? 'Séance légère · 20 min' : 'Préparer ma séance', () => plan.kind !== 'light' && data.player?.position && JP ? launch(JP.dailyBody(PT, data, {
+      minutes: 30
+    })) : quick('muscle', plan.kind === 'light' ? 20 : 30)],
+    pathway: [ready ? 'Préparer ma séance' : 'Ouvrir mon parcours', () => ready ? launch(next.plan) : go('pathway')]
   };
   const [label, run] = actions[plan.action] || actions.session;
+  const showPathway = plan.action === 'pathway' && next;
   return /*#__PURE__*/React.createElement("section", {
     className: `today-plan kind-${plan.kind} sport-reveal`,
     "aria-labelledby": "today-plan-title"
   }, /*#__PURE__*/React.createElement("span", {
     className: "eyebrow"
-  }, "Aujourd\u2019hui, pour toi"), /*#__PURE__*/React.createElement("h2", {
+  }, "Ta s\xE9ance du jour"), /*#__PURE__*/React.createElement("h2", {
     id: "today-plan-title"
-  }, plan.title), /*#__PURE__*/React.createElement("ul", {
+  }, showPathway ? next.day.name : plan.title), showPathway && /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "\xC9tape ", next.step.id, " \xB7 ", next.step.name, " \xB7 semaine ", next.status.week, ready ? ` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices` : ''), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
   }, plan.why.map(w => /*#__PURE__*/React.createElement("li", {
     key: w
-  }, w))), /*#__PURE__*/React.createElement(PTLoadGauge, {
-    load: plan.load
-  }), /*#__PURE__*/React.createElement(PTButton, {
+  }, w))), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: run
   }, label, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })));
-}
-
-// Charge des 6 dernières semaines : barres simples, la semaine en cours à droite.
-function PTLoadHistory({
-  data
-}) {
-  const load = PT.trainingLoad(data),
-    max = Math.max(1, ...load.weeks.map(w => w.load));
-  return /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "card-header"
-  }, /*#__PURE__*/React.createElement("h3", null, "Charge d\u2019entra\xEEnement"), /*#__PURE__*/React.createElement("small", null, "minutes \xD7 effort")), /*#__PURE__*/React.createElement("div", {
-    className: "load-weeks"
-  }, load.weeks.map(w => /*#__PURE__*/React.createElement("div", {
-    key: w.week,
-    className: w.week === 0 ? 'current' : ''
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      height: `${Math.max(3, w.load / max * 100)}%`
-    }
-  }), /*#__PURE__*/React.createElement("small", null, w.week === 0 ? 'Cette sem.' : `S-${w.week}`)))), /*#__PURE__*/React.createElement(PTLoadGauge, {
-    load: load
-  }), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Rep\xE8re de dosage : \xE9vite qu\u2019une semaine d\xE9passe nettement ta moyenne. Ce n\u2019est pas une pr\xE9diction de blessure.", load.estimated ? ' Certaines activités sans effort noté comptent pour 5/10.' : ''));
-}
-
-// Courbe par mouvement repère : 1RM estimée (Epley) séance après séance, plus la meilleure série réelle.
-function PTLiftCurves({
-  data
-}) {
-  const lifts = PT.trackedLifts(data),
-    [id, setId] = usePTState(lifts[0]?.id || null);
-  if (!lifts.length) return /*#__PURE__*/React.createElement("section", {
-    className: "card stack"
-  }, /*#__PURE__*/React.createElement("h3", null, "Mes courbes de progression"), /*#__PURE__*/React.createElement("p", {
-    className: "empty"
-  }, "Enregistre au moins deux s\xE9ances avec charge sur le m\xEAme mouvement pour voir sa courbe."));
-  const current = lifts.find(l => l.id === id) || lifts[0],
-    points = PT.liftHistory(data, current.id).filter(p => p.e1rm > 0);
-  const values = points.map(p => p.e1rm),
-    lo = Math.min(...values),
-    hi = Math.max(...values),
-    span = Math.max(1, hi - lo);
-  const W = 300,
-    H = 120,
-    x = i => points.length < 2 ? W / 2 : 12 + i * (W - 24) / (points.length - 1),
-    y = v => H - 14 - (v - lo) / span * (H - 30);
-  const first = points[0],
-    last = points[points.length - 1],
-    delta = first && last ? Math.round((last.e1rm - first.e1rm) / first.e1rm * 100) : 0;
-  return /*#__PURE__*/React.createElement("section", {
-    className: "card stack lift-curves"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "card-header"
-  }, /*#__PURE__*/React.createElement("h3", null, "Mes courbes de progression"), /*#__PURE__*/React.createElement("small", null, points.length, " s\xE9ances")), /*#__PURE__*/React.createElement(PTField, {
-    label: "Mouvement"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: current.id,
-    onChange: e => setId(e.target.value)
-  }, lifts.map(l => /*#__PURE__*/React.createElement("option", {
-    key: l.id,
-    value: l.id
-  }, l.name)))), /*#__PURE__*/React.createElement("svg", {
-    viewBox: `0 0 ${W} ${H}`,
-    role: "img",
-    "aria-label": `${current.name} : de ${first.e1rm} à ${last.e1rm} kg estimés`
-  }, /*#__PURE__*/React.createElement("polyline", {
-    points: points.map((p, i) => `${x(i)},${y(p.e1rm)}`).join(' ')
-  }), points.map((p, i) => /*#__PURE__*/React.createElement("circle", {
-    key: p.sessionId,
-    cx: x(i),
-    cy: y(p.e1rm),
-    r: "3.5"
-  }, /*#__PURE__*/React.createElement("title", null, `${shortDate(p.date)} · ${p.weight} kg × ${p.reps}`)))), /*#__PURE__*/React.createElement("div", {
-    className: "stats-row"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, last.weight, /*#__PURE__*/React.createElement("small", null, " kg")), /*#__PURE__*/React.createElement("small", null, "\xD7 ", last.reps, " \xB7 derni\xE8re")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, last.e1rm), /*#__PURE__*/React.createElement("small", null, "max estim\xE9 (kg)")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, delta > 0 ? '+' : '', delta, " %"), /*#__PURE__*/React.createElement("small", null, "depuis le d\xE9but"))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Max estim\xE9 \xE0 partir de ta meilleure s\xE9rie (formule d\u2019Epley). Ce n\u2019est pas une charge \xE0 tenter : il sert seulement \xE0 comparer tes s\xE9ances entre elles."));
+  })), !p && plan.action !== 'symptoms' && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('pathway')
+  }, "Commencer le parcours Retour au jeu \u2192"));
 }
 
 // Mesure vidéo au ralenti, principe de l'app My Jump : temps de vol t entre décollage et réception, hauteur = g·t²/8.

@@ -19,96 +19,6 @@ async function setVisibility(page,value){await page.evaluate(value=>{Object.defi
 // A muscle zone groups both body sides, so its bounding-box centre can fall on another zone: tap a point inside one side.
 async function tapMuscle(page,label,[x,y]){const point=await page.getByRole('button',{name:label,exact:true}).evaluate((el,[x,y])=>{const p=el.ownerSVGElement.createSVGPoint();p.x=x;p.y=y;const s=p.matrixTransform(el.getScreenCTM());return {x:s.x,y:s.y};},[x,y]);await page.mouse.click(point.x,point.y);}
 
-for(const width of [320,350,390,430,1280])test(`bibliothèque : stabilité du personnage à ${width}px`,async({page})=>{
-  await page.setViewportSize({width,height:900});const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');await page.evaluate(()=>document.fonts.ready);
-  const bounds=()=>page.locator('.muscle-explorer').evaluate(el=>{
-    const rect=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};};
-    return {card:rect(el),body:rect(el.querySelector('.body-map'))};
-  });
-  const initial=await bounds();
-  const stable=async()=>{
-    const current=await bounds();
-    for(const part of ['card','body'])for(const key of ['x','y','width','height'])expect(Math.abs(current[part][key]-initial[part][key]),`${part}.${key}`).toBeLessThanOrEqual(1);
-    expect(await page.locator('.muscle-copy h2').evaluate(el=>el.scrollHeight<=el.clientHeight+1&&el.scrollWidth<=el.clientWidth+1)).toBe(true);
-    await noOverflow(page);
-  };
-  for(const [label,point] of [['Bras',[72,108]],['Pectoraux',[106,82]],['Quadriceps',[102,204]],['Abdominaux',[110,125]]]){
-    await tapMuscle(page,label,point);await expect(page.getByRole('button',{name:label,exact:true})).toHaveAttribute('aria-pressed','true');await stable();
-  }
-  await tapMuscle(page,'Abdominaux',[110,125]);await stable();
-  await page.getByRole('button',{name:'Voir de dos'}).click();await stable();
-  await tapMuscle(page,'Ischio-jambiers',[102,204]);await stable();
-  await page.screenshot({path:`test-results/muscle-stable-${width}.png`});
-  await page.getByRole('button',{name:'Tout afficher',exact:true}).click();await stable();
-  await expect(page.getByRole('button',{name:'Tout afficher',exact:true})).toHaveCount(0);
-});
-
-test('catalogue : filtres combinés, aperçu vidéo, favoris et recherche sans accents',async({page})=>{
-  await page.setViewportSize({width:390,height:844});const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');
-  await tapMuscle(page,'Bras',[72,108]);
-  await expect(page.getByRole('button',{name:'Bras',exact:true})).toHaveAttribute('aria-pressed','true');
-  await page.getByLabel('Matériel',{exact:true}).selectOption('dumbbells');
-  await page.getByLabel('Rechercher un exercice',{exact:true}).fill('marteau');
-  await expect(page.locator('.library-tile')).toHaveCount(1);
-  await page.locator('.library-tile>.home-action').click();
-  await expect(page.locator('.library-tile.expanded video')).toBeVisible();
-  await expect.poll(()=>page.locator('.library-tile.expanded video').evaluate(v=>v.readyState)).toBeGreaterThanOrEqual(2);
-  await page.getByRole('button',{name:'J’aime',exact:true}).click();
-  await page.reload();
-  await page.getByRole('button',{name:'Favoris',exact:true}).click();
-  await expect(page.locator('.library-tile')).toHaveCount(1);
-  await page.getByRole('button',{name:'Effacer les filtres'}).click();
-  await page.getByLabel('Rechercher un exercice').fill('developpe');
-  await expect(page.locator('.library-tile').first()).toBeVisible();
-  await noOverflow(page);await page.screenshot({path:'test-results/catalogue-mobile.png',fullPage:true});
-});
-
-test('bibliothèque : carte des muscles au clavier et filtres rapides',async({page})=>{
-  const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.setViewportSize({width:320,height:568});const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');
-  const count=async()=>Number((await page.locator('.library-count').textContent()).match(/\d+/)[0]);
-  const all=await count();
-  const arms=page.getByRole('button',{name:'Bras',exact:true});
-  await arms.focus();await page.keyboard.press('Enter');
-  await expect(arms).toHaveAttribute('aria-pressed','true');
-  await expect(page.getByRole('heading',{name:'Bras',exact:true})).toBeVisible();
-  await expect.poll(count).toBeLessThan(all);expect(await count()).toBeGreaterThan(0);
-  await page.getByRole('button',{name:'Voir de dos'}).click();
-  await expect(page.getByRole('button',{name:'Ischio-jambiers',exact:true})).toBeVisible();
-  await page.getByRole('button',{name:'Tout afficher'}).click();
-  await expect.poll(count).toBe(all);
-  const cardio=page.getByRole('button',{name:'Cardio',exact:true});
-  await cardio.click();await expect(cardio).toHaveAttribute('aria-pressed','true');
-  await expect.poll(count).toBeLessThan(all);expect(await count()).toBeGreaterThan(0);
-  await noOverflow(page);await page.screenshot({path:'test-results/bibliotheque-320.png',fullPage:true});
-  expect(errors).toEqual([]);
-});
-
-test('démonstration : lecture muette en boucle, pause hors écran ou onglet masqué, pause manuelle respectée',async({page})=>{
-  await page.setViewportSize({width:390,height:844});const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');
-  await page.getByLabel('Rechercher un exercice').fill('marteau');
-  await page.locator('.library-tile>.home-action').click();
-  const video=page.locator('.library-tile.expanded .demo video');
-  await expect.poll(()=>video.evaluate(v=>!v.paused&&v.muted&&v.loop&&v.playsInline)).toBe(true);
-  await setVisibility(page,'hidden');
-  await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);
-  await setVisibility(page,'visible');
-  await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(false);
-  await video.evaluate(v=>v.pause());
-  await expect(page.getByRole('button',{name:'Lire la démo'})).toBeVisible();
-  await setVisibility(page,'hidden');await setVisibility(page,'visible');
-  await page.waitForTimeout(500);
-  expect(await video.evaluate(v=>v.paused)).toBe(true);
-  await page.getByRole('button',{name:'Lire la démo'}).click();
-  await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(false);
-  await page.evaluate(()=>{document.querySelector('.personal-app').style.paddingBottom='3000px';scrollTo(0,document.documentElement.scrollHeight);});
-  await expect.poll(()=>video.evaluate(v=>v.paused)).toBe(true);
-});
-
 test('séance : action fixe, résultats validés, repos, pause persistée, bilan et récompense unique',async({page})=>{
   test.setTimeout(90000); // trois chargements complets de l'app, chacun relance le précache du service worker
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -147,8 +57,6 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   expect(final.sessions).toHaveLength(1);expect(final.sessions[0].effort).toBe(8);expect(final.draft).toBeNull();
   expect(PT.context(final).hardRecently).toBe(true);expect(PT.context(final).low).toBe(true);
   const plan=PT.generate(final,{...final.checkIn,minutes:45,format:'hiit'});expect(plan.format).toBe('classic');expect(plan.exercises.every(e=>e.sets<=2)).toBe(true);
-  await page.getByRole('button',{name:'Progression',exact:true}).click();
-  await expect(page.locator('.earned-badge.unlocked')).toHaveCount(1);
   await noOverflow(page);expect(errors).toEqual([]);
 });
 
@@ -181,10 +89,10 @@ test('accueil sportif : la séance active est reprise, jamais remplacée',async(
   await page.setViewportSize({width:390,height:844});const data=fixture();
   await seed(page,data,'today');
   await expect(page.getByRole('heading',{name:/À toi de jouer/i})).toBeVisible();
-  await expect(page.getByRole('button',{name:/Reprendre la séance/})).toBeVisible();
-  await page.getByRole('button',{name:'Préparer cette séance',exact:true}).click();
+  // Une séance en cours masque la séance du jour : on ne peut que la reprendre.
+  await expect(page.locator('.today-plan')).toHaveCount(0);
+  await page.getByRole('button',{name:/Reprendre la séance/}).click();
   await expect(page).toHaveURL(/#session$/);
-  await expect(page.getByText('Ta séance en cours est conservée.')).toBeVisible();
   expect((await state(page)).draft.id).toBe(data.draft.id);
   await noOverflow(page);expect(errors).toEqual([]);
 });
@@ -199,21 +107,6 @@ test('petit écran : chronomètre de travail, dialogue clavier et retour à la s
   await page.getByRole('button',{name:'Terminé',exact:true}).click();await page.getByLabel('Secondes réalisées',{exact:true}).fill('20');
   await page.getByRole('button',{name:'Valider cette série'}).click();
   expect((await state(page)).draft.entries.plank[0].seconds).toBe('20');
-});
-
-test('démonstrations : réduction des animations et repli si une vidéo manque',async({page})=>{
-  await page.emulateMedia({reducedMotion:'reduce'});const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');await page.getByLabel('Rechercher un exercice').fill('marteau');
-  await expect(page.locator('.library-tile .movement-thumb img')).toHaveCount(1);
-  await expect(page.locator('.library-tile .movement-thumb video')).toHaveCount(0);
-  await page.locator('.library-tile>.home-action').click();
-  await expect(page.getByRole('button',{name:'Lire la démo'})).toBeVisible();
-  expect(await page.locator('.library-tile.expanded video').evaluate(v=>v.paused)).toBe(true);
-  await expect(page.getByLabel(/démonstration GIF/i)).toHaveCount(0);
-  await page.locator('.library-tile.expanded video').evaluate(v=>v.dispatchEvent(new Event('error')));
-  await expect(page.getByText('Démonstration indisponible',{exact:true})).toBeVisible();
-  await expect(page.locator('.library-tile.expanded .demo img')).toHaveCount(2);
-  await expect(page.locator('.library-tile.expanded .instruction-list')).toBeVisible();
 });
 
 // Portée volontairement restreinte : depuis le lot « programmes », le catalogue contient des
@@ -248,18 +141,16 @@ test('adaptation : effort récent seulement, aucune hausse automatique et règle
   expect(PT.importBundle(JSON.stringify(PT.exportBundle(data))).state.sessions[0].effort).toBe(9);
 });
 
-test('hors connexion : catalogue, sauvegarde et lecture partielle des vidéos embarquées',async({page,context})=>{
+test('hors connexion : accueil, sauvegarde et lecture partielle des vidéos embarquées',async({page,context})=>{
   test.setTimeout(90000);
   const data=PT.initialState();data.profile.onboarded=true;
-  await seed(page,data,'library');
+  await seed(page,data,'today');
   await page.evaluate(()=>navigator.serviceWorker.ready);
   await expect.poll(()=>page.evaluate(()=>!!navigator.serviceWorker.controller)).toBe(true);
   await expect.poll(()=>page.evaluate(async()=>!!(await caches.match('/media/videos/curl.mp4'))),{timeout:30000}).toBe(true);
   await expect.poll(()=>page.evaluate(async()=>!!(await caches.match('/compiled/sport-components.js'))&&!!(await caches.match('/media/fonts/cabinet-500.woff2')))).toBe(true);
   await context.setOffline(true);await page.reload();
-  await expect(page.getByRole('heading',{name:/mouvements/i})).toBeVisible();
-  await page.getByLabel('Rechercher un exercice').fill('marteau');await page.locator('.library-tile>.home-action').click();
-  await expect.poll(()=>page.locator('.library-tile.expanded video').evaluate(v=>v.readyState)).toBeGreaterThanOrEqual(2);
+  await expect(page.getByRole('heading',{name:/À toi de jouer/i})).toBeVisible({timeout:20000});
   const result=await page.evaluate(async()=>{const r=await fetch('/media/videos/curl.mp4',{headers:{Range:'bytes=100-199'}});return {status:r.status,length:(await r.arrayBuffer()).byteLength,range:r.headers.get('Content-Range')};});
   expect(result.status).toBe(206);expect(result.length).toBe(100);expect(result.range).toMatch(/^bytes 100-199\//);
   await context.setOffline(false);

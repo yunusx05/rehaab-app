@@ -45,7 +45,7 @@ test('bilan : les tests suivis comptent par tendance, sprint plus court = mieux'
   expect(AP.validateAthletic({tests:{vertical:[{value:41.2,date:NOW,method:'video'}]}}).tests.vertical[0].method).toBe('video');
 });
 
-test('accueil : une seule réponse pour aujourd’hui, avec la jauge de charge',async({page})=>{
+test('accueil : une seule réponse pour aujourd’hui',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   const data=regular();data.sessions.push(activity(1,90,9),activity(2,90,8),activity(4,90,8));
   // Les dates du test sont relatives au 3 octobre : on les recale sur aujourd'hui.
@@ -53,7 +53,6 @@ test('accueil : une seule réponse pour aujourd’hui, avec la jauge de charge',
   await seed(page,data);
   const card=page.locator('.today-plan');
   await expect(card.getByRole('heading',{name:'Récupération active.'})).toBeVisible();
-  await expect(card.getByRole('img',{name:/fois ta moyenne/})).toBeVisible();
   await page.screenshot({path:'test-results/accueil-aujourdhui.png'});
   await card.getByRole('button',{name:/10 min de mobilité/}).click();
   await expect.poll(async()=>(await state(page)).draft?.focus).toBe('mobility');
@@ -71,19 +70,6 @@ test('séance : « Fait comme prévu » valide la série sans marge, donc sans h
   await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Repos/);
   const row=(await state(page)).draft.entries.curl[0];
   expect(row).toMatchObject({done:true,result:'passed',rir:'',reps:String(e.targetMin),weight:'10'});
-});
-
-test('progression : courbe du mouvement repère et charge des 6 semaines',async({page})=>{
-  await page.setViewportSize({width:390,height:844});
-  const data=base();const e=PT.makePrescription(PT.catalog.find(x=>x.id==='curl'),'classic',30,PT.context(data));
-  [[20,8,8],[13,9,8],[6,10,8]].forEach(([n,weight,reps])=>data.sessions.push({id:PT.uid(),date:PT.dateKey(new Date(Date.now()-n*864e5)),title:'Bras',source:'generated',focus:'muscle',format:'classic',minutes:30,effort:6,exercises:[e],entries:{curl:[{...PT.newRows({sets:1})[0],done:true,reps:String(reps),weight:String(weight),result:'passed'}]},completedAt:new Date().toISOString(),partial:false,nextDay:'same',nextDayPending:false}));
-  await seed(page,data,'progress');
-  await expect(page.locator('.load-weeks > div')).toHaveCount(6);
-  await page.getByRole('button',{name:'Physique',exact:true}).click();
-  await expect(page.locator('.lift-curves circle')).toHaveCount(3);
-  await expect(page.locator('.lift-curves')).toContainText('+26 %');
-  await page.locator('.lift-curves').screenshot({path:'test-results/courbe-mouvement.png'});
-  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
 test('mesure vidéo : hauteur = g·t²/8, RSI et chrono, ralenti pris en compte',async({page})=>{

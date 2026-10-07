@@ -60,54 +60,18 @@ function PTBodyMap({selected='all',onSelect,back=false}){
     </g>
   </svg>;
 }
-function PTMuscleExplorer({value,onChange}){
-  const [back,setBack]=usePTState(false);
-  return <section className="muscle-explorer"><div className="muscle-copy"><span className="eyebrow">Cible ta séance</span><h2>{value==='all'?<>QUEL<br/>MUSCLE ?</>:ptMuscleLabels[value]}</h2><p className="fine">Touche une zone.</p><button className="chip rotate-body" onClick={()=>setBack(!back)}><PTIcon name="refresh" size={16}/>{back?'Voir de face':'Voir de dos'}</button><button className="text-button muscle-reset" aria-hidden={value==='all'} disabled={value==='all'} tabIndex={value==='all'?-1:undefined} onClick={()=>onChange('all')}>Tout afficher</button></div><PTBodyMap selected={value} onSelect={onChange} back={back}/></section>;
-}
-// Le raccourci reflete le programme multi-semaines quand il existe, sinon l'invitation a en creer un.
-function ptProgramShortcut(data){
-  const program=data.program,PP=window.PersonalPrograms;
-  if(!program||program.status==='archived'||!PP)return 'Construire un plan sur plusieurs semaines';
-  const progress=PP.progressOf(program),family=PP.familyById(program.familyId);
-  if(program.status==='paused')return `${family?family.short:'Programme'} · en pause`;
-  return `${family?family.short:'Programme'} · semaine ${progress.currentWeek}/${program.weeks}`;
-}
-function PTSportWeek({data,go}){
-  const [offset,setOffset]=usePTState(0),[selected,setSelected]=usePTState(PT.dateKey());
-  const monday=new Date(`${PT.dateKey()}T12:00:00`);monday.setDate(monday.getDate()-(monday.getDay()+6)%7+offset*7);
-  const rows=data.sessions.filter(s=>s.date===selected),events=data.events.filter(e=>e.date===selected);
-  return <section className="sport-week sport-reveal"><div className="topline"><h2>Ton rythme</h2><div className="week-switch"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setOffset(offset-1)}><PTIcon name="back" size={15}/></button><span>{monday.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</span><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setOffset(offset+1)}><PTIcon name="arrow" size={15}/></button></div></div><div className="week-calendar">{Array.from({length:7},(_,i)=>{const date=new Date(monday);date.setDate(date.getDate()+i);const key=PT.dateKey(date),done=data.sessions.some(s=>s.date===key),event=data.events.some(e=>e.date===key);return <button key={key} className={`day-cell${selected===key?' is-today':''}${done?' is-done':''}`} aria-pressed={selected===key} aria-label={date.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})} onClick={()=>setSelected(key)}><small>{['L','M','M','J','V','S','D'][i]}</small><span>{date.getDate()}</span><i className={done?'filled':event?'planned':''}/></button>;})}</div>{selected!==PT.dateKey()&&<div className="day-results">{rows.map(s=><button className="history-row" key={s.id} onClick={()=>go('history',s.id)}><PTIcon name="check" size={16}/><div><strong>{s.title}</strong><small>{s.minutes} min</small></div><PTIcon name="arrow" size={16}/></button>)}{events.map(e=><button key={e.id} className="history-row" onClick={()=>go('event',e.id)}>{e.title}<PTIcon name="arrow" size={16}/></button>)}{!rows.length&&!events.length&&<span className="caption">Journée libre</span>}</div>}</section>;
-}
 function PTSportToday({data,update,go,notify}){
-  const [focus,setFocus]=usePTState('muscle'),[minutes,setMinutes]=usePTState(30);
-  const summary=PT.weeklySummary(data),ctx=PT.context(data),symptoms=PT.activeSymptoms(data);
-  const followup=[...data.sessions].reverse().find(s=>s.nextDayPending&&PT.dayDiff(PT.dateKey(),s.date)>=1&&PT.dayDiff(PT.dateKey(),s.date)<=7);
-  const upcoming=data.events.filter(e=>!e.completed&&e.date>=PT.dateKey()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,2);
-  const prepare=(quick=false,chosenFocus=focus,chosenMinutes=minutes)=>{
-    if(data.draft?.status==='active'){go('session');notify('Ta séance en cours est conservée.');return;}
-    const check={...data.checkIn,date:PT.dateKey(),equipment:data.owned,minutes:chosenMinutes,focus:chosenFocus,motivation:chosenMinutes===8?'low':'normal',energy:data.checkIn.date===PT.dateKey()?data.checkIn.energy:'normal'};
-    if(quick){const plan=PT.generate(data,check);if(plan.error){notify(plan.error);return;}update(s=>({...s,checkIn:check,draft:plan}));go('preview');}
-    else {update(s=>({...s,checkIn:check}));go('prepare');}
-  };
+  const ctx=PT.context(data),symptoms=PT.activeSymptoms(data);
   const done=data.draft?Object.values(data.draft.entries).flat().filter(r=>r.done).length:0,total=data.draft?Object.values(data.draft.entries).flat().length:0;
   return <PTSportMotion identity="today"><div className="sport-home stack-lg">
     <div className="sport-greeting sport-reveal"><div><span className="caption">{new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</span><h1>{data.profile.name?`À TOI DE JOUER, ${data.profile.name}.`:'À TOI DE JOUER.'}</h1></div><button className="avatar-button" aria-label="Ouvrir mon profil" onClick={()=>go('profile')}>{data.profile.name?.slice(0,1).toUpperCase()||<PTIcon name="profile"/>}</button></div>
-    {typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
-    <PTSportWeek data={data} go={go}/>
     {symptoms.length>0&&<button className="constraint-strip" onClick={()=>go('symptoms')}><PTIcon name="pain" size={18}/><span>{ctx.active.blocked?'Fais le point avant de démarrer':symptoms.map(s=>PT.regions[s.region]).join(' · ')+' : séance adaptée'}</span><PTIcon name="arrow" size={16}/></button>}
-    {typeof PTBodyMind==='function'&&<PTBodyMind data={data} update={update} go={go} notify={notify}/>}
     {data.draft&&<button className="resume-workout sport-reveal" onClick={()=>go(data.draft.status==='active'?'session':'preview')}><PTThumbnail exercise={data.draft.exercises[0]}/><span><small>{data.draft.status==='active'?'Reprendre la séance':'Ta séance est prête'}</small><strong>{data.draft.title}</strong><span className="mini-progress"><i style={{transform:`scaleX(${total?done/total:0})`}}/></span></span><span className="round-play"><PTIcon name="play" size={20}/></span></button>}
     {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify}/>}
-    <div className="home-main-grid">
-      <section className="training-hero sport-reveal"><div className="training-image"><img src="media/training-floor.webp" alt="Salle de sport équipée pour la musculation"/></div><div className="training-hero-content"><span className="training-kicker">Séance libre · hors parcours</span><h2>PLUS FORT.<br/><em>PLUS LIBRE.</em></h2><div className="hero-bottom"><span>{minutes} min · {focusLabels[focus]}</span></div><PTButton primary onClick={()=>prepare(false)}>Trouver ma séance<span className="button-disc"><PTIcon name="arrow" size={18}/></span></PTButton></div></section>
-      <section className="quick-builder sport-reveal"><div className="section-head"><h2>Le bon format.</h2><span className="caption">À toi de choisir</span></div><div className="sport-categories">{[{id:'muscle',label:'Force',icon:'weight'},{id:'plyo',label:'Explosivité',icon:'spark'},{id:'cardio',label:'Cardio',icon:'run'},{id:'mobility',label:'Mobilité',icon:'body'}].map(c=><button key={c.id} aria-pressed={focus===c.id} onClick={()=>setFocus(c.id)}><PTIcon name={c.icon} size={23}/><span>{c.label}</span></button>)}</div><div className="quick-duration"><span>J’ai</span>{[15,30,45].map(n=><button aria-pressed={minutes===n} key={n} onClick={()=>setMinutes(n)}>{n}<small> min</small></button>)}</div><PTButton quiet onClick={()=>prepare(true)}>Préparer cette séance<PTIcon name="arrow" size={18}/></PTButton><div className="activity-compact"><PTRing value={summary.sessions} total={summary.target} label={`${summary.sessions} sur ${summary.target} séances`}><strong>{summary.sessions}<small>/{summary.target}</small></strong></PTRing><div><strong>Le rythme se construit.</strong><span>{summary.minutes} min cette semaine</span><button className="text-button accent-text" onClick={()=>go('progress')}>Mon activité <PTIcon name="arrow" size={14}/></button></div></div></section>
-    </div>
-    {typeof PTQuickRail==='function'&&<PTQuickRail data={data} update={update} go={go} notify={notify}/>}
+    {typeof PTCoachCard==='function'&&<PTCoachCard data={data} go={go}/>}
+    {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
+    {typeof PTBodyMind==='function'&&<PTBodyMind data={data} go={go}/>}
     {typeof PTWarmupRail==='function'&&<PTWarmupRail data={data} update={update} go={go} notify={notify}/>}
     {typeof PTRehabRail==='function'&&<PTRehabRail data={data} update={update} go={go} notify={notify}/>}
-    <PTAdaptation data={data}/>
-    {followup&&<section className="card stack"><h3>Comment ça va depuis hier ?</h3><PTChoices value={null} options={[{value:'same',label:'Tout va bien'},{value:'worse',label:'Une gêne a augmenté'}]} onChange={v=>{update(s=>({...s,sessions:s.sessions.map(x=>x.id===followup.id?{...x,nextDay:v,nextDayPending:false}:x)}));if(v==='worse')go('symptoms');else notify('Ressenti enregistré.');}}/></section>}
-    <section className="upcoming-events scroll-reveal"><div className="section-head"><h2>Sur ton agenda</h2><button className="icon-button" aria-label="Ajouter un match ou un entraînement" onClick={()=>go('event')}><PTIcon name="plus" size={19}/></button></div>{upcoming.length?upcoming.map(e=><button key={e.id} className="event-row" onClick={()=>go('event',e.id)}><span><strong>{e.title}</strong><small>{shortDate(e.date)}</small></span><PTIcon name="arrow" size={16}/></button>):<button className="calendar-empty" onClick={()=>go('event')}><PTIcon name="today"/><span>Un match prévu ?<small>Ajoute-le à ton planning.</small></span><PTIcon name="plus" size={18}/></button>}</section>
-    {!!data.savedWorkouts.length&&<section><h2>Tes favoris</h2>{data.savedWorkouts.slice(-3).map(w=><button key={w.id} className="history-row" onClick={()=>{if(data.draft?.status==='active'){go('session');return;}const check={...data.checkIn,equipment:data.owned};const safe=w.plan.exercises.filter(e=>PT.allowed(e,data,check));if(!safe.length){notify('Aucun mouvement compatible avec tes contraintes actuelles.');return;}update(s=>({...s,draft:{...PT.clone(w.plan),id:PT.uid(),exercises:safe,status:'preview',entries:{},check,reasons:['Favori adapté à tes contraintes actuelles.']}}));go('preview');}}><PTIcon name="heart"/><div><strong>{w.name}</strong><small>{w.plan.exercises.length} exercices</small></div><PTIcon name="arrow" size={16}/></button>)}</section>}
   </div></PTSportMotion>;
 }

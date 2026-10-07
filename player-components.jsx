@@ -76,44 +76,11 @@ function PTPlayerProfile({data,update,go,notify}) {
   </div>;
 }
 
-function PTBodyMind({data,update,go,notify}) {
-  const player=data.player||{},p=data.pathway;
+function PTBodyMind({data,go}) {
+  const player=data.player||{};
   if(!player.position) return <section className="player-invite sport-reveal"><span className="training-kicker">Profil joueur</span><h2>TON POSTE.<br/><em>TON CORPS.</em></h2><p className="fine">Poste, profil de jeu, douleurs, matériel : la séance et les lectures de jeu du jour en dépendent.</p><PTButton primary onClick={()=>go('player')}>Créer mon profil joueur<PTIcon name="arrow" size={18}/></PTButton></section>;
-  const launch=plan=>{
-    if(plan.error){notify(plan.error);return;}
-    if(data.draft?.status==='active'){go('session');notify('Une séance est déjà en cours : termine-la ou abandonne-la avant d’en lancer une autre.');return;}
-    update(s=>({...s,draft:plan}));go('preview');
-  };
-  let body;
-  if(p){
-    const step=BP.stepById(p.step),status=BP.weekStatus(p),day=step.days.find(d=>d.key===status.next),plan=BP.sessionPlan(PT,JP,data,p,day.key);
-    body=<><span className="training-kicker">Le corps · étape {step.id}/{BP.steps.length}</span><h2>{day.name}</h2><p className="fine">{step.name} · semaine {status.week} · {plan.error?'indisponible aujourd’hui':`~${plan.estimatedMinutes} min, ${plan.exercises.length} mouvements`}</p><div className="button-row"><PTButton primary disabled={!!plan.error} onClick={()=>launch(plan)}>Préparer<PTIcon name="arrow" size={18}/></PTButton><PTButton quiet onClick={()=>go('pathway')}>Le parcours</PTButton></div></>;
-  } else {
-    body=<><span className="training-kicker">Le corps</span><h2>Retour au jeu</h2><p className="fine">Cinq étapes, des critères de passage, adaptées à ton poste. {player.layoff==='long'?'Recommandé après ta longue pause.':''}</p><div className="button-row"><PTButton primary onClick={()=>go('pathway')}>Découvrir<PTIcon name="arrow" size={18}/></PTButton><PTButton quiet onClick={()=>launch(JP.dailyBody(PT,data,{minutes:30}))}>Séance du jour</PTButton></div></>;
-  }
-  const athletic=data.athletic;
-  if(!athletic?.date) body=<>{body}<button className="text-button" onClick={()=>go('bilan')}>Faire mon bilan physique · 10 min →</button></>;
-  else if(!apFresh(athletic)) body=<>{body}<button className="text-button" onClick={()=>go('bilan')}>Refaire mon bilan : 4 semaines sont passées →</button></>;
   const rank=JP.qiThemes(player),daily=QI.dailySet(data.qi,player,rank),left=daily.items.length-daily.done;
-  return <div className="body-mind sport-reveal">
-    <section className="body-card">{body}</section>
-    <section className="mind-card"><span className="training-kicker">L’esprit · QI basket</span><h2>{left?`${left} lecture${left>1?'s':''} du jour`:'Lectures faites'}</h2><p className="fine">{daily.items.map(x=>QI.themes[x.item.theme]).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')}</p><div className="button-row"><PTButton primary={!!left} quiet={!left} onClick={()=>go('qi-run','daily')}>{left?'Lire le jeu':'Refaire'}<PTIcon name="arrow" size={18}/></PTButton><PTButton quiet onClick={()=>go('qi')}>Tout le QI</PTButton></div></section>
-  </div>;
-}
-
-function PTQuickRail({data,update,go,notify}) {
-  const start=id=>{
-    if(data.draft?.status==='active'){go('session');notify('Ta séance en cours est conservée.');return;}
-    const plan=BP.quickPlan(PT,JP,data,id);
-    if(plan.error){notify(plan.error);return;}
-    update(s=>({...s,draft:plan}));go('preview');
-  };
-  const thumb=q=>PT.catalog.find(e=>e.id===q.ids[0][0]);
-  return <section className="scroll-reveal"><div className="section-head"><h2>QUICK WORKOUT</h2><span className="caption">À toi de choisir</span></div>
-    <div className="workout-rail">
-      {BP.quick.map(q=><button key={q.id} className="preset-workout" onClick={()=>start(q.id)}><PTThumbnail exercise={thumb(q)}/><span className="preset-info"><small>{q.minutes} min</small><strong>{q.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>)}
-      <button className="preset-workout quiz-tile" onClick={()=>go('qi-run','quiz')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="court" size={44}/></span><span className="preset-info"><small>5 min</small><strong>Quiz tactique rapide</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>
-    </div></section>;
+  return <section className="mind-card sport-reveal"><span className="training-kicker">QI basket du jour</span><h2>{left?`${left} lecture${left>1?'s':''} du jour`:'Lectures faites'}</h2><p className="fine">{daily.items.map(x=>QI.themes[x.item.theme]).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')}</p><div className="button-row"><PTButton primary={!!left} quiet={!left} onClick={()=>go('qi-run','daily')}>{left?'Lire le jeu':'Refaire'}<PTIcon name="arrow" size={18}/></PTButton></div></section>;
 }
 
 // Annuler la séance en cours : visible partout où une séance attend, toujours avec confirmation.

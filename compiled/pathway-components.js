@@ -93,34 +93,10 @@ function PTPathwayIntro({
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
-    onClick: () => go('library')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "weight"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, "Le catalogue complet, filtrable par mat\xE9riel.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
     onClick: () => go('profile')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "bench"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon mat\xE9riel"), /*#__PURE__*/React.createElement("small", null, data.owned.length, " \xE9quipement", data.owned.length > 1 ? 's' : '', " \xB7 gilet lest\xE9 et disques slide disponibles.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('program')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes autres programmes"), /*#__PURE__*/React.createElement("small", null, "Shred, force, hybride\u2026 Toujours s\xE9par\xE9s du parcours.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('program-legacy')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Programme basket d\u2019origine"), /*#__PURE__*/React.createElement("small", null, "Tes trois blocs, conserv\xE9s tels quels.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })))));
@@ -323,22 +299,6 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "basket"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, "Poste, douleurs, mat\xE9riel.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('library')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "weight"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, "Le catalogue complet.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('program')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes autres programmes"), /*#__PURE__*/React.createElement("small", null, "S\xE9par\xE9s du parcours, \xE0 suivre ou non.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   }))), stopping ? /*#__PURE__*/React.createElement("div", {
