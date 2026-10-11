@@ -102,8 +102,29 @@
     return out;
   }
   const SCENES = all();
-  const byId = id => SCENES.find(s=>s.id===id)||null;
-  const actionLabel = id => (ACTIONS[id]||{}).label||id;
+  // Version vidéo (extraits de vrais matchs, defender-reads.js) : actions formulées sans gauche ni droite, l'angle de caméra variant.
+  const READ_ACTIONS = {
+    'drive-lead-side':'Attaquer le côté de son pied avancé','cross-opposite':'Repartir du côté qu’il a lâché','shoot':'Tir direct',
+    'fake-drive':'Feinte de tir, puis drive','hesi-go':'Hesi, puis accélère','pass-help-side':'Passer au joueur laissé par l’aide','finish':'Aller finir au cercle'
+  };
+  const READ_DISTRACT = {'lead-foot':['cross-opposite','shoot'],sagging:['drive-lead-side','hesi-go'],'closeout-late':['fake-drive','drive-lead-side'],overplay:['drive-lead-side','shoot'],
+    'hands-high':['shoot','cross-opposite'],'closeout-fast':['shoot','hesi-go'],retreat:['shoot','pass-help-side'],'help-comes':['finish','shoot'],'help-stays':['pass-help-side','shoot']};
+  function reads() {
+    const list=(typeof globalThis!=='undefined'&&Array.isArray(globalThis.RehaabReads))?globalThis.RehaabReads:[];
+    const out=[];
+    list.forEach(r=>{
+      if(!READ_ACTIONS[r.action]) return;
+      // Vidéo : chaque extrait compte pour lui-même (pas de doublon de « modèle »), 2 niveaux + une version chronométrée.
+      const lvl=['lead-foot','sagging'].includes(r.cue)?1:2;
+      const base={...r,level:lvl,template:r.id,answer:r.action,options:[r.action,...(READ_DISTRACT[r.cue]||[])].filter((v,i,a)=>a.indexOf(v)===i).slice(0,3),cues:[r.what].filter(Boolean),timed:false,video:true};
+      out.push(base);
+      if(lvl>=2) out.push({...base,id:`${r.id}-v`,level:3,timed:true});
+    });
+    return out;
+  }
+  const pool = () => {const r=reads();return r.length?r:SCENES;};
+  const byId = id => SCENES.find(s=>s.id===id)||reads().find(s=>s.id===id)||null;
+  const actionLabel = id => READ_ACTIONS[id]||(ACTIONS[id]||{}).label||id;
 
   // Mélange déterministe des options (même ordre à chaque affichage d'une scène).
   function optionOrder(scene) {
@@ -115,9 +136,9 @@
   const answers = qi => ((qi&&qi.answers)||[]).filter(a=>a.mode==='scene');
   // Niveau atteint : 8 bonnes réponses sur les 10 dernières du niveau débloquent le suivant.
   function level(qi) {
-    let lvl=1;
+    let lvl=1;const P=pool(),inPool=id=>P.some(s=>s.id===id);
     for(const L of LEVELS.slice(0,3)){
-      const list=answers(qi).filter(a=>(byId(a.id)||{}).level===L.id).slice(-10);
+      const list=answers(qi).filter(a=>inPool(a.id)&&(byId(a.id)||{}).level===L.id).slice(-10);
       if(list.length>=10&&list.filter(a=>a.correct).length>=8) lvl=L.id+1; else break;
     }
     return lvl;
@@ -125,7 +146,7 @@
   // À revoir : scène ratée dont la dernière réponse est fausse, revue au plus tôt le lendemain.
   function due(qi,now=today()) {
     const last={};answers(qi).forEach(a=>{last[a.id]=a;});
-    return Object.values(last).filter(a=>!a.correct&&a.date<now&&byId(a.id)).map(a=>byId(a.id));
+    const P=pool();return Object.values(last).filter(a=>!a.correct&&a.date<now&&P.some(s=>s.id===a.id)).map(a=>byId(a.id));
   }
   // Série du jour : d'abord les scènes à revoir, puis le niveau atteint (et un peu du précédent), jamais deux fois le même modèle.
   function nextSet(qi,{count=5,now=today(),random=Math.random}={}) {
@@ -133,12 +154,12 @@
     const pick=[],templates=new Set();
     const take=list=>{for(const s of list){if(pick.length>=count)return;if(templates.has(s.template)||seen.has(s.id))continue;pick.push(s);templates.add(s.template);}};
     take(due(qi,now));
-    const pool=SCENES.filter(s=>s.level===lvl||s.level===lvl-1&&random()<0.3).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s);
-    take(pool);
-    if(pick.length<count) take(SCENES.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));
+    const P=pool(),cand=P.filter(s=>s.level===lvl||s.level===lvl-1&&random()<0.3).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s);
+    take(cand);
+    if(pick.length<count) take(P.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));
     // Toutes les scènes du niveau déjà vues aujourd'hui : on les repropose pour s'entraîner encore (jamais de série vide).
     const fresh=pick.length;
-    if(pick.length<count){seen.clear();take(SCENES.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));}
+    if(pick.length<count){seen.clear();take(P.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));}
     return {level:lvl,scenes:pick,replay:fresh===0};
   }
   function record(qi,scene,choice,{ms=null,now=today()}={}) {
@@ -150,5 +171,5 @@
     return {count:list.length,correct:list.filter(a=>a.correct).length,level:level(qi),due:due(qi).length};
   }
 
-  return {LEVELS,ACTIONS,TEMPLATES,SCENES,byId,actionLabel,optionOrder,answers,level,due,nextSet,record,stats,dir};
+  return {LEVELS,ACTIONS,READ_ACTIONS,TEMPLATES,SCENES,reads,pool,byId,actionLabel,optionOrder,answers,level,due,nextSet,record,stats,dir};
 });

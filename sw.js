@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v59-qi-3d-ok';
+const CACHE = 'rehaab-v60-qi-video';
 const PRECACHE = [
   './',
   './index.html',
@@ -42,6 +42,7 @@ const PRECACHE = [
   './body-weight.js',
   './shooting.js',
   './basket-scenes.js',
+  './defender-reads.js',
   './training-load.js',
   './personal-programs.js',
   './vendor/gsap.min.js',

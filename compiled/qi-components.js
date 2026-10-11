@@ -698,8 +698,8 @@ function PTQiHome({
       tall: true,
       photo: ptHub('qi'),
       badge: `Niveau ${st.level}${st.due ? ` · ${st.due} à revoir` : ''}`,
-      title: "Lis ton d\xE9fenseur \xB7 3D",
-      text: "\xC0 sa place, face \xE0 toi : pied avanc\xE9, mains, closeout, aide. Image fig\xE9e, tu choisis.",
+      title: window.BasketScenes.reads().length ? 'Lis ton défenseur · vrais matchs' : 'Lis ton défenseur · 3D',
+      text: "Pied avanc\xE9, mains, closeout, aide : la vid\xE9o s\u2019arr\xEAte au moment de d\xE9cider, tu choisis.",
       onClick: () => go('qi-scene')
     });
   })(), /*#__PURE__*/React.createElement("section", {

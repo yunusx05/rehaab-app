@@ -332,7 +332,25 @@ function PTScene2D({scene,reveal}){
   </svg>;
 }
 
-function PTQiScenes({data,update,go}){
+// « Lis ton défenseur » : extraits de vrais matchs quand ils sont installés (defender-reads.js), sinon les scènes 3D.
+function PTQiScenes(props){return BS&&BS.reads().length?<PTQiReads {...props}/>:<PTQiScenes3D {...props}/>;}
+function PTQiReads({data,update,go}){
+  const [set]=usePTState(()=>BS.nextSet(data.qi));
+  const [i,setI]=usePTState(0),[answered,setAnswered]=usePTState(null),[results,setResults]=usePTState([]);
+  const scene=set.scenes[i];
+  const next=()=>{setAnswered(null);if(i+1<set.scenes.length)setI(i+1);else setAnswered('done');};
+  if(!scene)return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><p className="empty">Aucun extrait disponible.</p></>;
+  if(answered==='done'){const ok=results.filter(Boolean).length,lvl=BS.level(data.qi);
+    return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><div className="stack-lg"><section className="card stack-sm"><h2>{ok} bonne{ok>1?'s':''} lecture{ok>1?'s':''} sur {results.length}.</h2><p className="fine">Niveau {lvl} · {BS.LEVELS[lvl-1].label}. 8 bonnes lectures sur les 10 dernières débloquent le niveau suivant. Les extraits ratés reviennent dès demain.</p></section><PTButton primary onClick={()=>go('qi')}>Retour au QI</PTButton></div></>;}
+  const clip={id:scene.id,file:scene.file,start:scene.start||0,pause:scene.pause,end:scene.end,
+    prompt:scene.timed?'Vite : que fais-tu ?':'Regarde ton défenseur. À la pause, que fais-tu ?',
+    choices:BS.optionOrder(scene).map(o=>({text:BS.actionLabel(o),ok:o===scene.answer,why:o===scene.answer?scene.why:`La bonne lecture : ${BS.actionLabel(scene.answer).toLowerCase()}. ${scene.why}`})),
+    lesson:scene.what?`Ce qu’il fallait voir : ${scene.what}`:null,source:scene.source?`${scene.source.channel} · ${scene.source.title}`:null};
+  const onAnswer=ok=>{if(ok===null){next();return;}update(s=>({...s,qi:BS.record(s.qi,scene,ok?scene.answer:'wrong').qi}));setResults(r=>[...r,!!ok]);setAnswered(true);};
+  return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur.">{`Extrait ${i+1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level-1].hint}${set.replay?' · extraits déjà vus aujourd’hui, pour t’entraîner encore':''}`}</PTPageHead>
+    <div className="stack"><PTQiVideoItem key={scene.id} clip={clip} onAnswer={onAnswer}/>{answered===true&&<PTButton primary onClick={next}>{i+1<set.scenes.length?'Extrait suivant':'Voir mon bilan'}<PTIcon name="arrow" size={18}/></PTButton>}</div></>;
+}
+function PTQiScenes3D({data,update,go}){
   const reduced=usePTMotionPreference?usePTMotionPreference():false;
   const [set]=usePTState(()=>BS.nextSet(data.qi));
   const [i,setI]=usePTState(0),[phase,setPhase]=usePTState('intro'),[choice,setChoice]=usePTState(null),[results,setResults]=usePTState([]),[left,setLeft]=usePTState(3);
