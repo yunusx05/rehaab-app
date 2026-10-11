@@ -294,3 +294,16 @@ Plan v3 (lots 12 → 17) : `~/.claude/plans/alors-j-ai-plusieurs-modifications-h
 - **Calendrier** : séance de tir hebdomadaire si panier accessible (`hoop` daily/weekly) ou déjà pratiquée, jamais un jour de club ni le même jour qu'une séance skills ; lien « Pesée du matin » le lundi. Bilan de la semaine et coach (`shooting`, `weight` dans le contexte) comptent les séances de tir. Tuiles « Mes séances de tir » et « Poids de forme » dans le hub Plan (10 tuiles) et dans « Moi » (6).
 - Cache `rehaab-v53-poids-tir`. Tests : `poids-tir.spec.cjs` (4). Suite complète : 146 réussis, 3 ignorés.
 - **Plan v3 terminé** (lots 12 → 17).
+
+## QI 3D réaliste (v54 → v59, 11/10/2026)
+- **Joueurs** : `media/3d/player.glb` (310 Ko) = Quaternius Superhero_Male + Hair_Buzzed + 10 animations UAL (CC0), construit par `scripts/build-player-glb.mjs` (gltf-transform, textures WebP 512 px, meshopt). `vendor/three.min.js` (r186) inclut désormais `GLTFLoader`, `cloneSkinned`, `MeshoptDecoder`.
+- `PTScene3D` : maillot et short découpés selon les os (`ptOutfit`), gestes basket orientés os par os (`aim`), intro au ralenti sur l'indice, image figée avec zoom, légende en 3 étapes, trace du bon chemin, « Revoir l'action ». Repli stylisé si le modèle échoue (`data-model="fallback"`, cause dans `localStorage.rh_scene_error`), vue 2D si pas de WebGL.
+- **Pièges** : le CSP (`vercel.json`) doit garder `'wasm-unsafe-eval'` dans `script-src` (décodeur meshopt) et `blob:` dans `connect-src` (textures du GLB) ; `nextSet` ne rend jamais de série vide (scènes du jour reproposées, `replay:true`).
+
+## QI « Lis ton défenseur » en vidéo (v60, 11/10/2026) — branche `feature/qi-video-defenseur`
+- Retour utilisateur : la 3D n'est pas assez parlante ; on passe à de vrais extraits de 1 contre 1 / jeu en salle. La 3D reste en repli quand aucun extrait n'est installé.
+- **Pipeline** : `scripts/scout-defender-reads.cjs [--gym|--varied|--team]` (recherche yt-dlp + Gemini qui repère start / pause / end, indice, action, pieds visibles, hommes uniquement) → `scripts/defender-reads.json` ; relecture sur planche, refus dans `scripts/defender-reads-review.json` ; `scripts/install-defender-reads.cjs <brut> [--sheet planche.jpg]` (`READS_CAP` par couple indice → action, seuls les couples cohérents gardés) → `clips/reads/*.mp4` + `.webp` et `defender-reads.js` (`window.RehaabReads`).
+- 22 extraits (14 Mo, non précachés : lus en ligne puis mis en cache par le service worker au fil de l'eau). Couverture déséquilibrée : surtout « défenseur loin → tir » et « pied avancé → déborder » ; il faut plus d'images de jeu en équipe pour l'aide et les closeouts.
+- **`basket-scenes.js`** : `reads()` transforme chaque extrait en scène (niveau 1 ou 2, copie chronométrée niveau 3), `pool()` = extraits s'il y en a, sinon scènes 3D ; `byId`, `level`, `due`, `nextSet` passent par `pool()`.
+- **Écran** : `PTQiScenes` choisit `PTQiReads` (réutilise `PTQiVideoItem` : pause au moment de décider, choix, explication, suite de l'action) ou `PTQiScenes3D`. Tuile « Lis ton défenseur · vrais matchs ». Réponses dans `qi.answers` (`mode:'scene'`).
+- Tests : `qi-scenes.spec.cjs` (6 ; les tests 3D masquent `RehaabReads` par script d'initialisation). Suite complète : 148 réussis, 3 ignorés.

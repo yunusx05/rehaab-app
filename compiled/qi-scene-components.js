@@ -1307,7 +1307,93 @@ function PTScene2D({
     stroke: reveal ? '#c3e65a' : '#9aa0a6'
   }));
 }
-function PTQiScenes({
+
+// « Lis ton défenseur » : extraits de vrais matchs quand ils sont installés (defender-reads.js), sinon les scènes 3D.
+function PTQiScenes(props) {
+  return BS && BS.reads().length ? /*#__PURE__*/React.createElement(PTQiReads, props) : /*#__PURE__*/React.createElement(PTQiScenes3D, props);
+}
+function PTQiReads({
+  data,
+  update,
+  go
+}) {
+  const [set] = usePTState(() => BS.nextSet(data.qi));
+  const [i, setI] = usePTState(0),
+    [answered, setAnswered] = usePTState(null),
+    [results, setResults] = usePTState([]);
+  const scene = set.scenes[i];
+  const next = () => {
+    setAnswered(null);
+    if (i + 1 < set.scenes.length) setI(i + 1);else setAnswered('done');
+  };
+  if (!scene) return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
+    onBack: () => go('qi'),
+    title: "Lis ton d\xE9fenseur."
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "empty"
+  }, "Aucun extrait disponible."));
+  if (answered === 'done') {
+    const ok = results.filter(Boolean).length,
+      lvl = BS.level(data.qi);
+    return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
+      onBack: () => go('qi'),
+      title: "Lis ton d\xE9fenseur."
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "stack-lg"
+    }, /*#__PURE__*/React.createElement("section", {
+      className: "card stack-sm"
+    }, /*#__PURE__*/React.createElement("h2", null, ok, " bonne", ok > 1 ? 's' : '', " lecture", ok > 1 ? 's' : '', " sur ", results.length, "."), /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, "Niveau ", lvl, " \xB7 ", BS.LEVELS[lvl - 1].label, ". 8 bonnes lectures sur les 10 derni\xE8res d\xE9bloquent le niveau suivant. Les extraits rat\xE9s reviennent d\xE8s demain.")), /*#__PURE__*/React.createElement(PTButton, {
+      primary: true,
+      onClick: () => go('qi')
+    }, "Retour au QI")));
+  }
+  const clip = {
+    id: scene.id,
+    file: scene.file,
+    start: scene.start || 0,
+    pause: scene.pause,
+    end: scene.end,
+    prompt: scene.timed ? 'Vite : que fais-tu ?' : 'Regarde ton défenseur. À la pause, que fais-tu ?',
+    choices: BS.optionOrder(scene).map(o => ({
+      text: BS.actionLabel(o),
+      ok: o === scene.answer,
+      why: o === scene.answer ? scene.why : `La bonne lecture : ${BS.actionLabel(scene.answer).toLowerCase()}. ${scene.why}`
+    })),
+    lesson: scene.what ? `Ce qu’il fallait voir : ${scene.what}` : null,
+    source: scene.source ? `${scene.source.channel} · ${scene.source.title}` : null
+  };
+  const onAnswer = ok => {
+    if (ok === null) {
+      next();
+      return;
+    }
+    update(s => ({
+      ...s,
+      qi: BS.record(s.qi, scene, ok ? scene.answer : 'wrong').qi
+    }));
+    setResults(r => [...r, !!ok]);
+    setAnswered(true);
+  };
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
+    onBack: () => go('qi'),
+    title: "Lis ton d\xE9fenseur."
+  }, `Extrait ${i + 1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level - 1].hint}${set.replay ? ' · extraits déjà vus aujourd’hui, pour t’entraîner encore' : ''}`), /*#__PURE__*/React.createElement("div", {
+    className: "stack"
+  }, /*#__PURE__*/React.createElement(PTQiVideoItem, {
+    key: scene.id,
+    clip: clip,
+    onAnswer: onAnswer
+  }), answered === true && /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: next
+  }, i + 1 < set.scenes.length ? 'Extrait suivant' : 'Voir mon bilan', /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))));
+}
+function PTQiScenes3D({
   data,
   update,
   go

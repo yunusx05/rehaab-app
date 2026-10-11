@@ -37,12 +37,14 @@ test('progression : niveau débloqué à 8 sur 10, scènes ratées revues le len
   expect(QI.validateQi(qi).answers.filter(a=>a.mode==='scene').length).toBe(11);
 });
 
+// Sans extraits vidéo installés, « Lis ton défenseur » revient aux scènes 3D : on teste ce repli en masquant defender-reads.js.
+async function no3dReads(page){await page.addInitScript(()=>{Object.defineProperty(window,'RehaabReads',{configurable:true,get:()=>[],set:()=>{}});});}
 async function seed(page){
   const s=PT.initialState();s.profile.onboarded=true;s.player=JP.validatePlayer({position:'meneur'});
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('seeded','1');}},{data:s,key:PT.STORAGE_KEY});
 }
 test('écran 3D : image figée, décision, rejeu expliqué, réponse enregistrée', async({page})=>{
-  await seed(page);const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await no3dReads(page);await seed(page);const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:320,height:740});
   await page.goto('/#qi');
   await page.getByRole('button',{name:/Lis ton défenseur/}).click();
@@ -63,7 +65,7 @@ test('écran 3D : image figée, décision, rejeu expliqué, réponse enregistré
 });
 
 test('sans WebGL : vue de dessus avec les mêmes indices', async({page})=>{
-  await seed(page);
+  await no3dReads(page);await seed(page);
   await page.addInitScript(()=>{const orig=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...a){return /webgl/.test(type)?null:orig.call(this,type,...a);};});
   await page.goto('/#qi-scene');
   await expect(page.locator('.scene-2d')).toBeVisible({timeout:15000});
@@ -76,4 +78,22 @@ test('jamais de série vide : scènes du jour reproposées quand tout le niveau 
   expect(set.scenes.length).toBe(5);
   expect(set.replay).toBe(true);
   expect(BS.nextSet(QI.initialQi(),{now:d}).replay).toBe(false);
+});
+
+test('vidéo : extraits de vrais 1 contre 1, pause au moment de décider, réponse enregistrée', async({page})=>{
+  global.window=globalThis;require('../defender-reads.js');
+  expect(globalThis.RehaabReads.length).toBeGreaterThanOrEqual(15);
+  for(const r of globalThis.RehaabReads){expect(r.pause).toBeGreaterThan(0);expect(r.end).toBeGreaterThan(r.pause);expect(require('node:fs').existsSync(require('node:path').join(__dirname,'..',r.file)),r.file).toBe(true);}
+  await seed(page);const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:320,height:740});
+  await page.goto('/#qi');
+  await page.getByRole('button',{name:/Lis ton défenseur · vrais matchs/}).click();
+  await page.getByRole('button',{name:/Lancer l’action/}).click({timeout:15000});
+  await expect(page.locator('.qi-video-freeze')).toBeVisible({timeout:20000});
+  await page.locator('.qi-choice, .qi-choices button').first().click();
+  await page.waitForTimeout(400);
+  const saved=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)).qi.answers.filter(a=>a.mode==='scene').length,PT.STORAGE_KEY);
+  expect(saved).toBe(1);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
 });

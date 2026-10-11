@@ -238,7 +238,7 @@ function PTQiHome({data,update,go}) {
   return <><PTPageHead eyebrow="L’esprit" title="QI basket.">{player.position ? `Situations choisies pour un ${JP.positions[player.position].label.toLowerCase()}, en attaque comme en défense.` : 'Lectures de jeu, placements et fins de match, sans ballon.'}</PTPageHead>
     <div className="stack-lg">
       {!player.position && <div className="notice warning stack-sm"><p>Renseigne ton poste pour recevoir les situations qui te concernent.</p><PTButton onClick={() => go('player')}>Créer mon profil joueur</PTButton></div>}
-      {window.BasketScenes && (() => {const st = window.BasketScenes.stats(qi); return <PTImageTile tall photo={ptHub('qi')} badge={`Niveau ${st.level}${st.due ? ` · ${st.due} à revoir` : ''}`} title="Lis ton défenseur · 3D" text="À sa place, face à toi : pied avancé, mains, closeout, aide. Image figée, tu choisis." onClick={() => go('qi-scene')}/>;})()}
+      {window.BasketScenes && (() => {const st = window.BasketScenes.stats(qi); return <PTImageTile tall photo={ptHub('qi')} badge={`Niveau ${st.level}${st.due ? ` · ${st.due} à revoir` : ''}`} title={window.BasketScenes.reads().length?'Lis ton défenseur · vrais matchs':'Lis ton défenseur · 3D'} text="Pied avancé, mains, closeout, aide : la vidéo s’arrête au moment de décider, tu choisis." onClick={() => go('qi-scene')}/>;})()}
       <section className="mind-card">
         <div className="topline"><span className="training-kicker">Aujourd’hui</span>{streak > 0 && <span className="caption">{streak} jour{streak > 1 ? 's' : ''} d’affilée</span>}</div>
         <h2>{daily.done >= daily.items.length ? 'Lectures du jour faites.' : `${daily.items.length - daily.done} lecture${daily.items.length - daily.done > 1 ? 's' : ''} du jour.`}</h2>

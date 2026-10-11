@@ -1,0 +1,30 @@
+{
+ "refused": {
+  "r-clsyzltwuvk-0": "écran de texte",
+  "r-clsyzltwuvk-1": "match télévisé, public",
+  "r-clsyzltwuvk-2": "flou, public",
+  "r-dn2j1hoqsfg-2": "foule, sombre",
+  "r-dn2j1hoqsfg-3": "image noire",
+  "r-ghe99ohadvm-0": "événement bondé",
+  "r-ghe99ohadvm-1": "événement bondé",
+  "r-ghe99ohadvm-2": "événement bondé",
+  "r-r9gppz6hy-0": "pas d’action, deux personnes qui posent",
+  "r-bxgrtsay8pm-0": "image noire",
+  "r-c7aohmgwbqw-0": "texte en surimpression",
+  "r-yp5tdvyjbf4-0": "match filmé de loin, public",
+  "r-yp5tdvyjbf4-1": "match filmé de loin, public",
+  "r-yp5tdvyjbf4-2": "match filmé de loin, public",
+  "r-zavrwe35ea-0": "retransmission avec public",
+  "r-zavrwe35ea-2": "retransmission avec public",
+  "r-yp9pei1n1dy-0": "flou, de loin",
+  "r-yp9pei1n1dy-1": "flou, de loin",
+  "r-sdzng7y03vc-0": "de loin, personnes non vérifiables",
+  "r-sdzng7y03vc-1": "de loin, personnes non vérifiables",
+  "r-7duvjy7jmk-1": "retransmission avec public",
+  "r-7duvjy7jmk-2": "retransmission avec public",
+  "r-bxgrtsay8pm-1": "deux personnes qui parlent face caméra",
+  "r-uke60lyqtxy-0": "filmé de trop loin",
+  "r-fseouonv0-2": "flou, vu de dos"
+ },
+ "fixes": {}
+}
