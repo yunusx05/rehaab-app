@@ -100,7 +100,7 @@ for(const width of [320,390])test(`skills : questionnaire, séance avec panier, 
   await page.getByRole('button',{name:/Mes skills basket/}).first().click();
   await page.getByRole('button',{name:/Faire le questionnaire/}).click();
   await expect(page.getByRole('heading',{name:'Où en es-tu ?'})).toBeVisible();
-  for(const [id,v] of Object.entries(SK.items)){const label=SK.ratings[weak[id]][1];await page.locator('.coach-q',{hasText:v.label}).getByRole('button',{name:label,exact:true}).click();}
+  for(const [id,v] of Object.entries(SK.items)){const label=SK.ratings[weak[id]??1][1];await page.locator('.coach-q',{hasText:v.label}).getByRole('button',{name:label,exact:true}).click();}
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   await page.getByRole('button',{name:/Calculer mes paliers/}).click();
   await expect(page.getByRole('heading',{name:'Mes skills.'})).toBeVisible();

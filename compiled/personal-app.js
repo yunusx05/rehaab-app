@@ -26,7 +26,7 @@ const shortDate = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR
   month: 'short'
 });
 const timeLabel = seconds => `${Math.floor(Math.max(0, seconds) / 60)}:${String(Math.floor(Math.max(0, seconds) % 60)).padStart(2, '0')}`;
-const loadUnit = ex => ex.weighted === 'dumbbells' && !ex.singleLoad ? 'kg par haltère' : ex.weighted === 'barbell' ? 'kg, barre comprise' : ex.weighted === 'kettlebell' ? 'kg par kettlebell' : ex.weighted === 'vest' ? 'kg de gilet' : 'kg affichés';
+const loadUnit = ex => ex.weighted === 'dumbbells' && !ex.singleLoad ? 'kg par haltère' : ex.weighted === 'barbell' ? 'kg, barre comprise' : ex.weighted === 'kettlebell' ? 'kg par kettlebell' : ex.weighted === 'vest' ? 'kg de gilet' : ex.weighted === 'trapbar' ? 'kg, barre comprise' : ex.weighted === 'landmine' ? 'kg ajoutés au bout de la barre' : 'kg affichés';
 const toggleId = (list, id) => list.includes(id) ? list.filter(x => x !== id) : [...list, id];
 // Zones du corps : une même silhouette pour toutes, un point plein sur la zone concernée. Lisible à 22 px, là où un membre isolé ne l'est pas.
 const ptZoneBody = /*#__PURE__*/React.createElement("g", {
@@ -448,21 +448,41 @@ function PTDemo({
     onClick: () => setFrame(1)
   }, "Arriv\xE9e")));
 }
+// Lot 13 : à quoi sert l’exercice sur le terrain, ses points clés et les vidéos des créateurs qui le montrent.
 function PTExerciseDetails({
   exercise
 }) {
+  const sources = window.RehaabSources?.[exercise.id] || [];
   return /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement(PTDemo, {
     key: exercise.id,
     exercise: exercise
-  }), /*#__PURE__*/React.createElement("ol", {
+  }), exercise.transfer && /*#__PURE__*/React.createElement("p", {
+    className: "court-transfer"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "basket",
+    size: 16
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Sur le terrain"), exercise.transfer)), /*#__PURE__*/React.createElement("ol", {
     className: "instruction-list"
   }, exercise.instructions.map((line, i) => /*#__PURE__*/React.createElement("li", {
     key: i
-  }, line))), exercise.weighted && /*#__PURE__*/React.createElement("p", {
+  }, line))), exercise.cues?.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "cue-chips",
+    "aria-label": "Points cl\xE9s"
+  }, exercise.cues.map(c => /*#__PURE__*/React.createElement("span", {
+    key: c
+  }, c))), exercise.weighted && /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Charge enregistr\xE9e en ", loadUnit(exercise), "."));
+  }, "Charge enregistr\xE9e en ", loadUnit(exercise), "."), sources.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "fine seen-at"
+  }, "Vu chez ", sources.map((s, i) => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: s.url
+  }, i > 0 && ', ', /*#__PURE__*/React.createElement("a", {
+    href: s.url,
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, s.creator)))));
 }
 function ptReadLegacy() {
   const snapshot = {};

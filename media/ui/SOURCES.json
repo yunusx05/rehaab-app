@@ -46,5 +46,35 @@
     "source": "https://www.pexels.com/photo/163452/",
     "license": "Pexels (usage libre)",
     "checked": "hommes uniquement, relu sur planche"
+  },
+  "pathway-1": {
+    "file": "media/pathway/1.webp",
+    "source": "https://www.pexels.com/photo/5470151/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "pathway-2": {
+    "file": "media/pathway/2.webp",
+    "source": "https://www.pexels.com/photo/5327530/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "pathway-3": {
+    "file": "media/pathway/3.webp",
+    "source": "https://www.pexels.com/photo/38675855/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "pathway-4": {
+    "file": "media/pathway/4.webp",
+    "source": "https://www.pexels.com/photo/38149419/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "pathway-5": {
+    "file": "media/pathway/5.webp",
+    "source": "https://www.pexels.com/photo/18003708/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
   }
 }

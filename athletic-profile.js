@@ -201,15 +201,15 @@
 
   // Candidats du créneau « point faible », par qualité puis par étape (1, 2, 3, 4 et plus). L'étape 1 reste sans impact.
   const focusLists = {
-    firststep:[['knee-drive-iso','psoas-march','a-march'],['a-march','wall-drill','knee-drive-iso'],['falling-start','split-start','a-skip','wall-drill'],['band-resisted-start','drop-step-start','split-start','falling-start']],
-    vertical:[['db-hip-thrust','hip-thrust','single-bridge'],['snap-down','box-jump-step','kb-swing'],['vertical-jump','db-jump','box-jump-step'],['approach-jump','single-leg-vertical','vertical-jump']],
-    decel:[['step-down','iso-split'],['snap-down','lateral-lunge','reverse-lunge'],['lateral-decel','decel-stick','lateral-bound-stick'],['lateral-decel','decel-stick','drop-step-start']],
-    reactive:[['calf-hold','foot-doming','single-calf'],['pogo','single-calf'],['single-pogo','lateral-hop','pogo'],['drop-jump','single-pogo','lateral-hop']],
-    strength:[['split-squat','step-up','single-bridge'],['single-rdl','db-single-rdl','db-step-up','step-up'],['db-single-rdl','db-bulgarian','step-up'],['db-single-rdl','db-bulgarian','step-up']],
+    firststep:[['knee-drive-iso','iso-wall-drive','psoas-march','a-march'],['a-march','wall-drill','iso-wall-drive','knee-drive-iso'],['half-kneel-start','falling-start','split-start','reaction-start','a-skip','wall-drill'],['sled-push','reaction-start','hip-open-start','band-resisted-start','mb-sprint-start','drop-step-start','split-start','falling-start']],
+    vertical:[['sl-hip-thrust','db-hip-thrust','hip-thrust','single-bridge'],['mb-scoop','snap-down','box-jump-step','kb-swing'],['penultimate-step','seated-box-jump','vertical-jump','step-up-hop','db-jump','box-jump-step'],['approach-jump','power-skip','rim-touches','single-leg-vertical','trapbar-jump','band-assisted-jump','vertical-jump']],
+    decel:[['ecc-split-squat','step-down','iso-split','miniband-stance'],['drop-squat','snap-down','lateral-lunge','reverse-lunge'],['drop-lunge','lateral-decel','lateral-drop-stick','decel-stick','lateral-bound-stick'],['cut-45-stick','lateral-decel','sprint-backpedal','decel-stick','drop-step-start']],
+    reactive:[['soleus-wall-iso','calf-hold','foot-doming','single-calf'],['pogo-forward','pogo','pogo-lateral','single-calf'],['square-hops','single-pogo','lateral-hop','rope-single','pogo'],['hurdle-hops','drop-jump','lateral-bounds','single-pogo','lateral-hop']],
+    strength:[['split-squat','step-up','single-bridge'],['b-stance-rdl','single-rdl','db-single-rdl','db-step-up','step-up'],['trapbar-deadlift','db-single-rdl','landmine-reverse-lunge','lateral-box-step-up','db-bulgarian','step-up'],['trapbar-deadlift','db-single-rdl','lateral-box-step-up','db-bulgarian','step-up']],
     balance:[['single-leg-eyes','single-leg-stand'],['single-leg-reach','airplane'],['single-hop-stick','single-leg-reach'],['single-hop-stick','single-leg-reach']],
-    core:[['deadbug','bird-dog','side-plank'],['pallof','suitcase-carry','side-plank'],['pallof-cable','side-plank-full','halo'],['pallof-cable','side-plank-full','halo']],
-    contact:[['carry','bear-hold'],['carry','suitcase-carry'],['carry','overhead-carry'],['carry','overhead-carry']],
-    endurance:[['bike','march'],['bike-interval','rower-interval'],['run-interval','bike-interval'],['run-interval','bike-interval']]
+    core:[['deadbug','bird-dog','side-plank'],['pallof','suitcase-carry','side-plank'],['landmine-rotation','mb-rotational','pallof-cable','side-plank-full','halo'],['mb-single-leg-rot','landmine-rotation','pallof-cable','side-plank-full','halo']],
+    contact:[['carry','bear-hold'],['carry','mb-chest-pass','suitcase-carry'],['landmine-press','mb-slam','carry','overhead-carry'],['landmine-press','mb-overhead','carry','overhead-carry']],
+    endurance:[['bike','march','tempo-court'],['bike-sprints','bike-interval','rower-interval'],['slide-intervals','run-interval','bike-interval'],['seventeens','ball-shuttles','run-interval','bike-interval']]
   };
   // Doses selon le type d'exercice choisi, par semaine d'étape (la 4e est allégée).
   function dosesFor(e) {

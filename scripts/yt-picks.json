@@ -1616,6 +1616,13 @@
   "query": "band shoulder dislocates"
  },
  "approach-jump": {
+  "videoId": "DOMeJWrQtAA",
+  "duration": 18,
+  "title": "Two Step Approach to Vertical Jump",
+  "start": 5,
+  "seen": "approach vertical jump basketball two foot",
+  "quality": 5,
+  "size": 91117,
   "rejected": [
    "zS7J_Z-0wU4",
    "STGtDv9qDwc",
@@ -1624,7 +1631,7 @@
    "NmAe3_-1vRs",
    "w6IevIgUfxY"
   ],
-  "query": "approach vertical jump basketball"
+  "query": "approach vertical jump basketball two foot"
  },
  "run-interval": {
   "videoId": "GxkWIKuH21U",
@@ -2295,5 +2302,1896 @@
   "size": 140586,
   "query": "rip through drive drill basketball",
   "refused": true
+ },
+ "kb-deadlift": {
+  "videoId": "l6gDwf3xC6s",
+  "duration": 15,
+  "title": "Kettlebell Deadlift | Exercise Tutorial",
+  "start": 2,
+  "seen": "kettlebell deadlift",
+  "quality": 5,
+  "size": 52342,
+  "query": "kettlebell deadlift form"
+ },
+ "run": {
+  "videoId": "7j8wrUQ2Smc",
+  "duration": 15,
+  "title": "Running technique: KICKING vs BOUNCING",
+  "start": 2,
+  "seen": "easy jogging running form",
+  "quality": 4,
+  "size": 238825,
+  "query": "easy jogging running form"
+ },
+ "stepjack": {
+  "videoId": "q8GCujxyZTA",
+  "duration": 40,
+  "title": "Step Jacks",
+  "start": 27,
+  "seen": "step jack low impact jumping jack",
+  "quality": 4,
+  "size": 154386,
+  "rejected": [
+   "JHdVMkRBuRA"
+  ],
+  "query": "step jack low impact jumping jack"
+ },
+ "walk": {
+  "videoId": "EpvXcGONfkk",
+  "duration": 117,
+  "title": "Learning the Arm Motion for Power Walking | Power Walking",
+  "start": 95,
+  "seen": "power walking technique man",
+  "quality": 5,
+  "size": 277325,
+  "rejected": [
+   "wrdIMKM3yzs",
+   "5NIYftjbsQo"
+  ],
+  "query": "power walking technique man"
+ },
+ "halo": {
+  "videoId": "wJcmanVh5EE",
+  "duration": 22,
+  "title": "Kettlebell Halo",
+  "start": 2,
+  "seen": "kettlebell halo",
+  "quality": 5,
+  "size": 62526,
+  "query": "kettlebell halo exercise"
+ },
+ "knee-pushup": {
+  "videoId": "WcHtt6zT3Go",
+  "duration": 46,
+  "title": "Wellness Wednesday: Give yourself 10 knee push-ups",
+  "start": 18,
+  "seen": "knee pushup",
+  "quality": 5,
+  "size": 92049,
+  "query": "knee push up form"
+ },
+ "decline-pushup": {
+  "videoId": "5QFjmotLfW4",
+  "duration": 52,
+  "title": "How to perform decline push ups with good form",
+  "start": 27,
+  "seen": "decline push up",
+  "quality": 5,
+  "size": 169526,
+  "query": "decline push up form"
+ },
+ "breath": {
+  "videoId": "Q1Me3bMx5Dc",
+  "duration": 31,
+  "title": "DIAPHRAGMATIC BREATHING",
+  "start": 14,
+  "seen": "diaphragmatic breathing lying down",
+  "quality": 4,
+  "size": 153314,
+  "query": "diaphragmatic breathing lying down exercise"
+ },
+ "band-press": {
+  "videoId": "9NGo4lZd65o",
+  "duration": 27,
+  "title": "Banded Chest Press",
+  "start": 13,
+  "seen": "resistance band chest press",
+  "quality": 5,
+  "size": 131612,
+  "query": "resistance band chest press"
+ },
+ "front-raise": {
+  "videoId": "zkP0MsTcIVU",
+  "duration": 16,
+  "title": "How To Do A Dumbbell Front Raise",
+  "start": 8,
+  "seen": "dumbbell front raise",
+  "quality": 5,
+  "size": 143373,
+  "query": "dumbbell front raise form"
+ },
+ "defense": {
+  "videoId": "IjGJ_CF5hcA",
+  "duration": 14,
+  "title": "Defensive Slide Drill",
+  "start": 2,
+  "seen": "basketball defensive slide drill",
+  "quality": 4,
+  "size": 104438,
+  "query": "basketball defensive slide drill"
+ },
+ "drop-step-start": {
+  "videoId": "oBLMNIPupPU",
+  "duration": 44,
+  "title": "Drop Step Sprint",
+  "start": 38,
+  "seen": "drop step start sprint drill",
+  "quality": 4,
+  "size": 239501,
+  "query": "drop step start sprint drill"
+ },
+ "band-resisted-start": {
+  "videoId": "P_KZDABB5VU",
+  "duration": 10,
+  "title": "Sprint Acceleration [Band Resisted]",
+  "start": 0,
+  "seen": "band resisted sprint start partner",
+  "quality": 4,
+  "size": 272916,
+  "query": "band resisted sprint start partner"
+ },
+ "split-start": {
+  "videoId": "sonIjubCduo",
+  "duration": 16,
+  "title": "10-yd Sprint, Staggered-stance Roll Start",
+  "start": 9,
+  "seen": "staggered stance start sprint drill",
+  "quality": 5,
+  "size": 104925,
+  "rejected": [
+   "OMomhBThf20",
+   "qD3GFnUfqek",
+   "yGvQHOjPufg",
+   "WPoyZJEgOjE",
+   "jdI7oNQm2eg",
+   "zCWLC7LXeL4",
+   "aaNs56oHTq4",
+   "sAaC_28ltm0"
+  ],
+  "query": "staggered stance start sprint drill"
+ },
+ "single-pogo": {
+  "videoId": "MYnVANm8H9E",
+  "duration": 24,
+  "title": "Single Leg Linear Pogo Hops",
+  "start": 10,
+  "seen": "single leg pogo hops",
+  "quality": 5,
+  "size": 157137,
+  "query": "single leg pogo hops"
+ },
+ "a-skip": {
+  "videoId": "qwcDGGB392g",
+  "duration": 76,
+  "title": "How to Improve Your Running Technique in 60 Seconds | A-Skip Tutorial",
+  "start": 60,
+  "seen": "a skip sprint drill",
+  "quality": 5,
+  "size": 196867,
+  "query": "a skip sprint drill"
+ },
+ "vertical-jump": {
+  "videoId": "QcQCihNGteE",
+  "duration": 30,
+  "title": "Countermovement Vertical Jump",
+  "start": 14,
+  "seen": "countermovement vertical jump",
+  "quality": 5,
+  "size": 114042,
+  "query": "countermovement vertical jump"
+ },
+ "drop-jump": {
+  "videoId": "3JY0pxIPaC4",
+  "duration": 10,
+  "title": "How To Drop Jumps",
+  "start": 3,
+  "seen": "drop jump plyometric",
+  "quality": 5,
+  "size": 76761,
+  "query": "drop jump plyometric"
+ },
+ "db-jump": {
+  "rejected": [
+   "wVpp2XH1ELI",
+   "y7M40xCnPK0",
+   "XOTO2qWRy9U",
+   "RqUGaKsi1vE",
+   "0pTBkUPuMkk",
+   "eDf49a4Vx5k"
+  ]
+ },
+ "reverse-nordic": {
+  "videoId": "6WXRylUxQ48",
+  "duration": 12,
+  "title": "Reverse nordic curl +20kg/44lbs",
+  "start": 2,
+  "seen": "reverse nordic exercise",
+  "quality": 5,
+  "size": 92629,
+  "query": "reverse nordic exercise"
+ },
+ "vest-pushup": {
+  "videoId": "jvZv8_oC6Vs",
+  "duration": 32,
+  "title": "How To Do A WEIGHT VEST PUSH UP | Exercise Demonstration Video and Guide",
+  "start": 18,
+  "seen": "weighted vest push ups",
+  "quality": 5,
+  "size": 229177,
+  "query": "weighted vest push ups"
+ },
+ "cable-fly": {
+  "videoId": "V5mlG3N-weQ",
+  "duration": 63,
+  "title": "How to perform Cable Fly | Jeet Selal",
+  "start": 13,
+  "seen": "cable lower chest fly",
+  "quality": 4,
+  "size": 205363,
+  "query": "cable chest fly form"
+ },
+ "neutral-pullup": {
+  "videoId": "cd_38C6LuvY",
+  "duration": 13,
+  "title": "Neutral Grip Pull-Up",
+  "start": 1,
+  "seen": "neutral grip pull up",
+  "quality": 5,
+  "size": 134826,
+  "query": "neutral grip pull up"
+ },
+ "dead-hang": {
+  "videoId": "4KWEko-tH-E",
+  "duration": 16,
+  "title": "Dead Hang Pull Up",
+  "start": 3,
+  "seen": "dead hang pull up bar",
+  "quality": 5,
+  "size": 213658,
+  "query": "dead hang pull up bar"
+ },
+ "kb-row": {
+  "videoId": "j2OdaGOmHlM",
+  "duration": 64,
+  "title": "Kettlebell One-Arm Row Instruction",
+  "start": 48,
+  "seen": "kettlebell row",
+  "quality": 5,
+  "size": 58976,
+  "query": "kettlebell row form"
+ },
+ "band-squat": {
+  "videoId": "byZrVEt3qF8",
+  "duration": 64,
+  "title": "Using Resistance Bands to Improve Your Squat",
+  "start": 45,
+  "seen": "resistance band squat",
+  "quality": 5,
+  "size": 145692,
+  "query": "resistance band squat"
+ },
+ "cable-row-single": {
+  "videoId": "pBbbR6ypIEs",
+  "duration": 46,
+  "title": "Standing Single Arm Cable Row | Elite Physique Training",
+  "start": 24,
+  "seen": "single arm cable row",
+  "quality": 5,
+  "size": 200698,
+  "query": "single arm cable row"
+ },
+ "legpress-single": {
+  "videoId": "BsOg0iBKs6A",
+  "duration": 33,
+  "title": "Exercise Tutorial - Single leg press (glute bias)",
+  "start": 7,
+  "seen": "single leg leg press",
+  "quality": 5,
+  "size": 135254,
+  "query": "single leg leg press"
+ },
+ "assisted-pistol": {
+  "videoId": "FHSNof-NnPQ",
+  "duration": 17,
+  "title": "Box Assisted Pistol Squat",
+  "start": 1,
+  "seen": "assisted pistol squat to box",
+  "quality": 4,
+  "size": 171143,
+  "query": "assisted pistol squat to box"
+ },
+ "kb-rdl": {
+  "videoId": "M6fGnnNR4bQ",
+  "duration": 39,
+  "title": "U.S. Marine Corps Fitness - Kettlebell Romanian Deadlift",
+  "start": 31,
+  "seen": "kettlebell romanian deadlift",
+  "quality": 5,
+  "size": 130264,
+  "query": "kettlebell romanian deadlift"
+ },
+ "band-hinge": {
+  "videoId": "a8f-c31u2GA",
+  "duration": 29,
+  "title": "Band Pull Through",
+  "start": 14,
+  "seen": "band pull through exercise",
+  "quality": 5,
+  "size": 150995,
+  "query": "band pull through exercise"
+ },
+ "db-calf": {
+  "videoId": "hPA98_r-6e4",
+  "duration": 55,
+  "title": "Standing DB Calf Raises (Exercise Library)",
+  "start": 18,
+  "seen": "dumbbell standing calf raise",
+  "quality": 5,
+  "size": 87341,
+  "query": "dumbbell standing calf raise"
+ },
+ "band-curl": {
+  "videoId": "AaA7Yj3zHiU",
+  "duration": 27,
+  "title": "How to do Bicep curls with resistance bands | YuryFit",
+  "start": 16,
+  "seen": "resistance band bicep curl",
+  "quality": 5,
+  "size": 85378,
+  "query": "resistance band bicep curl"
+ },
+ "db-kickback": {
+  "videoId": "m_UlDFNX4mk",
+  "duration": 11,
+  "title": "Dumbbell Tricep Kickback",
+  "start": 1,
+  "seen": "dumbbell tricep kickback",
+  "quality": 5,
+  "size": 135054,
+  "query": "dumbbell tricep kickback"
+ },
+ "hollow-hold": {
+  "videoId": "qcwAB98I2Gc",
+  "duration": 34,
+  "title": "How To Do A HOLLOW BODY HOLD | Exercise Demonstration Video and Guide",
+  "start": 15,
+  "seen": "hollow body hold",
+  "quality": 5,
+  "size": 173989,
+  "rejected": [
+   "jLxtFNO0r50",
+   "3kC0YkaY6jo",
+   "Gkh7ZF_lcGw",
+   "JnuYfsJ3CKg"
+  ],
+  "query": "hollow hold exercise tutorial"
+ },
+ "plank-reach": {
+  "videoId": "r-7_TWel2lI",
+  "duration": 29,
+  "title": "Plank With Single Arm Reach",
+  "start": 20,
+  "seen": "plank with arm reach",
+  "quality": 5,
+  "size": 115827,
+  "query": "plank with arm reach"
+ },
+ "bear-crawl": {
+  "videoId": "Ee1BQNI6zN4",
+  "duration": 41,
+  "title": "Bear Crawl",
+  "start": 26,
+  "seen": "bear crawl exercise",
+  "quality": 4,
+  "size": 130230,
+  "query": "bear crawl exercise"
+ },
+ "cable-crunch": {
+  "videoId": "b9FJ4hIK3pI",
+  "duration": 46,
+  "title": "Kneeling Rope Crunch With Proper Form",
+  "start": 24,
+  "seen": "cable crunch kneeling",
+  "quality": 5,
+  "size": 186564,
+  "query": "cable crunch kneeling"
+ },
+ "leg-raise": {
+  "videoId": "iUs7hd8u1wg",
+  "duration": 48,
+  "title": "Lying leg raises tutorial - core",
+  "start": 25,
+  "seen": "lying leg raise",
+  "quality": 5,
+  "size": 107751,
+  "query": "lying leg raise form"
+ },
+ "squat-thrust": {
+  "videoId": "fysU2ldlXSY",
+  "duration": 53,
+  "title": "Squat Thrusts",
+  "start": 43,
+  "seen": "squat thrust",
+  "quality": 5,
+  "size": 92667,
+  "query": "squat thrust exercise"
+ },
+ "overhead-carry": {
+  "videoId": "IrsLq3H9E8M",
+  "duration": 80,
+  "title": "Dumbbell Single Arm Overhead Carry",
+  "start": 62,
+  "seen": "overhead dumbbell carry",
+  "quality": 5,
+  "size": 137550,
+  "query": "overhead dumbbell carry"
+ },
+ "burpee-nojump": {
+  "videoId": "we5OJ7-zb48",
+  "duration": 14,
+  "title": "No Jump Burpee",
+  "start": 5,
+  "seen": "burpee without jump",
+  "quality": 5,
+  "size": 78766,
+  "query": "burpee without jump"
+ },
+ "burpee": {
+  "videoId": "CTV6_A56iD8",
+  "duration": 15,
+  "title": "How to do a Burpee | Spartan Race",
+  "start": 1,
+  "seen": "burpee",
+  "quality": 4,
+  "size": 268546,
+  "query": "burpee proper form"
+ },
+ "skater": {
+  "videoId": "9_jLW6VkU8A",
+  "duration": 69,
+  "title": "Speed Skaters Exercise (Skater Hops): Proper Form",
+  "start": 30,
+  "seen": "skater hops",
+  "quality": 5,
+  "size": 93868,
+  "query": "skater hops exercise"
+ },
+ "stair": {
+  "videoId": "1hiWQ7pehjQ",
+  "duration": 63,
+  "title": "Wellness Wednesday: Build your stair climbing power with step-ups",
+  "start": 17,
+  "seen": "stair climbing exercise",
+  "quality": 5,
+  "size": 73099,
+  "query": "stair climbing exercise"
+ },
+ "walk-hill": {
+  "videoId": "o4B8Fp_azLA",
+  "duration": 352,
+  "title": "Surprising Benefits of Incline Treadmill Walking for Knee Arthritis & Spinal Stenosis",
+  "start": 120,
+  "seen": "treadmill incline walking",
+  "quality": 5,
+  "size": 128913,
+  "rejected": [
+   "MJ1Jdu1QTUk"
+  ],
+  "query": "treadmill incline walking"
+ },
+ "rower-interval": {
+  "videoId": "ZN0J6qKCIrI",
+  "duration": 372,
+  "title": "The Official 2026 Rowing Form Checklist (PERFECT STROKE!)",
+  "start": 136,
+  "seen": "rowing machine exercise",
+  "quality": 5,
+  "size": 124113,
+  "rejected": [],
+  "query": "rowing machine interval workout technique"
+ },
+ "shadow-box": {
+  "videoId": "J4j3AOVWuHE",
+  "duration": 180,
+  "title": "Quick Shadow Boxing Tutorial by Olympian",
+  "start": 150,
+  "seen": "shadow boxing workout basics",
+  "quality": 5,
+  "size": 160386,
+  "query": "shadow boxing workout basics"
+ },
+ "depth-drop": {
+  "videoId": "n4lYo8MOGUM",
+  "duration": 11,
+  "title": "Plyometrics Phase 2: Landing Progression - Depth Drop",
+  "start": 3,
+  "seen": "depth drop landing plyometric",
+  "quality": 4,
+  "size": 210023,
+  "rejected": [
+   "AzPJZHOmGEg"
+  ],
+  "query": "depth drop landing plyometric"
+ },
+ "pigeon": {
+  "videoId": "h_hV-8suiiA",
+  "duration": 35,
+  "title": "4 Ways To Relieve Tight Hips - Pigeon Stretch",
+  "start": 23,
+  "seen": "pigeon stretch hip",
+  "quality": 5,
+  "size": 81226,
+  "query": "pigeon stretch hip"
+ },
+ "downdog": {
+  "videoId": "aOqkF3hrM0I",
+  "duration": 11,
+  "title": "Downward Dog Hold",
+  "start": 1,
+  "seen": "downward dog stretch",
+  "quality": 5,
+  "size": 135036,
+  "rejected": [
+   "rto2xsfqWx8"
+  ],
+  "query": "downward dog stretch"
+ },
+ "doorway-chest": {
+  "videoId": "B9uY01NoqBg",
+  "duration": 59,
+  "title": "Doorway Stretch",
+  "start": 27,
+  "seen": "doorway chest stretch",
+  "quality": 5,
+  "size": 78697,
+  "query": "doorway chest stretch"
+ },
+ "vest-pullup": {
+  "videoId": "xmHr1XcUUb8",
+  "duration": 75,
+  "title": "Weighted Vest Pro Chin Up + Pull Up",
+  "start": 65,
+  "seen": "weighted vest pull ups",
+  "quality": 5,
+  "size": 64468,
+  "query": "weighted vest pull ups"
+ },
+ "vest-step-up": {
+  "videoId": "-YlXFpEjCwo",
+  "duration": 36,
+  "title": "Resilient Performance - Weight Vest Step Ups",
+  "start": 10,
+  "seen": "weighted vest step ups",
+  "quality": 5,
+  "size": 78269,
+  "query": "weighted vest step ups"
+ },
+ "slider-reverse-lunge": {
+  "videoId": "q62hOW-RzFE",
+  "duration": 14,
+  "title": "Slider Reverse Lunge",
+  "start": 3,
+  "seen": "slider reverse lunge",
+  "quality": 5,
+  "size": 97093,
+  "query": "slider reverse lunge"
+ },
+ "slider-bodysaw": {
+  "videoId": "Qip3IEgsDzw",
+  "duration": 75,
+  "title": "Exercise Tutorial: The Slider Plank / Body Saw",
+  "start": 39,
+  "seen": "slider body saw plank",
+  "quality": 5,
+  "size": 87540,
+  "query": "slider body saw plank"
+ },
+ "slider-climber": {
+  "videoId": "iXOuw4vqus4",
+  "duration": 37,
+  "title": "Core Mountain Climber with Sliders",
+  "start": 28,
+  "seen": "slider mountain climbers",
+  "quality": 5,
+  "size": 161924,
+  "query": "slider mountain climbers"
+ },
+ "single-leg-vertical": {
+  "videoId": "bSFOojIlfJ0",
+  "duration": 43,
+  "title": "One Foot Take Off Practice 6'0\"",
+  "start": 17,
+  "seen": "one foot takeoff jump drill basketball",
+  "quality": 4,
+  "size": 108273,
+  "rejected": [
+   "P0YwAwxZHsw",
+   "w6IevIgUfxY",
+   "SQG8z63URKI",
+   "eqURGPnn1ps",
+   "vu5hRwbVx5Y",
+   "KSpb-O1xGQ8",
+   "bLq3LVGcKpg"
+  ],
+  "query": "one foot takeoff jump drill basketball"
+ },
+ "lateral-decel": {
+  "videoId": "uHlW-f8CwPI",
+  "duration": 16,
+  "title": "How to: Bilateral Deceleration",
+  "start": 8,
+  "seen": "lateral deceleration stick drill",
+  "quality": 4,
+  "size": 214508,
+  "query": "lateral deceleration stick drill"
+ },
+ "sled-push": {
+  "videoId": "IBC-L-AYIBo",
+  "duration": 41,
+  "title": "Improve Acceleration for Baketball with Heavy Sled Pushes",
+  "start": 17,
+  "seen": "sled push sprint acceleration",
+  "quality": 5,
+  "size": 207993,
+  "query": "sled push sprint acceleration"
+ },
+ "sled-march": {
+  "videoId": "k5ws60dbo3I",
+  "duration": 13,
+  "title": "Heavy Sled Push Marching Cadence",
+  "start": 3,
+  "seen": "heavy sled march push",
+  "quality": 5,
+  "size": 202265,
+  "query": "heavy sled march push"
+ },
+ "half-kneel-start": {
+  "videoId": "9TjMT2vxFk4",
+  "duration": 11,
+  "title": "Sprint - Half Kneeling Lateral Start",
+  "start": 3,
+  "seen": "half kneeling sprint start drill",
+  "quality": 4,
+  "size": 125913,
+  "query": "half kneeling sprint start drill"
+ },
+ "hip-open-start": {
+  "videoId": "We5AeoIWr1s",
+  "duration": 78,
+  "title": "SKLZ Acceleration Trainer: Backpedal To Drop Step and Acceleration With Release Drill",
+  "start": 49,
+  "seen": "open step acceleration start speed drill",
+  "quality": 4,
+  "size": 230589,
+  "rejected": [
+   "mCRCm5LtSow",
+   "SZcbfO7iJaQ",
+   "hVGGeFlbYfo",
+   "G-c17p2m61A"
+  ],
+  "query": "open step acceleration start speed drill"
+ },
+ "shuffle-sprint": {
+  "videoId": "PGVsteTgO-I",
+  "duration": 14,
+  "title": "Shuffle Shuffle Sprint",
+  "start": 7,
+  "seen": "shuffle to sprint drill",
+  "quality": 4,
+  "size": 173225,
+  "query": "shuffle to sprint drill"
+ },
+ "mb-sprint-start": {
+  "videoId": "rYo7ciuhYlw",
+  "duration": 12,
+  "title": "Winston Guy Med Ball Throw to Sprint",
+  "start": 3,
+  "seen": "medicine ball throw into sprint",
+  "quality": 3,
+  "size": 143512,
+  "query": "medicine ball throw into sprint"
+ },
+ "reaction-start": {
+  "videoId": "e7ZQhJSFSMY",
+  "duration": 10,
+  "title": "Reactive cone agility drill",
+  "start": 2,
+  "seen": "reactive sprint start drill coach signal",
+  "quality": 4,
+  "size": 119147,
+  "rejected": [
+   "w_9gZHIOxU0",
+   "iypyPwbiM88",
+   "Ex-vKetgNys",
+   "m4xJG0v4IGc"
+  ],
+  "query": "reactive sprint start drill coach signal"
+ },
+ "hill-sprint": {
+  "videoId": "Uv8wJlvBqgQ",
+  "duration": 31,
+  "title": "10 second hill sprint for form and strength slow motion",
+  "start": 10,
+  "seen": "short hill sprint technique",
+  "quality": 4,
+  "size": 236203,
+  "query": "short hill sprint technique"
+ },
+ "iso-wall-drive": {
+  "videoId": "ZW9rjy9TgGM",
+  "duration": 51,
+  "title": "Speed Mechanics - Wall knee drive",
+  "start": 18,
+  "seen": "wall drive isometric hold",
+  "quality": 4,
+  "size": 78572,
+  "query": "wall drive isometric hold sprint"
+ },
+ "drop-lunge": {
+  "videoId": "r4qFAngVgrA",
+  "duration": 44,
+  "title": "Drop Lunges for Deceleration",
+  "start": 15,
+  "seen": "drop lunge deceleration",
+  "quality": 4,
+  "size": 173343,
+  "query": "drop lunge deceleration"
+ },
+ "drop-squat": {
+  "videoId": "42gf6_4G8qs",
+  "duration": 59,
+  "title": "Deceleration Squats",
+  "start": 33,
+  "seen": "drop squat deceleration drill",
+  "quality": 5,
+  "size": 180223,
+  "query": "drop squat deceleration drill"
+ },
+ "cut-45-stick": {
+  "videoId": "RmdBA4KLmhg",
+  "duration": 24,
+  "title": "Ladder: 1-2 Stick @ 45 Degrees",
+  "start": 14,
+  "seen": "45 degree cut stick drill",
+  "quality": 4,
+  "size": 98874,
+  "query": "45 degree cut stick drill"
+ },
+ "backpedal-turn": {
+  "videoId": "hsyUaJQUqgY",
+  "duration": 66,
+  "title": "Backpedaling Drill",
+  "start": 28,
+  "seen": "backpedal turn and sprint drill",
+  "quality": 4,
+  "size": 276589,
+  "query": "backpedal turn and sprint drill"
+ },
+ "sprint-backpedal": {
+  "videoId": "YzWsQQwuJd4",
+  "duration": 15,
+  "title": "SPRINT TO BACKPEDAL; Sprint Variations",
+  "start": 4,
+  "seen": "sprint to backpedal transition drill",
+  "quality": 3,
+  "size": 226664,
+  "rejected": [
+   "0iKulhRgLPE",
+   "EqVWDpDLhbg",
+   "9E9azu-CAeg",
+   "IOT47nf8h3g"
+  ],
+  "query": "sprint to backpedal transition drill"
+ },
+ "ecc-split-squat": {
+  "videoId": "tWMWstS9RXE",
+  "duration": 56,
+  "title": "How to perform: Eccentric split squat",
+  "start": 39,
+  "seen": "eccentric split squat slow tempo",
+  "quality": 5,
+  "size": 92639,
+  "query": "eccentric split squat slow tempo"
+ },
+ "lateral-drop-stick": {
+  "videoId": "jxj2kY4gyAw",
+  "duration": 15,
+  "title": "Single Leg Lateral Hop Stick Landing Lukasz Lojas",
+  "start": 0,
+  "seen": "lateral hop stick landing single leg",
+  "quality": 4,
+  "size": 153004,
+  "query": "lateral hop stick landing single leg"
+ },
+ "band-assisted-jump": {
+  "videoId": "PeMhs7i0-Qw",
+  "duration": 8,
+  "title": "Banded Overspeed Jumps",
+  "start": 1,
+  "seen": "band assisted jumps overspeed",
+  "quality": 5,
+  "size": 160131,
+  "query": "band assisted jumps overspeed"
+ },
+ "step-up-hop": {
+  "videoId": "d6XOrNwKOHo",
+  "duration": 16,
+  "title": "Step Up Jump",
+  "start": 9,
+  "seen": "step up jump",
+  "quality": 5,
+  "size": 111317,
+  "query": "step up jump plyometric"
+ },
+ "penultimate-step": {
+  "videoId": "STGtDv9qDwc",
+  "duration": 420,
+  "title": "Jump Higher INSTANTLY With This Technique",
+  "start": 18,
+  "seen": "penultimate step vertical jump technique",
+  "quality": 4,
+  "size": 226388,
+  "query": "penultimate step vertical jump technique"
+ },
+ "hurdle-hops": {
+  "videoId": "TLOUx2H64_8",
+  "duration": 76,
+  "title": "Mini Hurdle Plyometric Training- Nike SPARQ Hurdles",
+  "start": 10,
+  "seen": "mini hurdle hops plyometric",
+  "quality": 5,
+  "size": 176181,
+  "query": "mini hurdle hops plyometric"
+ },
+ "seated-box-jump": {
+  "videoId": "64OAo8kINPQ",
+  "duration": 17,
+  "title": "Seated Box Jump",
+  "start": 0,
+  "seen": "seated box jump",
+  "quality": 5,
+  "size": 175543,
+  "query": "seated box jump"
+ },
+ "pause-squat-jump": {
+  "videoId": "fkozv_ZJFSQ",
+  "duration": 10,
+  "title": "PAUSE SQUAT JUMP",
+  "start": 1,
+  "seen": "pause squat jump",
+  "quality": 5,
+  "size": 205048,
+  "query": "pause squat jump"
+ },
+ "tuck-jump": {
+  "videoId": "3bCNPedVKgE",
+  "duration": 14,
+  "title": "Tuck Jumps Beginner",
+  "start": 8,
+  "seen": "tuck jump exercise",
+  "quality": 5,
+  "size": 220030,
+  "query": "tuck jump exercise"
+ },
+ "rim-touches": {
+  "rejected": [
+   "tbqtVPHBsIw",
+   "fCYjvUR0hpE",
+   "_9aV3FZxkDo",
+   "hclBGJNyoMs",
+   "AgvIov8D3cE",
+   "qyxI8Nyv1CY",
+   "5gGVYR_Bk8g",
+   "pix1YFsf8N8"
+  ]
+ },
+ "bounding": {
+  "videoId": "b3124L0KK3Q",
+  "duration": 28,
+  "title": "BOUNDING: Bounding Routine Alternate Leg Bounds",
+  "start": 8,
+  "seen": "bounding drill alternate leg",
+  "quality": 5,
+  "size": 163570,
+  "query": "bounding drill alternate leg"
+ },
+ "power-skip": {
+  "videoId": "0UzifxpWvYY",
+  "duration": 14,
+  "title": "Power Skips (Height)",
+  "start": 7,
+  "seen": "power skips for height",
+  "quality": 5,
+  "size": 120710,
+  "query": "power skip for height"
+ },
+ "trapbar-jump": {
+  "videoId": "rZGkx5PaZSM",
+  "duration": 21,
+  "title": "Trap Bar Jumps",
+  "start": 5,
+  "seen": "trap bar jump",
+  "quality": 5,
+  "size": 228169,
+  "query": "trap bar jump"
+ },
+ "single-box-jump": {
+  "videoId": "w5PUa6QYpe0",
+  "duration": 15,
+  "title": "Single Leg Box Jump",
+  "start": 0,
+  "seen": "single leg box jump",
+  "quality": 5,
+  "size": 156440,
+  "query": "single leg box jump"
+ },
+ "broad-jump-series": {
+  "videoId": "xeMRWJSYlBQ",
+  "duration": 58,
+  "title": "Continuous Broad Jumps",
+  "start": 52,
+  "seen": "continuous broad jumps",
+  "quality": 5,
+  "size": 199396,
+  "query": "continuous broad jumps"
+ },
+ "lateral-bounds": {
+  "videoId": "TRfEDK48M6Y",
+  "duration": 11,
+  "title": "Lateral Bounds continuous",
+  "start": 1,
+  "seen": "lateral bounds continuous",
+  "quality": 5,
+  "size": 141050,
+  "query": "lateral bounds continuous"
+ },
+ "pogo-forward": {
+  "videoId": "MR_Sn1z3Oc0",
+  "duration": 9,
+  "title": "Forward Pogo Jumps",
+  "start": 2,
+  "seen": "forward pogo jumps",
+  "quality": 5,
+  "size": 149470,
+  "query": "forward pogo hops"
+ },
+ "pogo-lateral": {
+  "videoId": "YBzs0YagDVg",
+  "duration": 27,
+  "title": "Lateral pogo hops | plyometric exercise for runners",
+  "start": 5,
+  "seen": "lateral pogo hops",
+  "quality": 4,
+  "size": 104704,
+  "query": "lateral pogo jumps"
+ },
+ "knee-drive-step-up": {
+  "videoId": "8fURQlBUtTY",
+  "duration": 35,
+  "title": "Box Step Up Knee Drive | Lunge | Strength and Conditioning Exercises",
+  "start": 6,
+  "seen": "step up with knee drive",
+  "quality": 5,
+  "size": 184030,
+  "query": "step up with knee drive"
+ },
+ "square-hops": {
+  "videoId": "aRJAkTP5vv4",
+  "duration": 22,
+  "title": "4-Square Hops",
+  "start": 4,
+  "seen": "four square hops ankle",
+  "quality": 5,
+  "size": 141729,
+  "query": "four square hops ankle"
+ },
+ "soleus-wall-iso": {
+  "videoId": "RZlD3UKM-JQ",
+  "duration": 25,
+  "title": "Soleus Wall Sit Isometric Hold",
+  "start": 8,
+  "seen": "soleus isometric wall sit calf raise hold",
+  "quality": 5,
+  "size": 112044,
+  "query": "soleus isometric wall sit calf raise hold"
+ },
+ "rope-single": {
+  "videoId": "A-BxmNoi7Jc",
+  "duration": 17,
+  "title": "Single Leg Jump Rope",
+  "start": 8,
+  "seen": "single leg jump rope",
+  "quality": 5,
+  "size": 168431,
+  "rejected": [
+   "4iPWOfmXIvA"
+  ],
+  "query": "single leg jump rope"
+ },
+ "single-wall-sit": {
+  "videoId": "Z_AMEENUVCA",
+  "duration": 17,
+  "title": "Single Leg Wall Sit",
+  "start": 9,
+  "seen": "single leg wall sit",
+  "quality": 5,
+  "size": 88679,
+  "query": "single leg wall sit"
+ },
+ "iso-push-split": {
+  "videoId": "coQTs4NZuDk",
+  "duration": 32,
+  "title": "Split Squat Pin Pull Overcoming Isometric",
+  "start": 21,
+  "seen": "overcoming isometric split squat pin press",
+  "quality": 5,
+  "size": 79456,
+  "query": "overcoming isometric split squat pin press"
+ },
+ "mb-rotational": {
+  "videoId": "o9BC7lgN1bo",
+  "duration": 45,
+  "title": "How To Do A STANDING MEDICINE BALL ROTATIONAL THROW AGAINST A WALL | Exercise Demonstration Video",
+  "start": 27,
+  "seen": "medicine ball rotational throw wall",
+  "quality": 5,
+  "size": 129815,
+  "query": "medicine ball rotational throw wall"
+ },
+ "mb-scoop": {
+  "videoId": "b7ix5GglVjE",
+  "duration": 57,
+  "title": "Med Ball Scoop Toss",
+  "start": 46,
+  "seen": "medicine ball scoop toss",
+  "quality": 5,
+  "size": 172038,
+  "query": "medicine ball scoop toss"
+ },
+ "mb-backward": {
+  "videoId": "j2iNY9aLmys",
+  "duration": 41,
+  "title": "Backward Med Ball Throw",
+  "start": 15,
+  "seen": "medicine ball backward overhead throw",
+  "quality": 5,
+  "size": 290051,
+  "query": "medicine ball backward overhead throw"
+ },
+ "mb-single-leg-rot": {
+  "videoId": "WItAAeLkQe0",
+  "duration": 20,
+  "title": "Single-Leg Med Ball Rotation Throws at Wall - Pro-Form Physiotherapy",
+  "start": 4,
+  "seen": "single leg medicine ball rotational throw",
+  "quality": 5,
+  "size": 117817,
+  "query": "single leg medicine ball rotational throw"
+ },
+ "mb-slam": {
+  "videoId": "QxYhFwMd1Ks",
+  "duration": 43,
+  "title": "How to Perform the Med Ball Slam",
+  "start": 23,
+  "seen": "medicine ball slam",
+  "quality": 5,
+  "size": 109867,
+  "query": "medicine ball slam"
+ },
+ "mb-chest-pass": {
+  "videoId": "Jo2on0-YBPM",
+  "duration": 35,
+  "title": "How to Do a Med Ball Chest Pass",
+  "start": 26,
+  "seen": "medicine ball chest pass wall",
+  "quality": 4,
+  "size": 124398,
+  "query": "medicine ball chest pass wall"
+ },
+ "trapbar-deadlift": {
+  "videoId": "2SJ9HkKaxwU",
+  "duration": 25,
+  "title": "900 lb trap bar deadlift!!!",
+  "start": 14,
+  "seen": "trap bar deadlift",
+  "quality": 4,
+  "size": 158302,
+  "query": "trap bar deadlift form"
+ },
+ "mb-overhead": {
+  "videoId": "h4SvwqKY-GM",
+  "duration": 45,
+  "title": "Medicine Ball Overhead Throw | Medicine Ball | Strength and Conditioning Exercises",
+  "start": 19,
+  "seen": "medicine ball overhead throw wall",
+  "quality": 5,
+  "size": 214840,
+  "query": "medicine ball overhead throw wall"
+ },
+ "landmine-press": {
+  "videoId": "ORoOn93dnh4",
+  "duration": 17,
+  "title": "Half Kneeling Landmine Press",
+  "start": 0,
+  "seen": "half kneeling landmine press",
+  "quality": 5,
+  "size": 124819,
+  "query": "half kneeling landmine press"
+ },
+ "landmine-rotation": {
+  "videoId": "e5DP6961WEk",
+  "duration": 15,
+  "title": "Landmine Rotation",
+  "start": 2,
+  "seen": "landmine rotation",
+  "quality": 5,
+  "size": 184132,
+  "query": "landmine rotation"
+ },
+ "b-stance-rdl": {
+  "videoId": "NqL21LLv5ak",
+  "duration": 27,
+  "title": "Dumbbell B Stance Romanian Deadlift",
+  "start": 15,
+  "seen": "b stance romanian deadlift dumbbell",
+  "quality": 5,
+  "size": 136010,
+  "query": "b stance romanian deadlift dumbbell"
+ },
+ "landmine-reverse-lunge": {
+  "videoId": "dHsQrYcrO6g",
+  "duration": 12,
+  "title": "Landmine Reverse Lunges",
+  "start": 2,
+  "seen": "landmine reverse lunge",
+  "quality": 5,
+  "size": 103967,
+  "query": "landmine reverse lunge"
+ },
+ "lateral-box-step-up": {
+  "videoId": "CjjkLo9rVik",
+  "duration": 14,
+  "title": "Goblet Lateral Box Step Up",
+  "start": 1,
+  "seen": "lateral step up box",
+  "quality": 5,
+  "size": 144128,
+  "query": "lateral step up box"
+ },
+ "sl-hip-thrust": {
+  "videoId": "L4nTaesNm0E",
+  "duration": 60,
+  "title": "Single Leg Dumbbell Hip Thrust (Full Tutorial) - Glute Exercises for Beginners",
+  "start": 37,
+  "seen": "single leg hip thrust bench",
+  "quality": 5,
+  "size": 130188,
+  "query": "single leg hip thrust bench"
+ },
+ "slant-iso-squat": {
+  "videoId": "VYlUN6UJxSY",
+  "duration": 25,
+  "title": "Slant board squat for knee (patella tendon) pain",
+  "start": 10,
+  "seen": "decline board squat patellar tendon exercise",
+  "quality": 5,
+  "size": 146019,
+  "rejected": [
+   "zzsPCrGW-ZA",
+   "Zxup9yKHOfo",
+   "l93jQ6TWaf0",
+   "zy9BmjmLHvE"
+  ],
+  "query": "decline board squat patellar tendon exercise"
+ },
+ "slant-sl-squat": {
+  "videoId": "I9UDK1CGy4o",
+  "duration": 25,
+  "title": "SINGLE LEG SQUAT ECCENTRIC + SLANT BOARD",
+  "start": 10,
+  "seen": "single leg decline squat slant board",
+  "quality": 5,
+  "size": 138413,
+  "query": "single leg decline squat slant board"
+ },
+ "ham-iso-bridge": {
+  "videoId": "raptR7N7yzg",
+  "duration": 18,
+  "title": "Bench Hamstring Bridge Isometric",
+  "start": 3,
+  "seen": "isometric hamstring bridge heels on bench",
+  "quality": 5,
+  "size": 92795,
+  "query": "isometric hamstring bridge heels on bench"
+ },
+ "miniband-stance": {
+  "videoId": "BtSHjmp_9ZI",
+  "duration": 16,
+  "title": "Miniband Squat Hold Knee Pulse",
+  "start": 2,
+  "seen": "mini band quarter squat hold",
+  "quality": 4,
+  "size": 135648,
+  "rejected": [
+   "GhkqHjBYnQw",
+   "LG21UzFZkMU",
+   "AW2JD6Y6CzU",
+   "Ly4CXOm90Fs"
+  ],
+  "query": "mini band quarter squat hold"
+ },
+ "miniband-slides": {
+  "videoId": "s86TbiI6_cY",
+  "duration": 45,
+  "title": "At Home Exercises - Lateral Shuffle with mini band",
+  "start": 26,
+  "seen": "mini band lateral shuffle",
+  "quality": 5,
+  "size": 87882,
+  "rejected": [
+   "uGeZL34qwTs",
+   "vJyIJq68i_k",
+   "iV54klX0n4Y",
+   "42pDEicQrDg"
+  ],
+  "query": "mini band lateral shuffle"
+ },
+ "seventeens": {
+  "videoId": "rvo4UzZ8c_I",
+  "duration": 76,
+  "title": "17's",
+  "start": 5,
+  "seen": "17s conditioning drill basketball",
+  "quality": 4,
+  "size": 152380,
+  "query": "17s conditioning drill basketball"
+ },
+ "slide-intervals": {
+  "videoId": "IjGJ_CF5hcA",
+  "duration": 14,
+  "title": "Defensive Slide Drill",
+  "start": 2,
+  "seen": "defensive slide conditioning drill",
+  "quality": 5,
+  "size": 104438,
+  "query": "defensive slide conditioning drill"
+ },
+ "full-court-layups": {
+  "videoId": "RINtrtNXsrc",
+  "duration": 24,
+  "title": "Layup drill to end Pacers practice",
+  "start": 15,
+  "seen": "full court layups drill",
+  "quality": 4,
+  "size": 350413,
+  "rejected": [
+   "HxLe8kw44zE",
+   "WukAhG9mc_8",
+   "RalqWFceGW0",
+   "Xx281oJMbBk"
+  ],
+  "query": "full court layups drill",
+  "refused": true,
+  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+ },
+ "ball-shuttles": {
+  "videoId": "i_v1lPYbPE0",
+  "duration": 36,
+  "title": "Dribbling Suicide | NBA Ball Handling Quickness Fit Conditioning Training Speed | Dre Baldwin",
+  "start": 16,
+  "seen": "basketball dribble suicides",
+  "quality": 4,
+  "size": 125931,
+  "query": "basketball dribble suicides"
+ },
+ "tempo-court": {
+  "rejected": [
+   "UWIOAwWjRXc",
+   "d0HFzz_emUQ",
+   "S_iQysDbBrE",
+   "f3XzwTyPe7s",
+   "Qx5zVnyeGVc",
+   "Gjt2-xMiOQM",
+   "9pb6JX2ulDU",
+   "IaHrfPgey08"
+  ]
+ },
+ "bike-sprints": {
+  "videoId": "PHReR7tC_tw",
+  "duration": 50,
+  "title": "How To Do An ASSAULT AIR BIKE SPRINT | Exercise Demonstration Video and Guide",
+  "start": 32,
+  "seen": "assault bike sprint intervals",
+  "quality": 5,
+  "size": 219615,
+  "query": "assault bike sprint intervals"
+ },
+ "sk-hesi": {
+  "videoId": "AaZxl-KdKls",
+  "duration": 365,
+  "title": "Top 5 DEADLY Hesitation Moves!  [HESI TUTORIAL]",
+  "start": 54,
+  "seen": "hesitation dribble move",
+  "quality": 5,
+  "size": 247698,
+  "query": "hesitation dribble move tutorial"
+ },
+ "sk-pound-cross": {
+  "videoId": "BkRQ_MtLoxg",
+  "duration": 44,
+  "title": "1 Pound Crossover Dribble | Michael Rossetti",
+  "start": 32,
+  "seen": "pound dribble crossover drill",
+  "quality": 5,
+  "size": 188881,
+  "query": "pound dribble crossover drill"
+ },
+ "sk-in-out": {
+  "videoId": "nVeCpUOTyzA",
+  "duration": 57,
+  "title": "How to develop a strong In and out dribble",
+  "start": 15,
+  "seen": "in and out dribble drill",
+  "quality": 5,
+  "size": 217641,
+  "query": "in and out dribble drill"
+ },
+ "sk-retreat": {
+  "videoId": "VliVhmyBcpc",
+  "duration": 60,
+  "title": "Retreat Dribble Drill - Basketball Manitoba Quick Hitter with coach Dan Becker",
+  "start": 45,
+  "seen": "retreat dribble basketball drill",
+  "quality": 5,
+  "size": 157645,
+  "query": "retreat dribble basketball drill"
+ },
+ "sk-two-ball-alt": {
+  "videoId": "ze3oMlRgtcg",
+  "duration": 39,
+  "title": "BASKETBALL DRIBBLE DRILL   Two Ball Drill 'Alternating Double Dribble'   Shot Science",
+  "start": 4,
+  "seen": "two ball alternating dribble",
+  "quality": 5,
+  "size": 120009,
+  "query": "two ball alternating dribble"
+ },
+ "sk-change-pace": {
+  "videoId": "0Wwv5nDpL6k",
+  "duration": 155,
+  "title": "How to Do a Change-of-Pace Dribble | Basketball Moves",
+  "start": 117,
+  "seen": "change of pace dribble basketball",
+  "quality": 4,
+  "size": 124689,
+  "query": "change of pace dribble basketball"
+ },
+ "sk-two-ball": {
+  "videoId": "z1RRCS5FoIY",
+  "duration": 263,
+  "title": "50 Two Ball Dribbling Drills (Ranked By Difficulty)",
+  "start": 134,
+  "seen": "two ball dribbling drills",
+  "quality": 5,
+  "size": 165252,
+  "query": "two ball dribbling drills"
+ },
+ "sk-tight-combos": {
+  "videoId": "HkTZSryDcsQ",
+  "duration": 46,
+  "title": "Basketball PDS: CP3 Triangle Cone Drill",
+  "start": 14,
+  "seen": "tight space dribble combo drill",
+  "quality": 4,
+  "size": 166251,
+  "query": "tight space dribble combo drill"
+ },
+ "sk-feet-into-shot": {
+  "videoId": "0L9Cy8tsOsA",
+  "duration": 225,
+  "title": "Basketball Drills: Shooting Footwork Fundamentals with Coach Mason",
+  "start": 108,
+  "seen": "footwork into shot basketball drill",
+  "quality": 5,
+  "size": 159649,
+  "query": "footwork into shot basketball drill"
+ },
+ "sk-one-motion": {
+  "videoId": "kAnCZUixInM",
+  "duration": 113,
+  "title": "How to make your basketball shot ONE MOTION  |  NBA Shooting Coach Dave Love",
+  "start": 68,
+  "seen": "one motion jump shot drill",
+  "quality": 5,
+  "size": 313285,
+  "query": "one motion jump shot drill"
+ },
+ "sk-attack-foot": {
+  "videoId": "a2WkxUWgn3g",
+  "duration": 33,
+  "title": "Attacking the lead foot in Basketball",
+  "start": 10,
+  "seen": "attack the lead foot basketball",
+  "quality": 4,
+  "size": 120310,
+  "query": "attack the lead foot basketball"
+ },
+ "sk-hop-12": {
+  "videoId": "uxkg9NJfBFo",
+  "duration": 88,
+  "title": "1-2 Step vs. Hop Step Basketball Shooting Footwork drills",
+  "start": 10,
+  "seen": "hop vs 1-2 step shooting footwork",
+  "quality": 4,
+  "size": 143135,
+  "query": "hop vs 1-2 step shooting footwork"
+ },
+ "sk-fake-pullup": {
+  "videoId": "QpXqire064g",
+  "duration": 19,
+  "title": "Shot Fake one dribble pullups",
+  "start": 5,
+  "seen": "shot fake one dribble pull up",
+  "quality": 5,
+  "size": 192082,
+  "query": "shot fake one dribble pull up"
+ },
+ "sk-hang-pullup": {
+  "videoId": "JhzadfJfqCM",
+  "duration": 61,
+  "title": "Skill Breakdown - Changing Angles Dribble Pull-Up",
+  "start": 24,
+  "seen": "hang dribble pull up jumper",
+  "quality": 4,
+  "size": 143816,
+  "query": "hang dribble pull up jumper"
+ },
+ "sk-fadeaway": {
+  "videoId": "cEUk5E8deYU",
+  "duration": 316,
+  "title": "Michael Jordan teaches how to shoot fadeaway jumper   ",
+  "start": 287,
+  "seen": "fadeaway jump shot",
+  "quality": 5,
+  "size": 259695,
+  "rejected": [
+   "HPWTkYgKWAk",
+   "kuoJ_ipNS-8",
+   "eQsiRnbxLqs",
+   "xUgIS3dogGc"
+  ],
+  "query": "fadeaway jump shot tutorial"
+ },
+ "sk-5-spots": {
+  "videoId": "u-eeORGpMb0",
+  "duration": 181,
+  "title": "5 Spot Shooting Drill by Rob Senderoff",
+  "start": 124,
+  "seen": "5 spot shooting drill",
+  "quality": 4,
+  "size": 125242,
+  "query": "5 spot shooting drill"
+ },
+ "sk-pro-hop": {
+  "videoId": "c_f6DzgPX5M",
+  "duration": 45,
+  "title": "Basketball Move: The Pro Hop",
+  "start": 14,
+  "seen": "pro hop finish basketball",
+  "quality": 4,
+  "size": 157185,
+  "query": "pro hop finish basketball"
+ },
+ "sk-dry-shot": {
+  "videoId": "W1WHGs0IKDA",
+  "duration": 324,
+  "title": "5 Shooting Drills WITHOUT A HOOP! How To Shoot A Basketball Better",
+  "start": 151,
+  "seen": "form shooting without ball",
+  "quality": 5,
+  "size": 153660,
+  "query": "shooting form drill without hoop"
+ },
+ "sk-1min": {
+  "videoId": "6b1nN_rNi60",
+  "duration": 375,
+  "title": "One Minute Mid-Range Shooting Drill (Advanced Level): Goalrilla Basketball Academy Driveway Drills",
+  "start": 161,
+  "seen": "one minute shooting drill",
+  "quality": 4,
+  "size": 206198,
+  "query": "one minute shooting drill"
+ },
+ "sk-inside-hand": {
+  "videoId": "YMULe_eEsOQ",
+  "duration": 28,
+  "title": "Inside hand lay-up (power step)",
+  "start": 20,
+  "seen": "inside hand layup",
+  "quality": 4,
+  "size": 231801,
+  "rejected": [
+   "zY_8QwPk78A",
+   "jhS8JrDhDeI",
+   "K_PFw1LDKDA",
+   "PFZeeMgaXdE"
+  ],
+  "query": "inside hand layup tutorial"
+ },
+ "sk-reverse-pivot": {
+  "videoId": "U8J2-kwWl_g",
+  "duration": 61,
+  "title": "Basketball Manitoba Quick Hitter with coach Dan Becker - Reverse Pivot",
+  "start": 50,
+  "seen": "reverse pivot finish basketball",
+  "quality": 4,
+  "size": 131077,
+  "rejected": [
+   "_TXMmBizZs4",
+   "ZwwSktEl2zI",
+   "GczSTHwa0TY",
+   "hI1o51a5TCs"
+  ],
+  "query": "reverse pivot finish basketball"
+ },
+ "sk-up-under": {
+  "videoId": "VTBMVKD23QA",
+  "duration": 116,
+  "title": "How to Do an Up & Under | Basketball Moves",
+  "start": 73,
+  "seen": "up and under",
+  "quality": 5,
+  "size": 200696,
+  "rejected": [
+   "vEAZlN9XPnI",
+   "h-FP8ieKi7U",
+   "P2EQZk9DrbQ",
+   "8OJ2p1xdDts"
+  ],
+  "query": "up and under post move tutorial"
+ },
+ "sk-same-foot": {
+  "videoId": "KWnGBMiTMz0",
+  "duration": 73,
+  "title": "Jr. NBA at Home: Same Foot Same Hand Finishes",
+  "start": 42,
+  "seen": "same foot same hand layup",
+  "quality": 5,
+  "size": 210284,
+  "query": "same foot same hand layup"
+ },
+ "sk-euro-counter": {
+  "videoId": "BdTlYtPdiIg",
+  "duration": 61,
+  "title": "Euro Step Tutorial | Five-Star Basketball x Ten000 Hours",
+  "start": 12,
+  "seen": "euro step counter finish",
+  "quality": 4,
+  "size": 274487,
+  "query": "euro step counter finish"
+ },
+ "sk-floater-1": {
+  "videoId": "Pc89DY6_o1Y",
+  "duration": 12,
+  "title": "DRIVE Basketball Drills: Floater",
+  "start": 5,
+  "seen": "one foot floater drill",
+  "quality": 4,
+  "size": 140731,
+  "rejected": [
+   "Vyvju3tNL0o"
+  ],
+  "query": "one foot floater drill"
+ },
+ "sk-jab-series": {
+  "videoId": "q9PRy_gVlv8",
+  "duration": 17,
+  "title": "Triple Threat Step Through:Between the Legs Jab",
+  "start": 2,
+  "seen": "jab series triple threat",
+  "quality": 5,
+  "size": 247789,
+  "query": "jab series triple threat"
+ },
+ "sk-rip-cross": {
+  "videoId": "edQ_2ZuYE00",
+  "duration": 71,
+  "title": "Tough Rip Throughs to Cross Step",
+  "start": 47,
+  "seen": "rip through crossover step",
+  "quality": 5,
+  "size": 154866,
+  "query": "rip through crossover step"
+ },
+ "sk-pivot-shot": {
+  "videoId": "Gs_HgiCypAg",
+  "duration": 13,
+  "title": "Basketball Drill  Rip Thru Jump Shots - Shooting Drills Basketball Training Improve Shooting Skills",
+  "start": 6,
+  "seen": "pivot into jump shot drill",
+  "quality": 4,
+  "size": 94990,
+  "query": "pivot into jump shot drill"
+ },
+ "df-stance": {
+  "videoId": "4A6KqSJX8Ek",
+  "duration": 76,
+  "title": "Fundamentals of A Defensive Stance",
+  "start": 57,
+  "seen": "basketball defensive stance",
+  "quality": 4,
+  "size": 126789,
+  "query": "basketball defensive stance"
+ },
+ "df-slide": {
+  "videoId": "IjGJ_CF5hcA",
+  "duration": 14,
+  "title": "Defensive Slide Drill",
+  "start": 2,
+  "seen": "defensive slides basketball drill",
+  "quality": 4,
+  "size": 104438,
+  "query": "defensive slides basketball drill"
+ },
+ "df-closeout": {
+  "videoId": "aSvFDJcIzys",
+  "duration": 70,
+  "title": "Closeout, Slide, & Backpedal Drill",
+  "start": 35,
+  "seen": "closeout drill basketball",
+  "quality": 4,
+  "size": 191883,
+  "rejected": [
+   "7BHRx5-0IyE"
+  ],
+  "query": "closeout drill basketball"
+ },
+ "sk-face-up": {
+  "videoId": "LX5Kl0_Agj0",
+  "duration": 390,
+  "title": "3 Killer Face Up Post Moves: Basketball Post Moves for Big Men",
+  "start": 325,
+  "seen": "catch and face up basketball",
+  "quality": 5,
+  "size": 209528,
+  "query": "catch and face up basketball"
+ },
+ "df-slide-sprint": {
+  "videoId": "zj5ReqFvKEQ",
+  "duration": 83,
+  "title": "X Drill Close Out Defensive Slide Retreat Sprint",
+  "start": 47,
+  "seen": "slide and sprint defensive drill basketball",
+  "quality": 5,
+  "size": 160598,
+  "rejected": [
+   "IjGJ_CF5hcA",
+   "RLoyNAhmv8A",
+   "ftQDP8_V-ls",
+   "tRQIIPScMTc"
+  ],
+  "query": "slide and sprint defensive drill basketball"
+ },
+ "df-closeout-contest": {
+  "videoId": "EUh5awh8MYc",
+  "duration": 25,
+  "title": "Shooting Drill: 2-2 Closeout",
+  "start": 17,
+  "seen": "closeout contest shot basketball drill",
+  "quality": 4,
+  "size": 199804,
+  "rejected": [
+   "4C6PmJoueqY",
+   "yxR0y-F2lF4",
+   "gIFeKew26O0",
+   "YrDwmKgkpe8"
+  ],
+  "query": "closeout contest shot basketball drill",
+  "refused": true,
+  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+ },
+ "df-drop-step": {
+  "videoId": "q5z-WcLbCso",
+  "duration": 28,
+  "title": "Day 15 Basketball Defense: Hip Turn and Drop Step",
+  "start": 20,
+  "seen": "defensive drop step basketball",
+  "quality": 4,
+  "size": 193667,
+  "query": "defensive drop step basketball"
+ },
+ "df-help-recover": {
+  "rejected": [
+   "Eg5v5JlPp38",
+   "i7emuWrxovo",
+   "6uMo319duj4",
+   "0GQGsFtovNw",
+   "KJM9701zZaU",
+   "IHA67P2d-Xc",
+   "dFR5l4fZNa4"
+  ]
+ },
+ "df-mirror": {
+  "videoId": "Pb15pCX16H8",
+  "duration": 14,
+  "title": "Partner Mirror Drill",
+  "start": 0,
+  "seen": "mirror drill basketball defense",
+  "quality": 4,
+  "size": 212423,
+  "query": "mirror drill basketball defense"
+ },
+ "df-zigzag": {
+  "videoId": "xogqAGeRL78",
+  "duration": 8,
+  "title": "Defensive Stance Zig Zag Drill",
+  "start": 0,
+  "seen": "zig zag defensive drill",
+  "quality": 4,
+  "size": 133240,
+  "rejected": [
+   "P_VgJD3MJ9E"
+  ],
+  "query": "zig zag defensive drill"
+ },
+ "df-hands": {
+  "videoId": "unnsKiUcmdY",
+  "duration": 54,
+  "title": "DEFENSIVE DIG: How to use your Hands on Defense",
+  "start": 33,
+  "seen": "active hands defense drill",
+  "quality": 5,
+  "size": 208016,
+  "query": "active hands defense drill"
+ },
+ "mv-front-foot": {
+  "videoId": "a2WkxUWgn3g",
+  "duration": 33,
+  "title": "Attacking the lead foot in Basketball",
+  "start": 20,
+  "seen": "attack the lead foot of defender basketball",
+  "quality": 4,
+  "size": 141542,
+  "query": "attack the lead foot of defender basketball"
+ },
+ "df-deny": {
+  "videoId": "eAel4WD0_B4",
+  "duration": 53,
+  "title": "Defensive Drill: Wing denial drill",
+  "start": 10,
+  "seen": "denial defense drill basketball",
+  "quality": 5,
+  "size": 150638,
+  "rejected": [
+   "5Brye9S-Y9w",
+   "hx7-C8oWhHs",
+   "nXaMx8QFd6w",
+   "nN7M6ewFqJg"
+  ],
+  "query": "denial defense drill basketball"
+ },
+ "df-box-out": {
+  "videoId": "bhTAm_1UflA",
+  "duration": 260,
+  "title": "3-Second Box Out Drill",
+  "start": 120,
+  "seen": "box out drill basketball",
+  "quality": 5,
+  "size": 289641,
+  "rejected": [
+   "fscBc6hO8z0",
+   "5TLz4R3SJ_w",
+   "Sv_5k2tMcuU",
+   "b_w5mEYGQ3I"
+  ],
+  "query": "box out drill basketball",
+  "refused": true,
+  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+ },
+ "mv-hesi-read": {
+  "videoId": "3ZhWV4BjoeA",
+  "duration": 68,
+  "title": "HESITATION Behind the Back CROSSOVER Pull Ups | Brick Made Swishes",
+  "start": 0,
+  "seen": "hesitation pull up",
+  "quality": 5,
+  "size": 121709,
+  "query": "hesitation pull up or crossover read"
+ },
+ "mv-jab-cross": {
+  "videoId": "E--nOYk0_IE",
+  "duration": 71,
+  "title": "HOW TO: Dribble Jab and Counter | Basketball Guard Training Workout",
+  "start": 53,
+  "seen": "jab crossover move basketball",
+  "quality": 4,
+  "size": 187909,
+  "query": "jab crossover move basketball"
+ },
+ "mv-double-cross": {
+  "videoId": "S2iE3-3LFNY",
+  "duration": 116,
+  "title": "How to Double Crossover Dribble | Basketball",
+  "start": 56,
+  "seen": "double crossover basketball move",
+  "quality": 5,
+  "size": 178963,
+  "query": "double crossover basketball move"
+ },
+ "mv-spin-counter": {
+  "videoId": "qwJj2JFt-Uw",
+  "duration": 24,
+  "title": "High Post Moves Counter: Spin Move to Fadeaway Jumpshot | Carmelo Anthony Kobe Bryant | Dre Baldwin",
+  "start": 10,
+  "seen": "spin move counter basketball",
+  "quality": 4,
+  "size": 84026,
+  "query": "spin move counter basketball"
+ },
+ "mv-fake-sidestep": {
+  "videoId": "BIsu4PqSiWw",
+  "duration": 31,
+  "title": "Triple threat pump fake side step(attacking the front leg of the defender) plus other combinations",
+  "start": 1,
+  "seen": "pump fake side step three pointer",
+  "quality": 5,
+  "size": 142345,
+  "rejected": [
+   "kX6akamtA1s",
+   "6n0jBsajW_8",
+   "ORtgCBifbXE",
+   "EEgH8Wet7vg"
+  ],
+  "query": "pump fake side step three pointer"
+ },
+ "mv-btl-retreat": {
+  "videoId": "XBCFvIfJAeo",
+  "duration": 71,
+  "title": "Breaking the press, between the legs, retreat dribble",
+  "start": 2,
+  "seen": "between the legs retreat attack",
+  "quality": 4,
+  "size": 146834,
+  "query": "between the legs retreat attack"
+ },
+ "mv-in-out-cross": {
+  "videoId": "OQWe-Y4zwEg",
+  "duration": 132,
+  "title": "Fundamentals Of The In & Out Crossover",
+  "start": 61,
+  "seen": "in and out crossover",
+  "quality": 5,
+  "size": 185032,
+  "query": "in and out crossover move"
+ },
+ "mv-drive-read": {
+  "videoId": "Wm5Qdod4O8s",
+  "duration": 35,
+  "title": "Ashton Harrell | Ambition Training | Continuous Drive & Kick Action + Extra Pass Drill",
+  "start": 15,
+  "seen": "drive and kick read help defense drill",
+  "quality": 4,
+  "size": 182749,
+  "query": "drive and kick read help defense drill"
+ },
+ "mv-snatch-cross": {
+  "videoId": "Djf3Uq5SsJs",
+  "duration": 184,
+  "title": "In-n-Out Behind The Back Snatch Back Move Tutorial... Love this move! Tons of NBA players use this",
+  "start": 164,
+  "seen": "snatch back dribble move",
+  "quality": 5,
+  "size": 219749,
+  "query": "snatch back dribble move tutorial"
  }
 }

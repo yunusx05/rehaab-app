@@ -48,7 +48,7 @@ test('parcours avec bilan : point faible adapté à l’étape, bloc kiné, séc
   const early=BP.sessionPlan(PT,JP,data,BP.create(),'C');
   expect(early.exercises.find(e=>e.pathwayRole==='point faible').id).toMatch(/knee-drive-iso|psoas-march|a-march/);
   const late=BP.sessionPlan(PT,JP,data,{...BP.create(),step:4},'C');
-  expect(late.exercises.find(e=>e.pathwayRole==='point faible').id).toMatch(/band-resisted-start|drop-step-start|split-start|falling-start/);
+  expect(late.exercises.find(e=>e.pathwayRole==='point faible').id).toMatch(/sled-push|reaction-start|hip-open-start|band-resisted-start|mb-sprint-start|drop-step-start|split-start|falling-start/);
   const kine=BP.sessionPlan(PT,JP,data,BP.create(),'A');
   expect(kine.exercises[0].pathwayRole).toBe('kiné');
   expect(kine.exercises.filter(e=>e.pathwayRole==='kiné').map(e=>e.id)).toContain('ankle-mob');
@@ -114,14 +114,17 @@ test('bilan dans l’app : répondre, passer les tests, lancer le parcours',asyn
   expect(errors).toEqual([]);
 });
 
-test('illustrations des exercices du bilan : deux positions présentes et précachées',()=>{
+// Lot 13 : les images générées par IA ont été retirées ; chaque exercice du bilan a une démo prise sur le web, précachée.
+test('illustrations des exercices du bilan : démo web présente et précachée',()=>{
   const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),root=path.join(__dirname,'..');
   const sandbox={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'exercise-media.js'),'utf8'),sandbox);
   const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
   const ids=['a-march','a-skip','knee-drive-iso','psoas-march','falling-start','split-start','drop-step-start','band-resisted-start','vertical-jump','snap-down','drop-jump','single-pogo','approach-jump','single-leg-vertical','db-jump','lateral-decel','slant-squat','reverse-nordic','couch-stretch','active-slr'];
-  for(const id of ids){
+  // Une démo refusée à la relecture (personne non vérifiable) laisse l’exercice sur son icône et ses consignes.
+  expect(ids.filter(id=>sandbox.window.RehaabMedia[id]?.video).length).toBeGreaterThanOrEqual(ids.length-2);
+  for(const id of ids.filter(id=>sandbox.window.RehaabMedia[id]?.video)){
     const m=sandbox.window.RehaabMedia[id];
-    expect(m&&m.generated,id).toBeTruthy();
-    for(const f of [m.card,`media/${m.frames}/0.webp`,`media/${m.frames}/1.webp`]){expect(fs.existsSync(path.join(root,f)),f).toBe(true);expect(sw.includes(`./${f}`),f).toBe(true);}
+    expect(m.generated,id).toBeUndefined();
+    for(const f of [m.video,m.poster]){expect(fs.existsSync(path.join(root,f)),f).toBe(true);expect(sw.includes(`./${f}`),f).toBe(true);}
   }
 });

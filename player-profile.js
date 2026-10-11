@@ -46,7 +46,8 @@
     core:['plank','deadbug','hollow-hold','bird-dog','bear-hold','plank-reach','pallof','side-plank'],
     endurance:['bike-interval','rower-interval','skater','run-interval','stepjack','wall-sit']
   };
-  const qualitiesOf = id => Object.keys(tags).filter(q => tags[q].includes(id));
+  // Les fiches du lot 13 portent leurs qualités (e.qualities) ; les anciennes passent par la table tags.
+  const qualitiesOf = e => {const id=typeof e==='string'?e:e.id,own=e&&Array.isArray(e.qualities)?e.qualities:[];return [...new Set(Object.keys(tags).filter(q => tags[q].includes(id)).concat(own))];};
 
   // Charge sur le genou : low = toléré même douloureux, moderate = seulement si gêne légère, high = écarté.
   const kneeHigh = ['reverse-nordic','couch-stretch','bulgarian','db-bulgarian','cossack','curtsy-lunge','assisted-pistol','walking-lunge','legextension','nordic-assisted','deep-squat-hold','pigeon','bb-squat','front-squat','lateral-lunge','decel-stick'];
@@ -60,6 +61,8 @@
   const hipModerate = ['lateral-shuffle','defensive-slide','backpedal','jog-court','slider-ham-curl','slider-reverse-lunge','vest-split-squat','vest-step-up','vest-march','knee-drive-iso','active-slr','slant-squat','reverse-nordic','a-march','copenhagen','kb-swing','legpress','legpress-single','goblet','goblet-db','db-squat','kb-front-squat','box-squat','split-squat','reverse-lunge','db-lunge','step-up','db-step-up','step-down','iso-split','rdl','kb-rdl','bb-rdl','kb-deadlift','single-rdl','db-single-rdl','band-hinge','back-extension','side-plank-lift','bear-crawl','reverse-crunch','cable-crunch','single-leg-reach','monster-walk','wall-sit','spanish-squat','band-squat','squat','legcurl','legextension','hamstring','downdog','quad-rotation'];
   const hipLow = ['curl-up','ankle-alphabet','heel-drop-ecc','vest-calf','foot-doming','adductor-squeeze','bridge','single-bridge','hip-thrust','db-hip-thrust','bb-hip-thrust','glute-kickback','clamshell','hip-abduction','bike','march','walk','deadbug','plank','side-plank','side-plank-full','bird-dog','bear-hold','pallof','pallof-cable','hollow-hold','plank-shoulder-tap','plank-reach','carry','suitcase-carry','overhead-carry','single-leg-stand','single-leg-eyes','tandem-stand','heel-toe-walk','cat','childs-pose','thoracic','shadow-box','gun-legs','gun-quads','gun-hamstrings','gun-glutes','gun-adductors','gun-calves','gun-shins'];
   function load(e,region) {
+    // Charge déclarée sur la fiche (lot 13) : prioritaire sur les tables, sauf pour un exercice à impacts, toujours « high » sur la zone.
+    if(e.load&&e.load[region]) return e.impact&&['knee','ankle','hip'].includes(region)?'high':e.load[region];
     if(region==='hip') {
       if(hipLow.includes(e.id)) return 'low';
       if(hipHigh.includes(e.id) || e.impact || e.pattern==='jump') return 'high';
@@ -119,7 +122,7 @@
   }
   function bonus(e,player,athletic) {
     const weights=Object.fromEntries(priorities(player,athletic).map(p=>[p.id,p.weight]));
-    return qualitiesOf(e.id).reduce((n,q)=>n+(weights[q]||0),0);
+    return qualitiesOf(e).reduce((n,q)=>n+(weights[q]||0),0);
   }
   function rehabBlock(pains,available,count=2) {
     const out=[];
@@ -207,5 +210,5 @@
     };
   }
 
-  return {positions,archetypes,qualityLabels,tags,load,tolerates,goals,priorities,bonus,rehabBlock,dailyBody,qiThemes,validatePlayer};
+  return {positions,archetypes,qualityLabels,tags,qualitiesOf,load,tolerates,goals,priorities,bonus,rehabBlock,dailyBody,qiThemes,validatePlayer};
 });

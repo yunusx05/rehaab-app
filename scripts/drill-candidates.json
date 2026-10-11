@@ -1,0 +1,6946 @@
+{
+ "videos": {
+  "4vd8wHcvqgk": {
+   "videoId": "4vd8wHcvqgk",
+   "duration": 938,
+   "channel": "PJF Performance",
+   "title": "Full 15 Minute Hip Mobility and Strengthening Workout for Athletes (With NBA Trainer Paul Fabritz)",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Étirement complet en fente",
+     "category": "mobility",
+     "purpose": "Améliorer la mobilité en extension de hanche et relâcher les fléchisseurs de hanche.",
+     "equipment": [
+      "élastique",
+      "bâton de mobilité"
+     ],
+     "cues": [
+      "Conserver une tension constante dans l'élastique",
+      "Contracter le fessier arrière",
+      "Ajouter une extension des bras vers le haut"
+     ],
+     "dosage": "1 série x 1 min de chaque côté",
+     "start": 55,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Étirement du canapé",
+     "category": "mobility",
+     "purpose": "Étirer en profondeur les quadriceps et le droit fémo-ral en position à genoux.",
+     "equipment": [
+      "élastique",
+      "tapis"
+     ],
+     "cues": [
+      "Garder le buste droit et relevé",
+      "Ramener le talon vers la fesse",
+      "Orienter le genou légèrement vers l'intérieur"
+     ],
+     "dosage": "1 série x 1 min de chaque côté",
+     "start": 134,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Extension de hanche · élastique",
+     "category": "mobility",
+     "purpose": "Renforcer l'extension active de la hanche sous résistance élastique.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Conserver un léger fléchissement du genou",
+      "Engager le fessier en fin de mouvement",
+      "Maintenir la poussée sur le grand orteil"
+     ],
+     "dosage": "1 série x 1 min",
+     "start": 225,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Posture du pigeon",
+     "category": "mobility",
+     "purpose": "Libérer la rotation externe et la capsule postérieure de la hanche.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Laisser l'élastique tracter le fémur vers l'arrière",
+      "Aligner le bassin parallèlement au sol",
+      "S'abaisser progressivement sur les avant-bras"
+     ],
+     "dosage": "1 série x 1 min de chaque côté",
+     "start": 398,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Équilibre avec touche au sol",
+     "category": "mobility",
+     "purpose": "Développer le contrôle en rotation et la stabilité de la hanche sur une jambe.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Maintenir le genou d'appui légèrement fléchi",
+      "Toucher le sol à gauche, au centre, puis à droite",
+      "Pivoter à partir de la hanche sans arrondir le dos"
+     ],
+     "dosage": "1 série x 4 répétitions",
+     "start": 503,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Balance de l'avion",
+     "category": "mobility",
+     "purpose": "Travailler la rotation interne et externe active de la hanche en charge unipodale.",
+     "equipment": [
+      "élastique",
+      "bâton de mobilité"
+     ],
+     "cues": [
+      "Maximiser la rotation interne puis la rotation externe",
+      "S'aider du bâton pour garder l'équilibre",
+      "Contrôler la descente et la montée du bassin"
+     ],
+     "dosage": "1 série x 8 répétitions de chaque côté",
+     "start": 615,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "wH8uL5hTQz4": {
+   "videoId": "wH8uL5hTQz4",
+   "duration": 886,
+   "channel": "PJF Performance",
+   "title": "Top 4 Change of Direction Drills to Build Explosiveness ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Freinage latéral",
+     "category": "deceleration",
+     "purpose": "Améliorer le freinage et le changement de direction latéral avec résistance élastique.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Charger la hanche extérieure",
+      "Pousser fort dans le sol",
+      "Pivoter le buste en contrôle"
+     ],
+     "dosage": "2-3 sets de 8-12 secondes",
+     "start": 149,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage en trois appuis",
+     "category": "deceleration",
+     "purpose": "Renforcer la capacité de décélération linéaire et la reprise d'appui rapide.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Reste bas à la réception",
+      "Contrôler la flexion du genou",
+      "Inverser l'effort rapidement"
+     ],
+     "dosage": "2-3 sets de 6-12 répétitions",
+     "start": 370,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe, réception tenue",
+     "category": "deceleration",
+     "purpose": "Développer la stabilité unipodale et la résistance aux forces de freinage avant.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Rebondir vers l'avant sur un pied",
+      "Stabiliser une seconde en bas",
+      "Garder le buste incliné en contrôle"
+     ],
+     "dosage": "2-3 sets de 8-12 secondes",
+     "start": 520,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Départ en pas de retrait (drop step)",
+     "category": "first-step",
+     "purpose": "Travailler la réactivité du premier pas lors des transitions arrière-avant.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Ouvrir la hanche et orienter le pied",
+      "Conserver un appui plein pied",
+      "Pousser de manière explosive"
+     ],
+     "dosage": "2-3 sets",
+     "start": 696,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "rp-fnzx5lr8": {
+   "videoId": "rp-fnzx5lr8",
+   "duration": 478,
+   "channel": "PJF Performance",
+   "title": "Anyone Can Jump 40+ Inches (If You Do THESE 5 Things)",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Squat · barre",
+     "category": "strength",
+     "purpose": "Développer la force maximale des jambes pour augmenter l'explosivité.",
+     "equipment": [
+      "barre",
+      "poids"
+     ],
+     "cues": [
+      "Garder le dos droit",
+      "Descendre jusqu'à la parallèle",
+      "Pousser fort dans le sol"
+     ],
+     "dosage": "",
+     "start": 247,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Renforcer la réactivité des chevilles et la raideur tendineuse.",
+     "equipment": [],
+     "cues": [
+      "Garder le buste droit",
+      "Rebondir rapidement au sol",
+      "Engager les chevilles"
+     ],
+     "dosage": "",
+     "start": 250,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Accélérations 10 m",
+     "category": "first-step",
+     "purpose": "Développer la vitesse d'accélération et l'explosivité du premier pas.",
+     "equipment": [],
+     "cues": [
+      "Pousser fort dans le sol",
+      "Garder le buste incliné vers l'avant",
+      "Mener les genoux haut"
+     ],
+     "dosage": "",
+     "start": 256,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Combo crossover, entre les jambes, dans le dos",
+     "category": "ball-handling",
+     "purpose": "Enchaîner différents changements de main pour déséquilibrer la défense.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Fléchir les appuis",
+      "Changer de rythme rapidement",
+      "Garder le regard haut"
+     ],
+     "dosage": "",
+     "start": 390,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut avec élan, deux pieds",
+     "category": "vertical-two-feet",
+     "purpose": "Travailler la détente verticale maximale à deux pieds avec prise d'élan.",
+     "equipment": [],
+     "cues": [
+      "Accélérer sur les derniers pas",
+      "Planter un blocage solide",
+      "Propulser les bras vers le haut"
+     ],
+     "dosage": "",
+     "start": 408,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pas latéraux · élastique",
+     "category": "strength",
+     "purpose": "Renforcer les abducteurs de hanche et améliorer la stabilité du genou.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Maintenir la tension dans l'élastique",
+      "Pousser avec les talons",
+      "Garder les genoux alignés"
+     ],
+     "dosage": "",
+     "start": 416,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "x16yNOwZ7ZQ": {
+   "videoId": "x16yNOwZ7ZQ",
+   "duration": 128,
+   "channel": "Pure Sweat Basketball",
+   "title": "Kelly Oubre OFFICIAL NBA Draft Workout Mixtape",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "9phaoe_pQVs": {
+   "videoId": "9phaoe_pQVs",
+   "duration": 64,
+   "channel": "Pure Sweat Basketball",
+   "title": "Zach LaVine Can Dunk ANYTHING! | Insane Football Dunks",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "aHmEOnVLf0I": {
+   "videoId": "aHmEOnVLf0I",
+   "duration": 187,
+   "channel": "Pure Sweat Basketball",
+   "title": "Andrew Wiggins Official NBA Draft Workout Mixtape",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "zWaeGbPv0t0": {
+   "videoId": "zWaeGbPv0t0",
+   "duration": 157,
+   "channel": "Pure Sweat Basketball",
+   "title": "Zach LaVine Official NBA Pre-Draft Workout Mixtape & Insane Dunks",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "eXkVuEkmvgA": {
+   "videoId": "eXkVuEkmvgA",
+   "duration": 515,
+   "channel": "Pure Sweat Basketball",
+   "title": "Bradley Beal Workout & Highlights: Pure Sweat Basketball",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Finition au contact",
+     "category": "finishing",
+     "purpose": "Improve finishing at the rim through contact from a defender or pad.",
+     "equipment": [
+      "basketball",
+      "contact pad"
+     ],
+     "cues": [
+      "Stay strong through contact",
+      "Keep eyes on the rim"
+     ],
+     "dosage": "",
+     "start": 15,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pull-up après un dribble",
+     "category": "shooting",
+     "purpose": "Develop the ability to pull up and shoot fluidly off the dribble.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Rise up balanced",
+      "Follow through high"
+     ],
+     "dosage": "",
+     "start": 26,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dribble sous pression",
+     "category": "ball-handling",
+     "purpose": "Enhance ball control and decision-making when closely guarded.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Protect the ball with body",
+      "Keep head up"
+     ],
+     "dosage": "",
+     "start": 85,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Catch & shoot mi-distance",
+     "category": "shooting",
+     "purpose": "Improve catch-and-shoot accuracy from mid-range distance.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Be shot ready",
+      "Quick release"
+     ],
+     "dosage": "",
+     "start": 140,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "S2g6XxJoHBo": {
+   "videoId": "S2g6XxJoHBo",
+   "duration": 418,
+   "channel": "Overtime Athletes",
+   "title": "Youth Athlete Strength Session",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Chat / vache",
+     "category": "mobility",
+     "purpose": "Improves spinal mobility and trunk control for better athletic posture.",
+     "equipment": [],
+     "cues": [
+      "Hands under shoulders and knees under hips",
+      "Round back and tuck chin",
+      "Arch back and look up smoothly"
+     ],
+     "dosage": "10 reps",
+     "start": 12,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rotation thoracique à quatre pattes",
+     "category": "mobility",
+     "purpose": "Enhances thoracic spine rotation required for rotation and fluid movement.",
+     "equipment": [],
+     "cues": [
+      "Slow and controlled rotation",
+      "Bring shoulder toward the ground",
+      "Rotate up and follow with eyes"
+     ],
+     "dosage": "5 reps on each side",
+     "start": 28,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Développé couché · haltères",
+     "category": "strength",
+     "purpose": "Builds upper body pressing strength and shoulder stability.",
+     "equipment": [
+      "bench",
+      "dumbbells"
+     ],
+     "cues": [
+      "Feet set firmly under hips",
+      "Hold 2 seconds at the bottom pause",
+      "Press up explosively"
+     ],
+     "dosage": "4 sets of 5 reps",
+     "start": 43,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Face pull · élastique",
+     "category": "strength",
+     "purpose": "Strengthens upper back, rear delts, and improves posture.",
+     "equipment": [
+      "elastic_band"
+     ],
+     "cues": [
+      "Pull band toward nose",
+      "Keep elbows elevated",
+      "Squeeze shoulder blades together"
+     ],
+     "dosage": "8 reps",
+     "start": 129,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Leg curl allongé",
+     "category": "strength",
+     "purpose": "Strengthens hamstrings through knee flexion resistance.",
+     "equipment": [
+      "bench",
+      "elastic_band"
+     ],
+     "cues": [
+      "Place band around ankle bones",
+      "Hold bench behind for support",
+      "Pull knees in and extend legs fully"
+     ],
+     "dosage": "8 reps",
+     "start": 244,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Montée sur banc · haltères",
+     "category": "strength",
+     "purpose": "Builds single-leg strength, hip drive, and balance.",
+     "equipment": [
+      "box",
+      "dumbbells"
+     ],
+     "cues": [
+      "Keep whole foot planted on the box",
+      "Drive opposite knee up to 90 degrees",
+      "Hold top position under control"
+     ],
+     "dosage": "3 rounds of 6 reps each leg",
+     "start": 306,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Portée valise",
+     "category": "strength",
+     "purpose": "Enhances lateral core stability and single-leg balance while marching.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Hold weight off the body",
+      "Avoid side-to-side leaning",
+      "March slowly with knees up to 90 degrees"
+     ],
+     "dosage": "10 reps per side",
+     "start": 270,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pallof press · élastique",
+     "category": "strength",
+     "purpose": "Develops anti-rotation and rotational trunk power.",
+     "equipment": [
+      "elastic_band"
+     ],
+     "cues": [
+      "Keep arms straight in front",
+      "Rotate upper body while lower body stays rigid",
+      "Control band return"
+     ],
+     "dosage": "2 rounds of 10 reps each direction",
+     "start": 310,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "UHrT1sOCYTI": {
+   "videoId": "UHrT1sOCYTI",
+   "duration": 376,
+   "channel": "Overtime Athletes",
+   "title": "Should Athletes Train Speed In Season?",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "oUCxfOkR4N8": {
+   "videoId": "oUCxfOkR4N8",
+   "duration": 311,
+   "channel": "Overtime Athletes",
+   "title": "Inside a Youth Athlete Agility Training Session",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Passages shin box",
+     "category": "mobility",
+     "purpose": "Améliore la mobilité interne et externe des hanches pour favoriser des changements de direction fluides.",
+     "equipment": [],
+     "cues": [
+      "Garder les genoux écartés",
+      "Pencher le buste sur la jambe avant",
+      "Pivoter d'un côté à l'autre avec contrôle"
+     ],
+     "dosage": "5 de chaque côté",
+     "start": 42,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Développe la rigidité de la cheville et la réactivité lors des appuis au sol.",
+     "equipment": [],
+     "cues": [
+      "Temps de contact au sol très court",
+      "Rester bien grand et gainer le buste",
+      "Utiliser l'élan des bras"
+     ],
+     "dosage": "",
+     "start": 100,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Skip A",
+     "category": "footwork",
+     "purpose": "Perfectionne la fréquence d'appuis et la puissance verticale de poussée.",
+     "equipment": [],
+     "cues": [
+      "Pousser vers le haut et non vers l'avant",
+      "Garder la tête et le regard levés",
+      "Prendre son temps sur chaque répétition"
+     ],
+     "dosage": "",
+     "start": 145,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bond latéral stabilisé",
+     "category": "deceleration",
+     "purpose": "Renforce la puissance d'impulsion latérale et la capacité à stopper ses appuis sur une jambe.",
+     "equipment": [],
+     "cues": [
+      "Charger la hanche et le genou d'appui",
+      "Pousser fort vers l'extérieur",
+      "Stabiliser la réception avant de réarmer"
+     ],
+     "dosage": "10 yards",
+     "start": 224,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage latéral",
+     "category": "deceleration",
+     "purpose": "Optimise le transfert entre le travail d'appuis latéraux et l'accélération en sprint avant.",
+     "equipment": [
+      "haies basse"
+     ],
+     "cues": [
+      "Passer par-dessus les haies de profil",
+      "Enchaîner immédiatement en sprint explosif",
+      "Sprinter jusqu'au cône repère"
+     ],
+     "dosage": "2 séries",
+     "start": 429,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "2uDihY7Hang": {
+   "videoId": "2uDihY7Hang",
+   "duration": 60,
+   "channel": "Pro Skills Basketball",
+   "title": "PSB Drills 2 Hand Form",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Tir de forme près du cercle",
+     "category": "shooting",
+     "purpose": "Améliorer la mécanique et le geste de tir à deux mains près du cercle.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Main guide sur le côté",
+      "Coude sous le ballon",
+      "Finition avec les doigts vers le cercle"
+     ],
+     "dosage": "",
+     "start": 15,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "IVILMnmU5yQ": {
+   "videoId": "IVILMnmU5yQ",
+   "duration": 368,
+   "channel": "Overtime Athletes",
+   "title": "How to Maintain Strength In Season",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "tCtOz-AXZrQ": {
+   "videoId": "tCtOz-AXZrQ",
+   "duration": 234,
+   "channel": "ShotMechanics",
+   "title": "Jumper Hack: How to INSTANTLY Make More Shots Doing THIS  ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Spin Drag Jump Shot",
+     "category": "shooting",
+     "purpose": "Improves deceleration and shooting balance off lateral movement by using a foot drag.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Spin ball out laterally",
+      "Push off inside foot",
+      "Drag trailing foot into jumper"
+     ],
+     "dosage": "",
+     "start": 118,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pull-Back Drag Jumper",
+     "category": "shooting",
+     "purpose": "Enhances deceleration and balance when creating separation with a pull-back dribble jumper.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Dribble downhill",
+      "Drag back leg on pull-back dribble",
+      "Rise into jumper balanced"
+     ],
+     "dosage": "",
+     "start": 148,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "gElBtcfpKlE": {
+   "videoId": "gElBtcfpKlE",
+   "duration": 310,
+   "channel": "ShotMechanics",
+   "title": "3 Crafty MUST HAVE Elite Basketball Finishing Moves ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Finition au contact",
+     "category": "finishing",
+     "purpose": "Initiate shoulder contact with the defender on the drive to create separation and protect the ball.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Initiate contact first",
+      "Bring ball up and away",
+      "Fade off the defender"
+     ],
+     "dosage": "",
+     "start": 25,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Euro-step",
+     "category": "finishing",
+     "purpose": "Step laterally around a closing defender while maintaining balance to launch a runner finish.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Keep first step loaded",
+      "Control weight over knee",
+      "Soft touch on release"
+     ],
+     "dosage": "",
+     "start": 130,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Floater",
+     "category": "finishing",
+     "purpose": "Use deliberate deceleration during the gather steps to throw off trailing defenders.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Control the second step",
+      "Freeze the defender",
+      "High arc release"
+     ],
+     "dosage": "",
+     "start": 211,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "gP_wFMTp894": {
+   "videoId": "gP_wFMTp894",
+   "duration": 264,
+   "channel": "ShotMechanics",
+   "title": "3 BIZARRE Shooting Form Hacks for INSTANT Results ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Tir de forme près du cercle",
+     "category": "shooting",
+     "purpose": "Improve shooting fluidity and set point alignment using a handshake grip technique.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Face palms together initially",
+      "Rotate wrist smoothly as ball rises",
+      "Keep guide hand soft"
+     ],
+     "dosage": "",
+     "start": 26,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tir de forme près du cercle",
+     "category": "shooting",
+     "purpose": "Sync hip dip with ball dip to build explosive energy and timing in the jumper.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Tap ball to thigh",
+      "Load hips simultaneously",
+      "Explode up into shot"
+     ],
+     "dosage": "",
+     "start": 151,
+     "male_demonstrator": true,
+     "duplicate_of": "Tir de forme près du cercle"
+    },
+    {
+     "name": "Tir de forme près du cercle",
+     "category": "shooting",
+     "purpose": "Align shooting elbow directly with hip to prevent lateral shot-line drift.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Tap elbow to hip",
+      "Keep ball close to body",
+      "Fire straight up to release"
+     ],
+     "dosage": "",
+     "start": 247,
+     "male_demonstrator": true,
+     "duplicate_of": "Tir de forme près du cercle"
+    }
+   ]
+  },
+  "LHaRST1wK7g": {
+   "videoId": "LHaRST1wK7g",
+   "duration": 554,
+   "channel": "ShotMechanics",
+   "title": "STUPID Shooting Mistakes | Basketball Shooting Tutorial ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "on3Nd0BQGbU": {
+   "videoId": "on3Nd0BQGbU",
+   "duration": 331,
+   "channel": "ShotMechanics",
+   "title": "Damian Lillard has \"BAD\" Shooting Mechanics ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Tir de forme près du cercle",
+     "category": "shooting",
+     "purpose": "Travailler les mécaniques fondamentales du tir comme le chargement bas et le placement de la main sur le ballon.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Armer le ballon au niveau des hanches",
+      "Monter de façon fluide sans pause",
+      "Garder la paume en contact avec le ballon"
+     ],
+     "dosage": "",
+     "start": 34,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Catch & shoot mi-distance",
+     "category": "shooting",
+     "purpose": "Améliorer l'alignement du corps et l'orientation des pieds à la réception pour un tir plus fluide.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Incliner légèrement les pieds",
+      "Armer dès l'attrapé",
+      "Conserver un alignement naturel de l'épaule"
+     ],
+     "dosage": "",
+     "start": 150,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "Jgvjvt4FqRE": {
+   "videoId": "Jgvjvt4FqRE",
+   "duration": 461,
+   "channel": "ShotMechanics",
+   "title": "Kyrie�s Handle Secrets REVEALED | Dribble Like Kyrie NOW ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "dfbIAOXDPFk": {
+   "videoId": "dfbIAOXDPFk",
+   "duration": 417,
+   "channel": "ShotMechanics",
+   "title": "How to Shoot a Basketball | The Beginners Guide to ELITE Shooting ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Catch & shoot mi-distance",
+     "category": "shooting",
+     "purpose": "Améliorer la mécanique de tir et l'efficacité à mi-distance.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Pieds légèrement inclinés",
+      "Charger le ballon et les articulations",
+      "Finition du coude au-dessus des yeux"
+     ],
+     "dosage": "",
+     "start": 117,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "7PeXI6RLzQc": {
+   "videoId": "7PeXI6RLzQc",
+   "duration": 267,
+   "channel": "ShotMechanics",
+   "title": "3 BIG Secrets to Break Ankles EASILY  INSANELY Simple ",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Pull-up après un dribble",
+     "category": "shooting",
+     "purpose": "Improve creating separation off setup fakes and pull-up jump shot execution.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Sell the pass fake",
+      "Explode through crossover",
+      "Rise up on balance"
+     ],
+     "dosage": "",
+     "start": 95,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Jab step et attaque",
+     "category": "counter-moves",
+     "purpose": "Deceive the defender using quick triple threat setup fakes prior to driving.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Pump or jab first",
+      "Keep low stance",
+      "React to defender shift"
+     ],
+     "dosage": "",
+     "start": 117,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Hésitation puis crossover",
+     "category": "ball-handling",
+     "purpose": "Use eye fakes and ball hesitations to displace defenders before crossing over.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Sell with your eyes",
+      "Hang the ball",
+      "Quick change of direction"
+     ],
+     "dosage": "",
+     "start": 148,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "7GHwbnJibdk": {
+   "videoId": "7GHwbnJibdk",
+   "duration": 274,
+   "channel": "ShotMechanics",
+   "title": " WARNING: Avoid this Basketball Shooting Posture it will RUIN Your Shot",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Pull-up après un dribble",
+     "category": "shooting",
+     "purpose": "Développer un tir en suspension fluide et puissant après un dribble en engageant correctement les hanches.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Ballon bas et poitrine inclinée",
+      "Hanches chargées",
+      "Yeux rivés sur le cercle"
+     ],
+     "dosage": "",
+     "start": 126,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "gtXoehJVkak": {
+   "videoId": "gtXoehJVkak",
+   "duration": 250,
+   "channel": "Get Handles",
+   "title": "This Is RUINING Your Handle",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Lay-ups des deux mains",
+     "category": "finishing",
+     "purpose": "Améliorer la finition au panier après une pénétration en dribble.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Attaquer le cercle avec agressivité",
+      "Garder le contrôle du ballon",
+      "Frapper la planche avec précision"
+     ],
+     "dosage": "",
+     "start": 40,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pull-up après un dribble",
+     "category": "shooting",
+     "purpose": "Développer la capacité à créer de l'espace et enchaîner un tir rapide.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Créer de la séparation avec le défenseur",
+      "Fixer ses appuis en équilibre",
+      "Armer le tir rapidement"
+     ],
+     "dosage": "",
+     "start": 57,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Combo crossover, entre les jambes, dans le dos",
+     "category": "ball-handling",
+     "purpose": "Maîtriser l'enchaînement de variations de dribble selon la distance avec le défenseur.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Protéger le ballon avec les jambes ou le corps",
+      "Changer de rythme à chaque mouvement",
+      "Adapter le geste à la distance du défenseur"
+     ],
+     "dosage": "",
+     "start": 140,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Spin move en sortie",
+     "category": "counter-moves",
+     "purpose": "Utiliser une rotation du corps pour contourner un défenseur agressif au contact.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Tourner sur le pied d'appui",
+      "Protéger la balle derrière le corps",
+      "Relancer l'accélération après le pivot"
+     ],
+     "dosage": "",
+     "start": 148,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dribbles bas et rapides",
+     "category": "ball-handling",
+     "purpose": "Développer le contrôle du ballon et la vitesse de réaction des mains lors de l'apprentissage de nouveaux gestes.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Garder le ballon près du sol",
+      "Regarder la balle pour ajuster la trajectoire si nécessaire",
+      "Relever les yeux dès que le mouvement est maîtrisé"
+     ],
+     "dosage": "",
+     "start": 338,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "n1T4RAWua78": {
+   "videoId": "n1T4RAWua78",
+   "duration": 689,
+   "channel": "Get Handles",
+   "title": "How To Dribble A Basketball For Beginners",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Crossovers sur place",
+     "category": "ball-handling",
+     "purpose": "Améliorer le contrôle du ballon et la rapidité des changements de main sur place.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Garder une posture basse",
+      "Mains basses à la réception",
+      "Faire claquer le poignet"
+     ],
+     "dosage": "",
+     "start": 0,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dribbles appuyés, une main",
+     "category": "ball-handling",
+     "purpose": "Développer le contrôle et la puissance du dribble à une main en position fléchie.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Fléchir les genoux et les hanches",
+      "Rester bas",
+      "Accompagner le ballon vers le bas"
+     ],
+     "dosage": "",
+     "start": 34,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Main faible en déplacement",
+     "category": "ball-handling",
+     "purpose": "Apprendre à dribbler efficacement et à contrôler le ballon tout en courant.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Pousser le ballon vers l'avant",
+      "Orienter la paume derrière la balle",
+      "Dribbler sur le côté du corps"
+     ],
+     "dosage": "",
+     "start": 384,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Hésitation puis crossover",
+     "category": "counter-moves",
+     "purpose": "Créer un décalage en feintant un départ avant d'enchaîner avec un crossover.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Ancrer le pied côté ballon",
+      "Changer le rythme",
+      "Accélérer après le changement de main"
+     ],
+     "dosage": "",
+     "start": 500,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Jab step et attaque",
+     "category": "counter-moves",
+     "purpose": "Déstabiliser le défenseur avec un pas de feinte avant d'attaquer le cercle.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Feinter avec le pied",
+      "Garder les appuis solides",
+      "Exploser vers l'avant"
+     ],
+     "dosage": "",
+     "start": 533,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rip-through et attaque",
+     "category": "counter-moves",
+     "purpose": "Protéger le ballon avec le corps et dépasser le défenseur avec un pas croisé.",
+     "equipment": [
+      "basketball",
+      "chair"
+     ],
+     "cues": [
+      "Engager le pied opposé en pas croisé",
+      "Protéger le ballon avec l'épaule",
+      "Garder une trajectoire directe"
+     ],
+     "dosage": "",
+     "start": 560,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "gtImFoRoPQI": {
+   "videoId": "gtImFoRoPQI",
+   "duration": 1167,
+   "channel": "Get Handles",
+   "title": "How To Finish Layups In Traffic",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Lay-ups des deux mains",
+     "category": "finishing",
+     "purpose": "Attaquer les espaces libres pour finir au panier malgré la présence de défenseurs.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "Repérer les intervalles libres",
+      "Réduire sa largeur corporelle",
+      "Finir fort près du cercle"
+     ],
+     "dosage": "",
+     "start": 0,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Finition au contact",
+     "category": "finishing",
+     "purpose": "Initier le contact avec le défenseur pour créer de la séparation et absorber le choc.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "S'engager vers l'épaule du défenseur",
+      "Absorber l'impact sur le dernier pas",
+      "Sauter à l'opposé pour lâcher le ballon"
+     ],
+     "dosage": "",
+     "start": 403,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Floater",
+     "category": "finishing",
+     "purpose": "Armer un tir court à trajectoire haute avant d'arriver au niveau des contreurs.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "S'arrêter court devant la défense",
+      "Lâcher de balle rapide et haut",
+      "Finition fluide sur un ou deux pieds"
+     ],
+     "dosage": "",
+     "start": 556,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Feinte de tir et drive",
+     "category": "counter-moves",
+     "purpose": "Déséquilibrer la défense avec une feinte de tir ou de passe pour attaquer l'espace créé.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "Engager le regard et le ballon sur la feinte",
+      "Attendre la réaction du défenseur",
+      "Réguler son appui pour repartir au panier"
+     ],
+     "dosage": "",
+     "start": 691,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse lay-up",
+     "category": "finishing",
+     "purpose": "Utiliser la planche et le cercle pour se protéger des contres sous le panier.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "Régler l'impulsion sous l'anneau",
+      "Mettre de l'effet sous le ballon",
+      "Allonger le bras vers la planche"
+     ],
+     "dosage": "",
+     "start": 810,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Euro-step",
+     "category": "finishing",
+     "purpose": "Contourner un défenseur sur la pénétration grâce à un changement d'appui latéral agressif.",
+     "equipment": [
+      "ballon de basket",
+      "chaises"
+     ],
+     "cues": [
+      "Vendre le premier pas dans une direction",
+      "Passer énergiquement sur l'autre pied",
+      "Garder la balle haute et protégée"
+     ],
+     "dosage": "",
+     "start": 870,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "SmspzPf7PPU": {
+   "videoId": "SmspzPf7PPU",
+   "duration": 342,
+   "channel": "Get Handles",
+   "title": "Why You Can't Shoot In Games",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "One-Dribble Pull-Up Jumpshot",
+     "category": "shooting",
+     "purpose": "Develops footwork and quick transition from a single dribble into a pull-up jump shot.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Right-left footwork",
+      "Rise into the shot smoothly",
+      "Bring the ball across quickly"
+     ],
+     "dosage": "",
+     "start": 14,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Float Into Pull-Up Jumpshot",
+     "category": "shooting",
+     "purpose": "Improves timing by letting the ball float before stepping directly into the pull-up shot.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Float the dribble",
+      "Step left-right smoothly",
+      "Stay patient with hand positioning"
+     ],
+     "dosage": "",
+     "start": 102,
+     "male_demonstrator": true,
+     "duplicate_of": "One-Dribble Pull-Up Jumpshot"
+    },
+    {
+     "name": "Hesi Drop Pull-Up Jumpshot",
+     "category": "shooting",
+     "purpose": "Creates space and misdirection by hanging the ball before dropping shoulders into a shot rhythm.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Hang the ball in hand",
+      "Drop shoulders aggressively",
+      "Stay stationary before attacking"
+     ],
+     "dosage": "",
+     "start": 141,
+     "male_demonstrator": true,
+     "duplicate_of": "One-Dribble Pull-Up Jumpshot"
+    },
+    {
+     "name": "Pound Step-Back Jumpshot",
+     "category": "shooting",
+     "purpose": "Generates separation from defenders using a heavy pound dribble and explosive step-back.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Pound ball hard with lead foot",
+      "Spring backward into stance",
+      "Align hips quickly for release"
+     ],
+     "dosage": "",
+     "start": 293,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "Q8mQSyZCHB8": {
+   "videoId": "Q8mQSyZCHB8",
+   "duration": 685,
+   "channel": "Get Handles",
+   "title": "ULTIMATE James Harden Dribbling Breakdown [SECRETS]",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Entre les jambes sur place",
+     "category": "ball-handling",
+     "purpose": "Improve ball control and fluidity moving the ball between the legs to set up offensive moves.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Stay in a athletic stance",
+      "Keep shooting foot forward",
+      "Control the dribble height"
+     ],
+     "dosage": "",
+     "start": 25,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Hésitation puis crossover",
+     "category": "ball-handling",
+     "purpose": "Sell the drive direction with a jab and hesitation before crossing the ball over to beat a defender.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Hard jab step",
+      "Stay low on the crossover",
+      "Change speed rapidly"
+     ],
+     "dosage": "",
+     "start": 165,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-back à 3 points",
+     "category": "shooting",
+     "purpose": "Create separation from a defender off the dribble to generate space for an un-blockable jumper.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Float the dribble",
+      "Push off lead foot",
+      "Land balanced on two feet"
+     ],
+     "dosage": "",
+     "start": 316,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Snatch-back pour créer l’espace",
+     "category": "counter-moves",
+     "purpose": "Pull the ball backwards away from a sliding defender to open up space for a shot or counter drive.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Drive hard downhill",
+      "Plant lead foot sharply",
+      "Pull ball behind body"
+     ],
+     "dosage": "",
+     "start": 587,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "QM1bteHtHE8": {
+   "videoId": "QM1bteHtHE8",
+   "duration": 328,
+   "channel": "Get Handles",
+   "title": "STOP Missing Layups In Games!!",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Lay-ups des deux mains",
+     "category": "finishing",
+     "purpose": "Améliorer la prise d'information tardive et le contrôle du geste au panier.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Fermer les yeux au départ du drive",
+      "Ouvrir les yeux au dernier moment",
+      "Ajuster la finition immédiatement"
+     ],
+     "dosage": "",
+     "start": 65,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse lay-up",
+     "category": "finishing",
+     "purpose": "Travailler la finition inversée sous le cercle avec une vue réduite.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Attaquer le panier yeux fermés",
+      "Ouvrir les yeux sur le saut",
+      "Utiliser la planche en finition inversée"
+     ],
+     "dosage": "",
+     "start": 108,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Euro-step",
+     "category": "finishing",
+     "purpose": "Développer l'équilibre, le contrôle du corps et le changement de direction sur un appui.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Ramasser la balle sur le premier appui",
+      "Marquer un temps de pause sur l'appui latéral",
+      "Conserver l'équilibre avant la finition"
+     ],
+     "dosage": "",
+     "start": 142,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse lay-up",
+     "category": "finishing",
+     "purpose": "Améliorer la manipulation du ballon et le contrôle du corps en suspension.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Partir sous le cercle",
+      "Pivoter à 180 degrés dans les airs",
+      "Ajuster la finition selon le côté"
+     ],
+     "dosage": "",
+     "start": 282,
+     "male_demonstrator": true,
+     "duplicate_of": "Reverse lay-up"
+    }
+   ]
+  },
+  "H3oRtAtWPOE": {
+   "videoId": "H3oRtAtWPOE",
+   "duration": 482,
+   "channel": "Get Handles",
+   "title": "Basketball Moves For SLOW Players",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Dans le dos sur place",
+     "category": "ball-handling",
+     "purpose": "Protéger le ballon et éliminer un défenseur trop agressif avec un dribble dans le dos.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Garder le ballon bas et protégé",
+      "Pousser le ballon vers l'avant",
+      "Verrouiller le défenseur avec le corps"
+     ],
+     "dosage": "",
+     "start": 3,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Spin move en sortie",
+     "category": "counter-moves",
+     "purpose": "Déborder un défenseur collant en tournant sur soi-même avec le ballon protégé.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Ancrer le pied d'appui près du défenseur",
+      "Pivoter rapidement dos au défenseur",
+      "Changer de hand au moment opportun"
+     ],
+     "dosage": "",
+     "start": 131,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dribble sous pression",
+     "category": "ball-handling",
+     "purpose": "Protéger son ballon en situation de marquage individuel serré.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Placer le corps de profil",
+      "Utiliser le bras franc en protection",
+      "Rester fléchi et stable"
+     ],
+     "dosage": "",
+     "start": 206,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Feinte de tir et drive",
+     "category": "counter-moves",
+     "purpose": "Faire réagir le défenseur par une feinte de tir avant de pénétrer vers le panier.",
+     "equipment": [
+      "ballon de basket",
+      "chaise"
+     ],
+     "cues": [
+      "Monter les yeux vers le cercle",
+      "Rapprocher la main d'appui du ballon",
+      "Attaquer l'espace dès la réaction du défenseur"
+     ],
+     "dosage": "",
+     "start": 355,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "Bv6hOHBf_Dg": {
+   "videoId": "Bv6hOHBf_Dg",
+   "duration": 1174,
+   "channel": "Garage Strength",
+   "title": "3 Exercises is All You Need To Get Athletic",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Corde à sauter",
+     "category": "reactive-ankles",
+     "purpose": "Activer le système nerveux et renforcer la réactivité des chevilles.",
+     "equipment": [
+      "corde à sauter"
+     ],
+     "cues": [
+      "Rebondissez sur l'avant-pied",
+      "Maintenez un rythme régulier"
+     ],
+     "dosage": "",
+     "start": 145,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente statique",
+     "category": "strength",
+     "purpose": "Travailler la stabilité unilatérale et l'alignement des hanches.",
+     "equipment": [],
+     "cues": [
+      "Gardez le buste droit",
+      "Contrôlez la descente"
+     ],
+     "dosage": "3 répétitions par côté",
+     "start": 209,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fentes marchées",
+     "category": "strength",
+     "purpose": "Développer la force dynamique des membres inférieurs en déplacement.",
+     "equipment": [],
+     "cues": [
+      "Faites de grands pas contrôlés",
+      "Engagez les fessiers à chaque poussée"
+     ],
+     "dosage": "",
+     "start": 234,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente bulgare",
+     "category": "strength",
+     "purpose": "Renforcer les quadriceps et fessiers en isolation unilatérale.",
+     "equipment": [
+      "support fente bulgare"
+     ],
+     "cues": [
+      "Gardez le poids sur le pied avant",
+      "Descendez la hanche vers le bas"
+     ],
+     "dosage": "5 à 7 répétitions",
+     "start": 267,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente sautée",
+     "category": "first-step",
+     "purpose": "Améliorer la puissance pliométrique unilatérale et la coordination bras-jambes.",
+     "equipment": [],
+     "cues": [
+      "Poussez de manière explosive",
+      "Utilisez les bras pour accentuer l'impulsion"
+     ],
+     "dosage": "",
+     "start": 302,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bond latéral stabilisé",
+     "category": "deceleration",
+     "purpose": "Travailler l'impulsion latérale et le contrôle du buste à l'atterrissage sur un support.",
+     "equipment": [
+      "box pliométrique"
+     ],
+     "cues": [
+      "Poussez latéralement avec force",
+      "Stabilisez l'atterrissage"
+     ],
+     "dosage": "",
+     "start": 343,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes",
+     "category": "strength",
+     "purpose": "Développer la force du haut du corps et le gainage abdominal.",
+     "equipment": [],
+     "cues": [
+      "Maintenez le corps aligné",
+      "Descendez la poitrine près du sol"
+     ],
+     "dosage": "",
+     "start": 490,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes",
+     "category": "first-step",
+     "purpose": "Améliorer la vitesse de poussée et la puissance explosive du haut du corps.",
+     "equipment": [],
+     "cues": [
+      "Poussez le sol le plus vite possible",
+      "Décollez brièvement les mains du sol"
+     ],
+     "dosage": "",
+     "start": 513,
+     "male_demonstrator": true,
+     "duplicate_of": "Pompes"
+    },
+    {
+     "name": "Pompes",
+     "category": "first-step",
+     "purpose": "Utiliser le cycle étirement-détente pour maximiser la vitesse de réaction des bras.",
+     "equipment": [],
+     "cues": [
+      "Effectuez une touche rapide au sol",
+      "Rebondissez immédiatement après la touche"
+     ],
+     "dosage": "",
+     "start": 554,
+     "male_demonstrator": true,
+     "duplicate_of": "Pompes"
+    },
+    {
+     "name": "Pompes",
+     "category": "first-step",
+     "purpose": "Maximiser la puissance explosive et la vitesse de recrutement musculaire.",
+     "equipment": [],
+     "cues": [
+      "Poussez fort pour avoir du temps aérien",
+      "Clappez dans les mains avant d'atterrir"
+     ],
+     "dosage": "",
+     "start": 588,
+     "male_demonstrator": true,
+     "duplicate_of": "Pompes"
+    },
+    {
+     "name": "Pompes mains surélevées",
+     "category": "first-step",
+     "purpose": "Développer la puissance de poussée ciblée vers une hauteur précise.",
+     "equipment": [
+      "box pliométrique"
+     ],
+     "cues": [
+      "Viser les blocs avec précision",
+      "Poussez de façon maximale"
+     ],
+     "dosage": "",
+     "start": 643,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes",
+     "category": "first-step",
+     "purpose": "Engager tout le corps dans un effort de poussée pliométrique maximal.",
+     "equipment": [],
+     "cues": [
+      "Décollez tout le corps du sol",
+      "Amortissez le retour au sol"
+     ],
+     "dosage": "",
+     "start": 699,
+     "male_demonstrator": true,
+     "duplicate_of": "Pompes"
+    },
+    {
+     "name": "Skip A",
+     "category": "conditioning",
+     "purpose": "Travailler le rythme, la coordination globale et la posture dynamique.",
+     "equipment": [],
+     "cues": [
+      "Montez le genou à 90 degrés",
+      "Gardez le buste gainé et droit"
+     ],
+     "dosage": "",
+     "start": 871,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Renforcer la rigidité de la cheville et le temps de réaction au sol sur une seule jambe.",
+     "equipment": [],
+     "cues": [
+      "Maintenez la cheville verrouillée",
+      "Rebondissez rapidement sans écraser le talon"
+     ],
+     "dosage": "5 répétitions par côté",
+     "start": 929,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bond latéral stabilisé",
+     "category": "deceleration",
+     "purpose": "Améliorer les changements de direction et la maîtrise de l'atterrissage bipède.",
+     "equipment": [],
+     "cues": [
+      "Poussez latéralement sur une jambe",
+      "Réceptionnez-vous de manière stable sur deux pieds"
+     ],
+     "dosage": "",
+     "start": 985,
+     "male_demonstrator": true,
+     "duplicate_of": "Bond latéral stabilisé"
+    },
+    {
+     "name": "Saut horizontal",
+     "category": "first-step",
+     "purpose": "Maximiser la production de force horizontale sur deux jambes.",
+     "equipment": [],
+     "cues": [
+      "Armez avec les bras vers l'arrière",
+      "Poussez le sol vers l'arrière de manière explosive"
+     ],
+     "dosage": "",
+     "start": 1041,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut horizontal",
+     "category": "vertical-two-feet",
+     "purpose": "Enchaîner une poussée horizontale rapide avec une impulsion verticale réactive.",
+     "equipment": [],
+     "cues": [
+      "Projetez-vous vers l'avant puis immédiatement vers le haut",
+      "Armez les bras en l'air pendant le transfert"
+     ],
+     "dosage": "",
+     "start": 1115,
+     "male_demonstrator": true,
+     "duplicate_of": "Saut horizontal"
+    }
+   ]
+  },
+  "LUAuHBz1N_M": {
+   "videoId": "LUAuHBz1N_M",
+   "duration": 1208,
+   "channel": "Garage Strength",
+   "title": "7 Plyometric Exercises Everyone Over 40 Should Do!",
+   "via": "chaîne suivie",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "PVC Pipe Walks",
+     "category": "reactive-ankles",
+     "purpose": "Improves foot and ankle stability, balance, and arch activation.",
+     "equipment": [
+      "pvc"
+     ],
+     "cues": [
+      "Step with control",
+      "Maintain upright posture",
+      "Feel the arch engage"
+     ],
+     "dosage": "5 sets of 15 meters",
+     "start": 91,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Isometric Split Squat Hold",
+     "category": "isometric",
+     "purpose": "Strengthens lower body tendons and glutes while improving ankle stability.",
+     "equipment": [],
+     "cues": [
+      "Slightly elevate front heel",
+      "Hold deep split position",
+      "Engage core and glutes"
+     ],
+     "dosage": "15 second hold",
+     "start": 121,
+     "male_demonstrator": true,
+     "duplicate_of": "Fente isométrique"
+    },
+    {
+     "name": "Hip Lock Hold",
+     "category": "isometric",
+     "purpose": "Strengthens calf stiffness and single-leg balance in a sprinting stance.",
+     "equipment": [],
+     "cues": [
+      "Dig big toe into floor",
+      "Drive opposite knee up",
+      "Keep heel slightly elevated"
+     ],
+     "dosage": "15 seconds hold",
+     "start": 217,
+     "male_demonstrator": true,
+     "duplicate_of": "Équilibre sur une jambe"
+    },
+    {
+     "name": "Low Box Jumps",
+     "category": "vertical-two-feet",
+     "purpose": "Enhances ankle stiffness and quick ground reaction force.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Minimal knee bend",
+      "Aggressive arm swing",
+      "Quick contact on box"
+     ],
+     "dosage": "5x4",
+     "start": 257,
+     "male_demonstrator": true,
+     "duplicate_of": "Drop jump · rebond immédiat"
+    },
+    {
+     "name": "2 to 1 Box Jump",
+     "category": "deceleration",
+     "purpose": "Develops unilateral deceleration, landing control, and force absorption.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Jump off two feet",
+      "Stick the single-leg landing",
+      "React quickly"
+     ],
+     "dosage": "2 jumps each side",
+     "start": 376,
+     "male_demonstrator": true,
+     "duplicate_of": "Saut une jambe, réception tenue"
+    },
+    {
+     "name": "Jump Rope",
+     "category": "reactive-ankles",
+     "purpose": "Builds tendon elasticity, ankle stiffness, and lower body rhythm.",
+     "equipment": [
+      "jump rope"
+     ],
+     "cues": [
+      "Stay light on toes",
+      "Maintain ankle stiffness",
+      "Keep steady rhythm"
+     ],
+     "dosage": "5x30 seconds",
+     "start": 449,
+     "male_demonstrator": true,
+     "duplicate_of": "Corde à sauter"
+    },
+    {
+     "name": "Single Leg Pogo Jumps",
+     "category": "reactive-ankles",
+     "purpose": "Improves reactive ankle stiffness and single-leg power transfer.",
+     "equipment": [
+      "hurdles"
+     ],
+     "cues": [
+      "Minimal dorsiflexion",
+      "Quick ground contact",
+      "Stay springy"
+     ],
+     "dosage": "5x5 each leg",
+     "start": 564,
+     "male_demonstrator": true,
+     "duplicate_of": "Rebonds sur une jambe"
+    },
+    {
+     "name": "Side to Side Jump to Hip Lock",
+     "category": "deceleration",
+     "purpose": "Enhances lateral stability, deceleration, and single-leg balance.",
+     "equipment": [
+      "hurdles",
+      "bumper plate"
+     ],
+     "cues": [
+      "Push off outside leg",
+      "Stick into hip lock position",
+      "Control your trunk"
+     ],
+     "dosage": "5-6 sets 3-4 reps",
+     "start": 680,
+     "male_demonstrator": true,
+     "duplicate_of": "Bond latéral stabilisé"
+    },
+    {
+     "name": "Broad Jump to Hurdle",
+     "category": "vertical-two-feet",
+     "purpose": "Trains horizontal to vertical force transfer and explosive reactivity.",
+     "equipment": [
+      "hurdles"
+     ],
+     "cues": [
+      "Flat foot landing on broad jump",
+      "Explode upward over hurdle",
+      "Re-load quickly"
+     ],
+     "dosage": "3 sets or 8 sets",
+     "start": 803,
+     "male_demonstrator": true,
+     "duplicate_of": "Saut horizontal"
+    },
+    {
+     "name": "Skips",
+     "category": "conditioning",
+     "purpose": "Develops coordination, hip extension, and sprinting rhythm.",
+     "equipment": [],
+     "cues": [
+      "Focus on hip extension",
+      "Maintain good timing",
+      "Drive knees high"
+     ],
+     "dosage": "25-30 yards",
+     "start": 1047,
+     "male_demonstrator": true,
+     "duplicate_of": "Skip A"
+    },
+    {
+     "name": "Skips for Distance",
+     "category": "reactive-ankles",
+     "purpose": "Maximizes horizontal power production and aggressive hip extension.",
+     "equipment": [],
+     "cues": [
+      "Short ground contact",
+      "Aggressive hip extension",
+      "Drive arms dynamically"
+     ],
+     "dosage": "25-30 yards",
+     "start": 1138,
+     "male_demonstrator": true,
+     "duplicate_of": "Skip A"
+    }
+   ]
+  },
+  "rDBFSxpOfac": {
+   "videoId": "rDBFSxpOfac",
+   "duration": 260,
+   "channel": "ShotMechanics",
+   "title": "Get a LIGHTNING Quick First Step | Basketball Scoring Tips",
+   "via": "thème « basketball first step drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Jab step et attaque",
+     "category": "first-step",
+     "purpose": "Développer une explosion rapide du premier pas en maintenant la jambe arrière chargée lors d'un jab step.",
+     "equipment": [
+      "basketball",
+      "basketball-hoop"
+     ],
+     "cues": [
+      "Garder la jambe arrière fléchie et chargée",
+      "Éviter la surextension du jab step",
+      "Exploser directement dès le contact du pied au sol"
+     ],
+     "dosage": "",
+     "start": 210,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "W2h4sG3dO8E": {
+   "videoId": "W2h4sG3dO8E",
+   "duration": 179,
+   "channel": "overtimeathletes",
+   "title": "Best 3 Exercises for First Step Quickness",
+   "via": "thème « basketball first step drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Départ un genou au sol",
+     "category": "first-step",
+     "purpose": "Développer une extension de hanche puissante en amplitude profonde pour une meilleure accélération.",
+     "equipment": [],
+     "cues": [
+      "Pousser fort le sol",
+      "Garder l'angle vers l'avant",
+      "Projeter les hanches"
+     ],
+     "dosage": "",
+     "start": 46,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Départ en chute avant, 5 m",
+     "category": "first-step",
+     "purpose": "Travailler la flexion rapide de la hanche et la réaction dynamique lors du démarrage.",
+     "equipment": [],
+     "cues": [
+      "Chuter vers l'avant",
+      "Monter la cuisse rapidement",
+      "Exploser en sprint"
+     ],
+     "dosage": "",
+     "start": 124,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Départ en fente, 5 m",
+     "category": "first-step",
+     "purpose": "Maximiser la projection horizontale et le temps de réaction en poussée agressive.",
+     "equipment": [],
+     "cues": [
+      "Allonger la position",
+      "Pousser fort dans le sol",
+      "Rappeler la cuisse activement"
+     ],
+     "dosage": "",
+     "start": 201,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "QHjKUadqVc0": {
+   "videoId": "QHjKUadqVc0",
+   "duration": 665,
+   "channel": "Good Drill",
+   "title": "3 Essential Drills to Improve Your First Step and Beat Defenders!",
+   "via": "thème « basketball first step drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "False Step Drill",
+     "category": "first-step",
+     "purpose": "Improves explosive acceleration and first-step quickness by unweighting the lead leg and falling forward.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Shift weight to front foot",
+      "Pull foot under body",
+      "Fall forward into drive"
+     ],
+     "dosage": "10 minutes",
+     "start": 54,
+     "male_demonstrator": true,
+     "duplicate_of": "Départ en pas de retrait (drop step)"
+    },
+    {
+     "name": "Fall to Ball Touch",
+     "category": "first-step",
+     "purpose": "Forces the player to drop their center of gravity and shin angle to gain maximum leverage when driving.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Maintain athletic posture",
+      "Fall forward low",
+      "Touch ball to floor before accelerating"
+     ],
+     "dosage": "",
+     "start": 337,
+     "male_demonstrator": true,
+     "duplicate_of": "Départ en chute avant, 5 m"
+    },
+    {
+     "name": "Self Toss Speed Chase",
+     "category": "first-step",
+     "purpose": "Develops maximal acceleration and reaction speed by sprinting to retrieve a bounced ball at the edge of capability.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Toss ball out ahead",
+      "Wait for bounce",
+      "Sprint at max effort to catch"
+     ],
+     "dosage": "5 minutes daily",
+     "start": 600,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "4a7a5ajzVCk": {
+   "videoId": "4a7a5ajzVCk",
+   "duration": 86,
+   "channel": "SportsEdTV Basketball Training",
+   "title": "Establishing A Quick & Effective First Step In Basketball",
+   "via": "thème « basketball first step drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Attaque le pied avant",
+     "category": "first-step",
+     "purpose": "Improves explosive first-step acceleration from a stationary triple threat position to beat defenders.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Push ball aggressively out front",
+      "Cover maximum ground with first step",
+      "Stay low and balanced"
+     ],
+     "dosage": "",
+     "start": 21,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Changements de rythme",
+     "category": "first-step",
+     "purpose": "Enhances explosive acceleration out of the dribble to burst past defenders.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Pound the dribble",
+      "Explode off the push foot",
+      "Drive the ball past the defender"
+     ],
+     "dosage": "",
+     "start": 57,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "dfXbQ_gN_y8": {
+   "videoId": "dfXbQ_gN_y8",
+   "duration": 295,
+   "channel": "By Any Means Basketball",
+   "title": "Get SHIFTY By Training Your Deceleration the Right Way ",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Fente arrière · haltères",
+     "category": "strength",
+     "purpose": "Renforcer les quadriceps et fessiers tout en développant la force excentrique nécessaire au freinage.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Garder le buste relevé",
+      "Contrôler la descente",
+      "Pousser fort sur la jambe avant"
+     ],
+     "dosage": "",
+     "start": 42,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente et réception",
+     "category": "deceleration",
+     "purpose": "Absorber l'impact d'un saut de façon excentrique pour améliorer la capacité de freinage unilatéral et bilatéral.",
+     "equipment": [
+      "boîte en bois"
+     ],
+     "cues": [
+      "Absorber l'impact en douceur",
+      "Fléchir les genoux à la réception",
+      "Stabiliser le tronc"
+     ],
+     "dosage": "",
+     "start": 118,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage en trois appuis",
+     "category": "deceleration",
+     "purpose": "Développer la capacité à stopper une course avant et à enchaîner immédiatement une ré-accélération.",
+     "equipment": [],
+     "cues": [
+      "Abaisser le centre de gravité",
+      "Ancrer le dernier appui",
+      "Repartir sans temps mort"
+     ],
+     "dosage": "",
+     "start": 203,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage latéral",
+     "category": "deceleration",
+     "purpose": "Maîtriser le contrôle des forces latérales pour stopper son élan et changer de direction avec explosivité.",
+     "equipment": [],
+     "cues": [
+      "Charger la jambe extérieure",
+      "Rester bas sur ses appuis",
+      "Exploser dans la nouvelle direction"
+     ],
+     "dosage": "",
+     "start": 236,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pull-up après un dribble",
+     "category": "shooting",
+     "purpose": "Convertir une décélération dynamique en dribble en un tir en suspension stable et précis.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Stopper net sur les appuis",
+      "Monter verticalement",
+      "Armer rapidement"
+     ],
+     "dosage": "",
+     "start": 316,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Changements de rythme",
+     "category": "ball-handling",
+     "purpose": "Associer le freinage soudain avec une sortie explosive en dribble pour éliminer le défenseur.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Varier la hauteur des appuis",
+      "Protéger la balle au freinage",
+      "Ré-accélérer vivement"
+     ],
+     "dosage": "",
+     "start": 349,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "KX_n86Ps3qw": {
+   "videoId": "KX_n86Ps3qw",
+   "duration": 398,
+   "channel": "PJFPerformance",
+   "title": "Building Better Deceleration and Change of Direction Ability (Advanced Drills)",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "LOPAZXBsG4I": {
+   "videoId": "LOPAZXBsG4I",
+   "duration": 216,
+   "channel": "By Any Means Basketball",
+   "title": "The Deceleration Workout That Every Hooper Needs!",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Sauts en carré",
+     "category": "reactive-ankles",
+     "purpose": "Développer la capacité du complexe mollet-Achille à absorber la force et stabiliser la cheville.",
+     "equipment": [],
+     "cues": [
+      "Rebondir rapidement",
+      "Garder les chevilles réactives",
+      "Rester gainé et stable"
+     ],
+     "dosage": "30 secondes par jambe et par direction",
+     "start": 74,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pas du patineur",
+     "category": "deceleration",
+     "purpose": "Renforcer l'absorption des forces latérales et la stabilité du genou à la réception.",
+     "equipment": [],
+     "cues": [
+      "Exploser latéralement",
+      "Stabiliser la réception une seconde",
+      "Éviter le valgus du genou"
+     ],
+     "dosage": "2 séries de 8 répétitions par jambe",
+     "start": 91,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Coupe à 45° tenue",
+     "category": "deceleration",
+     "purpose": "Travailler la décélération en angle diagonal et le contrôle articulaire de la jambe d'appui.",
+     "equipment": [],
+     "cues": [
+      "Exploser à 45 degrés",
+      "Atterrir en douceur",
+      "Garder le genou aligné avec le pied"
+     ],
+     "dosage": "Aller-retour jusqu'au milieu du terrain",
+     "start": 106,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage latéral",
+     "category": "deceleration",
+     "purpose": "Apprendre à stopper un déplacement latéral rapidement à l'aide de petits pas choppés.",
+     "equipment": [],
+     "cues": [
+      "Garder le centre de gravité bas",
+      "Enchaîner des petits pas choppés",
+      "Écarter les pieds plus larges que les épaules"
+     ],
+     "dosage": "Aller-retour jusqu'au milieu du terrain",
+     "start": 119,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage en trois appuis",
+     "category": "deceleration",
+     "purpose": "Enseigner l'absorption d'élan vers l'avant et l'arrêt brutal en trois foulées.",
+     "equipment": [],
+     "cues": [
+      "Exploser sur trois foulées",
+      "Planter le pied avec un bon angle de tibia",
+      "Maintenir une posture basse"
+     ],
+     "dosage": "Aller-retour jusqu'au milieu du terrain",
+     "start": 145,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Snatch-back pour créer l’espace",
+     "category": "deceleration",
+     "purpose": "Développer le freinage sec vers l'arrière pour feinter un drive et créer un décalage.",
+     "equipment": [],
+     "cues": [
+      "Roter légèrement le pied vers l'intérieur",
+      "Rapprocher les pieds en ciseaux",
+      "Atterrir de façon souple"
+     ],
+     "dosage": "2 séries de 5 répétitions par jambe",
+     "start": 163,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Course arrière",
+     "category": "deceleration",
+     "purpose": "Améliorer la décélération en reculant puis la transition explosive vers l'avant.",
+     "equipment": [],
+     "cues": [
+      "Reculer sur quelques foulées",
+      "Ancrer rapidement le pied arrière",
+      "Re-exploser immédiatement vers l'avant"
+     ],
+     "dosage": "2 séries de 3 répétitions par jambe",
+     "start": 181,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "DT_e5_ZDOVY": {
+   "videoId": "DT_e5_ZDOVY",
+   "duration": 253,
+   "channel": "overtimeathletes",
+   "title": "Top 3 Plyo Drills for Deceleration to Improve Athleticism",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Step-up sauté",
+     "category": "deceleration",
+     "purpose": "Améliorer la capacité de décélération unilatérale et la puissance verticale à partir des hanches.",
+     "equipment": [
+      "banc"
+     ],
+     "cues": [
+      "Pousser fort avec le pied sur le banc",
+      "Exploser en hauteur avec le genou opposé",
+      "Amortir la descente sans s'écraser"
+     ],
+     "dosage": "2 à 4 séries de 8 répétitions maximum",
+     "start": 98,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "deceleration",
+     "purpose": "Cibler la décélération au niveau du quadriceps en attaquant le banc de face.",
+     "equipment": [
+      "banc"
+     ],
+     "cues": [
+      "Pousser sur l'avant du pied",
+      "Pousser le genou vers l'avant",
+      "Absorber l'impact à chaque réception"
+     ],
+     "dosage": "2 à 4 séries de 8 répétitions maximum",
+     "start": 153,
+     "male_demonstrator": true,
+     "duplicate_of": "Step-up sauté"
+    },
+    {
+     "name": "Fente bulgare",
+     "category": "deceleration",
+     "purpose": "Renforcer la décélération excentrique sur l'ensemble de la jambe, des fléchisseurs de hanche aux ischios.",
+     "equipment": [
+      "banc"
+     ],
+     "cues": [
+      "Placer le pied arrière sur le banc",
+      "Monter le genou de la jambe arrière à la poitrine lors du saut",
+      "Freiner sur toute l'amplitude à la descente"
+     ],
+     "dosage": "2 à 4 séries de 8 répétitions maximum",
+     "start": 179,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "7FYEeFt9PD8": {
+   "videoId": "7FYEeFt9PD8",
+   "duration": 219,
+   "channel": "Isaiah Rivera",
+   "title": "How To Jump Higher In Less Than 5 Minutes",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Avant-dernier appui",
+     "category": "vertical-two-feet",
+     "purpose": "Improves approach plant mechanics to naturally lower center of gravity for maximum vertical jump.",
+     "equipment": [],
+     "cues": [
+      "Straighten back leg behind you",
+      "Turn front foot slightly",
+      "Keep arms synchronized with legs"
+     ],
+     "dosage": "",
+     "start": 50,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut avec élan, deux pieds",
+     "category": "vertical-two-feet",
+     "purpose": "Converts horizontal approach speed into maximum vertical jump height off two feet.",
+     "equipment": [],
+     "cues": [
+      "Fast penultimate step",
+      "Plant block foot on toes",
+      "Explode upward aggressively"
+     ],
+     "dosage": "",
+     "start": 256,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "LWh7l4RwP6A": {
+   "videoId": "LWh7l4RwP6A",
+   "duration": 221,
+   "channel": "PJFPerformance",
+   "title": "Exercise for Better Deceleration and Strengthening The Knees",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Fente excentrique lente",
+     "category": "deceleration",
+     "purpose": "Renforcer l'articulation du genou et absorber efficacement les forces de décélération.",
+     "equipment": [
+      "poulie"
+     ],
+     "cues": [
+      "Relever les orteils avant d'engager",
+      "Contrôler la descente en excentrique",
+      "Maintenir la position en isométrie"
+     ],
+     "dosage": "2-4 séries, 5-6 répétitions par bras",
+     "start": 57,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Voûte plantaire active",
+     "category": "reactive-ankles",
+     "purpose": "Renforcer les muscles intrinsèques du pied et de la cheville pour soulager le genou.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Engager la voûte plantaire",
+      "Mantenir une tension continue avec l'élastique",
+      "Contrôler le mouvement de la cheville"
+     ],
+     "dosage": "",
+     "start": 188,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "SpJX-LllC4M": {
+   "videoId": "SpJX-LllC4M",
+   "duration": 491,
+   "channel": "Matt Tometz",
+   "title": "Deceleration Training Explained: Techniques and Drills for Athletes for Speed and Agility",
+   "via": "thème « basketball deceleration drills »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "180 Degree Cut Test",
+     "category": "deceleration",
+     "purpose": "Measures an athlete's ability to decelerate rapidly from high speed and change direction 180 degrees.",
+     "equipment": [
+      "timing gates",
+      "cones"
+     ],
+     "cues": [
+      "Drop hip level",
+      "Short preparatory steps",
+      "Push off back leg"
+     ],
+     "dosage": "2-3 trials per side",
+     "start": 191,
+     "male_demonstrator": true,
+     "duplicate_of": "Navette 5-10-5"
+    },
+    {
+     "name": "Acceleration-Deceleration Ability Test",
+     "category": "deceleration",
+     "purpose": "Evaluates the minimum distance required to bring full sprint momentum to a complete stop.",
+     "equipment": [
+      "cones"
+     ],
+     "cues": [
+      "Sprint max speed",
+      "Chop feet quickly",
+      "Sink center of gravity"
+     ],
+     "dosage": "2-3 attempts",
+     "start": 219,
+     "male_demonstrator": true,
+     "duplicate_of": "Freinage en trois appuis"
+    },
+    {
+     "name": "Step Stop Series",
+     "category": "deceleration",
+     "purpose": "Teaches proper body control and braking positions during linear deceleration.",
+     "equipment": [],
+     "cues": [
+      "Land in sprint stance",
+      "Absorb impact in hips",
+      "Keep shin angled backward"
+     ],
+     "dosage": "2-3 sets of 3-5 reps",
+     "start": 294,
+     "male_demonstrator": false,
+     "duplicate_of": "Snap-down · réception rapide"
+    },
+    {
+     "name": "Drop Jump to Vertical Jump",
+     "category": "deceleration",
+     "purpose": "Trains eccentric force absorption upon ground contact immediately transferred into vertical power.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Step off box",
+      "Minimal ground contact time",
+      "Explode straight up"
+     ],
+     "dosage": "3 sets of 4 reps",
+     "start": 380,
+     "male_demonstrator": true,
+     "duplicate_of": "Drop jump · rebond immédiat"
+    },
+    {
+     "name": "Cone Cutting Drill",
+     "category": "deceleration",
+     "purpose": "Develops pre-planned change-of-direction mechanics at defined cutting angles.",
+     "equipment": [
+      "cones"
+     ],
+     "cues": [
+      "Decelerate before cut",
+      "Load outside leg",
+      "Steer shin toward new path"
+     ],
+     "dosage": "3-4 sets per side",
+     "start": 392,
+     "male_demonstrator": true,
+     "duplicate_of": "Coupe à 45° tenue"
+    },
+    {
+     "name": "Partner Mirror Drill",
+     "category": "defense",
+     "purpose": "Enhances reactive agility and defensive tracking based on opponent movements.",
+     "equipment": [],
+     "cues": [
+      "Stay light on feet",
+      "Match hip movements",
+      "React to visual cues"
+     ],
+     "dosage": "3-4 rounds of 10-15 seconds",
+     "start": 444,
+     "male_demonstrator": false,
+     "duplicate_of": "Miroir"
+    }
+   ]
+  },
+  "RUdn3W9zzPg": {
+   "videoId": "RUdn3W9zzPg",
+   "duration": 262,
+   "channel": "Riq B",
+   "title": "How I Got A 40 Inch VERT at 5'7 | Plyometrics Workout",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Squat sauté · haltères légers",
+     "category": "vertical-two-feet",
+     "purpose": "Developpe la vitesse reactive et l'explosivite en saut vertical avec charge.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Quarter squat depth",
+      "Explode up as fast as possible",
+      "Land softly and absorb force"
+     ],
+     "dosage": "5 sets of 5 reps",
+     "start": 51,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut avec élan, deux pieds",
+     "category": "vertical-two-feet",
+     "purpose": "Ameliore la hauteur de saut avec elan pour les situations de match.",
+     "equipment": [
+      "panier de basket"
+     ],
+     "cues": [
+      "Maximal effort approach",
+      "Transfer horizontal to vertical momentum",
+      "Explode up toward the rim"
+     ],
+     "dosage": "5 sets of 5 reps",
+     "start": 148,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe avec élan (appel de lay-up)",
+     "category": "vertical-one-foot",
+     "purpose": "Optimise la hauteur de saut sur prise d'elan a un pied.",
+     "equipment": [
+      "panier de basket"
+     ],
+     "cues": [
+      "Fast approach speed",
+      "Drive non-jumping knee high",
+      "Explode vertically off one foot"
+     ],
+     "dosage": "5 sets of 5 reps",
+     "start": 208,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Course · fractionné court",
+     "category": "conditioning",
+     "purpose": "Entraine le cycle etirement-raccourcissement et ameliore la vitesse d'approche.",
+     "equipment": [],
+     "cues": [
+      "Minimal ground contact time",
+      "Stay on forefeet",
+      "Maintain sprint mechanics"
+     ],
+     "dosage": "4 sets of 30-40m",
+     "start": 216,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Renforce la raideur de cheville et l'elasticite du tendon d'Achille.",
+     "equipment": [],
+     "cues": [
+      "Heels never touch the floor",
+      "Land and push off forefeet",
+      "Keep ankles stiff and reactive"
+     ],
+     "dosage": "5 sets of 8 reps",
+     "start": 239,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "vertical-one-foot",
+     "purpose": "Equilibre la force et l'explosivite unilaterale de chaque jambe.",
+     "equipment": [],
+     "cues": [
+      "Explode off lead leg",
+      "Drive opposite knee up explosively",
+      "Control landing softly"
+     ],
+     "dosage": "5 sets of 5 reps per leg",
+     "start": 300,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Hip thrust · barre",
+     "category": "strength",
+     "purpose": "Developpe la force maximale de la chaine posterieure et des fessiers.",
+     "equipment": [
+      "barre",
+      "banc"
+     ],
+     "cues": [
+      "Drive hips up aggressively",
+      "Squeeze glutes at top",
+      "Keep chin tucked throughout"
+     ],
+     "dosage": "1 session per week",
+     "start": 348,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "bWp6KcDu9-c": {
+   "videoId": "bWp6KcDu9-c",
+   "duration": 430,
+   "channel": "overtimeathletes",
+   "title": "Vertical Jump Training for Basketball Athletes",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Pogos en avançant",
+     "category": "reactive-ankles",
+     "purpose": "Améliorer la raideur de cheville, le temps de contact au sol et la réactivité.",
+     "equipment": [],
+     "cues": [
+      "Garder les genoux stricts",
+      "Rebondir sur l'avant-pied",
+      "Alterner saut haut et saut bas"
+     ],
+     "dosage": "10 sauts au total",
+     "start": 60,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "vertical-one-foot",
+     "purpose": "Développer la puissance unilatérale de poussée et la réactivité des membres inférieurs.",
+     "equipment": [
+      "Banc"
+     ],
+     "cues": [
+      "Pousser fort avec la jambe d'appui",
+      "Changer de jambe en l'air",
+      "Amortir la descente"
+     ],
+     "dosage": "2 séries par hauteur",
+     "start": 105,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe sur box",
+     "category": "vertical-one-foot",
+     "purpose": "Maximiser la puissance d'impulsion unilatérale sans élan.",
+     "equipment": [
+      "Box de pliométrie"
+     ],
+     "cues": [
+      "Contrôler le chargement sur une jambe",
+      "Exploser vers le haut",
+      "Atterrir à deux pieds"
+     ],
+     "dosage": "",
+     "start": 164,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe avec élan (appel de lay-up)",
+     "category": "vertical-one-foot",
+     "purpose": "Améliorer la détente unilatérale avec prise d'élan sur un pas.",
+     "equipment": [
+      "Box de pliométrie"
+     ],
+     "cues": [
+      "Prendre un pas d'élan dynamique",
+      "Planter le pied et fléchir légèrement",
+      "Pousser de manière explosive"
+     ],
+     "dosage": "",
+     "start": 212,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pas du patineur",
+     "category": "first-step",
+     "purpose": "Développer la force latérale, la stabilité unilatérale et le contrôle des appuis.",
+     "equipment": [
+      "Cônes"
+     ],
+     "cues": [
+      "Pousser latéralement avec explosivité",
+      "Stabiliser la réception",
+      "Garder le centre de gravité bas"
+     ],
+     "dosage": "",
+     "start": 247,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre en B-stance",
+     "category": "strength",
+     "purpose": "Renforcer les fessiers et ischios-jambiers en charge unilatérale.",
+     "equipment": [
+      "Barre"
+     ],
+     "cues": [
+      "Garder le dos plat",
+      "Engager la jambe arrière en soutien",
+      "Pousser dans le sol avec la jambe avant"
+     ],
+     "dosage": "4 répétitions par jambe",
+     "start": 366,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente contrôlée sur marche",
+     "category": "deceleration",
+     "purpose": "Renforcer le contrôle excentrique du quadriceps et la stabilité du genou.",
+     "equipment": [
+      "Banc"
+     ],
+     "cues": [
+      "Descendre de manière lente et contrôlée",
+      "Garder le genou aligné avec le pied",
+      "Maintenir le buste droit"
+     ],
+     "dosage": "",
+     "start": 377,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente latérale",
+     "category": "strength",
+     "purpose": "Développer la force et la mobilité des hanches et des adducteurs sur le plan frontal.",
+     "equipment": [
+      "Kettlebell"
+     ],
+     "cues": [
+      "Pousser le bassin vers l'arrière",
+      "Garder le pied à plat au sol",
+      "Pousser de façon explosive pour revenir"
+     ],
+     "dosage": "4 répétitions par côté",
+     "start": 410,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "WA564xCGgnc": {
+   "videoId": "WA564xCGgnc",
+   "duration": 941,
+   "channel": "Nathanael Morton",
+   "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Squat sur banc",
+     "category": "strength",
+     "purpose": "Développer la force explosive des cuisses en cassant le cycle étirement-contraction sur le banc.",
+     "equipment": [
+      "barre",
+      "banc"
+     ],
+     "cues": [
+      "Marquer une pause nette assis sur le banc",
+      "Pousser de façon explosive à la montée",
+      "Conserver un gainage du tronc optimal"
+     ],
+     "dosage": "6-8 séries",
+     "start": 93,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat avec élastique",
+     "category": "strength",
+     "purpose": "Améliorer la vitesse de contraction musculaire et l'efficacité du cycle étirement-contraction.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Enchaîner les répétitions le plus rapidement possible",
+      "Descendre légèrement plus bas que la position de saut",
+      "Garder une tension constante sur la bande"
+     ],
+     "dosage": "3 séries de 20 réps",
+     "start": 184,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bonjour · barre",
+     "category": "strength",
+     "purpose": "Renforcer la chaîne postérieure de manière explosive via une flexion-extension de hanche.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Pousser les hanches vers l'arrière",
+      "Ressentir l'étirement dans les ischio-jambiers",
+      "Contracter vivement les fessiers au retour"
+     ],
+     "dosage": "3 séries de 20 réps",
+     "start": 262,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Montée sur banc · haltères",
+     "category": "strength",
+     "purpose": "Renforcer la puissance unilatérale des cuisses et améliorer la stabilité des chevilles.",
+     "equipment": [
+      "banc",
+      "haltères"
+     ],
+     "cues": [
+      "Pousser fort avec la jambe posée sur le banc",
+      "Rester explosif durant la montée",
+      "Contrôler la phase de descente"
+     ],
+     "dosage": "3-4 séries de 6-8 réps",
+     "start": 284,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre une jambe · haltère",
+     "category": "strength",
+     "purpose": "Développer la force unilatérale et l'équilibre des ischio-jambiers et fessiers.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Descendre sous contrôle en gardant le buste aligné",
+      "Ressentir la tension dans l'ischio-jambier",
+      "Remonter de manière explosive"
+     ],
+     "dosage": "3-4 séries de 6-8 réps",
+     "start": 340,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre roumain · barre",
+     "category": "strength",
+     "purpose": "Renforcer la chaîne postérieure avec des charges plus lourdes sans contrainte d'équilibre.",
+     "equipment": [
+      "barre"
+     ],
+     "cues": [
+      "Maintenir la barre proche des tibias et des cuisses",
+      "Pousser le bassin vers l'arrière",
+      "Engager les fessiers au verrouillage"
+     ],
+     "dosage": "",
+     "start": 351,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tirage entre les jambes · élastique",
+     "category": "strength",
+     "purpose": "Travailler l'extension explosive des hanches pour maximiser la puissance de saut.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Basculer le bassin vers l'arrière à la descente",
+      "Conserver la tension sur l'élastique",
+      "Verrouiller les fessiers au sommet du mouvement"
+     ],
+     "dosage": "3 séries de 20 réps",
+     "start": 421,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Extension du dos au banc",
+     "category": "strength",
+     "purpose": "Renforcer l'ensemble de la chaîne postérieure, y compris les lombaires, les fessiers et les ischios.",
+     "equipment": [
+      "banc"
+     ],
+     "cues": [
+      "Garder la colonne vertébrale neutre",
+      "Contracter fort les fessiers en haut du mouvement",
+      "Éviter de trop cambrer le bas du dos"
+     ],
+     "dosage": "2-3 séries de 20 réps",
+     "start": 470,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche du monstre · élastique",
+     "category": "strength",
+     "purpose": "Cibler et renforcer le moyen fessier pour stabiliser le bassin et prévenir les blessures aux genoux.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Écarter activement les genoux vers l'extérieur",
+      "Maintenir une posture fléchie et athlétique",
+      "Garder une tension continue dans la bande"
+     ],
+     "dosage": "3 séries de 10 pas",
+     "start": 547,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut assisté à l’élastique",
+     "category": "vertical-two-feet",
+     "purpose": "Développer l'impulsion et la puissance de saut sous résistance élastique progressive.",
+     "equipment": [
+      "élastique",
+      "haltères"
+     ],
+     "cues": [
+      "Descendre en quart de squat",
+      "Exploser verticalement à chaque répétition",
+      "Maintenir le buste droit à l'extension"
+     ],
+     "dosage": "3 séries de 6 réps",
+     "start": 667,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut sur box",
+     "category": "vertical-two-feet",
+     "purpose": "Développer la puissance verticale maximale tout en diminuant l'impact à la réception.",
+     "equipment": [
+      "box"
+     ],
+     "cues": [
+      "Utiliser le balancier des bras pour l'impulsion",
+      "Pousser le sol le plus fort possible",
+      "Réceptionner en douceur sur le plateau"
+     ],
+     "dosage": "3-4 séries de 3-4 réps",
+     "start": 711,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "vertical-one-foot",
+     "purpose": "Améliorer la puissance explosive unilatérale et l'extension de la jambe d'appel.",
+     "equipment": [
+      "banc"
+     ],
+     "cues": [
+      "Pousser de façon explosive sur la jambe d'appui",
+      "Rechercher la hauteur maximale au sommet",
+      "Amortir le retour au sol avec contrôle"
+     ],
+     "dosage": "3-4 séries de 3-4 réps",
+     "start": 746,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "R5st-XGMw9k": {
+   "videoId": "R5st-XGMw9k",
+   "duration": 470,
+   "channel": "Isaiah Rivera",
+   "title": "Here Are My Top Vertical Jump Exercises (50.5 Inch Vertical)",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "flm5f7bn6SY": {
+   "videoId": "flm5f7bn6SY",
+   "duration": 619,
+   "channel": "BreakthroughBBall",
+   "title": "9 Important Plyometric Exercises for Basketball Players",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Pogos en avançant",
+     "category": "reactive-ankles",
+     "purpose": "Développer la réactivité des chevilles et la puissance de propulsion horizontale à deux pieds.",
+     "equipment": [],
+     "cues": [
+      "Tirer les pointes vers le haut en l'air",
+      "Contact rapide avec le sol",
+      "Pieds collés"
+     ],
+     "dosage": "2 sets, 12 seconds each",
+     "start": 143,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pogos latéraux",
+     "category": "reactive-ankles",
+     "purpose": "Renforcer les chevilles et le contrôle latéral lors des impulsions réactives.",
+     "equipment": [],
+     "cues": [
+      "Temps de contact minimal au sol",
+      "Garder les pieds collés",
+      "Sauter de gauche à droite"
+     ],
+     "dosage": "2 sets, 12 seconds each",
+     "start": 225,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe, réception tenue",
+     "category": "vertical-one-foot",
+     "purpose": "Améliorer la production de force unilatérale et la stabilité à l'atterrissage.",
+     "equipment": [],
+     "cues": [
+      "Charger le talon et le bassin",
+      "Utiliser les bras pour impulser",
+      "Stabiliser le genou à la réception"
+     ],
+     "dosage": "3 sets of 3-6 reps on each leg",
+     "start": 266,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "vertical-one-foot",
+     "purpose": "Développer la force verticale unilatérale tout en contrôlant la flexion du genou.",
+     "equipment": [
+      "box"
+     ],
+     "cues": [
+      "Charger tout le pied sur la box",
+      "Pousser fort avec la jambe avant",
+      "Pulsation dynamique des bras"
+     ],
+     "dosage": "3 sets of 5-10 reps on each leg",
+     "start": 296,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Améliorer la résilience du pied et la proprioception de la cheville dans plusieurs angles.",
+     "equipment": [],
+     "cues": [
+      "Rebonds courts et réactifs",
+      "Rester équilibré sur un seul pied",
+      "Varier les directions de saut"
+     ],
+     "dosage": "2 sets, 10 seconds on each leg",
+     "start": 337,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Sauts latéraux sur une jambe",
+     "category": "deceleration",
+     "purpose": "Développer la puissance latérale à une jambe et la capacité de freinage.",
+     "equipment": [],
+     "cues": [
+      "Pousser latéralement avec puissance",
+      "Rechercher de la hauteur et de la distance",
+      "Stabiliser la réception"
+     ],
+     "dosage": "2 sets of 5-10 reps on each leg",
+     "start": 392,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pas du patineur",
+     "category": "deceleration",
+     "purpose": "Maximiser la puissance latérale unilatérale et la coordination globale du corps.",
+     "equipment": [],
+     "cues": [
+      "Pousser le plus loin possible",
+      "Utiliser les bras en coordination",
+      "Absorber la force à l'atterrissage"
+     ],
+     "dosage": "3 sets of 6 reps on each leg",
+     "start": 436,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut vertical, réception tenue",
+     "category": "vertical-two-feet",
+     "purpose": "Développer la puissance de rotation bilatérale et le contrôle de la réception à 180 degrés.",
+     "equipment": [],
+     "cues": [
+      "Rester grand avec le buste droit",
+      "Utiliser l'élan des bras",
+      "Absorber le choc du milieu du pied au talon"
+     ],
+     "dosage": "3 sets of 4 reps, each direction",
+     "start": 501,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bonds alternés",
+     "category": "first-step",
+     "purpose": "Augmenter la rigidité musculaire et le taux de production de force dans le bas du corps.",
+     "equipment": [],
+     "cues": [
+      "Maintenir une posture haute",
+      "Maximiser le temps de suspension",
+      "Réduire le temps de contact au sol"
+     ],
+     "dosage": "3 sets of 4 reps on each leg",
+     "start": 548,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "adaqWTgGTXY": {
+   "videoId": "adaqWTgGTXY",
+   "duration": 763,
+   "channel": "Isaiah Rivera",
+   "title": "Highest Jumper In The World Breaks Down His Workout Routine",
+   "via": "thème « vertical jump exercises basketball players »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Leg extension",
+     "category": "isometric",
+     "purpose": "Build patellar tendon stiffness and relieve knee pain through isometric loading.",
+     "equipment": [
+      "leg extension machine"
+     ],
+     "cues": [
+      "Hold steady knee angle",
+      "Maintain ~70% effort",
+      "Hold for 30-45 seconds"
+     ],
+     "dosage": "3-5 sets of 30-45 sec",
+     "start": 251,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat au poids du corps",
+     "category": "mobility",
+     "purpose": "Warm up the lower body joints and increase active squat depth.",
+     "equipment": [],
+     "cues": [
+      "Keep chest up",
+      "Control descent into deep squat",
+      "Drive evenly through feet"
+     ],
+     "dosage": "",
+     "start": 288,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente fixe · poids du corps",
+     "category": "mobility",
+     "purpose": "Improve hip flexor mobility and dynamic knee extension range.",
+     "equipment": [],
+     "cues": [
+      "Take a long stride forward",
+      "Lower back knee towards ground",
+      "Keep torso upright"
+     ],
+     "dosage": "",
+     "start": 290,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut à la trap bar",
+     "category": "vertical-two-feet",
+     "purpose": "Develop explosive rate of force development under loaded vertical jumping conditions.",
+     "equipment": [
+      "trap bar",
+      "barbell plates"
+     ],
+     "cues": [
+      "Explode upward aggressively",
+      "Keep core tight",
+      "Absorb impact upon landing"
+     ],
+     "dosage": "",
+     "start": 333,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat · barre",
+     "category": "strength",
+     "purpose": "Maximize quadriceps and hip extension strength to transfer to vertical jump height.",
+     "equipment": [
+      "barbell",
+      "squat rack",
+      "plates"
+     ],
+     "cues": [
+      "Brace core firmly",
+      "Maintain posture through knee flex",
+      "Drive upward with maximum intent"
+     ],
+     "dosage": "",
+     "start": 345,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Hip thrust · barre",
+     "category": "strength",
+     "purpose": "Strengthen the gluteal muscles and posterior chain for hip extension power.",
+     "equipment": [
+      "hip thrust machine",
+      "plates"
+     ],
+     "cues": [
+      "Drive through heels",
+      "Lock out hips completely at top",
+      "Keep chin tucked throughout"
+     ],
+     "dosage": "",
+     "start": 362,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Leg curl allongé",
+     "category": "strength",
+     "purpose": "Target hamstring strength to support knee joint stability during high-speed jumping.",
+     "equipment": [
+      "lying leg curl machine"
+     ],
+     "cues": [
+      "Flex knees towards glutes",
+      "Lower weight smoothly under control",
+      "Avoid arching lower back"
+     ],
+     "dosage": "",
+     "start": 368,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Mollets assis · haltères",
+     "category": "strength",
+     "purpose": "Isolate and strengthen the soleus muscle to improve tendon energy storage.",
+     "equipment": [
+      "seated calf raise machine",
+      "plates"
+     ],
+     "cues": [
+      "Full stretch at the bottom",
+      "Press up onto ball of foot",
+      "Pause at peak contraction"
+     ],
+     "dosage": "",
+     "start": 375,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Développé couché · haltères",
+     "category": "strength",
+     "purpose": "Enhance upper body pressing strength and general work capacity.",
+     "equipment": [
+      "dumbbells",
+      "bench"
+     ],
+     "cues": [
+      "Keep shoulder blades retracted",
+      "Press dumbbells over mid-chest",
+      "Lower under steady control"
+     ],
+     "dosage": "",
+     "start": 389,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rowing un bras · haltère",
+     "category": "strength",
+     "purpose": "Improve unilateral upper back strength and scapular retraction control.",
+     "equipment": [
+      "dumbbell",
+      "bench"
+     ],
+     "cues": [
+      "Drive elbow toward hip",
+      "Keep spine neutral",
+      "Lower dumbbell smoothly without twisting"
+     ],
+     "dosage": "",
+     "start": 411,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Skip A",
+     "category": "footwork",
+     "purpose": "Improve running mechanics, hip flexor speed, and ankle stiffness.",
+     "equipment": [],
+     "cues": [
+      "Drive lead knee up aggressively",
+      "Maintain quick ground contact",
+      "Stay tall in upright posture"
+     ],
+     "dosage": "",
+     "start": 444,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat avant · barre",
+     "category": "strength",
+     "purpose": "Build quadriceps strength and core stabilization through slow tempo squats.",
+     "equipment": [
+      "barbell",
+      "plates",
+      "squat rack"
+     ],
+     "cues": [
+      "Keep elbows elevated high",
+      "Descent slowly over 3-5 seconds",
+      "Ascend slowly under full control"
+     ],
+     "dosage": "2-3 sets of 6-8 reps",
+     "start": 487,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tractions · gilet lesté",
+     "category": "strength",
+     "purpose": "Develop bodyweight upper body pulling strength and core stability.",
+     "equipment": [
+      "pull-up bar"
+     ],
+     "cues": [
+      "Pull chest to bar",
+      "Avoid swinging or kicking legs",
+      "Control the lowering phase"
+     ],
+     "dosage": "5 sets of 6 reps",
+     "start": 605,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "GUiH-HOwq-o": {
+   "videoId": "GUiH-HOwq-o",
+   "duration": 194,
+   "channel": "TrenchBoyz",
+   "title": "EXPLOSIVE SINGLE LEG WORKOUT FOR BASKETBALL PLAYERS! | INCREASE YOUR VERTICAL JUMP! | DUNK UNDER 6FT",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Fente bulgare · haltères",
+     "category": "strength",
+     "purpose": "Build single-leg strength, knee stability, and quad-glute power.",
+     "equipment": [
+      "dumbbells",
+      "bench"
+     ],
+     "cues": [
+      "Control the movement, do not rush",
+      "Knee can slightly go over toe",
+      "Keep a balanced split squat setup"
+     ],
+     "dosage": "4 sets x 8 reps each leg",
+     "start": 3,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "vertical-one-foot",
+     "purpose": "Develop single-leg explosive vertical drive and leg power.",
+     "equipment": [
+      "bench",
+      "medicine ball"
+     ],
+     "cues": [
+      "Keep strong base with back foot",
+      "Explode up quickly off the bench",
+      "Maintain control of the ball"
+     ],
+     "dosage": "4 sets x 10 reps each leg",
+     "start": 33,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sur une jambe assis-debout",
+     "category": "strength",
+     "purpose": "Improve unilateral strength and eccentric control of the leg muscles.",
+     "equipment": [
+      "kettlebell",
+      "bench"
+     ],
+     "cues": [
+      "Increase eccentric phase, slow down",
+      "Control the movement",
+      "Maintain tension throughout"
+     ],
+     "dosage": "4 sets x 8 reps each leg",
+     "start": 51,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up sauté",
+     "category": "reactive-ankles",
+     "purpose": "Reduce ground contact time and fire fast-twitch muscle fibers explosively.",
+     "equipment": [
+      "dumbbells",
+      "bench"
+     ],
+     "cues": [
+      "Decrease ground contact time",
+      "Get off the ground as quick as possible",
+      "Use your explosiveness"
+     ],
+     "dosage": "4 sets x 20 reps each leg",
+     "start": 117,
+     "male_demonstrator": true,
+     "duplicate_of": "Step-up sauté"
+    },
+    {
+     "name": "Descente latérale de marche",
+     "category": "strength",
+     "purpose": "Target single-leg eccentric strength, control, and balance off an elevated surface.",
+     "equipment": [
+      "dumbbell",
+      "bench"
+     ],
+     "cues": [
+      "Control the lowering movement",
+      "Do not rush the motion",
+      "Keep torso stable"
+     ],
+     "dosage": "4 sets x 8 reps each leg",
+     "start": 138,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sur une jambe assis-debout",
+     "category": "strength",
+     "purpose": "Challenge single-leg strength and counterbalanced hip mobility.",
+     "equipment": [
+      "weight plate",
+      "bench"
+     ],
+     "cues": [
+      "Control the descent to the bench",
+      "Extend plate forward for counterbalance",
+      "Drive through the standing heel"
+     ],
+     "dosage": "3 sets x 8 reps each leg",
+     "start": 158,
+     "male_demonstrator": true,
+     "duplicate_of": "Squat sur une jambe assis-debout"
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Train shock absorption upon landing and immediate reactive elasticity.",
+     "equipment": [
+      "bench"
+     ],
+     "cues": [
+      "Absorb the landing properly",
+      "Jump quick off the ground",
+      "Ensure safe landing mechanics"
+     ],
+     "dosage": "3 sets x 12 reps each leg",
+     "start": 211,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "mCF6dSlSGHU": {
+   "videoId": "mCF6dSlSGHU",
+   "duration": 621,
+   "channel": "KP Sports Performance",
+   "title": "Explosive Plyometric Workout | Basketball Training",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Respiration diaphragmatique",
+     "category": "mobility",
+     "purpose": "Improve pelvic positioning, breathing mechanics, and hamstring activation before training.",
+     "equipment": [
+      "bench"
+     ],
+     "cues": [
+      "Press heels into bench",
+      "Breathe deeply into belly",
+      "Keep spine neutral"
+     ],
+     "dosage": "1-2 sets x 8-10 breaths",
+     "start": 37,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Copenhagen sur genou",
+     "category": "strength",
+     "purpose": "Strengthen the adductors and improve hip and core stability.",
+     "equipment": [
+      "bench"
+     ],
+     "cues": [
+      "Keep hips elevated",
+      "Maintain straight alignment",
+      "Engage core"
+     ],
+     "dosage": "1-2 sets x 10-15s hold",
+     "start": 55,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche du psoas · élastique aux pieds",
+     "category": "mobility",
+     "purpose": "Strengthen hip flexors and improve single-leg postural control.",
+     "equipment": [
+      "mini-band"
+     ],
+     "cues": [
+      "Drive knee upward high",
+      "Keep standing leg braced",
+      "Control the lowering phase"
+     ],
+     "dosage": "1-2 sets x 10 reps each",
+     "start": 111,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pallof press · élastique",
+     "category": "strength",
+     "purpose": "Enhance anti-rotational core stability and trunk control.",
+     "equipment": [
+      "resistance band"
+     ],
+     "cues": [
+      "Press band straight out",
+      "Resist torso rotation",
+      "Squeeze glutes and core"
+     ],
+     "dosage": "1-2 sets x 10 reps each",
+     "start": 129,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente latérale",
+     "category": "mobility",
+     "purpose": "Warm up the frontal plane, hip groin stretch, and develop single-leg balance.",
+     "equipment": [],
+     "cues": [
+      "Sit hips back into lunge",
+      "Drive knee high on return",
+      "Keep chest upright"
+     ],
+     "dosage": "1-2 sets x 10 reps each",
+     "start": 147,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fentes marchées",
+     "category": "mobility",
+     "purpose": "Mobilize hips across sagittal, frontal, and transverse planes.",
+     "equipment": [],
+     "cues": [
+      "Step with control",
+      "Maintain upright posture",
+      "Move smoothly through angles"
+     ],
+     "dosage": "1-2 sets x 10 reps",
+     "start": 208,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre une jambe",
+     "category": "mobility",
+     "purpose": "Build ankle, foot, and hamstring stability while stretching quads.",
+     "equipment": [],
+     "cues": [
+      "Pull ankle to glute",
+      "Hinge at the hips",
+      "Maintain soft knee bend"
+     ],
+     "dosage": "1-2 sets x 10 reps each",
+     "start": 233,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche arrière contrôlée",
+     "category": "deceleration",
+     "purpose": "Activate quads and prepare lower legs for backward braking movements.",
+     "equipment": [],
+     "cues": [
+      "Backpedal and stick landing",
+      "Stay low in athletic stance",
+      "Control body center of gravity"
+     ],
+     "dosage": "1-2 sets x 10 reps each",
+     "start": 250,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Improve lower leg stiffness and rapid ground energy transfer.",
+     "equipment": [],
+     "cues": [
+      "Stay quick off ground",
+      "Keep ankles stiff",
+      "Minimize ground contact time"
+     ],
+     "dosage": "1-2 sets x 10 reps",
+     "start": 304,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente et réception",
+     "category": "deceleration",
+     "purpose": "Develop rapid eccentric braking and landing absorption capacity.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Step off box",
+      "Absorb landing quietly",
+      "Maintain stiff athletic stance"
+     ],
+     "dosage": "3 sets x 6 reps",
+     "start": 321,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Sauts de haies enchaînés",
+     "category": "reactive-ankles",
+     "purpose": "Maximize vertical bounce and quick reactive elasticity over hurdles.",
+     "equipment": [
+      "plyo box",
+      "hurdles"
+     ],
+     "cues": [
+      "Land springy off ground",
+      "Minimize contact time",
+      "Drive arms vertically"
+     ],
+     "dosage": "4-6 sets x 6 reps",
+     "start": 338,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut avec élan, deux pieds",
+     "category": "vertical-two-feet",
+     "purpose": "Maximize maximum vertical jump power output using approach steps.",
+     "equipment": [],
+     "cues": [
+      "Penultimate step speed",
+      "Explode upward with arms",
+      "Land softly under control"
+     ],
+     "dosage": "4 sets x 5 reps",
+     "start": 404,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sauté · haltères légers",
+     "category": "vertical-two-feet",
+     "purpose": "Build loaded rate of force development for vertical takeoff.",
+     "equipment": [
+      "barbell"
+     ],
+     "cues": [
+      "Dip quickly and jump",
+      "Explode vertically",
+      "Absorb landing with knees"
+     ],
+     "dosage": "3 sets x 3-6 reps",
+     "start": 440,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat avant · barre",
+     "category": "strength",
+     "purpose": "Enhance overhead stability, shoulder mobility, and explosive squat receiver technique.",
+     "equipment": [
+      "barbell"
+     ],
+     "cues": [
+      "Drop fast into deep squat",
+      "Punch bar overhead",
+      "Stand up strong"
+     ],
+     "dosage": "3 sets x 3 reps",
+     "start": 512,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche du fermier · haltères",
+     "category": "strength",
+     "purpose": "Build core, grip strength, and dynamic posture while moving.",
+     "equipment": [
+      "dumbbells"
+     ],
+     "cues": [
+      "Stand tall with shoulders back",
+      "Walk with controlled strides",
+      "Brace core tight"
+     ],
+     "dosage": "3 sets x 10-20 yards",
+     "start": 536,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sur une jambe assis-debout",
+     "category": "strength",
+     "purpose": "Build single-leg quad strength, balance, and control.",
+     "equipment": [
+      "dumbbell",
+      "plyo box"
+     ],
+     "cues": [
+      "Hold weight at chest",
+      "Lower body on one leg",
+      "Drive up through stance heel"
+     ],
+     "dosage": "3 sets x 6-8 reps each",
+     "start": 558,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente arrière · haltères",
+     "category": "strength",
+     "purpose": "Improve unilateral leg strength, hip flexibility, and knee stability.",
+     "equipment": [
+      "dumbbell"
+     ],
+     "cues": [
+      "Hold weight at chest",
+      "Lean torso slightly forward",
+      "Lower trailing knee toward floor"
+     ],
+     "dosage": "3 sets x 6-8 reps each",
+     "start": 641,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes prise large",
+     "category": "strength",
+     "purpose": "Develop upper body pushing strength and chest muscle engagement.",
+     "equipment": [],
+     "cues": [
+      "Wide hand position",
+      "Lower chest under control",
+      "Maintain solid plank alignment"
+     ],
+     "dosage": "3 sets x 8-12 reps",
+     "start": 725,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Enroulement à la poulie",
+     "category": "strength",
+     "purpose": "Strengthen upper and lower abdominal muscles with stability control.",
+     "equipment": [
+      "swiss ball"
+     ],
+     "cues": [
+      "Start in extended plank",
+      "Drive hips up into pike",
+      "Control the lowering phase"
+     ],
+     "dosage": "3 sets x 8-12 reps",
+     "start": 821,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rowing un bras · haltère",
+     "category": "strength",
+     "purpose": "Strengthen upper back pulling muscles and anti-rotational core posture.",
+     "equipment": [
+      "dumbbells"
+     ],
+     "cues": [
+      "Maintain pushup position",
+      "Row dumbbell to hip",
+      "Avoid rotating hips"
+     ],
+     "dosage": "3 sets x 5-8 reps each",
+     "start": 909,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "stEl62af_BE": {
+   "videoId": "stEl62af_BE",
+   "duration": 757,
+   "channel": "Vernon Griffith II",
+   "title": "PLYOMETRICS FOR ATHLETES with NBA Director for the Detroit Pistons",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Split squat grande amplitude",
+     "category": "mobility",
+     "purpose": "Améliore la mobilité de la cheville et la résistance des tendons du genou en flexion profonde.",
+     "equipment": [],
+     "cues": [
+      "Avance le genou au-dessus des orteils",
+      "Garde le buste redressé",
+      "Contrôle l'amplitude maximale"
+     ],
+     "dosage": "",
+     "start": 64,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente tombée",
+     "category": "deceleration",
+     "purpose": "Développe la capacité d'absorption des forces et la décélération explosive en position de fente.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Laisse tomber le corps rapidement",
+      "Freine l'impact instantanément",
+      "Garde le buste stable et fort"
+     ],
+     "dosage": "",
+     "start": 243,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "vB92j10d7IA": {
+   "videoId": "vB92j10d7IA",
+   "duration": 381,
+   "channel": "Riq B",
+   "title": "This Helped Me Dunk At 5'7 | FULL Plyometric Workout (No Equipment)",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Wall Sit Isos",
+     "category": "isometric",
+     "purpose": "Builds isometric knee extensor strength and prepares the patellar tendon for high-impact jumping.",
+     "equipment": [
+      "wall"
+     ],
+     "cues": [
+      "Back flat against wall",
+      "Knees bent at 90 degrees",
+      "Drive heels into the floor"
+     ],
+     "dosage": "5x45 sec",
+     "start": 38,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Max Approach Jumps",
+     "category": "vertical-two-feet",
+     "purpose": "Maximizes jump height and dunking ability through game-specific approach jump technique.",
+     "equipment": [
+      "basketball hoop",
+      "basketball"
+     ],
+     "cues": [
+      "Give 100% effort on every rep",
+      "Accelerate through the approach",
+      "Explode violently upward"
+     ],
+     "dosage": "6x4",
+     "start": 90,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat Jumps",
+     "category": "vertical-two-feet",
+     "purpose": "Develops explosive vertical power and continuous eccentric-to-concentric transitions.",
+     "equipment": [],
+     "cues": [
+      "Lower into a quarter squat",
+      "Explode upward as high as possible",
+      "Rebound immediately upon landing"
+     ],
+     "dosage": "4x6",
+     "start": 144,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Maximal Sprints",
+     "category": "conditioning",
+     "purpose": "Enhances stretch-shortening cycle efficiency and tendon stiffness through ultra-fast ground contacts.",
+     "equipment": [],
+     "cues": [
+      "Sprint at 100% max velocity",
+      "Minimize ground contact time",
+      "Maintain upright posture"
+     ],
+     "dosage": "6x30 m",
+     "start": 168,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Drop Jumps",
+     "category": "reactive-ankles",
+     "purpose": "Improves reactive strength and rate of force development upon landing impact.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Step off the box without jumping up",
+      "Land and spring off floor rapidly",
+      "Focus on ground contact speed over height"
+     ],
+     "dosage": "5x4",
+     "start": 219,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pogo Jumps",
+     "category": "reactive-ankles",
+     "purpose": "Builds ankle reactivity, Achilles stiffness, and lower leg elasticity.",
+     "equipment": [],
+     "cues": [
+      "Stay on forefoot throughout",
+      "Do not let heels touch the ground",
+      "Bounce as fast as possible"
+     ],
+     "dosage": "4x12",
+     "start": 266,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Single-Leg Pogo Jumps",
+     "category": "reactive-ankles",
+     "purpose": "Increases unilateral lower leg stiffness and single-leg ankle reactivity.",
+     "equipment": [],
+     "cues": [
+      "Balance on one forefoot",
+      "Keep heel elevated above ground",
+      "Spring off ground with minimal contact time"
+     ],
+     "dosage": "",
+     "start": 284,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "t0xEqm-0CTw": {
+   "videoId": "t0xEqm-0CTw",
+   "duration": 286,
+   "channel": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "via": "thème « basketball strength training exercises »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Écartés · élastique",
+     "category": "strength",
+     "purpose": "Improves shoulder strength, upper back stability, and overall posture.",
+     "equipment": [
+      "bande d'intensité"
+     ],
+     "cues": [
+      "Keep arms extended",
+      "Pull band across chest",
+      "Squeeze upper back"
+     ],
+     "dosage": "3 Sets x 20 Reps",
+     "start": 50,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Curl marteau",
+     "category": "strength",
+     "purpose": "Builds bicep strength and muscle endurance for pulling rebounds and shooting.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Keep elbows tucked",
+      "Control the movement",
+      "Maintain neutral grip"
+     ],
+     "dosage": "3 Sets x 12 Reps",
+     "start": 100,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Développé épaules · haltères",
+     "category": "strength",
+     "purpose": "Enhances shoulder strength and overhead stability for shooting.",
+     "equipment": [
+      "haltères",
+      "banc"
+     ],
+     "cues": [
+      "Press overhead under control",
+      "Keep core engaged",
+      "Lower dumbbells steadily"
+     ],
+     "dosage": "3 Sets x 8 Reps",
+     "start": 112,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tractions contrôlées",
+     "category": "strength",
+     "purpose": "Strengthens lats, upper back, and grip strength for defensive posture.",
+     "equipment": [
+      "barre de traction"
+     ],
+     "cues": [
+      "Full range of motion",
+      "Engage upper back",
+      "Control the descent"
+     ],
+     "dosage": "3 Sets x Until Failure",
+     "start": 123,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes",
+     "category": "strength",
+     "purpose": "Develops chest, shoulder, and tricep power while engaging core control.",
+     "equipment": [],
+     "cues": [
+      "Lower slowly",
+      "Explode up",
+      "Keep body in straight line"
+     ],
+     "dosage": "4 Sets x 12 Reps",
+     "start": 133,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Suspension à la barre",
+     "category": "strength",
+     "purpose": "Increases shoulder mobility, posture, and grip strength.",
+     "equipment": [
+      "barre de traction"
+     ],
+     "cues": [
+      "Hold bar firmly",
+      "Relieve spine pressure",
+      "Keep shoulders active"
+     ],
+     "dosage": "3 Sets x Until Failure",
+     "start": 144,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Élévations latérales",
+     "category": "strength",
+     "purpose": "Strengthens upper back and shoulders for dribbling, shooting, and rebounding.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Raise arms out to sides",
+      "Control dumbbell descent",
+      "Keep torso upright"
+     ],
+     "dosage": "4 Sets x 10 Reps Each Direction",
+     "start": 151,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Extension triceps · élastique",
+     "category": "strength",
+     "purpose": "Builds tricep endurance necessary for shooting follow-through.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Keep elbows pinned",
+      "Extend arms fully",
+      "Maintain tension on band"
+     ],
+     "dosage": "3 Sets x Until Failure",
+     "start": 203,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Mollets assis · haltères",
+     "category": "strength",
+     "purpose": "Strengthens calf muscles and ankle plantarflexion for jumping and sprinting.",
+     "equipment": [
+      "haltères",
+      "banc"
+     ],
+     "cues": [
+      "Extend ankles fully",
+      "Pause at the top",
+      "Lower heels with control"
+     ],
+     "dosage": "4 Sets x 15 Reps",
+     "start": 218,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat · haltères",
+     "category": "strength",
+     "purpose": "Targets glutes, quads, and inner thighs while reducing back strain.",
+     "equipment": [
+      "haltère"
+     ],
+     "cues": [
+      "Wide stance",
+      "Chest up",
+      "Drive through heels"
+     ],
+     "dosage": "4 Sets x 15 Reps",
+     "start": 226,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut assisté à l’élastique",
+     "category": "vertical-two-feet",
+     "purpose": "Increases jump height and explosiveness with minimal joint impact.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Use band assistance",
+      "Explode off the ground",
+      "Land softly"
+     ],
+     "dosage": "3 Sets x 5 Reps",
+     "start": 237,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente isométrique",
+     "category": "isometric",
+     "purpose": "Protects knees from injury by strengthening surrounding joint structures.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Hold deep lunge",
+      "Keep knee stable over ankle",
+      "Maintain upright torso"
+     ],
+     "dosage": "3 Sets x 20 Seconds",
+     "start": 246,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Step-up genou explosif",
+     "category": "first-step",
+     "purpose": "Improves single-leg power and dynamic ankle/knee stability.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Drive lead foot down",
+      "Explode upward",
+      "Drive free knee high"
+     ],
+     "dosage": "3 Sets x 8 Reps",
+     "start": 256,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Swing kettlebell",
+     "category": "strength",
+     "purpose": "Develops posterior chain explosiveness for sprint speed and vertical leap.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Hinge at hips",
+      "Snap hips forward",
+      "Keep core tight"
+     ],
+     "dosage": "3 Sets x 10 Reps",
+     "start": 304,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre roumain · haltères",
+     "category": "strength",
+     "purpose": "Strengthens glutes, hamstrings, lower back, and core.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Hinge back at hips",
+      "Keep back flat",
+      "Feel stretch in hamstrings"
+     ],
+     "dosage": "4 Sets x 10 Reps",
+     "start": 311,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Corde à sauter",
+     "category": "reactive-ankles",
+     "purpose": "Enhances agility, footwork, coordination, and lower-body endurance.",
+     "equipment": [
+      "corde à sauter"
+     ],
+     "cues": [
+      "Stay light on toes",
+      "Quick foot contact",
+      "Rhythmic jumping"
+     ],
+     "dosage": "200 Jumps",
+     "start": 321,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Curl-up McGill",
+     "category": "strength",
+     "purpose": "Builds abdominal strength for trunk stability during motion.",
+     "equipment": [
+      "tapis"
+     ],
+     "cues": [
+      "Engage core",
+      "Lift shoulders off floor",
+      "Control the motion"
+     ],
+     "dosage": "4 Sets x 25 Reps",
+     "start": 337,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Relevés de jambes au sol",
+     "category": "strength",
+     "purpose": "Strengthens lower core and hip flexors for better dynamic balance.",
+     "equipment": [
+      "tapis"
+     ],
+     "cues": [
+      "Keep lower back flat",
+      "Alternate leg kicks",
+      "Maintain steady tempo"
+     ],
+     "dosage": "2 Sets x Until Failure",
+     "start": 340,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rotations assises · kettlebell",
+     "category": "strength",
+     "purpose": "Enhances rotational core strength and stability.",
+     "equipment": [
+      "tapis"
+     ],
+     "cues": [
+      "Keep feet elevated",
+      "Rotate shoulders side to side",
+      "Keep core engaged"
+     ],
+     "dosage": "3 Sets x 15 Reps Each Direction",
+     "start": 344,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Planche sur les avant-bras",
+     "category": "isometric",
+     "purpose": "Develops total core stability essential for balance, jumping, and running.",
+     "equipment": [
+      "tapis"
+     ],
+     "cues": [
+      "Keep body in straight line",
+      "Squeeze glutes and core",
+      "Hold steady"
+     ],
+     "dosage": "2 Sets x Until Failure",
+     "start": 347,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "qcDfjK_CdtA": {
+   "videoId": "qcDfjK_CdtA",
+   "duration": 1144,
+   "channel": "overtimeathletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "via": "thème « basketball plyometrics workout »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Mobilité de cheville au mur",
+     "category": "mobility",
+     "purpose": "Improves ankle dorsiflexion range of motion and Achilles tendon flexibility for deeper squatting and jump landing.",
+     "equipment": [],
+     "cues": [
+      "Keep heel planted",
+      "Push knee forward over toe",
+      "Drive hands forward"
+     ],
+     "dosage": "3-5 reps per side",
+     "start": 0,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Étirement complet en fente",
+     "category": "mobility",
+     "purpose": "Enhances hip flexor mobility and thoracic spine rotation necessary for optimal athletic posture.",
+     "equipment": [],
+     "cues": [
+      "Step foot wide",
+      "Reach inside arm to ceiling",
+      "Drive back hip down"
+     ],
+     "dosage": "5 reps per side",
+     "start": 45,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Passages shin box",
+     "category": "mobility",
+     "purpose": "Increases internal and external hip rotation for multi-directional change of direction.",
+     "equipment": [],
+     "cues": [
+      "Maintain 90-degree knee angles",
+      "Keep spine tall",
+      "Lower chest toward front shin"
+     ],
+     "dosage": "",
+     "start": 111,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Lever de jambe tendue actif",
+     "category": "mobility",
+     "purpose": "Improves active hamstring flexibility while maintaining core and pelvic stability.",
+     "equipment": [],
+     "cues": [
+      "Press lower back into ground",
+      "Keep knee locked",
+      "Pull toes toward shin"
+     ],
+     "dosage": "10 reps per side",
+     "start": 212,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Builds ankle stiffness and elasticity for fast ground contact time.",
+     "equipment": [],
+     "cues": [
+      "Keep feet in dorsiflexion",
+      "Bounce off balls of feet",
+      "Minimize knee bend"
+     ],
+     "dosage": "10 seconds",
+     "start": 290,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Trains rapid force production and vertical recoil through ankle elasticity.",
+     "equipment": [],
+     "cues": [
+      "Alternate low and high hops",
+      "Stay in dorsiflexion",
+      "Quick contact"
+     ],
+     "dosage": "10 seconds",
+     "start": 323,
+     "male_demonstrator": false,
+     "duplicate_of": "Petits rebonds de cheville"
+    },
+    {
+     "name": "Petits rebonds de cheville",
+     "category": "reactive-ankles",
+     "purpose": "Enhances single-leg ankle stiffness and foot reactivity during movement.",
+     "equipment": [],
+     "cues": [
+      "Alternate feet smoothly",
+      "Stay light on feet",
+      "Maintain upright posture"
+     ],
+     "dosage": "10 seconds",
+     "start": 351,
+     "male_demonstrator": true,
+     "duplicate_of": "Petits rebonds de cheville"
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Develops single-leg ankle power, reactivity, and landing control.",
+     "equipment": [],
+     "cues": [
+      "Quick ground contact",
+      "Don't collapse at knee",
+      "Stay balanced"
+     ],
+     "dosage": "10 seconds per side",
+     "start": 418,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Increases single-leg plyometric strength and vertical displacement.",
+     "equipment": [],
+     "cues": [
+      "Absorb soft landing",
+      "Drive non-jumping knee",
+      "Control knee flexion"
+     ],
+     "dosage": "10 seconds per side",
+     "start": 490,
+     "male_demonstrator": false,
+     "duplicate_of": "Rebonds sur une jambe"
+    },
+    {
+     "name": "Drop squat",
+     "category": "deceleration",
+     "purpose": "Enhances double-leg force absorption and vertical jump warm-up mechanics.",
+     "equipment": [],
+     "cues": [
+      "Push hips back",
+      "Explode upward",
+      "Land soft with control"
+     ],
+     "dosage": "10 seconds",
+     "start": 529,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Sauts de haies enchaînés",
+     "category": "reactive-ankles",
+     "purpose": "Teaches reactive ground contacts and stretch-shortening cycle efficiency over obstacles.",
+     "equipment": [
+      "mini hurdle"
+     ],
+     "cues": [
+      "Fast ground contacts",
+      "Pop high off ground",
+      "Maintain rhythm"
+     ],
+     "dosage": "",
+     "start": 600,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Sauts de haies enchaînés",
+     "category": "vertical-two-feet",
+     "purpose": "Improves continuous two-foot bounding height and elastic energy return.",
+     "equipment": [
+      "mini hurdle"
+     ],
+     "cues": [
+      "Max vertical height",
+      "Quick ground contact",
+      "Slight knee bend"
+     ],
+     "dosage": "",
+     "start": 624,
+     "male_demonstrator": false,
+     "duplicate_of": "Sauts de haies enchaînés"
+    },
+    {
+     "name": "Step-up genou explosif",
+     "category": "vertical-one-foot",
+     "purpose": "Enhances single-leg takeoff power and hip drive for layups and single-leg jumping.",
+     "equipment": [
+      "mini hurdle"
+     ],
+     "cues": [
+      "Pop through single leg",
+      "Drive lead knee up",
+      "Minimal ground contact time"
+     ],
+     "dosage": "",
+     "start": 706,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut vertical, réception tenue",
+     "category": "deceleration",
+     "purpose": "Develops max vertical jump displacement and landing deceleration mechanics.",
+     "equipment": [
+      "hurdle"
+     ],
+     "cues": [
+      "Pop over hurdle",
+      "Stick landing with hips back",
+      "Keep knees aligned"
+     ],
+     "dosage": "",
+     "start": 732,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Sauts de haies enchaînés",
+     "category": "reactive-ankles",
+     "purpose": "Trains rapid transition from hurdle clear to explosive jump off quick contact.",
+     "equipment": [
+      "hurdle"
+     ],
+     "cues": [
+      "Spring off ground",
+      "Fast contact on landing",
+      "Explode over second hurdle"
+     ],
+     "dosage": "",
+     "start": 802,
+     "male_demonstrator": true,
+     "duplicate_of": "Sauts de haies enchaînés"
+    },
+    {
+     "name": "Saut une jambe avec élan (appel de lay-up)",
+     "category": "vertical-one-foot",
+     "purpose": "Improves single-leg takeoff power and impulse during run-up jumps.",
+     "equipment": [
+      "hurdle"
+     ],
+     "cues": [
+      "Approach with rhythm",
+      "Spring off plant foot",
+      "Land stable on two feet"
+     ],
+     "dosage": "4 total reps",
+     "start": 844,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage en trois appuis",
+     "category": "counter-moves",
+     "purpose": "Develops lateral reorientation power and jump execution following a direction change.",
+     "equipment": [
+      "hurdle"
+     ],
+     "cues": [
+      "Turn fast 90 degrees",
+      "Load hips deep",
+      "Explode vertically over hurdle"
+     ],
+     "dosage": "",
+     "start": 924,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Soulevé de terre à la trap bar",
+     "category": "strength",
+     "purpose": "Builds lower body posterior chain and quad strength in a joint-friendly joint position.",
+     "equipment": [
+      "trap bar",
+      "weight plate"
+     ],
+     "cues": [
+      "Screw feet into ground",
+      "Drive floor away",
+      "Keep chest upright"
+     ],
+     "dosage": "4 sets of 5 reps",
+     "start": 1200,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente contrôlée sur marche",
+     "category": "isometric",
+     "purpose": "Strengthens VMO, knee stability, and single-leg deceleration capacity.",
+     "equipment": [
+      "weight bench"
+     ],
+     "cues": [
+      "Push knee forward",
+      "Keep hips level",
+      "Touch heel lightly"
+     ],
+     "dosage": "5 reps per side",
+     "start": 1130,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Landmine press un genou au sol",
+     "category": "strength",
+     "purpose": "Builds upper body pushing strength and core anti-extension stability.",
+     "equipment": [
+      "barbell",
+      "weight bench",
+      "weight plate"
+     ],
+     "cues": [
+      "Keep trunk tall",
+      "Press bar overhead in arc",
+      "Control lowering phase"
+     ],
+     "dosage": "8 reps per arm",
+     "start": 1500,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tirage vertical · élastique",
+     "category": "strength",
+     "purpose": "Develops upper back pull strength and shoulder blade stability.",
+     "equipment": [
+      "resistance band"
+     ],
+     "cues": [
+      "Rotate thumb outward",
+      "Drive elbow back",
+      "Relax neck"
+     ],
+     "dosage": "8 reps per side",
+     "start": 1525,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Portée valise",
+     "category": "strength",
+     "purpose": "Builds shoulder endurance, grip strength, and core anti-extension holding capability.",
+     "equipment": [
+      "clubbell"
+     ],
+     "cues": [
+      "Hold club at shoulder height",
+      "Keep ribcage down",
+      "Walk with stacked spine"
+     ],
+     "dosage": "",
+     "start": 1645,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche lourde au traîneau",
+     "category": "conditioning",
+     "purpose": "Enhances knee drive, leg extension endurance, and posterior chain power.",
+     "equipment": [
+      "sled"
+     ],
+     "cues": [
+      "Sink into seated position",
+      "Keep arms extended",
+      "Walk steadily backwards"
+     ],
+     "dosage": "",
+     "start": 1813,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pompes avec résistance élastique",
+     "category": "strength",
+     "purpose": "Promotes upper body pushing power and explosive pressing rate of force development.",
+     "equipment": [
+      "resistance band",
+      "squat rack"
+     ],
+     "cues": [
+      "Band under armpits",
+      "Maintain rigid plank",
+      "Explode upward"
+     ],
+     "dosage": "10 reps",
+     "start": 1746,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "BW_L2Njcwgc": {
+   "videoId": "BW_L2Njcwgc",
+   "duration": 417,
+   "channel": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "via": "thème « basketball strength training exercises »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Pompes",
+     "category": "strength",
+     "purpose": "Renforce le haut du corps et les triceps.",
+     "equipment": [],
+     "cues": [
+      "Garder le corps aligné",
+      "Descendre le buste contrôlé",
+      "Pousser fermement sur les bras"
+     ],
+     "dosage": "12 répétitions",
+     "start": 41,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat au poids du corps",
+     "category": "strength",
+     "purpose": "Développe la force des quadriceps et la stabilité du bas du corps.",
+     "equipment": [],
+     "cues": [
+      "Pieds largeur d'épaules",
+      "Descendre sous la parallèle",
+      "Garder le buste relevé"
+     ],
+     "dosage": "15 répétitions",
+     "start": 96,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Extension du dos au banc",
+     "category": "strength",
+     "purpose": "Renforce les lombaires et la chaîne postérieure.",
+     "equipment": [],
+     "cues": [
+      "Contracter les lombaires",
+      "Ne pas trop cambrer",
+      "Mouvement fluide"
+     ],
+     "dosage": "10 répétitions",
+     "start": 153,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente statique",
+     "category": "strength",
+     "purpose": "Améliore la force unilatérale et l'explosivité du premier pas.",
+     "equipment": [],
+     "cues": [
+      "Mains sur les hanches",
+      "Garder l'équilibre",
+      "Genou ne dépasse pas les orteils"
+     ],
+     "dosage": "20 répétitions",
+     "start": 219,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Relevés de jambes au sol",
+     "category": "strength",
+     "purpose": "Renforce le tronc et améliore la puissance de saut.",
+     "equipment": [],
+     "cues": [
+      "Lever bras et jambes ensemble",
+      "Toucher les pointes de pieds",
+      "Mouvement continu"
+     ],
+     "dosage": "10 répétitions",
+     "start": 292,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "E1cBWmy2ohA": {
+   "videoId": "E1cBWmy2ohA",
+   "duration": 148,
+   "channel": "PJFPerformance",
+   "title": "#1 Key to Preventing Injuries-Reduce Risk of Knee Pain, Shin Splints, Achilles and More!",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": []
+  },
+  "5QY2uJ832YA": {
+   "videoId": "5QY2uJ832YA",
+   "duration": 420,
+   "channel": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "via": "thème « basketball strength training exercises »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Course facile",
+     "category": "mobility",
+     "purpose": "Warm up the cardiovascular system and prepare muscles for dynamic movement.",
+     "equipment": [],
+     "cues": [
+      "Rythme facile",
+      "Relâcher les bras"
+     ],
+     "dosage": "",
+     "start": 44,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente arrière · poids du corps",
+     "category": "mobility",
+     "purpose": "Mobilize hip flexors and prepare the lower body muscles for movement.",
+     "equipment": [],
+     "cues": [
+      "Buste redressé",
+      "Genou arrière vers le sol"
+     ],
+     "dosage": "",
+     "start": 47,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Carioca (pas croisés)",
+     "category": "mobility",
+     "purpose": "Improve hip rotation, coordination, and multi-directional warm-up efficiency.",
+     "equipment": [],
+     "cues": [
+      "Croiser les pieds",
+      "Rester fluide"
+     ],
+     "dosage": "",
+     "start": 59,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dead bug",
+     "category": "isometric",
+     "purpose": "Enhance core activation and lower-body motor control under load.",
+     "equipment": [
+      "haltère"
+     ],
+     "cues": [
+      "Bras tendu vers le plafond",
+      "Pousser avec les hanches"
+     ],
+     "dosage": "",
+     "start": 119,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Skip A",
+     "category": "footwork",
+     "purpose": "Improve locomotion mechanics and sprint coordination.",
+     "equipment": [],
+     "cues": [
+      "Genou haut",
+      "Pied armé"
+     ],
+     "dosage": "",
+     "start": 126,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Abduction de hanche debout · élastique",
+     "category": "strength",
+     "purpose": "Strengthen hip abductors and glutes to maintain knee alignment over the foot.",
+     "equipment": [
+      "élastique"
+     ],
+     "cues": [
+      "Genou aligné avec le pied",
+      "Franchir l'élastique"
+     ],
+     "dosage": "",
+     "start": 133,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Drop jump · rebond immédiat",
+     "category": "vertical-one-foot",
+     "purpose": "Develop single-leg reactive power and explosive lateral force generation.",
+     "equipment": [
+      "box"
+     ],
+     "cues": [
+      "Pousser fort le sol",
+      "Temps de contact court",
+      "Stabiliser l'atterrissage"
+     ],
+     "dosage": "",
+     "start": 218,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Lancer rotatif contre un mur",
+     "category": "medicine-ball",
+     "purpose": "Develop rotational trunk power and force absorption through hips and core.",
+     "equipment": [
+      "médecine-ball",
+      "box"
+     ],
+     "cues": [
+      "Absorber la force",
+      "Pivoter avec les hanches",
+      "Lancer explosif"
+     ],
+     "dosage": "",
+     "start": 254,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage en trois appuis",
+     "category": "deceleration",
+     "purpose": "Train reaction time, deceleration capability, and quick change of direction.",
+     "equipment": [
+      "cônes"
+     ],
+     "cues": [
+      "Réagir au signal",
+      "Centre de gravité bas",
+      "Retour rapide au centre"
+     ],
+     "dosage": "",
+     "start": 348,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Freinage latéral",
+     "category": "deceleration",
+     "purpose": "Develop pre-planned plant-foot force application and lateral push-off power.",
+     "equipment": [
+      "cadres au sol"
+     ],
+     "cues": [
+      "Planter le pied fermement",
+      "Pousser le sol avec force"
+     ],
+     "dosage": "",
+     "start": 405,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Dead bug",
+     "category": "strength",
+     "purpose": "Strengthen anterior core muscles while engaging lats using cable resistance.",
+     "equipment": [
+      "poulie",
+      "tapis"
+     ],
+     "cues": [
+      "Dos plat au sol",
+      "Engager les abdos"
+     ],
+     "dosage": "",
+     "start": 491,
+     "male_demonstrator": true,
+     "duplicate_of": "Dead bug"
+    },
+    {
+     "name": "Rowing buste appuyé",
+     "category": "strength",
+     "purpose": "Improve upper back strength and single-leg/core stability in a quadrupédic posture.",
+     "equipment": [
+      "haltère",
+      "banc"
+     ],
+     "cues": [
+      "Tirer le coude vers le haut",
+      "Garder les hanches stables"
+     ],
+     "dosage": "",
+     "start": 500,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tirage vertical · poulie",
+     "category": "strength",
+     "purpose": "Build upper body vertical pulling strength in the latissimus dorsi.",
+     "equipment": [
+      "poulie"
+     ],
+     "cues": [
+      "Tirer vers la poitrine",
+      "Serrer les omoplates"
+     ],
+     "dosage": "",
+     "start": 506,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Leg curl au sol · disques",
+     "category": "strength",
+     "purpose": "Strengthen hamstrings during eccentric lengthening and concentric contraction under hip extension.",
+     "equipment": [
+      "disques",
+      "tapis"
+     ],
+     "cues": [
+      "Garder les hanches hautes",
+      "Ramenes les talons sous soi"
+     ],
+     "dosage": "",
+     "start": 512,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Poussée de traîneau rapide",
+     "category": "conditioning",
+     "purpose": "Enhance horizontal drive, acceleration power, and sprinting speed.",
+     "equipment": [
+      "traîneau"
+     ],
+     "cues": [
+      "Pousser fort dans le sol",
+      "Vitesse maximale"
+     ],
+     "dosage": "",
+     "start": 527,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche lourde au traîneau",
+     "category": "strength",
+     "purpose": "Strengthen obliques and lateral hip musculature under sustained heavy drag.",
+     "equipment": [
+      "traîneau"
+     ],
+     "cues": [
+      "Buste droit",
+      "Engager la sangle abdominale"
+     ],
+     "dosage": "",
+     "start": 604,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Portée bras au-dessus de la tête",
+     "category": "conditioning",
+     "purpose": "Develop asymmetric core stability, shoulder control, and posture endurance during marching.",
+     "equipment": [
+      "haltères"
+     ],
+     "cues": [
+      "Un bras tendu vers le haut",
+      "Genou haut à chaque pas"
+     ],
+     "dosage": "",
+     "start": 617,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Slam de médecine-ball",
+     "category": "conditioning",
+     "purpose": "Build explosive anterior core power and muscular endurance at the end of a session.",
+     "equipment": [
+      "médecine-ball"
+     ],
+     "cues": [
+      "Remonter de manière explosive",
+      "Lancer le ballon contre le mur"
+     ],
+     "dosage": "",
+     "start": 627,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "PhAXCWAjnU8": {
+   "videoId": "PhAXCWAjnU8",
+   "duration": 699,
+   "channel": "KP Sports Performance",
+   "title": "Basketball Strength & Conditioning For Youth Athletes | Build Speed, Agility, Power, & Strength",
+   "via": "thème « basketball strength training exercises »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Spiderman Lunge with T-Spine Rotation",
+     "category": "mobility",
+     "purpose": "Improves hip mobility and thoracic spine rotation essential for athletic movement.",
+     "equipment": [],
+     "cues": [
+      "Step foot outside hand",
+      "Rotate arm to ceiling",
+      "Keep back leg active"
+     ],
+     "dosage": "1-2 sets x 8-10 reps each",
+     "start": 64,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Bodyweight Squat",
+     "category": "strength",
+     "purpose": "Develops foundational lower-body strength and squat mechanics.",
+     "equipment": [],
+     "cues": [
+      "Hands behind head",
+      "Keep chest up",
+      "Control the descent"
+     ],
+     "dosage": "1-2 sets x 8-10 reps",
+     "start": 111,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Stationary A-Skips",
+     "category": "footwork",
+     "purpose": "Enhances running mechanics, coordination, and lower-body rhythm.",
+     "equipment": [],
+     "cues": [
+      "Stay tall",
+      "Find your rhythm",
+      "Drive knees up"
+     ],
+     "dosage": "1-2 sets x 10-20 reps",
+     "start": 172,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Double Leg Snapdown",
+     "category": "deceleration",
+     "purpose": "Teaches proper landing mechanics and rapid force absorption.",
+     "equipment": [],
+     "cues": [
+      "Reach tall on toes",
+      "Snap down fast",
+      "Stick the athletic stance"
+     ],
+     "dosage": "1-2 sets x 6-8 reps",
+     "start": 318,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tennis Ball Shuffle Drill",
+     "category": "defense",
+     "purpose": "Enhances hand-eye coordination and lateral defensive reaction time.",
+     "equipment": [
+      "tennis ball"
+     ],
+     "cues": [
+      "Stay in defensive stance",
+      "Track the ball",
+      "Shuffle laterally"
+     ],
+     "dosage": "",
+     "start": 239,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Banded High Knees",
+     "category": "first-step",
+     "purpose": "Builds sprint acceleration mechanics and hip flexor power against resistance.",
+     "equipment": [
+      "resistance band"
+     ],
+     "cues": [
+      "Drive knees high",
+      "Pump feet quickly",
+      "Maintain slight forward lean"
+     ],
+     "dosage": "3 sets x 10-20s",
+     "start": 304,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Depth Drop Vertical Jump",
+     "category": "vertical-two-feet",
+     "purpose": "Improves stretch-shortening cycle reactivity and vertical jump power.",
+     "equipment": [
+      "chair"
+     ],
+     "cues": [
+      "Step off platform",
+      "Absorb landing quickly",
+      "Explode straight up"
+     ],
+     "dosage": "3 sets x 3-6 reps",
+     "start": 333,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reactive Lateral Cone Shuffle",
+     "category": "defense",
+     "purpose": "Develops rapid lateral agility and reaction skills on cue.",
+     "equipment": [
+      "cones"
+     ],
+     "cues": [
+      "Stay low",
+      "React to direction",
+      "Push off outside foot"
+     ],
+     "dosage": "3 sets x 10-20s",
+     "start": 410,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Lateral Cone Hops",
+     "category": "reactive-ankles",
+     "purpose": "Enhances ankle stiffness, lateral plyometric quickness, and balance.",
+     "equipment": [
+      "cones"
+     ],
+     "cues": [
+      "Quick ground contact",
+      "Hop side to side",
+      "Maintain balance"
+     ],
+     "dosage": "3 sets x 5 reps",
+     "start": 444,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Goblet Squat",
+     "category": "strength",
+     "purpose": "Strengthens quads and core while reinforcing proper squat posture.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Hug ball at chest",
+      "Squeeze the ball",
+      "Squat with control"
+     ],
+     "dosage": "3 sets x 5-10 reps",
+     "start": 472,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pushup Plank Tap",
+     "category": "strength",
+     "purpose": "Builds upper-body pushing power and anti-rotational core stability.",
+     "equipment": [],
+     "cues": [
+      "Keep body straight",
+      "Perform full pushup",
+      "Tap opposite shoulder"
+     ],
+     "dosage": "3 sets x 6-8 reps",
+     "start": 516,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Goblet Split Squat",
+     "category": "strength",
+     "purpose": "Increases single-leg strength, balance, and hip stability.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Hold ball at chest",
+      "Lower back knee straight down",
+      "Keep torso upright"
+     ],
+     "dosage": "3 sets x 6 reps",
+     "start": 562,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Cone Dribbling Drill",
+     "category": "ball-handling",
+     "purpose": "Improves tight space dribble control, change of direction, and conditioning.",
+     "equipment": [
+      "basketball",
+      "cones"
+     ],
+     "cues": [
+      "Weave through cones",
+      "Keep ball low",
+      "Change speed and direction"
+     ],
+     "dosage": "3 sets x 15-30s",
+     "start": 608,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "-pgljYtFuUU": {
+   "videoId": "-pgljYtFuUU",
+   "duration": 519,
+   "channel": "Good Drill",
+   "title": "5 Tips to Eliminating Knee Pain While Jumping for Hoopers",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Chaise au mur",
+     "category": "isometric",
+     "purpose": "Build isometric strength and increase knee tendon load tolerance without pain.",
+     "equipment": [
+      "wall"
+     ],
+     "cues": [
+      "Keep back flat against the wall",
+      "Hold position completely still",
+      "Stay within a pain-free knee angle"
+     ],
+     "dosage": "5 sets of 45 seconds, 3 times daily",
+     "start": 136,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat au poids du corps",
+     "category": "strength",
+     "purpose": "Develop lower body strength through a controlled, pain-free range of motion.",
+     "equipment": [],
+     "cues": [
+      "Control descent and ascent",
+      "Bias weight to the non-painful side if needed",
+      "Move smoothly through full available range"
+     ],
+     "dosage": "3 sets of 8 reps",
+     "start": 223,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente statique",
+     "category": "strength",
+     "purpose": "Strengthen quad and knee tendons in a split stance while controlling joint load.",
+     "equipment": [],
+     "cues": [
+      "Lower hips smoothly into split stance",
+      "Keep knee tracked in line with foot",
+      "Adjust knee position forward based on pain tolerance"
+     ],
+     "dosage": "3 sets of 8 reps",
+     "start": 262,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente et réception",
+     "category": "deceleration",
+     "purpose": "Train force absorption and landing mechanics to prevent knee pain during jumps.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Step off the edge without jumping up",
+      "Land softly absorbing force through knees and hips",
+      "Progress from two-leg to single-leg landings"
+     ],
+     "dosage": "5 minutes, 2-3 times per week",
+     "start": 348,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "Yy7PeWcXZKI": {
+   "videoId": "Yy7PeWcXZKI",
+   "duration": 389,
+   "channel": "Isaiah Rivera",
+   "title": "5 Isometric Exercises To Jump Higher And Get Rid Of Knee Pain!",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Isometric Leg Extension",
+     "category": "isometric",
+     "purpose": "Desensitizes knee tendon pain and builds quadriceps force capacity.",
+     "equipment": [
+      "kettlebell",
+      "bench"
+     ],
+     "cues": [
+      "Straighten leg just before lockout",
+      "Hold the weighted position steadily",
+      "Pad foot with a sock for heavy weights"
+     ],
+     "dosage": "3-5 sets of 45 sec",
+     "start": 98,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Manual Knee Extension Iso",
+     "category": "isometric",
+     "purpose": "Allows angle-specific isometric knee extension without equipment to target tendon pain.",
+     "equipment": [
+      "bench"
+     ],
+     "cues": [
+      "Interlock fingers around lower shin",
+      "Kick leg outward against hand resistance",
+      "Hold pressure at moderate intensity"
+     ],
+     "dosage": "3-5 sets of 45 sec",
+     "start": 132,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Single Leg Quarter Squat Iso",
+     "category": "isometric",
+     "purpose": "Provides a convenient bodyweight isometric load to reduce patellar tendon pain.",
+     "equipment": [],
+     "cues": [
+      "Lean slightly on a partner or wall for balance",
+      "Maintain a shallow quarter squat position",
+      "Keep continuous tension on the quad"
+     ],
+     "dosage": "3-5 sets of 45 sec",
+     "start": 170,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Kneeling Couch Iso",
+     "category": "isometric",
+     "purpose": "Targets quadriceps tendon pain above the kneecap through kneeling isometric extension.",
+     "equipment": [
+      "mat"
+     ],
+     "cues": [
+      "Keep tops of feet flat on floor",
+      "Support upper body weight in front",
+      "Press shins into floor as if extending knee"
+     ],
+     "dosage": "3-5 sets of 45 sec",
+     "start": 193,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Wall Sit Iso",
+     "category": "isometric",
+     "purpose": "Versatile isometric hold that can be modified by knee angle and stance to alleviate knee pain.",
+     "equipment": [
+      "wall"
+     ],
+     "cues": [
+      "Press back firmly into wall",
+      "Adjust knee depth to find pain-free spot",
+      "Drive through heels or toes to bias tendon"
+     ],
+     "dosage": "3-5 sets of 45 sec",
+     "start": 237,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "-6W03QOix3M": {
+   "videoId": "-6W03QOix3M",
+   "duration": 1311,
+   "channel": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Lever de jambe tendue actif",
+     "category": "strength",
+     "purpose": "Strengthens the quadriceps and hip flexors to support knee stability.",
+     "equipment": [],
+     "cues": [
+      "Contract quad fully",
+      "Lift leg with control",
+      "Pause briefly at top"
+     ],
+     "dosage": "1 set x 10 reps per side",
+     "start": 40,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Adduction allongé sur le côté",
+     "category": "strength",
+     "purpose": "Targets glutes and hip muscles to improve knee alignment and lateral stability.",
+     "equipment": [],
+     "cues": [
+      "Keep leg straight",
+      "Control movement up and down",
+      "Squeeze hip muscles at top"
+     ],
+     "dosage": "2 sets x 15 reps per side",
+     "start": 134,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pont fessier",
+     "category": "strength",
+     "purpose": "Strengthens glutes and hamstrings to relieve knee stress.",
+     "equipment": [],
+     "cues": [
+      "Press heels into floor",
+      "Squeeze glutes at top",
+      "Keep core engaged"
+     ],
+     "dosage": "2 sets x 15 reps",
+     "start": 510,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Équilibre sur une jambe",
+     "category": "isometric",
+     "purpose": "Develops ankle and knee joint stability and balance.",
+     "equipment": [],
+     "cues": [
+      "Keep soft bend in standing knee",
+      "Distribute weight evenly on foot",
+      "Maintain upright torso"
+     ],
+     "dosage": "1 set x 1 minute per side",
+     "start": 471,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Équilibre avec touche au sol",
+     "category": "mobility",
+     "purpose": "Enhances dynamic single-leg balance and knee tracking across multiple planes.",
+     "equipment": [],
+     "cues": [
+      "Tap lightly in four directions",
+      "Keep main weight on standing leg",
+      "Control knee alignment over toes"
+     ],
+     "dosage": "1 set x 1 minute per side",
+     "start": 621,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Montées sur pointes",
+     "category": "strength",
+     "purpose": "Strengthens calf muscles and ankle tendons supporting knee health.",
+     "equipment": [],
+     "cues": [
+      "Push high onto toes",
+      "Pause briefly at peak lift",
+      "Lower down slowly"
+     ],
+     "dosage": "2 sets x 15 reps",
+     "start": 752,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente isométrique",
+     "category": "isometric",
+     "purpose": "Builds quad and knee strength safely without joint friction.",
+     "equipment": [],
+     "cues": [
+      "Hold stable lunge depth",
+      "Keep chest up",
+      "Engage rear glute"
+     ],
+     "dosage": "2 sets x 30 seconds per side",
+     "start": 878,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat au poids du corps",
+     "category": "strength",
+     "purpose": "Builds overall lower body functional strength and knee joint capacity.",
+     "equipment": [],
+     "cues": [
+      "Keep chest high",
+      "Drive knees out over toes",
+      "Move through comfortable range of motion"
+     ],
+     "dosage": "1 min hold + 1 min reps",
+     "start": 1060,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "rbiy887jcGQ": {
+   "videoId": "rbiy887jcGQ",
+   "duration": 852,
+   "channel": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Fentes marchées",
+     "category": "reactive-ankles",
+     "purpose": "Improves ankle and foot complex endurance and stability while under tension on tiptoes.",
+     "equipment": [],
+     "cues": [
+      "Stay high on the balls of your feet",
+      "Keep heels off the ground",
+      "Maintain slow and controlled steps"
+     ],
+     "dosage": "2x20 seconds",
+     "start": 51,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pas latéraux · élastique",
+     "category": "reactive-ankles",
+     "purpose": "Strengthens ankles and knees under continuous tension in a low squat position.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Stay on the balls of your feet",
+      "Hold a steady squat position",
+      "Avoid bouncing between steps"
+     ],
+     "dosage": "2x4",
+     "start": 106,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente isométrique",
+     "category": "isometric",
+     "purpose": "Builds quad strength and knee joint stability through isometric split squat holds.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Maintain upright posture",
+      "Keep core fully engaged",
+      "Hold steady for 4 seconds"
+     ],
+     "dosage": "2x6",
+     "start": 193,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sur une jambe assis-debout",
+     "category": "strength",
+     "purpose": "Enhances single-leg strength, balance, and knee stability during controlled lowering.",
+     "equipment": [
+      "bench"
+     ],
+     "cues": [
+      "Lower down as slowly as possible",
+      "Soft touch on the bench",
+      "Explode up on one leg"
+     ],
+     "dosage": "2x7",
+     "start": 283,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente bulgare · haltères",
+     "category": "strength",
+     "purpose": "Increases quad and knee strength through eccentric control and isometric holds.",
+     "equipment": [
+      "dumbbell",
+      "bench"
+     ],
+     "cues": [
+      "Lower under control for 4 seconds",
+      "Hold at the bottom for 4 seconds",
+      "Explode up back to start"
+     ],
+     "dosage": "2x4",
+     "start": 332,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Équilibre sur une jambe",
+     "category": "mobility",
+     "purpose": "Enhances full-body coordination, ankle stability, and hip balance.",
+     "equipment": [
+      "weight plate"
+     ],
+     "cues": [
+      "Slightly bend the standing knee",
+      "Move the weight plate slowly overhead",
+      "Focus on body control and balance"
+     ],
+     "dosage": "1x4",
+     "start": 398,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Montée sur banc",
+     "category": "mobility",
+     "purpose": "Strengthens hips in end-range flexion without relying on rear leg momentum.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Do not push off the trailing leg",
+      "Pull up using the lead hip",
+      "Reset under control"
+     ],
+     "dosage": "1x4",
+     "start": 527,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Montée sur banc",
+     "category": "mobility",
+     "purpose": "Develops end-range hip strength on a lower platform height for beginners or regressions.",
+     "equipment": [
+      "plyo box"
+     ],
+     "cues": [
+      "Keep all weight on the box leg",
+      "Drive the hip up without momentum",
+      "Maintain upright posture"
+     ],
+     "dosage": "1x4",
+     "start": 605,
+     "male_demonstrator": true,
+     "duplicate_of": "Montée sur banc"
+    },
+    {
+     "name": "Cercles de hanche",
+     "category": "mobility",
+     "purpose": "Improves hip range of motion and joint mobility through controlled circular knee actions.",
+     "equipment": [
+      "barbell",
+      "weight plate"
+     ],
+     "cues": [
+      "Keep torso upright and erect",
+      "Draw a full circle with the knee",
+      "Control the movement smoothly"
+     ],
+     "dosage": "1x7",
+     "start": 671,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Lever de jambe tendue actif",
+     "category": "mobility",
+     "purpose": "Strengthens hip flexors and develops active end-range hip mobility while seated.",
+     "equipment": [
+      "kettlebell"
+     ],
+     "cues": [
+      "Sit tall with core engaged",
+      "Lift leg cleanly over the object",
+      "Do not lean back or rush"
+     ],
+     "dosage": "1x7",
+     "start": 734,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "D3GD5fcjw3E": {
+   "videoId": "D3GD5fcjw3E",
+   "duration": 562,
+   "channel": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "via": "thème « basketball knee pain exercises athletes »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Course arrière",
+     "category": "deceleration",
+     "purpose": "Renforce le tendon rotulien et les quadriceps en minimisant les contraintes articulaires.",
+     "equipment": [],
+     "cues": [
+      "Garder le buste droit",
+      "Pousser sur l'avant du pied",
+      "Conserver des foulées fluides"
+     ],
+     "dosage": "3 sets 30 yrds",
+     "start": 399,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Marche arrière contrôlée",
+     "category": "deceleration",
+     "purpose": "Développe la force de l'articulation du genou et du vaste interne en déclivité.",
+     "equipment": [],
+     "cues": [
+      "Pousser fort avec les orteils",
+      "Garder les genoux fléchis",
+      "Marcher avec un rythme régulier"
+     ],
+     "dosage": "3 sets 20 yrds",
+     "start": 432,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Course arrière",
+     "category": "deceleration",
+     "purpose": "Intensifie la charge sur les quadriceps et le tendon rotulien lors d'une course en côte.",
+     "equipment": [],
+     "cues": [
+      "Pousser sur les pointes de pieds",
+      "Maintenir une posture haute",
+      "Engager activement les quadriceps"
+     ],
+     "dosage": "3 sets 20 yrds",
+     "start": 490,
+     "male_demonstrator": true,
+     "duplicate_of": "Course arrière"
+    },
+    {
+     "name": "Rebonds sur une jambe",
+     "category": "reactive-ankles",
+     "purpose": "Améliore la rigidité de la cheville et la tolérance aux impacts sur une jambe.",
+     "equipment": [],
+     "cues": [
+      "Rester gainé et vertical",
+      "Rebondir rapidement sur la pointe",
+      "Garder le genou légèrement souple"
+     ],
+     "dosage": "3 sets 10 each",
+     "start": 528,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut horizontal",
+     "category": "vertical-one-foot",
+     "purpose": "Travaille l'absorption des forces d'impact et la réorientation horizontale de puissance.",
+     "equipment": [],
+     "cues": [
+      "Absorber le choc à la réception",
+      "Pousser immédiatement vers l'avant",
+      "Stabiliser l'atterrissage"
+     ],
+     "dosage": "3 sets 4 ea",
+     "start": 545,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Saut une jambe sur box",
+     "category": "vertical-one-foot",
+     "purpose": "Développe la puissance unilatérale dynamique et l'extension explosive de hanche.",
+     "equipment": [],
+     "cues": [
+      "Enchaîner le saut sans temps mort",
+      "Pousser fort sur une jambe",
+      "Atterrir de manière stable sur le support"
+     ],
+     "dosage": "3 sets 4 ea",
+     "start": 637,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Fente bulgare",
+     "category": "strength",
+     "purpose": "Renforce le quadriceps et le fessier en unilatéral avec un temps d'arrêt isométrique.",
+     "equipment": [],
+     "cues": [
+      "Poser le pied arrière en soutien",
+      "Marquer une pause en bas",
+      "Pousser dans le talon avant"
+     ],
+     "dosage": "2 sets 6 ea",
+     "start": 728,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Descente contrôlée sur marche",
+     "category": "deceleration",
+     "purpose": "Renforce la stabilité du genou et le vaste interne en charge excentrique unilatérale.",
+     "equipment": [],
+     "cues": [
+      "Fléchir le genou avec contrôle",
+      "Toucher le sol doucement avec le talon opposé",
+      "Maintenir l'alignement du genou"
+     ],
+     "dosage": "2 sets 8 ea",
+     "start": 815,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Squat sauté",
+     "category": "vertical-two-feet",
+     "purpose": "Améliore l'explosivité des membres inférieurs et la tolérance aux charges dynamiques.",
+     "equipment": [],
+     "cues": [
+      "Descendre rapidement en squat",
+      "Exploser vers le haut",
+      "Atterrir en douceur"
+     ],
+     "dosage": "3 sets 10",
+     "start": 850,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "ayndQh8VXNU": {
+   "videoId": "ayndQh8VXNU",
+   "duration": 655,
+   "channel": "ILoveBasketballTV",
+   "title": "THIS Makes You An ELITE FINISHER   Finish Like a PRO!",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Overhand Layup",
+     "category": "finishing",
+     "purpose": "Improves finishing over defenders using proper overhand hand placement on both sides.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Drive strong",
+      "Extend overhand",
+      "Eyes on the rim"
+     ],
+     "dosage": "",
+     "start": 53,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Underhand Layup",
+     "category": "finishing",
+     "purpose": "Develops a soft touch near the rim using an underhand finger-roll release.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Soft finger roll",
+      "Extend toward glass",
+      "Maintain control"
+     ],
+     "dosage": "",
+     "start": 108,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Side Hand Layup",
+     "category": "finishing",
+     "purpose": "Teaches players how to finish wide away from the defender's reach.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Head under rim",
+      "Extend ball wide",
+      "Protect with body"
+     ],
+     "dosage": "",
+     "start": 154,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Inside Hand Layup",
+     "category": "finishing",
+     "purpose": "Develops quick finishing skills using the inside hand to catch rim defenders off-guard.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Drive right finish left",
+      "One-step gather",
+      "Lift inside leg"
+     ],
+     "dosage": "",
+     "start": 234,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse Layup",
+     "category": "finishing",
+     "purpose": "Improves finishing on the opposite side of the rim using the backboard as protection.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Drive under rim",
+      "Reach opposite side",
+      "Use high soft touch"
+     ],
+     "dosage": "",
+     "start": 277,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Contact Layup",
+     "category": "finishing",
+     "purpose": "Teaches players how to absorb and initiate contact while protecting the basketball.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Tuck ball at ribs",
+      "Bump with shoulder",
+      "Jump sideways L-shape"
+     ],
+     "dosage": "",
+     "start": 418,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Pump Fake Finish",
+     "category": "finishing",
+     "purpose": "Teaches patience around the rim to elevate defenders into the air before finishing.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Stay grounded on fake",
+      "Sell the shot",
+      "Be patient"
+     ],
+     "dosage": "",
+     "start": 481,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Changing Angles Layup",
+     "category": "finishing",
+     "purpose": "Enhances body control and high extension to adjust shot angles over rim protectors.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Reach toward net",
+      "Bring ball back to shoulder",
+      "Finish smoothly"
+     ],
+     "dosage": "",
+     "start": 543,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "N8omkdkVLRE": {
+   "videoId": "N8omkdkVLRE",
+   "duration": 348,
+   "channel": "THINCPRO Basketball",
+   "title": "How to: Finish At The RIM!!! Daily 3 Minute LAYUP ROUTINE (Basketball Training Drills AT HOME)",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Lay-ups des deux mains",
+     "category": "finishing",
+     "purpose": "Améliorer la finition au cercle des deux mains enchaînée à haute intensité.",
+     "equipment": [
+      "ballon de basket",
+      "plots"
+     ],
+     "cues": [
+      "Attaquer le cercle à vitesse réelle",
+      "Contrôler le ballon lors de la prise d'appui",
+      "Enchaîner immédiatement vers l'autre plot"
+     ],
+     "dosage": "1 minute",
+     "start": 82,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse lay-up",
+     "category": "finishing",
+     "purpose": "Travailler la finition en reverse lay-up après un arraché et pivot vers le centre.",
+     "equipment": [
+      "ballon de basket",
+      "plots"
+     ],
+     "cues": [
+      "S'ouvrir vers le centre en pivot inversé",
+      "Attaquer le milieu de la raquette",
+      "Finir de l'autre côté du cercle"
+     ],
+     "dosage": "1 minute",
+     "start": 162,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Euro-step",
+     "category": "finishing",
+     "purpose": "Enchaîner des mouvements de dribble combo et varier les finitions autour du cercle.",
+     "equipment": [
+      "ballon de basket",
+      "plots"
+     ],
+     "cues": [
+      "Exécuter un double changement de direction",
+      "Attaquer le cercle de manière explosive",
+      "Varier les types de finitions au panier"
+     ],
+     "dosage": "1 minute",
+     "start": 260,
+     "male_demonstrator": false,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "dLNThHJw3tk": {
+   "videoId": "dLNThHJw3tk",
+   "duration": 1053,
+   "channel": "BreakthroughBBall",
+   "title": "5 Best Basketball Finishing Drills For Teams | Best Drills To Make More Layups",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Wildcat Finishing",
+     "category": "finishing",
+     "purpose": "Improves player finishing ability off screens using various footwork patterns and angles.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Curl tight off screen",
+      "Change finishes each rep",
+      "Shoulder to hip"
+     ],
+     "dosage": "30 seconds per rep",
+     "start": 28,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "4 Minute Layups",
+     "category": "finishing",
+     "purpose": "Builds high-tempo conditioning, communication, and fast-break layup execution.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Call out passer name",
+      "Catch outlet wide",
+      "Snap pass to middle"
+     ],
+     "dosage": "4 minutes",
+     "start": 323,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "3 Player 2 Ball Finishing",
+     "category": "finishing",
+     "purpose": "Teaches players to finish forcefully in the paint off two feet with poise and control.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Finish off two feet",
+      "Use the backboard",
+      "Change directions with pro hop"
+     ],
+     "dosage": "1 minute per variation",
+     "start": 484,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Speed Layups",
+     "category": "finishing",
+     "purpose": "Enhances full-court transition passing, speed, and finishing at maximum pace.",
+     "equipment": [
+      "basketball"
+     ],
+     "cues": [
+      "Catch outlet before half court",
+      "Push the ball ahead",
+      "Finish at full speed"
+     ],
+     "dosage": "4 minutes",
+     "start": 702,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Half Court Attack",
+     "category": "finishing",
+     "purpose": "Develops an aggressive mindset to attack the rim and finish through contact in 1v1 scenarios.",
+     "equipment": [
+      "basketball",
+      "chair"
+     ],
+     "cues": [
+      "Drive straight to the rim",
+      "Focus on making shot not contact",
+      "Push ball get long"
+     ],
+     "dosage": "",
+     "start": 805,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "zh2JLinO-ws": {
+   "videoId": "zh2JLinO-ws",
+   "duration": 419,
+   "channel": "By Any Means Basketball",
+   "title": "Daily Finishing Workout to Make More Layups!",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Overhand Cuff to Extension",
+     "category": "finishing",
+     "purpose": "Improves ball manipulation, hand positioning, and momentum control when finishing around defender momentum.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Cuff the ball over hand",
+      "Extend back under to finish",
+      "Control ball momentum"
+     ],
+     "dosage": "5-8 makes each way",
+     "start": 58,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Reverse 2-Foot Extensions",
+     "category": "finishing",
+     "purpose": "Enhances footwork coordination and extension range on reverse two-foot finishes.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Fluid right-left footwork",
+      "Extend far past the rim",
+      "Controlled two-foot takeoff"
+     ],
+     "dosage": "5-8 makes each way",
+     "start": 96,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "1-Step Inside Hand Finish",
+     "category": "finishing",
+     "purpose": "Develops soft touch while fading away on same-foot, inside-hand finish attempts.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Same foot same hand takeoff",
+      "Fade away slightly",
+      "Cradle and toss backwards"
+     ],
+     "dosage": "5-8 makes each way",
+     "start": 127,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Flick Finishes Above Square",
+     "category": "finishing",
+     "purpose": "Improves underhand wrist flick touch and high backboard release range.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Underhand flick release",
+      "Target high above the square",
+      "Soft wrist control"
+     ],
+     "dosage": "3-5 makes each way",
+     "start": 168,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Knee Touch Finishes",
+     "category": "finishing",
+     "purpose": "Enhances rotational body control and mid-air stability by tucking knees while finishing.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Lift knees in mid-air",
+      "Stay compact and controlled",
+      "Cradle into the finish"
+     ],
+     "dosage": "10-15 makes total",
+     "start": 199,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Tornado Finishes",
+     "category": "finishing",
+     "purpose": "Develops high-speed body control, spin orientation, and inside-hand finishing versatility.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Cross foot over rapidly",
+      "Spin back toward the rim",
+      "Finish with inside hand"
+     ],
+     "dosage": "5 makes each side",
+     "start": 237,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "No-Jump Finishing",
+     "category": "finishing",
+     "purpose": "Trains high-speed touch without decelerating or gathering into a vertical jump.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Maintain running stride",
+      "Quick wrist flick",
+      "Do not decelerate"
+     ],
+     "dosage": "5-8 makes each side",
+     "start": 268,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Variable Mikan",
+     "category": "finishing",
+     "purpose": "Prevents routine autopilot by requiring a distinct and wide finish on every rep.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Different finish every rep",
+      "Wide extension or inside hand",
+      "Stay dynamic and continuous"
+     ],
+     "dosage": "3 sets of 6",
+     "start": 294,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Eyes-Closed Finishing",
+     "category": "finishing",
+     "purpose": "Sharpen spatial awareness, feel around the rim, and immediate adaptability.",
+     "equipment": [
+      "basketball",
+      "basketball hoop"
+     ],
+     "cues": [
+      "Keep eyes closed on drive",
+      "Open eyes late after jump",
+      "Adapt finish instantly"
+     ],
+     "dosage": "3-5 minutes",
+     "start": 331,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "Xmzh33PWeJk": {
+   "videoId": "Xmzh33PWeJk",
+   "duration": 178,
+   "channel": "PGC Coaching",
+   "title": "Perfect Basketball Layup Drill For Your Team",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Finition explosive en un temps",
+     "category": "finishing",
+     "purpose": "Améliorer la vitesse d'exécution et la finition en contre-attaque.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Sprinter à pleine vitesse",
+      "Ne pas ralentir avant l'impulsion",
+      "Finir proprement au cercle"
+     ],
+     "dosage": "",
+     "start": 16,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Rip-through et attaque",
+     "category": "finishing",
+     "purpose": "Protéger le ballon face à la défense et traverser la raquette pour finir à l'opposé.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Balayer fort le ballon sous les hanches",
+      "Dribble explosif vers le panier",
+      "Protéger la finition de l'autre côté du cercle"
+     ],
+     "dosage": "",
+     "start": 34,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Finition au contact",
+     "category": "finishing",
+     "purpose": "Apprendre à absorber le contact physique du défenseur et garder l'équilibre pour marquer.",
+     "equipment": [
+      "ballon de basket",
+      "panier de basket"
+     ],
+     "cues": [
+      "Spin move le long de la ligne de fond",
+      "Mettre les épaules parallèles à la ligne de fond",
+      "Rechercher le contact et monter fort"
+     ],
+     "dosage": "",
+     "start": 104,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Combos en espace réduit",
+     "category": "ball-handling",
+     "purpose": "Développer le contrôle du ballon et l'enchaînement de dribbles après une finition.",
+     "equipment": [
+      "ballon de basket"
+     ],
+     "cues": [
+      "Garder les appuis fléchis et bas",
+      "Enchaîner les changements de main de façon dynamique",
+      "Conserver le regard vers l'avant"
+     ],
+     "dosage": "",
+     "start": 142,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  },
+  "_sf0CrcVtZA": {
+   "videoId": "_sf0CrcVtZA",
+   "duration": 388,
+   "channel": "Pro Training Basketball",
+   "title": "3 Finishing Drills For BEGINNERS | How To Make A Lay-Up | Pro Training Basketball",
+   "via": "thème « basketball finishing drills layups »",
+   "date": "2026-10-11",
+   "drills": [
+    {
+     "name": "Mikan Drill",
+     "category": "finishing",
+     "purpose": "Improves touch, rhythm, and lay-up efficiency with both hands around the rim.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Explode high to the basket",
+      "Use the backboard",
+      "Alternate sides continuously"
+     ],
+     "dosage": "20 makes or 30 seconds",
+     "start": 68,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Two Step Series",
+     "category": "finishing",
+     "purpose": "Develops proper footwork and balance for two-step layup finishes without a dribble.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Outside-inside footwork",
+      "Rise up strong to the rim",
+      "Master using the backboard"
+     ],
+     "dosage": "",
+     "start": 170,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    },
+    {
+     "name": "Cross the Lane Finishing",
+     "category": "finishing",
+     "purpose": "Trains players to drive across the key and finish under control off one or two feet.",
+     "equipment": [
+      "basketball",
+      "hoop"
+     ],
+     "cues": [
+      "Start with a move at the elbow",
+      "Take only one dribble in the paint",
+      "Finish strong on the opposite side"
+     ],
+     "dosage": "",
+     "start": 300,
+     "male_demonstrator": true,
+     "duplicate_of": ""
+    }
+   ]
+  }
+ }
+}

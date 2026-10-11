@@ -42,9 +42,9 @@
       nutrition:'maintain', focus:'muscle', format:'classic', preferWeighted:true,
       dosage:{anchor:{sets:4, reps:[5,8], rest:120}, accessory:{sets:3, reps:[8,12], rest:75}, finisher:{sets:2, reps:[10,15], rest:45}},
       days:[
-        day('A','Haut du corps · force',[anchor('push',['db-press','bb-press','floor-press','pushup']),anchor('pull',['pullup','chinup','db-row','bb-row','inverted-row']),acc('push',['db-shoulder','kb-press','band-ohp','pike-pushup']),acc('core',['pallof','pallof-cable','suitcase-carry']),fin('pull',['facepull','band-pullapart','rear-delt-fly'])]),
-        day('B','Chaîne postérieure & gainage',[anchor('hinge',['db-single-rdl','single-rdl','kb-rdl','rdl']),acc('hinge',['db-hip-thrust','hip-thrust','single-bridge']),acc('pull',['chest-supported-row','cable-row','band-row']),acc('core',['side-plank','side-plank-lift','bird-dog']),fin('hinge',['nordic-assisted','slider-ham-curl','legcurl'],{optional:true})]),
-        day('C','Contact & épaules',[anchor('push',['incline','db-press','push-press','pushup']),acc('pull',['neutral-pullup','pulldown','band-pulldown','kb-row']),acc('core',['carry','overhead-carry','suitcase-carry']),acc('pull',['band-er','er-iso','facepull']),fin('arms',['grip-hold','towel-grip','wrist-curl'])]),
+        day('A','Haut du corps · force',[anchor('push',['db-press','bb-press','floor-press','pushup']),anchor('pull',['pullup','chinup','db-row','bb-row','inverted-row']),acc('push',['db-shoulder','kb-press','band-ohp','pike-pushup']),acc('core',['mb-rotational','pallof','pallof-cable','suitcase-carry']),fin('pull',['facepull','band-pullapart','rear-delt-fly'])]),
+        day('B','Chaîne postérieure & gainage',[anchor('hinge',['b-stance-rdl','db-single-rdl','single-rdl','kb-rdl','rdl']),acc('hinge',['db-hip-thrust','hip-thrust','sl-hip-thrust','single-bridge']),acc('pull',['chest-supported-row','cable-row','band-row']),acc('core',['side-plank','side-plank-lift','bird-dog']),fin('hinge',['nordic-assisted','slider-ham-curl','legcurl'],{optional:true})]),
+        day('C','Contact & épaules',[anchor('push',['landmine-press','incline','db-press','push-press','pushup']),acc('pull',['neutral-pullup','pulldown','band-pulldown','kb-row']),acc('core',['carry','overhead-carry','suitcase-carry']),acc('pull',['band-er','er-iso','facepull']),fin('arms',['grip-hold','towel-grip','wrist-curl'])]),
         day('D','Unilatéral & stabilité',[anchor('squat',['db-bulgarian','split-squat','db-step-up','step-up']),acc('pull',['db-row','cable-row-single','band-row']),acc('core',['pallof','plank-reach','deadbug']),acc('calf',['single-calf','seated-calf','tibialis']),fin('core',['copenhagen','side-plank','adductor-squeeze'])]),
         day('E','Haut du corps · volume',[anchor('pull',['db-row','bb-row','inverted-row','band-row']),acc('push',['db-press','band-press','pushup']),acc('arms',['curl','band-curl','overhead-triceps','triceps']),acc('core',['hollow-hold','deadbug','plank']),fin('pull',['rear-delt-fly','band-pullapart','facepull'])])
       ]
@@ -158,10 +158,10 @@
 
   const ACCENTS = {
     hinge:{slot:acc('hinge',['db-hip-thrust','kb-swing','hip-thrust','single-bridge']), label:'puissance des hanches'},
-    antirot:{slot:acc('core',['pallof','pallof-cable','suitcase-carry']), label:'gainage anti-rotation'},
+    antirot:{slot:acc('core',['landmine-rotation','pallof','pallof-cable','suitcase-carry']), label:'gainage anti-rotation'},
     engine:{slot:fin('cardio',['bike-interval','rower-interval','bike','rower'],{kind:'cardio'}), label:'souffle'},
     hip:{slot:acc('core',['copenhagen','adductor-squeeze','side-plank-lift']), label:'stabilité de hanche'},
-    upper:{slot:acc('push',['push-press','db-press','pushup']), label:'solidité au contact'},
+    upper:{slot:acc('push',['mb-chest-pass','push-press','db-press','pushup']), label:'solidité au contact'},
     grip:{slot:fin('arms',['grip-hold','towel-grip','wrist-curl']), label:'poigne'},
     unilateral:{slot:acc('squat',['db-step-up','split-squat','step-up']), label:'force sur une jambe'},
     shoulder:{slot:acc('pull',['band-er','er-iso','facepull']), label:'épaules'}
