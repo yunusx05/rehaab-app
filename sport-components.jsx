@@ -68,10 +68,10 @@ function PTSportToday({data,update,go,notify}){
     {symptoms.length>0&&<button className="constraint-strip" onClick={()=>go('symptoms')}><PTIcon name="pain" size={18}/><span>{ctx.active.blocked?'Fais le point avant de démarrer':symptoms.map(s=>PT.regions[s.region]).join(' · ')+' : séance adaptée'}</span><PTIcon name="arrow" size={16}/></button>}
     {data.draft&&<button className="resume-workout sport-reveal" onClick={()=>go(data.draft.status==='active'?'session':'preview')}><PTThumbnail exercise={data.draft.exercises[0]}/><span><small>{data.draft.status==='active'?'Reprendre la séance':'Ta séance est prête'}</small><strong>{data.draft.title}</strong><span className="mini-progress"><i style={{transform:`scaleX(${total?done/total:0})`}}/></span></span><span className="round-play"><PTIcon name="play" size={20}/></span></button>}
     {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify}/>}
+    {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
     {typeof PTWeekReview==='function'&&<PTWeekReview data={data} update={update} notify={notify}/>}
     {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}
     {typeof PTCoachCard==='function'&&<PTCoachCard data={data} go={go}/>}
-    {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
     {typeof PTBodyMind==='function'&&<PTBodyMind data={data} go={go}/>}
     {typeof PTWarmupRail==='function'&&<PTWarmupRail data={data} update={update} go={go} notify={notify}/>}
     {typeof PTRehabRail==='function'&&<PTRehabRail data={data} update={update} go={go} notify={notify}/>}

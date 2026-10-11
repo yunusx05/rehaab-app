@@ -101,12 +101,23 @@ function PTTodayPlan({
   };
   const [label, run] = actions[plan.action] || actions.session;
   const showPathway = plan.action === 'pathway' && next;
+  const photo = ptTodayPhoto(plan.action, data),
+    [photoFailed, setPhotoFailed] = usePTState(false);
   return /*#__PURE__*/React.createElement("section", {
-    className: `today-plan kind-${plan.kind} sport-reveal`,
+    className: `today-plan kind-${plan.kind} has-photo sport-reveal`,
     "aria-labelledby": "today-plan-title"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "eyebrow"
-  }, "Ta s\xE9ance du jour"), /*#__PURE__*/React.createElement("h2", {
+  }, !photoFailed && /*#__PURE__*/React.createElement("img", {
+    className: "today-plan-photo",
+    src: photo,
+    alt: "",
+    decoding: "async",
+    onError: () => setPhotoFailed(true)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "today-plan-shade",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "today-plan-tag"
+  }, plan.kind === 'rest' ? 'Repos' : plan.kind === 'light' ? 'Version légère' : plan.kind === 'blocked' ? 'À vérifier' : 'Aujourd’hui'), /*#__PURE__*/React.createElement("h2", {
     id: "today-plan-title"
   }, showPathway ? next.day.name : plan.title), plan.action === 'program' && muscu && /*#__PURE__*/React.createElement("p", {
     className: "fine"
@@ -114,9 +125,15 @@ function PTTodayPlan({
     className: "fine"
   }, "\xC9tape ", next.step.id, " \xB7 ", next.step.name, " \xB7 semaine ", next.status.week, ready ? ` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices` : ''), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
-  }, plan.why.map(w => /*#__PURE__*/React.createElement("li", {
+  }, plan.why.slice(0, 2).map(w => /*#__PURE__*/React.createElement("li", {
     key: w
-  }, w))), /*#__PURE__*/React.createElement(PTButton, {
+  }, w))), plan.why.length > 2 && /*#__PURE__*/React.createElement("details", {
+    className: "today-plan-more"
+  }, /*#__PURE__*/React.createElement("summary", null, "Pourquoi cette s\xE9ance"), /*#__PURE__*/React.createElement("ul", {
+    className: "reason-list"
+  }, plan.why.slice(2).map(w => /*#__PURE__*/React.createElement("li", {
+    key: w
+  }, w)))), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: run
   }, label, /*#__PURE__*/React.createElement(PTIcon, {

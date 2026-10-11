@@ -247,6 +247,11 @@ function PTSportToday({
   }))), data.draft && typeof PTDraftCancel === 'function' && /*#__PURE__*/React.createElement(PTDraftCancel, {
     update: update,
     notify: notify
+  }), !data.draft && typeof PTTodayPlan === 'function' && /*#__PURE__*/React.createElement(PTTodayPlan, {
+    data: data,
+    update: update,
+    go: go,
+    notify: notify
   }), typeof PTWeekReview === 'function' && /*#__PURE__*/React.createElement(PTWeekReview, {
     data: data,
     update: update,
@@ -257,11 +262,6 @@ function PTSportToday({
   }), typeof PTCoachCard === 'function' && /*#__PURE__*/React.createElement(PTCoachCard, {
     data: data,
     go: go
-  }), !data.draft && typeof PTTodayPlan === 'function' && /*#__PURE__*/React.createElement(PTTodayPlan, {
-    data: data,
-    update: update,
-    go: go,
-    notify: notify
   }), typeof PTBodyMind === 'function' && /*#__PURE__*/React.createElement(PTBodyMind, {
     data: data,
     go: go

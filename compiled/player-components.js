@@ -305,22 +305,24 @@ function PTBodyMind({
   const rank = JP.qiThemes(player),
     daily = QI.dailySet(data.qi, player, rank),
     left = daily.items.length - daily.done;
-  return /*#__PURE__*/React.createElement("section", {
-    className: "mind-card sport-reveal"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "training-kicker"
-  }, "QI basket du jour"), /*#__PURE__*/React.createElement("h2", null, left ? `${left} lecture${left > 1 ? 's' : ''} du jour` : 'Lectures faites'), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, daily.items.map(x => QI.themes[x.item.theme]).filter((v, i, a) => a.indexOf(v) === i).join(' · ')), /*#__PURE__*/React.createElement("div", {
-    className: "button-row"
-  }, /*#__PURE__*/React.createElement(PTButton, {
-    primary: !!left,
-    quiet: !left,
+  const themes = daily.items.map(x => QI.themes[x.item.theme]).filter((v, i, a) => a.indexOf(v) === i).join(' · ');
+  const pos = JP.positions[player.position];
+  return /*#__PURE__*/React.createElement("div", {
+    className: "image-grid home-duo sport-reveal"
+  }, /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('qi'),
+    badge: left ? `${left} à lire` : null,
+    done: !left,
+    title: left ? 'Lire le jeu' : 'QI du jour fait',
+    text: themes,
     onClick: () => go('qi-run', 'daily')
-  }, left ? 'Lire le jeu' : 'Refaire', /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  }))));
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('card'),
+    badge: pos ? `#${pos.number}` : null,
+    title: "Ma carte joueur",
+    text: `${pos ? pos.label : ''}${(player.archetypes || []).length ? ' · ' + player.archetypes.map(a => JP.archetypes[a]?.label).join(', ') : ''}`,
+    onClick: () => go('profile')
+  }));
 }
 
 // Annuler la séance en cours : visible partout où une séance attend, toujours avec confirmation.
@@ -354,4 +356,78 @@ function PTDraftCancel({
     quiet: true,
     onClick: () => setConfirm(false)
   }, "Garder ma s\xE9ance"));
+}
+
+// Carte joueur (lot 15) : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests et les réponses du bilan.
+// Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée. Flèche : évolution d'un test suivi.
+const PT_CARD_QUALITIES = ['vertical', 'firststep', 'decel', 'reactive', 'strength', 'endurance'];
+function PTPlayerCard({
+  data,
+  go
+}) {
+  const JP = window.PlayerProfile,
+    AP = window.AthleticProfile,
+    player = data.player || {};
+  const pos = JP && JP.positions[player.position],
+    [failed, setFailed] = usePTState(false);
+  const assessed = AP && data.athletic ? AP.assess(data.athletic).qualities : null;
+  const rows = assessed ? PT_CARD_QUALITIES.map(id => assessed[id]).filter(Boolean) : [];
+  const source = q => q.failed.length || q.passed.length ? `test : ${(q.failed[0] || q.passed[0]).label.toLowerCase()}` : q.answer !== null && q.answer !== undefined ? 'd’après ta réponse' : 'pas encore évalué';
+  const trend = q => {
+    for (const t of [...q.passed, ...q.failed]) {
+      const tr = AP.trend(t.id, data.athletic.tests?.[t.id]);
+      if (tr) return tr.change > 0 ? 'up' : tr.change < -5 ? 'down' : null;
+    }
+    return null;
+  };
+  const name = (data.profile.name || 'Joueur').toUpperCase();
+  return /*#__PURE__*/React.createElement("section", {
+    className: "player-card",
+    "aria-label": "Ma carte joueur"
+  }, !failed && /*#__PURE__*/React.createElement("img", {
+    src: ptHub('card'),
+    alt: "",
+    decoding: "async",
+    onError: () => setFailed(true)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "player-card-shade",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "player-card-top"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "player-card-number",
+    "aria-label": pos ? `Numéro de poste ${pos.number}` : 'Poste non renseigné'
+  }, pos ? pos.number : '–'), /*#__PURE__*/React.createElement("span", {
+    className: "player-card-id"
+  }, /*#__PURE__*/React.createElement("strong", null, name), /*#__PURE__*/React.createElement("small", null, pos ? pos.label : 'Poste à renseigner', (player.archetypes || []).length ? ` · ${player.archetypes.map(a => JP.archetypes[a]?.label).join(', ')}` : ''))), rows.length > 0 ? /*#__PURE__*/React.createElement("ul", {
+    className: "player-card-stats"
+  }, rows.map(q => {
+    const t = trend(q);
+    return /*#__PURE__*/React.createElement("li", {
+      key: q.id
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "stat-name"
+    }, q.label), /*#__PURE__*/React.createElement("span", {
+      className: "stat-bar",
+      "data-level": q.level === null || q.level === undefined ? 'none' : q.level,
+      "aria-hidden": "true"
+    }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("span", {
+      className: "stat-level"
+    }, q.levelLabel, t && /*#__PURE__*/React.createElement("span", {
+      className: `stat-trend is-${t}`,
+      "aria-label": t === 'up' ? 'en progrès' : 'en baisse'
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: "arrow",
+      size: 12
+    }))), /*#__PURE__*/React.createElement("small", {
+      className: "stat-source"
+    }, source(q)));
+  })) : /*#__PURE__*/React.createElement("p", {
+    className: "player-card-empty"
+  }, "Fais ton bilan physique : tes qualit\xE9s appara\xEEtront ici, not\xE9es d\u2019apr\xE8s tes tests et tes r\xE9ponses."), /*#__PURE__*/React.createElement("div", {
+    className: "player-card-foot"
+  }, /*#__PURE__*/React.createElement("p", null, "Notes tir\xE9es de tes tests et de tes r\xE9ponses, rien d\u2019invent\xE9."), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('bilan')
+  }, rows.length ? 'Mettre à jour' : 'Faire mon bilan')));
 }

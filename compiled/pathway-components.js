@@ -179,33 +179,10 @@ function PTPathway({
     title: `${step.name}.`
   }, step.goal), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "home-options"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action is-featured",
-    onClick: () => go('calendar')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "today"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma semaine"), /*#__PURE__*/React.createElement("small", null, "Tes s\xE9ances cal\xE9es sur tes jours libres, ton club et tes matchs.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('plan')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "chart"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon plan de saison"), /*#__PURE__*/React.createElement("small", null, "Les phases, o\xF9 tu en es, et l\u2019architecte IA.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  }))), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('bilan', 'tests')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "chart"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mesurer ma d\xE9tente et mes tests"), /*#__PURE__*/React.createElement("small", null, "Saut vertical, RSI, sprint : avec un mur, un m\xE8tre ou une vid\xE9o au ralenti.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(PTPlanArsenal, {
+    data: data,
+    go: go
+  }), /*#__PURE__*/React.createElement("div", {
     className: "step-track pathway-track"
   }, BP.steps.map(s => /*#__PURE__*/React.createElement("span", {
     key: s.id,
@@ -364,46 +341,6 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "back"
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go(data.program && data.program.status !== 'archived' ? 'program' : 'program-new')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "weight"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma muscu"), /*#__PURE__*/React.createElement("small", null, data.program && data.program.status !== 'archived' && window.PersonalPrograms ? `${window.PersonalPrograms.familyById(data.program.familyId)?.short || 'Programme'} · semaine ${window.PersonalPrograms.progressOf(data.program).currentWeek}/${data.program.weeks}` : 'Programme à côté du parcours, sans le doubler.')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('skills')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "court"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes skills basket"), /*#__PURE__*/React.createElement("small", null, window.BasketSkills?.complete(data.skills) ? window.BasketSkills.summary(data.skills) : 'Dribble, tir, finition : questionnaire puis programme à ton niveau.')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('basket-profile')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon jeu"), /*#__PURE__*/React.createElement("small", null, window.BasketProfile?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Questionnaire terrain : forces, faiblesses, club.')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('library')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements, filtrables par muscle, mat\xE9riel et zone de soin.")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => go('player')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, "Poste, douleurs, mat\xE9riel.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   }))), stopping ? /*#__PURE__*/React.createElement("div", {
@@ -681,4 +618,65 @@ function PTPathwayTest({
       size: 16
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, shortDate(r.date)), /*#__PURE__*/React.createElement("small", null, ev.detail)));
   })))));
+}
+
+// Hub Plan (lot 15) : tout ce qui se lance ou se règle autour du parcours, en tuiles photo.
+function PTPlanArsenal({
+  data,
+  go
+}) {
+  const PPR = window.PersonalPrograms,
+    prog = data.program && data.program.status !== 'archived' ? data.program : null,
+    SK = window.BasketSkills,
+    C = window.BasketProfile;
+  const SP = window.SeasonPlan,
+    phase = SP ? SP.build(data).current : null;
+  const tests = data.pathway ? Object.values(data.pathway.tests || {}).reduce((n, l) => n + (l || []).length, 0) : 0;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "image-grid plan-arsenal"
+  }, /*#__PURE__*/React.createElement(PTImageTile, {
+    tall: true,
+    photo: ptHub('week'),
+    title: "Ma semaine",
+    text: "Tes s\xE9ances cal\xE9es sur tes jours libres, ton club et tes matchs.",
+    onClick: () => go('calendar')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    tall: true,
+    photo: ptHub('season'),
+    badge: phase?.phase ? `Semaine ${phase.week}` : null,
+    title: "Mon plan de saison",
+    text: phase?.phase ? phase.phase.name : 'Les phases et l’architecte IA.',
+    onClick: () => go('plan')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('muscu'),
+    title: "Ma muscu",
+    text: prog && PPR ? `${PPR.familyById(prog.familyId)?.short || 'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}` : 'Programme à côté du parcours, sans le doubler.',
+    onClick: () => go(prog ? 'program' : 'program-new')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('skills'),
+    title: "Mes skills basket",
+    text: SK?.complete(data.skills) ? 'Dribble, tir, finition, défense, moves.' : 'Questionnaire puis programme à ton niveau.',
+    onClick: () => go('skills')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('tests'),
+    badge: tests ? `${tests} mesure${tests > 1 ? 's' : ''}` : null,
+    title: "Mesurer ma d\xE9tente et mes tests",
+    text: "Saut, sprint, RSI : un mur, un m\xE8tre ou une vid\xE9o.",
+    onClick: () => go('bilan', 'tests')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('game'),
+    title: "Mon jeu",
+    text: C?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Forces, faiblesses, club.',
+    onClick: () => go('basket-profile')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('library'),
+    title: "Tous les exercices",
+    text: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} mouvements, filtres basket.`,
+    onClick: () => go('library')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('gear'),
+    title: "Mon mat\xE9riel",
+    text: `${data.owned.length} élément${data.owned.length > 1 ? 's' : ''} coché${data.owned.length > 1 ? 's' : ''}`,
+    onClick: () => go('player')
+  }));
 }

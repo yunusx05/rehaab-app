@@ -353,3 +353,43 @@
 .week-strip .dot.is-match{background:#f0a35e}
 .week-review h2{font-size:1.2rem}
 .because-list{margin-top:.4rem}
+
+/* Lot 15 : interface vivante. Même charbon, même lime, même titres condensés ; la photo porte enfin l'accueil. */
+.today-plan.has-photo{position:relative;overflow:hidden;isolation:isolate;min-height:clamp(340px,92vw,440px);align-content:end;padding:1.35rem;background:#151812}
+.today-plan-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.today-plan-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0c0e0a1a 0%,#0c0e0a59 38%,#0c0e0af2 78%)}
+.today-plan.has-photo h2{font-size:clamp(2.3rem,11vw,3.4rem);line-height:.88;max-width:12ch;text-wrap:balance}
+.today-plan.has-photo .fine{color:#e3e7da}
+.today-plan.has-photo .reason-list{color:#dfe3d6;font-size:.8rem}
+.today-plan-tag{justify-self:start;padding:.32rem .65rem;border-radius:999px;background:var(--accent);color:#1b2111;font-size:.7rem;font-weight:700;letter-spacing:.03em}
+.today-plan.kind-rest .today-plan-tag,.today-plan.kind-light .today-plan-tag{background:#d9e8ff;color:#14202f}
+.today-plan.kind-blocked .today-plan-tag,.today-plan.kind-rehab .today-plan-tag{background:#f6cf8a;color:#2d1f05}
+.today-plan-more summary{cursor:pointer;color:#e3e7da;font-size:.78rem;text-decoration:underline;text-underline-offset:3px}
+.today-plan-more[open] summary{margin-bottom:.4rem}
+.coach-card.is-ask{grid-template-columns:auto 1fr auto;align-items:center;gap:.8rem;cursor:pointer}.coach-card.is-ask small{display:block;font-size:.7rem;color:#8fc3ff;font-weight:700;letter-spacing:.04em}.coach-card.is-ask strong{display:block;font-size:.95rem;line-height:1.3;margin-top:.15rem}
+.home-duo .image-tile{min-height:178px}
+.plan-arsenal .image-tile.tall{min-height:200px}
+.player-card{position:relative;overflow:hidden;isolation:isolate;display:grid;gap:1.1rem;padding:1.35rem;border-radius:16px;background:#151812;min-height:420px;align-content:space-between}
+.player-card>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;object-position:center 20%}
+.player-card-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0c0e0a40 0%,#0c0e0acc 45%,#0c0e0af5 75%)}
+.player-card-top{display:flex;align-items:flex-end;gap:.9rem;min-width:0}
+.player-card-number{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:800;font-size:clamp(4.6rem,24vw,6rem);line-height:.8;color:var(--accent);letter-spacing:-.03em}
+.player-card-id{display:grid;gap:.25rem;min-width:0;padding-bottom:.3rem}
+.player-card-id strong{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:800;font-size:clamp(1.7rem,8vw,2.2rem);line-height:.9;overflow-wrap:anywhere}
+.player-card-id small{color:#dfe3d6;font-size:.8rem}
+.player-card-stats{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.player-card-stats li{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'name level' 'bar bar' 'src src';gap:.25rem .6rem;align-items:center}
+.stat-name{grid-area:name;font-weight:700;font-size:.88rem}
+.stat-level{grid-area:level;display:inline-flex;align-items:center;gap:.3rem;font-size:.74rem;color:#dfe3d6}
+.stat-source{grid-area:src;color:#b9bfb3;font-size:.68rem}
+.stat-bar{grid-area:bar;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.stat-bar i{height:6px;border-radius:3px;background:#ffffff26}
+.stat-bar[data-level="0"] i:nth-child(-n+1),.stat-bar[data-level="1"] i:nth-child(-n+2),.stat-bar[data-level="2"] i{background:var(--accent)}
+.stat-bar[data-level="0"] i:first-child{background:#f6cf8a}
+.stat-bar[data-level="none"] i{background:transparent;box-shadow:inset 0 0 0 1px #ffffff33}
+.stat-trend{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#1b2111}
+.stat-trend.is-up svg{transform:rotate(-90deg)}.stat-trend.is-down{background:#f6cf8a}.stat-trend.is-down svg{transform:rotate(90deg)}
+.player-card-empty{color:#dfe3d6;font-size:.86rem;max-width:34ch}
+.player-card-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.4rem 1rem;border-top:1px solid #ffffff1f;padding-top:.8rem}
+.player-card-foot p{margin:0;color:#b9bfb3;font-size:.7rem;max-width:30ch}
+@media(min-width:720px){.plan-arsenal{grid-template-columns:repeat(4,minmax(0,1fr))}.plan-arsenal .image-tile.tall{grid-column:span 2}.home-duo .image-tile{min-height:220px}.player-card{min-height:360px}}
