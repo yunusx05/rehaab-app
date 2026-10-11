@@ -47,6 +47,8 @@ test('écran 3D : image figée, décision, rejeu expliqué, réponse enregistré
   await page.goto('/#qi');
   await page.getByRole('button',{name:/Lis ton défenseur/}).click();
   await expect(page.locator('.scene-3d canvas')).toHaveCount(1,{timeout:15000});
+  // Joueurs réalistes chargés (pas le repli stylisé).
+  await expect(page.locator('.scene-3d')).toHaveAttribute('data-model','real',{timeout:15000});
   await expect(page.locator('.scene-status.is-freeze')).toBeVisible({timeout:8000});
   await page.locator('.scene-option').first().click();
   await expect(page.locator('.scene-feedback')).toBeVisible();
