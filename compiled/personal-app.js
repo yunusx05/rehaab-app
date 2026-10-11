@@ -2345,7 +2345,8 @@ function PersonalApp() {
       'dossier-q': PTDossierChapter,
       'dossier-synthese': PTDossierSynthesis,
       calendar: PTCalendar,
-      plan: PTSeasonPlan
+      plan: PTSeasonPlan,
+      'qi-scene': PTQiScenes
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({
