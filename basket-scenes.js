@@ -136,7 +136,10 @@
     const pool=SCENES.filter(s=>s.level===lvl||s.level===lvl-1&&random()<0.3).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s);
     take(pool);
     if(pick.length<count) take(SCENES.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));
-    return {level:lvl,scenes:pick};
+    // Toutes les scènes du niveau déjà vues aujourd'hui : on les repropose pour s'entraîner encore (jamais de série vide).
+    const fresh=pick.length;
+    if(pick.length<count){seen.clear();take(SCENES.filter(s=>s.level<=lvl).map(s=>({s,r:random()})).sort((a,b)=>a.r-b.r).map(x=>x.s));}
+    return {level:lvl,scenes:pick,replay:fresh===0};
   }
   function record(qi,scene,choice,{ms=null,now=today()}={}) {
     const correct=choice===scene.answer;

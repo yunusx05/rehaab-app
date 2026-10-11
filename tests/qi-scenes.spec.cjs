@@ -66,3 +66,12 @@ test('sans WebGL : vue de dessus avec les mêmes indices', async({page})=>{
   await page.goto('/#qi-scene');
   await expect(page.locator('.scene-2d')).toBeVisible({timeout:15000});
 });
+
+test('jamais de série vide : scènes du jour reproposées quand tout le niveau a été vu', ()=>{
+  let qi=QI.initialQi();const d='2026-10-11';
+  for(const s of BS.SCENES.filter(s=>s.level===1)) qi=BS.record(qi,s,s.answer,{now:d}).qi;
+  const set=BS.nextSet(qi,{now:d});
+  expect(set.scenes.length).toBe(5);
+  expect(set.replay).toBe(true);
+  expect(BS.nextSet(QI.initialQi(),{now:d}).replay).toBe(false);
+});
