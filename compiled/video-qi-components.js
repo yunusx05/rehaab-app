@@ -285,7 +285,7 @@ function PTQiVideoItem({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "refresh",
     size: 18
-  }), "Revoir au ralenti")), ready && /*#__PURE__*/React.createElement("button", {
+  }), "Revoir au ralenti")), ready && !clip.silent && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: toggleSound
   }, sound ? 'Couper le son' : 'Activer le son'), clip.source && /*#__PURE__*/React.createElement("p", {

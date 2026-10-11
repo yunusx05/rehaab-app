@@ -106,7 +106,7 @@ function PTQiVideoItem({clip, onAnswer}) {
       {picked !== null && <PTQiFeedback ok={ok} title={picked < 0 ? 'Trop tard : en match, la fenêtre se ferme.' : undefined} why={(clip.choices[picked] || clip.choices.find(c => c.ok))?.why} lesson={clip.lesson}/>}
       {phase === 'reveal' && <p className="caption" aria-live="polite">La suite de l’action…</p>}
       {phase === 'done' && <div className="button-row"><PTButton quiet onClick={() => start(0.5)}><PTIcon name="refresh" size={18}/>Revoir au ralenti</PTButton></div>}
-      {ready && <button className="text-button" onClick={toggleSound}>{sound ? 'Couper le son' : 'Activer le son'}</button>}
+      {ready && !clip.silent && <button className="text-button" onClick={toggleSound}>{sound ? 'Couper le son' : 'Activer le son'}</button>}
       {clip.source && <p className="fine">Source : {clip.source}</p>}
     </>}
   </div>;

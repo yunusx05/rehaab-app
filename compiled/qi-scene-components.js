@@ -1352,6 +1352,7 @@ function PTQiReads({
   const clip = {
     id: scene.id,
     file: scene.file,
+    silent: true,
     start: scene.start || 0,
     pause: scene.pause,
     end: scene.end,

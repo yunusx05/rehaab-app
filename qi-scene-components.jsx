@@ -342,7 +342,7 @@ function PTQiReads({data,update,go}){
   if(!scene)return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><p className="empty">Aucun extrait disponible.</p></>;
   if(answered==='done'){const ok=results.filter(Boolean).length,lvl=BS.level(data.qi);
     return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><div className="stack-lg"><section className="card stack-sm"><h2>{ok} bonne{ok>1?'s':''} lecture{ok>1?'s':''} sur {results.length}.</h2><p className="fine">Niveau {lvl} · {BS.LEVELS[lvl-1].label}. 8 bonnes lectures sur les 10 dernières débloquent le niveau suivant. Les extraits ratés reviennent dès demain.</p></section><PTButton primary onClick={()=>go('qi')}>Retour au QI</PTButton></div></>;}
-  const clip={id:scene.id,file:scene.file,start:scene.start||0,pause:scene.pause,end:scene.end,
+  const clip={id:scene.id,file:scene.file,silent:true,start:scene.start||0,pause:scene.pause,end:scene.end,
     prompt:scene.timed?'Vite : que fais-tu ?':'Regarde ton défenseur. À la pause, que fais-tu ?',
     choices:BS.optionOrder(scene).map(o=>({text:BS.actionLabel(o),ok:o===scene.answer,why:o===scene.answer?scene.why:`La bonne lecture : ${BS.actionLabel(scene.answer).toLowerCase()}. ${scene.why}`})),
     lesson:scene.what?`Ce qu’il fallait voir : ${scene.what}`:null,source:scene.source?`${scene.source.channel} · ${scene.source.title}`:null};
