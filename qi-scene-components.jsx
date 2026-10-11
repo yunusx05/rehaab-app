@@ -309,7 +309,7 @@ function PTScene3D({scene,phase,choice,onDecide,reduced,onStep,replayKey=0}){
       };
       frame=requestAnimationFrame(loop);
       resize=new ResizeObserver(()=>{const W=el.clientWidth;if(!W)return;const H=Math.round(Math.min(W*.82,window.innerHeight*.6));renderer.setSize(W,H);cam.aspect=W/H;cam.updateProjectionMatrix();});resize.observe(el);
-    }).catch(()=>{if(!disposed)setFailed(true);});
+    }).catch(e=>{console.warn('[Rehaab] scène 3D indisponible',e&&(e.stack||e.message));try{localStorage.setItem('rh_scene_error',String(e&&(e.stack||e.message)).slice(0,800));}catch(x){}if(!disposed)setFailed(true);});
     return ()=>{disposed=true;cancelAnimationFrame(frame);if(resize)resize.disconnect();if(renderer){renderer.dispose();renderer.domElement.remove();}api.current=null;};
   },[scene.id]);
   usePTEffect(()=>{if(phase==='replay'&&api.current)api.current.replay(scene.answer);},[phase,replayKey]);

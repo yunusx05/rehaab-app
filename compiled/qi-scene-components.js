@@ -1183,7 +1183,11 @@ function PTScene3D({
         cam.updateProjectionMatrix();
       });
       resize.observe(el);
-    }).catch(() => {
+    }).catch(e => {
+      console.warn('[Rehaab] scène 3D indisponible', e && (e.stack || e.message));
+      try {
+        localStorage.setItem('rh_scene_error', String(e && (e.stack || e.message)).slice(0, 800));
+      } catch (x) {}
       if (!disposed) setFailed(true);
     });
     return () => {
