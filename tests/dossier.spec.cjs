@@ -180,3 +180,16 @@ test('écran : sommaire du dossier en tuiles photo, accessible depuis le profil'
   await noOverflow(page);
   await page.screenshot({path:'test-results/dossier-320.png',fullPage:true});
 });
+
+// Sauvegarde réelle du 07/10 : le coach avait épargné toutes les zones et laissé une séance vide, qui cassait l'accueil.
+test('séance vidée par le coach : la sauvegarde reste valide et l’accueil s’ouvre',async({page})=>{
+  const s=filled();
+  s.draft={id:'vide',title:'Retrouver de l’aisance',source:'generated',focus:'mobility',format:'classic',exercises:[],check:s.checkIn,reasons:[],warmupSeconds:300,status:'active',entries:{},createdAt:new Date().toISOString()};
+  expect(PT.validateState(s).draft).toBe(null);
+  await page.addInitScript(v=>{if(!sessionStorage.getItem('seeded')){localStorage.setItem('rh_personal_v1',v);sessionStorage.setItem('seeded','1');}},JSON.stringify(s));
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('/#today');
+  await expect(page.getByText('L’écran n’a pas pu s’ouvrir')).toHaveCount(0);
+  await expect(page.locator('.resume-workout')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
