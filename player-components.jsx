@@ -78,7 +78,7 @@ function PTPlayerProfile({data,update,go,notify}) {
 
 function PTBodyMind({data,go}) {
   const player=data.player||{};
-  if(!player.position) return <section className="player-invite sport-reveal"><span className="training-kicker">Profil joueur</span><h2>TON POSTE.<br/><em>TON CORPS.</em></h2><p className="fine">Poste, profil de jeu, douleurs, matériel : la séance et les lectures de jeu du jour en dépendent.</p><PTButton primary onClick={()=>go('player')}>Créer mon profil joueur<PTIcon name="arrow" size={18}/></PTButton></section>;
+  if(!player.position) return <section className="player-invite sport-reveal"><span className="training-kicker">Profil joueur</span><h2>TON POSTE.<br/><em>TON CORPS.</em></h2><p className="fine">Ton gabarit, ton basket, ta pause, ta santé, tes objectifs : la séance, le calendrier et les lectures de jeu en dépendent.</p><PTButton primary onClick={()=>go('dossier')}>Remplir mon dossier joueur<PTIcon name="arrow" size={18}/></PTButton></section>;
   const rank=JP.qiThemes(player),daily=QI.dailySet(data.qi,player,rank),left=daily.items.length-daily.done;
   return <section className="mind-card sport-reveal"><span className="training-kicker">QI basket du jour</span><h2>{left?`${left} lecture${left>1?'s':''} du jour`:'Lectures faites'}</h2><p className="fine">{daily.items.map(x=>QI.themes[x.item.theme]).filter((v,i,a)=>a.indexOf(v)===i).join(' · ')}</p><div className="button-row"><PTButton primary={!!left} quiet={!left} onClick={()=>go('qi-run','daily')}>{left?'Lire le jeu':'Refaire'}<PTIcon name="arrow" size={18}/></PTButton></div></section>;
 }

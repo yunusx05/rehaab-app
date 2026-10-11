@@ -6,6 +6,7 @@ const MODEL_DEFAULT = 'gemini-3.6-flash';
 
 const SYSTEM = `Tu es le coach personnel d'un joueur de basket adulte qui reprend après environ deux ans sans jouer : préparateur physique basket expérimenté, à l'aise avec tous les postes, et attentif aux blessures.
 Il suit dans l'app un parcours « Retour au jeu » en 5 étapes (Fondations, Force, Puissance, Vitesse, Retour au jeu), qui porte le travail des jambes, des appuis et des sauts. Il peut aussi suivre un programme de musculation séparé (contexte "muscu"), complémentaire : haut du corps, chaîne postérieure, gainage, solidité au contact. Il fait des soins (protocoles par zone, intégrés aux séances quand une zone gêne) et des échauffements. Il joue en club (contexte "club" et "week"). Il suit aussi un programme de skills basket (contexte "skills" : paliers en maniement, tir, finition, appuis) : des séances skills seules et des blocs ajoutés après ses autres séances.
+Le contexte "dossier", quand il est présent, résume tout ce qu'il a déclaré (gabarit, poids de jeu, pause, blessures, disponibilités, objectifs) : appuie-toi dessus.
 Ton rôle : à partir de son état du jour, de sa semaine (club, parcours, muscu) et de ce qu'il vit sur le terrain (contexte "court" : forces, faiblesses, ressentis), décider ce qu'il fait aujourd'hui et doser la séance pour que l'ensemble reste complémentaire, sans surcharge.
 
 Repères par poste (à adapter à ses faiblesses déclarées) :
@@ -56,6 +57,27 @@ const SCHEMA = {
   required: ['message', 'questions', 'plan']
 };
 
+// Mode « dossier » : l'IA lit le dossier complet du joueur, dit ce qu'elle a compris et pose les questions qui manquent.
+const DOSSIER_SYSTEM = `Tu es préparateur physique basket et coach de développement. Tu lis le dossier d'un joueur adulte (gabarit, poste, pause, santé, corps, semaine, objectifs) et les priorités déjà calculées par l'app ("computed").
+Ton rôle : dire en clair ce que tu as compris de lui, ses 3 priorités pour les prochaines semaines et pourquoi, les points d'attention, puis poser 2 à 5 questions de relance qui changeraient vraiment son programme.
+Règles :
+- Français, tutoiement, phrases courtes, langage simple. "message" : 5 phrases maximum.
+- Tu n'es pas médecin : jamais de diagnostic. Signe d'alerte ou douleur à 7/10 ou plus : dis de consulter avant de cibler la zone.
+- Tes priorités partent des siennes, mais l'ordre suit la sécurité : tendons, poids et appuis avant les sauts répétés quand il reprend après une longue pause, a pris du poids ou a mal.
+- Chaque "why" s'appuie sur une réponse précise du dossier.
+- Les questions portent sur ce qui manque ou reste flou (ce qui déclenche une douleur, l'historique exact d'une blessure, le contenu de ses entraînements en club, ses disponibilités réelles). Jamais une question déjà répondue dans le dossier ou dans les relances.
+- Aucun chiffre présenté comme une norme ; pas de promesse de résultat.`;
+const DOSSIER_SCHEMA = {
+  type: 'OBJECT',
+  properties: {
+    message: {type: 'STRING'},
+    priorities: {type: 'ARRAY', items: {type: 'OBJECT', properties: {label: {type: 'STRING'}, why: {type: 'STRING'}}, required: ['label', 'why']}},
+    risks: {type: 'ARRAY', items: {type: 'STRING'}},
+    questions: {type: 'ARRAY', items: {type: 'STRING'}}
+  },
+  required: ['message', 'priorities', 'risks', 'questions']
+};
+
 const clamp = (n, lo, hi, d) => Number.isFinite(Number(n)) ? Math.min(hi, Math.max(lo, Number(n))) : d;
 
 module.exports = async (req, res) => {
@@ -70,6 +92,7 @@ module.exports = async (req, res) => {
   const context = JSON.stringify(body.context || {}).slice(0, 24000);
   if (!messages.length || messages.some(m => typeof m?.text !== 'string' || m.text.length > 4000)) { res.status(400).json({error: 'Message invalide.'}); return; }
 
+  const dossierMode = body.mode === 'dossier';
   const contents = [
     {role: 'user', parts: [{text: `Contexte de l'app (JSON) :\n${context}`}]},
     {role: 'model', parts: [{text: 'Compris. J’attends le bilan du jour.'}]},
@@ -80,12 +103,22 @@ module.exports = async (req, res) => {
     const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
       method: 'POST',
       headers: {'content-type': 'application/json', 'x-goog-api-key': key},
-      body: JSON.stringify({systemInstruction: {parts: [{text: SYSTEM}]}, contents, generationConfig: {responseMimeType: 'application/json', responseSchema: SCHEMA, temperature: 0.4}})
+      body: JSON.stringify({systemInstruction: {parts: [{text: dossierMode ? DOSSIER_SYSTEM : SYSTEM}]}, contents, generationConfig: {responseMimeType: 'application/json', responseSchema: dossierMode ? DOSSIER_SCHEMA : SCHEMA, temperature: 0.4}})
     });
     const j = await r.json();
     const text = j.candidates?.[0]?.content?.parts?.find(p => p.text)?.text;
     if (!r.ok || !text) { res.status(502).json({error: 'Le coach ne répond pas pour le moment.'}); return; }
     const out = JSON.parse(text), p = out.plan || {};
+    if (dossierMode) {
+      const str = (v, n) => String(v || '').slice(0, n);
+      res.status(200).json({
+        message: str(out.message, 1500),
+        priorities: (Array.isArray(out.priorities) ? out.priorities : []).filter(x => x && x.label).slice(0, 3).map(x => ({label: str(x.label, 80), why: str(x.why, 240)})),
+        risks: (Array.isArray(out.risks) ? out.risks : []).slice(0, 3).map(x => str(x, 200)),
+        questions: (Array.isArray(out.questions) ? out.questions : []).slice(0, 5).map(x => str(x, 240)).filter(Boolean)
+      });
+      return;
+    }
     // Bornes côté serveur : l'IA ne peut ni gonfler une séance ni supprimer le repos.
     const plan = {
       decision: ['normal', 'light', 'mobility', 'rehab', 'rest'].includes(p.decision) ? p.decision : 'light',

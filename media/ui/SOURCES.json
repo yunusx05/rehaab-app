@@ -1,0 +1,50 @@
+{
+  "hero": {
+    "file": "media/ui/dossier/hero.webp",
+    "source": "https://www.pexels.com/photo/38165147/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "morpho": {
+    "file": "media/ui/dossier/morpho.webp",
+    "source": "https://www.pexels.com/photo/220383/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "game": {
+    "file": "media/ui/dossier/game.webp",
+    "source": "https://www.pexels.com/photo/6249687/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "break": {
+    "file": "media/ui/dossier/break.webp",
+    "source": "https://www.pexels.com/photo/32767981/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "health": {
+    "file": "media/ui/dossier/health.webp",
+    "source": "https://www.pexels.com/photo/8401907/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "body": {
+    "file": "media/ui/dossier/body.webp",
+    "source": "https://www.pexels.com/photo/1552248/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "life": {
+    "file": "media/ui/dossier/life.webp",
+    "source": "https://www.pexels.com/photo/30806651/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  },
+  "goals": {
+    "file": "media/ui/dossier/goals.webp",
+    "source": "https://www.pexels.com/photo/163452/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement, relu sur planche"
+  }
+}

@@ -33,4 +33,23 @@ function PTRewards({data,notify,compact=false}){
   const badges=[{title:'Premier pas',goal:1,icon:'play'},{title:'Bien lancé',goal:5,icon:'spark'},{title:'Dans le rythme',goal:10,icon:'check'}];
   const copy=async()=>{try{await navigator.clipboard.writeText(`Mon défi Rehaab cette semaine : ${summary.sessions}/${summary.target} séances, ${summary.minutes} minutes pour moi. On se motive ensemble, chacun à son rythme ?`);notify('Bilan copié. Tu peux le partager avec tes amis.');}catch(e){notify('Copie indisponible sur ce navigateur. Ton bilan reste affiché ici.');}};
   return <section className={`reward-card${compact?' compact':''}`}><div className="reward-main"><PTRing value={summary.sessions} total={summary.target} label={`${summary.sessions} séances sur ${summary.target} cette semaine`}><strong>{summary.sessions}<small>/{summary.target}</small></strong><span>séances</span></PTRing><div><div className="eyebrow">Défi de la semaine</div><h2>{summary.sessions>=summary.target?'Objectif atteint.':'À ton rythme.'}</h2><p className="fine">{summary.sessions>=summary.target?'Profite aussi des jours de repos.':`${Math.max(0,summary.target-summary.sessions)} séance${summary.target-summary.sessions>1?'s':''} pour ton repère hebdo.`}</p><span className="reward-points">{count*50} points de régularité</span></div></div>{!compact&&<><div className="badge-shelf">{badges.map(b=><div className={`earned-badge${count>=b.goal?' unlocked':''}`} key={b.goal}><span><PTIcon name={b.icon} size={24}/></span><strong>{b.title}</strong><small>{Math.min(count,b.goal)}/{b.goal} séances</small></div>)}</div><p className="caption">50 points par séance enregistrée, même partielle. Aucune course à l’intensité.</p><button className="text-button accent-text" onClick={copy}><PTIcon name="copy" size={16}/>Copier mon bilan pour mes amis</button></>}</section>;
+}// Tuile photo : la photo porte le sujet, le texte reste lisible grâce au dégradé. Sans photo, un fond neutre la remplace.
+function PTImageTile({photo,eyebrow,title,text,badge,done=false,progress,onClick,tall=false}){
+  const [failed,setFailed]=usePTState(false);
+  return <button type="button" className={`image-tile${tall?' tall':''}${done?' is-done':''}`} onClick={onClick}>
+    {photo&&!failed&&<img src={photo} alt="" loading="lazy" decoding="async" onError={()=>setFailed(true)}/>}
+    <span className="image-tile-shade" aria-hidden="true"/>
+    {(badge||done)&&<span className={`image-tile-badge${done?' done':''}`}>{done?<><PTIcon name="check" size={13}/>Fait</>:badge}</span>}
+    <span className="image-tile-body">{eyebrow&&<span className="eyebrow">{eyebrow}</span>}<strong>{title}</strong>{text&&<small>{text}</small>}
+      {progress&&progress.total>0&&<span className="image-tile-progress" aria-label={`${progress.count} réponses sur ${progress.total}`}><span style={{width:`${Math.round(progress.count/progress.total*100)}%`}}/></span>}</span>
+  </button>;
+}
+// Carte héros photo : en-tête vivant d'un écran, avec une action principale.
+function PTHeroCard({photo,eyebrow,title,children,aside}){
+  const [failed,setFailed]=usePTState(false);
+  return <section className="photo-hero">
+    {photo&&!failed&&<img src={photo} alt="" decoding="async" onError={()=>setFailed(true)}/>}
+    <span className="photo-hero-shade" aria-hidden="true"/>
+    <div className="photo-hero-body"><div className="photo-hero-top">{eyebrow&&<span className="eyebrow">{eyebrow}</span>}{aside}</div><h2>{title}</h2>{children}</div>
+  </section>;
 }

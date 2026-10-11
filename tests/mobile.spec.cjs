@@ -21,8 +21,10 @@ for (const size of sizes) {
     await page.reload();
     // Le premier rendu compile tout le JSX via Babel dans le navigateur : laisser le temps au montage.
     await expect(page.locator('.brand')).toHaveText('Rehaab.',{timeout:20000});
-    await expect(page.getByRole('heading', { name: 'Un cap. De la liberté.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Ton dossier joueur.' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
+    await page.getByRole('button', { name: 'Version rapide (3 questions)' }).click();
+    await expect(page.getByRole('heading', { name: 'Un cap. De la liberté.' })).toBeVisible();
 
     await page.getByRole('button', { name: 'Continuer' }).click();
     await page.getByRole('button', { name: 'Continuer' }).click();
@@ -50,6 +52,7 @@ test('profil, douleur et export restent accessibles', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
   await page.reload();
+  await page.getByRole('button', { name: 'Version rapide (3 questions)' }).click();
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'C’est parti' }).click();

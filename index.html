@@ -59,6 +59,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="exercise-media.js"></script>
 <script src="rehab-warmup.js"></script>
 <script src="basket-profile.js"></script>
+<script src="player-dossier.js"></script>
 <script src="training-load.js"></script>
 <script src="basket-skills.js"></script>
 <script src="personal-programs.js"></script>
@@ -79,10 +80,11 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/program-components.js"></script>
 <script src="compiled/court-components.js"></script>
 <script src="compiled/skills-components.js"></script>
+<script src="compiled/dossier-components.js"></script>
 <script src="compiled/personal-app.js"></script>
 <script>
 // Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
-window.REHAAB_VERSION='v46-skills-videos';
+window.REHAAB_VERSION='v47-dossier';
 if('serviceWorker' in navigator){window.addEventListener('load',function(){
   // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
   // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.

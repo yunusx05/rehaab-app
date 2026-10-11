@@ -17,7 +17,8 @@
     ['bike','Vélo','bike'], ['rower','Rameur','machine'], ['rope','Corde à sauter','band'],
     ['ball','Ballon','basket'], ['hoop','Panier','basket'], ['court','Terrain / espace','court'],
     ['outdoor','Parcours extérieur','run'], ['partner','Partenaire','body'],
-    ['vest','Gilet lesté','vest'], ['sliders','Disques slide','slider']
+    ['vest','Gilet lesté','vest'], ['sliders','Disques slide','slider'],
+    ['massagegun','Pistolet de massage','gun']
   ].map(([id,label,icon])=>({id,label,icon}));
   const regions = {neck:'Cou',shoulder:'Épaule',elbow:'Coude',wrist:'Poignet',back:'Dos',hip:'Hanche / aine',knee:'Genou',ankle:'Cheville / pied'};
   const patterns = {push:'Poussée',pull:'Tirage',squat:'Jambes · flexion',hinge:'Chaîne postérieure',core:'Gainage',calf:'Mollets',arms:'Bras',mobility:'Mobilité',cardio:'Cardio',shoot:'Tir',handle:'Dribble',finish:'Finition',footwork:'Appuis',react:'Réaction',jump:'Sauts'};
@@ -225,6 +226,17 @@
   ex('pigeon','Posture du pigeon','mobility','mobility',['bodyweight'],['hip','knee','back'],['Une jambe repliée devant, l’autre tendue derrière.','Reste dans une tension supportable. Arrête si le genou est gêné.'],{floor:true,unilateral:true,measure:'seconds',seconds:40,rest:20});
   ex('deep-squat-hold','Maintien en squat profond','mobility','mobility',['bodyweight'],lower,['Descends à l’amplitude que tu contrôles, appui à portée de main.','Reste détendu et respire. Remonte avant que le dos ne s’arrondisse.'],{measure:'seconds',seconds:40,rest:25});
   ex('calf-stretch','Étirement du mollet au mur','mobility','mobility',['bodyweight'],['ankle','knee'],['Mains au mur, une jambe tendue derrière, talon au sol.','Avance le bassin doucement, sans décoller le talon.'],{unilateral:true,measure:'seconds',seconds:30,rest:20});
+  // Pistolet de massage : gain d'amplitude à court terme sans perte de force (Konrad 2020). Récupération et échauffement, jamais sur un os ni un tendon douloureux.
+  const gunSafe='Jamais sur un os, une articulation ou une zone qui fait mal.';
+  ex('gun-legs','Pistolet · réveil des jambes','mobility','mobility',['massagegun'],['ankle','knee','hip'],['Vitesse basse, 15 s par muscle : mollets, cuisses, fessiers.','Glisse lentement, sans appuyer fort.',gunSafe],{measure:'seconds',seconds:60,rest:10,tool:'massagegun'});
+  ex('gun-calves','Pistolet · mollets','mobility','mobility',['massagegun'],['ankle'],['Assis, jambe allongée, vitesse basse.','Remonte lentement du talon vers l’arrière du genou.','Contourne le tendon d’Achille et l’os.'],{measure:'seconds',seconds:45,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-quads','Pistolet · avant des cuisses','mobility','mobility',['massagegun'],['knee','hip'],['Assis, cuisse détendue, vitesse basse à moyenne.','Glisse du milieu de cuisse vers la hanche.','Évite la rotule et le tendon sous la rotule.'],{measure:'seconds',seconds:45,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-hamstrings','Pistolet · arrière des cuisses','mobility','mobility',['massagegun'],['hip','knee'],['Assis au bord d’une chaise, jambe tendue devant.','Glisse lentement du creux du genou vers la fesse.','Évite le creux du genou, sans appuyer fort.'],{measure:'seconds',seconds:45,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-glutes','Pistolet · fessiers','mobility','mobility',['massagegun'],['hip'],['Debout ou couché sur le côté, fessier relâché.','Petits cercles lents sur le muscle, vitesse moyenne.','Évite le bas du dos et l’os de la hanche.'],{measure:'seconds',seconds:45,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-adductors','Pistolet · intérieur des cuisses','mobility','mobility',['massagegun'],['hip'],['Assis, genou ouvert sur le côté, vitesse basse.','Glisse doucement du genou vers le milieu de cuisse.','Reste loin de l’aine, sans douleur.'],{measure:'seconds',seconds:30,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-shins','Pistolet · devant de la jambe','mobility','mobility',['massagegun'],['ankle'],['Assis, vitesse basse, sur le muscle à côté du tibia.','Remonte lentement de la cheville vers le genou.','Jamais directement sur l’os du tibia.'],{measure:'seconds',seconds:30,unilateral:true,rest:10,tool:'massagegun'});
+  ex('gun-upper-back','Pistolet · haut du dos et épaules','mobility','mobility',['massagegun'],['back','shoulder'],['Vitesse basse sur les trapèzes et entre les omoplates.','Petits passages lents, épaule relâchée.','Jamais sur la colonne ni sur le cou.'],{measure:'seconds',seconds:45,rest:10,tool:'massagegun'});
+  ex('gun-forearms','Pistolet · avant-bras','mobility','mobility',['massagegun'],['wrist','elbow'],['Avant-bras posé sur la cuisse, vitesse basse.','Glisse du poignet vers le coude, côté muscle.','Évite le poignet et la pointe du coude.'],{measure:'seconds',seconds:30,unilateral:true,rest:10,tool:'massagegun'});
   ex('doorway-chest','Ouverture de poitrine à l’encadrement','mobility','mobility',['bodyweight'],['shoulder','elbow','back'],['Avant-bras contre un montant, coude à hauteur d’épaule.','Avance très légèrement le buste. Aucune douleur d’épaule.'],{unilateral:true,measure:'seconds',seconds:30,rest:20});
   ex('band-dislocate','Passages d’épaules · élastique','mobility','mobility',['bands'],['shoulder','elbow','wrist'],['Tiens l’élastique large, bras tendus devant toi.','Passe les bras au-dessus de la tête, jusque derrière.','Coudes tendus ; écarte les mains si ça force.'],{measure:'seconds',seconds:40,rest:20});
   ex('quad-rotation','Rotation thoracique à quatre pattes','mobility','mobility',['bodyweight'],['shoulder','back','hip'],['À quatre pattes, une main derrière la nuque.','Ouvre le coude vers le plafond en suivant du regard.'],{floor:true,unilateral:true,measure:'seconds',seconds:30,rest:20});
@@ -332,7 +344,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]}};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -389,6 +401,9 @@
     // Questionnaire « Mon jeu » : absent des anciennes sauvegardes, nettoyé plutôt que rejeté.
     const court=globals.BasketProfile||tryRequire('./basket-profile.js');
     s.basketProfile=court?court.validate(s.basketProfile):(s.basketProfile&&typeof s.basketProfile==='object'?s.basketProfile:null);
+    // Dossier joueur (lot 12) : absent des anciennes sauvegardes.
+    const dossier=globals.PlayerDossier||tryRequire('./player-dossier.js');
+    s.dossier=s.dossier==null?null:dossier?dossier.validate(s.dossier):(typeof s.dossier==='object'?s.dossier:null);
     // Skills basket : questionnaire, paliers, programme et journal, absents des anciennes sauvegardes.
     const skillsLib=globals.BasketSkills||tryRequire('./basket-skills.js');
     s.skills=s.skills&&skillsLib?skillsLib.validate(s.skills):(s.skills&&typeof s.skills==='object'?s.skills:null);
@@ -490,6 +505,8 @@
       return n;
     };
     candidates=candidates.map(e=>({e,score:score(e)})).sort((a,b)=>b.score-a.score).map(x=>x.e);
+    // Pistolet de massage : un passage au plus par séance, il complète la mobilité sans la remplacer.
+    {let tool=false;candidates=candidates.filter(e=>!e.tool||(!tool&&(tool=true)));}
     const count=check.focus==='cardio'?1:Math.max(1,Math.min(check.focus==='plyo'?3:5,Math.floor(check.minutes/7)));
     const selected=pinned.filter(e=>e.kind!=='basket' && allowed(e,state,check,ctx)).map(e=>({...e,pinned:true}));
     while(selected.length<count && candidates.length){
