@@ -256,6 +256,18 @@ function ptCoachContext(data) {
       level: window.RehabWarmup?.LEVELS[level] || level
     })),
     season: ptCoachSeason(data, today),
+    shooting: window.Shooting?.summary(data.shooting) || null,
+    weight: (() => {
+      const BW = window.BodyWeight;
+      if (!BW) return null;
+      const s = BW.summary(data);
+      return s.avg === null ? null : {
+        avg7: s.avg,
+        trendPerWeek: s.trend,
+        playWeight: s.playWeight,
+        gap: s.gap
+      };
+    })(),
     trends: ptCoachTrends(data, today)
   };
 }

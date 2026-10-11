@@ -248,7 +248,10 @@
     };
     // Choix de l'IA architecte (lot 14) : en tête de son créneau, puis les candidats habituels. resolve() garde tous les filtres de sécurité.
     const arch=(state.seasonPlan&&state.seasonPlan.architect&&state.seasonPlan.architect.choices)||{};
-    day.slots.forEach((slot,i)=>{const pick=arch[`${step.id}${day.key}${i}`];const s=pick&&!slot.pos?{...slot,ids:[pick,...slot.ids.filter(x=>x!==pick)]}:slot;const e=resolve(s,i<3);if(e){if(pick&&e.id===pick)e.architect=true;exercises.push(e);}});
+    const BW=(typeof globalThis!=='undefined'&&globalThis.BodyWeight)||(()=>{try{return typeof require==='function'?require('./body-weight.js'):null;}catch(e){return null;}})();
+    const heavy=!!(BW&&BW.cautious(state));
+    const bikeFirst=ids=>heavy&&ids.some(id=>/^run/.test(id))?[...ids.filter(id=>/^bike/.test(id)),...ids.filter(id=>!/^bike/.test(id))]:ids;
+    day.slots.forEach((slot,i)=>{const pick=arch[`${step.id}${day.key}${i}`];const s0=pick&&!slot.pos?{...slot,ids:[pick,...slot.ids.filter(x=>x!==pick)]}:slot;const s=s0.pos||s0.role!=='cardio'?s0:{...s0,ids:bikeFirst(s0.ids)};const e=resolve(s,i<3);if(e){if(pick&&e.id===pick)e.architect=true;exercises.push(e);}});
     // Point faible du bilan : un créneau de plus, adapté à l'étape, juste après les mouvements clés.
     let focusNote=null;
     if(athletic){
@@ -298,6 +301,7 @@
     if(player.position) reasons.push(`Variantes choisies pour ton poste (${PP?PP.positions[player.position]?.label:player.position}).`);
     if(cared&&exercises.some(e=>e.pathwayRole==='soin')) reasons.push(care.note);
     if(kineNote&&exercises.some(e=>e.pathwayRole==='kiné')) reasons.push(kineNote);
+    if(heavy){exercises.forEach(e=>{if((e.pattern==='jump'||e.impact)&&e.sets>3)e.sets=3;});reasons.push('Au-dessus de ton poids de jeu : sauts limités à 3 séries, souffle au vélo plutôt qu’en course, pour ménager les genoux.');}
     if(focusNote&&exercises.some(e=>['point faible','priorité'].includes(e.pathwayRole))) reasons.push(focusNote);
     if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
     reasons.push(...step.rules);

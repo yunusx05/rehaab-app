@@ -7,7 +7,8 @@ const ptCalIcon = {
   muscu: 'weight',
   vivacite: 'spark',
   skills: 'court',
-  care: 'heart'
+  care: 'heart',
+  shooting: 'basket'
 };
 const ptCalStatus = {
   done: 'Faite',
@@ -72,6 +73,10 @@ function PTCalendar({
     }
     if (item.type === 'care') {
       go('rehab');
+      return;
+    }
+    if (item.type === 'shooting') {
+      go('shooting');
       return;
     }
     if (data.draft?.status === 'active') {
@@ -157,7 +162,10 @@ function PTCalendar({
     className: "badge quiet"
   }, "Club"), !d.free && !d.club.match && !d.club.practice && /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, "non dispo")), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
+  }, "non dispo"), d.weighIn && window.BodyWeight && /*#__PURE__*/React.createElement("button", {
+    className: "text-button calendar-weigh",
+    onClick: () => go('weight')
+  }, "Pes\xE9e du matin")), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos', d.qi && !d.club.match ? ' · QI du jour (5 min)' : ''), d.items.map(item => /*#__PURE__*/React.createElement("div", {
     key: item.key,

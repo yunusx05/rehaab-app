@@ -193,6 +193,8 @@ function PTPlanArsenal({data,go}){
     <PTImageTile photo={ptHub('tests')} badge={tests?`${tests} mesure${tests>1?'s':''}`:null} title="Mesurer ma détente et mes tests" text="Saut, sprint, RSI : un mur, un mètre ou une vidéo." onClick={()=>go('bilan','tests')}/>
     <PTImageTile photo={ptHub('game')} title="Mon jeu" text={C?.complete(data.basketProfile)?'Forces, faiblesses et club renseignés.':'Forces, faiblesses, club.'} onClick={()=>go('basket-profile')}/>
     <PTImageTile photo={ptHub('library')} title="Tous les exercices" text={`${PT.allExercises(data).length+(window.BasketSkills?.drills.length||0)} mouvements, filtres basket.`} onClick={()=>go('library')}/>
+    <PTImageTile photo={ptHub('shooting')} title="Mes séances de tir" text={window.Shooting?.summary(data.shooting)||'Compteur en direct, % par semaine, carte de tir.'} onClick={()=>go('shooting')}/>
+    <PTImageTile photo="media/ui/dossier/body.webp" title="Poids de forme" text="Ton poids face à ton poids de jeu." onClick={()=>go('weight')}/>
     <PTImageTile photo={ptHub('gear')} title="Mon matériel" text={`${data.owned.length} élément${data.owned.length>1?'s':''} coché${data.owned.length>1?'s':''}`} onClick={()=>go('player')}/>
   </div>;
 }
