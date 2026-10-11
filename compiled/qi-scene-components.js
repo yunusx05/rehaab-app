@@ -444,7 +444,9 @@ function PTScene3D({
   phase,
   choice,
   onDecide,
-  reduced
+  reduced,
+  onStep,
+  replayKey = 0
 }) {
   const host = usePTRef(null),
     api = usePTRef(null);
@@ -598,10 +600,34 @@ function PTScene3D({
         ball.rotation.x += .12;
         return t;
       };
-      const INTRO = reduced ? 0 : 1700;
-      let t0 = performance.now(),
-        mode = 'intro',
-        replay = null;
+      const INTRO = reduced ? 0 : 2600;
+      let mode = 'intro',
+        replay = null,
+        sim = 0,
+        last = performance.now(),
+        freezeAt = 0,
+        step = -1;
+      // Trace au sol du bon chemin, révélée pendant le rejeu.
+      const dots = Array.from({
+        length: 16
+      }, () => {
+        const m = new THREE.Mesh(new THREE.CircleGeometry(.07, 16), new THREE.MeshBasicMaterial({
+          color: PT_LIME,
+          transparent: true,
+          opacity: 0,
+          depthWrite: false
+        }));
+        m.rotation.x = -Math.PI / 2;
+        m.position.y = .025;
+        S.add(m);
+        return m;
+      });
+      const setStep = n => {
+        if (n !== step) {
+          step = n;
+          onStep && onStep(n);
+        }
+      };
       const intro = (k, now) => {
         const time = now / 1000,
           m = ease(k);
@@ -668,9 +694,38 @@ function PTScene3D({
         replay: action => {
           replay = {
             action,
-            t0: performance.now()
+            t0: sim
           };
           mode = 'replay';
+          setStep(0);
+          // Rejeu depuis la position figée : chacun revient à sa place.
+          me.root.position.set(-.25, 0, 0);
+          def.root.position.set(end.x - .25, 0, end.z);
+          def.root.rotation.y = 0;
+          def.root.position.y = 0;
+          const A = BS.ACTIONS[action] || {
+              side: 0
+            },
+            sd = A.side || (d.foot && d.foot !== 'square' ? BS.dir(d.foot) : 1);
+          const path = action === 'shoot' ? null : action.startsWith('pass') ? (() => {
+            const tx = mate ? mate.root.position.x : BS.dir(scene.teammate || 'right') * 6,
+              tz = mate ? mate.root.position.z : -6;
+            return k => [lerp(-.25, tx, k), lerp(-.3, tz, k)];
+          })() : (() => {
+            const lane = action === 'finish' || action === 'hesi-go' ? -.1 : sd * 1.35;
+            return k => [lerp(-.25, lane, Math.min(1, k * 1.5)), lerp(0, -5.2, k)];
+          })();
+          dots.forEach((m, i) => {
+            if (!path) {
+              m.material.opacity = 0;
+              return;
+            }
+            const [x, z] = path((i + 1) / dots.length);
+            m.position.x = x;
+            m.position.z = z;
+            m.material.opacity = 0;
+            m.userData.k = (i + 1) / dots.length;
+          });
           const s = d.foot && d.foot !== 'square' ? BS.dir(d.foot) : 0;
           if (scene.help && help) marker.position.set(help.root.position.x, .02, help.root.position.z);else if (s) marker.position.set(def.root.position.x + s * .14, .02, def.root.position.z + .3);else marker.position.set(def.root.position.x, .02, def.root.position.z);
           marker.material.opacity = .95;
@@ -680,20 +735,35 @@ function PTScene3D({
         if (disposed) return;
         frame = requestAnimationFrame(loop);
         if (document.hidden) return;
+        const dt = Math.min(50, now - last);
+        last = now;
         if (mode === 'intro') {
-          const k = INTRO ? (now - t0) / INTRO : 1;
-          intro(Math.min(1, k), now);
-          if (k >= 1) {
+          const lin = INTRO ? sim / INTRO : 1;
+          sim += dt * (lin > .68 ? .42 : 1);
+          // Les 30 derniers % de l'intro au ralenti : c'est là que le défenseur montre l'indice.
+          const k = lin < .68 ? lin / .68 * .82 : .82 + Math.min(1, (lin - .68) / .32) * .18;
+          intro(Math.min(1, k), sim);
+          if (lin >= 1) {
             mode = 'freeze';
+            freezeAt = now;
             onDecide && onDecide();
           }
+        } else if (mode === 'freeze') {
+          const p = easeIO(Math.min(1, (now - freezeAt) / 900));
+          cam.position.set(lerp(camBase.x, camBase.x - .35, p), lerp(camBase.y, camBase.y - .25, p), lerp(camBase.z, camBase.z - .9, p));
+          cam.lookAt(look);
         } else if (mode === 'replay' && replay) {
-          const T = reduced ? 1 : Math.min(1, (now - replay.t0) / 2200),
+          sim += dt * .7;
+          const T = reduced ? 1 : Math.min(1, (sim - replay.t0) / 2400),
             a = replay.action,
             A = BS.ACTIONS[a] || {
               side: 0
             },
-            time = now / 1000;
+            time = sim / 1000;
+          setStep(T < .3 ? 0 : T < .72 ? 1 : 2);
+          dots.forEach(m => {
+            m.material.opacity = m.userData.k !== undefined && T > .15 ? Math.min(.9, Math.max(0, (T - .15) * 1.6 - m.userData.k * .9) * 3) : 0;
+          });
           const side = A.side || (d.foot && d.foot !== 'square' ? BS.dir(d.foot) : 1);
           if (a === 'shoot') {
             const up = Math.sin(Math.min(1, T / .45) * Math.PI);
@@ -855,7 +925,7 @@ function PTScene3D({
   }, [scene.id]);
   usePTEffect(() => {
     if (phase === 'replay' && api.current) api.current.replay(scene.answer);
-  }, [phase]);
+  }, [phase, replayKey]);
   if (failed) return /*#__PURE__*/React.createElement(PTScene2D, {
     scene: scene,
     reveal: phase === 'replay'
@@ -971,7 +1041,9 @@ function PTQiScenes({
     [choice, setChoice] = usePTState(null),
     [results, setResults] = usePTState([]),
     [left, setLeft] = usePTState(3);
-  const decidedAt = usePTRef(0);
+  const decidedAt = usePTRef(0),
+    [step, setStep] = usePTState(-1),
+    [replayKey, setReplayKey] = usePTState(0);
   const scene = set.scenes[i];
   // Niveau 4 : 3 secondes pour décider, sinon la scène compte comme ratée.
   usePTEffect(() => {
@@ -1010,6 +1082,7 @@ function PTQiScenes({
     setPhase('replay');
   };
   const next = () => {
+    setStep(-1);
     if (i + 1 < set.scenes.length) {
       setI(i + 1);
       setChoice(null);
@@ -1047,6 +1120,8 @@ function PTQiScenes({
     phase: phase,
     choice: choice,
     reduced: reduced,
+    replayKey: replayKey,
+    onStep: setStep,
     onDecide: () => {
       decidedAt.current = Date.now();
       setPhase('decide');
@@ -1062,7 +1137,13 @@ function PTQiScenes({
     style: {
       transform: `scaleX(${left / 3})`
     }
-  }))), /*#__PURE__*/React.createElement("div", {
+  })), phase === 'replay' && step >= 0 && /*#__PURE__*/React.createElement("ol", {
+    className: "scene-caption",
+    "aria-live": "polite"
+  }, [scene.cues.join(' '), `Bonne action : ${BS.actionLabel(scene.answer).toLowerCase()}.`, scene.why.split(/(?<=\.)\s/)[0]].map((c, n) => /*#__PURE__*/React.createElement("li", {
+    key: n,
+    className: n === step ? 'is-now' : n < step ? 'is-done' : ''
+  }, /*#__PURE__*/React.createElement("b", null, n + 1), /*#__PURE__*/React.createElement("span", null, c))))), /*#__PURE__*/React.createElement("div", {
     className: "scene-options",
     role: "group",
     "aria-label": "Ta d\xE9cision"
@@ -1078,11 +1159,16 @@ function PTQiScenes({
     className: "reason-list"
   }, scene.cues.map(c => /*#__PURE__*/React.createElement("li", {
     key: c
-  }, c))), /*#__PURE__*/React.createElement("p", null, scene.why), /*#__PURE__*/React.createElement(PTButton, {
+  }, c))), /*#__PURE__*/React.createElement("p", null, scene.why), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setReplayKey(k => k + 1)
+  }, "Revoir l\u2019action"), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: next
   }, i + 1 < set.scenes.length ? 'Scène suivante' : 'Voir mon bilan', /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })))));
+  }))))));
 }
