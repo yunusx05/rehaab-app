@@ -50,7 +50,14 @@ function PTLibrary({
     [error, setError] = usePTState('');
   const [muscle, setMuscle] = usePTState('all'),
     [equipment, setEquipment] = usePTState('all'),
-    [care, setCare] = usePTState('all');
+    [care, setCare] = usePTState('all'),
+    [quality, setQuality] = usePTState('all'),
+    [creator, setCreator] = usePTState('all');
+  // Qualité basket (fiches et table de player-profile.js) et créateur (drill-sources.js).
+  const JP = window.PlayerProfile,
+    sources = window.RehaabSources || {};
+  const creators = [...new Set(Object.values(sources).flat().map(s => s.creator))].sort((a, b) => a.localeCompare(b, 'fr'));
+  const qualityOf = e => JP ? JP.qualitiesOf(e) : e.qualities || [];
   const [custom, setCustom] = usePTState({
     name: '',
     kind: 'strength',
@@ -71,7 +78,7 @@ function PTLibrary({
   const careIds = ptCareIds(care),
     RW = window.RehabWarmup;
   const all = [...PT.allExercises(data), ...(window.BasketSkills?.drills || [])];
-  const items = all.filter(e => (muscle === 'all' || ptMuscles(e).includes(muscle)) && (equipment === 'all' || e.needs.includes(equipment)) && (!careIds || careIds.has(e.id)) && (kind === 'all' || kind === 'liked' && data.preferences.likes.includes(e.id) || kind === 'owned' && e.needs.every(n => n === 'bodyweight' || data.owned.includes(n)) || kind === 'basket' && (e.kind === 'skill' || ['react'].includes(e.pattern)) || e.kind === kind) && normalize(e.name).includes(normalize(query)));
+  const items = all.filter(e => (muscle === 'all' || ptMuscles(e).includes(muscle)) && (equipment === 'all' || e.needs.includes(equipment)) && (!careIds || careIds.has(e.id)) && (quality === 'all' || qualityOf(e).includes(quality)) && (creator === 'all' || (sources[e.id] || []).some(s => s.creator === creator)) && (kind === 'all' || kind === 'liked' && data.preferences.likes.includes(e.id) || kind === 'owned' && e.needs.every(n => n === 'bodyweight' || data.owned.includes(n)) || kind === 'basket' && (e.kind === 'skill' || !!e.transfer || ['react'].includes(e.pattern)) || e.kind === kind) && normalize(e.name).includes(normalize(query)));
   const set = (k, v) => setCustom(c => ({
     ...c,
     [k]: v
@@ -82,6 +89,8 @@ function PTLibrary({
     setEquipment('all');
     setKind('all');
     setCare('all');
+    setQuality('all');
+    setCreator('all');
     setOpen(null);
   };
   const add = () => {
@@ -163,7 +172,33 @@ function PTLibrary({
   }, "Tout le mat\xE9riel"), PT.equipment.map(e => /*#__PURE__*/React.createElement("option", {
     key: e.id,
     value: e.id
-  }, e.label)))), RW && /*#__PURE__*/React.createElement(PTField, {
+  }, e.label)))), JP && /*#__PURE__*/React.createElement(PTField, {
+    label: "Qualit\xE9 basket"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: quality,
+    onChange: e => {
+      setQuality(e.target.value);
+      setOpen(null);
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, "Toutes les qualit\xE9s"), Object.entries(JP.qualityLabels).map(([id, label]) => /*#__PURE__*/React.createElement("option", {
+    key: id,
+    value: id
+  }, label)))), creators.length > 0 && /*#__PURE__*/React.createElement(PTField, {
+    label: "Cr\xE9ateur"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: creator,
+    onChange: e => {
+      setCreator(e.target.value);
+      setOpen(null);
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "all"
+  }, "Tous les cr\xE9ateurs"), creators.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c,
+    value: c
+  }, c)))), RW && /*#__PURE__*/React.createElement(PTField, {
     label: "Soin d\u2019une zone"
   }, /*#__PURE__*/React.createElement("select", {
     value: care,
@@ -299,7 +334,7 @@ function PTLibrary({
   })), /*#__PURE__*/React.createElement("span", {
     className: "library-count",
     role: "status"
-  }, items.length, " mouvements"), (query || muscle !== 'all' || equipment !== 'all' || kind !== 'all' || care !== 'all') && /*#__PURE__*/React.createElement("button", {
+  }, items.length, " mouvements"), (query || muscle !== 'all' || equipment !== 'all' || kind !== 'all' || care !== 'all' || quality !== 'all' || creator !== 'all') && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: reset
   }, "Effacer les filtres")), /*#__PURE__*/React.createElement("div", {

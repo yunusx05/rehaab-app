@@ -5,7 +5,7 @@ const focusLabels = {muscle:'Musculation',core:'Gainage',cardio:'Cardio',plyo:'P
 const goalLabels = {balanced:'Un corps athlétique, un meilleur jeu',muscle:'Développer mes muscles',basket:'Progresser au basket',strength:'Gagner en force',mobility:'Bouger plus facilement'};
 const shortDate = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
 const timeLabel = seconds => `${Math.floor(Math.max(0,seconds)/60)}:${String(Math.floor(Math.max(0,seconds)%60)).padStart(2,'0')}`;
-const loadUnit = ex => ex.weighted==='dumbbells'&&!ex.singleLoad?'kg par haltère':ex.weighted==='barbell'?'kg, barre comprise':ex.weighted==='kettlebell'?'kg par kettlebell':ex.weighted==='vest'?'kg de gilet':'kg affichés';
+const loadUnit = ex => ex.weighted==='dumbbells'&&!ex.singleLoad?'kg par haltère':ex.weighted==='barbell'?'kg, barre comprise':ex.weighted==='kettlebell'?'kg par kettlebell':ex.weighted==='vest'?'kg de gilet':ex.weighted==='trapbar'?'kg, barre comprise':ex.weighted==='landmine'?'kg ajoutés au bout de la barre':'kg affichés';
 const toggleId = (list,id) => list.includes(id)?list.filter(x=>x!==id):[...list,id];
 // Zones du corps : une même silhouette pour toutes, un point plein sur la zone concernée. Lisible à 22 px, là où un membre isolé ne l'est pas.
 const ptZoneBody=<g opacity=".34"><circle cx="12" cy="3.4" r="1.9"/><path d="M12 5.3v7.4M12 7.4 8.2 11.2M12 7.4l3.8 3.8M12 12.7 9.4 20m2.6-7.3L14.6 20"/></g>;
@@ -71,7 +71,11 @@ function PTDemo({exercise}) {
     {primary?<video key={attempt} ref={video} muted playsInline loop controls preload="metadata" poster={media?.poster} src={primary} onError={()=>setFailed(true)} aria-label={`Démonstration vidéo de ${exercise.name}`}/>:<><img src={`media/${frames}/0.webp`} alt={`${exercise.name} : départ`} onError={()=>setPhotosFailed(true)}/><img className="second" src={`media/${frames}/1.webp`} alt={`${exercise.name} : arrivée`} onError={()=>setPhotosFailed(true)}/></>}
     </div><div className="demo-controls"><span>{primary?'Vidéo en boucle':media?.generated?'Illustration IA · 2 positions':'Départ ↔ arrivée · 2 positions'}</span><div className="media-meta">{primary&&media.credit&&<a className="media-credit" href="media/ATTRIBUTION.md" target="_blank" rel="noreferrer" title={media.credit} aria-label={`Crédits de la vidéo : ${media.credit}`}>CC</a>}<button className="text-button" onClick={()=>setPlay(!play)}><PTIcon name={play?'pause':'play'} size={16}/>{play?'Pause démo':'Lire la démo'}</button></div></div>{!primary&&!play&&<div className="position-switch"><button aria-pressed={frame===0} onClick={()=>setFrame(0)}>Départ</button><button aria-pressed={frame===1} onClick={()=>setFrame(1)}>Arrivée</button></div>}</div>;
 }
-function PTExerciseDetails({exercise}) {return <div className="stack"><PTDemo key={exercise.id} exercise={exercise}/><ol className="instruction-list">{exercise.instructions.map((line,i)=><li key={i}>{line}</li>)}</ol>{exercise.weighted&&<p className="fine">Charge enregistrée en {loadUnit(exercise)}.</p>}</div>;}
+// Lot 13 : à quoi sert l’exercice sur le terrain, ses points clés et les vidéos des créateurs qui le montrent.
+function PTExerciseDetails({exercise}) {
+  const sources=window.RehaabSources?.[exercise.id]||[];
+  return <div className="stack"><PTDemo key={exercise.id} exercise={exercise}/>{exercise.transfer&&<p className="court-transfer"><PTIcon name="basket" size={16}/><span><strong>Sur le terrain</strong>{exercise.transfer}</span></p>}<ol className="instruction-list">{exercise.instructions.map((line,i)=><li key={i}>{line}</li>)}</ol>{exercise.cues?.length>0&&<div className="cue-chips" aria-label="Points clés">{exercise.cues.map(c=><span key={c}>{c}</span>)}</div>}{exercise.weighted&&<p className="fine">Charge enregistrée en {loadUnit(exercise)}.</p>}{sources.length>0&&<p className="fine seen-at">Vu chez {sources.map((s,i)=><React.Fragment key={s.url}>{i>0&&', '}<a href={s.url} target="_blank" rel="noopener noreferrer">{s.creator}</a></React.Fragment>)}</p>}</div>;
+}
 function ptReadLegacy() {
   const snapshot={};try{Object.keys(localStorage).filter(k=>k.startsWith('rh_')&&!k.startsWith('rh_personal')).forEach(k=>snapshot[k]=localStorage.getItem(k));}catch(e){}return snapshot;
 }

@@ -1,0 +1,11 @@
+{
+ "sk-fake-pullup": [{"videoId": "SmspzPf7PPU", "start": 14}],
+ "sk-hang-pullup": [{"videoId": "SmspzPf7PPU", "start": 141}],
+ "mv-hesi-read": [{"videoId": "SmspzPf7PPU", "start": 141}, {"videoId": "7PeXI6RLzQc", "start": 148}],
+ "mv-jab-cross": [{"videoId": "7PeXI6RLzQc", "start": 117}],
+ "sk-stepback": [{"videoId": "SmspzPf7PPU", "start": 293}],
+ "sk-euro-counter": [{"videoId": "gElBtcfpKlE", "start": 130}],
+ "mv-snatch-cross": [{"videoId": "Q8mQSyZCHB8", "start": 587}],
+ "cut-45-stick": [{"videoId": "wH8uL5hTQz4", "start": 149}],
+ "penultimate-step": [{"videoId": "rp-fnzx5lr8", "start": 408}]
+}

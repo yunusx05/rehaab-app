@@ -10,9 +10,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=WDIpL0pjun0&t=4s"
   },
   "wall-pushup": {
-    "card": "media/cards/wall-pushup.webp",
-    "frames": "generated/wall-pushup",
-    "generated": true,
     "video": "media/videos/yt/wall-pushup.mp4",
     "poster": "media/videos/yt/wall-pushup.webp",
     "credit": "YouTube · How to Do Wall Push Ups: A Guide from Physical Therapists",
@@ -64,9 +61,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=qXrTDQG1oUQ&t=42s"
   },
   "band-row": {
-    "card": "media/cards/band-row.webp",
-    "frames": "generated/band-row",
-    "generated": true,
     "video": "media/videos/yt/band-row.mp4",
     "poster": "media/videos/yt/band-row.webp",
     "credit": "YouTube · Seated Rows with Resistance Bands",
@@ -131,9 +125,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=BRVDS6HVR9Q&t=33s"
   },
   "triceps": {
-    "card": "media/cards/triceps.webp",
-    "frames": "generated/triceps",
-    "generated": true,
     "video": "media/videos/yt/triceps.mp4",
     "poster": "media/videos/yt/triceps.webp",
     "credit": "YouTube · Resistance Band Overhead Tricep Extension",
@@ -176,16 +167,12 @@ window.RehaabMedia = {
     ]
   },
   "reverse-lunge": {
-    "card": "media/cards/reverse-lunge.webp",
-    "frames": "generated/reverse-lunge",
-    "generated": true,
     "video": "media/videos/yt/reverse-lunge.mp4",
     "poster": "media/videos/yt/reverse-lunge.webp",
     "credit": "YouTube · Bodyweight Reverse Lunge",
     "source": "https://www.youtube.com/watch?v=bB1Jye7cxKY&t=40s"
   },
   "db-lunge": {
-    "card": "media/cards/db-lunge.webp",
     "frames": "Dumbbell_Rear_Lunge",
     "muscles": [
       "quadriceps"
@@ -196,7 +183,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=RZKXLMxPF_I&t=44s"
   },
   "rdl": {
-    "card": "media/cards/rdl.webp",
     "video": "media/videos/rdl.mp4",
     "poster": "media/videos/rdl.webp",
     "credit": "Goulart · wger · CC BY-SA 4.0"
@@ -212,9 +198,10 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=yPqv3ejnZvc&t=3s"
   },
   "kb-deadlift": {
-    "card": "media/cards/kb-deadlift.webp",
-    "frames": "generated/kb-deadlift",
-    "generated": true
+    "video": "media/videos/yt/kb-deadlift.mp4",
+    "poster": "media/videos/yt/kb-deadlift.webp",
+    "credit": "YouTube · Kettlebell Deadlift | Exercise Tutorial",
+    "source": "https://www.youtube.com/watch?v=l6gDwf3xC6s&t=2s"
   },
   "bridge": {
     "frames": "Butt_Lift_Bridge",
@@ -252,9 +239,6 @@ window.RehaabMedia = {
     "credit": "Goulart · wger · CC BY-SA 4.0"
   },
   "calf": {
-    "card": "media/cards/calf.webp",
-    "frames": "generated/calf",
-    "generated": true,
     "video": "media/videos/yt/calf.mp4",
     "poster": "media/videos/yt/calf.webp",
     "credit": "YouTube · Standing Bodyweight Calf Raise",
@@ -281,18 +265,12 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=EPiXN2bkLoQ&t=1s"
   },
   "side-plank": {
-    "card": "media/cards/side-plank.webp",
-    "frames": "generated/side-plank",
-    "generated": true,
     "video": "media/videos/yt/side-plank.mp4",
     "poster": "media/videos/yt/side-plank.webp",
     "credit": "YouTube · Side plank on knee",
     "source": "https://www.youtube.com/watch?v=-Dw9Es42eLM&t=19s"
   },
   "pallof": {
-    "card": "media/cards/pallof.webp",
-    "frames": "generated/pallof",
-    "generated": true,
     "video": "media/videos/yt/pallof.mp4",
     "poster": "media/videos/yt/pallof.webp",
     "credit": "YouTube · How To Do A Pallof Press",
@@ -315,7 +293,6 @@ window.RehaabMedia = {
     ]
   },
   "bike-interval": {
-    "card": "media/cards/bike-interval.webp",
     "frames": "Bicycling_Stationary",
     "muscles": [
       "quadriceps"
@@ -326,14 +303,16 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=PHReR7tC_tw&t=3s"
   },
   "walk": {
-    "card": "media/cards/walk.webp",
-    "frames": "generated/walk",
-    "generated": true
+    "video": "media/videos/yt/walk.mp4",
+    "poster": "media/videos/yt/walk.webp",
+    "credit": "YouTube · Learning the Arm Motion for Power Walking | Power Walking",
+    "source": "https://www.youtube.com/watch?v=EpvXcGONfkk&t=95s"
   },
   "run": {
-    "card": "media/cards/run.webp",
-    "frames": "generated/run",
-    "generated": true
+    "video": "media/videos/yt/run.mp4",
+    "poster": "media/videos/yt/run.webp",
+    "credit": "YouTube · Running technique: KICKING vs BOUNCING",
+    "source": "https://www.youtube.com/watch?v=7j8wrUQ2Smc&t=2s"
   },
   "rower": {
     "frames": "Rowing_Stationary",
@@ -342,18 +321,16 @@ window.RehaabMedia = {
     ]
   },
   "march": {
-    "card": "media/cards/march.webp",
-    "frames": "generated/march",
-    "generated": true,
     "video": "media/videos/yt/march.mp4",
     "poster": "media/videos/yt/march.webp",
     "credit": "YouTube · High knee march in place",
     "source": "https://www.youtube.com/watch?v=XrOxOD913yM&t=0s"
   },
   "stepjack": {
-    "card": "media/cards/stepjack.webp",
-    "frames": "generated/stepjack",
-    "generated": true
+    "video": "media/videos/yt/stepjack.mp4",
+    "poster": "media/videos/yt/stepjack.webp",
+    "credit": "YouTube · Step Jacks",
+    "source": "https://www.youtube.com/watch?v=q8GCujxyZTA&t=27s"
   },
   "rope": {
     "frames": "Rope_Jumping",
@@ -362,9 +339,6 @@ window.RehaabMedia = {
     ]
   },
   "ankle-mob": {
-    "card": "media/cards/ankle-mob.webp",
-    "frames": "generated/ankle-mob",
-    "generated": true,
     "video": "media/videos/yt/ankle-mob.mp4",
     "poster": "media/videos/yt/ankle-mob.webp",
     "credit": "YouTube · Knee to Wall Dorsiflexion Lunge Test for the Ankle",
@@ -381,16 +355,12 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=7nhKGSzG5Eo&t=30s"
   },
   "thoracic": {
-    "card": "media/cards/thoracic.webp",
-    "frames": "generated/thoracic",
-    "generated": true,
     "video": "media/videos/yt/thoracic.mp4",
     "poster": "media/videos/yt/thoracic.webp",
     "credit": "YouTube · Thoracic Rotation Open Book",
     "source": "https://www.youtube.com/watch?v=peeW19ofFUg&t=26s"
   },
   "hip-flexor": {
-    "card": "media/cards/hip-flexor.webp",
     "frames": "Kneeling_Hip_Flexor",
     "muscles": [
       "quadriceps"
@@ -401,9 +371,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=gqoPYLUgP48&t=54s"
   },
   "shoulder-mob": {
-    "card": "media/cards/shoulder-mob.webp",
-    "frames": "generated/shoulder-mob",
-    "generated": true,
     "video": "media/videos/yt/shoulder-mob.mp4",
     "poster": "media/videos/yt/shoulder-mob.webp",
     "credit": "YouTube · How to Perform Wall Angel for Tight Upper Back",
@@ -420,27 +387,18 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=5f5aHVj-f9Q&t=42s"
   },
   "landing": {
-    "card": "media/cards/landing.webp",
-    "frames": "generated/landing",
-    "generated": true,
     "video": "media/videos/yt/landing.mp4",
     "poster": "media/videos/yt/landing.webp",
     "credit": "YouTube · Multidirectional Jumps Stick Landing Level 1",
     "source": "https://www.youtube.com/watch?v=0J4z4MiaaG4&t=0s"
   },
   "pogo": {
-    "card": "media/cards/pogo.webp",
-    "frames": "generated/pogo",
-    "generated": true,
     "video": "media/videos/yt/pogo.mp4",
     "poster": "media/videos/yt/pogo.webp",
     "credit": "YouTube · Ankle Pogo Jumps",
     "source": "https://www.youtube.com/watch?v=wa1ClvLqSHo&t=0s"
   },
   "lateral-hop": {
-    "card": "media/cards/lateral-hop.webp",
-    "frames": "generated/lateral-hop",
-    "generated": true,
     "video": "media/videos/yt/lateral-hop.mp4",
     "poster": "media/videos/yt/lateral-hop.webp",
     "credit": "YouTube · Lateral Hop & Stick",
@@ -466,41 +424,34 @@ window.RehaabMedia = {
     "credit": "Goulart · wger · CC BY-SA 4.0"
   },
   "copenhagen": {
-    "card": "media/cards/copenhagen.webp",
-    "frames": "generated/copenhagen",
-    "generated": true,
     "video": "media/videos/yt/copenhagen.mp4",
     "poster": "media/videos/yt/copenhagen.webp",
     "credit": "YouTube · Copenhagen Side Plank Short Lever + Knee Drive",
     "source": "https://www.youtube.com/watch?v=XBZC4GEqyQc&t=18s"
   },
   "kb-swing": {
-    "card": "media/cards/kb-swing.webp",
-    "frames": "generated/kb-swing",
-    "generated": true,
     "video": "media/videos/yt/kb-swing.mp4",
     "poster": "media/videos/yt/kb-swing.webp",
     "credit": "YouTube · Kettlebell Swing",
     "source": "https://www.youtube.com/watch?v=1cVT3ee9mgU&t=15s"
   },
   "band-shuffle": {
-    "card": "media/cards/band-shuffle.webp",
-    "frames": "generated/band-shuffle",
-    "generated": true,
     "video": "media/videos/yt/band-shuffle.mp4",
     "poster": "media/videos/yt/band-shuffle.webp",
     "credit": "YouTube · Lateral band walks | Ohio State Sports Medicine",
     "source": "https://www.youtube.com/watch?v=6eoK_yxY8Ak&t=6s"
   },
   "halo": {
-    "card": "media/cards/halo.webp",
-    "frames": "generated/halo",
-    "generated": true
+    "video": "media/videos/yt/halo.mp4",
+    "poster": "media/videos/yt/halo.webp",
+    "credit": "YouTube · Kettlebell Halo",
+    "source": "https://www.youtube.com/watch?v=wJcmanVh5EE&t=2s"
   },
   "breath": {
-    "card": "media/cards/breath.webp",
-    "frames": "generated/breath",
-    "generated": true
+    "video": "media/videos/yt/breath.mp4",
+    "poster": "media/videos/yt/breath.webp",
+    "credit": "YouTube · DIAPHRAGMATIC BREATHING",
+    "source": "https://www.youtube.com/watch?v=Q1Me3bMx5Dc&t=14s"
   },
   "dips": {
     "frames": "Bench_Dips",
@@ -509,9 +460,10 @@ window.RehaabMedia = {
     ]
   },
   "knee-pushup": {
-    "card": "media/cards/knee-pushup.webp",
-    "frames": "generated/knee-pushup",
-    "generated": true
+    "video": "media/videos/yt/knee-pushup.mp4",
+    "poster": "media/videos/yt/knee-pushup.webp",
+    "credit": "YouTube · Wellness Wednesday: Give yourself 10 knee push-ups",
+    "source": "https://www.youtube.com/watch?v=WcHtt6zT3Go&t=18s"
   },
   "incline-pushup": {
     "frames": "Incline_Push-Up",
@@ -524,59 +476,46 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=Me9bHFAxnCs&t=25s"
   },
   "decline-pushup": {
-    "card": "media/cards/decline-pushup.webp",
-    "frames": "generated/decline-pushup",
-    "generated": true
+    "video": "media/videos/yt/decline-pushup.mp4",
+    "poster": "media/videos/yt/decline-pushup.webp",
+    "credit": "YouTube · How to perform decline push ups with good form",
+    "source": "https://www.youtube.com/watch?v=5QFjmotLfW4&t=27s"
   },
   "wide-pushup": {
-    "card": "media/cards/wide-pushup.webp",
-    "frames": "generated/wide-pushup",
-    "generated": true,
     "video": "media/videos/yt/wide-pushup.mp4",
     "poster": "media/videos/yt/wide-pushup.webp",
     "credit": "YouTube · How To Do A WIDE GRIP PUSH UP | Exercise Demonstration Video and Guide",
     "source": "https://www.youtube.com/watch?v=Z8nUVpSZAhE&t=5s"
   },
   "tempo-pushup": {
-    "card": "media/cards/tempo-pushup.webp",
-    "frames": "generated/tempo-pushup",
-    "generated": true,
     "video": "media/videos/yt/tempo-pushup.mp4",
     "poster": "media/videos/yt/tempo-pushup.webp",
     "credit": "YouTube · Slow Tempo Push Up",
     "source": "https://www.youtube.com/watch?v=1rAKHS13yTs&t=25s"
   },
   "scap-pushup": {
-    "card": "media/cards/scap-pushup.webp",
-    "frames": "generated/scap-pushup",
-    "generated": true,
     "video": "media/videos/yt/scap-pushup.mp4",
     "poster": "media/videos/yt/scap-pushup.webp",
     "credit": "YouTube · Scapular Push Up",
     "source": "https://www.youtube.com/watch?v=huGj4aBk9C4&t=1s"
   },
   "pike-pushup": {
-    "card": "media/cards/pike-pushup.webp",
-    "frames": "generated/pike-pushup",
-    "generated": true,
     "video": "media/videos/yt/pike-pushup.mp4",
     "poster": "media/videos/yt/pike-pushup.webp",
     "credit": "YouTube · How to do a Pike Push-Up",
     "source": "https://www.youtube.com/watch?v=XckEEwa1BPI&t=1s"
   },
   "band-pushup": {
-    "card": "media/cards/band-pushup.webp",
-    "frames": "generated/band-pushup",
-    "generated": true,
     "video": "media/videos/yt/band-pushup.mp4",
     "poster": "media/videos/yt/band-pushup.webp",
     "credit": "YouTube · Banded Push-Up",
     "source": "https://www.youtube.com/watch?v=dGYUa6Ekwqs&t=8s"
   },
   "band-press": {
-    "card": "media/cards/band-press.webp",
-    "frames": "generated/band-press",
-    "generated": true
+    "video": "media/videos/yt/band-press.mp4",
+    "poster": "media/videos/yt/band-press.webp",
+    "credit": "YouTube · Banded Chest Press",
+    "source": "https://www.youtube.com/watch?v=9NGo4lZd65o&t=13s"
   },
   "cable-press": {
     "frames": "Cable_Chest_Press",
@@ -617,9 +556,10 @@ window.RehaabMedia = {
     ]
   },
   "front-raise": {
-    "card": "media/cards/front-raise.webp",
-    "frames": "generated/front-raise",
-    "generated": true
+    "video": "media/videos/yt/front-raise.mp4",
+    "poster": "media/videos/yt/front-raise.webp",
+    "credit": "YouTube · How To Do A Dumbbell Front Raise",
+    "source": "https://www.youtube.com/watch?v=zkP0MsTcIVU&t=8s"
   },
   "band-lateral": {
     "frames": "Lateral_Raise_-_With_Bands",
@@ -970,9 +910,6 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=_R389Jk0tIo&t=1s"
   },
   "bird-dog": {
-    "card": "media/cards/bird-dog.webp",
-    "frames": "generated/bird-dog",
-    "generated": true,
     "video": "media/videos/yt/bird-dog.mp4",
     "poster": "media/videos/yt/bird-dog.webp",
     "credit": "YouTube · Bird Dog Exercise",
@@ -1099,889 +1036,714 @@ window.RehaabMedia = {
     "source": "https://www.youtube.com/watch?v=oU_oVMJL3-8&t=3s"
   },
   "defense": {
-    "card": "media/cards/defense.webp",
-    "frames": "generated/defense",
-    "generated": true
+    "video": "media/videos/yt/defense.mp4",
+    "poster": "media/videos/yt/defense.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=2s"
   },
   "a-march": {
-    "card": "media/cards/a-march.webp",
-    "frames": "generated/a-march",
-    "generated": true,
     "video": "media/videos/yt/a-march.mp4",
     "poster": "media/videos/yt/a-march.webp",
     "credit": "YouTube · A March Drill",
     "source": "https://www.youtube.com/watch?v=am3v2I1LxaM&t=9s"
   },
   "psoas-march": {
-    "card": "media/cards/psoas-march.webp",
-    "frames": "generated/psoas-march",
-    "generated": true,
     "video": "media/videos/yt/psoas-march.mp4",
     "poster": "media/videos/yt/psoas-march.webp",
     "credit": "YouTube · Supine Psoas March",
     "source": "https://www.youtube.com/watch?v=MezNdAcVfZE&t=30s"
   },
   "falling-start": {
-    "card": "media/cards/falling-start.webp",
-    "frames": "generated/falling-start",
-    "generated": true,
     "video": "media/videos/yt/falling-start.mp4",
     "poster": "media/videos/yt/falling-start.webp",
     "credit": "YouTube · Falling Starts",
     "source": "https://www.youtube.com/watch?v=EK8jLSC8CaY&t=21s"
   },
   "split-start": {
-    "card": "media/cards/split-start.webp",
-    "frames": "generated/split-start",
-    "generated": true
+    "video": "media/videos/yt/split-start.mp4",
+    "poster": "media/videos/yt/split-start.webp",
+    "credit": "YouTube · 10-yd Sprint, Staggered-stance Roll Start",
+    "source": "https://www.youtube.com/watch?v=sonIjubCduo&t=9s"
   },
   "drop-step-start": {
-    "card": "media/cards/drop-step-start.webp",
-    "frames": "generated/drop-step-start",
-    "generated": true
+    "video": "media/videos/yt/drop-step-start.mp4",
+    "poster": "media/videos/yt/drop-step-start.webp",
+    "credit": "YouTube · Drop Step Sprint",
+    "source": "https://www.youtube.com/watch?v=oBLMNIPupPU&t=38s"
   },
   "band-resisted-start": {
-    "card": "media/cards/band-resisted-start.webp",
-    "frames": "generated/band-resisted-start",
-    "generated": true
+    "video": "media/videos/yt/band-resisted-start.mp4",
+    "poster": "media/videos/yt/band-resisted-start.webp",
+    "credit": "YouTube · Sprint Acceleration [Band Resisted]",
+    "source": "https://www.youtube.com/watch?v=P_KZDABB5VU&t=0s"
   },
   "snap-down": {
-    "card": "media/cards/snap-down.webp",
-    "frames": "generated/snap-down",
-    "generated": true,
     "video": "media/videos/yt/snap-down.mp4",
     "poster": "media/videos/yt/snap-down.webp",
     "credit": "YouTube · Snapdown to Jump and Stick",
     "source": "https://www.youtube.com/watch?v=vQqmduv_de8&t=11s"
   },
   "single-pogo": {
-    "card": "media/cards/single-pogo.webp",
-    "frames": "generated/single-pogo",
-    "generated": true
-  },
-  "single-leg-vertical": {
-    "card": "media/cards/single-leg-vertical.webp",
-    "frames": "generated/single-leg-vertical",
-    "generated": true
+    "video": "media/videos/yt/single-pogo.mp4",
+    "poster": "media/videos/yt/single-pogo.webp",
+    "credit": "YouTube · Single Leg Linear Pogo Hops",
+    "source": "https://www.youtube.com/watch?v=MYnVANm8H9E&t=10s"
   },
   "slant-squat": {
-    "card": "media/cards/slant-squat.webp",
-    "frames": "generated/slant-squat",
-    "generated": true,
     "video": "media/videos/yt/slant-squat.mp4",
     "poster": "media/videos/yt/slant-squat.webp",
     "credit": "YouTube · Slant Board Squats: Heels elevated squats",
     "source": "https://www.youtube.com/watch?v=THxMd-K76DU&t=12s"
   },
   "a-skip": {
-    "card": "media/cards/a-skip.webp",
-    "frames": "generated/a-skip",
-    "generated": true
+    "video": "media/videos/yt/a-skip.mp4",
+    "poster": "media/videos/yt/a-skip.webp",
+    "credit": "YouTube · How to Improve Your Running Technique in 60 Seconds | A-Skip Tutorial",
+    "source": "https://www.youtube.com/watch?v=qwcDGGB392g&t=60s"
   },
   "knee-drive-iso": {
-    "card": "media/cards/knee-drive-iso.webp",
-    "frames": "generated/knee-drive-iso",
-    "generated": true,
     "video": "media/videos/yt/knee-drive-iso.mp4",
     "poster": "media/videos/yt/knee-drive-iso.webp",
     "credit": "YouTube · Speed Mechanics - Wall knee drive",
     "source": "https://www.youtube.com/watch?v=ZW9rjy9TgGM&t=34s"
   },
   "vertical-jump": {
-    "card": "media/cards/vertical-jump.webp",
-    "frames": "generated/vertical-jump",
-    "generated": true
+    "video": "media/videos/yt/vertical-jump.mp4",
+    "poster": "media/videos/yt/vertical-jump.webp",
+    "credit": "YouTube · Countermovement Vertical Jump",
+    "source": "https://www.youtube.com/watch?v=QcQCihNGteE&t=14s"
   },
   "drop-jump": {
-    "card": "media/cards/drop-jump.webp",
-    "frames": "generated/drop-jump",
-    "generated": true
+    "video": "media/videos/yt/drop-jump.mp4",
+    "poster": "media/videos/yt/drop-jump.webp",
+    "credit": "YouTube · How To Drop Jumps",
+    "source": "https://www.youtube.com/watch?v=3JY0pxIPaC4&t=3s"
   },
   "approach-jump": {
-    "card": "media/cards/approach-jump.webp",
-    "frames": "generated/approach-jump",
-    "generated": true
-  },
-  "db-jump": {
-    "card": "media/cards/db-jump.webp",
-    "frames": "generated/db-jump",
-    "generated": true
+    "video": "media/videos/yt/approach-jump.mp4",
+    "poster": "media/videos/yt/approach-jump.webp",
+    "credit": "YouTube · Two Step Approach to Vertical Jump",
+    "source": "https://www.youtube.com/watch?v=DOMeJWrQtAA&t=5s"
   },
   "lateral-decel": {
-    "card": "media/cards/lateral-decel.webp",
-    "frames": "generated/lateral-decel",
-    "generated": true
+    "video": "media/videos/yt/lateral-decel.mp4",
+    "poster": "media/videos/yt/lateral-decel.webp",
+    "credit": "YouTube · How to: Bilateral Deceleration",
+    "source": "https://www.youtube.com/watch?v=uHlW-f8CwPI&t=8s"
   },
   "reverse-nordic": {
-    "card": "media/cards/reverse-nordic.webp",
-    "frames": "generated/reverse-nordic",
-    "generated": true
+    "video": "media/videos/yt/reverse-nordic.mp4",
+    "poster": "media/videos/yt/reverse-nordic.webp",
+    "credit": "YouTube · Reverse nordic curl +20kg/44lbs",
+    "source": "https://www.youtube.com/watch?v=6WXRylUxQ48&t=2s"
   },
   "couch-stretch": {
-    "card": "media/cards/couch-stretch.webp",
-    "frames": "generated/couch-stretch",
-    "generated": true,
     "video": "media/videos/yt/couch-stretch.mp4",
     "poster": "media/videos/yt/couch-stretch.webp",
     "credit": "YouTube · Couch Stretch",
     "source": "https://www.youtube.com/watch?v=Fg-lwNBzVV8&t=37s"
   },
   "active-slr": {
-    "card": "media/cards/active-slr.webp",
-    "frames": "generated/active-slr",
-    "generated": true,
     "video": "media/videos/yt/active-slr.mp4",
     "poster": "media/videos/yt/active-slr.webp",
     "credit": "YouTube · Active Straight Leg Raise Assessment",
     "source": "https://www.youtube.com/watch?v=t9AsBEtlSJk&t=15s"
   },
   "vest-pushup": {
-    "card": "media/cards/vest-pushup.webp",
-    "frames": "generated/vest-pushup",
-    "generated": true
+    "video": "media/videos/yt/vest-pushup.mp4",
+    "poster": "media/videos/yt/vest-pushup.webp",
+    "credit": "YouTube · How To Do A WEIGHT VEST PUSH UP | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=jvZv8_oC6Vs&t=18s"
   },
   "slider-ham-curl": {
-    "card": "media/cards/slider-ham-curl.webp",
-    "frames": "generated/slider-ham-curl",
-    "generated": true,
     "video": "media/videos/yt/slider-ham-curl.mp4",
     "poster": "media/videos/yt/slider-ham-curl.webp",
     "credit": "YouTube · How To: Slider Leg Curl",
     "source": "https://www.youtube.com/watch?v=kkkTfzi2gj4&t=13s"
   },
   "spanish-squat": {
-    "card": "media/cards/spanish-squat.webp",
-    "frames": "generated/spanish-squat",
-    "generated": true,
     "video": "media/videos/yt/spanish-squat.mp4",
     "poster": "media/videos/yt/spanish-squat.webp",
     "credit": "YouTube · Spanish Squat",
     "source": "https://www.youtube.com/watch?v=SZMidXQy7jY&t=1s"
   },
   "cable-fly": {
-    "card": "media/cards/cable-fly.webp",
-    "frames": "generated/cable-fly",
-    "generated": true
+    "video": "media/videos/yt/cable-fly.mp4",
+    "poster": "media/videos/yt/cable-fly.webp",
+    "credit": "YouTube · How to perform Cable Fly | Jeet Selal",
+    "source": "https://www.youtube.com/watch?v=V5mlG3N-weQ&t=13s"
   },
   "push-press": {
-    "card": "media/cards/push-press.webp",
-    "frames": "generated/push-press",
-    "generated": true,
     "video": "media/videos/yt/push-press.mp4",
     "poster": "media/videos/yt/push-press.webp",
     "credit": "YouTube · Dumbbell Push Press - How To",
     "source": "https://www.youtube.com/watch?v=sElIkjcfyNY&t=11s"
   },
   "diamond-pushup": {
-    "card": "media/cards/diamond-pushup.webp",
-    "frames": "generated/diamond-pushup",
-    "generated": true,
     "video": "media/videos/yt/diamond-pushup.mp4",
     "poster": "media/videos/yt/diamond-pushup.webp",
     "credit": "YouTube · Diamond Push Up",
     "source": "https://www.youtube.com/watch?v=XtU2VQVuLYs&t=1s"
   },
   "kb-press": {
-    "card": "media/cards/kb-press.webp",
-    "frames": "generated/kb-press",
-    "generated": true,
     "video": "media/videos/yt/kb-press.mp4",
     "poster": "media/videos/yt/kb-press.webp",
     "credit": "YouTube · How to do a Kettlebell Overhead Press",
     "source": "https://www.youtube.com/watch?v=X-uFqWtjpGI&t=2s"
   },
   "neutral-pullup": {
-    "card": "media/cards/neutral-pullup.webp",
-    "frames": "generated/neutral-pullup",
-    "generated": true
+    "video": "media/videos/yt/neutral-pullup.mp4",
+    "poster": "media/videos/yt/neutral-pullup.webp",
+    "credit": "YouTube · Neutral Grip Pull-Up",
+    "source": "https://www.youtube.com/watch?v=cd_38C6LuvY&t=1s"
   },
   "dead-hang": {
-    "card": "media/cards/dead-hang.webp",
-    "frames": "generated/dead-hang",
-    "generated": true
+    "video": "media/videos/yt/dead-hang.mp4",
+    "poster": "media/videos/yt/dead-hang.webp",
+    "credit": "YouTube · Dead Hang Pull Up",
+    "source": "https://www.youtube.com/watch?v=4KWEko-tH-E&t=3s"
   },
   "bb-row-underhand": {
-    "card": "media/cards/bb-row-underhand.webp",
-    "frames": "generated/bb-row-underhand",
-    "generated": true,
     "video": "media/videos/yt/bb-row-underhand.mp4",
     "poster": "media/videos/yt/bb-row-underhand.webp",
     "credit": "YouTube · Bent-Over Barbell Row (underhand grip) | Elite Physique Training",
     "source": "https://www.youtube.com/watch?v=4XTcecic_Fg&t=2s"
   },
   "kb-row": {
-    "card": "media/cards/kb-row.webp",
-    "frames": "generated/kb-row",
-    "generated": true
+    "video": "media/videos/yt/kb-row.mp4",
+    "poster": "media/videos/yt/kb-row.webp",
+    "credit": "YouTube · Kettlebell One-Arm Row Instruction",
+    "source": "https://www.youtube.com/watch?v=j2OdaGOmHlM&t=48s"
   },
   "chest-supported-row": {
-    "card": "media/cards/chest-supported-row.webp",
-    "frames": "generated/chest-supported-row",
-    "generated": true,
     "video": "media/videos/yt/chest-supported-row.mp4",
     "poster": "media/videos/yt/chest-supported-row.webp",
     "credit": "YouTube · Thibaudeau Coaches the Chest Supported Dumbbell Row",
     "source": "https://www.youtube.com/watch?v=nl2MnK1i504&t=27s"
   },
   "cable-row-single": {
-    "card": "media/cards/cable-row-single.webp",
-    "frames": "generated/cable-row-single",
-    "generated": true
+    "video": "media/videos/yt/cable-row-single.mp4",
+    "poster": "media/videos/yt/cable-row-single.webp",
+    "credit": "YouTube · Standing Single Arm Cable Row | Elite Physique Training",
+    "source": "https://www.youtube.com/watch?v=pBbbR6ypIEs&t=24s"
   },
   "facepull": {
-    "card": "media/cards/facepull.webp",
-    "frames": "generated/facepull",
-    "generated": true,
     "video": "media/videos/yt/facepull.mp4",
     "poster": "media/videos/yt/facepull.webp",
     "credit": "YouTube · How To Do Face Pull With Resistance Band | Upper Back & Rear Delts Workout | Fitness My Life",
     "source": "https://www.youtube.com/watch?v=JBpj9-3tP0c&t=39s"
   },
   "shrug": {
-    "card": "media/cards/shrug.webp",
-    "frames": "generated/shrug",
-    "generated": true,
     "video": "media/videos/yt/shrug.mp4",
     "poster": "media/videos/yt/shrug.webp",
     "credit": "YouTube · Athlean x   Kneeling DB shrug",
     "source": "https://www.youtube.com/watch?v=uN5rwCivJXc&t=21s"
   },
   "bulgarian": {
-    "card": "media/cards/bulgarian.webp",
-    "frames": "generated/bulgarian",
-    "generated": true,
     "video": "media/videos/yt/bulgarian.mp4",
     "poster": "media/videos/yt/bulgarian.webp",
     "credit": "YouTube · Bulgarian split squat - Bodyweight",
     "source": "https://www.youtube.com/watch?v=beqcqA6I0oM&t=4s"
   },
   "lateral-lunge": {
-    "card": "media/cards/lateral-lunge.webp",
-    "frames": "generated/lateral-lunge",
-    "generated": true,
     "video": "media/videos/yt/lateral-lunge.mp4",
     "poster": "media/videos/yt/lateral-lunge.webp",
     "credit": "YouTube · Bodyweight Lateral Lunge",
     "source": "https://www.youtube.com/watch?v=tmhESsZcpDY&t=3s"
   },
   "cossack": {
-    "card": "media/cards/cossack.webp",
-    "frames": "generated/cossack",
-    "generated": true,
     "video": "media/videos/yt/cossack.mp4",
     "poster": "media/videos/yt/cossack.webp",
     "credit": "YouTube · Cossack Squat | Hip Mobilization Exercise",
     "source": "https://www.youtube.com/watch?v=nLNqEQ4B6XI&t=70s"
   },
   "curtsy-lunge": {
-    "card": "media/cards/curtsy-lunge.webp",
-    "frames": "generated/curtsy-lunge",
-    "generated": true,
     "video": "media/videos/yt/curtsy-lunge.mp4",
     "poster": "media/videos/yt/curtsy-lunge.webp",
     "credit": "YouTube · Bodyweight Curtsy Lunge",
     "source": "https://www.youtube.com/watch?v=rUD0rPjlxdQ&t=35s"
   },
   "wall-sit": {
-    "card": "media/cards/wall-sit.webp",
-    "frames": "generated/wall-sit",
-    "generated": true,
     "video": "media/videos/yt/wall-sit.mp4",
     "poster": "media/videos/yt/wall-sit.webp",
     "credit": "YouTube · How to Do a Wall Sit Exercise | 30 Seconds | MedBridge",
     "source": "https://www.youtube.com/watch?v=cWTZ8Am1Ee0&t=10s"
   },
   "band-squat": {
-    "card": "media/cards/band-squat.webp",
-    "frames": "generated/band-squat",
-    "generated": true
+    "video": "media/videos/yt/band-squat.mp4",
+    "poster": "media/videos/yt/band-squat.webp",
+    "credit": "YouTube · Using Resistance Bands to Improve Your Squat",
+    "source": "https://www.youtube.com/watch?v=byZrVEt3qF8&t=45s"
   },
   "assisted-pistol": {
-    "card": "media/cards/assisted-pistol.webp",
-    "frames": "generated/assisted-pistol",
-    "generated": true
+    "video": "media/videos/yt/assisted-pistol.mp4",
+    "poster": "media/videos/yt/assisted-pistol.webp",
+    "credit": "YouTube · Box Assisted Pistol Squat",
+    "source": "https://www.youtube.com/watch?v=FHSNof-NnPQ&t=1s"
   },
   "legpress-single": {
-    "card": "media/cards/legpress-single.webp",
-    "frames": "generated/legpress-single",
-    "generated": true
+    "video": "media/videos/yt/legpress-single.mp4",
+    "poster": "media/videos/yt/legpress-single.webp",
+    "credit": "YouTube · Exercise Tutorial - Single leg press (glute bias)",
+    "source": "https://www.youtube.com/watch?v=BsOg0iBKs6A&t=7s"
   },
   "single-rdl": {
-    "card": "media/cards/single-rdl.webp",
-    "frames": "generated/single-rdl",
-    "generated": true,
     "video": "media/videos/yt/single-rdl.mp4",
     "poster": "media/videos/yt/single-rdl.webp",
     "credit": "YouTube · Movement Demo | Body Weight Single Leg Romanian Deadlift",
     "source": "https://www.youtube.com/watch?v=JQZqPsmeesc&t=12s"
   },
   "kb-rdl": {
-    "card": "media/cards/kb-rdl.webp",
-    "frames": "generated/kb-rdl",
-    "generated": true
+    "video": "media/videos/yt/kb-rdl.mp4",
+    "poster": "media/videos/yt/kb-rdl.webp",
+    "credit": "YouTube · U.S. Marine Corps Fitness - Kettlebell Romanian Deadlift",
+    "source": "https://www.youtube.com/watch?v=M6fGnnNR4bQ&t=31s"
   },
   "band-hinge": {
-    "card": "media/cards/band-hinge.webp",
-    "frames": "generated/band-hinge",
-    "generated": true
+    "video": "media/videos/yt/band-hinge.mp4",
+    "poster": "media/videos/yt/band-hinge.webp",
+    "credit": "YouTube · Band Pull Through",
+    "source": "https://www.youtube.com/watch?v=a8f-c31u2GA&t=14s"
   },
   "hip-thrust": {
-    "card": "media/cards/hip-thrust.webp",
-    "frames": "generated/hip-thrust",
-    "generated": true,
     "video": "media/videos/yt/hip-thrust.mp4",
     "poster": "media/videos/yt/hip-thrust.webp",
     "credit": "YouTube · Bodyweight Hip Thrust",
     "source": "https://www.youtube.com/watch?v=6iP3wYRS2ko&t=32s"
   },
   "nordic-assisted": {
-    "card": "media/cards/nordic-assisted.webp",
-    "frames": "generated/nordic-assisted",
-    "generated": true,
     "video": "media/videos/yt/nordic-assisted.mp4",
     "poster": "media/videos/yt/nordic-assisted.webp",
     "credit": "YouTube · How To Do A RESISTANCE BAND ASSISTED NORDIC HAMSTRING CURL | Exercise Demonstration Video and Guide",
     "source": "https://www.youtube.com/watch?v=RS9yc3i69M8&t=3s"
   },
   "db-calf": {
-    "card": "media/cards/db-calf.webp",
-    "frames": "generated/db-calf",
-    "generated": true
+    "video": "media/videos/yt/db-calf.mp4",
+    "poster": "media/videos/yt/db-calf.webp",
+    "credit": "YouTube · Standing DB Calf Raises (Exercise Library)",
+    "source": "https://www.youtube.com/watch?v=hPA98_r-6e4&t=18s"
   },
   "calf-hold": {
-    "card": "media/cards/calf-hold.webp",
-    "frames": "generated/calf-hold",
-    "generated": true,
     "video": "media/videos/yt/calf-hold.mp4",
     "poster": "media/videos/yt/calf-hold.webp",
     "credit": "YouTube · Double Leg Isometric Calf Raise",
     "source": "https://www.youtube.com/watch?v=1-e4EgueAwU&t=18s"
   },
   "band-curl": {
-    "card": "media/cards/band-curl.webp",
-    "frames": "generated/band-curl",
-    "generated": true
+    "video": "media/videos/yt/band-curl.mp4",
+    "poster": "media/videos/yt/band-curl.webp",
+    "credit": "YouTube · How to do Bicep curls with resistance bands | YuryFit",
+    "source": "https://www.youtube.com/watch?v=AaA7Yj3zHiU&t=16s"
   },
   "db-kickback": {
-    "card": "media/cards/db-kickback.webp",
-    "frames": "generated/db-kickback",
-    "generated": true
+    "video": "media/videos/yt/db-kickback.mp4",
+    "poster": "media/videos/yt/db-kickback.webp",
+    "credit": "YouTube · Dumbbell Tricep Kickback",
+    "source": "https://www.youtube.com/watch?v=m_UlDFNX4mk&t=1s"
   },
   "grip-hold": {
-    "card": "media/cards/grip-hold.webp",
-    "frames": "generated/grip-hold",
-    "generated": true,
     "video": "media/videos/yt/grip-hold.mp4",
     "poster": "media/videos/yt/grip-hold.webp",
     "credit": "YouTube · The Dumbbell Static Hold and Curl Exercise",
     "source": "https://www.youtube.com/watch?v=xo5kGSdYg_A&t=1s"
   },
   "hollow-hold": {
-    "card": "media/cards/hollow-hold.webp",
-    "frames": "generated/hollow-hold",
-    "generated": true
+    "video": "media/videos/yt/hollow-hold.mp4",
+    "poster": "media/videos/yt/hollow-hold.webp",
+    "credit": "YouTube · How To Do A HOLLOW BODY HOLD | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=qcwAB98I2Gc&t=15s"
   },
   "plank-reach": {
-    "card": "media/cards/plank-reach.webp",
-    "frames": "generated/plank-reach",
-    "generated": true
+    "video": "media/videos/yt/plank-reach.mp4",
+    "poster": "media/videos/yt/plank-reach.webp",
+    "credit": "YouTube · Plank With Single Arm Reach",
+    "source": "https://www.youtube.com/watch?v=r-7_TWel2lI&t=20s"
   },
   "side-plank-lift": {
-    "card": "media/cards/side-plank-lift.webp",
-    "frames": "generated/side-plank-lift",
-    "generated": true,
     "video": "media/videos/yt/side-plank-lift.mp4",
     "poster": "media/videos/yt/side-plank-lift.webp",
     "credit": "YouTube · How To Do FOREARM SIDE PLANK DIPS | Exercise Demonstration Video and Guide",
     "source": "https://www.youtube.com/watch?v=7BaVvUuxj6Q&t=26s"
   },
   "bear-hold": {
-    "card": "media/cards/bear-hold.webp",
-    "frames": "generated/bear-hold",
-    "generated": true,
     "video": "media/videos/yt/bear-hold.mp4",
     "poster": "media/videos/yt/bear-hold.webp",
     "credit": "YouTube · Bear Plank",
     "source": "https://www.youtube.com/watch?v=VaoNT0BLTqw&t=5s"
   },
   "bear-crawl": {
-    "card": "media/cards/bear-crawl.webp",
-    "frames": "generated/bear-crawl",
-    "generated": true
+    "video": "media/videos/yt/bear-crawl.mp4",
+    "poster": "media/videos/yt/bear-crawl.webp",
+    "credit": "YouTube · Bear Crawl",
+    "source": "https://www.youtube.com/watch?v=Ee1BQNI6zN4&t=26s"
   },
   "leg-raise": {
-    "card": "media/cards/leg-raise.webp",
-    "frames": "generated/leg-raise",
-    "generated": true
+    "video": "media/videos/yt/leg-raise.mp4",
+    "poster": "media/videos/yt/leg-raise.webp",
+    "credit": "YouTube · Lying leg raises tutorial - core",
+    "source": "https://www.youtube.com/watch?v=iUs7hd8u1wg&t=25s"
   },
   "cable-crunch": {
-    "card": "media/cards/cable-crunch.webp",
-    "frames": "generated/cable-crunch",
-    "generated": true
+    "video": "media/videos/yt/cable-crunch.mp4",
+    "poster": "media/videos/yt/cable-crunch.webp",
+    "credit": "YouTube · Kneeling Rope Crunch With Proper Form",
+    "source": "https://www.youtube.com/watch?v=b9FJ4hIK3pI&t=24s"
   },
   "suitcase-carry": {
-    "card": "media/cards/suitcase-carry.webp",
-    "frames": "generated/suitcase-carry",
-    "generated": true,
     "video": "media/videos/yt/suitcase-carry.mp4",
     "poster": "media/videos/yt/suitcase-carry.webp",
     "credit": "YouTube · Suitcase Carry",
     "source": "https://www.youtube.com/watch?v=bAnCoDrvXc4&t=21s"
   },
   "overhead-carry": {
-    "card": "media/cards/overhead-carry.webp",
-    "frames": "generated/overhead-carry",
-    "generated": true
+    "video": "media/videos/yt/overhead-carry.mp4",
+    "poster": "media/videos/yt/overhead-carry.webp",
+    "credit": "YouTube · Dumbbell Single Arm Overhead Carry",
+    "source": "https://www.youtube.com/watch?v=IrsLq3H9E8M&t=62s"
   },
   "single-leg-stand": {
-    "card": "media/cards/single-leg-stand.webp",
-    "frames": "generated/single-leg-stand",
-    "generated": true,
     "video": "media/videos/yt/single-leg-stand.mp4",
     "poster": "media/videos/yt/single-leg-stand.webp",
     "credit": "YouTube · Single Leg Stance (balance)",
     "source": "https://www.youtube.com/watch?v=HTVVv4ESgms&t=24s"
   },
   "single-leg-eyes": {
-    "card": "media/cards/single-leg-eyes.webp",
-    "frames": "generated/single-leg-eyes",
-    "generated": true,
     "video": "media/videos/yt/single-leg-eyes.mp4",
     "poster": "media/videos/yt/single-leg-eyes.webp",
     "credit": "YouTube · Single Leg Balance with Eyes Closed",
     "source": "https://www.youtube.com/watch?v=4HtOeds_vyw&t=4s"
   },
   "single-leg-reach": {
-    "card": "media/cards/single-leg-reach.webp",
-    "frames": "generated/single-leg-reach",
-    "generated": true,
     "video": "media/videos/yt/single-leg-reach.mp4",
     "poster": "media/videos/yt/single-leg-reach.webp",
     "credit": "YouTube · 1 Leg Balance with Multiple Cone Reach",
     "source": "https://www.youtube.com/watch?v=GRsUfqUG_yE&t=8s"
   },
   "tandem-stand": {
-    "card": "media/cards/tandem-stand.webp",
-    "frames": "generated/tandem-stand",
-    "generated": true,
     "video": "media/videos/yt/tandem-stand.mp4",
     "poster": "media/videos/yt/tandem-stand.webp",
     "credit": "YouTube · Tandem Stance Balance",
     "source": "https://www.youtube.com/watch?v=_ZPmfGXwlGQ&t=29s"
   },
   "heel-toe-walk": {
-    "card": "media/cards/heel-toe-walk.webp",
-    "frames": "generated/heel-toe-walk",
-    "generated": true,
     "video": "media/videos/yt/heel-toe-walk.mp4",
     "poster": "media/videos/yt/heel-toe-walk.webp",
     "credit": "YouTube · Heel To Toe Inline Walks - Tangelo Health",
     "source": "https://www.youtube.com/watch?v=eghMLTn8tDc&t=9s"
   },
   "airplane": {
-    "card": "media/cards/airplane.webp",
-    "frames": "generated/airplane",
-    "generated": true,
     "video": "media/videos/yt/airplane.mp4",
     "poster": "media/videos/yt/airplane.webp",
     "credit": "YouTube · The Hip Airplane Demo (+ beginner steps)",
     "source": "https://www.youtube.com/watch?v=orlH8p9llo4&t=17s"
   },
   "clamshell": {
-    "card": "media/cards/clamshell.webp",
-    "frames": "generated/clamshell",
-    "generated": true,
     "video": "media/videos/yt/clamshell.mp4",
     "poster": "media/videos/yt/clamshell.webp",
     "credit": "YouTube · Banded Clam Shell",
     "source": "https://www.youtube.com/watch?v=QjKyGqrAaP4&t=20s"
   },
   "hip-abduction": {
-    "card": "media/cards/hip-abduction.webp",
-    "frames": "generated/hip-abduction",
-    "generated": true,
     "video": "media/videos/yt/hip-abduction.mp4",
     "poster": "media/videos/yt/hip-abduction.webp",
     "credit": "YouTube · How To Do A STANDING BANDED HIP ABDUCTION | Exercise Demonstration Video and Guide",
     "source": "https://www.youtube.com/watch?v=4qr26RNU3EQ&t=16s"
   },
   "squat-thrust": {
-    "card": "media/cards/squat-thrust.webp",
-    "frames": "generated/squat-thrust",
-    "generated": true
+    "video": "media/videos/yt/squat-thrust.mp4",
+    "poster": "media/videos/yt/squat-thrust.webp",
+    "credit": "YouTube · Squat Thrusts",
+    "source": "https://www.youtube.com/watch?v=fysU2ldlXSY&t=43s"
   },
   "burpee-nojump": {
-    "card": "media/cards/burpee-nojump.webp",
-    "frames": "generated/burpee-nojump",
-    "generated": true
+    "video": "media/videos/yt/burpee-nojump.mp4",
+    "poster": "media/videos/yt/burpee-nojump.webp",
+    "credit": "YouTube · No Jump Burpee",
+    "source": "https://www.youtube.com/watch?v=we5OJ7-zb48&t=5s"
   },
   "burpee": {
-    "card": "media/cards/burpee.webp",
-    "frames": "generated/burpee",
-    "generated": true
+    "video": "media/videos/yt/burpee.mp4",
+    "poster": "media/videos/yt/burpee.webp",
+    "credit": "YouTube · How to do a Burpee | Spartan Race",
+    "source": "https://www.youtube.com/watch?v=CTV6_A56iD8&t=1s"
   },
   "skater": {
-    "card": "media/cards/skater.webp",
-    "frames": "generated/skater",
-    "generated": true
+    "video": "media/videos/yt/skater.mp4",
+    "poster": "media/videos/yt/skater.webp",
+    "credit": "YouTube · Speed Skaters Exercise (Skater Hops): Proper Form",
+    "source": "https://www.youtube.com/watch?v=9_jLW6VkU8A&t=30s"
   },
   "shadow-box": {
-    "card": "media/cards/shadow-box.webp",
-    "frames": "generated/shadow-box",
-    "generated": true
+    "video": "media/videos/yt/shadow-box.mp4",
+    "poster": "media/videos/yt/shadow-box.webp",
+    "credit": "YouTube · Quick Shadow Boxing Tutorial by Olympian",
+    "source": "https://www.youtube.com/watch?v=J4j3AOVWuHE&t=150s"
   },
   "stair": {
-    "card": "media/cards/stair.webp",
-    "frames": "generated/stair",
-    "generated": true
+    "video": "media/videos/yt/stair.mp4",
+    "poster": "media/videos/yt/stair.webp",
+    "credit": "YouTube · Wellness Wednesday: Build your stair climbing power with step-ups",
+    "source": "https://www.youtube.com/watch?v=1hiWQ7pehjQ&t=17s"
   },
   "walk-hill": {
-    "card": "media/cards/walk-hill.webp",
-    "frames": "generated/walk-hill",
-    "generated": true
+    "video": "media/videos/yt/walk-hill.mp4",
+    "poster": "media/videos/yt/walk-hill.webp",
+    "credit": "YouTube · Surprising Benefits of Incline Treadmill Walking for Knee Arthritis & Spinal Stenosis",
+    "source": "https://www.youtube.com/watch?v=o4B8Fp_azLA&t=120s"
   },
   "run-interval": {
-    "card": "media/cards/run-interval.webp",
-    "frames": "generated/run-interval",
-    "generated": true,
     "video": "media/videos/yt/run-interval.mp4",
     "poster": "media/videos/yt/run-interval.webp",
     "credit": "YouTube · Sprint Interval Training: Incline Treadmill | Speed Endurance Workout",
     "source": "https://www.youtube.com/watch?v=GxkWIKuH21U&t=4s"
   },
   "rower-interval": {
-    "card": "media/cards/rower-interval.webp",
-    "frames": "generated/rower-interval",
-    "generated": true
+    "video": "media/videos/yt/rower-interval.mp4",
+    "poster": "media/videos/yt/rower-interval.webp",
+    "credit": "YouTube · The Official 2026 Rowing Form Checklist (PERFECT STROKE!)",
+    "source": "https://www.youtube.com/watch?v=ZN0J6qKCIrI&t=136s"
   },
   "depth-drop": {
-    "card": "media/cards/depth-drop.webp",
-    "frames": "generated/depth-drop",
-    "generated": true
+    "video": "media/videos/yt/depth-drop.mp4",
+    "poster": "media/videos/yt/depth-drop.webp",
+    "credit": "YouTube · Plyometrics Phase 2: Landing Progression - Depth Drop",
+    "source": "https://www.youtube.com/watch?v=n4lYo8MOGUM&t=3s"
   },
   "worlds-greatest": {
-    "card": "media/cards/worlds-greatest.webp",
-    "frames": "generated/worlds-greatest",
-    "generated": true,
     "video": "media/videos/yt/worlds-greatest.mp4",
     "poster": "media/videos/yt/worlds-greatest.webp",
     "credit": "YouTube · The World's Greatest Stretch (Mobility Exercise) by Squat University",
     "source": "https://www.youtube.com/watch?v=-CiWQ2IvY34&t=10s"
   },
   "downdog": {
-    "card": "media/cards/downdog.webp",
-    "frames": "generated/downdog",
-    "generated": true
+    "video": "media/videos/yt/downdog.mp4",
+    "poster": "media/videos/yt/downdog.webp",
+    "credit": "YouTube · Downward Dog Hold",
+    "source": "https://www.youtube.com/watch?v=aOqkF3hrM0I&t=1s"
   },
   "pigeon": {
-    "card": "media/cards/pigeon.webp",
-    "frames": "generated/pigeon",
-    "generated": true
+    "video": "media/videos/yt/pigeon.mp4",
+    "poster": "media/videos/yt/pigeon.webp",
+    "credit": "YouTube · 4 Ways To Relieve Tight Hips - Pigeon Stretch",
+    "source": "https://www.youtube.com/watch?v=h_hV-8suiiA&t=23s"
   },
   "deep-squat-hold": {
-    "card": "media/cards/deep-squat-hold.webp",
-    "frames": "generated/deep-squat-hold",
-    "generated": true,
     "video": "media/videos/yt/deep-squat-hold.mp4",
     "poster": "media/videos/yt/deep-squat-hold.webp",
     "credit": "YouTube · Mobility - Deep Squat Hold",
     "source": "https://www.youtube.com/watch?v=D3zYzIlbjXM&t=3s"
   },
   "doorway-chest": {
-    "card": "media/cards/doorway-chest.webp",
-    "frames": "generated/doorway-chest",
-    "generated": true
+    "video": "media/videos/yt/doorway-chest.mp4",
+    "poster": "media/videos/yt/doorway-chest.webp",
+    "credit": "YouTube · Doorway Stretch",
+    "source": "https://www.youtube.com/watch?v=B9uY01NoqBg&t=27s"
   },
   "band-dislocate": {
-    "card": "media/cards/band-dislocate.webp",
-    "frames": "generated/band-dislocate",
-    "generated": true,
     "video": "media/videos/yt/band-dislocate.mp4",
     "poster": "media/videos/yt/band-dislocate.webp",
     "credit": "YouTube · Band Shoulder Dislocates",
     "source": "https://www.youtube.com/watch?v=a9rqTzZaI7s&t=32s"
   },
   "quad-rotation": {
-    "card": "media/cards/quad-rotation.webp",
-    "frames": "generated/quad-rotation",
-    "generated": true,
     "video": "media/videos/yt/quad-rotation.mp4",
     "poster": "media/videos/yt/quad-rotation.webp",
     "credit": "YouTube · Quadruped Thoracic Rotation for Spine Mobility",
     "source": "https://www.youtube.com/watch?v=AzCghjjWt5k&t=35s"
   },
   "wrist-mob": {
-    "card": "media/cards/wrist-mob.webp",
-    "frames": "generated/wrist-mob",
-    "generated": true,
     "video": "media/videos/yt/wrist-mob.mp4",
     "poster": "media/videos/yt/wrist-mob.webp",
     "credit": "YouTube · 5 Minute Calisthenics Wrist Stretching Routine - Follow Along!",
     "source": "https://www.youtube.com/watch?v=5OWbZ9Oxz0E&t=15s"
   },
   "tke": {
-    "card": "media/cards/tke.webp",
-    "frames": "generated/tke",
-    "generated": true,
     "video": "media/videos/yt/tke.mp4",
     "poster": "media/videos/yt/tke.webp",
     "credit": "YouTube · Banded Terminal Knee Extension",
     "source": "https://www.youtube.com/watch?v=xdKm8PSX438&t=2s"
   },
   "iso-split": {
-    "card": "media/cards/iso-split.webp",
-    "frames": "generated/iso-split",
-    "generated": true,
     "video": "media/videos/yt/iso-split.mp4",
     "poster": "media/videos/yt/iso-split.webp",
     "credit": "YouTube · Resilient Performance - Split Squat Isometric Hold",
     "source": "https://www.youtube.com/watch?v=9-E7YW2WAlM&t=13s"
   },
   "step-down": {
-    "card": "media/cards/step-down.webp",
-    "frames": "generated/step-down",
-    "generated": true,
     "video": "media/videos/yt/step-down.mp4",
     "poster": "media/videos/yt/step-down.webp",
     "credit": "YouTube · Lateral Step Down",
     "source": "https://www.youtube.com/watch?v=_r_vsI64pyw&t=7s"
   },
   "wall-drill": {
-    "card": "media/cards/wall-drill.webp",
-    "frames": "generated/wall-drill",
-    "generated": true,
     "video": "media/videos/yt/wall-drill.mp4",
     "poster": "media/videos/yt/wall-drill.webp",
     "credit": "YouTube · Acceleration Wall Drill",
     "source": "https://www.youtube.com/watch?v=Qt6q--Lx4KM&t=26s"
   },
   "accel-10": {
-    "card": "media/cards/accel-10.webp",
-    "frames": "generated/accel-10",
-    "generated": true,
     "video": "media/videos/yt/accel-10.mp4",
     "poster": "media/videos/yt/accel-10.webp",
     "credit": "YouTube · SPRINT DRILLS: Acceleration Drills, 10 Meter 2 Leg Falling Start Stand",
     "source": "https://www.youtube.com/watch?v=w4kDDcCjCto&t=15s"
   },
   "sprint-20": {
-    "card": "media/cards/sprint-20.webp",
-    "frames": "generated/sprint-20",
-    "generated": true,
     "video": "media/videos/yt/sprint-20.mp4",
     "poster": "media/videos/yt/sprint-20.webp",
     "credit": "YouTube · SPRINT DRILLS: Acceleration Ladder Block",
     "source": "https://www.youtube.com/watch?v=tK1ZzR35pHQ&t=42s"
   },
   "crossover-start": {
-    "card": "media/cards/crossover-start.webp",
-    "frames": "generated/crossover-start",
-    "generated": true,
     "video": "media/videos/yt/crossover-start.mp4",
     "poster": "media/videos/yt/crossover-start.webp",
     "credit": "YouTube · Cross over step to sprint",
     "source": "https://www.youtube.com/watch?v=AnPkO0akEXw&t=2s"
   },
   "shuttle-5105": {
-    "card": "media/cards/shuttle-5105.webp",
-    "frames": "generated/shuttle-5105",
-    "generated": true,
     "video": "media/videos/yt/shuttle-5105.mp4",
     "poster": "media/videos/yt/shuttle-5105.webp",
     "credit": "YouTube · Combine Pro-agility (5-10-5) 4.02 seconds",
     "source": "https://www.youtube.com/watch?v=U8aiqJ7O0dk&t=8s"
   },
   "decel-stick": {
-    "card": "media/cards/decel-stick.webp",
-    "frames": "generated/decel-stick",
-    "generated": true,
     "video": "media/videos/yt/decel-stick.mp4",
     "poster": "media/videos/yt/decel-stick.webp",
     "credit": "YouTube · Deceleration Series: Sprint to Half Turn Stop",
     "source": "https://www.youtube.com/watch?v=tFaTIM0Mw5c&t=5s"
   },
   "lateral-bound-stick": {
-    "card": "media/cards/lateral-bound-stick.webp",
-    "frames": "generated/lateral-bound-stick",
-    "generated": true,
     "video": "media/videos/yt/lateral-bound-stick.mp4",
     "poster": "media/videos/yt/lateral-bound-stick.webp",
     "credit": "YouTube · Lateral Bound with Stick",
     "source": "https://www.youtube.com/watch?v=4nTDP0G3nhc&t=5s"
   },
   "single-hop-stick": {
-    "card": "media/cards/single-hop-stick.webp",
-    "frames": "generated/single-hop-stick",
-    "generated": true,
     "video": "media/videos/yt/single-hop-stick.mp4",
     "poster": "media/videos/yt/single-hop-stick.webp",
     "credit": "YouTube · Single leg hop and stick",
     "source": "https://www.youtube.com/watch?v=3_QHB0B9JyU&t=15s"
   },
   "foot-doming": {
-    "card": "media/cards/foot-doming.webp",
-    "frames": "generated/foot-doming",
-    "generated": true,
     "video": "media/videos/yt/foot-doming.mp4",
     "poster": "media/videos/yt/foot-doming.webp",
     "credit": "YouTube · Barefoot Running Exercise: Foot Doming",
     "source": "https://www.youtube.com/watch?v=rS5ucOyfgSg&t=24s"
   },
   "vest-pullup": {
-    "card": "media/cards/vest-pullup.webp",
-    "frames": "generated/vest-pullup",
-    "generated": true
+    "video": "media/videos/yt/vest-pullup.mp4",
+    "poster": "media/videos/yt/vest-pullup.webp",
+    "credit": "YouTube · Weighted Vest Pro Chin Up + Pull Up",
+    "source": "https://www.youtube.com/watch?v=xmHr1XcUUb8&t=65s"
   },
   "vest-split-squat": {
-    "card": "media/cards/vest-split-squat.webp",
-    "frames": "generated/vest-split-squat",
-    "generated": true,
     "video": "media/videos/yt/vest-split-squat.mp4",
     "poster": "media/videos/yt/vest-split-squat.webp",
     "credit": "YouTube · Weight Vest Split Squat",
     "source": "https://www.youtube.com/watch?v=K-TOA3jJHNM&t=1s"
   },
   "vest-step-up": {
-    "card": "media/cards/vest-step-up.webp",
-    "frames": "generated/vest-step-up",
-    "generated": true
+    "video": "media/videos/yt/vest-step-up.mp4",
+    "poster": "media/videos/yt/vest-step-up.webp",
+    "credit": "YouTube · Resilient Performance - Weight Vest Step Ups",
+    "source": "https://www.youtube.com/watch?v=-YlXFpEjCwo&t=10s"
   },
   "vest-calf": {
-    "card": "media/cards/vest-calf.webp",
-    "frames": "generated/vest-calf",
-    "generated": true,
     "video": "media/videos/yt/vest-calf.mp4",
     "poster": "media/videos/yt/vest-calf.webp",
     "credit": "YouTube · Plantar Fasciitis Workshop Bonus Track #3: Drop-Heel Calf Raises",
     "source": "https://www.youtube.com/watch?v=qXD3B9et7ZQ&t=14s"
   },
   "slider-lateral-lunge": {
-    "card": "media/cards/slider-lateral-lunge.webp",
-    "frames": "generated/slider-lateral-lunge",
-    "generated": true,
     "video": "media/videos/yt/slider-lateral-lunge.mp4",
     "poster": "media/videos/yt/slider-lateral-lunge.webp",
     "credit": "YouTube · Slider Lateral Lunge",
     "source": "https://www.youtube.com/watch?v=gVZbEbeg_9I&t=0s"
   },
   "slider-reverse-lunge": {
-    "card": "media/cards/slider-reverse-lunge.webp",
-    "frames": "generated/slider-reverse-lunge",
-    "generated": true
+    "video": "media/videos/yt/slider-reverse-lunge.mp4",
+    "poster": "media/videos/yt/slider-reverse-lunge.webp",
+    "credit": "YouTube · Slider Reverse Lunge",
+    "source": "https://www.youtube.com/watch?v=q62hOW-RzFE&t=3s"
   },
   "slider-climber": {
-    "card": "media/cards/slider-climber.webp",
-    "frames": "generated/slider-climber",
-    "generated": true
+    "video": "media/videos/yt/slider-climber.mp4",
+    "poster": "media/videos/yt/slider-climber.webp",
+    "credit": "YouTube · Core Mountain Climber with Sliders",
+    "source": "https://www.youtube.com/watch?v=iXOuw4vqus4&t=28s"
   },
   "slider-adductor": {
-    "card": "media/cards/slider-adductor.webp",
-    "frames": "generated/slider-adductor",
-    "generated": true,
     "video": "media/videos/yt/slider-adductor.mp4",
     "poster": "media/videos/yt/slider-adductor.webp",
     "credit": "YouTube · Adductor Slide",
     "source": "https://www.youtube.com/watch?v=-iuFoX10QQQ&t=20s"
   },
   "slider-bodysaw": {
-    "card": "media/cards/slider-bodysaw.webp",
-    "frames": "generated/slider-bodysaw",
-    "generated": true
+    "video": "media/videos/yt/slider-bodysaw.mp4",
+    "poster": "media/videos/yt/slider-bodysaw.webp",
+    "credit": "YouTube · Exercise Tutorial: The Slider Plank / Body Saw",
+    "source": "https://www.youtube.com/watch?v=Qip3IEgsDzw&t=39s"
   },
   "er-iso": {
-    "card": "media/cards/er-iso.webp",
-    "frames": "generated/er-iso",
-    "generated": true,
     "video": "media/videos/yt/er-iso.mp4",
     "poster": "media/videos/yt/er-iso.webp",
     "credit": "YouTube · Isometric Shoulder External Rotation",
     "source": "https://www.youtube.com/watch?v=ozhHe-u6uMM&t=15s"
   },
   "wall-slide": {
-    "card": "media/cards/wall-slide.webp",
-    "frames": "generated/wall-slide",
-    "generated": true,
     "video": "media/videos/yt/wall-slide.mp4",
     "poster": "media/videos/yt/wall-slide.webp",
     "credit": "YouTube · Easy fix for rounded shoulders - Scapula Wall Slides #mobility",
     "source": "https://www.youtube.com/watch?v=tWDGEyMWv10&t=29s"
   },
   "curl-up": {
-    "card": "media/cards/curl-up.webp",
-    "frames": "generated/curl-up",
-    "generated": true,
     "video": "media/videos/yt/curl-up.mp4",
     "poster": "media/videos/yt/curl-up.webp",
     "credit": "YouTube · The McGill Curl-Up",
     "source": "https://www.youtube.com/watch?v=I_drRVYlHbc&t=20s"
   },
   "heel-drop-ecc": {
-    "card": "media/cards/heel-drop-ecc.webp",
-    "frames": "generated/heel-drop-ecc",
-    "generated": true,
     "video": "media/videos/yt/heel-drop-ecc.mp4",
     "poster": "media/videos/yt/heel-drop-ecc.webp",
     "credit": "YouTube · Eccentric Heel Drop (achilles strengthening and mobility)",
     "source": "https://www.youtube.com/watch?v=3tc0lN_bW5o&t=20s"
   },
   "finger-ext": {
-    "card": "media/cards/finger-ext.webp",
-    "frames": "generated/finger-ext",
-    "generated": true,
     "video": "media/videos/yt/finger-ext.mp4",
     "poster": "media/videos/yt/finger-ext.webp",
     "credit": "YouTube · Rubber Band Finger Extensions",
     "source": "https://www.youtube.com/watch?v=gk5D_sJny1s&t=21s"
   },
   "chin-tuck": {
-    "card": "media/cards/chin-tuck.webp",
-    "frames": "generated/chin-tuck",
-    "generated": true,
     "video": "media/videos/yt/chin-tuck.mp4",
     "poster": "media/videos/yt/chin-tuck.webp",
     "credit": "YouTube · Chin Tuck Exercise",
     "source": "https://www.youtube.com/watch?v=u8C5LgpK3r4&t=31s"
   },
   "towel-grip": {
-    "card": "media/cards/towel-grip.webp",
-    "frames": "generated/towel-grip",
-    "generated": true,
     "video": "media/videos/yt/towel-grip.mp4",
     "poster": "media/videos/yt/towel-grip.webp",
     "credit": "YouTube · FOREARM TRAINING ( TOWEL WRINGING )",
     "source": "https://www.youtube.com/watch?v=qvxf9uBHNUw&t=13s"
   },
   "ankle-alphabet": {
-    "card": "media/cards/ankle-alphabet.webp",
-    "frames": "generated/ankle-alphabet",
-    "generated": true,
     "video": "media/videos/yt/ankle-alphabet.mp4",
     "poster": "media/videos/yt/ankle-alphabet.webp",
     "credit": "YouTube · Foot alphabet for foot & ankle rehab | Melbourne Sports Chiropractor",
     "source": "https://www.youtube.com/watch?v=W4l0NMC-A88&t=31s"
   },
   "jog-court": {
-    "card": "media/cards/jog-court.webp",
-    "frames": "generated/jog-court",
-    "generated": true,
     "video": "media/videos/yt/jog-court.mp4",
     "poster": "media/videos/yt/jog-court.webp",
     "credit": "YouTube · Warm up - Light Jogging",
     "source": "https://www.youtube.com/watch?v=NStWEq8hc98&t=7s"
   },
   "lateral-shuffle": {
-    "card": "media/cards/lateral-shuffle.webp",
-    "frames": "generated/lateral-shuffle",
-    "generated": true,
     "video": "media/videos/yt/lateral-shuffle.mp4",
     "poster": "media/videos/yt/lateral-shuffle.webp",
     "credit": "YouTube · Lateral Shuffle Agility Cone Drill",
     "source": "https://www.youtube.com/watch?v=omvckxoF9OI&t=8s"
   },
   "carioca": {
-    "card": "media/cards/carioca.webp",
-    "frames": "generated/carioca",
-    "generated": true,
     "video": "media/videos/yt/carioca.mp4",
     "poster": "media/videos/yt/carioca.webp",
     "credit": "YouTube · How To Do The CARIOCA EXERCISE | Exercise Demonstration Video and Guide",
@@ -2304,5 +2066,659 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/sk-shot-fake.webp",
     "credit": "YouTube · Fundamentals Of The Shot Fake",
     "source": "https://www.youtube.com/watch?v=Uv323KLwytA&t=58s"
+  },
+  "sled-push": {
+    "video": "media/videos/yt/sled-push.mp4",
+    "poster": "media/videos/yt/sled-push.webp",
+    "credit": "YouTube · Improve Acceleration for Baketball with Heavy Sled Pushes",
+    "source": "https://www.youtube.com/watch?v=IBC-L-AYIBo&t=17s"
+  },
+  "sled-march": {
+    "video": "media/videos/yt/sled-march.mp4",
+    "poster": "media/videos/yt/sled-march.webp",
+    "credit": "YouTube · Heavy Sled Push Marching Cadence",
+    "source": "https://www.youtube.com/watch?v=k5ws60dbo3I&t=3s"
+  },
+  "half-kneel-start": {
+    "video": "media/videos/yt/half-kneel-start.mp4",
+    "poster": "media/videos/yt/half-kneel-start.webp",
+    "credit": "YouTube · Sprint - Half Kneeling Lateral Start",
+    "source": "https://www.youtube.com/watch?v=9TjMT2vxFk4&t=3s"
+  },
+  "hip-open-start": {
+    "video": "media/videos/yt/hip-open-start.mp4",
+    "poster": "media/videos/yt/hip-open-start.webp",
+    "credit": "YouTube · SKLZ Acceleration Trainer: Backpedal To Drop Step and Acceleration With Release Drill",
+    "source": "https://www.youtube.com/watch?v=We5AeoIWr1s&t=49s"
+  },
+  "shuffle-sprint": {
+    "video": "media/videos/yt/shuffle-sprint.mp4",
+    "poster": "media/videos/yt/shuffle-sprint.webp",
+    "credit": "YouTube · Shuffle Shuffle Sprint",
+    "source": "https://www.youtube.com/watch?v=PGVsteTgO-I&t=7s"
+  },
+  "mb-sprint-start": {
+    "video": "media/videos/yt/mb-sprint-start.mp4",
+    "poster": "media/videos/yt/mb-sprint-start.webp",
+    "credit": "YouTube · Winston Guy Med Ball Throw to Sprint",
+    "source": "https://www.youtube.com/watch?v=rYo7ciuhYlw&t=3s"
+  },
+  "reaction-start": {
+    "video": "media/videos/yt/reaction-start.mp4",
+    "poster": "media/videos/yt/reaction-start.webp",
+    "credit": "YouTube · Reactive cone agility drill",
+    "source": "https://www.youtube.com/watch?v=e7ZQhJSFSMY&t=2s"
+  },
+  "hill-sprint": {
+    "video": "media/videos/yt/hill-sprint.mp4",
+    "poster": "media/videos/yt/hill-sprint.webp",
+    "credit": "YouTube · 10 second hill sprint for form and strength slow motion",
+    "source": "https://www.youtube.com/watch?v=Uv8wJlvBqgQ&t=10s"
+  },
+  "iso-wall-drive": {
+    "video": "media/videos/yt/iso-wall-drive.mp4",
+    "poster": "media/videos/yt/iso-wall-drive.webp",
+    "credit": "YouTube · Speed Mechanics - Wall knee drive",
+    "source": "https://www.youtube.com/watch?v=ZW9rjy9TgGM&t=18s"
+  },
+  "drop-lunge": {
+    "video": "media/videos/yt/drop-lunge.mp4",
+    "poster": "media/videos/yt/drop-lunge.webp",
+    "credit": "YouTube · Drop Lunges for Deceleration",
+    "source": "https://www.youtube.com/watch?v=r4qFAngVgrA&t=15s"
+  },
+  "drop-squat": {
+    "video": "media/videos/yt/drop-squat.mp4",
+    "poster": "media/videos/yt/drop-squat.webp",
+    "credit": "YouTube · Deceleration Squats",
+    "source": "https://www.youtube.com/watch?v=42gf6_4G8qs&t=33s"
+  },
+  "cut-45-stick": {
+    "video": "media/videos/yt/cut-45-stick.mp4",
+    "poster": "media/videos/yt/cut-45-stick.webp",
+    "credit": "YouTube · Ladder: 1-2 Stick @ 45 Degrees",
+    "source": "https://www.youtube.com/watch?v=RmdBA4KLmhg&t=14s"
+  },
+  "backpedal-turn": {
+    "video": "media/videos/yt/backpedal-turn.mp4",
+    "poster": "media/videos/yt/backpedal-turn.webp",
+    "credit": "YouTube · Backpedaling Drill",
+    "source": "https://www.youtube.com/watch?v=hsyUaJQUqgY&t=28s"
+  },
+  "sprint-backpedal": {
+    "video": "media/videos/yt/sprint-backpedal.mp4",
+    "poster": "media/videos/yt/sprint-backpedal.webp",
+    "credit": "YouTube · SPRINT TO BACKPEDAL; Sprint Variations",
+    "source": "https://www.youtube.com/watch?v=YzWsQQwuJd4&t=4s"
+  },
+  "ecc-split-squat": {
+    "video": "media/videos/yt/ecc-split-squat.mp4",
+    "poster": "media/videos/yt/ecc-split-squat.webp",
+    "credit": "YouTube · How to perform: Eccentric split squat",
+    "source": "https://www.youtube.com/watch?v=tWMWstS9RXE&t=39s"
+  },
+  "lateral-drop-stick": {
+    "video": "media/videos/yt/lateral-drop-stick.mp4",
+    "poster": "media/videos/yt/lateral-drop-stick.webp",
+    "credit": "YouTube · Single Leg Lateral Hop Stick Landing Lukasz Lojas",
+    "source": "https://www.youtube.com/watch?v=jxj2kY4gyAw&t=0s"
+  },
+  "band-assisted-jump": {
+    "video": "media/videos/yt/band-assisted-jump.mp4",
+    "poster": "media/videos/yt/band-assisted-jump.webp",
+    "credit": "YouTube · Banded Overspeed Jumps",
+    "source": "https://www.youtube.com/watch?v=PeMhs7i0-Qw&t=1s"
+  },
+  "step-up-hop": {
+    "video": "media/videos/yt/step-up-hop.mp4",
+    "poster": "media/videos/yt/step-up-hop.webp",
+    "credit": "YouTube · Step Up Jump",
+    "source": "https://www.youtube.com/watch?v=d6XOrNwKOHo&t=9s"
+  },
+  "penultimate-step": {
+    "video": "media/videos/yt/penultimate-step.mp4",
+    "poster": "media/videos/yt/penultimate-step.webp",
+    "credit": "YouTube · Jump Higher INSTANTLY With This Technique",
+    "source": "https://www.youtube.com/watch?v=STGtDv9qDwc&t=18s"
+  },
+  "hurdle-hops": {
+    "video": "media/videos/yt/hurdle-hops.mp4",
+    "poster": "media/videos/yt/hurdle-hops.webp",
+    "credit": "YouTube · Mini Hurdle Plyometric Training- Nike SPARQ Hurdles",
+    "source": "https://www.youtube.com/watch?v=TLOUx2H64_8&t=10s"
+  },
+  "seated-box-jump": {
+    "video": "media/videos/yt/seated-box-jump.mp4",
+    "poster": "media/videos/yt/seated-box-jump.webp",
+    "credit": "YouTube · Seated Box Jump",
+    "source": "https://www.youtube.com/watch?v=64OAo8kINPQ&t=0s"
+  },
+  "pause-squat-jump": {
+    "video": "media/videos/yt/pause-squat-jump.mp4",
+    "poster": "media/videos/yt/pause-squat-jump.webp",
+    "credit": "YouTube · PAUSE SQUAT JUMP",
+    "source": "https://www.youtube.com/watch?v=fkozv_ZJFSQ&t=1s"
+  },
+  "tuck-jump": {
+    "video": "media/videos/yt/tuck-jump.mp4",
+    "poster": "media/videos/yt/tuck-jump.webp",
+    "credit": "YouTube · Tuck Jumps Beginner",
+    "source": "https://www.youtube.com/watch?v=3bCNPedVKgE&t=8s"
+  },
+  "bounding": {
+    "video": "media/videos/yt/bounding.mp4",
+    "poster": "media/videos/yt/bounding.webp",
+    "credit": "YouTube · BOUNDING: Bounding Routine Alternate Leg Bounds",
+    "source": "https://www.youtube.com/watch?v=b3124L0KK3Q&t=8s"
+  },
+  "power-skip": {
+    "video": "media/videos/yt/power-skip.mp4",
+    "poster": "media/videos/yt/power-skip.webp",
+    "credit": "YouTube · Power Skips (Height)",
+    "source": "https://www.youtube.com/watch?v=0UzifxpWvYY&t=7s"
+  },
+  "trapbar-jump": {
+    "video": "media/videos/yt/trapbar-jump.mp4",
+    "poster": "media/videos/yt/trapbar-jump.webp",
+    "credit": "YouTube · Trap Bar Jumps",
+    "source": "https://www.youtube.com/watch?v=rZGkx5PaZSM&t=5s"
+  },
+  "single-box-jump": {
+    "video": "media/videos/yt/single-box-jump.mp4",
+    "poster": "media/videos/yt/single-box-jump.webp",
+    "credit": "YouTube · Single Leg Box Jump",
+    "source": "https://www.youtube.com/watch?v=w5PUa6QYpe0&t=0s"
+  },
+  "broad-jump-series": {
+    "video": "media/videos/yt/broad-jump-series.mp4",
+    "poster": "media/videos/yt/broad-jump-series.webp",
+    "credit": "YouTube · Continuous Broad Jumps",
+    "source": "https://www.youtube.com/watch?v=xeMRWJSYlBQ&t=52s"
+  },
+  "lateral-bounds": {
+    "video": "media/videos/yt/lateral-bounds.mp4",
+    "poster": "media/videos/yt/lateral-bounds.webp",
+    "credit": "YouTube · Lateral Bounds continuous",
+    "source": "https://www.youtube.com/watch?v=TRfEDK48M6Y&t=1s"
+  },
+  "pogo-forward": {
+    "video": "media/videos/yt/pogo-forward.mp4",
+    "poster": "media/videos/yt/pogo-forward.webp",
+    "credit": "YouTube · Forward Pogo Jumps",
+    "source": "https://www.youtube.com/watch?v=MR_Sn1z3Oc0&t=2s"
+  },
+  "pogo-lateral": {
+    "video": "media/videos/yt/pogo-lateral.mp4",
+    "poster": "media/videos/yt/pogo-lateral.webp",
+    "credit": "YouTube · Lateral pogo hops | plyometric exercise for runners",
+    "source": "https://www.youtube.com/watch?v=YBzs0YagDVg&t=5s"
+  },
+  "knee-drive-step-up": {
+    "video": "media/videos/yt/knee-drive-step-up.mp4",
+    "poster": "media/videos/yt/knee-drive-step-up.webp",
+    "credit": "YouTube · Box Step Up Knee Drive | Lunge | Strength and Conditioning Exercises",
+    "source": "https://www.youtube.com/watch?v=8fURQlBUtTY&t=6s"
+  },
+  "square-hops": {
+    "video": "media/videos/yt/square-hops.mp4",
+    "poster": "media/videos/yt/square-hops.webp",
+    "credit": "YouTube · 4-Square Hops",
+    "source": "https://www.youtube.com/watch?v=aRJAkTP5vv4&t=4s"
+  },
+  "soleus-wall-iso": {
+    "video": "media/videos/yt/soleus-wall-iso.mp4",
+    "poster": "media/videos/yt/soleus-wall-iso.webp",
+    "credit": "YouTube · Soleus Wall Sit Isometric Hold",
+    "source": "https://www.youtube.com/watch?v=RZlD3UKM-JQ&t=8s"
+  },
+  "rope-single": {
+    "video": "media/videos/yt/rope-single.mp4",
+    "poster": "media/videos/yt/rope-single.webp",
+    "credit": "YouTube · Single Leg Jump Rope",
+    "source": "https://www.youtube.com/watch?v=A-BxmNoi7Jc&t=8s"
+  },
+  "single-wall-sit": {
+    "video": "media/videos/yt/single-wall-sit.mp4",
+    "poster": "media/videos/yt/single-wall-sit.webp",
+    "credit": "YouTube · Single Leg Wall Sit",
+    "source": "https://www.youtube.com/watch?v=Z_AMEENUVCA&t=9s"
+  },
+  "iso-push-split": {
+    "video": "media/videos/yt/iso-push-split.mp4",
+    "poster": "media/videos/yt/iso-push-split.webp",
+    "credit": "YouTube · Split Squat Pin Pull Overcoming Isometric",
+    "source": "https://www.youtube.com/watch?v=coQTs4NZuDk&t=21s"
+  },
+  "mb-rotational": {
+    "video": "media/videos/yt/mb-rotational.mp4",
+    "poster": "media/videos/yt/mb-rotational.webp",
+    "credit": "YouTube · How To Do A STANDING MEDICINE BALL ROTATIONAL THROW AGAINST A WALL | Exercise Demonstration Video",
+    "source": "https://www.youtube.com/watch?v=o9BC7lgN1bo&t=27s"
+  },
+  "mb-scoop": {
+    "video": "media/videos/yt/mb-scoop.mp4",
+    "poster": "media/videos/yt/mb-scoop.webp",
+    "credit": "YouTube · Med Ball Scoop Toss",
+    "source": "https://www.youtube.com/watch?v=b7ix5GglVjE&t=46s"
+  },
+  "mb-backward": {
+    "video": "media/videos/yt/mb-backward.mp4",
+    "poster": "media/videos/yt/mb-backward.webp",
+    "credit": "YouTube · Backward Med Ball Throw",
+    "source": "https://www.youtube.com/watch?v=j2iNY9aLmys&t=15s"
+  },
+  "mb-single-leg-rot": {
+    "video": "media/videos/yt/mb-single-leg-rot.mp4",
+    "poster": "media/videos/yt/mb-single-leg-rot.webp",
+    "credit": "YouTube · Single-Leg Med Ball Rotation Throws at Wall - Pro-Form Physiotherapy",
+    "source": "https://www.youtube.com/watch?v=WItAAeLkQe0&t=4s"
+  },
+  "mb-slam": {
+    "video": "media/videos/yt/mb-slam.mp4",
+    "poster": "media/videos/yt/mb-slam.webp",
+    "credit": "YouTube · How to Perform the Med Ball Slam",
+    "source": "https://www.youtube.com/watch?v=QxYhFwMd1Ks&t=23s"
+  },
+  "mb-chest-pass": {
+    "video": "media/videos/yt/mb-chest-pass.mp4",
+    "poster": "media/videos/yt/mb-chest-pass.webp",
+    "credit": "YouTube · How to Do a Med Ball Chest Pass",
+    "source": "https://www.youtube.com/watch?v=Jo2on0-YBPM&t=26s"
+  },
+  "trapbar-deadlift": {
+    "video": "media/videos/yt/trapbar-deadlift.mp4",
+    "poster": "media/videos/yt/trapbar-deadlift.webp",
+    "credit": "YouTube · 900 lb trap bar deadlift!!!",
+    "source": "https://www.youtube.com/watch?v=2SJ9HkKaxwU&t=14s"
+  },
+  "mb-overhead": {
+    "video": "media/videos/yt/mb-overhead.mp4",
+    "poster": "media/videos/yt/mb-overhead.webp",
+    "credit": "YouTube · Medicine Ball Overhead Throw | Medicine Ball | Strength and Conditioning Exercises",
+    "source": "https://www.youtube.com/watch?v=h4SvwqKY-GM&t=19s"
+  },
+  "landmine-press": {
+    "video": "media/videos/yt/landmine-press.mp4",
+    "poster": "media/videos/yt/landmine-press.webp",
+    "credit": "YouTube · Half Kneeling Landmine Press",
+    "source": "https://www.youtube.com/watch?v=ORoOn93dnh4&t=0s"
+  },
+  "landmine-rotation": {
+    "video": "media/videos/yt/landmine-rotation.mp4",
+    "poster": "media/videos/yt/landmine-rotation.webp",
+    "credit": "YouTube · Landmine Rotation",
+    "source": "https://www.youtube.com/watch?v=e5DP6961WEk&t=2s"
+  },
+  "b-stance-rdl": {
+    "video": "media/videos/yt/b-stance-rdl.mp4",
+    "poster": "media/videos/yt/b-stance-rdl.webp",
+    "credit": "YouTube · Dumbbell B Stance Romanian Deadlift",
+    "source": "https://www.youtube.com/watch?v=NqL21LLv5ak&t=15s"
+  },
+  "landmine-reverse-lunge": {
+    "video": "media/videos/yt/landmine-reverse-lunge.mp4",
+    "poster": "media/videos/yt/landmine-reverse-lunge.webp",
+    "credit": "YouTube · Landmine Reverse Lunges",
+    "source": "https://www.youtube.com/watch?v=dHsQrYcrO6g&t=2s"
+  },
+  "lateral-box-step-up": {
+    "video": "media/videos/yt/lateral-box-step-up.mp4",
+    "poster": "media/videos/yt/lateral-box-step-up.webp",
+    "credit": "YouTube · Goblet Lateral Box Step Up",
+    "source": "https://www.youtube.com/watch?v=CjjkLo9rVik&t=1s"
+  },
+  "sl-hip-thrust": {
+    "video": "media/videos/yt/sl-hip-thrust.mp4",
+    "poster": "media/videos/yt/sl-hip-thrust.webp",
+    "credit": "YouTube · Single Leg Dumbbell Hip Thrust (Full Tutorial) - Glute Exercises for Beginners",
+    "source": "https://www.youtube.com/watch?v=L4nTaesNm0E&t=37s"
+  },
+  "slant-iso-squat": {
+    "video": "media/videos/yt/slant-iso-squat.mp4",
+    "poster": "media/videos/yt/slant-iso-squat.webp",
+    "credit": "YouTube · Slant board squat for knee (patella tendon) pain",
+    "source": "https://www.youtube.com/watch?v=VYlUN6UJxSY&t=10s"
+  },
+  "slant-sl-squat": {
+    "video": "media/videos/yt/slant-sl-squat.mp4",
+    "poster": "media/videos/yt/slant-sl-squat.webp",
+    "credit": "YouTube · SINGLE LEG SQUAT ECCENTRIC + SLANT BOARD",
+    "source": "https://www.youtube.com/watch?v=I9UDK1CGy4o&t=10s"
+  },
+  "ham-iso-bridge": {
+    "video": "media/videos/yt/ham-iso-bridge.mp4",
+    "poster": "media/videos/yt/ham-iso-bridge.webp",
+    "credit": "YouTube · Bench Hamstring Bridge Isometric",
+    "source": "https://www.youtube.com/watch?v=raptR7N7yzg&t=3s"
+  },
+  "miniband-stance": {
+    "video": "media/videos/yt/miniband-stance.mp4",
+    "poster": "media/videos/yt/miniband-stance.webp",
+    "credit": "YouTube · Miniband Squat Hold Knee Pulse",
+    "source": "https://www.youtube.com/watch?v=BtSHjmp_9ZI&t=2s"
+  },
+  "miniband-slides": {
+    "video": "media/videos/yt/miniband-slides.mp4",
+    "poster": "media/videos/yt/miniband-slides.webp",
+    "credit": "YouTube · At Home Exercises - Lateral Shuffle with mini band",
+    "source": "https://www.youtube.com/watch?v=s86TbiI6_cY&t=26s"
+  },
+  "seventeens": {
+    "video": "media/videos/yt/seventeens.mp4",
+    "poster": "media/videos/yt/seventeens.webp",
+    "credit": "YouTube · 17's",
+    "source": "https://www.youtube.com/watch?v=rvo4UzZ8c_I&t=5s"
+  },
+  "slide-intervals": {
+    "video": "media/videos/yt/slide-intervals.mp4",
+    "poster": "media/videos/yt/slide-intervals.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=2s"
+  },
+  "ball-shuttles": {
+    "video": "media/videos/yt/ball-shuttles.mp4",
+    "poster": "media/videos/yt/ball-shuttles.webp",
+    "credit": "YouTube · Dribbling Suicide | NBA Ball Handling Quickness Fit Conditioning Training Speed | Dre Baldwin",
+    "source": "https://www.youtube.com/watch?v=i_v1lPYbPE0&t=16s"
+  },
+  "bike-sprints": {
+    "video": "media/videos/yt/bike-sprints.mp4",
+    "poster": "media/videos/yt/bike-sprints.webp",
+    "credit": "YouTube · How To Do An ASSAULT AIR BIKE SPRINT | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=PHReR7tC_tw&t=32s"
+  },
+  "sk-hesi": {
+    "video": "media/videos/yt/sk-hesi.mp4",
+    "poster": "media/videos/yt/sk-hesi.webp",
+    "credit": "YouTube · Top 5 DEADLY Hesitation Moves!  [HESI TUTORIAL]",
+    "source": "https://www.youtube.com/watch?v=AaZxl-KdKls&t=54s"
+  },
+  "sk-pound-cross": {
+    "video": "media/videos/yt/sk-pound-cross.mp4",
+    "poster": "media/videos/yt/sk-pound-cross.webp",
+    "credit": "YouTube · 1 Pound Crossover Dribble | Michael Rossetti",
+    "source": "https://www.youtube.com/watch?v=BkRQ_MtLoxg&t=32s"
+  },
+  "sk-in-out": {
+    "video": "media/videos/yt/sk-in-out.mp4",
+    "poster": "media/videos/yt/sk-in-out.webp",
+    "credit": "YouTube · How to develop a strong In and out dribble",
+    "source": "https://www.youtube.com/watch?v=nVeCpUOTyzA&t=15s"
+  },
+  "sk-retreat": {
+    "video": "media/videos/yt/sk-retreat.mp4",
+    "poster": "media/videos/yt/sk-retreat.webp",
+    "credit": "YouTube · Retreat Dribble Drill - Basketball Manitoba Quick Hitter with coach Dan Becker",
+    "source": "https://www.youtube.com/watch?v=VliVhmyBcpc&t=45s"
+  },
+  "sk-two-ball-alt": {
+    "video": "media/videos/yt/sk-two-ball-alt.mp4",
+    "poster": "media/videos/yt/sk-two-ball-alt.webp",
+    "credit": "YouTube · BASKETBALL DRIBBLE DRILL   Two Ball Drill 'Alternating Double Dribble'   Shot Science",
+    "source": "https://www.youtube.com/watch?v=ze3oMlRgtcg&t=4s"
+  },
+  "sk-change-pace": {
+    "video": "media/videos/yt/sk-change-pace.mp4",
+    "poster": "media/videos/yt/sk-change-pace.webp",
+    "credit": "YouTube · How to Do a Change-of-Pace Dribble | Basketball Moves",
+    "source": "https://www.youtube.com/watch?v=0Wwv5nDpL6k&t=117s"
+  },
+  "sk-two-ball": {
+    "video": "media/videos/yt/sk-two-ball.mp4",
+    "poster": "media/videos/yt/sk-two-ball.webp",
+    "credit": "YouTube · 50 Two Ball Dribbling Drills (Ranked By Difficulty)",
+    "source": "https://www.youtube.com/watch?v=z1RRCS5FoIY&t=134s"
+  },
+  "sk-tight-combos": {
+    "video": "media/videos/yt/sk-tight-combos.mp4",
+    "poster": "media/videos/yt/sk-tight-combos.webp",
+    "credit": "YouTube · Basketball PDS: CP3 Triangle Cone Drill",
+    "source": "https://www.youtube.com/watch?v=HkTZSryDcsQ&t=14s"
+  },
+  "sk-feet-into-shot": {
+    "video": "media/videos/yt/sk-feet-into-shot.mp4",
+    "poster": "media/videos/yt/sk-feet-into-shot.webp",
+    "credit": "YouTube · Basketball Drills: Shooting Footwork Fundamentals with Coach Mason",
+    "source": "https://www.youtube.com/watch?v=0L9Cy8tsOsA&t=108s"
+  },
+  "sk-one-motion": {
+    "video": "media/videos/yt/sk-one-motion.mp4",
+    "poster": "media/videos/yt/sk-one-motion.webp",
+    "credit": "YouTube · How to make your basketball shot ONE MOTION  |  NBA Shooting Coach Dave Love",
+    "source": "https://www.youtube.com/watch?v=kAnCZUixInM&t=68s"
+  },
+  "sk-attack-foot": {
+    "video": "media/videos/yt/sk-attack-foot.mp4",
+    "poster": "media/videos/yt/sk-attack-foot.webp",
+    "credit": "YouTube · Attacking the lead foot in Basketball",
+    "source": "https://www.youtube.com/watch?v=a2WkxUWgn3g&t=10s"
+  },
+  "sk-hop-12": {
+    "video": "media/videos/yt/sk-hop-12.mp4",
+    "poster": "media/videos/yt/sk-hop-12.webp",
+    "credit": "YouTube · 1-2 Step vs. Hop Step Basketball Shooting Footwork drills",
+    "source": "https://www.youtube.com/watch?v=uxkg9NJfBFo&t=10s"
+  },
+  "sk-fake-pullup": {
+    "video": "media/videos/yt/sk-fake-pullup.mp4",
+    "poster": "media/videos/yt/sk-fake-pullup.webp",
+    "credit": "YouTube · Shot Fake one dribble pullups",
+    "source": "https://www.youtube.com/watch?v=QpXqire064g&t=5s"
+  },
+  "sk-hang-pullup": {
+    "video": "media/videos/yt/sk-hang-pullup.mp4",
+    "poster": "media/videos/yt/sk-hang-pullup.webp",
+    "credit": "YouTube · Skill Breakdown - Changing Angles Dribble Pull-Up",
+    "source": "https://www.youtube.com/watch?v=JhzadfJfqCM&t=24s"
+  },
+  "sk-fadeaway": {
+    "video": "media/videos/yt/sk-fadeaway.mp4",
+    "poster": "media/videos/yt/sk-fadeaway.webp",
+    "credit": "YouTube · Michael Jordan teaches how to shoot fadeaway jumper   ",
+    "source": "https://www.youtube.com/watch?v=cEUk5E8deYU&t=287s"
+  },
+  "sk-5-spots": {
+    "video": "media/videos/yt/sk-5-spots.mp4",
+    "poster": "media/videos/yt/sk-5-spots.webp",
+    "credit": "YouTube · 5 Spot Shooting Drill by Rob Senderoff",
+    "source": "https://www.youtube.com/watch?v=u-eeORGpMb0&t=124s"
+  },
+  "sk-pro-hop": {
+    "video": "media/videos/yt/sk-pro-hop.mp4",
+    "poster": "media/videos/yt/sk-pro-hop.webp",
+    "credit": "YouTube · Basketball Move: The Pro Hop",
+    "source": "https://www.youtube.com/watch?v=c_f6DzgPX5M&t=14s"
+  },
+  "sk-dry-shot": {
+    "video": "media/videos/yt/sk-dry-shot.mp4",
+    "poster": "media/videos/yt/sk-dry-shot.webp",
+    "credit": "YouTube · 5 Shooting Drills WITHOUT A HOOP! How To Shoot A Basketball Better",
+    "source": "https://www.youtube.com/watch?v=W1WHGs0IKDA&t=151s"
+  },
+  "sk-1min": {
+    "video": "media/videos/yt/sk-1min.mp4",
+    "poster": "media/videos/yt/sk-1min.webp",
+    "credit": "YouTube · One Minute Mid-Range Shooting Drill (Advanced Level): Goalrilla Basketball Academy Driveway Drills",
+    "source": "https://www.youtube.com/watch?v=6b1nN_rNi60&t=161s"
+  },
+  "sk-inside-hand": {
+    "video": "media/videos/yt/sk-inside-hand.mp4",
+    "poster": "media/videos/yt/sk-inside-hand.webp",
+    "credit": "YouTube · Inside hand lay-up (power step)",
+    "source": "https://www.youtube.com/watch?v=YMULe_eEsOQ&t=20s"
+  },
+  "sk-reverse-pivot": {
+    "video": "media/videos/yt/sk-reverse-pivot.mp4",
+    "poster": "media/videos/yt/sk-reverse-pivot.webp",
+    "credit": "YouTube · Basketball Manitoba Quick Hitter with coach Dan Becker - Reverse Pivot",
+    "source": "https://www.youtube.com/watch?v=U8J2-kwWl_g&t=50s"
+  },
+  "sk-up-under": {
+    "video": "media/videos/yt/sk-up-under.mp4",
+    "poster": "media/videos/yt/sk-up-under.webp",
+    "credit": "YouTube · How to Do an Up & Under | Basketball Moves",
+    "source": "https://www.youtube.com/watch?v=VTBMVKD23QA&t=73s"
+  },
+  "sk-same-foot": {
+    "video": "media/videos/yt/sk-same-foot.mp4",
+    "poster": "media/videos/yt/sk-same-foot.webp",
+    "credit": "YouTube · Jr. NBA at Home: Same Foot Same Hand Finishes",
+    "source": "https://www.youtube.com/watch?v=KWnGBMiTMz0&t=42s"
+  },
+  "sk-euro-counter": {
+    "video": "media/videos/yt/sk-euro-counter.mp4",
+    "poster": "media/videos/yt/sk-euro-counter.webp",
+    "credit": "YouTube · Euro Step Tutorial | Five-Star Basketball x Ten000 Hours",
+    "source": "https://www.youtube.com/watch?v=BdTlYtPdiIg&t=12s"
+  },
+  "sk-floater-1": {
+    "video": "media/videos/yt/sk-floater-1.mp4",
+    "poster": "media/videos/yt/sk-floater-1.webp",
+    "credit": "YouTube · DRIVE Basketball Drills: Floater",
+    "source": "https://www.youtube.com/watch?v=Pc89DY6_o1Y&t=5s"
+  },
+  "sk-jab-series": {
+    "video": "media/videos/yt/sk-jab-series.mp4",
+    "poster": "media/videos/yt/sk-jab-series.webp",
+    "credit": "YouTube · Triple Threat Step Through:Between the Legs Jab",
+    "source": "https://www.youtube.com/watch?v=q9PRy_gVlv8&t=2s"
+  },
+  "sk-rip-cross": {
+    "video": "media/videos/yt/sk-rip-cross.mp4",
+    "poster": "media/videos/yt/sk-rip-cross.webp",
+    "credit": "YouTube · Tough Rip Throughs to Cross Step",
+    "source": "https://www.youtube.com/watch?v=edQ_2ZuYE00&t=47s"
+  },
+  "sk-pivot-shot": {
+    "video": "media/videos/yt/sk-pivot-shot.mp4",
+    "poster": "media/videos/yt/sk-pivot-shot.webp",
+    "credit": "YouTube · Basketball Drill  Rip Thru Jump Shots - Shooting Drills Basketball Training Improve Shooting Skills",
+    "source": "https://www.youtube.com/watch?v=Gs_HgiCypAg&t=6s"
+  },
+  "df-stance": {
+    "video": "media/videos/yt/df-stance.mp4",
+    "poster": "media/videos/yt/df-stance.webp",
+    "credit": "YouTube · Fundamentals of A Defensive Stance",
+    "source": "https://www.youtube.com/watch?v=4A6KqSJX8Ek&t=57s"
+  },
+  "df-slide": {
+    "video": "media/videos/yt/df-slide.mp4",
+    "poster": "media/videos/yt/df-slide.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=2s"
+  },
+  "df-closeout": {
+    "video": "media/videos/yt/df-closeout.mp4",
+    "poster": "media/videos/yt/df-closeout.webp",
+    "credit": "YouTube · Closeout, Slide, & Backpedal Drill",
+    "source": "https://www.youtube.com/watch?v=aSvFDJcIzys&t=35s"
+  },
+  "sk-face-up": {
+    "video": "media/videos/yt/sk-face-up.mp4",
+    "poster": "media/videos/yt/sk-face-up.webp",
+    "credit": "YouTube · 3 Killer Face Up Post Moves: Basketball Post Moves for Big Men",
+    "source": "https://www.youtube.com/watch?v=LX5Kl0_Agj0&t=325s"
+  },
+  "df-slide-sprint": {
+    "video": "media/videos/yt/df-slide-sprint.mp4",
+    "poster": "media/videos/yt/df-slide-sprint.webp",
+    "credit": "YouTube · X Drill Close Out Defensive Slide Retreat Sprint",
+    "source": "https://www.youtube.com/watch?v=zj5ReqFvKEQ&t=47s"
+  },
+  "df-drop-step": {
+    "video": "media/videos/yt/df-drop-step.mp4",
+    "poster": "media/videos/yt/df-drop-step.webp",
+    "credit": "YouTube · Day 15 Basketball Defense: Hip Turn and Drop Step",
+    "source": "https://www.youtube.com/watch?v=q5z-WcLbCso&t=20s"
+  },
+  "df-mirror": {
+    "video": "media/videos/yt/df-mirror.mp4",
+    "poster": "media/videos/yt/df-mirror.webp",
+    "credit": "YouTube · Partner Mirror Drill",
+    "source": "https://www.youtube.com/watch?v=Pb15pCX16H8&t=0s"
+  },
+  "df-zigzag": {
+    "video": "media/videos/yt/df-zigzag.mp4",
+    "poster": "media/videos/yt/df-zigzag.webp",
+    "credit": "YouTube · Defensive Stance Zig Zag Drill",
+    "source": "https://www.youtube.com/watch?v=xogqAGeRL78&t=0s"
+  },
+  "df-hands": {
+    "video": "media/videos/yt/df-hands.mp4",
+    "poster": "media/videos/yt/df-hands.webp",
+    "credit": "YouTube · DEFENSIVE DIG: How to use your Hands on Defense",
+    "source": "https://www.youtube.com/watch?v=unnsKiUcmdY&t=33s"
+  },
+  "mv-front-foot": {
+    "video": "media/videos/yt/mv-front-foot.mp4",
+    "poster": "media/videos/yt/mv-front-foot.webp",
+    "credit": "YouTube · Attacking the lead foot in Basketball",
+    "source": "https://www.youtube.com/watch?v=a2WkxUWgn3g&t=20s"
+  },
+  "df-deny": {
+    "video": "media/videos/yt/df-deny.mp4",
+    "poster": "media/videos/yt/df-deny.webp",
+    "credit": "YouTube · Defensive Drill: Wing denial drill",
+    "source": "https://www.youtube.com/watch?v=eAel4WD0_B4&t=10s"
+  },
+  "mv-hesi-read": {
+    "video": "media/videos/yt/mv-hesi-read.mp4",
+    "poster": "media/videos/yt/mv-hesi-read.webp",
+    "credit": "YouTube · HESITATION Behind the Back CROSSOVER Pull Ups | Brick Made Swishes",
+    "source": "https://www.youtube.com/watch?v=3ZhWV4BjoeA&t=0s"
+  },
+  "mv-jab-cross": {
+    "video": "media/videos/yt/mv-jab-cross.mp4",
+    "poster": "media/videos/yt/mv-jab-cross.webp",
+    "credit": "YouTube · HOW TO: Dribble Jab and Counter | Basketball Guard Training Workout",
+    "source": "https://www.youtube.com/watch?v=E--nOYk0_IE&t=53s"
+  },
+  "mv-double-cross": {
+    "video": "media/videos/yt/mv-double-cross.mp4",
+    "poster": "media/videos/yt/mv-double-cross.webp",
+    "credit": "YouTube · How to Double Crossover Dribble | Basketball",
+    "source": "https://www.youtube.com/watch?v=S2iE3-3LFNY&t=56s"
+  },
+  "mv-spin-counter": {
+    "video": "media/videos/yt/mv-spin-counter.mp4",
+    "poster": "media/videos/yt/mv-spin-counter.webp",
+    "credit": "YouTube · High Post Moves Counter: Spin Move to Fadeaway Jumpshot | Carmelo Anthony Kobe Bryant | Dre Baldwin",
+    "source": "https://www.youtube.com/watch?v=qwJj2JFt-Uw&t=10s"
+  },
+  "mv-fake-sidestep": {
+    "video": "media/videos/yt/mv-fake-sidestep.mp4",
+    "poster": "media/videos/yt/mv-fake-sidestep.webp",
+    "credit": "YouTube · Triple threat pump fake side step(attacking the front leg of the defender) plus other combinations",
+    "source": "https://www.youtube.com/watch?v=BIsu4PqSiWw&t=1s"
+  },
+  "mv-btl-retreat": {
+    "video": "media/videos/yt/mv-btl-retreat.mp4",
+    "poster": "media/videos/yt/mv-btl-retreat.webp",
+    "credit": "YouTube · Breaking the press, between the legs, retreat dribble",
+    "source": "https://www.youtube.com/watch?v=XBCFvIfJAeo&t=2s"
+  },
+  "mv-in-out-cross": {
+    "video": "media/videos/yt/mv-in-out-cross.mp4",
+    "poster": "media/videos/yt/mv-in-out-cross.webp",
+    "credit": "YouTube · Fundamentals Of The In & Out Crossover",
+    "source": "https://www.youtube.com/watch?v=OQWe-Y4zwEg&t=61s"
+  },
+  "mv-drive-read": {
+    "video": "media/videos/yt/mv-drive-read.mp4",
+    "poster": "media/videos/yt/mv-drive-read.webp",
+    "credit": "YouTube · Ashton Harrell | Ambition Training | Continuous Drive & Kick Action + Extra Pass Drill",
+    "source": "https://www.youtube.com/watch?v=Wm5Qdod4O8s&t=15s"
+  },
+  "mv-snatch-cross": {
+    "video": "media/videos/yt/mv-snatch-cross.mp4",
+    "poster": "media/videos/yt/mv-snatch-cross.webp",
+    "credit": "YouTube · In-n-Out Behind The Back Snatch Back Move Tutorial... Love this move! Tons of NBA players use this",
+    "source": "https://www.youtube.com/watch?v=Djf3Uq5SsJs&t=164s"
+  },
+  "single-leg-vertical": {
+    "video": "media/videos/yt/single-leg-vertical.mp4",
+    "poster": "media/videos/yt/single-leg-vertical.webp",
+    "credit": "YouTube · One Foot Take Off Practice 6'0\"",
+    "source": "https://www.youtube.com/watch?v=bSFOojIlfJ0&t=17s"
   }
 };

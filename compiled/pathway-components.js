@@ -268,7 +268,30 @@ function PTPathway({
   }), error && /*#__PURE__*/React.createElement("p", {
     className: "error",
     role: "alert"
-  }, error)), p.step === BP.steps.length && /*#__PURE__*/React.createElement(PTPathwayLadder, {
+  }, error), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => {
+      if (data.draft?.status === 'active') {
+        setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.');
+        return;
+      }
+      const plan = BP.quickPlan(PT, JP, data, 'vivacite');
+      if (plan.error) {
+        setError(plan.error);
+        return;
+      }
+      update(s => ({
+        ...s,
+        draft: plan
+      }));
+      go('preview');
+    }
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "spark"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Vivacit\xE9 \xB7 15 min"), /*#__PURE__*/React.createElement("small", null, p.step < 2 ? 'Appuis et chevilles en version isométrique, sans saut à cette étape.' : 'Pogos, départs au signal, freinages : jusqu’à 3 fois par semaine, ou juste après l’échauffement.')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))), p.step === BP.steps.length && /*#__PURE__*/React.createElement(PTPathwayLadder, {
     data: data,
     update: update,
     go: go,

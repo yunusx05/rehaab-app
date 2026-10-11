@@ -80,6 +80,7 @@ function PTPathway({data,update,go,notify}) {
           </article>;
         })}
         {error && <p className="error" role="alert">{error}</p>}
+        <button className="home-action" onClick={() => {if (data.draft?.status === 'active') { setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.'); return; } const plan = BP.quickPlan(PT, JP, data, 'vivacite'); if (plan.error) { setError(plan.error); return; } update(s => ({...s, draft: plan})); go('preview');}}><PTIcon name="spark"/><span><strong>Vivacité · 15 min</strong><small>{p.step < 2 ? 'Appuis et chevilles en version isométrique, sans saut à cette étape.' : 'Pogos, départs au signal, freinages : jusqu’à 3 fois par semaine, ou juste après l’échauffement.'}</small></span><PTIcon name="arrow" size={18}/></button>
       </section>
 
       {p.step === BP.steps.length && <PTPathwayLadder data={data} update={update} go={go} notify={notify}/>}

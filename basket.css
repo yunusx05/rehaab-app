@@ -307,3 +307,11 @@
 .dossier-priority>b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#1b2111;font-family:'IBM Plex Mono',monospace}
 .dossier-priority strong{display:block;margin-bottom:.2rem}
 .dossier-followup{display:grid;gap:.5rem;padding:1rem;border-radius:14px;background:var(--surface)}
+
+/* Lot 13 : fiche d'exercice — usage sur le terrain, points clés, créateurs. */
+.court-transfer{display:flex;gap:.6rem;align-items:flex-start;margin:0;padding:.75rem .85rem;border-radius:14px;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);font-size:.84rem;line-height:1.4}
+.court-transfer svg{flex:none;margin-top:.15rem;color:var(--accent)}
+.court-transfer strong{display:block;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:.15rem}
+.cue-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.cue-chips span{font-size:.74rem;padding:.3rem .6rem;border-radius:999px;background:var(--raised);color:var(--text)}
+.seen-at a{color:inherit;text-decoration:underline;text-underline-offset:2px}

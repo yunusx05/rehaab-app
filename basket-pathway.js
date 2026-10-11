@@ -15,7 +15,7 @@
       rules:['Aucun sprint, aucun saut maximal.','Tempo lent (3 s à la descente) sur les mouvements de force.','Douleur tolérée pendant l’effort : 2/10 au maximum, revenue à la normale le lendemain.'],
       days:[
         {key:'A',name:'Jambes & tendons',slots:[
-          S('tendon',['spanish-squat','wall-sit'],['3x1','3x1','4x1','4x1'],[30,40,40,45]),
+          S('tendon',['slant-iso-squat','spanish-squat','wall-sit'],['3x1','3x1','4x1','4x1'],[30,40,40,45]),
           S('force',['goblet','goblet-db','box-squat','squat'],['3x10','3x10','3x10-12','3x8-10']),
           S('force',['db-hip-thrust','hip-thrust','single-bridge','bridge'],['3x12','3x12','3x10','3x10']),
           S('tendon',['single-calf','calf'],['3x12','3x15','4x12','4x15']),
@@ -43,7 +43,7 @@
       days:[
         {key:'A',name:'Force jambes & rebond',slots:[
           S('force',['bb-squat','db-squat','goblet','squat'],['3x8','4x6-8','4x6','3x6']),
-          S('force',['deadlift','kb-deadlift','rdl','single-rdl'],['3x8','4x8','4x6','3x6']),
+          S('force',['trapbar-deadlift','deadlift','kb-deadlift','rdl','single-rdl'],['3x8','4x8','4x6','3x6']),
           S('unilatéral',['db-bulgarian','bulgarian','split-squat'],['3x8','3x8','3x10','2x8'],null,{big:['db-step-up','step-up','split-squat']}),
           S('rebond',['pogo'],['3x15','3x20','4x20','2x15']),
           S('gainage',['copenhagen','side-plank'],['3x1','3x1','3x1','2x1'],[30,30,35,30])]},
@@ -57,7 +57,7 @@
         {key:'C',name:'Déplacements & souffle',slots:[
           S('unilatéral',['db-lunge','reverse-lunge'],['3x8','3x10','4x10','2x8']),
           S('réception',['box-jump-step','landing'],['3x5','3x5','4x5','2x5']),
-          S('puissance',['kb-swing','db-hip-thrust','hip-thrust'],['3x12','4x12','4x15','3x12']),
+          S('puissance',['kb-swing','mb-scoop','db-hip-thrust','hip-thrust'],['3x12','4x12','4x15','3x12']),
           S('latéral',['band-shuffle','monster-walk','lateral-lunge'],['3x1','3x1','4x1','2x1'],[30,40,45,30],{guard:['lateral-lunge','band-shuffle','monster-walk'],big:['monster-walk','band-shuffle','lateral-lunge']}),
           S('cheville',['lateral-hop','pogo'],['2x8','3x8','3x10','2x8']),
           S('cardio',['bike-interval','rower-interval','bike'],['1x1','1x1','1x1','1x1'],[600,720,840,600])]}
@@ -69,8 +69,8 @@
       days:[
         {key:'A',name:'Force & détente',slots:[
           S('force',['bb-squat','front-squat','db-squat','goblet'],['4x5','4x5','5x4','3x4']),
-          S('détente',['box-jump-step','broad-jump'],['4x4','4x5','5x5','3x4'],null,{big:['box-jump-step','split-jump','broad-jump']}),
-          S('force',['bb-rdl','rdl','kb-rdl'],['3x8','3x6','4x6','3x6']),
+          S('détente',['seated-box-jump','box-jump-step','broad-jump'],['4x4','4x5','5x5','3x4'],null,{big:['box-jump-step','split-jump','broad-jump']}),
+          S('force',['trapbar-deadlift','bb-rdl','rdl','kb-rdl'],['3x8','3x6','4x6','3x6']),
           S('unilatéral',['single-hop-stick','lateral-bound-stick'],['3x3','3x4','4x4','2x4']),
           S('gainage',['copenhagen','side-plank-full'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
         {key:'B',name:'Haut du corps · puissance',slots:[
@@ -78,13 +78,13 @@
           S('force',['bb-press','db-press','floor-press'],['4x5','4x5','5x4','3x5']),
           S('force',['pullup','chinup','pulldown','band-pulldown'],['4x5-6','4x5-6','5x5','3x5']),
           S('force',['bb-row','db-row','band-row'],['3x8','3x8','4x8','3x8']),
-          S('gainage',['pallof','pallof-cable','halo'],['3x10','3x10','3x12','2x10'])]},
+          S('gainage',['landmine-rotation','pallof','pallof-cable','halo'],['3x10','3x10','3x12','2x10'])]},
         {key:'C',name:'Accélération & freinage',slots:[
           S('vitesse',['wall-drill'],['3x1','3x1','3x1','2x1'],[20,20,20,20]),
-          S('vitesse',['accel-10','run-interval','bike-interval'],['1x4','1x5','1x6','1x4']),
+          S('vitesse',['sled-push','accel-10','run-interval','bike-interval'],['1x4','1x5','1x6','1x4']),
           S('freinage',['decel-stick','lateral-bound-stick'],['3x4','3x5','4x5','2x4'],null,{guard:['decel-stick','crossover-start'],big:['box-jump-step','decel-stick']}),
           S('latéral',['lateral-bound-stick','lateral-hop'],['3x4','3x5','3x6','2x4'],null,{big:['split-jump','landing']}),
-          S('puissance',['kb-swing','db-hip-thrust'],['4x10','4x10','5x10','3x10']),
+          S('puissance',['mb-scoop','kb-swing','db-hip-thrust'],['4x10','4x10','5x10','3x10']),
           S('tendon',['single-calf','db-calf'],['3x15','3x15','3x20','2x15'])]}
       ],
       tests:['hop','hopquality','sprint10','pain']},
@@ -94,7 +94,7 @@
       days:[
         {key:'A',name:'Puissance jambes',slots:[
           S('puissance',['db-squat','bb-squat','goblet'],['4x4','4x4','5x3','3x3']),
-          S('détente',['broad-jump','box-jump-step'],['4x4','4x4','5x4','3x3'],null,{big:['box-jump-step','split-jump']}),
+          S('détente',['trapbar-jump','broad-jump','box-jump-step'],['4x4','4x4','5x4','3x3'],null,{big:['box-jump-step','split-jump']}),
           S('unilatéral',['db-single-rdl','single-rdl'],['3x8','3x8','3x6','2x6']),
           S('unilatéral',['single-hop-stick','lateral-bound-stick'],['3x4','3x5','3x5','2x4']),
           S('gainage',['copenhagen','side-plank'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
@@ -118,7 +118,7 @@
       days:[
         {key:'A',name:'Force entretien',slots:[
           S('force',['bb-squat','db-squat','goblet'],['3x5','3x4','3x4','2x4']),
-          S('force',['bb-rdl','rdl','kb-rdl'],['3x6','3x5','3x5','2x5']),
+          S('force',['trapbar-deadlift','bb-rdl','rdl','kb-rdl'],['3x6','3x5','3x5','2x5']),
           S('force',['bb-press','db-press','pushup'],['3x5','3x5','3x5','2x5']),
           S('force',['pullup','chinup','pulldown','db-row'],['3x5','3x5','3x5','2x5']),
           S('gainage',['copenhagen','side-plank'],['2x1','2x1','2x1','2x1'],[30,30,30,30]),
@@ -381,14 +381,16 @@
 
   // Séances courtes à la carte : listes fixes, filtrées au lancement par le matériel et les douleurs.
   const quick = [
-    {id:'knee-prev',title:'Prévention genoux',minutes:15,icon:'body',ids:[['spanish-squat','wall-sit'],['tke','hip-abduction'],['step-down','split-squat'],['single-bridge','bridge'],['tibialis']]},
+    {id:'knee-prev',title:'Prévention genoux',minutes:15,icon:'body',ids:[['slant-iso-squat','spanish-squat','wall-sit'],['tke','hip-abduction'],['step-down','split-squat'],['single-bridge','bridge'],['tibialis']]},
     {id:'hips',title:'Mobilité du bassin',minutes:10,icon:'body',ids:[['hip-90-90'],['hip-flexor'],['worlds-greatest'],['pigeon','hip-circles'],['deep-squat-hold','cat']]},
     {id:'ankles',title:'Chevilles réactives',minutes:8,icon:'spark',ids:[['ankle-mob'],['single-leg-eyes','single-leg-stand'],['calf-hold'],['pogo','calf']]},
     {id:'antirot',title:'Gainage anti-rotation',minutes:10,icon:'weight',ids:[['pallof','pallof-cable'],['side-plank'],['bird-dog'],['suitcase-carry','deadbug']]},
     {id:'prematch',title:'Activation avant match',minutes:12,icon:'spark',ids:[['hip-circles'],['monster-walk','hip-abduction'],['wall-drill'],['pogo','calf'],['landing']]},
-    {id:'recovery',title:'Récup lendemain de match',minutes:15,icon:'heart',ids:[['bike','march','walk'],['cat'],['hip-flexor'],['hamstring'],['calf-stretch'],['breath']]},
+    {id:'recovery',title:'Récup lendemain de match',minutes:15,icon:'heart',ids:[['bike','march','walk'],['gun-legs'],['cat'],['hip-flexor'],['hamstring'],['calf-stretch'],['breath']]},
     // Départs chronométrés seulement à partir de l'étape 3 du parcours : avant, le premier pas se prépare sans sprint.
     {id:'first-step',title:'Premier pas',minutes:12,icon:'spark',impactFromStep:3,ids:[['wall-drill'],['a-march'],['knee-drive-iso'],['falling-start','split-start','psoas-march'],['psoas-march','single-bridge']]},
+    // Vivacité : 15 minutes, jusqu'à 3 fois par semaine ou juste après l'échauffement. Avant l'étape 2, sauts et départs laissent place aux versions isométriques.
+    {id:'vivacite',title:'Vivacité',minutes:15,icon:'spark',impactFromStep:2,ids:[['pogo-forward','pogo','soleus-wall-iso'],['reaction-start','hip-open-start','split-start','iso-wall-drive'],['drop-squat','snap-down','miniband-stance'],['shuffle-sprint','lateral-shuffle','miniband-slides','knee-drive-iso'],['pogo-lateral','lateral-hop','calf-hold'],['cut-45-stick','decel-stick','ecc-split-squat']]},
     // Construite depuis le bilan athlétique et les douleurs ; liste générique sans bilan.
     {id:'kine',title:'Mon bloc kiné',minutes:15,icon:'heart',ids:[['ankle-mob'],['couch-stretch','hip-flexor'],['spanish-squat','wall-sit'],['calf-hold'],['foot-doming','tibialis'],['active-slr','hamstring']]}
   ];
