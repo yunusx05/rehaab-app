@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v53-poids-tir';
+const CACHE = 'rehaab-v54-qi-3d-style';
 const PRECACHE = [
   './',
   './index.html',
