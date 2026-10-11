@@ -412,3 +412,35 @@
 .scene-feedback.is-right strong{color:var(--accent)}.scene-feedback.is-wrong strong{color:#f6cf8a}
 .scene-feedback p{margin:0;font-size:.88rem;line-height:1.5}
 @media(prefers-reduced-motion:reduce){.scene-timer i{transition:none}}
+
+/* Lot 17 : graphiques (une série, une échelle), carte de tir, compteur en direct. */
+.chart{margin:0;display:grid;gap:.4rem}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart-readout{font-size:.78rem;color:var(--text);min-height:1.2em;font-variant-numeric:tabular-nums}
+.chart-grid{stroke:#ffffff14;stroke-width:1}
+.chart-axis{fill:#a9afaa;font-size:9px;font-variant-numeric:tabular-nums}
+.chart-label{fill:var(--text);font-size:10px;font-weight:700;font-variant-numeric:tabular-nums}
+.chart-bar{fill:var(--accent);opacity:.72;transition:opacity .14s}.chart-bar.is-active{opacity:1}
+.chart-empty{stroke:#ffffff33;stroke-width:2;stroke-dasharray:3 3}
+.chart-line{stroke:var(--accent);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.chart-dot{fill:var(--accent);fill-opacity:.45;stroke:#111212;stroke-width:2}.chart-dot.is-active{fill-opacity:1}
+.chart-ref{stroke:#a9afaa;stroke-width:1.5;stroke-dasharray:5 4}
+.chart g[role=button]{cursor:pointer;outline:none}.chart g[role=button]:focus-visible circle:last-child,.chart g[role=button]:focus-visible path{stroke:var(--text);stroke-width:2}
+.chart-key{margin:0}
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums}
+.data-table th,.data-table td{padding:.45rem .3rem;text-align:left;border-bottom:1px solid var(--line)}
+.data-table th{color:#a9afaa;font-weight:500}
+.shot-map{display:block;width:100%;max-width:420px;height:auto}
+.court-floor{fill:#2a2118}.court-line{stroke:#efe6d2;stroke-opacity:.55;stroke-width:1.5}.court-rim{fill:none;stroke:#e2662b;stroke-width:2.5}
+.shot-zone{fill:var(--accent);stroke:#111212;stroke-width:2}.shot-zone.is-empty{fill:transparent;stroke:#ffffff40;stroke-dasharray:3 3}
+.shot-zone-label{fill:#f6f7f2;font-size:10px;font-weight:700;paint-order:stroke;stroke:#111212;stroke-width:3px}
+.shot-now{display:grid;gap:.45rem;padding:1.2rem;border-radius:16px;background:var(--surface)}
+.shot-zone-name{color:var(--accent);font-weight:700;font-size:.8rem}
+.shot-now strong{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:800;font-size:clamp(1.8rem,8vw,2.4rem);line-height:.95}
+.shot-count{font-variant-numeric:tabular-nums;font-size:1.1rem}.shot-count b{font-size:2.6rem;font-family:'Barlow Condensed',sans-serif;font-weight:800}
+.shot-buttons{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.shot-btn{min-height:128px;border-radius:16px;border:0;font:inherit;font-size:1.3rem;font-weight:800;cursor:pointer;transition:transform .14s cubic-bezier(.23,1,.32,1)}
+.shot-btn:active{transform:scale(.97)}.shot-btn:focus-visible{outline:3px solid var(--text);outline-offset:3px}
+.shot-btn.is-made{background:var(--accent);color:#1b2111}.shot-btn.is-miss{background:var(--raised);color:var(--text)}
+.calendar-weigh{font-size:.72rem}
+@media(prefers-reduced-motion:reduce){.chart-bar,.shot-btn{transition:none}}

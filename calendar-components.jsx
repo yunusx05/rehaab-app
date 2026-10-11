@@ -1,7 +1,7 @@
 /* Lot 14 : calendrier de la semaine (route « calendar ») et plan de saison (route « plan »).
    Toute la logique est dans season-plan.js ; ces écrans affichent, lancent et déplacent les séances. */
 const SP=window.SeasonPlan;
-const ptCalIcon={pathway:'weight',reset:'body',muscu:'weight',vivacite:'spark',skills:'court',care:'heart'};
+const ptCalIcon={pathway:'weight',reset:'body',muscu:'weight',vivacite:'spark',skills:'court',care:'heart',shooting:'basket'};
 const ptCalStatus={done:'Faite',missed:'Manquée',planned:'Prévue'};
 const ptShortDay=date=>`${date.slice(8,10)}/${date.slice(5,7)}`;
 
@@ -30,6 +30,7 @@ function PTCalendar({data,update,go,notify}){
   const launch=item=>{
     if(item.type==='muscu'){go('program');return;}
     if(item.type==='care'){go('rehab');return;}
+    if(item.type==='shooting'){go('shooting');return;}
     if(data.draft?.status==='active'){setError('Une séance est en cours : termine-la ou reprends-la avant d’en lancer une autre.');return;}
     const plan=ptCalendarPlan(data,item);
     if(!plan||plan.error){setError(plan?.error||'Séance indisponible aujourd’hui.');return;}
@@ -44,7 +45,7 @@ function PTCalendar({data,update,go,notify}){
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       <ol className="calendar-week">{week.days.map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
-        <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}</div>
+        <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}{d.qi&&!d.club.match?' · QI du jour (5 min)':''}</p>}
         {d.items.map(item=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>

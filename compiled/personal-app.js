@@ -1929,6 +1929,19 @@ function PTProfile({
     title: "Mes douleurs du moment",
     text: PT.activeSymptoms(data).length ? 'Soin intégré à tes séances' : 'Aucune douleur signalée',
     onClick: () => go('symptoms')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: "media/ui/dossier/body.webp",
+    title: "Poids de forme",
+    text: (() => {
+      const s = window.BodyWeight?.summary(data);
+      return s && s.avg !== null ? `${String(s.avg).replace('.', ',')} kg en moyenne${s.gap !== null && s.playWeight ? ` · poids de jeu ${String(s.playWeight).replace('.', ',')} kg` : ''}` : 'Pesée hebdomadaire et poids de jeu';
+    })(),
+    onClick: () => go('weight')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('shooting'),
+    title: "Mes s\xE9ances de tir",
+    text: window.Shooting?.summary(data.shooting) || 'Compteur de tirs et pourcentage par semaine',
+    onClick: () => go('shooting')
   })), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Mes informations & mon niveau"), /*#__PURE__*/React.createElement("div", {
@@ -2307,7 +2320,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'calendar', 'plan', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route.startsWith('dossier') ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   // Premier lancement : le dossier joueur (ou la version rapide). Les écrans du dossier restent ouverts avant la fin de l'accueil.
   if (!data.profile.onboarded && !storageError && !['symptoms', 'dossier', 'dossier-q', 'dossier-synthese'].includes(route)) content = /*#__PURE__*/React.createElement(PTDossierWelcome, props);else {
@@ -2346,7 +2359,11 @@ function PersonalApp() {
       'dossier-synthese': PTDossierSynthesis,
       calendar: PTCalendar,
       plan: PTSeasonPlan,
-      'qi-scene': PTQiScenes
+      'qi-scene': PTQiScenes,
+      shooting: PTShooting,
+      'shooting-new': PTShootingNew,
+      'shooting-live': PTShootingLive,
+      weight: PTWeight
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

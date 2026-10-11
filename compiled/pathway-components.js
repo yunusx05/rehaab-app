@@ -674,6 +674,16 @@ function PTPlanArsenal({
     text: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} mouvements, filtres basket.`,
     onClick: () => go('library')
   }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('shooting'),
+    title: "Mes s\xE9ances de tir",
+    text: window.Shooting?.summary(data.shooting) || 'Compteur en direct, % par semaine, carte de tir.',
+    onClick: () => go('shooting')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: "media/ui/dossier/body.webp",
+    title: "Poids de forme",
+    text: "Ton poids face \xE0 ton poids de jeu.",
+    onClick: () => go('weight')
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('gear'),
     title: "Mon mat\xE9riel",
     text: `${data.owned.length} élément${data.owned.length > 1 ? 's' : ''} coché${data.owned.length > 1 ? 's' : ''}`,

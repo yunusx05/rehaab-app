@@ -35,7 +35,7 @@ test('accueil, hub Plan et Moi : photos, carte joueur fidèle au bilan, sans dé
     await expect(page.locator('.home-duo .image-tile')).toHaveCount(2);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#pathway');
-    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(8);
+    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(10);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#profile');
     await expect(page.getByRole('heading',{name:'Moi.'})).toBeVisible();

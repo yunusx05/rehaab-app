@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v52-qi-3d';
+const CACHE = 'rehaab-v53-poids-tir';
 const PRECACHE = [
   './',
   './index.html',
@@ -38,6 +38,9 @@ const PRECACHE = [
   './compiled/dossier-components.js',
   './compiled/calendar-components.js',
   './compiled/qi-scene-components.js',
+  './compiled/shooting-components.js',
+  './body-weight.js',
+  './shooting.js',
   './basket-scenes.js',
   './training-load.js',
   './personal-programs.js',

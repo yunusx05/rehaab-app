@@ -24,6 +24,7 @@
   const PDL = () => lib('PlayerDossier','./player-dossier.js');
   const PTL = () => lib('PersonalTraining','./personal-engine.js');
   const SKL = () => lib('BasketSkills','./basket-skills.js');
+  const SHL = () => lib('Shooting','./shooting.js');
 
   // Développement : cycles de 4 semaines après le retour au jeu, la 4e allégée. En saison, l'entretien prend le relais.
   const CYCLES = [
@@ -133,6 +134,8 @@
     if(step>=2) for(let i=0;i<(cur==='dev-quick'?2:1);i++) out.push({key:`V${i+1}`,type:'vivacite',label:'Vivacité · 15 min',legs:'impact',minutes:15});
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
     if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills basket',legs:'light',minutes:Math.min(max,sk.minutes||45)});
+    const hoop=a.hoop&&['daily','weekly'].includes(a.hoop);
+    if(hoop||(state.shooting&&(state.shooting.sessions||[]).length)) out.push({key:'T1',type:'shooting',label:'Séance de tir',legs:'light',minutes:Math.min(max,40)});
     if(activePains(state).length) out.push({key:'C1',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10},{key:'C2',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10});
     return out;
   }
@@ -163,7 +166,8 @@
     if(item.legs==='impact'&&next.club.match) return 'Veille de match : pas d’impacts répétés.';
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';
     if(item.legs==='heavy'&&d.club.practice) return 'Entraînement au club ce jour-là : pas de jambes lourdes en plus.';
-    if(item.type==='skills'&&(d.club.practice||d.club.match)) return 'Pas de skills un jour de club : le basket y est déjà.';
+    if((item.type==='skills'||item.type==='shooting')&&(d.club.practice||d.club.match)) return 'Pas de skills ni de tir un jour de club : le basket y est déjà.';
+    if(item.type==='shooting'&&placed.some(x=>x!==item&&x.type==='skills'&&x.date===date)) return 'Déjà une séance skills ce jour-là.';
     if(item.legs==='heavy'&&placed.some(x=>x!==item&&x.legs==='heavy'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances de jambes lourdes.';
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
@@ -191,7 +195,7 @@
     if(physical.length>tgt){physical.filter(x=>x.extra).slice(0,physical.length-tgt).forEach(x=>x.dropped=true);physical=physical.filter(x=>!x.dropped);}
     if(physical.length>tgt) physical=physical.slice(0,tgt);
     const rest=all.filter(x=>!x.physical);
-    const queue=[...physical.sort((a,b)=>(b.legs==='heavy')-(a.legs==='heavy')),...rest.filter(x=>x.type==='vivacite'),...rest.filter(x=>x.type==='skills'),...rest.filter(x=>x.type==='care')].filter(x=>!skips.includes(x.key));
+    const queue=[...physical.sort((a,b)=>(b.legs==='heavy')-(a.legs==='heavy')),...rest.filter(x=>x.type==='vivacite'),...rest.filter(x=>x.type==='skills'),...rest.filter(x=>x.type==='shooting'),...rest.filter(x=>x.type==='care')].filter(x=>!skips.includes(x.key));
     const placed=[];
     for(const item of queue){
       const moved=moves[item.key];
@@ -208,12 +212,13 @@
       else if(item.type!=='care'&&!startWeek) warnings.push(`${item.label} : aucun jour libre compatible cette semaine${item.type==='vivacite'?' (fais-la juste après l’échauffement d’une séance du haut du corps)':''}.`);
     }
     // Statut : faite (séance correspondante enregistrée dans la semaine), manquée (jour passé), prévue.
-    const sessions=(state.sessions||[]).filter(s=>diff(s.date,monday)>=0&&diff(s.date,monday)<7);
+    const shots=((state.shooting&&state.shooting.sessions)||[]).map(s=>({id:s.id,date:s.date,source:'shooting'}));
+    const sessions=[...(state.sessions||[]),...shots].filter(s=>diff(s.date,monday)>=0&&diff(s.date,monday)<7);
     const used=new Set();
     const match=item=>sessions.find(s=>!used.has(s.id)&&(
       item.type==='pathway'&&s.source==='pathway'&&s.pathwayDay===item.day||item.type==='reset'&&['reset','pathway'].includes(s.source)||
       item.type==='muscu'&&s.source==='program-plan'||item.type==='skills'&&s.source==='skills'||
-      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
+      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
     placed.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{
       const s=match(item);if(s)used.add(s.id);
       item.status=s?'done':diff(item.date,now)<0?'missed':'planned';item.doneDate=s?s.date:null;
@@ -290,7 +295,8 @@
     const qi=((state.qi&&state.qi.answers)||[]).filter(a=>inWeek(a.date));
     const tests=Object.entries((state.pathway&&state.pathway.tests)||{}).flatMap(([id,l])=>(l||[]).filter(r=>inWeek(r.date)).map(r=>({id,...r})));
     const shots=(state.sessions||[]).filter(s=>inWeek(s.date)).flatMap(s=>(s.exercises||[]).filter(e=>e.measure==='shots').flatMap(e=>((s.entries||{})[e.id]||[]).filter(r=>r.done)));
-    const made=shots.reduce((n,r)=>n+(Number(r.made)||0),0),attempts=shots.reduce((n,r)=>n+(Number(r.attempts)||0),0);
+    const SH=SHL(),own=SH&&state.shooting?(state.shooting.sessions||[]).filter(s=>inWeek(s.date)).map(s=>SH.totals(s)):[];
+    const made=shots.reduce((n,r)=>n+(Number(r.made)||0),0)+own.reduce((n,t)=>n+t.made,0),attempts=shots.reduce((n,r)=>n+(Number(r.attempts)||0),0)+own.reduce((n,t)=>n+t.attempts,0);
     const pains=activePains(state);
     const suggestions=[];
     if(missedList.length>=2) suggestions.push({id:'lighter',label:'Semaine prochaine : une séance de moins',why:`${missedList.length} séances manquées : mieux vaut un plan tenu qu’un plan idéal.`});
