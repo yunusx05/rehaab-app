@@ -366,6 +366,8 @@
     s.measurements.forEach(x=>assert(isoDay(x.date) && (x.weight==='' || bounded(x.weight,1,350)) && (x.waist==='' || bounded(x.waist,1,300)),'Mensuration invalide.'));
     s.customExercises.forEach(x=>assert(typeof x.id==='string' && x.id.startsWith('custom-') && typeof x.name==='string' && x.name.length<160 && equipmentIds(x.needs) && Array.isArray(x.regions) && x.regions.length>0 && x.regions.every(r=>regions[r]) && Array.isArray(x.instructions) && x.instructions.every(t=>typeof t==='string') && patterns[x.pattern] && ['strength','cardio','basket','mobility','plyo'].includes(x.kind) && ['reps','seconds','shots','contacts'].includes(x.measure) && bounded(x.min,1,100) && bounded(x.max,x.min,100) && bounded(x.seconds,1,3600) && bounded(x.rest,0,600),'Exercice personnel invalide.'));
     if(s.draft) { assert(typeof s.draft.id==='string' && Array.isArray(s.draft.exercises) && s.draft.exercises.length<100 && s.draft.entries && typeof s.draft.entries==='object' && ['preview','active'].includes(s.draft.status),'Séance en cours invalide.'); validateEntries(s.draft.entries); assert(s.draft.programInstanceId===undefined||typeof s.draft.programInstanceId==='string','Référence de programme invalide.'); assert(s.draft.programWeekIndex===undefined||bounded(s.draft.programWeekIndex,1,52),'Semaine de programme invalide.'); }
+    // Une séance vidée (toutes ses zones épargnées) n'a rien à reprendre : elle cassait l'accueil.
+    if(s.draft&&!s.draft.exercises.length)s.draft=null;
     assert(bounded(s.programWeek,1,12),'Semaine invalide.');
     // Nouvelles cles du lot « programmes » : absentes des anciennes sauvegardes, donc tolerees et completees.
     if(s.trash!==undefined && s.trash!==null) {

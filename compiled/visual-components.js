@@ -61,9 +61,10 @@ function ptKindIcon(e) {
   }[e.kind] || 'body';
 }
 function PTThumbnail({
-  exercise: e
+  exercise
 }) {
-  const m = window.RehaabMedia?.[e.id];
+  const e = exercise || {},
+    m = window.RehaabMedia?.[e.id];
   // Cards stay still and fill their frame; videos are reserved for the exercise demonstration.
   const sources = [m?.card, m?.poster, m?.frames && `media/${m.frames}/0.webp`].filter(Boolean);
   const [attempt, setAttempt] = usePTState(0),

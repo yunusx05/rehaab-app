@@ -497,6 +497,10 @@ function ptCoachApply({
     const total = () => PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60;
     while (total() > check.minutes * 60 && main().length > 2) exercises.splice(exercises.indexOf(main().pop()), 1);
   }
+  if (!exercises.length) {
+    notify('Trop de zones à épargner : repos ou soin aujourd’hui.');
+    return;
+  }
   const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
   const draft = {
     ...base,

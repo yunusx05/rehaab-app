@@ -12,8 +12,8 @@ function ptMuscles(e){
   return specific[e.id]||({push:['chest','shoulders'],pull:['back'],arms:['arms'],squat:['quads','glutes'],hinge:['glutes','hamstrings'],core:['core'],calf:['calves']}[e.pattern]||[]);
 }
 function ptKindIcon(e){return {strength:'weight',basket:'basket',cardio:'run',mobility:'body',plyo:'spark'}[e.kind]||'body';}
-function PTThumbnail({exercise:e}){
-  const m=window.RehaabMedia?.[e.id];
+function PTThumbnail({exercise}){
+  const e=exercise||{},m=window.RehaabMedia?.[e.id];
   // Cards stay still and fill their frame; videos are reserved for the exercise demonstration.
   const sources=[m?.card,m?.poster,m?.frames&&`media/${m.frames}/0.webp`].filter(Boolean);
   const [attempt,setAttempt]=usePTState(0),src=sources[attempt];

@@ -135,6 +135,7 @@ function ptCoachApply({data,update,go,notify},entry){
     const total=()=>PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60;
     while(total()>check.minutes*60&&main().length>2)exercises.splice(exercises.indexOf(main().pop()),1);
   }
+  if(!exercises.length){notify('Trop de zones à épargner : repos ou soin aujourd’hui.');return;}
   const reasons=[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(care?.note&&exercises.some(e=>e.pathwayRole==='soin')?[care.note]:[]),...(base.reasons||[])];
   const draft={...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60)/60)};
   update(s=>({...s,checkIn:check,draft,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');
