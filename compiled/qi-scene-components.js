@@ -1379,7 +1379,7 @@ function PTQiScenes({
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('qi'),
     title: "Lis ton d\xE9fenseur."
-  }, `Scène ${i + 1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level - 1].hint}`), /*#__PURE__*/React.createElement("div", {
+  }, `Scène ${i + 1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level - 1].hint}${set.replay ? ' · scènes déjà vues aujourd’hui, pour t’entraîner encore' : ''}`), /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement("div", {
     className: "scene-stage"

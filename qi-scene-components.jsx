@@ -349,7 +349,7 @@ function PTQiScenes({data,update,go}){
   if(phase==='done'){const ok=results.filter(Boolean).length;
     return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><div className="stack-lg"><section className="card stack-sm"><h2>{ok} bonne{ok>1?'s':''} lecture{ok>1?'s':''} sur {results.length}.</h2><p className="fine">Niveau {BS.level(data.qi)} · {BS.LEVELS[BS.level(data.qi)-1].label}. 8 bonnes lectures sur les 10 dernières débloquent le niveau suivant. Les scènes ratées reviennent dès demain.</p></section><PTButton primary onClick={()=>go('qi')}>Retour au QI</PTButton></div></>;}
   const order=BS.optionOrder(scene),correct=choice===scene.answer;
-  return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur.">{`Scène ${i+1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level-1].hint}`}</PTPageHead>
+  return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur.">{`Scène ${i+1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level-1].hint}${set.replay?' · scènes déjà vues aujourd’hui, pour t’entraîner encore':''}`}</PTPageHead>
     <div className="stack">
       <div className="scene-stage">
         <PTScene3D key={scene.id} scene={scene} phase={phase} choice={choice} reduced={reduced} replayKey={replayKey} onStep={setStep} onDecide={()=>{decidedAt.current=Date.now();setPhase('decide');}}/>
