@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v51-interface';
+const CACHE = 'rehaab-v52-qi-3d';
 const PRECACHE = [
   './',
   './index.html',
@@ -37,6 +37,8 @@ const PRECACHE = [
   './season-plan.js',
   './compiled/dossier-components.js',
   './compiled/calendar-components.js',
+  './compiled/qi-scene-components.js',
+  './basket-scenes.js',
   './training-load.js',
   './personal-programs.js',
   './vendor/gsap.min.js',
@@ -158,6 +160,7 @@ const PRECACHE = [
 // Illustrations du catalogue : mises en cache en arrière-plan après l'activation, jamais attendues à l'installation.
 // Sans cela, la première ouverture après une mise à jour télécharge des dizaines de Mo avant d'être utilisable.
 const PRECACHE_MEDIA = [
+  './vendor/three.min.js',
   './media/ui/hub/card.webp',
   './media/ui/hub/game.webp',
   './media/ui/hub/gear.webp',

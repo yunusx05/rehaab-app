@@ -692,7 +692,17 @@ function PTQiHome({
     className: "notice warning stack-sm"
   }, /*#__PURE__*/React.createElement("p", null, "Renseigne ton poste pour recevoir les situations qui te concernent."), /*#__PURE__*/React.createElement(PTButton, {
     onClick: () => go('player')
-  }, "Cr\xE9er mon profil joueur")), /*#__PURE__*/React.createElement("section", {
+  }, "Cr\xE9er mon profil joueur")), window.BasketScenes && (() => {
+    const st = window.BasketScenes.stats(qi);
+    return /*#__PURE__*/React.createElement(PTImageTile, {
+      tall: true,
+      photo: ptHub('qi'),
+      badge: `Niveau ${st.level}${st.due ? ` · ${st.due} à revoir` : ''}`,
+      title: "Lis ton d\xE9fenseur \xB7 3D",
+      text: "\xC0 sa place, face \xE0 toi : pied avanc\xE9, mains, closeout, aide. Image fig\xE9e, tu choisis.",
+      onClick: () => go('qi-scene')
+    });
+  })(), /*#__PURE__*/React.createElement("section", {
     className: "mind-card"
   }, /*#__PURE__*/React.createElement("div", {
     className: "topline"
