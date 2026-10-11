@@ -115,7 +115,7 @@ function ptGym(THREE,kit,S){
   return {net};
 }
 
-function PTScene3D({scene,phase,choice,onDecide,reduced}){
+function PTScene3D({scene,phase,choice,onDecide,reduced,onStep,replayKey=0}){
   const host=usePTRef(null),api=usePTRef(null);
   const [failed,setFailed]=usePTState(()=>!ptWebGL());
   // Repli 2D : pas d'animation, la décision est ouverte tout de suite.
@@ -151,7 +151,10 @@ function PTScene3D({scene,phase,choice,onDecide,reduced}){
       const syncShadows=()=>[me,def,help,mate].filter(Boolean).forEach(p=>{p.shadow.position.x=p.root.position.x;p.shadow.position.z=p.root.position.z;p.shadow.material.opacity=.32-p.root.position.y*.3;});
       // Ballon dans la main de dribble (droite du porteur) : de la main au parquet.
       const handBall=(t,x=me.root.position.x+.32,z=me.root.position.z-.28,hi=.95)=>{const b=Math.abs(Math.sin(t));ball.position.set(x,.13+b*(hi-.13),z);ball.rotation.x+=.12;return t;};
-      const INTRO=reduced?0:1700;let t0=performance.now(),mode='intro',replay=null;
+      const INTRO=reduced?0:2600;let mode='intro',replay=null,sim=0,last=performance.now(),freezeAt=0,step=-1;
+      // Trace au sol du bon chemin, révélée pendant le rejeu.
+      const dots=Array.from({length:16},()=>{const m=new THREE.Mesh(new THREE.CircleGeometry(.07,16),new THREE.MeshBasicMaterial({color:PT_LIME,transparent:true,opacity:0,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=.025;S.add(m);return m;});
+      const setStep=n=>{if(n!==step){step=n;onStep&&onStep(n);}};
       const intro=(k,now)=>{
         const time=now/1000,m=ease(k);
         // Toi : dribble sur place, posture basse.
@@ -170,7 +173,12 @@ function PTScene3D({scene,phase,choice,onDecide,reduced}){
         if(mate) ptSetPose(mate,{crouch:.28,lean:.15,arms:scene.level>=3&&k>.6?'call':'low',side:BS.dir(scene.teammate)*-1,phase:time*3});
         cam.position.set(camBase.x,camBase.y,lerp(camBase.z+.5,camBase.z,m));cam.lookAt(look);
       };
-      api.current={replay:(action)=>{replay={action,t0:performance.now()};mode='replay';
+      api.current={replay:(action)=>{replay={action,t0:sim};mode='replay';setStep(0);
+        // Rejeu depuis la position figée : chacun revient à sa place.
+        me.root.position.set(-.25,0,0);def.root.position.set(end.x-.25,0,end.z);def.root.rotation.y=0;def.root.position.y=0;
+        const A=BS.ACTIONS[action]||{side:0},sd=A.side||(d.foot&&d.foot!=='square'?BS.dir(d.foot):1);
+        const path=action==='shoot'?null:action.startsWith('pass')?(()=>{const tx=mate?mate.root.position.x:BS.dir(scene.teammate||'right')*6,tz=mate?mate.root.position.z:-6;return k=>[lerp(-.25,tx,k),lerp(-.3,tz,k)];})():(()=>{const lane=action==='finish'||action==='hesi-go'?-.1:sd*1.35;return k=>[lerp(-.25,lane,Math.min(1,k*1.5)),lerp(0,-5.2,k)];})();
+        dots.forEach((m,i)=>{if(!path){m.material.opacity=0;return;}const [x,z]=path((i+1)/dots.length);m.position.x=x;m.position.z=z;m.material.opacity=0;m.userData.k=(i+1)/dots.length;});
         const s=d.foot&&d.foot!=='square'?BS.dir(d.foot):0;
         if(scene.help&&help)marker.position.set(help.root.position.x,.02,help.root.position.z);
         else if(s)marker.position.set(def.root.position.x+s*.14,.02,def.root.position.z+.3);
@@ -179,9 +187,18 @@ function PTScene3D({scene,phase,choice,onDecide,reduced}){
       const loop=now=>{
         if(disposed)return;frame=requestAnimationFrame(loop);
         if(document.hidden)return;
-        if(mode==='intro'){const k=INTRO?(now-t0)/INTRO:1;intro(Math.min(1,k),now);if(k>=1){mode='freeze';onDecide&&onDecide();}}
+        const dt=Math.min(50,now-last);last=now;
+        if(mode==='intro'){
+          const lin=INTRO?sim/INTRO:1;sim+=dt*(lin>.68?.42:1);
+          // Les 30 derniers % de l'intro au ralenti : c'est là que le défenseur montre l'indice.
+          const k=lin<.68?lin/.68*.82:.82+Math.min(1,(lin-.68)/.32)*.18;
+          intro(Math.min(1,k),sim);if(lin>=1){mode='freeze';freezeAt=now;onDecide&&onDecide();}}
+        else if(mode==='freeze'){const p=easeIO(Math.min(1,(now-freezeAt)/900));cam.position.set(lerp(camBase.x,camBase.x-.35,p),lerp(camBase.y,camBase.y-.25,p),lerp(camBase.z,camBase.z-.9,p));cam.lookAt(look);}
         else if(mode==='replay'&&replay){
-          const T=reduced?1:Math.min(1,(now-replay.t0)/2200),a=replay.action,A=BS.ACTIONS[a]||{side:0},time=now/1000;
+          sim+=dt*.7;
+          const T=reduced?1:Math.min(1,(sim-replay.t0)/2400),a=replay.action,A=BS.ACTIONS[a]||{side:0},time=sim/1000;
+          setStep(T<.3?0:T<.72?1:2);
+          dots.forEach(m=>{m.material.opacity=m.userData.k!==undefined&&T>.15?Math.min(.9,Math.max(0,(T-.15)*1.6-m.userData.k*.9)*3):0;});
           const side=A.side||(d.foot&&d.foot!=='square'?BS.dir(d.foot):1);
           if(a==='shoot'){
             const up=Math.sin(Math.min(1,T/.45)*Math.PI);ptSetPose(me,{crouch:.15,lean:.05,arms:'shoot',armT:Math.min(1,T/.35),jump:T<.45?up*.45:0,facing:-1});
@@ -223,7 +240,7 @@ function PTScene3D({scene,phase,choice,onDecide,reduced}){
     }).catch(()=>{if(!disposed)setFailed(true);});
     return ()=>{disposed=true;cancelAnimationFrame(frame);if(resize)resize.disconnect();if(renderer){renderer.dispose();renderer.domElement.remove();}api.current=null;};
   },[scene.id]);
-  usePTEffect(()=>{if(phase==='replay'&&api.current)api.current.replay(scene.answer);},[phase]);
+  usePTEffect(()=>{if(phase==='replay'&&api.current)api.current.replay(scene.answer);},[phase,replayKey]);
   if(failed)return <PTScene2D scene={scene} reveal={phase==='replay'}/>;
   return <div className="scene-3d" ref={host} role="img" aria-label="Scène en 3D vue par-dessus ton épaule : ton défenseur face à toi."/>;
 }
@@ -247,7 +264,7 @@ function PTQiScenes({data,update,go}){
   const reduced=usePTMotionPreference?usePTMotionPreference():false;
   const [set]=usePTState(()=>BS.nextSet(data.qi));
   const [i,setI]=usePTState(0),[phase,setPhase]=usePTState('intro'),[choice,setChoice]=usePTState(null),[results,setResults]=usePTState([]),[left,setLeft]=usePTState(3);
-  const decidedAt=usePTRef(0);
+  const decidedAt=usePTRef(0),[step,setStep]=usePTState(-1),[replayKey,setReplayKey]=usePTState(0);
   const scene=set.scenes[i];
   // Niveau 4 : 3 secondes pour décider, sinon la scène compte comme ratée.
   usePTEffect(()=>{if(phase!=='decide'||!scene?.timed)return;setLeft(3);const start=Date.now();const id=setInterval(()=>{const r=3-(Date.now()-start)/1000;setLeft(Math.max(0,r));if(r<=0){clearInterval(id);answer(null);}},100);return()=>clearInterval(id);},[phase,i]);
@@ -258,24 +275,25 @@ function PTQiScenes({data,update,go}){
     update(s=>({...s,qi:BS.record(s.qi,scene,c,{ms:Date.now()-decidedAt.current}).qi}));
     setChoice(c);setResults(x=>[...x,r.correct]);setPhase('replay');
   };
-  const next=()=>{if(i+1<set.scenes.length){setI(i+1);setChoice(null);setPhase('intro');}else setPhase('done');};
+  const next=()=>{setStep(-1);if(i+1<set.scenes.length){setI(i+1);setChoice(null);setPhase('intro');}else setPhase('done');};
   if(phase==='done'){const ok=results.filter(Boolean).length;
     return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur."/><div className="stack-lg"><section className="card stack-sm"><h2>{ok} bonne{ok>1?'s':''} lecture{ok>1?'s':''} sur {results.length}.</h2><p className="fine">Niveau {BS.level(data.qi)} · {BS.LEVELS[BS.level(data.qi)-1].label}. 8 bonnes lectures sur les 10 dernières débloquent le niveau suivant. Les scènes ratées reviennent dès demain.</p></section><PTButton primary onClick={()=>go('qi')}>Retour au QI</PTButton></div></>;}
   const order=BS.optionOrder(scene),correct=choice===scene.answer;
   return <><PTPageHead onBack={()=>go('qi')} title="Lis ton défenseur.">{`Scène ${i+1} sur ${set.scenes.length} · niveau ${scene.level} · ${BS.LEVELS[scene.level-1].hint}`}</PTPageHead>
     <div className="stack">
       <div className="scene-stage">
-        <PTScene3D key={scene.id} scene={scene} phase={phase} choice={choice} reduced={reduced} onDecide={()=>{decidedAt.current=Date.now();setPhase('decide');}}/>
+        <PTScene3D key={scene.id} scene={scene} phase={phase} choice={choice} reduced={reduced} replayKey={replayKey} onStep={setStep} onDecide={()=>{decidedAt.current=Date.now();setPhase('decide');}}/>
         {phase==='intro'&&<span className="scene-status">Regarde ton défenseur…</span>}
         {phase==='decide'&&<span className="scene-status is-freeze">{scene.timed?`Décide · ${left.toFixed(1)} s`:'Image figée : que fais-tu ?'}</span>}
         {phase==='decide'&&scene.timed&&<span className="scene-timer" aria-hidden="true"><i style={{transform:`scaleX(${left/3})`}}/></span>}
+        {phase==='replay'&&step>=0&&<ol className="scene-caption" aria-live="polite">{[scene.cues.join(' '),`Bonne action : ${BS.actionLabel(scene.answer).toLowerCase()}.`,scene.why.split(/(?<=\.)\s/)[0]].map((c,n)=><li key={n} className={n===step?'is-now':n<step?'is-done':''}><b>{n+1}</b><span>{c}</span></li>)}</ol>}
       </div>
       <div className="scene-options" role="group" aria-label="Ta décision">{order.map(o=><button key={o} className={`scene-option${choice===o?(correct?' is-right':' is-wrong'):''}${phase==='replay'&&o===scene.answer?' is-answer':''}`} disabled={phase!=='decide'} onClick={()=>answer(o)}>{BS.actionLabel(o)}</button>)}</div>
       {phase==='replay'&&<section className={`scene-feedback${correct?' is-right':' is-wrong'}`} aria-live="polite">
         <strong>{correct?'Bonne lecture.':choice?'Pas cette fois.':'Trop tard.'} {correct?'':`La bonne action : ${BS.actionLabel(scene.answer).toLowerCase()}.`}</strong>
         <ul className="reason-list">{scene.cues.map(c=><li key={c}>{c}</li>)}</ul>
         <p>{scene.why}</p>
-        <PTButton primary onClick={next}>{i+1<set.scenes.length?'Scène suivante':'Voir mon bilan'}<PTIcon name="arrow" size={18}/></PTButton>
+        <div className="button-row"><PTButton quiet onClick={()=>setReplayKey(k=>k+1)}>Revoir l’action</PTButton><PTButton primary onClick={next}>{i+1<set.scenes.length?'Scène suivante':'Voir mon bilan'}<PTIcon name="arrow" size={18}/></PTButton></div>
       </section>}
     </div></>;
 }

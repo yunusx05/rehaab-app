@@ -444,3 +444,8 @@
 .shot-btn.is-made{background:var(--accent);color:#1b2111}.shot-btn.is-miss{background:var(--raised);color:var(--text)}
 .calendar-weigh{font-size:.72rem}
 @media(prefers-reduced-motion:reduce){.chart-bar,.shot-btn{transition:none}}
+.scene-caption{margin:0;padding:.7rem .8rem;list-style:none;display:grid;gap:.35rem;background:var(--surface);border-top:1px solid var(--line)}
+.scene-caption li{display:grid;grid-template-columns:20px 1fr;gap:.5rem;align-items:start;font-size:.76rem;line-height:1.35;color:#8f958d;transition:color .2s}
+.scene-caption li b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#ffffff1f;color:var(--text);font-size:.68rem}
+.scene-caption li.is-done{color:#c9cec4}.scene-caption li.is-now{color:var(--text)}.scene-caption li.is-now b{background:var(--accent);color:#1b2111}
+@media(prefers-reduced-motion:reduce){.scene-caption li{transition:none}}
