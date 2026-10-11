@@ -17,6 +17,7 @@
 
   // Références : affichées dans l'app, listées en entier dans REHAB-SOURCES.md.
   const S = {
+    percussion:{label:'Konrad et al. 2020 · pistolet de massage, amplitude des mollets sans perte de force',url:'https://pubmed.ncbi.nlm.nih.gov/33239942/'},
     rio:{label:'Rio et al. 2019 · isométriques et tendon rotulien en saison',url:'https://pubmed.ncbi.nlm.nih.gov/31033611/'},
     patLoad:{label:'Progression de charge du tendon rotulien (2024)',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10925836/'},
     decline:{label:'Kongsgaard et al. 2006 · squat sur plan incliné',url:'https://pubmed.ncbi.nlm.nih.gov/16675081/'},
@@ -316,13 +317,13 @@
   // Échauffements basket : structure SHRed / FIFA 11+ / RAMP (élever, mobiliser, activer, potentialiser).
   const warmups = [
     {id:'practice',title:'Avant entraînement',minutes:10,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm'],
-      blocks:[['jog-court',90],['carioca',20],['skip-a',20],['worlds-greatest',30],['monster-walk',30],['single-leg-reach',30],['snap-down',20],['pogo',20],['defensive-slide',20]]},
+      blocks:[['gun-legs',45,true],['jog-court',90],['carioca',20],['skip-a',20],['worlds-greatest',30],['monster-walk',30],['single-leg-reach',30],['snap-down',20],['pogo',20],['defensive-slide',20]]},
     {id:'match',title:'Avant match',minutes:15,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm'],
-      blocks:[['jog-court',120],['carioca',20],['backpedal',20],['skip-a',20],['worlds-greatest',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['single-leg-reach',30],['pogo',20],['snap-down',20],['defensive-slide',20],['accel-10',20],['crossover-start',20],['approach-jump',20]]},
+      blocks:[['gun-legs',45,true],['jog-court',120],['carioca',20],['backpedal',20],['skip-a',20],['worlds-greatest',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['single-leg-reach',30],['pogo',20],['snap-down',20],['defensive-slide',20],['accel-10',20],['crossover-start',20],['approach-jump',20]]},
     {id:'express',title:'Express',minutes:6,thumb:'worlds-greatest',sources:['shred','fifa'],
       blocks:[['jog-court',60],['worlds-greatest',30],['lateral-shuffle',20],['skip-a',20],['pogo',20],['defensive-slide',20]]},
-    {id:'legs',title:'Avant jambes ou sauts',minutes:8,thumb:'monster-walk',sources:['fifa','backman'],
-      blocks:[['jog-court',90],['hip-circles',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['squat',30],['snap-down',20],['pogo',20]]},
+    {id:'legs',title:'Avant jambes ou sauts',minutes:8,thumb:'monster-walk',sources:['fifa','backman','percussion'],
+      blocks:[['gun-legs',45,true],['jog-court',90],['hip-circles',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['squat',30],['snap-down',20],['pogo',20]]},
     {id:'shoot',title:'Avant shoot',minutes:6,thumb:'band-dislocate',sources:['kuhn','orthoShoulder'],
       blocks:[['thoracic',30],['wall-slide',30],['band-er',30],['band-pullapart',30],['scap-pushup',30],['wrist-mob',30],['finger-ext',20]]}
   ];
@@ -335,17 +336,20 @@
     const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes:w.minutes,date:today(),guided:2,warmup:true};
     const ctx=PT.context(state,check),all=PT.allExercises(state);
     const ok=x=>x&&PT.allowed(x,state,check,ctx)&&(!JP||JP.tolerates(x,safety.active));
-    const exercises=[];let removed=0;
-    w.blocks.forEach(([first,seconds])=>{
+    const exercises=[];let removed=0,extra=0;
+    // optional : bloc ajouté seulement si le matériel est là (pistolet de massage), sans compter comme un retrait.
+    w.blocks.forEach(([first,seconds,optional])=>{
       const e=[first,...(warmFallback[first]||[])].map(i=>all.find(y=>y.id===i)).find(x=>ok(x)&&!exercises.some(y=>y.id===x.id));
-      if(!e){removed++;return;}
+      if(!e){if(!optional)removed++;return;}
+      if(optional) extra+=seconds+15; // le pistolet ajoute son temps, il ne raccourcit pas l'échauffement actif
       const timed=e.measure==='seconds'||e.kind==='cardio';
-      exercises.push({...PT.makePrescription(e,'classic',w.minutes,ctx),sets:1,rest:15,measure:timed?'seconds':e.measure,seconds:timed?seconds:e.seconds,min:Math.min(e.min,8),max:Math.min(e.max,10),targetMin:Math.min(e.min,8),targetMax:Math.min(e.max,10),role:'warmup'});
+      exercises.push({...PT.makePrescription(e,'classic',w.minutes,ctx),sets:1,rest:15,measure:timed?'seconds':e.measure,seconds:timed?seconds:e.seconds,min:Math.min(e.min,8),max:Math.min(e.max,10),targetMin:Math.min(e.min,8),targetMax:Math.min(e.max,10),role:'warmup',...(optional?{fixed:true}:{})});
     });
     // Trop long : durées raccourcies, l'ordre (élever, mobiliser, activer, potentialiser) ne bouge pas.
-    while(PT.estimateSeconds(exercises,'classic')>w.minutes*60&&exercises.some(e=>e.measure==='seconds'&&e.seconds>20)) exercises.forEach(e=>{if(e.measure==='seconds'&&e.seconds>20)e.seconds=Math.max(20,e.seconds-10);});
+    while(PT.estimateSeconds(exercises,'classic')>w.minutes*60+extra&&exercises.some(e=>!e.fixed&&e.measure==='seconds'&&e.seconds>20)) exercises.forEach(e=>{if(!e.fixed&&e.measure==='seconds'&&e.seconds>20)e.seconds=Math.max(20,e.seconds-10);});
     if(exercises.length<3) return {error:'Pas assez de mouvements compatibles aujourd’hui. Vérifie tes douleurs et ton matériel.'};
     const reasons=['Échauffement basket : on monte en température, on mobilise, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs.'];
+    if(exercises.some(e=>e.id==='gun-legs')) reasons.push('Pistolet de massage en ouverture : une minute à vitesse basse suffit. Il gagne un peu d’amplitude sans faire perdre de force, mais ne remplace pas l’échauffement actif.');
     if(removed) reasons.push('Certains sauts ou mouvements ont été remplacés à cause de ton matériel ou de tes douleurs.');
     return {id:uid(),title:`Warm Up · ${w.title}`,source:'warmup',warmupId:w.id,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }

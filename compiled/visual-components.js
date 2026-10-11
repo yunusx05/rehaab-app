@@ -197,4 +197,74 @@ function PTRewards({
     name: "copy",
     size: 16
   }), "Copier mon bilan pour mes amis")));
+} // Tuile photo : la photo porte le sujet, le texte reste lisible grâce au dégradé. Sans photo, un fond neutre la remplace.
+function PTImageTile({
+  photo,
+  eyebrow,
+  title,
+  text,
+  badge,
+  done = false,
+  progress,
+  onClick,
+  tall = false
+}) {
+  const [failed, setFailed] = usePTState(false);
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: `image-tile${tall ? ' tall' : ''}${done ? ' is-done' : ''}`,
+    onClick: onClick
+  }, photo && !failed && /*#__PURE__*/React.createElement("img", {
+    src: photo,
+    alt: "",
+    loading: "lazy",
+    decoding: "async",
+    onError: () => setFailed(true)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "image-tile-shade",
+    "aria-hidden": "true"
+  }), (badge || done) && /*#__PURE__*/React.createElement("span", {
+    className: `image-tile-badge${done ? ' done' : ''}`
+  }, done ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "check",
+    size: 13
+  }), "Fait") : badge), /*#__PURE__*/React.createElement("span", {
+    className: "image-tile-body"
+  }, eyebrow && /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, eyebrow), /*#__PURE__*/React.createElement("strong", null, title), text && /*#__PURE__*/React.createElement("small", null, text), progress && progress.total > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "image-tile-progress",
+    "aria-label": `${progress.count} réponses sur ${progress.total}`
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: `${Math.round(progress.count / progress.total * 100)}%`
+    }
+  }))));
+}
+// Carte héros photo : en-tête vivant d'un écran, avec une action principale.
+function PTHeroCard({
+  photo,
+  eyebrow,
+  title,
+  children,
+  aside
+}) {
+  const [failed, setFailed] = usePTState(false);
+  return /*#__PURE__*/React.createElement("section", {
+    className: "photo-hero"
+  }, photo && !failed && /*#__PURE__*/React.createElement("img", {
+    src: photo,
+    alt: "",
+    decoding: "async",
+    onError: () => setFailed(true)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "photo-hero-shade",
+    "aria-hidden": "true"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "photo-hero-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "photo-hero-top"
+  }, eyebrow && /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, eyebrow), aside), /*#__PURE__*/React.createElement("h2", null, title), children));
 }

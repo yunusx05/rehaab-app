@@ -44,6 +44,7 @@ function ptCoachContext(data){
   return {
     today,
     profile:{age:data.profile.age,experience:data.profile.experience,basketLevel:data.profile.basketLevel},
+    dossier:window.PlayerDossier?.summary(data.dossier)||null,
     player:data.player?.position?{position:JP?.positions[data.player.position]?.label,profile:(data.player.archetypes||[]).map(a=>JP?.archetypes[a]?.label)}:null,
     plannedSession:planned,
     recentSessions:data.sessions.filter(s=>PT.dayDiff(today,s.date)>=0&&PT.dayDiff(today,s.date)<=14).sort((a,b)=>b.date.localeCompare(a.date)).map(s=>({daysAgo:PT.dayDiff(today,s.date),title:s.title,type:s.source,minutes:Math.round(s.minutes),effort:s.effort||null,partial:!!s.partial,painAfter:s.painAfter??null,exercises:(s.exercises||[]).slice(0,10).map(e=>e.name)})),

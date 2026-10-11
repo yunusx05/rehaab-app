@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v46-skills-videos';
+const CACHE = 'rehaab-v47-dossier';
 const PRECACHE = [
   './',
   './index.html',
@@ -32,6 +32,8 @@ const PRECACHE = [
   './compiled/skills-components.js',
   './basket-skills.js',
   './basket-profile.js',
+  './player-dossier.js',
+  './compiled/dossier-components.js',
   './training-load.js',
   './personal-programs.js',
   './vendor/gsap.min.js',
@@ -153,6 +155,14 @@ const PRECACHE = [
 // Illustrations du catalogue : mises en cache en arrière-plan après l'activation, jamais attendues à l'installation.
 // Sans cela, la première ouverture après une mise à jour télécharge des dizaines de Mo avant d'être utilisable.
 const PRECACHE_MEDIA = [
+  './media/ui/dossier/hero.webp',
+  './media/ui/dossier/morpho.webp',
+  './media/ui/dossier/game.webp',
+  './media/ui/dossier/break.webp',
+  './media/ui/dossier/health.webp',
+  './media/ui/dossier/body.webp',
+  './media/ui/dossier/life.webp',
+  './media/ui/dossier/goals.webp',
   './media/cards/wall-pushup.webp',
   './media/cards/band-row.webp',
   './media/cards/knee-pushup.webp',

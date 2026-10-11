@@ -182,6 +182,11 @@ function PTIcon({
     }), /*#__PURE__*/React.createElement("path", {
       d: "M5 13h5m4 0h5"
     })),
+    gun: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M3 7h11a3 3 0 0 1 0 6H3z"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M9 13l-1 8h4l1-8M17 10h4"
+    })),
     slider: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("ellipse", {
       cx: "7",
       cy: "16",
@@ -1878,6 +1883,14 @@ function PTProfile({
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
+    onClick: () => go('dossier')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "book"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon dossier joueur"), /*#__PURE__*/React.createElement("small", null, window.PlayerDossier ? `Rempli à ${window.PlayerDossier.completeness(data.dossier).percent} % · ce que le coach sait de toi` : 'Ce que le coach sait de toi')), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('player')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "basket"
@@ -2278,9 +2291,10 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route.startsWith('dossier') ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
-  if (!data.profile.onboarded && !storageError && route !== 'symptoms') content = /*#__PURE__*/React.createElement(PTOnboarding, props);else {
+  // Premier lancement : le dossier joueur (ou la version rapide). Les écrans du dossier restent ouverts avant la fin de l'accueil.
+  if (!data.profile.onboarded && !storageError && !['symptoms', 'dossier', 'dossier-q', 'dossier-synthese'].includes(route)) content = /*#__PURE__*/React.createElement(PTDossierWelcome, props);else {
     const screens = {
       today: PTSportToday,
       prepare: PTPrepare,
@@ -2310,7 +2324,10 @@ function PersonalApp() {
       'program-checkin': PTProgramCheckIn,
       'basket-profile': PTBasketProfile,
       skills: PTSkillsHome,
-      'skills-quiz': PTSkillsQuiz
+      'skills-quiz': PTSkillsQuiz,
+      dossier: PTDossier,
+      'dossier-q': PTDossierChapter,
+      'dossier-synthese': PTDossierSynthesis
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

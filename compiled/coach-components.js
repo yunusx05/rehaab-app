@@ -215,6 +215,7 @@ function ptCoachContext(data) {
       experience: data.profile.experience,
       basketLevel: data.profile.basketLevel
     },
+    dossier: window.PlayerDossier?.summary(data.dossier) || null,
     player: data.player?.position ? {
       position: JP?.positions[data.player.position]?.label,
       profile: (data.player.archetypes || []).map(a => JP?.archetypes[a]?.label)

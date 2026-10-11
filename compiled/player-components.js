@@ -295,10 +295,10 @@ function PTBodyMind({
     className: "training-kicker"
   }, "Profil joueur"), /*#__PURE__*/React.createElement("h2", null, "TON POSTE.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("em", null, "TON CORPS.")), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Poste, profil de jeu, douleurs, mat\xE9riel : la s\xE9ance et les lectures de jeu du jour en d\xE9pendent."), /*#__PURE__*/React.createElement(PTButton, {
+  }, "Ton gabarit, ton basket, ta pause, ta sant\xE9, tes objectifs : la s\xE9ance, le calendrier et les lectures de jeu en d\xE9pendent."), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
-    onClick: () => go('player')
-  }, "Cr\xE9er mon profil joueur", /*#__PURE__*/React.createElement(PTIcon, {
+    onClick: () => go('dossier')
+  }, "Remplir mon dossier joueur", /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
   })));
