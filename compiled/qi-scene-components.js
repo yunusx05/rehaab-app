@@ -177,15 +177,18 @@ function ptPlayer(THREE, kit, {
   }));
   shadow.rotation.x = -Math.PI / 2;
   shadow.position.y = .012;
-  return {
+  const P = {
     root,
     hips,
     torso,
     head,
     legs,
     arms,
-    shadow
+    shadow,
+    update: () => {},
+    pose: o => ptSetPose(P, o)
   };
+  return P;
 }
 // Pose. lead : jambe avancée (-1 = côté x négatif du monde, 1 = positif, 0 = aucune). arms : high | mid | low | dribble | shoot | pass | call | catch.
 function ptSetPose(P, {
@@ -439,6 +442,264 @@ function ptGym(THREE, kit, S) {
     net
   };
 }
+
+// Joueur réaliste (Quaternius, CC0) : modèle chargé une fois, cloné par joueur ; maillot et short découpés dans le corps
+// selon les os, teintés aux couleurs de l'équipe ; animations Quaternius + gestes basket orientés os par os.
+let ptModelPromise = null;
+function ptLoadModel(THREE) {
+  if (!ptModelPromise) ptModelPromise = new Promise((ok, ko) => {
+    const l = new THREE.GLTFLoader();
+    l.setMeshoptDecoder(THREE.MeshoptDecoder);
+    l.load('media/3d/player.glb', ok, undefined, ko);
+  }).catch(e => {
+    ptModelPromise = null;
+    throw e;
+  });
+  return ptModelPromise;
+}
+const PT_JERSEY_BONES = new Set(['spine_01', 'spine_02', 'spine_03', 'clavicle_l', 'clavicle_r']);
+function ptOutfit(THREE, body, jersey, shorts) {
+  const g = body.geometry,
+    pos = g.attributes.position,
+    nor = g.attributes.normal,
+    si = g.attributes.skinIndex,
+    sw = g.attributes.skinWeight,
+    idx = g.index;
+  const names = body.skeleton.bones.map(b => b.name),
+    dom = new Int16Array(pos.count);
+  for (let v = 0; v < pos.count; v++) {
+    let best = 0,
+      bw = -1;
+    for (let k = 0; k < 4; k++) {
+      const w = sw.getComponent(v, k);
+      if (w > bw) {
+        bw = w;
+        best = si.getComponent(v, k);
+      }
+    }
+    dom[v] = best;
+  }
+  // Bas du short : un quart de la cuisse au-dessus du genou.
+  let tMin = Infinity,
+    tMax = -Infinity;
+  for (let v = 0; v < pos.count; v++) {
+    if (/^thigh_/.test(names[dom[v]])) {
+      const y = pos.getY(v);
+      tMin = Math.min(tMin, y);
+      tMax = Math.max(tMax, y);
+    }
+  }
+  const cut = tMin + (tMax - tMin) * .22;
+  const inJersey = v => PT_JERSEY_BONES.has(names[dom[v]]),
+    inShorts = v => {
+      const n = names[dom[v]];
+      return n === 'pelvis' || /^thigh_/.test(n) && pos.getY(v) > cut;
+    };
+  body.updateWorldMatrix(true, false);
+  const scale = new THREE.Vector3().setFromMatrixScale(body.matrixWorld).y || 1;
+  const make = (test, color, off) => {
+    const tri = [];
+    const n = idx ? idx.count : pos.count;
+    for (let i = 0; i < n; i += 3) {
+      const a = idx ? idx.getX(i) : i,
+        b = idx ? idx.getX(i + 1) : i + 1,
+        c = idx ? idx.getX(i + 2) : i + 2;
+      if (test(a) && test(b) && test(c)) tri.push(a, b, c);
+    }
+    const p = new Float32Array(pos.count * 3),
+      o = off / scale;
+    for (let v = 0; v < pos.count; v++) {
+      p[v * 3] = pos.getX(v) + nor.getX(v) * o;
+      p[v * 3 + 1] = pos.getY(v) + nor.getY(v) * o;
+      p[v * 3 + 2] = pos.getZ(v) + nor.getZ(v) * o;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(p, 3));
+    geo.setAttribute('normal', nor);
+    geo.setAttribute('skinIndex', si);
+    geo.setAttribute('skinWeight', sw);
+    geo.setIndex(tri);
+    const m = new THREE.SkinnedMesh(geo, new THREE.MeshStandardMaterial({
+      color,
+      roughness: .85
+    }));
+    m.bind(body.skeleton, body.bindMatrix);
+    m.frustumCulled = false;
+    body.parent.add(m);
+    return m;
+  };
+  return {
+    jersey: make(inJersey, jersey, .012),
+    shorts: make(inShorts, shorts, .016)
+  };
+}
+function ptRealPlayer(THREE, gltf, {
+  jersey,
+  number,
+  ink = '#111212'
+}) {
+  const root = new THREE.Group(),
+    model = THREE.cloneSkinned(gltf.scene);
+  root.add(model);
+  // Taille de joueur : 1,93 m.
+  const box = new THREE.Box3().setFromObject(model),
+    h = box.max.y - box.min.y || 1;
+  model.scale.multiplyScalar(1.93 / h);
+  model.position.y -= box.min.y * 1.93 / h;
+  let body = null;
+  model.traverse(o => {
+    if (o.isSkinnedMesh) {
+      o.frustumCulled = false;
+      if (!body || o.geometry.attributes.position.count > body.geometry.attributes.position.count) body = o;
+    }
+  });
+  model.updateMatrixWorld(true);
+  const dark = new THREE.Color(jersey).multiplyScalar(.7).getHex();
+  ptOutfit(THREE, body, jersey, dark);
+  const bone = n => model.getObjectByName(n);
+  // Numéro devant et derrière, collé au haut du dos.
+  const hex = '#' + jersey.toString(16).padStart(6, '0'),
+    tex = ptNumberTexture(THREE, number, ink, hex),
+    spine = bone('spine_03');
+  [1, -1].forEach(s => {
+    const p = new THREE.Mesh(new THREE.PlaneGeometry(.2, .2), new THREE.MeshBasicMaterial({
+      map: tex,
+      transparent: true
+    }));
+    p.position.set(0, 1.4, s * .16);
+    if (s < 0) p.rotation.y = Math.PI;
+    root.add(p);
+    root.updateMatrixWorld(true);
+    spine && spine.attach(p);
+  });
+  const mixer = new THREE.AnimationMixer(model),
+    acts = {};
+  gltf.animations.forEach(c => {
+    acts[c.name] = mixer.clipAction(c);
+  });
+  let curKey = null;
+  const play = (key, ts = 1) => {
+    if (key === curKey) {
+      Object.values(acts).forEach(a => {
+        if (a.isRunning()) a.timeScale = ts;
+      });
+      return;
+    }
+    curKey = key;
+    const want = key === 'stance' ? {
+      Idle_Loop: .45,
+      Crouch_Idle_Loop: .55
+    } : {
+      [key]: 1
+    };
+    Object.entries(acts).forEach(([n, a]) => {
+      if (want[n]) {
+        if (!a.isRunning()) a.reset().play();
+        a.setEffectiveWeight(want[n]);
+        a.timeScale = ts;
+        a.fadeIn(.18);
+      } else if (a.isRunning()) a.fadeOut(.18);
+    });
+  };
+  const shadow = new THREE.Mesh(new THREE.CircleGeometry(.42, 24), new THREE.MeshBasicMaterial({
+    color: 0,
+    transparent: true,
+    opacity: .32,
+    depthWrite: false
+  }));
+  shadow.rotation.x = -Math.PI / 2;
+  shadow.position.y = .012;
+  const V = THREE.Vector3,
+    Q = THREE.Quaternion,
+    pa = new V(),
+    pb = new V(),
+    dq = new Q(),
+    wq = new Q(),
+    pq = new Q();
+  // Oriente un os pour que le segment os → enfant pointe dans une direction du monde (indépendant des axes du squelette).
+  const aim = (bn, ch, dir) => {
+    const b = bone(bn),
+      c = bone(ch);
+    if (!b || !c) return;
+    b.parent.updateMatrixWorld(true);
+    b.updateMatrixWorld(true);
+    pa.setFromMatrixPosition(b.matrixWorld);
+    pb.setFromMatrixPosition(c.matrixWorld).sub(pa).normalize();
+    dq.setFromUnitVectors(pb, dir.clone().normalize());
+    b.getWorldQuaternion(wq);
+    wq.premultiply(dq);
+    b.parent.getWorldQuaternion(pq);
+    b.quaternion.copy(pq.invert().multiply(wq));
+    b.updateMatrixWorld(true);
+  };
+  const api = {
+    root,
+    shadow,
+    mixer,
+    update: dt => mixer.update(dt),
+    pose({
+      crouch = .3,
+      lead = 0,
+      run = 0,
+      shuffle = 0,
+      arms = 'mid',
+      armT = 0,
+      jump = 0,
+      side = 1,
+      facing = 1
+    }) {
+      root.position.y = jump;
+      play(jump > .05 ? 'Jump_Loop' : run > .75 ? 'Sprint_Loop' : run > .3 ? 'Jog_Fwd_Loop' : crouch >= .28 || shuffle ? 'stance' : 'Idle_Loop', run > .3 ? Math.max(.8, run * 1.2) : 1);
+      mixer.update(0);
+      root.updateMatrixWorld(true);
+      const f = facing,
+        ry = root.rotation.y;
+      const W = (x, y, z) => new V(x, y, z).applyAxisAngle(new V(0, 1, 0), ry - (facing < 0 ? Math.PI : 0));
+      // Côté du monde (x) → os gauche/droit selon le sens où regarde le joueur.
+      const sideBone = s => s * f > 0 ? '_l' : '_r';
+      if (lead && !run && !jump) {
+        const L = sideBone(lead),
+          B = sideBone(-lead);
+        aim('thigh' + L, 'calf' + L, W(lead * .3, -1, f * .4));
+        aim('calf' + L, 'foot' + L, W(0, -1, f * .04));
+        aim('thigh' + B, 'calf' + B, W(-lead * .22, -1, -f * .22));
+        aim('calf' + B, 'foot' + B, W(0, -1, -f * .3));
+      }
+      const arm = (s, up, low) => {
+        const S = sideBone(s);
+        aim('upperarm' + S, 'lowerarm' + S, W(...up));
+        aim('lowerarm' + S, 'hand' + S, W(...low));
+      };
+      if (arms === 'high') {
+        arm(-1, [-.15, 1, f * .18], [-.05, 1, f * .05]);
+        arm(1, [.15, 1, f * .18], [.05, 1, f * .05]);
+      } else if (arms === 'mid' && !run) {
+        arm(-1, [-.75, -.35, f * .55], [-.25, .3, f * 1]);
+        arm(1, [.75, -.35, f * .55], [.25, .3, f * 1]);
+      } else if (arms === 'dribble') {
+        const hs = -side;
+        arm(hs, [hs * .3, -.85, f * .45], [hs * .05, -.75 + Math.sin(armT) * .25, f * .7]);
+        if (!run) arm(-hs, [-hs * .55, -.45, f * .55], [0, .35, f * 1]);
+      } else if (arms === 'shoot') {
+        arm(-1, [-.12, 1, f * (.5 - armT * .25)], [0, 1, f * (.25 - armT * .15)]);
+        arm(1, [.12, 1, f * (.5 - armT * .25)], [0, 1, f * (.2 - armT * .15)]);
+      } else if (arms === 'pass') {
+        arm(-1, [side * .6 - .1, .1, f * .9], [side * .7, 0, f * .7]);
+        arm(1, [side * .6 + .1, .1, f * .9], [side * .7, 0, f * .7]);
+      } else if (arms === 'call') {
+        arm(side, [side * .2, 1, f * .1], [0, 1, 0]);
+      } else if (arms === 'catch') {
+        arm(-1, [-.3, .1, f * 1], [-.1, .3, f * 1]);
+        arm(1, [.3, .1, f * 1], [.1, .3, f * 1]);
+      }
+    },
+    hand: (s = 1, f = 1) => {
+      const b = bone('hand' + (s * f > 0 ? '_l' : '_r'));
+      return b ? new V().setFromMatrixPosition(b.matrixWorld) : null;
+    }
+  };
+  return api;
+}
 function PTScene3D({
   scene,
   phase,
@@ -461,8 +722,12 @@ function PTScene3D({
       frame = 0,
       renderer = null,
       resize = null;
-    ptLoadThree().then(THREE => {
+    ptLoadThree().then(THREE => ptLoadModel(THREE).then(g => [THREE, g], () => [THREE, null])).then(([THREE, gltf]) => {
       if (disposed || !host.current) return;
+      const mk = o => gltf ? ptRealPlayer(THREE, gltf, o) : ptPlayer(THREE, kit, {
+        ...o,
+        skin: PT_SKIN[(o.number + scene.id.length) % PT_SKIN.length]
+      });
       const el = host.current,
         w = el.clientWidth || 360,
         h = Math.round(Math.min(w * .82, window.innerHeight * .6));
@@ -486,8 +751,8 @@ function PTScene3D({
       const gym = ptGym(THREE, kit, S);
       // Vue par-dessus ton épaule droite, légèrement en hauteur : ton défenseur est visible des pieds aux mains.
       const cam = new THREE.PerspectiveCamera(50, w / h, .1, 80);
-      const camBase = new THREE.Vector3(1.55, 2.55, 3.3),
-        look = new THREE.Vector3(-.45, .8, -2.4);
+      const camBase = new THREE.Vector3(1.95, 2.6, 3.5),
+        look = new THREE.Vector3(-.35, .85, -2.2);
       cam.position.copy(camBase);
       cam.lookAt(look);
       const d = scene.defender,
@@ -497,14 +762,14 @@ function PTScene3D({
         S.add(o.shadow);
         return o;
       };
-      const me = add(ptPlayer(THREE, kit, {
+      const me = add(mk({
         jersey: PT_LIME,
         number: 1,
         skin: skin(0)
       }));
       me.root.rotation.y = Math.PI;
       me.root.position.set(-.25, 0, 0);
-      const def = add(ptPlayer(THREE, kit, {
+      const def = add(mk({
         jersey: PT_BLUE,
         number: 7,
         skin: skin(1),
@@ -533,14 +798,14 @@ function PTScene3D({
         mate = null;
       if (scene.teammate) {
         const s = BS.dir(scene.teammate);
-        mate = add(ptPlayer(THREE, kit, {
+        mate = add(mk({
           jersey: PT_LIME,
           number: 3,
           skin: skin(2)
         }));
         mate.root.position.set(s * 6.1, 0, -5.9);
         mate.root.rotation.y = Math.PI + s * .9;
-        help = add(ptPlayer(THREE, kit, {
+        help = add(mk({
           jersey: PT_BLUE,
           number: 12,
           skin: skin(3),
@@ -632,8 +897,8 @@ function PTScene3D({
         const time = now / 1000,
           m = ease(k);
         // Toi : dribble sur place, posture basse.
-        ptSetPose(me, {
-          crouch: .35,
+        me.pose({
+          crouch: .2,
           lean: .3,
           arms: 'dribble',
           armT: time * 9.4,
@@ -648,7 +913,7 @@ function PTScene3D({
         def.root.position.x = lerp(start.x, end.x, m) - .25 + (shade ? 0 : 0);
         const run = moving ? Math.max(0, 1 - k * 1.25) : 0,
           chop = moving && k > .72 && k < .95 ? 1 : 0;
-        ptSetPose(def, {
+        def.pose({
           crouch: moving && k < .8 ? .12 : d.move === 'retreat' ? .12 : .42,
           lean: moving && k < .8 ? .15 : .32,
           lead: k > .85 ? d.foot === 'square' ? 0 : BS.dir(d.foot) : 0,
@@ -666,21 +931,21 @@ function PTScene3D({
           help.root.position.x = lerp(s * 4.9, tx, m);
           help.root.position.z = lerp(-5.4, tz, m);
           help.root.rotation.y = lerp(-s * .5, -s * .25, m);
-          ptSetPose(help, {
+          help.pose({
             crouch: .3,
             lean: .2,
             run: k < .9 ? .8 : 0,
             phase: time * 13,
             arms: k > .85 ? 'mid' : 'low'
           });
-        } else if (help) ptSetPose(help, {
+        } else if (help) help.pose({
           crouch: .32,
           lean: .2,
           shuffle: .3,
           phase: time * 3,
           arms: 'mid'
         });
-        if (mate) ptSetPose(mate, {
+        if (mate) mate.pose({
           crouch: .28,
           lean: .15,
           arms: scene.level >= 3 && k > .6 ? 'call' : 'low',
@@ -737,9 +1002,12 @@ function PTScene3D({
         if (document.hidden) return;
         const dt = Math.min(50, now - last);
         last = now;
+        const players = [me, def, help, mate].filter(Boolean);
         if (mode === 'intro') {
-          const lin = INTRO ? sim / INTRO : 1;
-          sim += dt * (lin > .68 ? .42 : 1);
+          const lin = INTRO ? sim / INTRO : 1,
+            sp = lin > .68 ? .42 : 1;
+          sim += dt * sp;
+          players.forEach(p => p.update(dt * sp / 1000));
           // Les 30 derniers % de l'intro au ralenti : c'est là que le défenseur montre l'indice.
           const k = lin < .68 ? lin / .68 * .82 : .82 + Math.min(1, (lin - .68) / .32) * .18;
           intro(Math.min(1, k), sim);
@@ -754,6 +1022,7 @@ function PTScene3D({
           cam.lookAt(look);
         } else if (mode === 'replay' && replay) {
           sim += dt * .7;
+          players.forEach(p => p.update(dt * .7 / 1000));
           const T = reduced ? 1 : Math.min(1, (sim - replay.t0) / 2400),
             a = replay.action,
             A = BS.ACTIONS[a] || {
@@ -767,7 +1036,7 @@ function PTScene3D({
           const side = A.side || (d.foot && d.foot !== 'square' ? BS.dir(d.foot) : 1);
           if (a === 'shoot') {
             const up = Math.sin(Math.min(1, T / .45) * Math.PI);
-            ptSetPose(me, {
+            me.pose({
               crouch: .15,
               lean: .05,
               arms: 'shoot',
@@ -783,7 +1052,7 @@ function PTScene3D({
               ball.position.y = Math.max(2.4, 3.05 - (T - .9) * 6);
               gym.net.scale.y = 1 + Math.sin((T - .9) * 40) * .08;
             }
-            ptSetPose(def, {
+            def.pose({
               crouch: .2,
               lean: .1,
               arms: 'high',
@@ -791,7 +1060,7 @@ function PTScene3D({
             });
           } else if (a.startsWith('pass')) {
             const tx = BS.dir(scene.teammate || 'right');
-            ptSetPose(me, {
+            me.pose({
               crouch: .3,
               lean: .2,
               arms: T < .3 ? 'pass' : 'low',
@@ -800,13 +1069,13 @@ function PTScene3D({
             });
             const k = Math.min(1, Math.max(0, (T - .12) / .45));
             ball.position.set(lerp(me.root.position.x, mate ? mate.root.position.x : tx * 6, k), 1.3 + Math.sin(k * Math.PI) * .35, lerp(-.3, mate ? mate.root.position.z + .3 : -6, k));
-            if (mate) ptSetPose(mate, {
+            if (mate) mate.pose({
               crouch: .3,
               lean: .15,
               arms: k > .7 ? 'catch' : 'call',
               side: -tx
             });
-            if (help) ptSetPose(help, {
+            if (help) help.pose({
               crouch: .35,
               lean: .25,
               arms: 'mid',
@@ -821,7 +1090,7 @@ function PTScene3D({
             const lane = a === 'finish' || a === 'hesi-go' ? -.1 : side * 1.35;
             if (T < pre) {
               if (a === 'fake-drive') {
-                ptSetPose(me, {
+                me.pose({
                   crouch: .22,
                   lean: .05,
                   arms: 'shoot',
@@ -830,14 +1099,14 @@ function PTScene3D({
                 });
                 ball.position.set(me.root.position.x, 1.85, -.2);
                 const j = Math.sin(T / pre * Math.PI);
-                ptSetPose(def, {
+                def.pose({
                   crouch: .1,
                   lean: 0,
                   arms: 'high',
                   jump: j * .42
                 });
               } else if (a === 'hesi-go') {
-                ptSetPose(me, {
+                me.pose({
                   crouch: .18,
                   lean: .05,
                   arms: 'dribble',
@@ -846,14 +1115,14 @@ function PTScene3D({
                   facing: -1
                 });
                 handBall(time * 2.6, undefined, undefined, 1.15);
-                ptSetPose(def, {
+                def.pose({
                   crouch: .15,
                   lean: .05,
                   arms: 'low'
                 });
               } else {
                 const c = T / pre;
-                ptSetPose(me, {
+                me.pose({
                   crouch: .42,
                   lean: .35,
                   arms: 'dribble',
@@ -867,7 +1136,7 @@ function PTScene3D({
               me.root.position.x = lerp(-.25, lane, Math.min(1, m * 1.5));
               me.root.position.z = lerp(0, -5.2, m);
               const fin = k > .82 ? (k - .82) / .18 : 0;
-              ptSetPose(me, {
+              me.pose({
                 crouch: .25,
                 lean: .45,
                 run: fin ? 0 : 1,
@@ -880,8 +1149,8 @@ function PTScene3D({
               });
               if (fin) ball.position.set(me.root.position.x + lerp(.2, 0, fin), lerp(1.6, 3.15, fin), lerp(me.root.position.z - .3, RIM_Z + .15, fin));else ball.position.set(me.root.position.x + (a.startsWith('cross') ? -.3 : .3), .13 + Math.abs(Math.sin(time * 14)) * .7, me.root.position.z - .35);
               def.root.rotation.y = lerp(0, -side * 1.3, Math.min(1, m * 2));
-              def.root.position.x = lerp(end.x - .25, end.x - .25 + side * .7, Math.min(1, m * 1.2));
-              ptSetPose(def, {
+              def.root.position.x = lerp(end.x - .25, end.x - .25 + side * .3, Math.max(0, Math.min(1, (m - .25) * 1.4)));
+              def.pose({
                 crouch: .35,
                 lean: .25,
                 run: .7,

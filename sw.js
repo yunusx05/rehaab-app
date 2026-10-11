@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v55-qi-3d-clarte';
+const CACHE = 'rehaab-v56-qi-3d-realiste';
 const PRECACHE = [
   './',
   './index.html',
@@ -163,6 +163,7 @@ const PRECACHE = [
 // Illustrations du catalogue : mises en cache en arrière-plan après l'activation, jamais attendues à l'installation.
 // Sans cela, la première ouverture après une mise à jour télécharge des dizaines de Mo avant d'être utilisable.
 const PRECACHE_MEDIA = [
+  './media/3d/player.glb',
   './vendor/three.min.js',
   './media/ui/hub/card.webp',
   './media/ui/hub/game.webp',
