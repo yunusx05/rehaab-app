@@ -722,8 +722,13 @@ function PTScene3D({
       frame = 0,
       renderer = null,
       resize = null;
-    ptLoadThree().then(THREE => ptLoadModel(THREE).then(g => [THREE, g], () => [THREE, null])).then(([THREE, gltf]) => {
+    ptLoadThree().then(THREE => ptLoadModel(THREE).then(g => [THREE, g], e => {
+      console.warn('[Rehaab] modèle 3D indisponible', e && e.message);
+      return [THREE, null];
+    })).then(([THREE, gltf]) => {
       if (disposed || !host.current) return;
+      // Rendu utilisé, visible pour le diagnostic : real = joueurs Quaternius, fallback = joueurs stylisés.
+      el.dataset.model = gltf ? 'real' : 'fallback';
       const mk = o => gltf ? ptRealPlayer(THREE, gltf, o) : ptPlayer(THREE, kit, {
         ...o,
         skin: PT_SKIN[(o.number + scene.id.length) % PT_SKIN.length]
