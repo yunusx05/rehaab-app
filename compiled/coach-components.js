@@ -584,19 +584,18 @@ function PTCoachCard({
     name: "arrow",
     size: 18
   }));
-  return /*#__PURE__*/React.createElement("section", {
-    className: "coach-card sport-reveal"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "eyebrow"
-  }, "Coach"), /*#__PURE__*/React.createElement("h2", null, "Comment tu te sens aujourd\u2019hui ?"), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "30 secondes de questions, et ta s\xE9ance s\u2019adapte \xE0 ton \xE9tat."), /*#__PURE__*/React.createElement(PTButton, {
-    primary: true,
+  return /*#__PURE__*/React.createElement("button", {
+    className: "coach-card is-ask sport-reveal",
     onClick: () => go('coach')
-  }, "Faire mon bilan", /*#__PURE__*/React.createElement(PTIcon, {
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "coach-avatar"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "spark",
+    size: 20
+  })), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("small", null, "Bilan du coach \xB7 30 secondes"), /*#__PURE__*/React.createElement("strong", null, "Comment tu te sens aujourd\u2019hui ?")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })));
+  }));
 }
 
 // Une question du bilan (défini hors du rendu : un composant recréé à chaque frappe ferait perdre le curseur).

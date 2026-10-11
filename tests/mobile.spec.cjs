@@ -56,14 +56,14 @@ test('profil, douleur et export restent accessibles', async ({ page }) => {
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'Continuer' }).click();
   await page.getByRole('button', { name: 'C’est parti' }).click();
-  await page.getByRole('button', { name: 'Profil', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Mon profil.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Moi', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Moi.' })).toBeVisible();
   await page.getByRole('button', { name: /Mes douleurs du moment/ }).click();
   await expect(page.getByRole('heading', { name: 'Comment va ton corps ?' })).toBeVisible();
   await page.getByRole('button', { name: 'Genou' }).click();
   await page.getByRole('button', { name: 'Enregistrer le signalement' }).click();
   await expect(page.getByText(/Signalement enregistré/)).toBeVisible();
-  await page.getByRole('button', { name: 'Profil', exact: true }).click();
+  await page.getByRole('button', { name: 'Moi', exact: true }).click();
   await page.getByText('Mes données & sauvegardes').click();
   await expect(page.getByRole('button', { name: 'Exporter toutes mes données' })).toBeVisible();
 });

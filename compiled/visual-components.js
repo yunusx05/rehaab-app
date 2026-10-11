@@ -243,6 +243,20 @@ function PTImageTile({
   }))));
 }
 // Carte héros photo : en-tête vivant d'un écran, avec une action principale.
+const ptHub = key => `media/ui/hub/${key}.webp`;
+// Photo de la séance du jour selon ce que l'app propose.
+function ptTodayPhoto(action, data) {
+  if (action === 'pathway') return `media/pathway/${Math.min(5, Math.max(1, data.pathway?.step || 1))}.webp`;
+  return ptHub({
+    skills: 'skills',
+    program: 'muscu',
+    symptoms: 'recovery',
+    rehab: 'recovery',
+    mobility: 'recovery',
+    warmup: 'week',
+    session: 'library'
+  }[action] || 'library');
+}
 function PTHeroCard({
   photo,
   eyebrow,

@@ -1896,44 +1896,40 @@ function PTProfile({
     }
   };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
-    title: "Mon profil."
+    title: "Moi."
   }), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "home-options"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
+  }, /*#__PURE__*/React.createElement(PTPlayerCard, {
+    data: data,
+    go: go
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "image-grid"
+  }, /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: "media/ui/dossier/hero.webp",
+    title: "Mon dossier joueur",
+    text: window.PlayerDossier ? `Rempli à ${window.PlayerDossier.completeness(data.dossier).percent} % · ce que le coach sait de toi` : 'Ce que le coach sait de toi',
+    progress: window.PlayerDossier ? {
+      count: window.PlayerDossier.completeness(data.dossier).percent,
+      total: 100
+    } : null,
     onClick: () => go('dossier')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon dossier joueur"), /*#__PURE__*/React.createElement("small", null, window.PlayerDossier ? `Rempli à ${window.PlayerDossier.completeness(data.dossier).percent} % · ce que le coach sait de toi` : 'Ce que le coach sait de toi')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('game'),
+    title: "Mon profil joueur",
+    text: data.player?.position ? `${window.PlayerProfile.positions[data.player.position].label}${data.player.archetypes.length ? ' · ' + data.player.archetypes.map(a => window.PlayerProfile.archetypes[a].label).join(', ') : ''}` : 'Poste, profil de jeu, douleurs, matériel',
     onClick: () => go('player')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon profil joueur"), /*#__PURE__*/React.createElement("small", null, data.player?.position ? `${window.PlayerProfile.positions[data.player.position].label}${data.player.archetypes.length ? ' · ' + data.player.archetypes.map(a => window.PlayerProfile.archetypes[a].label).join(', ') : ''}` : 'Poste, profil de jeu, douleurs, matériel')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('library'),
+    title: "Tous les exercices",
+    text: `${PT.allExercises(data).length} mouvements`,
     onClick: () => go('library')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "book"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Tous les exercices"), /*#__PURE__*/React.createElement("small", null, PT.allExercises(data).length, " mouvements")), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  })), /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
+  }), /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: ptHub('recovery'),
+    badge: PT.activeSymptoms(data).length ? `${PT.activeSymptoms(data).length} active${PT.activeSymptoms(data).length > 1 ? 's' : ''}` : null,
+    title: "Mes douleurs du moment",
+    text: PT.activeSymptoms(data).length ? 'Soin intégré à tes séances' : 'Aucune douleur signalée',
     onClick: () => go('symptoms')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "pain"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes douleurs du moment"), /*#__PURE__*/React.createElement("small", null, PT.activeSymptoms(data).length, " signalement", PT.activeSymptoms(data).length > 1 ? 's' : '', " actif", PT.activeSymptoms(data).length > 1 ? 's' : '')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  }))), /*#__PURE__*/React.createElement("details", {
+  })), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Mes informations & mon niveau"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
@@ -2403,7 +2399,7 @@ function PersonalApp() {
     icon: 'court'
   }, {
     id: 'profile',
-    label: 'Profil',
+    label: 'Moi',
     icon: 'profile'
   }].map(item => /*#__PURE__*/React.createElement("button", {
     className: "nav-button",

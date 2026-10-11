@@ -76,5 +76,77 @@
     "source": "https://www.pexels.com/photo/18003708/",
     "license": "Pexels (usage libre)",
     "checked": "hommes uniquement, relu sur planche"
+  },
+  "hub-skills": {
+    "file": "media/ui/hub/skills.webp",
+    "source": "https://www.pexels.com/photo/3056932/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-muscu": {
+    "file": "media/ui/hub/muscu.webp",
+    "source": "https://www.pexels.com/photo/5837242/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-library": {
+    "file": "media/ui/hub/library.webp",
+    "source": "https://www.pexels.com/photo/1552250/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-gear": {
+    "file": "media/ui/hub/gear.webp",
+    "source": "https://www.pexels.com/photo/27810155/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-tests": {
+    "file": "media/ui/hub/tests.webp",
+    "source": "https://www.pexels.com/photo/3760259/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-week": {
+    "file": "media/ui/hub/week.webp",
+    "source": "https://www.pexels.com/photo/680074/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-qi": {
+    "file": "media/ui/hub/qi.webp",
+    "source": "https://www.pexels.com/photo/15701389/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-recovery": {
+    "file": "media/ui/hub/recovery.webp",
+    "source": "https://www.pexels.com/photo/4804297/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-shooting": {
+    "file": "media/ui/hub/shooting.webp",
+    "source": "https://www.pexels.com/photo/18110074/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-game": {
+    "file": "media/ui/hub/game.webp",
+    "source": "https://www.pexels.com/photo/3755442/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-season": {
+    "file": "media/ui/hub/season.webp",
+    "source": "https://www.pexels.com/photo/11625569/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
+  },
+  "hub-card": {
+    "file": "media/ui/hub/card.webp",
+    "source": "https://www.pexels.com/photo/38165150/",
+    "license": "Pexels (usage libre)",
+    "checked": "hommes uniquement ou sans personne, relu sur planche"
   }
 }

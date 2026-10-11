@@ -33,12 +33,16 @@ function PTTodayPlan({data,update,go,notify}) {
   };
   const [label,run]=actions[plan.action]||actions.session;
   const showPathway=plan.action==='pathway'&&next;
-  return <section className={`today-plan kind-${plan.kind} sport-reveal`} aria-labelledby="today-plan-title">
-    <span className="eyebrow">Ta séance du jour</span>
+  const photo=ptTodayPhoto(plan.action,data),[photoFailed,setPhotoFailed]=usePTState(false);
+  return <section className={`today-plan kind-${plan.kind} has-photo sport-reveal`} aria-labelledby="today-plan-title">
+    {!photoFailed&&<img className="today-plan-photo" src={photo} alt="" decoding="async" onError={()=>setPhotoFailed(true)}/>}
+    <span className="today-plan-shade" aria-hidden="true"/>
+    <span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}</span>
     <h2 id="today-plan-title">{showPathway?next.day.name:plan.title}</h2>
     {plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
     {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
-    <ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul>
+    <ul className="reason-list">{plan.why.slice(0,2).map(w=><li key={w}>{w}</li>)}</ul>
+    {plan.why.length>2&&<details className="today-plan-more"><summary>Pourquoi cette séance</summary><ul className="reason-list">{plan.why.slice(2).map(w=><li key={w}>{w}</li>)}</ul></details>}
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
     {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
   </section>;

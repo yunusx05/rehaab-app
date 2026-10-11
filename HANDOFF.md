@@ -271,3 +271,11 @@ Plan v3 (lots 12 → 17) : `~/.claude/plans/alors-j-ai-plusieurs-modifications-h
 - **Écrans** `calendar-components.jsx` : routes `calendar` (semaine, lancer, « Je ne peux pas aujourd'hui », déplacer, export .ics) et `plan` (feuille de route, pourquoi, architecte) ; `PTWeekStrip` et `PTWeekReview` sur l'accueil ; onglet « Parcours » renommé « Plan ».
 - Cache `rehaab-v50-plan-calendrier`. Tests : `season-plan.spec.cjs` (7, dont 600 semaines aléatoires sans règle enfreinte). Suite complète : 136 réussis, 3 ignorés.
 - **Reste** : lots 15 (interface vivante, menu moins générique), 16 (QI 3D), 17 (poids de forme, séances de tir).
+
+## Lot 15 (11/10/2026) : interface vivante — branche `feature/interface-vivante`
+- Direction conservée (charbon, lime, Barlow Condensed italique, Cabinet Grotesk) ; la photo porte désormais l'accueil, le hub et « Moi ». `DESIGN.md` : section « Système photo ».
+- **Photos** : 12 Pexels dans `media/ui/hub/` (muscu, skills, tests, semaine, saison, QI, récup, tir, jeu, bibliothèque, matériel, carte), relues sur planche (deux écartées pour des personnes non vérifiables en arrière-plan), sources dans `media/ui/SOURCES.json`, précachées. Helpers `ptHub`, `ptTodayPhoto` (`visual-components.jsx`).
+- **Accueil** : séance du jour en grande photo (photo selon l'action : étape du parcours, skills, muscu, récup…), deux raisons visibles et « Pourquoi cette séance » à la demande ; coach en ligne compacte (`.coach-card.is-ask`) ; QI du jour et « Ma carte joueur » en tuiles côte à côte ; bilan et bandeau de la semaine dessous.
+- **Hub Plan** : `PTPlanArsenal`, 8 tuiles photo (semaine, plan de saison, muscu, skills, tests, mon jeu, exercices, matériel) à la place des listes d'icônes.
+- **« Moi »** (onglet renommé) : `PTPlayerCard` (numéro de poste, nom, profil, 6 qualités en 3 niveaux tirées d'`AthleticProfile.assess`, source « test » ou « réponse », flèche si un test suivi progresse ou recule ; aucune note chiffrée inventée) puis 4 tuiles photo.
+- Cache `rehaab-v51-interface`. Tests : `interface.spec.cjs` (2) ; tests mis à jour pour l'onglet « Moi » et la carte coach compacte. Suite complète : 138 réussis, 3 ignorés.

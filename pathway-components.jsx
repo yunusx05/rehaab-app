@@ -56,8 +56,7 @@ function PTPathway({data,update,go,notify}) {
 
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
-      <div className="home-options"><button className="home-action is-featured" onClick={() => go('calendar')}><PTIcon name="today"/><span><strong>Ma semaine</strong><small>Tes séances calées sur tes jours libres, ton club et tes matchs.</small></span><PTIcon name="arrow" size={18}/></button><button className="home-action" onClick={() => go('plan')}><PTIcon name="chart"/><span><strong>Mon plan de saison</strong><small>Les phases, où tu en es, et l’architecte IA.</small></span><PTIcon name="arrow" size={18}/></button></div>
-      <button className="home-action" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
+      <PTPlanArsenal data={data} go={go}/>
       <div className="step-track pathway-track">{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
       <section className="card stack-sm">
         <div className="topline"><strong>Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''}</strong><span className="caption">{status.sessions} / {status.needed} séances</span></div>
@@ -102,11 +101,6 @@ function PTPathway({data,update,go,notify}) {
       <section className="stack"><h3>Gérer le parcours</h3>
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
-          <button className="home-action" onClick={() => go(data.program && data.program.status !== 'archived' ? 'program' : 'program-new')}><PTIcon name="weight"/><span><strong>Ma muscu</strong><small>{data.program && data.program.status !== 'archived' && window.PersonalPrograms ? `${window.PersonalPrograms.familyById(data.program.familyId)?.short || 'Programme'} · semaine ${window.PersonalPrograms.progressOf(data.program).currentWeek}/${data.program.weeks}` : 'Programme à côté du parcours, sans le doubler.'}</small></span><PTIcon name="arrow" size={18}/></button>
-          <button className="home-action" onClick={() => go('skills')}><PTIcon name="court"/><span><strong>Mes skills basket</strong><small>{window.BasketSkills?.complete(data.skills) ? window.BasketSkills.summary(data.skills) : 'Dribble, tir, finition : questionnaire puis programme à ton niveau.'}</small></span><PTIcon name="arrow" size={18}/></button>
-        <button className="home-action" onClick={() => go('basket-profile')}><PTIcon name="basket"/><span><strong>Mon jeu</strong><small>{window.BasketProfile?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Questionnaire terrain : forces, faiblesses, club.'}</small></span><PTIcon name="arrow" size={18}/></button>
-          <button className="home-action" onClick={() => go('library')}><PTIcon name="book"/><span><strong>Tous les exercices</strong><small>{PT.allExercises(data).length} mouvements, filtrables par muscle, matériel et zone de soin.</small></span><PTIcon name="arrow" size={18}/></button>
-          <button className="home-action" onClick={() => go('player')}><PTIcon name="basket"/><span><strong>Mon profil joueur</strong><small>Poste, douleurs, matériel.</small></span><PTIcon name="arrow" size={18}/></button>
         </div>
         {stopping
           ? <div className="notice warning stack-sm"><p>Arrêter le parcours ? Il est archivé avec tes tests et ton avancement : tu pourras le reprendre à la même étape. Tes séances restent dans l’historique.</p>
@@ -184,4 +178,21 @@ function PTPathwayTest({data,update,go,notify,id}) {
           return <li key={i} className={ev.ok ? 'is-ok' : ''}><span className="criteria-mark"><PTIcon name={ev.ok ? 'check' : 'clock'} size={16}/></span><div><strong>{shortDate(r.date)}</strong><small>{ev.detail}</small></div></li>;})}</ul>
       </section>}
     </div></>;
+}
+
+// Hub Plan (lot 15) : tout ce qui se lance ou se règle autour du parcours, en tuiles photo.
+function PTPlanArsenal({data,go}){
+  const PPR=window.PersonalPrograms,prog=data.program&&data.program.status!=='archived'?data.program:null,SK=window.BasketSkills,C=window.BasketProfile;
+  const SP=window.SeasonPlan,phase=SP?SP.build(data).current:null;
+  const tests=data.pathway?Object.values(data.pathway.tests||{}).reduce((n,l)=>n+(l||[]).length,0):0;
+  return <div className="image-grid plan-arsenal">
+    <PTImageTile tall photo={ptHub('week')} title="Ma semaine" text="Tes séances calées sur tes jours libres, ton club et tes matchs." onClick={()=>go('calendar')}/>
+    <PTImageTile tall photo={ptHub('season')} badge={phase?.phase?`Semaine ${phase.week}`:null} title="Mon plan de saison" text={phase?.phase?phase.phase.name:'Les phases et l’architecte IA.'} onClick={()=>go('plan')}/>
+    <PTImageTile photo={ptHub('muscu')} title="Ma muscu" text={prog&&PPR?`${PPR.familyById(prog.familyId)?.short||'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}`:'Programme à côté du parcours, sans le doubler.'} onClick={()=>go(prog?'program':'program-new')}/>
+    <PTImageTile photo={ptHub('skills')} title="Mes skills basket" text={SK?.complete(data.skills)?'Dribble, tir, finition, défense, moves.':'Questionnaire puis programme à ton niveau.'} onClick={()=>go('skills')}/>
+    <PTImageTile photo={ptHub('tests')} badge={tests?`${tests} mesure${tests>1?'s':''}`:null} title="Mesurer ma détente et mes tests" text="Saut, sprint, RSI : un mur, un mètre ou une vidéo." onClick={()=>go('bilan','tests')}/>
+    <PTImageTile photo={ptHub('game')} title="Mon jeu" text={C?.complete(data.basketProfile)?'Forces, faiblesses et club renseignés.':'Forces, faiblesses, club.'} onClick={()=>go('basket-profile')}/>
+    <PTImageTile photo={ptHub('library')} title="Tous les exercices" text={`${PT.allExercises(data).length+(window.BasketSkills?.drills.length||0)} mouvements, filtres basket.`} onClick={()=>go('library')}/>
+    <PTImageTile photo={ptHub('gear')} title="Mon matériel" text={`${data.owned.length} élément${data.owned.length>1?'s':''} coché${data.owned.length>1?'s':''}`} onClick={()=>go('player')}/>
+  </div>;
 }

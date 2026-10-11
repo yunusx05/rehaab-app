@@ -160,7 +160,7 @@ function ptCoachApply({data,update,go,notify},entry){
 function PTCoachCard({data,go}){
   const entry=ptCoachToday(data);
   if(entry)return <button className="coach-card done sport-reveal" onClick={()=>go('coach')}><span className="coach-avatar"><PTIcon name="spark" size={20}/></span><span><small>Bilan du jour fait · {COACH_DECISIONS[entry.plan?.decision]||'en cours'}</small><strong>{entry.plan?.why||'Voir la réponse du coach'}</strong></span><PTIcon name="arrow" size={18}/></button>;
-  return <section className="coach-card sport-reveal"><span className="eyebrow">Coach</span><h2>Comment tu te sens aujourd’hui ?</h2><p className="fine">30 secondes de questions, et ta séance s’adapte à ton état.</p><PTButton primary onClick={()=>go('coach')}>Faire mon bilan<PTIcon name="arrow" size={18}/></PTButton></section>;
+  return <button className="coach-card is-ask sport-reveal" onClick={()=>go('coach')}><span className="coach-avatar"><PTIcon name="spark" size={20}/></span><span><small>Bilan du coach · 30 secondes</small><strong>Comment tu te sens aujourd’hui ?</strong></span><PTIcon name="arrow" size={18}/></button>;
 }
 
 // Une question du bilan (défini hors du rendu : un composant recréé à chaque frappe ferait perdre le curseur).

@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v50-plan-calendrier';
+const CACHE = 'rehaab-v51-interface';
 const PRECACHE = [
   './',
   './index.html',
@@ -158,6 +158,18 @@ const PRECACHE = [
 // Illustrations du catalogue : mises en cache en arrière-plan après l'activation, jamais attendues à l'installation.
 // Sans cela, la première ouverture après une mise à jour télécharge des dizaines de Mo avant d'être utilisable.
 const PRECACHE_MEDIA = [
+  './media/ui/hub/card.webp',
+  './media/ui/hub/game.webp',
+  './media/ui/hub/gear.webp',
+  './media/ui/hub/library.webp',
+  './media/ui/hub/muscu.webp',
+  './media/ui/hub/qi.webp',
+  './media/ui/hub/recovery.webp',
+  './media/ui/hub/season.webp',
+  './media/ui/hub/shooting.webp',
+  './media/ui/hub/skills.webp',
+  './media/ui/hub/tests.webp',
+  './media/ui/hub/week.webp',
   './media/ui/dossier/hero.webp',
   './media/ui/dossier/morpho.webp',
   './media/ui/dossier/game.webp',
