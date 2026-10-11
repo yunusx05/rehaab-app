@@ -423,7 +423,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null,seasonPlan:null,calendar:null,weeklyReviews:[]};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -485,6 +485,11 @@
     // Dossier joueur (lot 12) : absent des anciennes sauvegardes.
     const dossier=globals.PlayerDossier||tryRequire('./player-dossier.js');
     s.dossier=s.dossier==null?null:dossier?dossier.validate(s.dossier):(typeof s.dossier==='object'?s.dossier:null);
+    // Lot 14 : plan de saison, calendrier (déplacements), bilans de la semaine.
+    const season=globals.SeasonPlan||tryRequire('./season-plan.js');
+    s.seasonPlan=s.seasonPlan==null?null:season?season.validate(s.seasonPlan):null;
+    s.calendar=s.calendar==null?null:season?season.validateCalendar(s.calendar):null;
+    s.weeklyReviews=(Array.isArray(s.weeklyReviews)?s.weeklyReviews:[]).filter(r=>r&&isoDay(r.monday)).slice(-26).map(r=>({monday:r.monday,date:isoDay(r.date)?r.date:r.monday,accepted:(Array.isArray(r.accepted)?r.accepted:[]).filter(x=>typeof x==='string').slice(0,5),message:typeof r.message==='string'?r.message.slice(0,900):''}));
     // Skills basket : questionnaire, paliers, programme et journal, absents des anciennes sauvegardes.
     const skillsLib=globals.BasketSkills||tryRequire('./basket-skills.js');
     s.skills=s.skills&&skillsLib?skillsLib.validate(s.skills):(s.skills&&typeof s.skills==='object'?s.skills:null);

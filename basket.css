@@ -315,3 +315,41 @@
 .cue-chips{display:flex;flex-wrap:wrap;gap:.4rem}
 .cue-chips span{font-size:.74rem;padding:.3rem .6rem;border-radius:999px;background:var(--raised);color:var(--text)}
 .seen-at a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* Lot 14 : calendrier, feuille de route, bandeau de la semaine, bilan. */
+.calendar-nav{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.calendar-week{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.calendar-day{display:grid;gap:.5rem;padding:.85rem;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.calendar-day.is-today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.calendar-day.is-match{background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+.calendar-day-head{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.calendar-day-head .badge{font-size:.68rem;padding:.15rem .5rem;border-radius:999px;background:var(--accent);color:#1b2111;font-weight:700}
+.calendar-day-head .badge.quiet{background:var(--raised);color:var(--text)}
+.calendar-item{display:grid;grid-template-columns:auto 1fr;gap:.35rem .6rem;align-items:start;padding:.6rem .65rem;border-radius:12px;background:var(--raised)}
+.calendar-item svg{margin-top:.15rem;color:var(--accent)}
+.calendar-item strong{display:block;font-size:.9rem}
+.calendar-item small{color:var(--sub,inherit);font-size:.74rem}
+.calendar-item.is-done{opacity:.7}.calendar-item.is-done svg{color:var(--text)}
+.calendar-item.is-missed strong{text-decoration:line-through;text-decoration-thickness:1px}
+.calendar-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.4rem .9rem;align-items:center}
+.calendar-actions .btn{min-height:40px;padding:.45rem 1rem}
+.calendar-move{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:.4rem}
+.roadmap{list-style:none;margin:0;padding:0;display:grid}
+.roadmap-step{display:grid;grid-template-columns:22px 1fr;gap:.75rem;position:relative;padding-bottom:1.1rem}
+.roadmap-step:not(:last-child):before{content:'';position:absolute;left:10px;top:20px;bottom:0;width:2px;background:var(--line)}
+.roadmap-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);background:var(--bg);margin-top:.1rem}
+.roadmap-step.is-done .roadmap-dot{background:var(--raised);border-color:var(--raised)}
+.roadmap-step.is-current .roadmap-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 25%,transparent)}
+.roadmap-step .badge{display:inline-block;width:max-content;font-size:.7rem;padding:.2rem .55rem;border-radius:999px;background:var(--accent);color:#1b2111;font-weight:700;margin:0}
+.week-strip{display:grid;gap:.7rem;width:100%;text-align:left;padding:1rem;border-radius:18px;background:var(--surface);border:1px solid var(--line);color:inherit;cursor:pointer}
+.week-strip-head{display:grid;gap:.15rem}.week-strip-head strong{font-size:1rem}
+.week-strip-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.week-strip-day{display:grid;justify-items:center;gap:.3rem;padding:.4rem 0;border-radius:10px}
+.week-strip-day small{font-size:.7rem;color:var(--sub,inherit)}
+.week-strip-day i{display:flex;gap:2px;min-height:8px;flex-wrap:wrap;justify-content:center}
+.week-strip-day.is-today{background:var(--raised)}.week-strip-day.is-today small{color:var(--accent);font-weight:700}
+.week-strip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.week-strip .dot.is-done{background:var(--text);opacity:.55}.week-strip .dot.is-missed{background:transparent;border:1px solid var(--sub,#888)}
+.week-strip .dot.is-match{background:#f0a35e}
+.week-review h2{font-size:1.2rem}
+.because-list{margin-top:.4rem}

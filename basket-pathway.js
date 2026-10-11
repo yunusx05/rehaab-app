@@ -246,7 +246,9 @@
       if((ctx.upcoming.length||clubSoon)&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
       return e;
     };
-    day.slots.forEach((slot,i)=>{const e=resolve(slot,i<3);if(e)exercises.push(e);});
+    // Choix de l'IA architecte (lot 14) : en tête de son créneau, puis les candidats habituels. resolve() garde tous les filtres de sécurité.
+    const arch=(state.seasonPlan&&state.seasonPlan.architect&&state.seasonPlan.architect.choices)||{};
+    day.slots.forEach((slot,i)=>{const pick=arch[`${step.id}${day.key}${i}`];const s=pick&&!slot.pos?{...slot,ids:[pick,...slot.ids.filter(x=>x!==pick)]}:slot;const e=resolve(s,i<3);if(e){if(pick&&e.id===pick)e.architect=true;exercises.push(e);}});
     // Point faible du bilan : un créneau de plus, adapté à l'étape, juste après les mouvements clés.
     let focusNote=null;
     if(athletic){

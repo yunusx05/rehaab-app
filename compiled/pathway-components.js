@@ -179,8 +179,26 @@ function PTPathway({
     title: `${step.name}.`
   }, step.goal), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
     className: "home-action is-featured",
+    onClick: () => go('calendar')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "today"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma semaine"), /*#__PURE__*/React.createElement("small", null, "Tes s\xE9ances cal\xE9es sur tes jours libres, ton club et tes matchs.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('plan')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "chart"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mon plan de saison"), /*#__PURE__*/React.createElement("small", null, "Les phases, o\xF9 tu en es, et l\u2019architecte IA.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
     onClick: () => go('bilan', 'tests')
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "chart"

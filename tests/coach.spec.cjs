@@ -41,7 +41,7 @@ test('coach : bilan envoyé avec l’historique, séance allégée appliquée sa
   let sent=null;
   await page.route('**/api/coach',async route=>{sent=route.request().postDataJSON();await route.fulfill({json:{message:'Match dur hier et genou sensible : on allège.',questions:['La douleur est-elle apparue pendant le match ?'],plan:{decision:'light',intensity:'reduced',setsFactor:.5,restFactor:1.2,minutes:25,avoidRegions:[],avoidImpact:true,rehabRegion:'',why:'Fatigue et genou sensible.'}}});});
   await seed(page,data,'today');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Parcours','Coach','QI','Profil']);
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','Coach','QI','Profil']);
   await page.locator('.coach-card').getByRole('button',{name:/Faire mon bilan/}).click();
   await expect(page.getByRole('heading',{name:'Comment tu te sens ?'})).toBeVisible();
   await page.getByRole('button',{name:/Envoyer au coach/}).click();

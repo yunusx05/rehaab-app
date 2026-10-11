@@ -56,7 +56,8 @@ function PTPathway({data,update,go,notify}) {
 
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
-      <button className="home-action is-featured" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
+      <div className="home-options"><button className="home-action is-featured" onClick={() => go('calendar')}><PTIcon name="today"/><span><strong>Ma semaine</strong><small>Tes séances calées sur tes jours libres, ton club et tes matchs.</small></span><PTIcon name="arrow" size={18}/></button><button className="home-action" onClick={() => go('plan')}><PTIcon name="chart"/><span><strong>Mon plan de saison</strong><small>Les phases, où tu en es, et l’architecte IA.</small></span><PTIcon name="arrow" size={18}/></button></div>
+      <button className="home-action" onClick={() => go('bilan', 'tests')}><PTIcon name="chart"/><span><strong>Mesurer ma détente et mes tests</strong><small>Saut vertical, RSI, sprint : avec un mur, un mètre ou une vidéo au ralenti.</small></span><PTIcon name="arrow" size={18}/></button>
       <div className="step-track pathway-track">{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
       <section className="card stack-sm">
         <div className="topline"><strong>Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''}</strong><span className="caption">{status.sessions} / {status.needed} séances</span></div>

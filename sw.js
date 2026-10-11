@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v49-biblio';
+const CACHE = 'rehaab-v50-plan-calendrier';
 const PRECACHE = [
   './',
   './index.html',
@@ -34,7 +34,9 @@ const PRECACHE = [
   './basket-skills.js',
   './basket-profile.js',
   './player-dossier.js',
+  './season-plan.js',
   './compiled/dossier-components.js',
+  './compiled/calendar-components.js',
   './training-load.js',
   './personal-programs.js',
   './vendor/gsap.min.js',

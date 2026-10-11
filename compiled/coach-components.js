@@ -254,10 +254,53 @@ function ptCoachContext(data) {
     care: Object.entries(data.rehab?.levels || {}).map(([protocol, level]) => ({
       protocol,
       level: window.RehabWarmup?.LEVELS[level] || level
-    }))
+    })),
+    season: ptCoachSeason(data, today),
+    trends: ptCoachTrends(data, today)
   };
 }
 
+// Lot 14 : phase du plan et séances prévues aujourd'hui / demain (season-plan.js).
+function ptCoachSeason(data, today) {
+  const SP = window.SeasonPlan;
+  if (!SP) return null;
+  try {
+    const built = SP.build(data, today),
+      week = SP.weekSchedule(data, today, today),
+      next = SP.at(today, 1);
+    const on = date => {
+      const d = week.days.find(x => x.date === date) || SP.weekSchedule(data, date, today).days.find(x => x.date === date);
+      return d ? d.items.map(x => ({
+        label: x.label,
+        legs: x.legs,
+        status: x.status
+      })) : [];
+    };
+    return {
+      phase: built.current.phase?.name || null,
+      week: built.current.week,
+      deload: built.deload,
+      today: on(today),
+      tomorrow: on(next),
+      warnings: week.warnings
+    };
+  } catch (e) {
+    return null;
+  }
+}
+// Tendances sur 14 jours : douleur (bilans du coach), forme, poids.
+function ptCoachTrends(data, today) {
+  const recent = (data.coachLog || []).filter(x => x.date && PT.dayDiff(today, x.date) >= 0 && PT.dayDiff(today, x.date) < 14);
+  const pain = recent.map(x => Number(x.checkin?.painLevel)).filter(Number.isFinite);
+  const weights = (data.measurements || []).filter(m => m.weight !== '' && PT.dayDiff(today, m.date) <= 14).sort((a, b) => a.date.localeCompare(b.date));
+  return {
+    painMax: pain.length ? Math.max(...pain) : null,
+    painLast: pain.length ? pain[pain.length - 1] : null,
+    forms: recent.map(x => x.checkin?.form).filter(Boolean),
+    weightChange: weights.length >= 2 ? Math.round((Number(weights[weights.length - 1].weight) - Number(weights[0].weight)) * 10) / 10 : null,
+    sessions14: data.sessions.filter(s => PT.dayDiff(today, s.date) >= 0 && PT.dayDiff(today, s.date) < 14).length
+  };
+}
 // Repli hors connexion : mêmes principes que le coach, en règles simples.
 function ptCoachLocal(c, data) {
   const regions = c.pain === 'yes' ? [...new Set(c.zones.map(ptCoachRegion))] : [];
@@ -501,7 +544,7 @@ function ptCoachApply({
     notify('Trop de zones à épargner : repos ou soin aujourd’hui.');
     return;
   }
-  const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
+  const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(plan.because || []).map(b => `Parce que ${b.replace(/^parce ques*/i, '')}`), ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
   const draft = {
     ...base,
     id: PT.uid(),
@@ -678,7 +721,11 @@ function PTCoach({
       className: "eyebrow"
     }, "D\xE9cision"), /*#__PURE__*/React.createElement("h2", null, COACH_DECISIONS[entry.plan.decision]), /*#__PURE__*/React.createElement("p", {
       className: "fine"
-    }, entry.plan.why), /*#__PURE__*/React.createElement("ul", {
+    }, entry.plan.why), entry.plan.because?.length > 0 && /*#__PURE__*/React.createElement("ul", {
+      className: "reason-list because-list"
+    }, entry.plan.because.map(b => /*#__PURE__*/React.createElement("li", {
+      key: b
+    }, b))), /*#__PURE__*/React.createElement("ul", {
       className: "reason-list"
     }, entry.plan.decision !== 'rest' && entry.plan.setsFactor < 1 && /*#__PURE__*/React.createElement("li", null, "S\xE9ries r\xE9duites (", Math.round(entry.plan.setsFactor * 100), " %)"), entry.plan.restFactor > 1 && /*#__PURE__*/React.createElement("li", null, "Repos allong\xE9"), entry.plan.avoidRegions.length > 0 && /*#__PURE__*/React.createElement("li", null, "Zones \xE9pargn\xE9es : ", entry.plan.avoidRegions.map(r => PT.regions[r]).join(', ')), entry.plan.avoidImpact && /*#__PURE__*/React.createElement("li", null, "Pas de sauts ni d\u2019impacts"), !['rest', 'mobility'].includes(entry.plan.decision) && entry.checkin.pain === 'yes' && !entry.checkin.redFlags && entry.checkin.painLevel < (entry.plan.decision === 'rehab' ? 4 : 7) && /*#__PURE__*/React.createElement("li", null, "Soin int\xE9gr\xE9 : on calme la zone en d\xE9but de s\xE9ance, on la renforce \xE0 la fin")), entry.applied ? /*#__PURE__*/React.createElement("p", {
       className: "fine"
