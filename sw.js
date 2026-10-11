@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v58-qi-3d-wasm';
+const CACHE = 'rehaab-v59-qi-3d-ok';
 const PRECACHE = [
   './',
   './index.html',

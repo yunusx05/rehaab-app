@@ -728,7 +728,7 @@ function PTScene3D({
     })).then(([THREE, gltf]) => {
       if (disposed || !host.current) return;
       // Rendu utilisé, visible pour le diagnostic : real = joueurs Quaternius, fallback = joueurs stylisés.
-      el.dataset.model = gltf ? 'real' : 'fallback';
+      host.current.dataset.model = gltf ? 'real' : 'fallback';
       const mk = o => gltf ? ptRealPlayer(THREE, gltf, o) : ptPlayer(THREE, kit, {
         ...o,
         skin: PT_SKIN[(o.number + scene.id.length) % PT_SKIN.length]

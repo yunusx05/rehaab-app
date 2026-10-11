@@ -195,7 +195,7 @@ function PTScene3D({scene,phase,choice,onDecide,reduced,onStep,replayKey=0}){
     ptLoadThree().then(THREE=>ptLoadModel(THREE).then(g=>[THREE,g],e=>{console.warn('[Rehaab] modèle 3D indisponible',e&&e.message);return [THREE,null];})).then(([THREE,gltf])=>{
       if(disposed||!host.current)return;
       // Rendu utilisé, visible pour le diagnostic : real = joueurs Quaternius, fallback = joueurs stylisés.
-      el.dataset.model=gltf?'real':'fallback';
+      host.current.dataset.model=gltf?'real':'fallback';
       const mk=o=>gltf?ptRealPlayer(THREE,gltf,o):ptPlayer(THREE,kit,{...o,skin:PT_SKIN[(o.number+scene.id.length)%PT_SKIN.length]});
       const el=host.current,w=el.clientWidth||360,h=Math.round(Math.min(w*.82,window.innerHeight*.6));
       renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'low-power'});renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));renderer.setSize(w,h);renderer.outputColorSpace=THREE.SRGBColorSpace;
