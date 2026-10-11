@@ -2311,7 +2311,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route.startsWith('dossier') ? 'profile' : route === 'coach' ? 'coach' : 'today';
+  const active = ['pathway', 'calendar', 'plan', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route.startsWith('dossier') ? 'profile' : route === 'coach' ? 'coach' : 'today';
   let content;
   // Premier lancement : le dossier joueur (ou la version rapide). Les écrans du dossier restent ouverts avant la fin de l'accueil.
   if (!data.profile.onboarded && !storageError && !['symptoms', 'dossier', 'dossier-q', 'dossier-synthese'].includes(route)) content = /*#__PURE__*/React.createElement(PTDossierWelcome, props);else {
@@ -2347,7 +2347,9 @@ function PersonalApp() {
       'skills-quiz': PTSkillsQuiz,
       dossier: PTDossier,
       'dossier-q': PTDossierChapter,
-      'dossier-synthese': PTDossierSynthesis
+      'dossier-synthese': PTDossierSynthesis,
+      calendar: PTCalendar,
+      plan: PTSeasonPlan
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({
@@ -2389,7 +2391,7 @@ function PersonalApp() {
     icon: 'today'
   }, {
     id: 'pathway',
-    label: 'Parcours',
+    label: 'Plan',
     icon: 'weight'
   }, {
     id: 'coach',

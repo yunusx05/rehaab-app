@@ -55,10 +55,26 @@ function ptCoachContext(data){
     skills:window.BasketSkills?.summary(data.skills)||null,
     week:ptCoachWeek(data),
     muscu:ptCoachMuscu(data),
-    care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.LEVELS[level]||level}))
+    care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.LEVELS[level]||level})),
+    season:ptCoachSeason(data,today),
+    trends:ptCoachTrends(data,today)
   };
 }
 
+// Lot 14 : phase du plan et séances prévues aujourd'hui / demain (season-plan.js).
+function ptCoachSeason(data,today){
+  const SP=window.SeasonPlan;if(!SP)return null;
+  try{const built=SP.build(data,today),week=SP.weekSchedule(data,today,today),next=SP.at(today,1);
+    const on=date=>{const d=week.days.find(x=>x.date===date)||SP.weekSchedule(data,date,today).days.find(x=>x.date===date);return d?d.items.map(x=>({label:x.label,legs:x.legs,status:x.status})):[];};
+    return {phase:built.current.phase?.name||null,week:built.current.week,deload:built.deload,today:on(today),tomorrow:on(next),warnings:week.warnings};}catch(e){return null;}
+}
+// Tendances sur 14 jours : douleur (bilans du coach), forme, poids.
+function ptCoachTrends(data,today){
+  const recent=(data.coachLog||[]).filter(x=>x.date&&PT.dayDiff(today,x.date)>=0&&PT.dayDiff(today,x.date)<14);
+  const pain=recent.map(x=>Number(x.checkin?.painLevel)).filter(Number.isFinite);
+  const weights=(data.measurements||[]).filter(m=>m.weight!==''&&PT.dayDiff(today,m.date)<=14).sort((a,b)=>a.date.localeCompare(b.date));
+  return {painMax:pain.length?Math.max(...pain):null,painLast:pain.length?pain[pain.length-1]:null,forms:recent.map(x=>x.checkin?.form).filter(Boolean),weightChange:weights.length>=2?Math.round((Number(weights[weights.length-1].weight)-Number(weights[0].weight))*10)/10:null,sessions14:data.sessions.filter(s=>PT.dayDiff(today,s.date)>=0&&PT.dayDiff(today,s.date)<14).length};
+}
 // Repli hors connexion : mêmes principes que le coach, en règles simples.
 function ptCoachLocal(c,data){
   const regions=c.pain==='yes'?[...new Set(c.zones.map(ptCoachRegion))]:[];
@@ -136,7 +152,7 @@ function ptCoachApply({data,update,go,notify},entry){
     while(total()>check.minutes*60&&main().length>2)exercises.splice(exercises.indexOf(main().pop()),1);
   }
   if(!exercises.length){notify('Trop de zones à épargner : repos ou soin aujourd’hui.');return;}
-  const reasons=[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(care?.note&&exercises.some(e=>e.pathwayRole==='soin')?[care.note]:[]),...(base.reasons||[])];
+  const reasons=[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(plan.because||[]).map(b=>`Parce que ${b.replace(/^parce ques*/i,'')}`),...(care?.note&&exercises.some(e=>e.pathwayRole==='soin')?[care.note]:[]),...(base.reasons||[])];
   const draft={...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60)/60)};
   update(s=>({...s,checkIn:check,draft,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');
 }
@@ -181,7 +197,7 @@ function PTCoach({data,update,go,notify}){
     const last=entry.messages.filter(m=>m.role==='coach').slice(-1)[0];
     return <><PTPageHead eyebrow="Coach · bilan du jour" title="Ton plan du jour."/><div className="stack-lg">
       <div className="coach-thread" aria-live="polite">{entry.messages.map((m,i)=><div key={i} className={`bubble ${m.role}`}>{m.role==='user'&&i===0?<><small>Ton bilan</small>{m.text.replace(/^Bilan du jour : /,'')}</>:m.text}{m.questions?.length>0&&<ul>{m.questions.map(q=><li key={q}>{q}</li>)}</ul>}</div>)}</div>
-      <section className={`coach-plan decision-${entry.plan.decision}`}><span className="eyebrow">Décision</span><h2>{COACH_DECISIONS[entry.plan.decision]}</h2><p className="fine">{entry.plan.why}</p>
+      <section className={`coach-plan decision-${entry.plan.decision}`}><span className="eyebrow">Décision</span><h2>{COACH_DECISIONS[entry.plan.decision]}</h2><p className="fine">{entry.plan.why}</p>{entry.plan.because?.length>0&&<ul className="reason-list because-list">{entry.plan.because.map(b=><li key={b}>{b}</li>)}</ul>}
         <ul className="reason-list">{entry.plan.decision!=='rest'&&entry.plan.setsFactor<1&&<li>Séries réduites ({Math.round(entry.plan.setsFactor*100)} %)</li>}{entry.plan.restFactor>1&&<li>Repos allongé</li>}{entry.plan.avoidRegions.length>0&&<li>Zones épargnées : {entry.plan.avoidRegions.map(r=>PT.regions[r]).join(', ')}</li>}{entry.plan.avoidImpact&&<li>Pas de sauts ni d’impacts</li>}{!['rest','mobility'].includes(entry.plan.decision)&&entry.checkin.pain==='yes'&&!entry.checkin.redFlags&&entry.checkin.painLevel<(entry.plan.decision==='rehab'?4:7)&&<li>Soin intégré : on calme la zone en début de séance, on la renforce à la fin</li>}</ul>
         {entry.applied?<p className="fine">Appliqué à ta séance du jour.</p>:null}
         <PTButton primary onClick={()=>ptCoachApply({data,update,go,notify},entry)}>{entry.plan.decision==='rest'?'OK, repos aujourd’hui':entry.plan.decision==='rehab'&&!(entry.checkin.pain==='yes'&&entry.checkin.painLevel<4)?'Ouvrir le soin':'Appliquer à ma séance'}<PTIcon name="arrow" size={18}/></PTButton>

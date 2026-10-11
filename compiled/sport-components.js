@@ -247,6 +247,13 @@ function PTSportToday({
   }))), data.draft && typeof PTDraftCancel === 'function' && /*#__PURE__*/React.createElement(PTDraftCancel, {
     update: update,
     notify: notify
+  }), typeof PTWeekReview === 'function' && /*#__PURE__*/React.createElement(PTWeekReview, {
+    data: data,
+    update: update,
+    notify: notify
+  }), typeof PTWeekStrip === 'function' && /*#__PURE__*/React.createElement(PTWeekStrip, {
+    data: data,
+    go: go
   }), typeof PTCoachCard === 'function' && /*#__PURE__*/React.createElement(PTCoachCard, {
     data: data,
     go: go
