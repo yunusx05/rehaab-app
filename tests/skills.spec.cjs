@@ -108,6 +108,7 @@ for(const width of [320,390])test(`skills : questionnaire, séance avec panier, 
   expect(saved.skills.levels.handle).toBe(1);
   await page.getByLabel('J’ai un panier aujourd’hui').check();
   await page.getByRole('button',{name:/Lancer une séance skills/}).click();
+  await page.getByRole('button',{name:'Rien à signaler'}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   saved=await state(page);
   expect(saved.draft.source).toBe('skills');

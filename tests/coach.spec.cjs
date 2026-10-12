@@ -41,8 +41,10 @@ test('coach : bilan envoyé avec l’historique, séance allégée appliquée sa
   let sent=null;
   await page.route('**/api/coach',async route=>{sent=route.request().postDataJSON();await route.fulfill({json:{message:'Match dur hier et genou sensible : on allège.',questions:['La douleur est-elle apparue pendant le match ?'],plan:{decision:'light',intensity:'reduced',setsFactor:.5,restFactor:1.2,minutes:25,avoidRegions:[],avoidImpact:true,rehabRegion:'',why:'Fatigue et genou sensible.'}}});});
   await seed(page,data,'today');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','Coach','QI','Moi']);
-  await page.getByRole('button',{name:/Comment tu te sens aujourd’hui/}).click();
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Moi']);
+  // Plus de carte d'accueil : l'écran du coach reste ouvert depuis « Parler au coach ».
+  await expect(page.locator('.coach-card')).toHaveCount(0);
+  await page.goto('/#coach');
   await expect(page.getByRole('heading',{name:'Comment tu te sens ?'})).toBeVisible();
   await page.getByRole('button',{name:/Envoyer au coach/}).click();
   await expect(page.getByRole('alert')).toContainText('Réponds à chaque question');
@@ -65,8 +67,8 @@ test('coach : bilan envoyé avec l’historique, séance allégée appliquée sa
   expect(saved.draft.exercises.some(e=>e.pathwayRole==='soin'&&e.careRegion==='knee')).toBe(true);
   expect(saved.coachLog).toHaveLength(1);expect(saved.coachLog[0].applied).toBe(true);
   expect(saved.checkIn.energy).toBe('low');
-  await page.goto('/#today');
-  await expect(page.locator('.coach-card.done')).toContainText('Séance allégée');
+  // Séance déjà ajustée par le coach : l'aperçu ne repose pas la question.
+  await expect(page.locator('.precheck')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
@@ -144,8 +146,7 @@ test('coach : une entrée enregistrée par une ancienne version ne fait plus pla
   await expect(page.locator('.coach-plan h2')).toHaveText('Séance allégée');
   await page.getByRole('button',{name:/Appliquer à ma séance/}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
-  await page.goto('/#today');
-  await expect(page.locator('.coach-card.done')).toBeVisible();
+  await expect(page.locator('.precheck')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
@@ -181,7 +182,8 @@ test('bibliothèque : tous les exercices retrouvés depuis le parcours, filtre p
   await page.locator('.library-tile .home-action').first().click();
   await expect(page.locator('.library-tile.expanded')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-  await page.goto('/#profile');
+  // Les exercices vivent dans le hub Plan (plus de doublon dans « Moi »).
+  await page.goto('/#pathway');
   await expect(page.getByRole('button',{name:/Tous les exercices/})).toBeVisible();
   expect(errors).toEqual([]);
 });
@@ -206,4 +208,65 @@ test('coach : veille de match, il choisit la muscu et l’app protège les jambe
   expect(saved.draft.source).toBe('program-plan');
   expect(saved.draft.exercises.some(e=>e.impact)).toBe(false);
   expect(errors).toEqual([]);
+});
+
+/* ---------- Bilan avant séance (UX simple) : la question posée au lancement de la séance prévue ---------- */
+async function prepare(page){
+  await page.getByRole('button',{name:/Préparer cette séance/}).first().click();
+  await expect(page.locator('.precheck')).toContainText('Comment tu te sens ?');
+  await expect(page.getByRole('button',{name:'Démarrer la séance'})).toHaveCount(0);
+}
+test('bilan avant séance : rien à signaler = la séance prévue reste identique',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  await seed(page,player(),'pathway');
+  await prepare(page);
+  const before=(await state(page)).draft;
+  await page.getByRole('button',{name:'Rien à signaler'}).click();
+  await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
+  const after=(await state(page)).draft;
+  expect(after.exercises.map(e=>[e.id,e.sets])).toEqual(before.exercises.map(e=>[e.id,e.sets]));
+  expect(after.precheck.status).toBe('ok');
+  expect(errors).toEqual([]);
+});
+test('bilan avant séance : genou 3/10, la séance prévue est adaptée (hors ligne)',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  await page.route('**/api/coach',route=>route.abort());
+  await seed(page,player(),'pathway');
+  await prepare(page);
+  await page.getByRole('button',{name:'Quelque chose ne va pas'}).click();
+  await page.getByRole('button',{name:'Fatigué',exact:true}).click();
+  await page.getByRole('button',{name:'Moyenne',exact:true}).click();
+  await page.getByRole('button',{name:'Légères',exact:true}).click();
+  const painQ=page.locator('.coach-q',{hasText:'Une douleur ?'});
+  await painQ.getByRole('button',{name:'Oui',exact:true}).click();
+  await painQ.getByRole('button',{name:'Genou',exact:true}).click();
+  await painQ.getByLabel(/Intensité/).fill('3');
+  await page.getByRole('button',{name:/Adapter ma séance/}).click();
+  await expect(page.locator('.precheck.is-done')).toContainText('Séance adaptée');
+  await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
+  const saved=await state(page);
+  expect(saved.draft.precheck.status).toBe('adapted');
+  expect(saved.draft.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>!(e.regions||[]).includes('knee'))).toBe(true);
+  await page.screenshot({path:'test-results/precheck-adaptee.png',fullPage:true});
+  expect(errors).toEqual([]);
+});
+test('bilan avant séance : douleur 8/10 = repos proposé, la séance est annulée',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.route('**/api/coach',route=>route.abort());
+  await seed(page,player(),'pathway');
+  await prepare(page);
+  await page.getByRole('button',{name:'Quelque chose ne va pas'}).click();
+  await page.getByRole('button',{name:'Correct',exact:true}).click();
+  await page.getByRole('button',{name:'Bonne',exact:true}).click();
+  await page.getByRole('button',{name:'Aucune',exact:true}).click();
+  const painQ=page.locator('.coach-q',{hasText:'Une douleur ?'});
+  await painQ.getByRole('button',{name:'Oui',exact:true}).click();
+  await painQ.getByRole('button',{name:'Dos',exact:true}).click();
+  await painQ.getByLabel(/Intensité/).fill('8');
+  await page.getByRole('button',{name:/Adapter ma séance/}).click();
+  await expect(page.locator('.precheck h2')).toHaveText('Repos');
+  await page.getByRole('button',{name:'OK, repos aujourd’hui'}).click();
+  expect((await state(page)).draft).toBeNull();
 });

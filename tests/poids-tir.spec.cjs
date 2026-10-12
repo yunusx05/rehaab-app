@@ -87,3 +87,14 @@ test('écrans : séance de tir en direct conservée, enregistrée, pesée et cou
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   expect(errors).toEqual([]);
 });
+
+test('carte joueur : niveau de tir sur 4 semaines, 50 tirs minimum', ()=>{
+  const SH=require('../shooting.js');
+  const today='2026-10-12';
+  const mk=(date,made,attempts)=>({id:date,date,items:[{drill:'sk-form',made,attempts,best:3}]});
+  expect(SH.level({sessions:[mk('2026-10-10',20,40)]},today).level).toBeNull();
+  expect(SH.level({sessions:[mk('2026-10-10',20,60)]},today).level).toBe(0);
+  expect(SH.level({sessions:[mk('2026-10-10',27,60)]},today).level).toBe(1);
+  const top=SH.level({sessions:[mk('2026-10-03',36,60),mk('2026-10-10',40,60)]},today);
+  expect(top.level).toBe(2);expect(top.pct).toBe(63);expect(top.attempts).toBe(120);
+});

@@ -35,7 +35,7 @@ test('accueil, hub Plan et Moi : photos, carte joueur fidèle au bilan, sans dé
     await expect(page.locator('.home-duo .image-tile')).toHaveCount(2);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#pathway');
-    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(10);
+    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(8);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#profile');
     await expect(page.getByRole('heading',{name:'Moi.'})).toBeVisible();
@@ -50,6 +50,10 @@ test('accueil, hub Plan et Moi : photos, carte joueur fidèle au bilan, sans dé
   const detente=card.locator('li',{hasText:'Détente'});
   await expect(detente.locator('.stat-trend.is-up')).toHaveCount(1);
   await expect(detente).toContainText('test');
+  // Toile d'araignée : 6 qualités + le tir.
+  await expect(card.locator('.player-radar .radar-label')).toHaveCount(7);
+  await expect(card.locator('.player-radar')).toContainText('Tir');
+  await expect(page.getByRole('heading',{name:'Mes questionnaires'})).toBeVisible();
   expect(await card.locator('.player-card-stats').textContent()).not.toMatch(/\b\d{2}\s*\/\s*99\b|OVR/);
   expect(errors).toEqual([]);
 });

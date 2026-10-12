@@ -58,6 +58,7 @@ function PTCalendar({
 }) {
   const [shift, setShift] = usePTState(0),
     [moving, setMoving] = usePTState(null),
+    [confirm, setConfirm] = usePTState(null),
     [error, setError] = usePTState('');
   if (!SP) return /*#__PURE__*/React.createElement("p", {
     className: "empty"
@@ -103,15 +104,59 @@ function PTCalendar({
     }));
     notify(r.why);
   };
-  const moveTo = (item, date) => {
-    const r = SP.reschedule(data, monday, item.key, date);
+  // Liberté + alerte : un jour qui casse une règle demande confirmation, puis la séance y va quand même.
+  const moveTo = (item, date, force = false) => {
+    const r = SP.reschedule(data, monday, item.key, date, {
+      force
+    });
+    if (!r.ok && r.canForce) {
+      setConfirm({
+        item,
+        date,
+        why: r.why
+      });
+      return;
+    }
     setMoving(null);
+    setConfirm(null);
     if (r.ok) update(s => ({
       ...s,
       calendar: r.calendar
     }));
     notify(r.why);
   };
+  const reset = item => {
+    update(s => ({
+      ...s,
+      calendar: SP.unmove(s, monday, item.key)
+    }));
+    setMoving(null);
+    notify(`${item.label} : placement automatique rétabli.`);
+  };
+  // Mes jours d'entraînement : même réponse que dans le dossier joueur, modifiable ici.
+  const free = SP.freeDays(data),
+    perWeek = SP.target(data);
+  const setLife = (k, v) => update(s => {
+    const PD = window.PlayerDossier,
+      base = s.dossier || (PD ? PD.blank() : {
+        answers: {}
+      });
+    return {
+      ...s,
+      dossier: {
+        ...base,
+        answers: {
+          ...(base.answers || {}),
+          [k]: v
+        }
+      }
+    };
+  });
+  const fullDate = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'numeric'
+  });
   const exportIcs = () => {
     ptDownload(`rehaab-plan-${now}.ics`, SP.ics(data, now, 4), 'text/calendar');
     notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');
@@ -119,8 +164,8 @@ function PTCalendar({
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
-    title: "Ma semaine."
-  }, week.target, " s\xE9ances physiques pr\xE9vues, cal\xE9es sur tes jours libres et ton club."), /*#__PURE__*/React.createElement("div", {
+    title: "Mon planning."
+  }, week.target, " s\xE9ances physiques pr\xE9vues. Choisis tes jours, ou d\xE9place une s\xE9ance o\xF9 tu veux."), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "calendar-nav"
@@ -138,7 +183,36 @@ function PTCalendar({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("section", {
+    className: "card stack-sm calendar-life"
+  }, /*#__PURE__*/React.createElement("h2", null, "Mes jours d\u2019entra\xEEnement"), /*#__PURE__*/React.createElement(PTChips, {
+    multi: true,
+    value: free,
+    onChange: v => {
+      if (!v.length) {
+        notify('Garde au moins un jour libre.');
+        return;
+      }
+      setLife('freeDays', [...v].sort((a, b) => a - b));
+    },
+    options: SP.DAYS.map((d, i) => ({
+      value: i,
+      label: d.slice(0, 3)
+    }))
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "S\xE9ances par semaine"), /*#__PURE__*/React.createElement(PTChips, {
+    value: perWeek,
+    onChange: v => setLife('sessions', String(v)),
+    options: [2, 3, 4, 5, 6].map(n => ({
+      value: n,
+      label: String(n)
+    }))
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "L\u2019app place tes s\xE9ances sur ces jours. Tu peux ensuite d\xE9placer chaque s\xE9ance sur le jour de ton choix.")), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "notice warning"
   }, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
@@ -173,7 +247,9 @@ function PTCalendar({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: ptCalIcon[item.type] || 'weight',
     size: 18
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min \xB7 ", ptCalStatus[item.status], item.moved ? ' · déplacée' : '', item.legs === 'heavy' ? ' · jambes' : '')), item.status !== 'done' && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("span", {
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min \xB7 ", ptCalStatus[item.status], item.moved ? ' · placée par toi' : '', item.legs === 'heavy' ? ' · jambes' : ''), item.warning && /*#__PURE__*/React.createElement("small", {
+    className: "calendar-warning"
+  }, "\u26A0 ", item.warning)), item.status !== 'done' && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("span", {
     className: "calendar-actions"
   }, d.date === now && /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
@@ -184,16 +260,44 @@ function PTCalendar({
   }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     "aria-expanded": moving === item.key,
-    onClick: () => setMoving(moving === item.key ? null : item.key)
-  }, "D\xE9placer")), moving === item.key && /*#__PURE__*/React.createElement("div", {
-    className: "calendar-move",
+    onClick: () => {
+      setConfirm(null);
+      setMoving(moving === item.key ? null : item.key);
+    }
+  }, "Choisir le jour")), moving === item.key && /*#__PURE__*/React.createElement("div", {
+    className: "calendar-move stack-sm",
     role: "group",
-    "aria-label": "Choisir un jour"
-  }, week.days.filter(x => x.date !== d.date && diff0(x.date, now) >= 0).map(x => /*#__PURE__*/React.createElement("button", {
-    key: x.date,
-    className: "chip",
-    onClick: () => moveTo(item, x.date)
-  }, x.label.slice(0, 3))))))))), /*#__PURE__*/React.createElement("details", {
+    "aria-label": `Choisir le jour de ${item.label}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "calendar-move-days"
+  }, week.days.map(x => {
+    const past = diff0(x.date, now) < 0,
+      here = x.date === d.date,
+      rule = !past && !here ? SP.ruleBreakAt(data, monday, item.key, x.date) : null;
+    return /*#__PURE__*/React.createElement("button", {
+      key: x.date,
+      className: `calendar-move-day${rule ? ' has-rule' : ''}`,
+      disabled: past || here,
+      "aria-pressed": here,
+      onClick: () => moveTo(item, x.date)
+    }, /*#__PURE__*/React.createElement("strong", null, fullDate(x.date)), /*#__PURE__*/React.createElement("small", null, here ? 'Jour actuel' : past ? 'Passé' : rule ? '⚠ règle' : x.club.match ? 'Match' : x.club.practice ? 'Club' : free.includes(x.weekday) ? 'Libre' : 'Jour off'));
+  })), confirm?.item.key === item.key && /*#__PURE__*/React.createElement("div", {
+    className: "notice warning stack-sm",
+    role: "alert"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, fullDate(confirm.date), " :"), " ", confirm.why, " Placer quand m\xEAme ?"), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => moveTo(item, confirm.date, true)
+  }, "Oui, ce jour-l\xE0"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setConfirm(null)
+  }, "Choisir un autre jour"))), item.moved && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => reset(item)
+  }, "Laisser l\u2019app choisir le jour"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Pour une autre semaine, change de semaine avec les fl\xE8ches en haut."))))))), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"

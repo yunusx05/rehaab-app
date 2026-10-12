@@ -33,6 +33,7 @@ for (const size of sizes) {
     await expectNoHorizontalOverflow(page);
     await page.screenshot({ path: `test-results/accueil-${size.width}.png`, fullPage: true });
     await page.locator('.today-plan').getByRole('button', { name: /Préparer ma séance/ }).click();
+    await page.getByRole('button', { name: 'Rien à signaler' }).click();
     await expect(page.getByRole('button', { name: 'Démarrer la séance' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.getByRole('button', { name: 'Démarrer la séance' }).click();

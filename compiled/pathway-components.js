@@ -637,8 +637,8 @@ function PTPlanArsenal({
   }, /*#__PURE__*/React.createElement(PTImageTile, {
     tall: true,
     photo: ptHub('week'),
-    title: "Ma semaine",
-    text: "Tes s\xE9ances cal\xE9es sur tes jours libres, ton club et tes matchs.",
+    title: "Mon planning",
+    text: "Choisis tes jours et place chaque s\xE9ance o\xF9 tu veux.",
     onClick: () => go('calendar')
   }), /*#__PURE__*/React.createElement(PTImageTile, {
     tall: true,
@@ -664,11 +664,6 @@ function PTPlanArsenal({
     text: "Saut, sprint, RSI : un mur, un m\xE8tre ou une vid\xE9o.",
     onClick: () => go('bilan', 'tests')
   }), /*#__PURE__*/React.createElement(PTImageTile, {
-    photo: ptHub('game'),
-    title: "Mon jeu",
-    text: C?.complete(data.basketProfile) ? 'Forces, faiblesses et club renseignés.' : 'Forces, faiblesses, club.',
-    onClick: () => go('basket-profile')
-  }), /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('library'),
     title: "Tous les exercices",
     text: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} mouvements, filtres basket.`,
@@ -683,10 +678,5 @@ function PTPlanArsenal({
     title: "Poids de forme",
     text: "Ton poids face \xE0 ton poids de jeu.",
     onClick: () => go('weight')
-  }), /*#__PURE__*/React.createElement(PTImageTile, {
-    photo: ptHub('gear'),
-    title: "Mon mat\xE9riel",
-    text: `${data.owned.length} élément${data.owned.length > 1 ? 's' : ''} coché${data.owned.length > 1 ? 's' : ''}`,
-    onClick: () => go('player')
   }));
 }

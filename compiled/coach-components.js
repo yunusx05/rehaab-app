@@ -515,6 +515,28 @@ function ptCoachApply({
     notify(base?.error || 'Aucune séance possible aujourd’hui.');
     return;
   }
+  const r = ptCoachAdapt(state, check, base, c, plan);
+  if (r.error) {
+    notify(r.error);
+    return;
+  }
+  update(s => ({
+    ...s,
+    checkIn: check,
+    draft: r.draft,
+    coachLog: (s.coachLog || []).map(x => x.id === entry.id ? {
+      ...x,
+      applied: true
+    } : x)
+  }));
+  go('preview');
+}
+
+// Adapte une séance déjà construite au bilan : zones épargnées, séries et repos dosés, soin ajouté pour une douleur légère.
+// Séance « normale » sans douleur : les exercices ressortent identiques.
+function ptCoachAdapt(state, check, base, c, plan) {
+  const RW = window.RehabWarmup,
+    JP = window.PlayerProfile;
   const avoid = new Set(plan.avoidRegions || []);
   // Le soin cible justement la zone épargnée : il échappe au filtre, le reste de la séance non.
   const spared = e => e.pathwayRole === 'soin' || !(e.regions || []).some(r => avoid.has(r)) && !(plan.avoidImpact && e.impact);
@@ -525,10 +547,9 @@ function ptCoachApply({
       focus: 'mobility',
       minutes: 15
     });
-    if (mobility.error) {
-      notify('Trop de zones à épargner : repos ou soin aujourd’hui.');
-      return;
-    }
+    if (mobility.error) return {
+      error: 'Trop de zones à épargner : repos ou soin aujourd’hui.'
+    };
     base = mobility;
     exercises = [...exercises.filter(e => e.pathwayRole === 'soin'), ...mobility.exercises.filter(e => !(e.regions || []).some(r => avoid.has(r)))];
   }
@@ -552,32 +573,23 @@ function ptCoachApply({
     const total = () => PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60;
     while (total() > check.minutes * 60 && main().length > 2) exercises.splice(exercises.indexOf(main().pop()), 1);
   }
-  if (!exercises.length) {
-    notify('Trop de zones à épargner : repos ou soin aujourd’hui.');
-    return;
-  }
-  const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(plan.because || []).map(b => `Parce que ${b.replace(/^parce ques*/i, '')}`), ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
-  const draft = {
-    ...base,
-    id: PT.uid(),
-    exercises,
-    coach: {
-      decision: plan.decision,
-      why: plan.why
-    },
-    reasons,
-    estimatedMinutes: Math.ceil((PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60) / 60)
+  if (!exercises.length) return {
+    error: 'Trop de zones à épargner : repos ou soin aujourd’hui.'
   };
-  update(s => ({
-    ...s,
-    checkIn: check,
-    draft,
-    coachLog: (s.coachLog || []).map(x => x.id === entry.id ? {
-      ...x,
-      applied: true
-    } : x)
-  }));
-  go('preview');
+  const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(plan.because || []).map(b => `Parce que ${b.replace(/^parce ques*/i, '')}`), ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
+  return {
+    draft: {
+      ...base,
+      id: PT.uid(),
+      exercises,
+      coach: {
+        decision: plan.decision,
+        why: plan.why
+      },
+      reasons,
+      estimatedMinutes: Math.ceil((PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60) / 60)
+    }
+  };
 }
 function PTCoachCard({
   data,
@@ -618,6 +630,432 @@ function PTCoachQ({
   return /*#__PURE__*/React.createElement("div", {
     className: "coach-q"
   }, /*#__PURE__*/React.createElement("h3", null, title), children);
+}
+
+/* Bilan avant séance : la question « comment tu te sens » posée au moment de lancer la séance prévue.
+   « Rien à signaler » ne touche à rien ; sinon le coach adapte CETTE séance (jamais une autre). */
+const PT_PRECHECK_SKIP = ['rehab', 'warmup'];
+const ptPreCheckNeeded = plan => !!plan && plan.status !== 'active' && !plan.precheck && !plan.coach && !PT_PRECHECK_SKIP.includes(plan.source);
+// Basket hier / aujourd'hui / demain : lu dans le calendrier (club déclaré, matchs saisis), plus demandé.
+function ptPreCheckClub(data) {
+  const SPx = window.SeasonPlan,
+    today = PT.dateKey();
+  if (!SPx) return {
+    basketYesterday: 'none',
+    basketIntensity: null,
+    basketSoon: 'none'
+  };
+  const y = SPx.clubOf(data, SPx.at(today, -1)),
+    t = SPx.clubOf(data, today),
+    n = SPx.clubOf(data, SPx.at(today, 1));
+  return {
+    basketYesterday: y.match ? 'match' : y.practice ? 'practice' : 'none',
+    basketIntensity: y.match ? 'hard' : y.practice ? 'medium' : null,
+    basketSoon: t.match || t.practice ? 'today' : n.match || n.practice ? 'tomorrow' : 'none'
+  };
+}
+// Réponses du bilan → questions de forme du programme de muscu (mêmes trois axes).
+const ptPreCheckReadiness = c => ({
+  energy: c.form <= 2 ? 0 : c.form === 3 ? 1 : 2,
+  sleep: {
+    bad: 0,
+    mid: 1,
+    good: 2
+  }[c.sleep],
+  soreness: {
+    strong: 0,
+    light: 1,
+    none: 2
+  }[c.soreness]
+});
+function PTPreCheck({
+  data,
+  update,
+  go,
+  notify,
+  plan
+}) {
+  const [open, setOpen] = usePTState(false),
+    [busy, setBusy] = usePTState(false),
+    [error, setError] = usePTState(''),
+    [result, setResult] = usePTState(null);
+  const minutes = (plan?.estimatedMinutes || 45) + 10;
+  const [c, setC] = usePTState(() => ({
+    ...ptCoachBlank(),
+    ...ptPreCheckClub(data),
+    minutes
+  }));
+  if (!plan) return null;
+  if (plan.precheck) {
+    const p = plan.precheck;
+    if (p.status !== 'adapted') return null;
+    return /*#__PURE__*/React.createElement("section", {
+      className: "precheck is-done",
+      "aria-label": "Bilan avant s\xE9ance"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "coach-avatar"
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: "spark",
+      size: 18
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "S\xE9ance adapt\xE9e par le coach \xB7 ", COACH_DECISIONS[p.decision] || ''), /*#__PURE__*/React.createElement("strong", null, p.why), p.notes?.length > 0 && /*#__PURE__*/React.createElement("ul", {
+      className: "reason-list"
+    }, p.notes.map(n => /*#__PURE__*/React.createElement("li", {
+      key: n
+    }, n))), /*#__PURE__*/React.createElement("button", {
+      className: "text-button",
+      onClick: () => go('coach')
+    }, "Parler au coach \u2192")));
+  }
+  if (!ptPreCheckNeeded(plan)) return null;
+  const set = (k, v) => setC(x => ({
+    ...x,
+    [k]: v
+  }));
+  const setDraft = fn => update(s => ({
+    ...s,
+    draft: fn(s.draft)
+  }));
+  const log = item => update(s => ({
+    ...s,
+    coachLog: [...(s.coachLog || []).filter(x => x.date !== item.date), item].slice(-60)
+  }));
+  const fine = () => {
+    log({
+      id: PT.uid(),
+      date: PT.dateKey(),
+      checkin: {
+        ...c,
+        form: 4,
+        sleep: 'good',
+        soreness: 'none',
+        pain: 'no'
+      },
+      plan: ptCoachPlan({
+        decision: 'normal',
+        intensity: 'normal',
+        why: 'Rien à signaler : séance prévue.'
+      }),
+      messages: [],
+      applied: true,
+      quick: true
+    });
+    setDraft(d => ({
+      ...d,
+      precheck: {
+        date: PT.dateKey(),
+        status: 'ok'
+      }
+    }));
+  };
+  const missing = c.form == null || !c.sleep || !c.soreness || !c.pain || c.pain === 'yes' && !c.zones.length;
+  // Applique la décision à la séance prévue. Repos et soin vif : on propose, l'utilisateur choisit.
+  const apply = entry => {
+    const p = entry.plan,
+      today = PT.dateKey();
+    const check = {
+      ...(plan.check || data.checkIn),
+      date: today,
+      minutes,
+      energy: c.form <= 2 || c.sleep === 'bad' ? 'low' : 'normal',
+      motivation: c.form <= 2 ? 'low' : 'normal'
+    };
+    const state = {
+      ...data,
+      checkIn: check
+    };
+    if (p.decision === 'rest' || p.decision === 'rehab' && !(c.pain === 'yes' && c.painLevel < 4)) {
+      setResult(entry);
+      return;
+    }
+    let base = plan,
+      adaptPlan = p;
+    if (p.decision === 'mobility') {
+      base = PT.generate(state, {
+        ...check,
+        focus: 'mobility',
+        minutes: Math.min(20, minutes)
+      });
+      if (base.error) {
+        setError(base.error);
+        return;
+      }
+    } else if (plan.source === 'program-plan' && window.PersonalPrograms && data.program) {
+      // Muscu : la forme du jour passe par le dosage du programme (pas de double réduction des séries).
+      const PP = window.PersonalPrograms,
+        prog = data.program,
+        checkP = PP.checkForSession(data, prog, {
+          answers: ptPreCheckReadiness(c),
+          minutes: Number(prog.minutes) || minutes
+        });
+      const rebuilt = PP.sessionPlan(prog, plan.programWeekIndex, plan.programDay, data, checkP);
+      if (!rebuilt.error) {
+        base = rebuilt;
+        adaptPlan = {
+          ...p,
+          setsFactor: 1,
+          restFactor: 1
+        };
+      }
+    }
+    const r = ptCoachAdapt(state, check, base, c, adaptPlan);
+    if (r.error) {
+      setError(r.error);
+      return;
+    }
+    const notes = [p.decision !== 'mobility' && adaptPlan.setsFactor < 1 && `Séries réduites (${Math.round(adaptPlan.setsFactor * 100)} %)`, p.restFactor > 1 && 'Repos allongé', p.avoidRegions.length > 0 && `Zones épargnées : ${p.avoidRegions.map(x => PT.regions[x]).join(', ')}`, p.avoidImpact && 'Pas de sauts ni d’impacts', base !== plan && plan.source === 'program-plan' && 'Volume calé sur ta forme du jour'].filter(Boolean);
+    const unchanged = p.decision === 'normal' && r.draft.exercises.length === plan.exercises.length && r.draft.exercises.every((e, i) => e.id === plan.exercises[i].id && e.sets === plan.exercises[i].sets);
+    update(s => ({
+      ...s,
+      coachLog: (s.coachLog || []).map(x => x.id === entry.id ? {
+        ...x,
+        applied: true
+      } : x),
+      draft: unchanged ? {
+        ...s.draft,
+        precheck: {
+          date: today,
+          status: 'ok'
+        }
+      } : {
+        ...r.draft,
+        precheck: {
+          date: today,
+          status: 'adapted',
+          decision: p.decision,
+          why: p.why || COACH_DECISIONS[p.decision],
+          notes
+        }
+      }
+    }));
+    window.scrollTo(0, 0);
+  };
+  const send = async () => {
+    if (missing) {
+      setError('Réponds à chaque question pour que le coach adapte ta séance.');
+      return;
+    }
+    setBusy(true);
+    setError('');
+    const messages = [{
+      role: 'user',
+      text: `${ptCoachSummary(c)} Séance prévue : ${plan.title}.`
+    }];
+    const ask = async () => {
+      const res = await fetch('/api/coach', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          messages,
+          context: {
+            ...ptCoachContext(data),
+            plannedSession: {
+              name: plan.title,
+              minutes: plan.estimatedMinutes,
+              exercises: plan.exercises.map(e => ({
+                name: e.name,
+                sets: e.sets,
+                regions: e.regions,
+                impact: !!e.impact
+              }))
+            }
+          }
+        })
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || 'Le coach ne répond pas.');
+      return json;
+    };
+    let answer;
+    try {
+      answer = await ask();
+    } catch (e) {
+      answer = ptCoachLocal(c, data);
+    }
+    const entry = {
+      id: PT.uid(),
+      date: PT.dateKey(),
+      checkin: c,
+      plan: ptCoachGuard(ptCoachPlan(answer.plan), c),
+      offline: !!answer.offline,
+      messages: [...messages, {
+        role: 'coach',
+        text: answer.message,
+        questions: answer.questions || []
+      }],
+      applied: false
+    };
+    log(entry);
+    setBusy(false);
+    apply(entry);
+  };
+  if (result) {
+    const rest = result.plan.decision === 'rest',
+      region = result.plan.rehabRegion || result.plan.avoidRegions[0],
+      RW = window.RehabWarmup;
+    return /*#__PURE__*/React.createElement("section", {
+      className: `coach-plan precheck decision-${result.plan.decision}`
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "eyebrow"
+    }, "Avant ta s\xE9ance"), /*#__PURE__*/React.createElement("h2", null, COACH_DECISIONS[result.plan.decision]), /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, result.plan.why), rest ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTButton, {
+      primary: true,
+      onClick: () => {
+        update(s => ({
+          ...s,
+          draft: null
+        }));
+        notify('Repos aujourd’hui. Ton bilan est enregistré.');
+        go('today');
+      }
+    }, "OK, repos aujourd\u2019hui"), !(c.pain === 'yes' && (c.painLevel >= 7 || c.redFlags)) && /*#__PURE__*/React.createElement(PTButton, {
+      quiet: true,
+      onClick: () => {
+        setResult(null);
+        apply({
+          ...result,
+          plan: {
+            ...result.plan,
+            decision: 'mobility',
+            why: 'Mobilité douce à la place de la séance.'
+          }
+        });
+      }
+    }, "Faire une mobilit\xE9 douce \xE0 la place")) : /*#__PURE__*/React.createElement(PTButton, {
+      primary: true,
+      onClick: () => {
+        update(s => ({
+          ...s,
+          draft: null
+        }));
+        go('rehab', RW && region ? RW.zoneOfRegion[region] : undefined);
+      }
+    }, "Ouvrir le soin de la zone", /*#__PURE__*/React.createElement(PTIcon, {
+      name: "arrow",
+      size: 18
+    })), /*#__PURE__*/React.createElement("button", {
+      className: "text-button",
+      onClick: () => go('coach')
+    }, "Parler au coach \u2192"));
+  }
+  return /*#__PURE__*/React.createElement("section", {
+    className: "precheck stack",
+    "aria-label": "Bilan avant s\xE9ance"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "precheck-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "coach-avatar"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "spark",
+    size: 18
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "Bilan du coach \xB7 avant la s\xE9ance"), /*#__PURE__*/React.createElement("strong", null, "Comment tu te sens ?"))), !open ? /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: fine
+  }, "Rien \xE0 signaler"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setOpen(true)
+  }, "Quelque chose ne va pas")) : /*#__PURE__*/React.createElement("div", {
+    className: "stack coach-form"
+  }, /*#__PURE__*/React.createElement(PTCoachQ, {
+    title: "Ta forme"
+  }, /*#__PURE__*/React.createElement(PTChips, {
+    options: COACH_FORM,
+    value: c.form,
+    onChange: v => set('form', v)
+  })), /*#__PURE__*/React.createElement(PTCoachQ, {
+    title: "Ta nuit"
+  }, /*#__PURE__*/React.createElement(PTChips, {
+    options: [{
+      value: 'bad',
+      label: 'Mauvaise'
+    }, {
+      value: 'mid',
+      label: 'Moyenne'
+    }, {
+      value: 'good',
+      label: 'Bonne'
+    }],
+    value: c.sleep,
+    onChange: v => set('sleep', v)
+  })), /*#__PURE__*/React.createElement(PTCoachQ, {
+    title: "Courbatures"
+  }, /*#__PURE__*/React.createElement(PTChips, {
+    options: [{
+      value: 'none',
+      label: 'Aucune'
+    }, {
+      value: 'light',
+      label: 'Légères'
+    }, {
+      value: 'strong',
+      label: 'Fortes'
+    }],
+    value: c.soreness,
+    onChange: v => set('soreness', v)
+  })), /*#__PURE__*/React.createElement(PTCoachQ, {
+    title: "Une douleur ?"
+  }, /*#__PURE__*/React.createElement(PTChips, {
+    options: [{
+      value: 'no',
+      label: 'Non'
+    }, {
+      value: 'yes',
+      label: 'Oui'
+    }],
+    value: c.pain,
+    onChange: v => set('pain', v)
+  }), c.pain === 'yes' && /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "O\xF9 ? (plusieurs choix possibles)"), /*#__PURE__*/React.createElement(PTChips, {
+    multi: true,
+    options: COACH_ZONES.map(z => ({
+      value: z.id,
+      label: z.label
+    })),
+    value: c.zones,
+    onChange: v => set('zones', v)
+  }), /*#__PURE__*/React.createElement(PTField, {
+    label: `Intensité : ${c.painLevel}/10`,
+    type: "range",
+    min: "1",
+    max: "10",
+    value: c.painLevel,
+    onChange: e => set('painLevel', Number(e.target.value))
+  }), /*#__PURE__*/React.createElement("label", {
+    className: "check-label"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: c.redFlags,
+    onChange: e => set('redFlags', e.target.checked)
+  }), "Gonflement, douleur la nuit, articulation qui l\xE2che ou fourmillements"))), /*#__PURE__*/React.createElement(PTField, {
+    label: "Autre chose ? (facultatif)",
+    value: c.note,
+    maxLength: "400",
+    onChange: e => set('note', e.target.value),
+    placeholder: "Ex. : jambes lourdes, stress, peu mang\xE9\u2026"
+  }), error && /*#__PURE__*/React.createElement("p", {
+    className: "error",
+    role: "alert"
+  }, error), /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    disabled: busy,
+    onClick: send
+  }, busy ? 'Le coach adapte ta séance…' : 'Adapter ma séance', /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => {
+      setOpen(false);
+      setError('');
+    }
+  }, "Finalement, tout va bien")));
 }
 function PTCoach({
   data,

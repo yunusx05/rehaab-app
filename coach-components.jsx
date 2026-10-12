@@ -133,13 +133,22 @@ function ptCoachApply({data,update,go,notify},entry){
     if(!base||base.error)base=PT.generate(state,{...check,focus:'muscle'});
   }
   if(!base||base.error){notify(base?.error||'Aucune séance possible aujourd’hui.');return;}
+  const r=ptCoachAdapt(state,check,base,c,plan);
+  if(r.error){notify(r.error);return;}
+  update(s=>({...s,checkIn:check,draft:r.draft,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');
+}
+
+// Adapte une séance déjà construite au bilan : zones épargnées, séries et repos dosés, soin ajouté pour une douleur légère.
+// Séance « normale » sans douleur : les exercices ressortent identiques.
+function ptCoachAdapt(state,check,base,c,plan){
+  const RW=window.RehabWarmup,JP=window.PlayerProfile;
   const avoid=new Set(plan.avoidRegions||[]);
   // Le soin cible justement la zone épargnée : il échappe au filtre, le reste de la séance non.
   const spared=e=>e.pathwayRole==='soin'||!(e.regions||[]).some(r=>avoid.has(r))&&!(plan.avoidImpact&&e.impact);
   let exercises=base.exercises.filter(spared);
   if(exercises.filter(e=>e.pathwayRole!=='soin').length<2&&plan.decision!=='mobility'){
     const mobility=PT.generate(state,{...check,focus:'mobility',minutes:15});
-    if(mobility.error){notify('Trop de zones à épargner : repos ou soin aujourd’hui.');return;}
+    if(mobility.error)return {error:'Trop de zones à épargner : repos ou soin aujourd’hui.'};
     base=mobility;exercises=[...exercises.filter(e=>e.pathwayRole==='soin'),...mobility.exercises.filter(e=>!(e.regions||[]).some(r=>avoid.has(r)))];
   }
   exercises=exercises.map(e=>e.pathwayRole==='soin'?e:({...e,sets:Math.max(1,Math.round(e.sets*(plan.setsFactor||1))),rest:Math.round((e.rest||60)*(plan.restFactor||1))}));
@@ -153,10 +162,9 @@ function ptCoachApply({data,update,go,notify},entry){
     const total=()=>PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60;
     while(total()>check.minutes*60&&main().length>2)exercises.splice(exercises.indexOf(main().pop()),1);
   }
-  if(!exercises.length){notify('Trop de zones à épargner : repos ou soin aujourd’hui.');return;}
+  if(!exercises.length)return {error:'Trop de zones à épargner : repos ou soin aujourd’hui.'};
   const reasons=[`Coach : ${plan.why||COACH_DECISIONS[plan.decision]}`,...(plan.because||[]).map(b=>`Parce que ${b.replace(/^parce ques*/i,'')}`),...(care?.note&&exercises.some(e=>e.pathwayRole==='soin')?[care.note]:[]),...(base.reasons||[])];
-  const draft={...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60)/60)};
-  update(s=>({...s,checkIn:check,draft,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x)}));go('preview');
+  return {draft:{...base,id:PT.uid(),exercises,coach:{decision:plan.decision,why:plan.why},reasons,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+(base.warmupSeconds||0)+60)/60)}};
 }
 
 function PTCoachCard({data,go}){
@@ -167,6 +175,98 @@ function PTCoachCard({data,go}){
 
 // Une question du bilan (défini hors du rendu : un composant recréé à chaque frappe ferait perdre le curseur).
 function PTCoachQ({title,children}){return <div className="coach-q"><h3>{title}</h3>{children}</div>;}
+
+/* Bilan avant séance : la question « comment tu te sens » posée au moment de lancer la séance prévue.
+   « Rien à signaler » ne touche à rien ; sinon le coach adapte CETTE séance (jamais une autre). */
+const PT_PRECHECK_SKIP=['rehab','warmup'];
+const ptPreCheckNeeded=plan=>!!plan&&plan.status!=='active'&&!plan.precheck&&!plan.coach&&!PT_PRECHECK_SKIP.includes(plan.source);
+// Basket hier / aujourd'hui / demain : lu dans le calendrier (club déclaré, matchs saisis), plus demandé.
+function ptPreCheckClub(data){
+  const SPx=window.SeasonPlan,today=PT.dateKey();
+  if(!SPx)return {basketYesterday:'none',basketIntensity:null,basketSoon:'none'};
+  const y=SPx.clubOf(data,SPx.at(today,-1)),t=SPx.clubOf(data,today),n=SPx.clubOf(data,SPx.at(today,1));
+  return {basketYesterday:y.match?'match':y.practice?'practice':'none',basketIntensity:y.match?'hard':y.practice?'medium':null,basketSoon:t.match||t.practice?'today':n.match||n.practice?'tomorrow':'none'};
+}
+// Réponses du bilan → questions de forme du programme de muscu (mêmes trois axes).
+const ptPreCheckReadiness=c=>({energy:c.form<=2?0:c.form===3?1:2,sleep:{bad:0,mid:1,good:2}[c.sleep],soreness:{strong:0,light:1,none:2}[c.soreness]});
+
+function PTPreCheck({data,update,go,notify,plan}){
+  const [open,setOpen]=usePTState(false),[busy,setBusy]=usePTState(false),[error,setError]=usePTState(''),[result,setResult]=usePTState(null);
+  const minutes=(plan?.estimatedMinutes||45)+10;
+  const [c,setC]=usePTState(()=>({...ptCoachBlank(),...ptPreCheckClub(data),minutes}));
+  if(!plan)return null;
+  if(plan.precheck){
+    const p=plan.precheck;
+    if(p.status!=='adapted')return null;
+    return <section className="precheck is-done" aria-label="Bilan avant séance"><span className="coach-avatar"><PTIcon name="spark" size={18}/></span><div><small>Séance adaptée par le coach · {COACH_DECISIONS[p.decision]||''}</small><strong>{p.why}</strong>{p.notes?.length>0&&<ul className="reason-list">{p.notes.map(n=><li key={n}>{n}</li>)}</ul>}<button className="text-button" onClick={()=>go('coach')}>Parler au coach →</button></div></section>;
+  }
+  if(!ptPreCheckNeeded(plan))return null;
+  const set=(k,v)=>setC(x=>({...x,[k]:v}));
+  const setDraft=fn=>update(s=>({...s,draft:fn(s.draft)}));
+  const log=item=>update(s=>({...s,coachLog:[...(s.coachLog||[]).filter(x=>x.date!==item.date),item].slice(-60)}));
+  const fine=()=>{
+    log({id:PT.uid(),date:PT.dateKey(),checkin:{...c,form:4,sleep:'good',soreness:'none',pain:'no'},plan:ptCoachPlan({decision:'normal',intensity:'normal',why:'Rien à signaler : séance prévue.'}),messages:[],applied:true,quick:true});
+    setDraft(d=>({...d,precheck:{date:PT.dateKey(),status:'ok'}}));
+  };
+  const missing=c.form==null||!c.sleep||!c.soreness||!c.pain||(c.pain==='yes'&&!c.zones.length);
+  // Applique la décision à la séance prévue. Repos et soin vif : on propose, l'utilisateur choisit.
+  const apply=(entry)=>{
+    const p=entry.plan,today=PT.dateKey();
+    const check={...(plan.check||data.checkIn),date:today,minutes,energy:c.form<=2||c.sleep==='bad'?'low':'normal',motivation:c.form<=2?'low':'normal'};
+    const state={...data,checkIn:check};
+    if(p.decision==='rest'||(p.decision==='rehab'&&!(c.pain==='yes'&&c.painLevel<4))){setResult(entry);return;}
+    let base=plan,adaptPlan=p;
+    if(p.decision==='mobility'){base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,minutes)});if(base.error){setError(base.error);return;}}
+    else if(plan.source==='program-plan'&&window.PersonalPrograms&&data.program){
+      // Muscu : la forme du jour passe par le dosage du programme (pas de double réduction des séries).
+      const PP=window.PersonalPrograms,prog=data.program,checkP=PP.checkForSession(data,prog,{answers:ptPreCheckReadiness(c),minutes:Number(prog.minutes)||minutes});
+      const rebuilt=PP.sessionPlan(prog,plan.programWeekIndex,plan.programDay,data,checkP);
+      if(!rebuilt.error){base=rebuilt;adaptPlan={...p,setsFactor:1,restFactor:1};}
+    }
+    const r=ptCoachAdapt(state,check,base,c,adaptPlan);
+    if(r.error){setError(r.error);return;}
+    const notes=[p.decision!=='mobility'&&adaptPlan.setsFactor<1&&`Séries réduites (${Math.round(adaptPlan.setsFactor*100)} %)`,p.restFactor>1&&'Repos allongé',p.avoidRegions.length>0&&`Zones épargnées : ${p.avoidRegions.map(x=>PT.regions[x]).join(', ')}`,p.avoidImpact&&'Pas de sauts ni d’impacts',base!==plan&&plan.source==='program-plan'&&'Volume calé sur ta forme du jour'].filter(Boolean);
+    const unchanged=p.decision==='normal'&&r.draft.exercises.length===plan.exercises.length&&r.draft.exercises.every((e,i)=>e.id===plan.exercises[i].id&&e.sets===plan.exercises[i].sets);
+    update(s=>({...s,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x),draft:unchanged?{...s.draft,precheck:{date:today,status:'ok'}}:{...r.draft,precheck:{date:today,status:'adapted',decision:p.decision,why:p.why||COACH_DECISIONS[p.decision],notes}}}));
+    window.scrollTo(0,0);
+  };
+  const send=async()=>{
+    if(missing){setError('Réponds à chaque question pour que le coach adapte ta séance.');return;}
+    setBusy(true);setError('');
+    const messages=[{role:'user',text:`${ptCoachSummary(c)} Séance prévue : ${plan.title}.`}];
+    const ask=async()=>{const res=await fetch('/api/coach',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({messages,context:{...ptCoachContext(data),plannedSession:{name:plan.title,minutes:plan.estimatedMinutes,exercises:plan.exercises.map(e=>({name:e.name,sets:e.sets,regions:e.regions,impact:!!e.impact}))}}})});const json=await res.json().catch(()=>({}));if(!res.ok)throw new Error(json.error||'Le coach ne répond pas.');return json;};
+    let answer;
+    try{answer=await ask();}catch(e){answer=ptCoachLocal(c,data);}
+    const entry={id:PT.uid(),date:PT.dateKey(),checkin:c,plan:ptCoachGuard(ptCoachPlan(answer.plan),c),offline:!!answer.offline,messages:[...messages,{role:'coach',text:answer.message,questions:answer.questions||[]}],applied:false};
+    log(entry);setBusy(false);apply(entry);
+  };
+  if(result){
+    const rest=result.plan.decision==='rest',region=result.plan.rehabRegion||result.plan.avoidRegions[0],RW=window.RehabWarmup;
+    return <section className={`coach-plan precheck decision-${result.plan.decision}`}><span className="eyebrow">Avant ta séance</span><h2>{COACH_DECISIONS[result.plan.decision]}</h2><p className="fine">{result.plan.why}</p>
+      {rest?<><PTButton primary onClick={()=>{update(s=>({...s,draft:null}));notify('Repos aujourd’hui. Ton bilan est enregistré.');go('today');}}>OK, repos aujourd’hui</PTButton>
+        {!(c.pain==='yes'&&(c.painLevel>=7||c.redFlags))&&<PTButton quiet onClick={()=>{setResult(null);apply({...result,plan:{...result.plan,decision:'mobility',why:'Mobilité douce à la place de la séance.'}});}}>Faire une mobilité douce à la place</PTButton>}</>
+        :<PTButton primary onClick={()=>{update(s=>({...s,draft:null}));go('rehab',RW&&region?RW.zoneOfRegion[region]:undefined);}}>Ouvrir le soin de la zone<PTIcon name="arrow" size={18}/></PTButton>}
+      <button className="text-button" onClick={()=>go('coach')}>Parler au coach →</button>
+    </section>;
+  }
+  return <section className="precheck stack" aria-label="Bilan avant séance">
+    <div className="precheck-head"><span className="coach-avatar"><PTIcon name="spark" size={18}/></span><div><small>Bilan du coach · avant la séance</small><strong>Comment tu te sens ?</strong></div></div>
+    {!open?<div className="button-row"><PTButton primary onClick={fine}>Rien à signaler</PTButton><PTButton quiet onClick={()=>setOpen(true)}>Quelque chose ne va pas</PTButton></div>
+    :<div className="stack coach-form">
+      <PTCoachQ title="Ta forme"><PTChips options={COACH_FORM} value={c.form} onChange={v=>set('form',v)}/></PTCoachQ>
+      <PTCoachQ title="Ta nuit"><PTChips options={[{value:'bad',label:'Mauvaise'},{value:'mid',label:'Moyenne'},{value:'good',label:'Bonne'}]} value={c.sleep} onChange={v=>set('sleep',v)}/></PTCoachQ>
+      <PTCoachQ title="Courbatures"><PTChips options={[{value:'none',label:'Aucune'},{value:'light',label:'Légères'},{value:'strong',label:'Fortes'}]} value={c.soreness} onChange={v=>set('soreness',v)}/></PTCoachQ>
+      <PTCoachQ title="Une douleur ?"><PTChips options={[{value:'no',label:'Non'},{value:'yes',label:'Oui'}]} value={c.pain} onChange={v=>set('pain',v)}/>
+        {c.pain==='yes'&&<div className="stack-sm"><p className="fine">Où ? (plusieurs choix possibles)</p><PTChips multi options={COACH_ZONES.map(z=>({value:z.id,label:z.label}))} value={c.zones} onChange={v=>set('zones',v)}/>
+          <PTField label={`Intensité : ${c.painLevel}/10`} type="range" min="1" max="10" value={c.painLevel} onChange={e=>set('painLevel',Number(e.target.value))}/>
+          <label className="check-label"><input type="checkbox" checked={c.redFlags} onChange={e=>set('redFlags',e.target.checked)}/>Gonflement, douleur la nuit, articulation qui lâche ou fourmillements</label></div>}</PTCoachQ>
+      <PTField label="Autre chose ? (facultatif)" value={c.note} maxLength="400" onChange={e=>set('note',e.target.value)} placeholder="Ex. : jambes lourdes, stress, peu mangé…"/>
+      {error&&<p className="error" role="alert">{error}</p>}
+      <PTButton primary disabled={busy} onClick={send}>{busy?'Le coach adapte ta séance…':'Adapter ma séance'}<PTIcon name="arrow" size={18}/></PTButton>
+      <button className="text-button" onClick={()=>{setOpen(false);setError('');}}>Finalement, tout va bien</button>
+    </div>}
+  </section>;
+}
 
 function PTCoach({data,update,go,notify}){
   const existing=ptCoachToday(data);

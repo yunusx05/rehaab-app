@@ -259,9 +259,6 @@ function PTSportToday({
   }), typeof PTWeekStrip === 'function' && /*#__PURE__*/React.createElement(PTWeekStrip, {
     data: data,
     go: go
-  }), typeof PTCoachCard === 'function' && /*#__PURE__*/React.createElement(PTCoachCard, {
-    data: data,
-    go: go
   }), typeof PTBodyMind === 'function' && /*#__PURE__*/React.createElement(PTBodyMind, {
     data: data,
     go: go

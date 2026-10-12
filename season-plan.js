@@ -73,13 +73,15 @@
     const accents=(Array.isArray(a.accents)?a.accents:[]).filter(p=>p&&typeof p==='object').slice(0,8).map(p=>({phase:text(p.phase,30),text:text(p.text,240)})).filter(p=>p.phase&&p.text);
     return {date:isDay(a.date)?a.date:null,message:text(a.message,1200),priorities,accents,rules:list(a.rules,5,200),choices};
   }
-  function blankCalendar() {return {moves:{},skips:{}};}
+  function blankCalendar() {return {moves:{},skips:{},forced:{}};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
-    const moves={},skips={};
+    const moves={},skips={},forced={};
     Object.entries(v.moves&&typeof v.moves==='object'?v.moves:{}).slice(-12).forEach(([w,m])=>{if(!isDay(w)||!m||typeof m!=='object')return;const x={};Object.entries(m).slice(0,20).forEach(([k,d])=>{if(/^[A-Za-z0-9-]{1,20}$/.test(k)&&isDay(d))x[k]=d;});moves[w]=x;});
     Object.entries(v.skips&&typeof v.skips==='object'?v.skips:{}).slice(-12).forEach(([w,list])=>{if(isDay(w)&&Array.isArray(list))skips[w]=list.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,20);});
-    return {moves,skips};
+    // Déplacements forcés : choisis par l'utilisateur malgré une règle de charge (il a été prévenu).
+    Object.entries(v.forced&&typeof v.forced==='object'?v.forced:{}).slice(-12).forEach(([w,list])=>{if(isDay(w)&&Array.isArray(list))forced[w]=list.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,20);});
+    return {moves,skips,forced};
   }
 
   function build(state, now=today()) {
@@ -189,7 +191,7 @@
     // Semaine du début : les jours d'avant ne comptent pas (rien de « manqué » avant d'avoir commencé).
     days.forEach(d=>{if(diff(d.date,built.start)<0){d.before=true;d.free=false;}});
     const startWeek=days.some(d=>d.before);
-    const skips=cal.skips[monday]||[],moves=cal.moves[monday]||{};
+    const skips=cal.skips[monday]||[],moves=cal.moves[monday]||{},forced=cal.forced[monday]||[];
     // Séances physiques : autant que l'objectif hebdomadaire, le parcours d'abord.
     let physical=all.filter(x=>x.physical);
     if(physical.length>tgt){physical.filter(x=>x.extra).slice(0,physical.length-tgt).forEach(x=>x.dropped=true);physical=physical.filter(x=>!x.dropped);}
@@ -199,7 +201,10 @@
     const placed=[];
     for(const item of queue){
       const moved=moves[item.key];
-      if(moved&&!ruleBreak(item,moved,placed,days)){placed.push({...item,date:moved,moved:true});continue;}
+      const broken=moved?ruleBreak(item,moved,placed,days):null;
+      if(moved&&!broken){placed.push({...item,date:moved,moved:true});continue;}
+      // Choix de l'utilisateur : on le respecte, avec l'alerte affichée sur la séance.
+      if(moved&&forced.includes(item.key)&&days.some(d=>d.date===moved)){placed.push({...item,date:moved,moved:true,forced:true,warning:broken});continue;}
       if(moved) warnings.push(`${item.label} : déplacement annulé (${ruleBreak(item,moved,placed,days)})`);
       // Meilleur jour : libre, sans règle enfreinte, le plus éloigné des autres séances du même type de charge.
       const options=days.filter(d=>(d.free||item.type==='care')&&!ruleBreak(item,d.date,placed,days)&&!(item.type==='care'&&placed.some(x=>x.date===d.date))).map(d=>{
@@ -233,12 +238,12 @@
   function violations(state,schedule) {
     const out=[],placed=schedule.days.flatMap(d=>d.items);
     const days=schedule.days.map(d=>({...d}));days.nextClub=clubOf(state,at(schedule.monday,7));days.prevClub=clubOf(state,at(schedule.monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
-    placed.forEach(item=>{const r=ruleBreak(item,item.date,placed,days);if(r)out.push({key:item.key,date:item.date,rule:r});});
+    placed.filter(item=>!item.forced).forEach(item=>{const r=ruleBreak(item,item.date,placed,days);if(r)out.push({key:item.key,date:item.date,rule:r});});
     if(placed.filter(x=>x.physical).length>schedule.target) out.push({key:'*',rule:'Plus de séances physiques que l’objectif de la semaine.'});
     return out;
   }
 
-  function reschedule(state, monday, itemKey, toDate) {
+  function reschedule(state, monday, itemKey, toDate, opts={}) {
     monday=mondayOf(monday);
     const before=weekSchedule(state,monday),item=before.days.flatMap(d=>d.items).find(x=>x.key===itemKey);
     if(!item) return {ok:false,why:'Séance introuvable cette semaine.'};
@@ -246,10 +251,26 @@
     const others=before.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
     const days=before.days.map(d=>({...d}));days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
     const why=ruleBreak(item,toDate,others,days);
-    if(why) return {ok:false,why};
+    if(why&&!opts.force) return {ok:false,why,canForce:true};
     const cal=validateCalendar(state.calendar)||blankCalendar();
-    const calendar={...cal,moves:{...cal.moves,[monday]:{...(cal.moves[monday]||{}),[itemKey]:toDate}}};
-    return {ok:true,calendar,why:`${item.label} déplacée au ${DAYS[weekday(toDate)].toLowerCase()} : règles de charge respectées.`};
+    const list=(cal.forced[monday]||[]).filter(k=>k!==itemKey);
+    const calendar={...cal,moves:{...cal.moves,[monday]:{...(cal.moves[monday]||{}),[itemKey]:toDate}},forced:{...cal.forced,[monday]:why?[...list,itemKey]:list}};
+    return {ok:true,calendar,forced:!!why,why:why?`${item.label} placée au ${DAYS[weekday(toDate)].toLowerCase()}, comme tu l’as choisi. Attention : ${why.charAt(0).toLowerCase()+why.slice(1)}`:`${item.label} déplacée au ${DAYS[weekday(toDate)].toLowerCase()} : règles de charge respectées.`};
+  }
+  // Règle cassée si la séance allait ce jour-là (null = jour compatible) : sert au choix du jour dans le calendrier.
+  function ruleBreakAt(state, monday, itemKey, toDate) {
+    monday=mondayOf(monday);
+    const sch=weekSchedule(state,monday),item=sch.days.flatMap(d=>d.items).find(x=>x.key===itemKey);
+    if(!item) return null;
+    const others=sch.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
+    const days=sch.days.map(d=>({...d}));days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
+    return ruleBreak(item,toDate,others,days);
+  }
+  // Retour au placement automatique pour une séance déplacée.
+  function unmove(state, monday, itemKey) {
+    monday=mondayOf(monday);
+    const cal=validateCalendar(state.calendar)||blankCalendar(),m={...(cal.moves[monday]||{})};delete m[itemKey];
+    return {...cal,moves:{...cal.moves,[monday]:m},forced:{...cal.forced,[monday]:(cal.forced[monday]||[]).filter(k=>k!==itemKey)}};
   }
   // Jour manqué ou « Je ne peux pas aujourd'hui » : prochain jour libre compatible de la semaine, sinon report à la semaine suivante.
   function missed(state, monday, itemKey, now=today()) {
@@ -311,5 +332,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,mondayOf,weekday,at,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,ics,review,applySuggestion,target};
 });

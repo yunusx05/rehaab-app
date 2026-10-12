@@ -361,17 +361,90 @@ function PTDraftCancel({
 // Carte joueur (lot 15) : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests et les réponses du bilan.
 // Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée. Flèche : évolution d'un test suivi.
 const PT_CARD_QUALITIES = ['vertical', 'firststep', 'decel', 'reactive', 'strength', 'endurance'];
+const PT_RADAR_SHORT = {
+  vertical: 'Détente',
+  firststep: '1er pas',
+  decel: 'Appuis',
+  reactive: 'Chevilles',
+  strength: 'Force',
+  endurance: 'Souffle',
+  shooting: 'Tir'
+};
+// Toile d'araignée : un axe par qualité, trois anneaux = les trois niveaux. « À travailler » reste visible (1er anneau) ; non évaluée = centre.
+function PTPlayerRadar({
+  rows
+}) {
+  const W = 300,
+    H = 250,
+    cx = 150,
+    cy = 128,
+    R = 82,
+    n = rows.length;
+  const pt = (i, r) => {
+    const a = (-90 + i * 360 / n) * Math.PI / 180;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
+  };
+  const ring = k => rows.map((_, i) => pt(i, R * k / 3).join(',')).join(' ');
+  const val = q => q.level === null || q.level === undefined ? 0 : q.level + 1;
+  const shape = rows.map((q, i) => pt(i, R * val(q) / 3).join(',')).join(' ');
+  const label = rows.map(q => `${q.label} : ${q.levelLabel}`).join(', ');
+  return /*#__PURE__*/React.createElement("svg", {
+    className: "player-radar",
+    viewBox: `0 0 ${W} ${H}`,
+    role: "img",
+    "aria-label": `Profil athlétique. ${label}.`
+  }, [1, 2, 3].map(k => /*#__PURE__*/React.createElement("polygon", {
+    key: k,
+    points: ring(k),
+    className: `radar-ring ring-${k}`
+  })), rows.map((_, i) => {
+    const [x, y] = pt(i, R);
+    return /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: cx,
+      y1: cy,
+      x2: x,
+      y2: y,
+      className: "radar-axis"
+    });
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: shape,
+    className: "radar-shape"
+  }), rows.map((q, i) => {
+    const [x, y] = pt(i, R * val(q) / 3);
+    return q.level === null || q.level === undefined ? null : /*#__PURE__*/React.createElement("circle", {
+      key: q.id,
+      cx: x,
+      cy: y,
+      r: "4.5",
+      className: `radar-dot level-${q.level}`
+    }, /*#__PURE__*/React.createElement("title", null, `${q.label} : ${q.levelLabel}`));
+  }), rows.map((q, i) => {
+    const [x, y] = pt(i, R + 20),
+      anchor = Math.abs(x - cx) < 8 ? 'middle' : x > cx ? 'start' : 'end',
+      none = q.level === null || q.level === undefined;
+    return /*#__PURE__*/React.createElement("text", {
+      key: q.id,
+      x: x,
+      y: y + 4,
+      textAnchor: anchor,
+      className: `radar-label${none ? ' is-none' : ''}`
+    }, PT_RADAR_SHORT[q.id] || q.label, none ? ' ?' : '', q.trend === 'up' ? ' ↑' : q.trend === 'down' ? ' ↓' : '');
+  }));
+}
+// Carte joueur : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests, les réponses du bilan et les tirs enregistrés.
+// Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée.
 function PTPlayerCard({
   data,
   go
 }) {
   const JP = window.PlayerProfile,
     AP = window.AthleticProfile,
+    SH = window.Shooting,
     player = data.player || {};
   const pos = JP && JP.positions[player.position],
     [failed, setFailed] = usePTState(false);
   const assessed = AP && data.athletic ? AP.assess(data.athletic).qualities : null;
-  const rows = assessed ? PT_CARD_QUALITIES.map(id => assessed[id]).filter(Boolean) : [];
   const source = q => q.failed.length || q.passed.length ? `test : ${(q.failed[0] || q.passed[0]).label.toLowerCase()}` : q.answer !== null && q.answer !== undefined ? 'd’après ta réponse' : 'pas encore évalué';
   const trend = q => {
     for (const t of [...q.passed, ...q.failed]) {
@@ -380,6 +453,32 @@ function PTPlayerCard({
     }
     return null;
   };
+  const levels = AP?.levelLabels || ['À travailler', 'Correct', 'Point fort'];
+  const physical = PT_CARD_QUALITIES.map(id => assessed?.[id] ? {
+    ...assessed[id],
+    trend: trend(assessed[id]),
+    source: source(assessed[id])
+  } : {
+    id,
+    label: PT_RADAR_SHORT[id],
+    level: null,
+    levelLabel: 'Pas encore évalué',
+    source: 'pas encore évalué'
+  });
+  const sh = SH?.level ? SH.level(data.shooting) : {
+    level: null,
+    attempts: 0
+  };
+  const shooting = {
+    id: 'shooting',
+    label: 'Tir',
+    level: sh.level,
+    levelLabel: sh.level === null ? 'Pas encore évalué' : levels[sh.level],
+    trend: sh.trend,
+    source: sh.level === null ? sh.attempts ? `${sh.attempts} tirs sur 4 semaines : 50 minimum` : 'enregistre tes séances de tir' : `${sh.pct} % sur 4 semaines (${sh.attempts} tirs)`
+  };
+  const rows = [...physical, shooting],
+    any = rows.some(q => q.level !== null && q.level !== undefined);
   const name = (data.profile.name || 'Joueur').toUpperCase();
   return /*#__PURE__*/React.createElement("section", {
     className: "player-card",
@@ -399,35 +498,127 @@ function PTPlayerCard({
     "aria-label": pos ? `Numéro de poste ${pos.number}` : 'Poste non renseigné'
   }, pos ? pos.number : '–'), /*#__PURE__*/React.createElement("span", {
     className: "player-card-id"
-  }, /*#__PURE__*/React.createElement("strong", null, name), /*#__PURE__*/React.createElement("small", null, pos ? pos.label : 'Poste à renseigner', (player.archetypes || []).length ? ` · ${player.archetypes.map(a => JP.archetypes[a]?.label).join(', ')}` : ''))), rows.length > 0 ? /*#__PURE__*/React.createElement("ul", {
+  }, /*#__PURE__*/React.createElement("strong", null, name), /*#__PURE__*/React.createElement("small", null, pos ? pos.label : 'Poste à renseigner', (player.archetypes || []).length ? ` · ${player.archetypes.map(a => JP.archetypes[a]?.label).join(', ')}` : ''))), any ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPlayerRadar, {
+    rows: rows
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "radar-legend",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("span", null, "Centre : pas \xE9valu\xE9"), /*#__PURE__*/React.createElement("span", null, "1er anneau : \xE0 travailler"), /*#__PURE__*/React.createElement("span", null, "2e : correct"), /*#__PURE__*/React.createElement("span", null, "Bord : point fort")), /*#__PURE__*/React.createElement("details", {
+    className: "player-card-detail"
+  }, /*#__PURE__*/React.createElement("summary", null, "Le d\xE9tail de mes notes"), /*#__PURE__*/React.createElement("ul", {
     className: "player-card-stats"
-  }, rows.map(q => {
-    const t = trend(q);
-    return /*#__PURE__*/React.createElement("li", {
-      key: q.id
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "stat-name"
-    }, q.label), /*#__PURE__*/React.createElement("span", {
-      className: "stat-bar",
-      "data-level": q.level === null || q.level === undefined ? 'none' : q.level,
-      "aria-hidden": "true"
-    }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null)), /*#__PURE__*/React.createElement("span", {
-      className: "stat-level"
-    }, q.levelLabel, t && /*#__PURE__*/React.createElement("span", {
-      className: `stat-trend is-${t}`,
-      "aria-label": t === 'up' ? 'en progrès' : 'en baisse'
-    }, /*#__PURE__*/React.createElement(PTIcon, {
-      name: "arrow",
-      size: 12
-    }))), /*#__PURE__*/React.createElement("small", {
-      className: "stat-source"
-    }, source(q)));
-  })) : /*#__PURE__*/React.createElement("p", {
+  }, rows.map(q => /*#__PURE__*/React.createElement("li", {
+    key: q.id
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "stat-name"
+  }, q.label), /*#__PURE__*/React.createElement("span", {
+    className: "stat-level"
+  }, q.levelLabel, q.trend && /*#__PURE__*/React.createElement("span", {
+    className: `stat-trend is-${q.trend}`,
+    "aria-label": q.trend === 'up' ? 'en progrès' : 'en baisse'
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 12
+  }))), /*#__PURE__*/React.createElement("small", {
+    className: "stat-source"
+  }, q.source)))))) : /*#__PURE__*/React.createElement("p", {
     className: "player-card-empty"
-  }, "Fais ton bilan physique : tes qualit\xE9s appara\xEEtront ici, not\xE9es d\u2019apr\xE8s tes tests et tes r\xE9ponses."), /*#__PURE__*/React.createElement("div", {
+  }, "Fais ton bilan physique et enregistre tes tirs : tes qualit\xE9s appara\xEEtront ici en toile, not\xE9es d\u2019apr\xE8s tes tests, tes r\xE9ponses et tes pourcentages."), /*#__PURE__*/React.createElement("div", {
     className: "player-card-foot"
-  }, /*#__PURE__*/React.createElement("p", null, "Notes tir\xE9es de tes tests et de tes r\xE9ponses, rien d\u2019invent\xE9."), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("p", null, "Notes tir\xE9es de tes tests, de tes r\xE9ponses et de tes tirs, rien d\u2019invent\xE9."), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => go('bilan')
-  }, rows.length ? 'Mettre à jour' : 'Faire mon bilan')));
+  }, assessed ? 'Mettre à jour' : 'Faire mon bilan')));
+}
+
+// Tous les questionnaires au même endroit (onglet Moi) : ce qui reste à faire en premier, puis ce qui est fait.
+function PTQuestionnaires({
+  data,
+  go
+}) {
+  const PD = window.PlayerDossier,
+    BPr = window.BasketProfile,
+    SK = window.BasketSkills,
+    JP = window.PlayerProfile;
+  const when = date => date ? ` · mis à jour le ${new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'short'
+  })}` : '';
+  const pct = PD ? PD.completeness(data.dossier).percent : 0,
+    pains = PT.activeSymptoms(data).length,
+    player = data.player || {};
+  const list = [{
+    id: 'dossier',
+    icon: 'profile',
+    title: 'Dossier joueur',
+    done: pct >= 100,
+    text: pct ? `Rempli à ${pct} %${when(data.dossier?.date)}` : 'Gabarit, pause, blessures, disponibilités, objectifs',
+    go: () => go('dossier')
+  }, {
+    id: 'player',
+    icon: 'basket',
+    title: 'Poste & profil de jeu',
+    done: !!player.position,
+    text: player.position && JP ? `${JP.positions[player.position]?.label || ''}${(player.archetypes || []).length ? ' · ' + player.archetypes.map(a => JP.archetypes[a]?.label).join(', ') : ''}` : 'Ton poste, ton style, tes objectifs physiques',
+    go: () => go('player')
+  }, {
+    id: 'game',
+    icon: 'court',
+    title: 'Mon jeu & mon club',
+    done: !!BPr?.complete(data.basketProfile),
+    text: BPr?.complete(data.basketProfile) ? `Forces, faiblesses et club renseignés${when(data.basketProfile?.date)}` : 'Forces, faiblesses, jours de club et de match',
+    go: () => go('basket-profile')
+  }, {
+    id: 'bilan',
+    icon: 'chart',
+    title: 'Bilan physique & tests',
+    done: !!data.athletic?.date,
+    text: data.athletic?.date ? `Fait${when(data.athletic.date)} · détente, sprint, force` : 'Questions + tests : détente, sprint, force',
+    go: () => go('bilan')
+  }, {
+    id: 'skills',
+    icon: 'spark',
+    title: 'Niveau skills basket',
+    done: !!SK?.complete(data.skills),
+    text: SK?.complete(data.skills) ? `Fait${when(data.skills?.profile?.date)}` : 'Dribble, tir, finition, défense : ton niveau de départ',
+    go: () => go(SK?.complete(data.skills) ? 'skills' : 'skills-quiz')
+  }, {
+    id: 'pain',
+    icon: 'pain',
+    title: 'Mes douleurs du moment',
+    done: true,
+    text: pains ? `${pains} douleur${pains > 1 ? 's' : ''} suivie${pains > 1 ? 's' : ''} · soin intégré aux séances` : 'Aucune douleur signalée',
+    go: () => go('symptoms')
+  }, {
+    id: 'gear',
+    icon: 'weight',
+    title: 'Mon matériel',
+    done: data.owned.length > 1,
+    text: `${data.owned.length} élément${data.owned.length > 1 ? 's' : ''} coché${data.owned.length > 1 ? 's' : ''}`,
+    go: () => go('player')
+  }].sort((a, b) => a.done - b.done);
+  const todo = list.filter(x => !x.done).length;
+  return /*#__PURE__*/React.createElement("section", {
+    className: "stack-sm questionnaires",
+    "aria-labelledby": "questionnaires-title"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("h2", {
+    id: "questionnaires-title"
+  }, "Mes questionnaires"), /*#__PURE__*/React.createElement("span", {
+    className: "caption"
+  }, todo ? `${todo} à faire` : 'Tout est à jour')), /*#__PURE__*/React.createElement("div", {
+    className: "home-options"
+  }, list.map(x => /*#__PURE__*/React.createElement("button", {
+    key: x.id,
+    className: `home-action${x.done ? '' : ' is-todo'}`,
+    onClick: x.go
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: x.icon
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, x.title, !x.done && /*#__PURE__*/React.createElement("em", {
+    className: "todo-badge"
+  }, "\xC0 faire")), /*#__PURE__*/React.createElement("small", null, x.text)), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })))));
 }

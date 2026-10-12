@@ -100,13 +100,37 @@ function PTDraftCancel({update,notify,after}) {
 // Carte joueur (lot 15) : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests et les réponses du bilan.
 // Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée. Flèche : évolution d'un test suivi.
 const PT_CARD_QUALITIES=['vertical','firststep','decel','reactive','strength','endurance'];
+const PT_RADAR_SHORT={vertical:'Détente',firststep:'1er pas',decel:'Appuis',reactive:'Chevilles',strength:'Force',endurance:'Souffle',shooting:'Tir'};
+// Toile d'araignée : un axe par qualité, trois anneaux = les trois niveaux. « À travailler » reste visible (1er anneau) ; non évaluée = centre.
+function PTPlayerRadar({rows}){
+  const W=300,H=250,cx=150,cy=128,R=82,n=rows.length;
+  const pt=(i,r)=>{const a=(-90+i*360/n)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
+  const ring=k=>rows.map((_,i)=>pt(i,R*k/3).join(',')).join(' ');
+  const val=q=>q.level===null||q.level===undefined?0:q.level+1;
+  const shape=rows.map((q,i)=>pt(i,R*val(q)/3).join(',')).join(' ');
+  const label=rows.map(q=>`${q.label} : ${q.levelLabel}`).join(', ');
+  return <svg className="player-radar" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Profil athlétique. ${label}.`}>
+    {[1,2,3].map(k=><polygon key={k} points={ring(k)} className={`radar-ring ring-${k}`}/>)}
+    {rows.map((_,i)=>{const [x,y]=pt(i,R);return <line key={i} x1={cx} y1={cy} x2={x} y2={y} className="radar-axis"/>;})}
+    <polygon points={shape} className="radar-shape"/>
+    {rows.map((q,i)=>{const [x,y]=pt(i,R*val(q)/3);return q.level===null||q.level===undefined?null:<circle key={q.id} cx={x} cy={y} r="4.5" className={`radar-dot level-${q.level}`}><title>{`${q.label} : ${q.levelLabel}`}</title></circle>;})}
+    {rows.map((q,i)=>{const [x,y]=pt(i,R+20),anchor=Math.abs(x-cx)<8?'middle':x>cx?'start':'end',none=q.level===null||q.level===undefined;
+      return <text key={q.id} x={x} y={y+4} textAnchor={anchor} className={`radar-label${none?' is-none':''}`}>{PT_RADAR_SHORT[q.id]||q.label}{none?' ?':''}{q.trend==='up'?' ↑':q.trend==='down'?' ↓':''}</text>;})}
+  </svg>;
+}
+// Carte joueur : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests, les réponses du bilan et les tirs enregistrés.
+// Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée.
 function PTPlayerCard({data,go}){
-  const JP=window.PlayerProfile,AP=window.AthleticProfile,player=data.player||{};
+  const JP=window.PlayerProfile,AP=window.AthleticProfile,SH=window.Shooting,player=data.player||{};
   const pos=JP&&JP.positions[player.position],[failed,setFailed]=usePTState(false);
   const assessed=AP&&data.athletic?AP.assess(data.athletic).qualities:null;
-  const rows=assessed?PT_CARD_QUALITIES.map(id=>assessed[id]).filter(Boolean):[];
   const source=q=>q.failed.length||q.passed.length?`test : ${(q.failed[0]||q.passed[0]).label.toLowerCase()}`:q.answer!==null&&q.answer!==undefined?'d’après ta réponse':'pas encore évalué';
   const trend=q=>{for(const t of [...q.passed,...q.failed]){const tr=AP.trend(t.id,data.athletic.tests?.[t.id]);if(tr)return tr.change>0?'up':tr.change<-5?'down':null;}return null;};
+  const levels=AP?.levelLabels||['À travailler','Correct','Point fort'];
+  const physical=PT_CARD_QUALITIES.map(id=>assessed?.[id]?{...assessed[id],trend:trend(assessed[id]),source:source(assessed[id])}:{id,label:PT_RADAR_SHORT[id],level:null,levelLabel:'Pas encore évalué',source:'pas encore évalué'});
+  const sh=SH?.level?SH.level(data.shooting):{level:null,attempts:0};
+  const shooting={id:'shooting',label:'Tir',level:sh.level,levelLabel:sh.level===null?'Pas encore évalué':levels[sh.level],trend:sh.trend,source:sh.level===null?(sh.attempts?`${sh.attempts} tirs sur 4 semaines : 50 minimum`:'enregistre tes séances de tir'):`${sh.pct} % sur 4 semaines (${sh.attempts} tirs)`};
+  const rows=[...physical,shooting],any=rows.some(q=>q.level!==null&&q.level!==undefined);
   const name=(data.profile.name||'Joueur').toUpperCase();
   return <section className="player-card" aria-label="Ma carte joueur">
     {!failed&&<img src={ptHub('card')} alt="" decoding="async" onError={()=>setFailed(true)}/>}
@@ -115,12 +139,34 @@ function PTPlayerCard({data,go}){
       <span className="player-card-number" aria-label={pos?`Numéro de poste ${pos.number}`:'Poste non renseigné'}>{pos?pos.number:'–'}</span>
       <span className="player-card-id"><strong>{name}</strong><small>{pos?pos.label:'Poste à renseigner'}{(player.archetypes||[]).length?` · ${player.archetypes.map(a=>JP.archetypes[a]?.label).join(', ')}`:''}</small></span>
     </div>
-    {rows.length>0?<ul className="player-card-stats">{rows.map(q=>{const t=trend(q);return <li key={q.id}>
-      <span className="stat-name">{q.label}</span>
-      <span className="stat-bar" data-level={q.level===null||q.level===undefined?'none':q.level} aria-hidden="true"><i/><i/><i/></span>
-      <span className="stat-level">{q.levelLabel}{t&&<span className={`stat-trend is-${t}`} aria-label={t==='up'?'en progrès':'en baisse'}><PTIcon name="arrow" size={12}/></span>}</span>
-      <small className="stat-source">{source(q)}</small>
-    </li>;})}</ul>:<p className="player-card-empty">Fais ton bilan physique : tes qualités apparaîtront ici, notées d’après tes tests et tes réponses.</p>}
-    <div className="player-card-foot"><p>Notes tirées de tes tests et de tes réponses, rien d’inventé.</p><button className="text-button" onClick={()=>go('bilan')}>{rows.length?'Mettre à jour':'Faire mon bilan'}</button></div>
+    {any?<>
+      <PTPlayerRadar rows={rows}/>
+      <p className="radar-legend" aria-hidden="true"><span>Centre : pas évalué</span><span>1er anneau : à travailler</span><span>2e : correct</span><span>Bord : point fort</span></p>
+      <details className="player-card-detail"><summary>Le détail de mes notes</summary>
+        <ul className="player-card-stats">{rows.map(q=><li key={q.id}><span className="stat-name">{q.label}</span><span className="stat-level">{q.levelLabel}{q.trend&&<span className={`stat-trend is-${q.trend}`} aria-label={q.trend==='up'?'en progrès':'en baisse'}><PTIcon name="arrow" size={12}/></span>}</span><small className="stat-source">{q.source}</small></li>)}</ul>
+      </details>
+    </>:<p className="player-card-empty">Fais ton bilan physique et enregistre tes tirs : tes qualités apparaîtront ici en toile, notées d’après tes tests, tes réponses et tes pourcentages.</p>}
+    <div className="player-card-foot"><p>Notes tirées de tes tests, de tes réponses et de tes tirs, rien d’inventé.</p><button className="text-button" onClick={()=>go('bilan')}>{assessed?'Mettre à jour':'Faire mon bilan'}</button></div>
+  </section>;
+}
+
+// Tous les questionnaires au même endroit (onglet Moi) : ce qui reste à faire en premier, puis ce qui est fait.
+function PTQuestionnaires({data,go}){
+  const PD=window.PlayerDossier,BPr=window.BasketProfile,SK=window.BasketSkills,JP=window.PlayerProfile;
+  const when=date=>date?` · mis à jour le ${new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}`:'';
+  const pct=PD?PD.completeness(data.dossier).percent:0,pains=PT.activeSymptoms(data).length,player=data.player||{};
+  const list=[
+    {id:'dossier',icon:'profile',title:'Dossier joueur',done:pct>=100,text:pct?`Rempli à ${pct} %${when(data.dossier?.date)}`:'Gabarit, pause, blessures, disponibilités, objectifs',go:()=>go('dossier')},
+    {id:'player',icon:'basket',title:'Poste & profil de jeu',done:!!player.position,text:player.position&&JP?`${JP.positions[player.position]?.label||''}${(player.archetypes||[]).length?' · '+player.archetypes.map(a=>JP.archetypes[a]?.label).join(', '):''}`:'Ton poste, ton style, tes objectifs physiques',go:()=>go('player')},
+    {id:'game',icon:'court',title:'Mon jeu & mon club',done:!!BPr?.complete(data.basketProfile),text:BPr?.complete(data.basketProfile)?`Forces, faiblesses et club renseignés${when(data.basketProfile?.date)}`:'Forces, faiblesses, jours de club et de match',go:()=>go('basket-profile')},
+    {id:'bilan',icon:'chart',title:'Bilan physique & tests',done:!!data.athletic?.date,text:data.athletic?.date?`Fait${when(data.athletic.date)} · détente, sprint, force`:'Questions + tests : détente, sprint, force',go:()=>go('bilan')},
+    {id:'skills',icon:'spark',title:'Niveau skills basket',done:!!SK?.complete(data.skills),text:SK?.complete(data.skills)?`Fait${when(data.skills?.profile?.date)}`:'Dribble, tir, finition, défense : ton niveau de départ',go:()=>go(SK?.complete(data.skills)?'skills':'skills-quiz')},
+    {id:'pain',icon:'pain',title:'Mes douleurs du moment',done:true,text:pains?`${pains} douleur${pains>1?'s':''} suivie${pains>1?'s':''} · soin intégré aux séances`:'Aucune douleur signalée',go:()=>go('symptoms')},
+    {id:'gear',icon:'weight',title:'Mon matériel',done:data.owned.length>1,text:`${data.owned.length} élément${data.owned.length>1?'s':''} coché${data.owned.length>1?'s':''}`,go:()=>go('player')}
+  ].sort((a,b)=>a.done-b.done);
+  const todo=list.filter(x=>!x.done).length;
+  return <section className="stack-sm questionnaires" aria-labelledby="questionnaires-title">
+    <div className="topline"><h2 id="questionnaires-title">Mes questionnaires</h2><span className="caption">{todo?`${todo} à faire`:'Tout est à jour'}</span></div>
+    <div className="home-options">{list.map(x=><button key={x.id} className={`home-action${x.done?'':' is-todo'}`} onClick={x.go}><PTIcon name={x.icon}/><span><strong>{x.title}{!x.done&&<em className="todo-badge">À faire</em>}</strong><small>{x.text}</small></span><PTIcon name="arrow" size={18}/></button>)}</div>
   </section>;
 }

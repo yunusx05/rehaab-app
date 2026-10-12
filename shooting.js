@@ -124,5 +124,12 @@
     if(!sh||!(sh.sessions||[]).length) return null;
     const c=compare(sh,now);return `Tir : ${c.cur.attempts?`${c.cur.made}/${c.cur.attempts} cette semaine (${c.cur.pct} %)`:'aucun tir cette semaine'}${c.prev.attempts?`, ${c.prev.pct} % la semaine d’avant`:''}.`;
   }
-  return {ZONES,DRILLS,ROUTINES,drillLabel,pct,blank,validate,create,fromRoutine,shot,undo,totals,finish,weekly,byDrill,byZone,records,compare,toSkillSession,summary,mondayOf};
+  // Niveau de tir pour la carte joueur : 4 dernières semaines, au moins 50 tirs. Repères d'entraînement (tous tirs confondus), pas une norme.
+  function level(sh,now=today()) {
+    const w=sh?weekly(sh,4,now):[],made=w.reduce((n,x)=>n+x.made,0),attempts=w.reduce((n,x)=>n+x.attempts,0),p=pct(made,attempts);
+    if(attempts<50) return {level:null,pct:p,attempts,trend:null};
+    const c=compare(sh,now);
+    return {level:p<40?0:p<55?1:2,pct:p,attempts,trend:c.delta===null?null:c.delta>=3?'up':c.delta<=-5?'down':null};
+  }
+  return {ZONES,DRILLS,ROUTINES,drillLabel,pct,blank,validate,create,fromRoutine,shot,undo,totals,finish,weekly,byDrill,byZone,records,compare,toSkillSession,summary,level,mondayOf};
 });

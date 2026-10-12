@@ -343,8 +343,9 @@ for(const width of [320,390])test(`mon jeu puis ma muscu depuis le parcours, san
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width,height:900});
   const data=basketPlayer(null);data.pathway=BP.create();
-  await seed(page,data,'pathway');
-  await page.getByRole('button',{name:/Mon jeu/}).first().click();
+  await seed(page,data,'profile');
+  // Les questionnaires sont regroupés dans « Moi ».
+  await page.getByRole('button',{name:/Mon jeu & mon club/}).click();
   await expect(page.getByRole('heading',{name:'Mon jeu.'})).toBeVisible();
   await page.locator('.coach-q',{hasText:'Où es-tu en difficulté'}).getByRole('button',{name:/Tenir au contact/}).click();
   await page.locator('.coach-q',{hasText:'Entraînements au club'}).getByRole('button',{name:'Mar',exact:true}).click();
@@ -354,6 +355,7 @@ for(const width of [320,390])test(`mon jeu puis ma muscu depuis le parcours, san
   await page.getByRole('button',{name:/Enregistrer mon jeu/}).click();
   let saved=await state(page);
   expect(saved.basketProfile).toMatchObject({weaknesses:['contact'],practiceDays:[1],matchDay:5});
+  await page.goto('/#pathway');
   await page.getByRole('button',{name:/Ma muscu/}).first().click();
   await expect(page.getByRole('heading',{name:'Créer ma muscu.'})).toBeVisible();
   await page.getByRole('button',{name:/Basket · force complémentaire/}).click();
@@ -364,10 +366,9 @@ for(const width of [320,390])test(`mon jeu puis ma muscu depuis le parcours, san
   saved=await state(page);
   expect(saved.program.familyId).toBe('basket');
   await page.getByRole('button',{name:/Lancer cette séance/}).first().click();
-  await page.getByRole('button',{name:'En forme',exact:true}).click();
-  await page.getByRole('button',{name:'Bonne',exact:true}).click();
-  await page.getByRole('button',{name:'Aucune',exact:true}).click();
-  await page.getByRole('button',{name:/Voir ma séance du jour/}).click();
+  // Plus de check-in séparé : la séance prévue s'ouvre, le bilan du coach est en tête.
+  await expect(page.locator('.precheck')).toContainText('Comment tu te sens ?');
+  await page.getByRole('button',{name:'Rien à signaler'}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   await expect(page.locator('.role-tag',{hasText:'Priorité terrain'})).toHaveCount(1);
   expect(errors).toEqual([]);

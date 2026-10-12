@@ -113,7 +113,7 @@ test('écran : calendrier à 320 px, lancement de la séance du jour, plan de sa
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:320,height:740});
   await page.goto('/#calendar');
-  await expect(page.getByRole('heading',{name:'Ma semaine.'})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Mon planning.'})).toBeVisible();
   await expect(page.locator('.calendar-day')).toHaveCount(7);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.goto('/#plan');
@@ -126,4 +126,29 @@ test('écran : calendrier à 320 px, lancement de la séance du jour, plan de sa
   await page.goto('/#today');
   await expect(page.locator('.week-strip')).toBeVisible();
   expect(errors).toEqual([]);
+});
+
+test('planning libre : un jour qui casse une règle demande confirmation, puis la séance y va avec une alerte', ()=>{
+  const s=meneur();
+  const week=SP.weekSchedule(s,MONDAY,MONDAY),heavy=items(week).find(x=>x.physical);
+  expect(heavy).toBeTruthy();
+  const friday=SP.at(MONDAY,5); // jour du match du samedi
+  const refused=SP.reschedule(s,MONDAY,heavy.key,friday);
+  expect(refused.ok).toBe(false);expect(refused.canForce).toBe(true);
+  expect(SP.ruleBreakAt(s,MONDAY,heavy.key,friday)).toMatch(/Jour de match/);
+  const forced=SP.reschedule(s,MONDAY,heavy.key,friday,{force:true});
+  expect(forced.ok).toBe(true);expect(forced.forced).toBe(true);
+  const after={...s,calendar:forced.calendar},placed=items(SP.weekSchedule(after,MONDAY,MONDAY)).find(x=>x.key===heavy.key);
+  expect(placed.date).toBe(friday);expect(placed.warning).toMatch(/Jour de match/);
+  expect(SP.violations(after,SP.weekSchedule(after,MONDAY,MONDAY))).toEqual([]);
+  // Sauvegarde : le choix forcé survit à la validation ; « laisser l'app choisir » le retire.
+  expect(SP.validateCalendar(JSON.parse(JSON.stringify(forced.calendar))).forced[MONDAY]).toContain(heavy.key);
+  const back={...s,calendar:SP.unmove(after,MONDAY,heavy.key)};
+  expect(items(SP.weekSchedule(back,MONDAY,MONDAY)).find(x=>x.key===heavy.key).date).toBe(heavy.date);
+});
+test('planning libre : changer ses jours d’entraînement replace les séances', ()=>{
+  const s=meneur();s.dossier={...s.dossier,answers:{...s.dossier.answers,freeDays:[1,3,6]}};
+  const days=items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.physical&&!x.moved).map(x=>x.day);
+  expect(days.length).toBeGreaterThan(0);
+  expect(days.every(d=>[1,3,6].includes(d))).toBe(true);
 });

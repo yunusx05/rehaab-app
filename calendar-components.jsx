@@ -23,7 +23,7 @@ function ptCalendarPlan(data,item){
 }
 
 function PTCalendar({data,update,go,notify}){
-  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[error,setError]=usePTState('');
+  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[confirm,setConfirm]=usePTState(null),[error,setError]=usePTState('');
   if(!SP)return <p className="empty">Calendrier indisponible.</p>;
   const now=PT.dateKey(),monday=SP.at(SP.mondayOf(now),shift*7);
   const week=SP.weekSchedule(data,monday,now),phase=week.phase.phase;
@@ -37,11 +37,23 @@ function PTCalendar({data,update,go,notify}){
     setError('');update(s=>({...s,draft:plan}));go('preview');
   };
   const cannot=item=>{const r=SP.missed(data,monday,item.key,now);if(r.ok)update(s=>({...s,calendar:r.calendar}));notify(r.why);};
-  const moveTo=(item,date)=>{const r=SP.reschedule(data,monday,item.key,date);setMoving(null);if(r.ok)update(s=>({...s,calendar:r.calendar}));notify(r.why);};
+  // Liberté + alerte : un jour qui casse une règle demande confirmation, puis la séance y va quand même.
+  const moveTo=(item,date,force=false)=>{const r=SP.reschedule(data,monday,item.key,date,{force});if(!r.ok&&r.canForce){setConfirm({item,date,why:r.why});return;}setMoving(null);setConfirm(null);if(r.ok)update(s=>({...s,calendar:r.calendar}));notify(r.why);};
+  const reset=item=>{update(s=>({...s,calendar:SP.unmove(s,monday,item.key)}));setMoving(null);notify(`${item.label} : placement automatique rétabli.`);};
+  // Mes jours d'entraînement : même réponse que dans le dossier joueur, modifiable ici.
+  const free=SP.freeDays(data),perWeek=SP.target(data);
+  const setLife=(k,v)=>update(s=>{const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});return {...s,dossier:{...base,answers:{...(base.answers||{}),[k]:v}}};});
+  const fullDate=date=>new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'numeric'});
   const exportIcs=()=>{ptDownload(`rehaab-plan-${now}.ics`,SP.ics(data,now,4),'text/calendar');notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');};
-  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Ma semaine.">{week.target} séances physiques prévues, calées sur tes jours libres et ton club.</PTPageHead>
+  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">{week.target} séances physiques prévues. Choisis tes jours, ou déplace une séance où tu veux.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
+      <section className="card stack-sm calendar-life">
+        <h2>Mes jours d’entraînement</h2>
+        <PTChips multi value={free} onChange={v=>{if(!v.length){notify('Garde au moins un jour libre.');return;}setLife('freeDays',[...v].sort((a,b)=>a-b));}} options={SP.DAYS.map((d,i)=>({value:i,label:d.slice(0,3)}))}/>
+        <div className="topline"><span className="fine">Séances par semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
+        <p className="fine">L’app place tes séances sur ces jours. Tu peux ensuite déplacer chaque séance sur le jour de ton choix.</p>
+      </section>
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       <ol className="calendar-week">{week.days.map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
@@ -49,13 +61,19 @@ function PTCalendar({data,update,go,notify}){
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}{d.qi&&!d.club.match?' · QI du jour (5 min)':''}</p>}
         {d.items.map(item=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
-          <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · déplacée':''}{item.legs==='heavy'?' · jambes':''}</small></span>
+          <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
           {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
             {d.date===now&&<PTButton primary onClick={()=>launch(item)}>Lancer</PTButton>}
             {d.date===now&&<button className="text-button" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
-            <button className="text-button" aria-expanded={moving===item.key} onClick={()=>setMoving(moving===item.key?null:item.key)}>Déplacer</button>
+            <button className="text-button" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
-          {moving===item.key&&<div className="calendar-move" role="group" aria-label="Choisir un jour">{week.days.filter(x=>x.date!==d.date&&diff0(x.date,now)>=0).map(x=><button key={x.date} className="chip" onClick={()=>moveTo(item,x.date)}>{x.label.slice(0,3)}</button>)}</div>}
+          {moving===item.key&&<div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
+            <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,here=x.date===d.date,rule=!past&&!here?SP.ruleBreakAt(data,monday,item.key,x.date):null;
+              return <button key={x.date} className={`calendar-move-day${rule?' has-rule':''}`} disabled={past||here} aria-pressed={here} onClick={()=>moveTo(item,x.date)}><strong>{fullDate(x.date)}</strong><small>{here?'Jour actuel':past?'Passé':rule?'⚠ règle':x.club.match?'Match':x.club.practice?'Club':free.includes(x.weekday)?'Libre':'Jour off'}</small></button>;})}</div>
+            {confirm?.item.key===item.key&&<div className="notice warning stack-sm" role="alert"><p><strong>{fullDate(confirm.date)} :</strong> {confirm.why} Placer quand même ?</p><div className="button-row"><PTButton primary onClick={()=>moveTo(item,confirm.date,true)}>Oui, ce jour-là</PTButton><PTButton quiet onClick={()=>setConfirm(null)}>Choisir un autre jour</PTButton></div></div>}
+            {item.moved&&<button className="text-button" onClick={()=>reset(item)}>Laisser l’app choisir le jour</button>}
+            <p className="fine">Pour une autre semaine, change de semaine avec les flèches en haut.</p>
+          </div>}
         </div>)}
       </li>)}</ol>
       <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club : le basket y est déjà.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
