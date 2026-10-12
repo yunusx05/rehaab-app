@@ -207,6 +207,17 @@ function PTProgramCheckIn({data,update,go,notify,id}) {
   const [answers,setAnswers] = usePTState({});
   const [minutes,setMinutes] = usePTState(Number(program?.minutes) || 30);
   const [error,setError] = usePTState('');
+  // Le bilan de forme se fait désormais dans l'aperçu (PTPreCheck), comme pour toutes les séances : on prépare la version prévue et on y va.
+  const valid = program && program.status !== 'archived' && program.days.includes(dayKey);
+  usePTEffect(() => {
+    if (!valid) return;
+    if (data.draft?.status === 'active') { notify('Une séance est en cours : termine-la avant d’en lancer une autre.'); window.location.replace('#session'); return; }
+    const plan = PP.sessionPlan(program, week, dayKey, data, PP.checkForSession(data, program, {answers:null, minutes:Number(program.minutes) || 30}));
+    if (plan.error) { setError(plan.error); return; }
+    update(s => ({...s, draft: plan}));
+    window.location.replace('#preview');
+  }, []);
+  if (valid && !error) return <p className="fine">Préparation de ta séance…</p>;
 
   if (!program || program.status === 'archived' || !program.days.includes(dayKey))
     return <><PTPageHead onBack={() => go('program')} title="Séance introuvable."/>

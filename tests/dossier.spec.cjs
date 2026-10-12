@@ -173,7 +173,7 @@ test('écran : sommaire du dossier en tuiles photo, accessible depuis le profil'
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('seeded','1');}},{data,key:PT.STORAGE_KEY});
   await page.setViewportSize({width:320,height:700});
   await page.goto('/#profile');
-  await page.getByRole('button',{name:/Mon dossier joueur/}).click({timeout:20000});
+  await page.getByRole('button',{name:/Dossier joueur/}).click({timeout:20000});
   await expect(page.getByRole('heading',{name:'Ce que le coach sait de toi.'})).toBeVisible();
   await expect(page.locator('.image-tile')).toHaveCount(7);
   await expect(page.locator('.image-tile.is-done')).toHaveCount(4);

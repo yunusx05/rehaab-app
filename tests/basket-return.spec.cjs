@@ -103,6 +103,7 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await expect(page.getByRole('heading',{name:'Fondations.'})).toBeVisible();
   await noOverflow(page);
   await page.getByRole('button',{name:/Préparer cette séance/}).first().click();
+  await page.getByRole('button',{name:'Rien à signaler'}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   const draft=(await state(page)).draft;
   expect(draft.source).toBe('pathway');expect(draft.pathwayStep).toBe(1);
@@ -214,9 +215,10 @@ test('accueil allégé : la séance du jour lance directement la séance du parc
   await seed(page,data,'today');
   const card=page.locator('.today-plan');
   await expect(card).toContainText('Étape 1 · Fondations');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','Coach','QI','Moi']);
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Moi']);
   await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
   await card.getByRole('button',{name:/Préparer ma séance/}).click();
+  await page.getByRole('button',{name:'Rien à signaler'}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   expect((await state(page)).draft.source).toBe('pathway');
   await noOverflow(page);expect(errors).toEqual([]);

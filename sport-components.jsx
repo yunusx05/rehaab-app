@@ -71,7 +71,6 @@ function PTSportToday({data,update,go,notify}){
     {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
     {typeof PTWeekReview==='function'&&<PTWeekReview data={data} update={update} notify={notify}/>}
     {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}
-    {typeof PTCoachCard==='function'&&<PTCoachCard data={data} go={go}/>}
     {typeof PTBodyMind==='function'&&<PTBodyMind data={data} go={go}/>}
     {typeof PTWarmupRail==='function'&&<PTWarmupRail data={data} update={update} go={go} notify={notify}/>}
     {typeof PTRehabRail==='function'&&<PTRehabRail data={data} update={update} go={go} notify={notify}/>}

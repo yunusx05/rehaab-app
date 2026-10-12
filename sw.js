@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v61-qi-video-muet';
+const CACHE = 'rehaab-v62-ux-simple';
 const PRECACHE = [
   './',
   './index.html',
