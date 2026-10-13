@@ -53,6 +53,11 @@ function PTIcon({
     pause: /*#__PURE__*/React.createElement("path", {
       d: "M8 5v14M16 5v14"
     }),
+    food: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M7 3v7a2 2 0 0 0 2 2v9M11 3v7a2 2 0 0 1-2 2M9 3v6"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M17 21V3c-2 1-3.5 4-3.5 8 0 2 1.2 3 3.5 3"
+    })),
     copy: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
       x: "8",
       y: "8",
@@ -458,7 +463,9 @@ function PTExerciseDetails({
   }, /*#__PURE__*/React.createElement(PTDemo, {
     key: exercise.id,
     exercise: exercise
-  }), exercise.transfer && /*#__PURE__*/React.createElement("p", {
+  }), exercise.sideNote && /*#__PURE__*/React.createElement("p", {
+    className: "notice warning side-note"
+  }, /*#__PURE__*/React.createElement("strong", null, "\xC9quilibre gauche / droite."), " ", exercise.sideNote), exercise.transfer && /*#__PURE__*/React.createElement("p", {
     className: "court-transfer"
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "basket",
@@ -1808,7 +1815,42 @@ function PTProfile({
     [loads, setLoads] = usePTState(Object.fromEntries(Object.entries(data.loads).map(([k, v]) => [k, v.join(', ')]))),
     [error, setError] = usePTState(''),
     [pendingImport, setPendingImport] = usePTState(null),
-    [showLegacy, setShowLegacy] = usePTState(false);
+    [showLegacy, setShowLegacy] = usePTState(false),
+    [resetAsk, setResetAsk] = usePTState(false),
+    [resetAll, setResetAll] = usePTState(false);
+  // Remise à zéro : une copie complète est gardée sur l'appareil pour pouvoir annuler.
+  const RESET_KEY = 'rh_personal_reset_backup_v1';
+  let resetBackup = null;
+  try {
+    resetBackup = localStorage.getItem(RESET_KEY);
+  } catch (e) {}
+  const resetProfile = () => {
+    try {
+      localStorage.setItem(RESET_KEY, JSON.stringify(PT.exportBundle(data, legacy)));
+    } catch (e) {
+      setError('Copie de sécurité impossible (espace plein ?) : rien n’a été effacé. Exporte tes données d’abord.');
+      return;
+    }
+    update(s => PT.resetProfile(s, {
+      all: resetAll
+    }));
+    setResetAsk(false);
+    notify('Profil remis à zéro. On repart du dossier joueur, puis le bilan et les tests.');
+    go('today');
+  };
+  const undoReset = () => {
+    try {
+      const bundle = PT.importBundle(resetBackup);
+      update(() => ({
+        ...bundle.state,
+        legacyArchive: bundle.legacy
+      }));
+      localStorage.removeItem(RESET_KEY);
+      notify('Profil d’avant la remise à zéro restauré.');
+    } catch (e) {
+      setError('Restauration impossible : la copie est illisible.');
+    }
+  };
   const set = (k, v) => setForm(p => ({
     ...p,
     [k]: v
@@ -2102,6 +2144,35 @@ function PTProfile({
     }))
   }, "Restaurer")))))), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, "Repartir \xE0 z\xE9ro"), /*#__PURE__*/React.createElement("div", {
+    className: "stack"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Efface ton dossier joueur, tes questionnaires (bilan, skills, \xAB Mon jeu \xBB, nutrition), tes tests, tes paliers, ton parcours, ton plan et ton calendrier. L\u2019app te fait tout refaire depuis le d\xE9but. Ton mat\xE9riel, tes charges et tes infos de base restent."), /*#__PURE__*/React.createElement("label", {
+    className: "check-label"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: resetAll,
+    onChange: e => setResetAll(e.target.checked)
+  }), "Effacer aussi mon historique (s\xE9ances, poids, QI, tirs, douleurs signal\xE9es)."), !resetAsk ? /*#__PURE__*/React.createElement(PTButton, {
+    danger: true,
+    onClick: () => setResetAsk(true)
+  }, "R\xE9initialiser mon profil") : /*#__PURE__*/React.createElement("div", {
+    className: "notice warning stack-sm",
+    role: "alert"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Tout reprendre \xE0 z\xE9ro ?"), " ", resetAll ? 'Profil et historique seront effacés.' : 'Ton historique de séances est conservé.', " Une copie est gard\xE9e sur ce t\xE9l\xE9phone pour annuler."), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    danger: true,
+    onClick: resetProfile
+  }, "Oui, repartir \xE0 z\xE9ro"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setResetAsk(false)
+  }, "Annuler"))), resetBackup && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: undoReset
+  }, "Annuler la derni\xE8re remise \xE0 z\xE9ro"))), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Cr\xE9dits des images et vid\xE9os"), /*#__PURE__*/React.createElement("div", {
     className: "stack"
   }, /*#__PURE__*/React.createElement("p", {
@@ -2295,7 +2366,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
+  const active = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route.startsWith('nutrition') ? 'nutrition' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
   let content;
   // Premier lancement : le dossier joueur (ou la version rapide). Les écrans du dossier restent ouverts avant la fin de l'accueil.
   if (!data.profile.onboarded && !storageError && !['symptoms', 'dossier', 'dossier-q', 'dossier-synthese'].includes(route)) content = /*#__PURE__*/React.createElement(PTDossierWelcome, props);else {
@@ -2336,6 +2407,8 @@ function PersonalApp() {
       plan: PTSeasonPlan,
       'qi-scene': PTQiScenes,
       shooting: PTShooting,
+      nutrition: PTNutrition,
+      'nutrition-q': PTNutritionQuiz,
       'shooting-new': PTShootingNew,
       'shooting-live': PTShootingLive,
       weight: PTWeight
@@ -2386,6 +2459,10 @@ function PersonalApp() {
     id: 'qi',
     label: 'QI',
     icon: 'court'
+  }, {
+    id: 'nutrition',
+    label: 'Nutrition',
+    icon: 'food'
   }, {
     id: 'profile',
     label: 'Moi',

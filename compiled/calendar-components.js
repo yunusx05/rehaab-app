@@ -18,11 +18,13 @@ const ptCalStatus = {
 const ptShortDay = date => `${date.slice(8, 10)}/${date.slice(5, 7)}`;
 
 // Construit la séance correspondant à un élément du calendrier.
-function ptCalendarPlan(data, item) {
+// day : le jour du calendrier. S'il porte déjà une séance skills, la séance du parcours n'ajoute pas son bloc skills (pas de doublon).
+function ptCalendarPlan(data, item, day) {
   const BP = window.BasketPathway,
     JP = window.PlayerProfile,
     SK = window.BasketSkills;
-  if (item.type === 'pathway' && data.pathway) return BP.sessionPlan(PT, JP, data, data.pathway, item.day);
+  const ownSkills = !!day && day.items.some(x => x.type === 'skills');
+  if (item.type === 'pathway' && data.pathway) return ownSkills && BP.sessionPlanCore ? BP.sessionPlanCore(PT, JP, data, data.pathway, item.day) : BP.sessionPlan(PT, JP, data, data.pathway, item.day);
   if (item.type === 'reset') {
     // Remise en route : les jours de l'étape 1, sans saut ni impact, hors parcours (rien n'est validé dans les étapes).
     const p = data.pathway && data.pathway.step === 1 ? data.pathway : BP.create({
@@ -67,7 +69,7 @@ function PTCalendar({
     monday = SP.at(SP.mondayOf(now), shift * 7);
   const week = SP.weekSchedule(data, monday, now),
     phase = week.phase.phase;
-  const launch = item => {
+  const launch = (item, day) => {
     if (item.type === 'muscu') {
       go('program');
       return;
@@ -84,7 +86,7 @@ function PTCalendar({
       setError('Une séance est en cours : termine-la ou reprends-la avant d’en lancer une autre.');
       return;
     }
-    const plan = ptCalendarPlan(data, item);
+    const plan = ptCalendarPlan(data, item, day);
     if (!plan || plan.error) {
       setError(plan?.error || 'Séance indisponible aujourd’hui.');
       return;
@@ -157,15 +159,69 @@ function PTCalendar({
     day: 'numeric',
     month: 'numeric'
   });
+  // Type de journée : un seul jour (cette semaine) ou toute la semaine type.
+  const setMode = (date, mode, every) => update(s => {
+    let next = {
+      ...s,
+      calendar: SP.setDayMode(s, date, mode, {
+        every
+      })
+    };
+    const wd = SP.weekday(date),
+      days = SP.freeDays(s);
+    // « Auto » sur un jour non disponible le rend disponible : sinon l'app n'y placerait rien.
+    if (every && mode === 'auto' && !days.includes(wd)) {
+      const PD = window.PlayerDossier,
+        base = s.dossier || (PD ? PD.blank() : {
+          answers: {}
+        });
+      next = {
+        ...next,
+        dossier: {
+          ...base,
+          answers: {
+            ...(base.answers || {}),
+            freeDays: [...days, wd].sort((a, b) => a - b)
+          }
+        }
+      };
+    }
+    return next;
+  });
+  const weekMode = wd => {
+    const m = SP.dayMode({
+      calendar: {
+        week: (data.calendar || {}).week || {}
+      }
+    }, SP.at(monday, wd));
+    return m === 'auto' && !free.includes(wd) ? 'off' : m;
+  };
+  const modeOptions = Object.entries(SP.MODES).map(([value, label]) => ({
+    value,
+    label
+  }));
+  const sk = data.skills?.program;
+  const setSkillsPerWeek = n => update(s => ({
+    ...s,
+    skills: {
+      ...s.skills,
+      program: {
+        ...s.skills.program,
+        perWeek: n,
+        status: 'active'
+      }
+    }
+  }));
   const exportIcs = () => {
     ptDownload(`rehaab-plan-${now}.ics`, SP.ics(data, now, 4), 'text/calendar');
     notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');
   };
+  const physCount = week.days.flatMap(d => d.items).filter(x => x.physical).length;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
     title: "Mon planning."
-  }, week.target, " s\xE9ances physiques pr\xE9vues. Choisis tes jours, ou d\xE9place une s\xE9ance o\xF9 tu veux."), /*#__PURE__*/React.createElement("div", {
+  }, "Muscu et skills dans un seul planning. R\xE8gle chaque jour : muscu, skills, les deux ou repos."), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "calendar-nav"
@@ -183,36 +239,55 @@ function PTCalendar({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), /*#__PURE__*/React.createElement("section", {
-    className: "card stack-sm calendar-life"
-  }, /*#__PURE__*/React.createElement("h2", null, "Mes jours d\u2019entra\xEEnement"), /*#__PURE__*/React.createElement(PTChips, {
-    multi: true,
-    value: free,
-    onChange: v => {
-      if (!v.length) {
-        notify('Garde au moins un jour libre.');
-        return;
-      }
-      setLife('freeDays', [...v].sort((a, b) => a - b));
-    },
-    options: SP.DAYS.map((d, i) => ({
-      value: i,
-      label: d.slice(0, 3)
-    }))
-  }), /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement("p", {
+    className: "calendar-balance"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "cette semaine")), week.skills.placed < week.skills.wanted && /*#__PURE__*/React.createElement("p", {
+    className: "notice warning"
+  }, week.skills.wanted - week.skills.placed, " s\xE9ance", week.skills.wanted - week.skills.placed > 1 ? 's' : '', " skills sans place cette semaine : r\xE8gle un jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("details", {
+    className: "card stack-sm calendar-life disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, /*#__PURE__*/React.createElement("strong", null, "Ma semaine type"), /*#__PURE__*/React.createElement("small", null, "Le type de chaque jour, toutes les semaines")), /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "calendar-modes"
+  }, SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("label", {
+    key: d,
+    className: "calendar-mode-row"
+  }, /*#__PURE__*/React.createElement("span", null, d), /*#__PURE__*/React.createElement("select", {
+    value: weekMode(i),
+    onChange: e => setMode(SP.at(monday, i), e.target.value, true)
+  }, modeOptions.map(o => /*#__PURE__*/React.createElement("option", {
+    key: o.value,
+    value: o.value
+  }, o.label)))))), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "\xAB Auto \xBB : l\u2019app choisit selon tes r\xE8gles de charge. \xAB Muscu + skills \xBB : la s\xE9ance skills, raccourcie, suit la s\xE9ance physique."), /*#__PURE__*/React.createElement("div", {
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
     className: "fine"
-  }, "S\xE9ances par semaine"), /*#__PURE__*/React.createElement(PTChips, {
+  }, "S\xE9ances physiques / semaine"), /*#__PURE__*/React.createElement(PTChips, {
     value: perWeek,
     onChange: v => setLife('sessions', String(v)),
     options: [2, 3, 4, 5, 6].map(n => ({
       value: n,
       label: String(n)
     }))
-  })), /*#__PURE__*/React.createElement("p", {
+  })), sk ? /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
     className: "fine"
-  }, "L\u2019app place tes s\xE9ances sur ces jours. Tu peux ensuite d\xE9placer chaque s\xE9ance sur le jour de ton choix.")), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "S\xE9ances skills / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+    value: sk.perWeek,
+    onChange: setSkillsPerWeek,
+    options: [1, 2, 3, 4].map(n => ({
+      value: n,
+      label: String(n)
+    }))
+  })) : /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('skills-quiz')
+  }, "Faire le questionnaire skills pour ajouter des s\xE9ances skills \u2192"))), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "notice warning"
   }, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
@@ -230,7 +305,15 @@ function PTCalendar({
     className: "calendar-day-head"
   }, /*#__PURE__*/React.createElement("strong", null, d.label), /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, ptShortDay(d.date)), d.club.match && /*#__PURE__*/React.createElement("span", {
+  }, ptShortDay(d.date)), !d.club.match && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("select", {
+    className: "calendar-day-mode",
+    "aria-label": `Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`,
+    value: d.mode === 'auto' && !d.free ? 'off' : d.mode,
+    onChange: e => setMode(d.date, e.target.value, false)
+  }, modeOptions.map(o => /*#__PURE__*/React.createElement("option", {
+    key: o.value,
+    value: o.value
+  }, o.label))), d.club.match && /*#__PURE__*/React.createElement("span", {
     className: "badge"
   }, "Match"), d.club.practice && /*#__PURE__*/React.createElement("span", {
     className: "badge quiet"
@@ -253,7 +336,7 @@ function PTCalendar({
     className: "calendar-actions"
   }, d.date === now && /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
-    onClick: () => launch(item)
+    onClick: () => launch(item, d)
   }, "Lancer"), d.date === now && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => cannot(item)
@@ -301,7 +384,7 @@ function PTCalendar({
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
-  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club : le basket y est d\xE9j\xE0."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine.")), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club (le basket y est d\xE9j\xE0), sauf si tu r\xE8gles ce jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("li", null, "Skills sans jour libre : elles passent apr\xE8s une s\xE9ance physique, en version courte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine.")), /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, "Ce sont des conventions d\u2019entra\xEEnement courantes, pas des normes m\xE9dicales (voir les sources du plan)."))), /*#__PURE__*/React.createElement("div", {
     className: "home-options"

@@ -13,6 +13,7 @@
 
   const areas = {
     handle:{label:'Maniement de balle',short:'Dribble',style:'Kyrie Irving',why:'Contrôle des deux mains, tête haute, changements de rythme.'},
+    coordination:{label:'Coordination & réception',short:'Coordination',style:'',why:'Attraper la balle en mouvement des deux côtés, changer de main autour d’un plot, pieds et mains ensemble.'},
     shoot:{label:'Tir',short:'Tir',style:'Stephen Curry',why:'Routine de forme, catch & shoot, tir après dribble, volume.'},
     finish:{label:'Finition au cercle',short:'Finition',style:'Derrick Rose',why:'Deux mains, appuis variés, vitesse et explosivité au cercle.'},
     footwork:{label:'Jeu de jambes avec ballon',short:'Appuis',style:'',why:'Triple menace, feintes, arrêts et pivots.'},
@@ -28,6 +29,9 @@
     pressure:{area:'handle',label:'Garder la balle sous pression'},
     moves:{area:'handle',label:'Enchaîner crossover, entre les jambes, dans le dos'},
     speedDribble:{area:'handle',label:'Dribbler vite en transition'},
+    catchTwo:{area:'coordination',label:'Attraper une passe en mouvement, à droite comme à gauche'},
+    coneHands:{area:'coordination',label:'Contourner un plot en changeant de main au bon moment'},
+    feetHands:{area:'coordination',label:'Coordonner les pieds et le dribble sans regarder'},
     catchShoot:{area:'shoot',label:'Catch & shoot seul, pieds prêts'},
     pullup:{area:'shoot',label:'Tir après dribble (pull-up)'},
     freeThrow:{area:'shoot',label:'Lancers francs'},
@@ -77,6 +81,19 @@
     D('sk-snatch','Snatch-back pour créer l’espace','handle',3,['moves','pressure'],HC,['Attaque deux dribbles.','Ramène la balle d’un dribble arrière en reculant.','Finis équilibré, prêt à tirer.'],{min:6,max:8,rest:40,cuts:true,regions:['wrist','ankle','knee']}),
     D('sk-spin','Spin move en sortie','handle',3,['moves'],HC,['Attaque un plot.','Pivote sur le pied avant, balle collée à la hanche.','Ressors vite de l’autre côté.'],{min:6,max:8,rest:40,cuts:true,regions:['wrist','ankle','knee']}),
     D('sk-zigzag','Zigzag tout terrain','handle',3,['speedDribble','moves','pressure'],HC,['Traverse en zigzag d’un côté à l’autre.','Change de main à chaque changement de direction.','Varie : crossover, entre les jambes, dans le dos.'],{measure:'seconds',seconds:45,rest:40,cuts:true,regions:['wrist','ankle','knee'],style:'Kyrie Irving'}),
+    // Coordination & réception : les bases qui manquent souvent après une longue pause. Un plot peut être une bouteille ou une chaussure.
+    D('co-wall-catch','Passes au mur, réception deux mains','coordination',1,['catchTwo'],H,['À deux mètres d’un mur, passe à deux mains, poitrine.','Attrape mains ouvertes en « W », pouces presque joints, coudes souples.','Ramène tout de suite la balle en triple menace.'],{measure:'seconds',seconds:40,rest:20,transfer:'Ne plus perdre les passes faciles.',cues:['Mains prêtes avant la balle','Yeux sur la balle jusqu’aux mains']}),
+    D('co-one-hand-catch','Passes au mur à une main','coordination',1,['catchTwo'],H,['Passe au mur d’une main, rattrape de la même main.','Dix de la main droite, dix de la main gauche.','La main recule avec la balle pour l’amortir.'],{min:10,max:15,unilateral:true,rest:20,transfer:'Une main faible qui sécurise la balle.',cues:['Amortir, pas taper','Main faible en premier']}),
+    D('co-toss-catch','Lancer et rattraper en marchant','coordination',1,['catchTwo','feetHands'],H,['Marche en lançant la balle juste au-dessus de la tête.','Rattrape à deux mains sans t’arrêter de marcher.','Puis main droite seule, puis main gauche seule.'],{measure:'seconds',seconds:40,rest:20,transfer:'Les mains qui suivent pendant que les pieds avancent.',cues:['Balle pas plus haut que la tête','Les pieds ne s’arrêtent pas']}),
+    D('co-cone-walk','Tour du plot en marchant, main extérieure','coordination',1,['coneHands','weakHand'],HC,['Pose un plot (ou une bouteille).','Tourne autour en dribblant de la main la plus éloignée du plot.','Change de sens et change de main. Marche, tête haute.'],{measure:'seconds',seconds:40,rest:20,transfer:'Protéger la balle du défenseur avec le corps.',cues:['Main loin du plot','Corps entre le plot et la balle']}),
+    D('co-line-dribble','Pas autour d’une ligne en dribblant','coordination',1,['feetHands'],HC,['Une ligne au sol.','Petits pas de part et d’autre, dribble main droite.','Change de main à chaque aller-retour, sans regarder tes pieds.'],{measure:'seconds',seconds:30,rest:20,transfer:'Dribbler sans penser à ses appuis.',cues:['Tête haute','Petits appuis rapides']}),
+    D('co-catch-move','Réception en mouvement des deux côtés','coordination',2,['catchTwo'],HC,['Lance la balle contre le mur en te déplaçant en pas chassés.','Attrape en appui 1-2, côté droit puis côté gauche.','Enchaîne un dribble de la main extérieure.'],{min:8,max:10,unilateral:true,rest:30,cuts:true,regions:['wrist','ankle','knee'],transfer:'Recevoir une passe en sortie de coupe et partir tout de suite.',cues:['Pieds qui arrivent sous la balle','Main extérieure au départ']}),
+    D('co-cone-cross','Plot : crossover au bon moment','coordination',2,['coneHands','moves'],HC,['Dribble vers un plot main droite.','À un pas du plot, crossover bas vers la main gauche.','Passe le plot côté gauche et accélère deux dribbles. Puis l’inverse.'],{min:6,max:8,unilateral:true,rest:30,cuts:true,regions:['wrist','ankle','knee'],transfer:'Changer de main juste avant le défenseur, pas trop tôt.',cues:['Un pas avant le plot','Crossover sous le genou']}),
+    D('co-slalom','Slalom de plots, main extérieure','coordination',2,['coneHands','speedDribble'],HC,['Quatre plots espacés de deux mètres.','Toujours la main extérieure : change de main entre deux plots.','Aller en trottinant, retour plus vite.'],{measure:'seconds',seconds:40,rest:30,cuts:true,regions:['wrist','ankle','knee'],transfer:'Traverser le trafic sans perdre la balle.',cues:['Main extérieure','Balle basse au plot']}),
+    D('co-catch-turn','Réception, pivot et départ main opposée','coordination',2,['catchTwo','coneHands'],HC,['Lance-toi la balle et attrape-la en arrêt deux temps.','Pivote vers le plot.','Pars main la plus éloignée du plot et contourne-le.'],{min:6,max:8,rest:30,cuts:true,regions:['wrist','ankle','knee'],transfer:'Attraper, faire face, attaquer du bon côté.',cues:['Arrêt équilibré','Premier dribble main extérieure']}),
+    D('co-figure8-cones','Huit autour de deux plots en vitesse','coordination',3,['coneHands','speedDribble'],HC,['Deux plots à trois mètres.','Fais des huit en dribble, main extérieure à chaque plot.','Accélère à chaque sortie de plot.'],{measure:'seconds',seconds:40,rest:40,cuts:true,regions:['wrist','ankle','knee'],transfer:'Changer de main en vitesse sans ralentir.',cues:['Épaule basse au plot','Accélère en sortie']}),
+    D('co-pass-attack','Passe au mur, réception et attaque du plot','coordination',3,['catchTwo','coneHands'],HC,['Passe au mur en courant.','Réception en mouvement, sans arrêter les pieds.','Main extérieure, contourne le plot, finis en arrêt deux temps.'],{min:6,max:8,unilateral:true,rest:40,cuts:true,regions:['wrist','ankle','knee'],transfer:'Recevoir en course et attaquer le bon côté.',cues:['Mains prêtes avant la balle','Pas d’arrêt avant le plot']}),
+    D('co-reaction-catch','Réception sur signal','coordination',3,['catchTwo'],H,['Un partenaire lance la balle à droite ou à gauche, au hasard.','Attrape d’une main ou des deux, ramène en triple menace.','Seul : lance-la de biais contre un mur irrégulier.'],{min:10,max:12,rest:30,regions:['wrist','ankle'],transfer:'Les mains qui réagissent aux mauvaises passes.',cues:['Mains ouvertes, coudes souples','Triple menace tout de suite']}),
     // Tir — avec panier.
     D('sk-form','Tir de forme près du cercle','shoot',1,['catchShoot','freeThrow'],HH,['À un mètre du cercle, une main.','Coude sous la balle, poignet cassé en fin de geste.','Cinq réussis de suite avant de reculer.'],shots(5,5,{style:'Stephen Curry'})),
     D('sk-ft','Lancers francs','shoot',1,['freeThrow'],HH,['Toujours la même routine avant le tir.','Respire, fixe l’arrière du cercle.','Note chaque série de 10.'],shots(2,10,{rest:20})),
@@ -253,7 +270,9 @@
     const opts={hoop,noImpact:light};
     const used=hoop?['sk-ft']:[],take=(area,count)=>{const list=pick(state,{...opts,area,count,exclude:used});list.forEach(d=>used.push(d.id));return list.map(d=>dose(d,PT));};
     // Échauffement balle en main, cœur sur le point faible, deuxième domaine, puis lancers francs ou tir de forme pour finir.
-    const plan=[...take('handle',1),...take(main,total>=45?3:2),...take(second,total>=45?2:1)];
+    // Échauffement : coordination et réception tant qu'elles ne sont pas un point fort, sinon maniement.
+    const warm=(s.levels.coordination||1)<3&&main!=='coordination'?'coordination':'handle';
+    const plan=[...take(warm,1),...take(main,total>=45?3:2),...take(second,total>=45?2:1)];
     if(total>=60) plan.push(...take(main==='shoot'?'finish':'shoot',1),...take('footwork',1));
     // Avec un panier, la séance se termine toujours par des lancers francs (routine sous fatigue légère).
     const ft=hoop?dose(byId('sk-ft'),PT):null;

@@ -261,6 +261,22 @@
         if(e){exercises.splice(Math.min(3,exercises.length),0,e);focusNote=`${focus.level===0?'Point faible':'Priorité'} de ton bilan · ${focus.label.toLowerCase()} : ${e.name}.`;break;}
       }
     }
+    // Jambe en retrait (bilan) : les jours de jambes, un exercice sur cette jambe seule, puis chaque exercice sur une jambe commence par elle.
+    let legNote=null;
+    const weak=athletic&&AP.weakLeg?AP.weakLeg(athletic):null;
+    if(weak){
+      const side=AP.sideLabel(weak.side),legPattern=e=>['squat','hinge','jump','calf'].includes(e.pattern)&&e.unilateral;
+      if(['A','C'].includes(day.key)){
+        const slot=AP.legBalanceSlot(athletic,step.id,exercises.map(x=>x.id));
+        const e=slot&&resolve(slot,true);
+        if(e){
+          Object.assign(e,{name:`${e.name} · jambe ${side} seule`,unilateral:false,weakSide:weak.side,sideNote:`Jambe ${side} seulement : c’est elle qui rattrape son retard. Qualité avant vitesse, réception silencieuse.`});
+          exercises.splice(Math.min(4,exercises.length),0,e);
+        }
+      }
+      exercises.filter(x=>legPattern(x)&&!x.weakSide).forEach(x=>{x.sideNote=`Commence par la jambe ${side}, puis termine par une série de plus sur la jambe ${side} seule.`;});
+      if(exercises.some(x=>x.weakSide||x.sideNote)) legNote=`Jambe ${side} en retrait (${weak.source==='tests'?`tes tests : ${weak.tests.map(t=>t.label.toLowerCase()).join(', ')}`:'d’après ton bilan'}) : exercices sur cette jambe seule et une série de plus pour elle. On recontrôle au prochain bilan.`;
+    }
     // Sans point faible du bilan : la première faiblesse du questionnaire « Mon jeu » prend ce créneau.
     const C=!focusNote&&player.court?courtLib():null,APL=C?athleticLib():null;
     if(C&&APL&&C.complete(player.court)){
@@ -303,6 +319,7 @@
     if(kineNote&&exercises.some(e=>e.pathwayRole==='kiné')) reasons.push(kineNote);
     if(heavy){exercises.forEach(e=>{if((e.pattern==='jump'||e.impact)&&e.sets>3)e.sets=3;});reasons.push('Au-dessus de ton poids de jeu : sauts limités à 3 séries, souffle au vélo plutôt qu’en course, pour ménager les genoux.');}
     if(focusNote&&exercises.some(e=>['point faible','priorité'].includes(e.pathwayRole))) reasons.push(focusNote);
+    if(legNote) reasons.push(legNote);
     if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
     reasons.push(...step.rules);
     return {id:uid(),title:`${step.short} · ${day.name}`,source:'pathway',pathwayId:p.id,pathwayStep:step.id,pathwayWeek:week,pathwayDay:day.key,focus:'muscle',format:'classic',exercises,check,reasons:reasons.concat(changes),warmupSeconds:300,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
@@ -424,5 +441,5 @@
     return {id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
-  return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,markCompleted,latest,evaluate,gate,advance,stepBack,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
+  return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,stepBack,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
 });

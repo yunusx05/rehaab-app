@@ -215,7 +215,7 @@ test('accueil allégé : la séance du jour lance directement la séance du parc
   await seed(page,data,'today');
   const card=page.locator('.today-plan');
   await expect(card).toContainText('Étape 1 · Fondations');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Moi']);
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Nutrition','Moi']);
   await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
   await card.getByRole('button',{name:/Préparer ma séance/}).click();
   await page.getByRole('button',{name:'Rien à signaler'}).click();

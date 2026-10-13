@@ -792,6 +792,18 @@
     return {kind:'train',title:plan==='pathway'?'Ta séance du parcours t’attend.':plan==='program'?'Ta séance du programme t’attend.':'Feu vert pour t’entraîner.',why:[load.zone==='low'?'Ta charge récente est sous ta moyenne : tu peux reprendre le rythme, sans rattraper d’un coup.':load.zone==='rising'?'Charge en hausse : garde une intensité maîtrisée.':(cared?'Pas de match proche : séance prévue, avec le soin.':'Pas de douleur, pas de match proche : séance normale.'),...clubWhy,...careWhy],action:plan,load};
   }
   function exportBundle(state,legacy={}) {return {app:'Rehaab',exportedAt:new Date().toISOString(),state:validateState(state),legacy};}
+  // Repartir à zéro : questionnaires, bilan, tests, paliers, parcours, plan et calendrier effacés ; l'accueil redemande le dossier.
+  // Le matériel, les paliers de charge et les infos de base (prénom, âge, taille, poids) restent. all : l'historique part aussi.
+  const PROFILE_KEYS=['player','pathway','athletic','dossier','basketProfile','skills','seasonPlan','calendar','weeklyReviews','coachLog','program','weightPrefs','nutrition','rehab','draft'];
+  function resetProfile(state,{all=false}={}) {
+    const base=initialState(),next={...state};
+    PROFILE_KEYS.forEach(k=>{next[k]=base[k]!==undefined?clone(base[k]):null;});
+    if(all) ['sessions','symptoms','events','measurements','qi','shooting','trash','savedWorkouts'].forEach(k=>{next[k]=base[k]!==undefined?clone(base[k]):null;});
+    const p=state.profile||base.profile;
+    next.profile={...base.profile,name:p.name||'',age:p.age||'',height:p.height||'',weight:p.weight||'',weeklyTarget:p.weeklyTarget||base.profile.weeklyTarget,safeties:!!p.safeties,onboarded:false};
+    next.programWeek=1;
+    return next;
+  }
   function importBundle(raw) {const bundle=JSON.parse(raw);assert(bundle.app==='Rehaab','Ce fichier n’est pas une sauvegarde Rehaab récente.');return {state:validateState(bundle.state),legacy:bundle.legacy && typeof bundle.legacy==='object'?bundle.legacy:{}};}
-  return {VERSION,STORAGE_KEY,equipment,regions,patterns,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,trainingLoad,loadZones,liftHistory,trackedLifts,todayPlan,exportBundle,importBundle,estimateSeconds,makePrescription};
+  return {VERSION,STORAGE_KEY,equipment,regions,patterns,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,resetProfile,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,trainingLoad,loadZones,liftHistory,trackedLifts,todayPlan,exportBundle,importBundle,estimateSeconds,makePrescription};
 });

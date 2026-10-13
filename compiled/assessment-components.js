@@ -2,7 +2,7 @@
 const AP = window.AthleticProfile;
 const apLevelClass = level => level === null ? 'is-unknown' : ['is-low', 'is-mid', 'is-high'][level];
 // Étiquette affichée dans l'aperçu de séance pour le bloc kiné et le créneau du bilan.
-const ptRoleTag = e => e.pathwayRole === 'soin' ? e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer' : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? e.courtFocus ? 'Priorité terrain' : 'Priorité du bilan' : null;
+const ptRoleTag = e => e.pathwayRole === 'soin' ? e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer' : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'jambe faible' ? 'Jambe faible' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? e.courtFocus ? 'Priorité terrain' : 'Priorité du bilan' : null;
 const apFresh = a => !!(a && a.date) && PT.dayDiff(PT.dateKey(), a.date) <= 28;
 function PTAssessment({
   data,
@@ -264,7 +264,9 @@ function PTAssessmentResult({
     "aria-hidden": "true"
   }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null))))), res.asymmetries.length > 0 && /*#__PURE__*/React.createElement("p", {
     className: "notice warning"
-  }, "\xC9cart entre tes deux jambes : ", res.asymmetries.map(a => `${a.label.toLowerCase()} (côté ${a.weak === 'left' ? 'gauche' : 'droit'} en retrait${a.gap ? `, ${a.gap} %` : ''})`).join(' · '), ". Le travail sur une jambe commencera par ce c\xF4t\xE9.")), /*#__PURE__*/React.createElement("section", {
+  }, "\xC9cart entre tes deux jambes : ", res.asymmetries.map(a => `${a.label.toLowerCase()} (côté ${a.weak === 'left' ? 'gauche' : 'droit'} en retrait${a.gap ? `, ${a.gap} %` : ''})`).join(' · '), ". Le travail sur une jambe commencera par ce c\xF4t\xE9, avec un exercice pour lui seul les jours de jambes."), !res.asymmetries.length && AP.weakLeg(draft) && /*#__PURE__*/React.createElement("p", {
+    className: "notice"
+  }, "Jambe ", AP.sideLabel(AP.weakLeg(draft).side), " d\xE9clar\xE9e en retrait : les jours de jambes, un exercice pour elle seule, et chaque exercice sur une jambe commence par elle. Le saut une jambe en longueur (tests terrain) mesurera l\u2019\xE9cart.")), /*#__PURE__*/React.createElement("section", {
     className: "stack-sm"
   }, /*#__PURE__*/React.createElement("h2", null, "Tes priorit\xE9s"), /*#__PURE__*/React.createElement("ol", {
     className: "step-list"

@@ -80,7 +80,7 @@ test('séance Vivacité : sans saut avant l’étape 2, avec appuis rapides ensu
 test('skills : anciennes sauvegardes valides, défense et moves dans les séances',()=>{
   const old={profile:{answers:{weakHand:0},tests:{},date:'2026-09-01'},levels:{handle:2,shoot:1,finish:1,footwork:1},program:null,log:[],hoopDate:null};
   const v=SK.validate(old);
-  expect(v.levels).toEqual({handle:2,shoot:1,finish:1,footwork:1,defense:1,moves:1});
+  expect(v.levels).toEqual({handle:2,coordination:1,shoot:1,finish:1,footwork:1,defense:1,moves:1});
   const s=PT.initialState();s.owned=['bodyweight','court'];s.checkIn.equipment=s.owned;
   s.player=JP.validatePlayer({position:'meneur'});
   s.skills=SK.saveProfile(null,{answers:{onBall:0,closeout:0,helpD:0,boxout:0,counter:2,readFoot:2,combos:2},tests:{}});
