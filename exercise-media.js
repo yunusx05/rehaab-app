@@ -2720,5 +2720,23 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/single-leg-vertical.webp",
     "credit": "YouTube · One Foot Take Off Practice 6'0\"",
     "source": "https://www.youtube.com/watch?v=bSFOojIlfJ0&t=17s"
+  },
+  "co-slalom": {
+    "video": "media/videos/yt/co-slalom.mp4",
+    "poster": "media/videos/yt/co-slalom.webp",
+    "credit": "YouTube · Through the Legs Dribbling Drill Zig Zag",
+    "source": "https://www.youtube.com/watch?v=iaAitgVDWJ4&t=2s"
+  },
+  "co-cone-cross": {
+    "video": "media/videos/yt/co-cone-cross.mp4",
+    "poster": "media/videos/yt/co-cone-cross.webp",
+    "credit": "YouTube · Basketball PDS: CP3 Triangle Cone Drill",
+    "source": "https://www.youtube.com/watch?v=HkTZSryDcsQ&t=15s"
+  },
+  "co-catch-move": {
+    "video": "media/videos/yt/co-catch-move.mp4",
+    "poster": "media/videos/yt/co-catch-move.webp",
+    "credit": "YouTube · CoachRB Self Pass and Shoot 6 Wings",
+    "source": "https://www.youtube.com/watch?v=Ic6UJdjIBZk&t=28s"
   }
 };
