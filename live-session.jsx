@@ -158,7 +158,7 @@ function PTSession({data,update,go,notify}) {
   const actionLabel=paused?'Reprendre la séance':blocked||!permitted?'Voir mes douleurs':phase==='warmup'?'Échauffement effectué':phase==='rest'?(timerLeft>0?'Passer le repos':'Commencer la série'):allDone?'Terminer la séance':'Terminé';
   const nextIndex=steps.findIndex((s,i)=>i>cursor&&!draft.entries[s.id][s.set].done&&!draft.entries[s.id][s.set].pain);
   const upcoming=phase==='warmup'?{step,exercise}:nextIndex<0?null:{step:steps[nextIndex],exercise:draft.exercises.find(e=>e.id===steps[nextIndex].id)};
-  // Moving between sets never validates or discards a result: saving still requires the result sheet.
+  // « Série précédente » et la liste des séries ne valident rien ; seule la flèche droite valide, « comme prévu ».
   const adjustRest=delta=>setDraft(d=>{const t=d.timer;if(!t||t.kind!=='rest')return d;const left=Math.max(5,(t.endAt?Math.ceil((t.endAt-Date.now())/1000):t.remaining)+delta);return {...d,timer:{...t,duration:Math.max(t.duration,left),remaining:left,endAt:t.endAt?Date.now()+left*1000:null}};});
   // Position : exercice n sur N, série a sur b, et une barre par exercice découpée en séries.
   const exerciseSets=draft.exercises.map(e=>({e,rows:draft.entries[e.id]||[]}));
@@ -166,6 +166,17 @@ function PTSession({data,update,go,notify}) {
   // Un exercice chronométré repart avec son chrono plein (gelé si la séance est en pause).
   const workTimer=index=>{const e=draft.exercises.find(x=>x.id===steps[index]?.id);if(!e||e.measure!=='seconds')return null;const t=makeTimer(e.seconds,'Temps de travail','work');return paused?{...t,endAt:null}:t;};
   const jump=index=>{setError('');setLogging(false);setDraft(d=>({...d,cursor:index,timer:workTimer(index),stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
+  // Flèche droite en travail : valide la série « comme prévu » et passe à la suite, sans descendre jusqu'au bouton du bas.
+  // Chrono interrompu avant la fin : le temps réellement tenu est gardé. Tirs à compter ou résultat incomplet : la feuille de saisie s'ouvre.
+  const validateNext=()=>{
+    if(blocked||!permitted){go('symptoms');return;}
+    if(row.done){if(nextIndex>=0)jump(nextIndex);else if(allDone)review();return;}
+    const quick=quickRow();
+    const cut=exercise.measure==='seconds'&&!row.seconds&&activeTimer&&remaining(activeTimer)>0&&stageElapsed>=1;
+    const candidate=quick&&cut?{...quick,seconds:String(Math.min(exercise.seconds,Math.floor(stageElapsed)))}:quick;
+    if(!candidate||PT.validateRow(candidate,exercise)){openLog();return;}
+    advance(candidate);
+  };
   return <div className={`live-session phase-${phase}`}>
     <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div className="live-position">{phase==='warmup'?<><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Avant de commencer</span><strong>Échauffement</strong></>:<><span className="eyebrow"><span className={`live-dot${paused?' paused':''}`}/>Exercice {exerciseIndex+1} sur {draft.exercises.length}</span><strong>Série {step.set+1} sur {exercise.sets}</strong></>}</div><button className="live-cancel" aria-expanded={abandon} onClick={()=>setAbandon(!abandon)}><PTIcon name="close" size={16}/>Annuler</button></header>
     {abandon&&<div className="notice warning stack-sm live-cancel-confirm" role="alert"><p>Annuler la séance sans enregistrer ? Les séries faites seront perdues.</p><PTButton danger onClick={()=>{update(s=>({...s,draft:null}));go('today');}}>Oui, annuler sans enregistrer</PTButton><PTButton quiet onClick={()=>setAbandon(false)}>Garder ma séance</PTButton></div>}
@@ -187,7 +198,7 @@ function PTSession({data,update,go,notify}) {
         <svg viewBox="0 0 220 150" aria-hidden="true"><path className="dial-track" d="M30 131 A94 94 0 1 1 190 131" pathLength="100"/><path className="dial-value" d="M30 131 A94 94 0 1 1 190 131" pathLength="100" strokeDasharray={`${activeTimer?Math.min(100,shownTime/(activeTimer.duration||1)*100):100} 100`}/></svg>
         <div><small>{paused?'En pause':phase==='rest'?'Repos':activeTimer?'Temps restant':'Temps de série'}</small><strong>{timeLabel(shownTime)}</strong></div>
       </div>}
-      <div className="session-transport">{phase!=='warmup'&&<button type="button" aria-label="Série précédente" disabled={cursor===0} onClick={()=>jump(cursor-1)}><PTIcon name="back" size={20}/></button>}<button type="button" className="transport-pause" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'} size={24}/></button>{phase!=='warmup'&&<button type="button" aria-label={phase==='rest'?'Terminer le repos':'Passer cette série'} disabled={phase==='rest'?paused:nextIndex<0} onClick={()=>{if(phase!=='rest'){jump(nextIndex);return;}if(blocked||!permitted){go('symptoms');return;}beginWork();}}><PTIcon name="arrow" size={20}/></button>}</div>
+      <div className="session-transport">{phase!=='warmup'&&<button type="button" aria-label="Série précédente" disabled={cursor===0} onClick={()=>jump(cursor-1)}><PTIcon name="back" size={20}/></button>}<button type="button" className="transport-pause" aria-label={paused?'Reprendre le chrono':'Mettre en pause'} onClick={pause}><PTIcon name={paused?'play':'pause'} size={24}/></button>{phase!=='warmup'&&<button type="button" className={phase==='work'?'transport-validate':''} aria-label={phase==='rest'?'Terminer le repos':row.done?'Série suivante':'Valider la série et passer à la suite'} disabled={paused||phase==='work'&&row.done&&nextIndex<0&&!allDone} onClick={()=>{if(phase==='work'){validateNext();return;}if(blocked||!permitted){go('symptoms');return;}beginWork();}}><PTIcon name="arrow" size={20}/></button>}</div>
       {phase!=='warmup'&&<PTExerciseMetrics exercise={exercise} weight={row.weight||PT.loadAdvice(exercise,data,draft.check)?.value}/>}
       {upcoming&&<div className="next-up"><PTThumbnail exercise={upcoming.exercise}/><div><small>{phase==='warmup'?'Pour commencer':'Ensuite'}</small><strong>{upcoming.exercise.name}</strong><small>Série {upcoming.step.set+1} / {upcoming.exercise.sets}</small></div></div>}
       <p className="live-coach" aria-live="polite"><PTIcon name={phase==='rest'?'heart':'spark'} size={17}/>{coach}</p>

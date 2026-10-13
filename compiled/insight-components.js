@@ -102,7 +102,48 @@ function PTTodayPlan({
   const [label, run] = actions[plan.action] || actions.session;
   const showPathway = plan.action === 'pathway' && next;
   const photo = ptTodayPhoto(plan.action, data),
-    [photoFailed, setPhotoFailed] = usePTState(false);
+    [photoFailed, setPhotoFailed] = usePTState(false),
+    [mishap, setMishap] = usePTState(false);
+  // Imprévu : la séance prévue au planning aujourd'hui est annulée ou reportée en un geste, et peut être rétablie dans la journée.
+  const SPL = window.SeasonPlan,
+    now = PT.dateKey();
+  const excused = SPL ? SPL.excusedToday(data, now) : null;
+  const plannedToday = SPL && !excused && plan.kind !== 'blocked' ? (SPL.weekSchedule(data, now, now).days.find(d => d.date === now)?.items || []).filter(x => x.status === 'planned') : [];
+  const excuse = action => {
+    const r = SPL.excuse(data, action, now);
+    if (r.ok) update(s => ({
+      ...s,
+      calendar: r.calendar
+    }));
+    setMishap(false);
+    notify(r.why);
+  };
+  const unexcuse = () => {
+    update(s => ({
+      ...s,
+      calendar: SPL.unexcuse(s, now)
+    }));
+    notify('Séance rétablie aujourd’hui.');
+  };
+  if (excused) return /*#__PURE__*/React.createElement("section", {
+    className: "today-plan kind-rest sport-reveal",
+    "aria-labelledby": "today-plan-title"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "today-plan-tag"
+  }, "Repos"), /*#__PURE__*/React.createElement("h2", {
+    id: "today-plan-title"
+  }, excused.action === 'cancel' ? 'Séance annulée.' : 'Séance reportée.'), excused.why && /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, excused.why), /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => quick('mobility', 15)
+  }, "10 min de mobilit\xE9", /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: unexcuse
+  }, "Finalement, je peux m\u2019entra\xEEner"));
   return /*#__PURE__*/React.createElement("section", {
     className: `today-plan kind-${plan.kind} has-photo sport-reveal`,
     "aria-labelledby": "today-plan-title"
@@ -142,7 +183,35 @@ function PTTodayPlan({
   })), !p && plan.action !== 'symptoms' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => go('pathway')
-  }, "Commencer le parcours Retour au jeu \u2192"));
+  }, "Commencer le parcours Retour au jeu \u2192"), plannedToday.length > 0 && (!mishap ? /*#__PURE__*/React.createElement("button", {
+    className: "text-button today-mishap",
+    "aria-expanded": "false",
+    onClick: () => setMishap(true)
+  }, "Un impr\xE9vu aujourd\u2019hui ?") : /*#__PURE__*/React.createElement("div", {
+    className: "today-mishap-panel stack-sm",
+    role: "group",
+    "aria-label": "Impr\xE9vu aujourd\u2019hui"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, plannedToday.map(x => x.label).join(' · ')), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    onClick: () => excuse('postpone')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "clock",
+    size: 18
+  }), "Reporter"), /*#__PURE__*/React.createElement(PTButton, {
+    danger: true,
+    onClick: () => excuse('cancel')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "close",
+    size: 18
+  }), "Annuler")), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Reporter : prochain jour libre qui respecte les r\xE8gles de charge. Annuler : la s\xE9ance saute cette semaine, sans rattrapage."), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => setMishap(false)
+  }, "Je garde ma s\xE9ance"))));
 }
 
 // Mesure vidéo au ralenti, principe de l'app My Jump : temps de vol t entre décollage et réception, hauteur = g·t²/8.

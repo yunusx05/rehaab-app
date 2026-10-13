@@ -82,6 +82,30 @@ test('jour manqué : décalé au prochain jour compatible, sinon sauté sans rat
   expect((ics.match(/BEGIN:VEVENT/g)||[]).length).toBeGreaterThanOrEqual(8);
 });
 
+test('imprévu : annuler ou reporter la séance du jour, puis la rétablir', ()=>{
+  const s=meneur();
+  const day=SP.weekSchedule(s,MONDAY,MONDAY).days.find(d=>d.items.some(x=>x.status==='planned'));
+  const now=day.date,keys=day.items.filter(x=>x.status==='planned').map(x=>x.key);
+  const cancel=SP.excuse(s,'cancel',now);
+  expect(cancel.ok).toBe(true);
+  const c={...s,calendar:cancel.calendar},wc=SP.weekSchedule(c,now,now);
+  expect(wc.days.find(d=>d.date===now).items).toEqual([]);
+  expect(wc.days.flatMap(d=>d.items).some(x=>keys.includes(x.key))).toBe(false);
+  expect(SP.excusedToday(c,now).action).toBe('cancel');
+  const back={...c,calendar:SP.unexcuse(c,now)};
+  expect(SP.excusedToday(back,now)).toBe(null);
+  expect(SP.weekSchedule(back,now,now).days.find(d=>d.date===now).items.map(x=>x.key)).toEqual(SP.weekSchedule(s,now,now).days.find(d=>d.date===now).items.map(x=>x.key));
+  const post=SP.excuse(s,'postpone',now);
+  expect(post.ok).toBe(true);
+  const p={...s,calendar:post.calendar},wp=SP.weekSchedule(p,now,now);
+  expect(wp.days.find(d=>d.date===now).items).toEqual([]);
+  wp.days.flatMap(d=>d.items).filter(x=>keys.includes(x.key)).forEach(x=>expect(x.date>now).toBe(true));
+  expect(SP.violations(p,wp)).toEqual([]);
+  // Une sauvegarde relue garde l'imprévu.
+  expect(SP.validateCalendar(JSON.parse(JSON.stringify(p.calendar))).excused.keys).toEqual(keys);
+  expect(SP.excuse({...s,calendar:post.calendar},'cancel',now).ok).toBe(false);
+});
+
 test('architecte : son choix passe en tête du créneau, un identifiant inconnu ou non toléré est ignoré', ()=>{
   const s=meneur();s.owned=['bodyweight','dumbbells','bands','slantboard'];s.checkIn.equipment=s.owned;
   s.seasonPlan=SP.validate({architect:{choices:{'1A0':'slant-iso-squat','1A1':'inconnu-xyz','1C2':'tuck-jump'}}});

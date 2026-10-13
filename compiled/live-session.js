@@ -606,7 +606,7 @@ function PTSession({
     step: steps[nextIndex],
     exercise: draft.exercises.find(e => e.id === steps[nextIndex].id)
   };
-  // Moving between sets never validates or discards a result: saving still requires the result sheet.
+  // « Série précédente » et la liste des séries ne valident rien ; seule la flèche droite valide, « comme prévu ».
   const adjustRest = delta => setDraft(d => {
     const t = d.timer;
     if (!t || t.kind !== 'rest') return d;
@@ -651,6 +651,29 @@ function PTSession({
       stageStarted: paused ? null : Date.now()
     }));
     window.scrollTo(0, 0);
+  };
+  // Flèche droite en travail : valide la série « comme prévu » et passe à la suite, sans descendre jusqu'au bouton du bas.
+  // Chrono interrompu avant la fin : le temps réellement tenu est gardé. Tirs à compter ou résultat incomplet : la feuille de saisie s'ouvre.
+  const validateNext = () => {
+    if (blocked || !permitted) {
+      go('symptoms');
+      return;
+    }
+    if (row.done) {
+      if (nextIndex >= 0) jump(nextIndex);else if (allDone) review();
+      return;
+    }
+    const quick = quickRow();
+    const cut = exercise.measure === 'seconds' && !row.seconds && activeTimer && remaining(activeTimer) > 0 && stageElapsed >= 1;
+    const candidate = quick && cut ? {
+      ...quick,
+      seconds: String(Math.min(exercise.seconds, Math.floor(stageElapsed)))
+    } : quick;
+    if (!candidate || PT.validateRow(candidate, exercise)) {
+      openLog();
+      return;
+    }
+    advance(candidate);
   };
   return /*#__PURE__*/React.createElement("div", {
     className: `live-session phase-${phase}`
@@ -809,11 +832,12 @@ function PTSession({
     size: 24
   })), phase !== 'warmup' && /*#__PURE__*/React.createElement("button", {
     type: "button",
-    "aria-label": phase === 'rest' ? 'Terminer le repos' : 'Passer cette série',
-    disabled: phase === 'rest' ? paused : nextIndex < 0,
+    className: phase === 'work' ? 'transport-validate' : '',
+    "aria-label": phase === 'rest' ? 'Terminer le repos' : row.done ? 'Série suivante' : 'Valider la série et passer à la suite',
+    disabled: paused || phase === 'work' && row.done && nextIndex < 0 && !allDone,
     onClick: () => {
-      if (phase !== 'rest') {
-        jump(nextIndex);
+      if (phase === 'work') {
+        validateNext();
         return;
       }
       if (blocked || !permitted) {

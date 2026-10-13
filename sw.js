@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v64-coordination';
+const CACHE = 'rehaab-v65-imprevus';
 const PRECACHE = [
   './',
   './index.html',

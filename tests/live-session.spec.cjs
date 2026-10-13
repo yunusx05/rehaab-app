@@ -64,7 +64,7 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   await noOverflow(page);expect(errors).toEqual([]);
 });
 
-test('séance : précédent, suivant et exercice à venir sans valider de résultat',async({page})=>{
+test('séance : la flèche droite valide la série, précédent ne valide rien',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:390,height:844});await seed(page,fixture({timed:true}));
   await expect(page.locator('.next-up')).toContainText('Pour commencer');
@@ -72,11 +72,13 @@ test('séance : précédent, suivant et exercice à venir sans valider de résul
   await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await expect(page.getByRole('button',{name:'Série précédente'})).toBeDisabled();
   await expect(page.locator('.next-up')).toContainText('Série 2 / 2');
-  await page.getByRole('button',{name:'Passer cette série'}).click();
+  await page.getByRole('button',{name:'Valider la série et passer à la suite'}).click();
+  await expect(page.getByRole('button',{name:'Passer le repos',exact:true})).toBeVisible();
+  const validated=await state(page);expect(validated.draft.cursor).toBe(1);
+  expect(validated.draft.entries.plank[0].done).toBe(true);expect(Number(validated.draft.entries.plank[0].seconds)).toBeGreaterThan(0);expect(validated.draft.entries.plank[1].done).toBe(false);
+  await page.getByRole('button',{name:'Passer le repos',exact:true}).click();
   await expect(page.locator('.live-position')).toContainText('Série 2 sur 2');
-  await expect(page.getByRole('button',{name:'Passer cette série'})).toBeDisabled();
   await expect(page.locator('.next-up')).toHaveCount(0);
-  const skipped=await state(page);expect(skipped.draft.cursor).toBe(1);expect(skipped.draft.entries.plank.every(r=>!r.done)).toBe(true);
   await page.getByRole('button',{name:'Série précédente'}).click();
   await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await page.getByRole('button',{name:'Mettre en pause',exact:true}).click();

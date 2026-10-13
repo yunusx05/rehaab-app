@@ -139,3 +139,22 @@ test('écrans : planning réglable par jour, onglet nutrition avec questionnaire
   expect(after.profile.onboarded).toBe(false);expect(after.nutrition).toBe(null);
   expect(await page.evaluate(()=>!!localStorage.getItem('rh_personal_reset_backup_v1'))).toBe(true);
 });
+
+test('imprévu : depuis l’accueil, reporter ou annuler la séance du jour, puis la rétablir',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  const s=player(),day=SP.weekSchedule(s,MONDAY,MONDAY).days.find(d=>d.items.some(x=>x.status==='planned'&&x.type!=='care'));
+  await page.clock.setFixedTime(new Date(`${day.date}T10:00:00`));
+  await page.setViewportSize({width:390,height:844});await seed(page,s,'today');
+  await page.getByRole('button',{name:'Un imprévu aujourd’hui ?'}).click();
+  await page.getByRole('button',{name:'Reporter',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Séance reportée.'})).toBeVisible();
+  let saved=await state(page);expect(saved.calendar.excused.action).toBe('postpone');
+  expect(SP.weekSchedule(saved,day.date,day.date).days.find(d=>d.date===day.date).items).toEqual([]);
+  await page.getByRole('button',{name:'Finalement, je peux m’entraîner'}).click();
+  await expect(page.getByRole('button',{name:'Un imprévu aujourd’hui ?'})).toBeVisible();
+  saved=await state(page);expect(saved.calendar.excused).toBe(null);
+  await page.getByRole('button',{name:'Un imprévu aujourd’hui ?'}).click();
+  await page.getByRole('button',{name:'Annuler',exact:true}).click();
+  await expect(page.getByRole('heading',{name:'Séance annulée.'})).toBeVisible();
+  await noOverflow(page);await page.screenshot({path:'test-results/imprevu-accueil.png'});expect(errors).toEqual([]);
+});

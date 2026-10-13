@@ -76,7 +76,7 @@
   // Type de journée choisi par l'utilisateur : auto (l'app décide), muscu, skills, les deux, ou repos.
   // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
   const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',both:'Muscu + skills',off:'Repos'};
-  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{}};}
+  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
     const moves={},skips={},forced={};
@@ -87,7 +87,11 @@
     const week={},dates={};
     Object.entries(v.week&&typeof v.week==='object'?v.week:{}).forEach(([d,m])=>{if(/^[0-6]$/.test(d)&&MODES[m]&&m!=='auto')week[d]=m;});
     Object.entries(v.dates&&typeof v.dates==='object'?v.dates:{}).filter(([d,m])=>isDay(d)&&MODES[m]).sort((a,b)=>a[0].localeCompare(b[0])).slice(-60).forEach(([d,m])=>dates[d]=m);
-    return {moves,skips,forced,week,dates};
+    // Imprévu du jour (séance annulée ou reportée depuis l'accueil) : gardé pour pouvoir revenir en arrière.
+    const e=v.excused;
+    const excused=e&&typeof e==='object'&&isDay(e.date)&&['cancel','postpone'].includes(e.action)&&Array.isArray(e.keys)
+      ?{date:e.date,action:e.action,keys:e.keys.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,10),prev:MODES[e.prev]?e.prev:null,why:typeof e.why==='string'?e.why.slice(0,400):''}:null;
+    return {moves,skips,forced,week,dates,excused};
   }
   function dayMode(state,date) {
     const cal=validateCalendar(state.calendar)||blankCalendar();
@@ -239,7 +243,7 @@
       if(moved&&forced.includes(item.key)&&days.some(d=>d.date===moved)){placed.push({...item,date:moved,moved:true,forced:true,warning:broken});continue;}
       if(moved) warnings.push(`${item.label} : déplacement annulé (${ruleBreak(item,moved,placed,days)})`);
       // Meilleur jour : libre, sans règle enfreinte, le plus éloigné des autres séances du même type de charge.
-      const options=days.filter(d=>(d.free||item.type==='care')&&!ruleBreak(item,d.date,placed,days)&&!(item.type==='care'&&placed.some(x=>x.date===d.date))).map(d=>{
+      const options=days.filter(d=>(d.free||item.type==='care')&&!(cal.excused&&cal.excused.date===d.date)&&!ruleBreak(item,d.date,placed,days)&&!(item.type==='care'&&placed.some(x=>x.date===d.date))).map(d=>{
         const same=placed.filter(x=>x.physical===item.physical||x.legs===item.legs);
         const gap=same.length?Math.min(...same.map(x=>Math.abs(diff(x.date,d.date)))):7;
         const load=placed.filter(x=>x.date===d.date).length;
@@ -332,6 +336,41 @@
       why:`${item.label} : aucun jour compatible d’ici dimanche. Elle saute cette semaine ; le plan reprend lundi sans rattrapage forcé.`};
   }
 
+  // Imprévu : toutes les séances prévues aujourd'hui sont annulées (sautées cette semaine) ou reportées (prochain jour compatible),
+  // puis la journée passe en repos pour que le placement automatique n'y remette rien.
+  function excuse(state, action, now=today()) {
+    const monday=mondayOf(now),day=weekSchedule(state,monday,now).days.find(d=>d.date===now);
+    const list=day?day.items.filter(x=>x.status==='planned'):[];
+    if(!list.length) return {ok:false,why:'Aucune séance prévue aujourd’hui.'};
+    const prev=(validateCalendar(state.calendar)||blankCalendar()).dates[now]||null;
+    let s=state;const notes=[];
+    if(action==='cancel'){
+      const cal=validateCalendar(s.calendar)||blankCalendar();
+      s={...s,calendar:{...cal,skips:{...cal.skips,[monday]:[...new Set([...(cal.skips[monday]||[]),...list.map(x=>x.key)])]}}};
+      notes.push(`${list.map(x=>x.label).join(' et ')} : annulée${list.length>1?'s':''} pour cette semaine. Le plan reprend normalement ensuite, sans rattrapage.`);
+    } else {
+      list.forEach(item=>{const r=missed(s,monday,item.key,now);if(r.ok){s={...s,calendar:r.calendar};notes.push(r.why);}});
+    }
+    const cal=validateCalendar(s.calendar)||blankCalendar();
+    const calendar={...cal,dates:{...cal.dates,[now]:'off'},excused:{date:now,action,keys:list.map(x=>x.key),prev,why:notes.join(' ')}};
+    return {ok:true,calendar,why:notes.join(' ')};
+  }
+  // « Finalement, je peux » : annule l'imprévu du jour et rend les séances à leur place.
+  function unexcuse(state, now=today()) {
+    const cal=validateCalendar(state.calendar)||blankCalendar(),e=cal.excused;
+    if(!e||e.date!==now) return cal;
+    const monday=mondayOf(now),moves={...(cal.moves[monday]||{})},dates={...cal.dates};
+    e.keys.forEach(k=>delete moves[k]);
+    if(e.prev) dates[now]=e.prev; else delete dates[now];
+    return {...cal,dates,excused:null,moves:{...cal.moves,[monday]:moves},
+      skips:{...cal.skips,[monday]:(cal.skips[monday]||[]).filter(k=>!e.keys.includes(k))},
+      forced:{...cal.forced,[monday]:(cal.forced[monday]||[]).filter(k=>!e.keys.includes(k))}};
+  }
+  function excusedToday(state, now=today()) {
+    const cal=validateCalendar(state.calendar);
+    return cal&&cal.excused&&cal.excused.date===now?cal.excused:null;
+  }
+
   // Export .ics des prochaines semaines (rappels dans l'agenda du téléphone).
   function ics(state, from=today(), weeks=4) {
     const esc=s=>String(s).replace(/[\\;,]/g,m=>'\\'+m).replace(/\n/g,'\\n');
@@ -378,5 +417,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,MODES,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
 });
