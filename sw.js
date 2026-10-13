@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v63-equilibre';
+const CACHE = 'rehaab-v64-coordination';
 const PRECACHE = [
   './',
   './index.html',
@@ -932,7 +932,13 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/mv-drive-read.mp4',
   './media/videos/yt/mv-drive-read.webp',
   './media/videos/yt/mv-snatch-cross.mp4',
-  './media/videos/yt/mv-snatch-cross.webp'
+  './media/videos/yt/mv-snatch-cross.webp',
+  './media/videos/yt/co-slalom.mp4',
+  './media/videos/yt/co-slalom.webp',
+  './media/videos/yt/co-cone-cross.mp4',
+  './media/videos/yt/co-cone-cross.webp',
+  './media/videos/yt/co-catch-move.mp4',
+  './media/videos/yt/co-catch-move.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

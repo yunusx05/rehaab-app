@@ -4193,5 +4193,44 @@
   "quality": 5,
   "size": 219749,
   "query": "snatch back dribble move tutorial"
+ },
+ "co-slalom": {
+  "videoId": "iaAitgVDWJ4",
+  "duration": 9,
+  "title": "Through the Legs Dribbling Drill Zig Zag",
+  "start": 2,
+  "seen": "zig zag cone dribbling drill basketball",
+  "quality": 5,
+  "size": 101011,
+  "rejected": [
+   "HkTZSryDcsQ"
+  ],
+  "query": "zig zag cone dribbling drill basketball"
+ },
+ "co-cone-cross": {
+  "videoId": "HkTZSryDcsQ",
+  "duration": 46,
+  "title": "Basketball PDS: CP3 Triangle Cone Drill",
+  "start": 15,
+  "seen": "crossover at the cone dribble drill basketball",
+  "quality": 4,
+  "size": 169230,
+  "query": "crossover at the cone dribble drill basketball"
+ },
+ "co-catch-move": {
+  "videoId": "Ic6UJdjIBZk",
+  "duration": 38,
+  "title": "CoachRB Self Pass and Shoot 6 Wings",
+  "start": 28,
+  "seen": "self pass catch footwork drill basketball",
+  "quality": 4,
+  "size": 114440,
+  "rejected": [
+   "NFP7zCMy7L0",
+   "FBKYihYXd4w",
+   "C-8B9Vhha-g",
+   "0OVuRgX6cH8"
+  ],
+  "query": "self pass catch footwork drill basketball"
  }
 }
