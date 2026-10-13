@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v62-ux-simple';
+const CACHE = 'rehaab-v63-equilibre';
 const PRECACHE = [
   './',
   './index.html',
@@ -39,6 +39,8 @@ const PRECACHE = [
   './compiled/calendar-components.js',
   './compiled/qi-scene-components.js',
   './compiled/shooting-components.js',
+  './compiled/nutrition-components.js',
+  './basket-nutrition.js',
   './body-weight.js',
   './shooting.js',
   './basket-scenes.js',

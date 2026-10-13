@@ -2,7 +2,7 @@
 const AP = window.AthleticProfile;
 const apLevelClass = level => level === null ? 'is-unknown' : ['is-low','is-mid','is-high'][level];
 // Étiquette affichée dans l'aperçu de séance pour le bloc kiné et le créneau du bilan.
-const ptRoleTag = e => e.pathwayRole === 'soin' ? (e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer') : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? (e.courtFocus ? 'Priorité terrain' : 'Priorité du bilan') : null;
+const ptRoleTag = e => e.pathwayRole === 'soin' ? (e.carePhase === 'calm' ? 'Soin · calmer' : 'Soin · renforcer') : e.pathwayRole === 'kiné' || e.role === 'rehab' || e.role === 'kine' ? 'Kiné' : e.pathwayRole === 'jambe faible' ? 'Jambe faible' : e.pathwayRole === 'point faible' ? 'Point faible' : e.pathwayRole === 'priorité' ? (e.courtFocus ? 'Priorité terrain' : 'Priorité du bilan') : null;
 const apFresh = a => !!(a && a.date) && PT.dayDiff(PT.dateKey(), a.date) <= 28;
 
 function PTAssessment({data,update,go,notify,id}) {
@@ -106,7 +106,8 @@ function PTAssessmentResult({data,draft,update,go,notify}) {
         <div><strong>{q.label}</strong><small>{q.levelLabel}{q.failed.length ? ` · ${q.failed.map(f => f.label.toLowerCase()).join(', ')}` : ''}</small></div>
         <span className="quality-bar" aria-hidden="true"><i/><i/><i/></span>
       </li>)}</ul>
-      {res.asymmetries.length > 0 && <p className="notice warning">Écart entre tes deux jambes : {res.asymmetries.map(a => `${a.label.toLowerCase()} (côté ${a.weak === 'left' ? 'gauche' : 'droit'} en retrait${a.gap ? `, ${a.gap} %` : ''})`).join(' · ')}. Le travail sur une jambe commencera par ce côté.</p>}
+      {res.asymmetries.length > 0 && <p className="notice warning">Écart entre tes deux jambes : {res.asymmetries.map(a => `${a.label.toLowerCase()} (côté ${a.weak === 'left' ? 'gauche' : 'droit'} en retrait${a.gap ? `, ${a.gap} %` : ''})`).join(' · ')}. Le travail sur une jambe commencera par ce côté, avec un exercice pour lui seul les jours de jambes.</p>}
+      {!res.asymmetries.length && AP.weakLeg(draft) && <p className="notice">Jambe {AP.sideLabel(AP.weakLeg(draft).side)} déclarée en retrait : les jours de jambes, un exercice pour elle seule, et chaque exercice sur une jambe commence par elle. Le saut une jambe en longueur (tests terrain) mesurera l’écart.</p>}
     </section>
     <section className="stack-sm"><h2>Tes priorités</h2>
       <ol className="step-list">{targets.map((t, i) => <li key={t.id} className={i === 0 ? 'is-current' : ''}><span className="step-num">{i + 1}</span><div><strong>{t.label}</strong><small>{t.why}</small></div></li>)}</ol>

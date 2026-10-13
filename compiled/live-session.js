@@ -838,7 +838,9 @@ function PTSession({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: phase === 'rest' ? 'heart' : 'spark',
     size: 17
-  }), coach), blocked || !permitted ? /*#__PURE__*/React.createElement("div", {
+  }), coach), phase === 'work' && exercise.sideNote && /*#__PURE__*/React.createElement("p", {
+    className: "notice side-note"
+  }, /*#__PURE__*/React.createElement("strong", null, exercise.weakSide ? 'Jambe faible' : 'Équilibre gauche / droite', " \xB7 "), exercise.sideNote), blocked || !permitted ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning"
   }, blocked ? 'Séance suspendue : fais le point sur la douleur signalée.' : 'Ce mouvement ne convient plus à tes contraintes actuelles.') : null, phase === 'work' && exercise.unilateral && exercise.measure === 'seconds' && /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,

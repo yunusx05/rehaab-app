@@ -6,9 +6,11 @@ const ptCalStatus={done:'Faite',missed:'Manquée',planned:'Prévue'};
 const ptShortDay=date=>`${date.slice(8,10)}/${date.slice(5,7)}`;
 
 // Construit la séance correspondant à un élément du calendrier.
-function ptCalendarPlan(data,item){
+// day : le jour du calendrier. S'il porte déjà une séance skills, la séance du parcours n'ajoute pas son bloc skills (pas de doublon).
+function ptCalendarPlan(data,item,day){
   const BP=window.BasketPathway,JP=window.PlayerProfile,SK=window.BasketSkills;
-  if(item.type==='pathway'&&data.pathway)return BP.sessionPlan(PT,JP,data,data.pathway,item.day);
+  const ownSkills=!!day&&day.items.some(x=>x.type==='skills');
+  if(item.type==='pathway'&&data.pathway)return ownSkills&&BP.sessionPlanCore?BP.sessionPlanCore(PT,JP,data,data.pathway,item.day):BP.sessionPlan(PT,JP,data,data.pathway,item.day);
   if(item.type==='reset'){
     // Remise en route : les jours de l'étape 1, sans saut ni impact, hors parcours (rien n'est validé dans les étapes).
     const p=data.pathway&&data.pathway.step===1?data.pathway:BP.create({startStep:1});
@@ -27,12 +29,12 @@ function PTCalendar({data,update,go,notify}){
   if(!SP)return <p className="empty">Calendrier indisponible.</p>;
   const now=PT.dateKey(),monday=SP.at(SP.mondayOf(now),shift*7);
   const week=SP.weekSchedule(data,monday,now),phase=week.phase.phase;
-  const launch=item=>{
+  const launch=(item,day)=>{
     if(item.type==='muscu'){go('program');return;}
     if(item.type==='care'){go('rehab');return;}
     if(item.type==='shooting'){go('shooting');return;}
     if(data.draft?.status==='active'){setError('Une séance est en cours : termine-la ou reprends-la avant d’en lancer une autre.');return;}
-    const plan=ptCalendarPlan(data,item);
+    const plan=ptCalendarPlan(data,item,day);
     if(!plan||plan.error){setError(plan?.error||'Séance indisponible aujourd’hui.');return;}
     setError('');update(s=>({...s,draft:plan}));go('preview');
   };
@@ -44,26 +46,45 @@ function PTCalendar({data,update,go,notify}){
   const free=SP.freeDays(data),perWeek=SP.target(data);
   const setLife=(k,v)=>update(s=>{const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});return {...s,dossier:{...base,answers:{...(base.answers||{}),[k]:v}}};});
   const fullDate=date=>new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'numeric'});
+  // Type de journée : un seul jour (cette semaine) ou toute la semaine type.
+  const setMode=(date,mode,every)=>update(s=>{
+    let next={...s,calendar:SP.setDayMode(s,date,mode,{every})};
+    const wd=SP.weekday(date),days=SP.freeDays(s);
+    // « Auto » sur un jour non disponible le rend disponible : sinon l'app n'y placerait rien.
+    if(every&&mode==='auto'&&!days.includes(wd)){const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});next={...next,dossier:{...base,answers:{...(base.answers||{}),freeDays:[...days,wd].sort((a,b)=>a-b)}}};}
+    return next;
+  });
+  const weekMode=wd=>{const m=SP.dayMode({calendar:{week:(data.calendar||{}).week||{}}},SP.at(monday,wd));return m==='auto'&&!free.includes(wd)?'off':m;};
+  const modeOptions=Object.entries(SP.MODES).map(([value,label])=>({value,label}));
+  const sk=data.skills?.program;
+  const setSkillsPerWeek=n=>update(s=>({...s,skills:{...s.skills,program:{...s.skills.program,perWeek:n,status:'active'}}}));
   const exportIcs=()=>{ptDownload(`rehaab-plan-${now}.ics`,SP.ics(data,now,4),'text/calendar');notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');};
-  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">{week.target} séances physiques prévues. Choisis tes jours, ou déplace une séance où tu veux.</PTPageHead>
+  const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length;
+  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Muscu et skills dans un seul planning. Règle chaque jour : muscu, skills, les deux ou repos.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
-      <section className="card stack-sm calendar-life">
-        <h2>Mes jours d’entraînement</h2>
-        <PTChips multi value={free} onChange={v=>{if(!v.length){notify('Garde au moins un jour libre.');return;}setLife('freeDays',[...v].sort((a,b)=>a-b));}} options={SP.DAYS.map((d,i)=>({value:i,label:d.slice(0,3)}))}/>
-        <div className="topline"><span className="fine">Séances par semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
-        <p className="fine">L’app place tes séances sur ces jours. Tu peux ensuite déplacer chaque séance sur le jour de ton choix.</p>
-      </section>
+      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span><span className="fine">cette semaine</span></p>
+      {week.skills.placed<week.skills.wanted&&<p className="notice warning">{week.skills.wanted-week.skills.placed} séance{week.skills.wanted-week.skills.placed>1?'s':''} skills sans place cette semaine : règle un jour sur « Skills » ou « Muscu + skills ».</p>}
+      <details className="card stack-sm calendar-life disclosure">
+        <summary><strong>Ma semaine type</strong><small>Le type de chaque jour, toutes les semaines</small></summary>
+        <div className="stack-sm">
+          <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setMode(SP.at(monday,i),e.target.value,true)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
+          <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique.</p>
+          <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
+          {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
+            :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
+        </div>
+      </details>
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       <ol className="calendar-week">{week.days.map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
-        <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
+        <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}{d.qi&&!d.club.match?' · QI du jour (5 min)':''}</p>}
         {d.items.map(item=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
           <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
           {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
-            {d.date===now&&<PTButton primary onClick={()=>launch(item)}>Lancer</PTButton>}
+            {d.date===now&&<PTButton primary onClick={()=>launch(item,d)}>Lancer</PTButton>}
             {d.date===now&&<button className="text-button" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
             <button className="text-button" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
@@ -76,7 +97,7 @@ function PTCalendar({data,update,go,notify}){
           </div>}
         </div>)}
       </li>)}</ol>
-      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club : le basket y est déjà.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
+      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
       <div className="home-options">
         <button className="home-action" onClick={()=>go('plan')}><PTIcon name="chart"/><span><strong>Mon plan de saison</strong><small>Les phases, où tu en es, et pourquoi ce plan.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={exportIcs}><PTIcon name="today"/><span><strong>Ajouter à mon agenda</strong><small>Fichier .ics des 4 prochaines semaines, avec les rappels de ton téléphone.</small></span><PTIcon name="arrow" size={18}/></button>

@@ -39,6 +39,7 @@
     {id:'strength',qualities:['strength'],label:'Squats, fentes, soulevés de terre avec charge',options:[['regular','Je m’entraîne régulièrement',2],['some','Un peu, sans régularité',1],['none','Pas depuis longtemps',0]]},
     {id:'squat',qualities:['mobility'],label:'Squat profond, talons au sol, buste droit',options:[['easy','Facilement',2],['heels','Les talons décollent',1],['no','Impossible ou douloureux',0]]},
     {id:'stiff',qualities:['mobility'],multi:true,optional:true,label:'Où te sens-tu raide ?',options:[['ankle','Chevilles'],['hip','Hanches'],['hamstring','Arrière des cuisses'],['back','Dos'],['shoulder','Épaules']]},
+    {id:'weakLeg',qualities:[],optional:true,label:'Une jambe moins forte ou moins explosive que l’autre ?',options:[['none','Non, elles se valent'],['left','Oui, la gauche'],['right','Oui, la droite'],['unknown','Je ne sais pas']]},
     {id:'mindset',qualities:[],label:'Ton état d’esprit pour la reprise',options:[['confident','Confiant'],['careful','Un peu d’appréhension'],['afraid','Peur de me blesser']]}
   ];
 
@@ -230,6 +231,29 @@
   }
   function focusSlot(a,player,stepId,dayKey,exclude=[]) { return focusSlots(a,player,stepId,dayKey,exclude)[0]||null; }
 
+  // Jambe en retrait : les tests (saut une jambe, mollet, équilibre…) priment ; sans écart mesuré, ce que tu as déclaré.
+  function weakLeg(a) {
+    if(!a) return null;
+    const asym=assess(a).asymmetries,n={left:0,right:0};
+    asym.forEach(x=>{n[x.weak]+=1;});
+    if(n.left!==n.right){const side=n.left>n.right?'left':'right';return {side,source:'tests',tests:asym.filter(x=>x.weak===side)};}
+    const said=a.answers&&a.answers.weakLeg;
+    return ['left','right'].includes(said)?{side:said,source:'declared',tests:[]}:null;
+  }
+  const sideLabel = side => side==='left'?'gauche':'droite';
+  // Rattrapage de la jambe en retrait, par étape : force unilatérale d'abord (étapes 1-2, sans impact), puis puissance sur une jambe.
+  const legBalanceLists = [
+    ['split-squat','ecc-split-squat','step-up','single-bridge','single-calf'],
+    ['db-bulgarian','step-up','lateral-box-step-up','single-rdl','single-calf'],
+    ['single-hop-stick','step-up-hop','single-pogo','lateral-bound-stick','db-bulgarian','step-up'],
+    ['single-leg-vertical','single-box-jump','lateral-bound-stick','single-hop-stick','step-up-hop','single-pogo']
+  ];
+  function legBalanceSlot(a,stepId,exclude=[]) {
+    const w=weakLeg(a); if(!w) return null;
+    const stage=Math.min(4,Math.max(1,Number(stepId)||1))-1;
+    return {role:'jambe faible',side:w.side,source:w.source,label:`Jambe ${sideLabel(w.side)}`,ids:legBalanceLists[stage].filter(id=>!exclude.includes(id)),optional:true,dosesFor};
+  }
+
   // Mobilité qui manque, d'après les tests ratés et les raideurs déclarées. Ordre : cheville, avant de hanche, arrière de cuisse, dos, épaules.
   function deficits(a) {
     if(!a) return [];
@@ -329,5 +353,5 @@
   }
   function answered(a) { return questions.filter(q=>!q.optional).every(q=>a.answers[q.id]!==undefined); }
 
-  return {meetsBase,trend,qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
+  return {weakLeg,sideLabel,legBalanceLists,legBalanceSlot,meetsBase,trend,qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
 });

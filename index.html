@@ -68,6 +68,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="shooting.js"></script>
 <script src="training-load.js"></script>
 <script src="basket-skills.js"></script>
+<script src="basket-nutrition.js"></script>
 <script src="personal-programs.js"></script>
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
@@ -90,10 +91,11 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/calendar-components.js"></script>
 <script src="compiled/qi-scene-components.js"></script>
 <script src="compiled/shooting-components.js"></script>
+<script src="compiled/nutrition-components.js"></script>
 <script src="compiled/personal-app.js"></script>
 <script>
 // Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
-window.REHAAB_VERSION='v62-ux-simple';
+window.REHAAB_VERSION='v63-equilibre';
 if('serviceWorker' in navigator){window.addEventListener('load',function(){
   // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
   // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.

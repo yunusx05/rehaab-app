@@ -583,6 +583,13 @@ function PTQuestionnaires({
     text: SK?.complete(data.skills) ? `Fait${when(data.skills?.profile?.date)}` : 'Dribble, tir, finition, défense : ton niveau de départ',
     go: () => go(SK?.complete(data.skills) ? 'skills' : 'skills-quiz')
   }, {
+    id: 'nutrition',
+    icon: 'food',
+    title: 'Profil nutrition',
+    done: !!window.BasketNutrition?.complete(data.nutrition),
+    text: window.BasketNutrition?.complete(data.nutrition) ? `Fait${when(data.nutrition?.date)} · repères, horaires, compléments` : 'Objectif, horaires, halal, digestion : tes repères de repas',
+    go: () => go(window.BasketNutrition?.complete(data.nutrition) ? 'nutrition' : 'nutrition-q')
+  }, {
     id: 'pain',
     icon: 'pain',
     title: 'Mes douleurs du moment',

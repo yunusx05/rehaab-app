@@ -73,7 +73,10 @@
     const accents=(Array.isArray(a.accents)?a.accents:[]).filter(p=>p&&typeof p==='object').slice(0,8).map(p=>({phase:text(p.phase,30),text:text(p.text,240)})).filter(p=>p.phase&&p.text);
     return {date:isDay(a.date)?a.date:null,message:text(a.message,1200),priorities,accents,rules:list(a.rules,5,200),choices};
   }
-  function blankCalendar() {return {moves:{},skips:{},forced:{}};}
+  // Type de journée choisi par l'utilisateur : auto (l'app décide), muscu, skills, les deux, ou repos.
+  // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
+  const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',both:'Muscu + skills',off:'Repos'};
+  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{}};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
     const moves={},skips={},forced={};
@@ -81,7 +84,29 @@
     Object.entries(v.skips&&typeof v.skips==='object'?v.skips:{}).slice(-12).forEach(([w,list])=>{if(isDay(w)&&Array.isArray(list))skips[w]=list.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,20);});
     // Déplacements forcés : choisis par l'utilisateur malgré une règle de charge (il a été prévenu).
     Object.entries(v.forced&&typeof v.forced==='object'?v.forced:{}).slice(-12).forEach(([w,list])=>{if(isDay(w)&&Array.isArray(list))forced[w]=list.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,20);});
-    return {moves,skips,forced};
+    const week={},dates={};
+    Object.entries(v.week&&typeof v.week==='object'?v.week:{}).forEach(([d,m])=>{if(/^[0-6]$/.test(d)&&MODES[m]&&m!=='auto')week[d]=m;});
+    Object.entries(v.dates&&typeof v.dates==='object'?v.dates:{}).filter(([d,m])=>isDay(d)&&MODES[m]).sort((a,b)=>a[0].localeCompare(b[0])).slice(-60).forEach(([d,m])=>dates[d]=m);
+    return {moves,skips,forced,week,dates};
+  }
+  function dayMode(state,date) {
+    const cal=validateCalendar(state.calendar)||blankCalendar();
+    return cal.dates[date]||cal.week[weekday(date)]||'auto';
+  }
+  // every : appliquer à ce jour de la semaine, toutes les semaines (le réglage ponctuel de ce jour est retiré).
+  function setDayMode(state,date,mode,{every=false}={}) {
+    const cal=validateCalendar(state.calendar)||blankCalendar(),week={...cal.week},dates={...cal.dates},wd=String(weekday(date));
+    if(every){if(mode==='auto')delete week[wd];else week[wd]=mode;delete dates[date];}
+    else if(week[wd]&&mode===week[wd])delete dates[date];
+    else dates[date]=mode;
+    return {...cal,week,dates};
+  }
+  // La séance a-t-elle sa place un jour de ce type ?
+  function fitsMode(item,mode) {
+    if(item.type==='care') return true;
+    if(mode==='off') return false;
+    if(item.type==='skills'||item.type==='shooting') return ['auto','skills','both'].includes(mode);
+    return ['auto','muscu','both'].includes(mode);
   }
 
   function build(state, now=today()) {
@@ -160,21 +185,27 @@
   }
 
   // Règles de placement (conventions courantes, voir COACH-SOURCES.md).
-  function ruleBreak(item,date,placed,days) {
+  function ruleBreak(item,date,placed,days,{ignoreMinutes=false}={}) {
     const i=days.findIndex(d=>d.date===date),d=days[i];if(!d) return 'Jour hors de la semaine.';
+    const mode=d.mode||'auto';
+    if(!fitsMode(item,mode)) return `Jour réglé sur « ${MODES[mode]} ».`;
     const prev=days[i-1]||{club:days.prevClub||{match:false,practice:false}},next=days[i+1]||{club:clubOfNext(days,i)};
     if(d.club.match&&item.type!=='care') return 'Jour de match : seulement l’échauffement.';
     if(item.legs==='heavy'&&next.club.match) return 'Veille de match : pas de jambes lourdes.';
     if(item.legs==='impact'&&next.club.match) return 'Veille de match : pas d’impacts répétés.';
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';
     if(item.legs==='heavy'&&d.club.practice) return 'Entraînement au club ce jour-là : pas de jambes lourdes en plus.';
-    if((item.type==='skills'||item.type==='shooting')&&(d.club.practice||d.club.match)) return 'Pas de skills ni de tir un jour de club : le basket y est déjà.';
-    if(item.type==='shooting'&&placed.some(x=>x!==item&&x.type==='skills'&&x.date===date)) return 'Déjà une séance skills ce jour-là.';
+    // Un jour de club, les skills ne passent que si tu l'as demandé (jour réglé sur « Skills » ou « Muscu + skills »).
+    if((item.type==='skills'||item.type==='shooting')&&(d.club.match||d.club.practice&&!['skills','both'].includes(mode))) return 'Pas de skills ni de tir un jour de club : le basket y est déjà.';
+    if((item.type==='shooting'||item.type==='skills')&&placed.some(x=>x!==item&&x.type==='skills'&&x.date===date)) return 'Déjà une séance skills ce jour-là.';
     if(item.legs==='heavy'&&placed.some(x=>x!==item&&x.legs==='heavy'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances de jambes lourdes.';
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
-    const total=placed.filter(x=>x!==item&&x.date===date&&x.type!=='care').reduce((n,x)=>n+x.minutes,0);
-    if(item.type!=='care'&&total&&total+item.minutes>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
+    // Les skills raccourcies pour accompagner une séance physique ne comptent pas dans la durée du jour.
+    const total=placed.filter(x=>x!==item&&x.date===date&&x.type!=='care'&&!(x.type==='skills'&&(mode==='both'||x.combined))).reduce((n,x)=>n+x.minutes,0);
+    // Muscu + skills le même jour : la séance skills est raccourcie pour tenir dans ta durée (voir weekSchedule).
+    const paired=item.type==='skills'&&(mode==='both'||ignoreMinutes||item.combined)||item.physical&&mode==='both'&&placed.every(x=>x===item||x.date!==date||x.type==='skills'||x.type==='care');
+    if(item.type!=='care'&&!paired&&total&&total+item.minutes>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
     if(d.before) return 'Avant le début de ton plan.';
     return null;
   }
@@ -184,7 +215,8 @@
   function weekSchedule(state, monday=mondayOf(today()), now=today()) {
     monday=mondayOf(monday);
     const free=freeDays(state),cal=validateCalendar(state.calendar)||blankCalendar();
-    const days=Array.from({length:7},(_,i)=>{const date=at(monday,i);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),free:free.includes(i),items:[]};});
+    // « Auto » choisi pour un seul jour le rend disponible, même hors de tes jours habituels.
+    const days=Array.from({length:7},(_,i)=>{const date=at(monday,i),mode=dayMode(state,date);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),mode,free:mode==='off'?false:mode==='auto'?free.includes(i)||cal.dates[date]==='auto':true,items:[]};});
     days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));
     const built=build(state,now),all=items(state,built),tgt=target(state),warnings=[];
     const ans=state.dossier&&state.dossier.answers||{};days.maxMinutes=Math.max(30,Math.round((Number(ans.maxMinutes)||75)*1.15));
@@ -211,11 +243,24 @@
         const same=placed.filter(x=>x.physical===item.physical||x.legs===item.legs);
         const gap=same.length?Math.min(...same.map(x=>Math.abs(diff(x.date,d.date)))):7;
         const load=placed.filter(x=>x.date===d.date).length;
-        return {d,score:gap*2-load*3-(d.club.practice?2:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
+        // Un jour que tu as réglé pour ce type de séance passe devant.
+        const skillsType=item.type==='skills'||item.type==='shooting';
+        const wanted=d.mode==='both'||d.mode==='skills'&&skillsType||d.mode==='muscu'&&!skillsType;
+        return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
       }).sort((a,b)=>b.score-a.score||a.d.weekday-b.d.weekday);
+      // Skills sans jour à elles : elles passent après une séance physique, en version courte, plutôt que de disparaître.
+      const paired=!options.length&&item.type==='skills'?days.filter(d=>d.free&&!ruleBreak(item,d.date,placed,days,{ignoreMinutes:true})&&!placed.some(x=>x.date===d.date&&x.type==='skills')).sort((a,b)=>placed.filter(x=>x.date===a.date).length-placed.filter(x=>x.date===b.date).length||a.weekday-b.weekday):[];
       if(options.length) placed.push({...item,date:options[0].d.date});
+      else if(paired.length) placed.push({...item,date:paired[0].date});
       else if(item.type!=='care'&&!startWeek) warnings.push(`${item.label} : aucun jour libre compatible cette semaine${item.type==='vivacite'?' (fais-la juste après l’échauffement d’une séance du haut du corps)':''}.`);
     }
+    // Skills le même jour qu'une séance physique : version courte (20 min au moins) pour ne pas dépasser ta durée maximale.
+    placed.filter(x=>x.type==='skills').forEach(x=>{
+      const phys=placed.filter(y=>y.physical&&y.date===x.date).reduce((n,y)=>n+y.minutes,0);
+      if(!phys) return;
+      const room=Math.max(20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-phys)/5)*5));
+      Object.assign(x,{minutes:room,combined:true,label:'Skills basket · après la séance'});
+    });
     // Statut : faite (séance correspondante enregistrée dans la semaine), manquée (jour passé), prévue.
     const shots=((state.shooting&&state.shooting.sessions)||[]).map(s=>({id:s.id,date:s.date,source:'shooting'}));
     const sessions=[...(state.sessions||[]),...shots].filter(s=>diff(s.date,monday)>=0&&diff(s.date,monday)<7);
@@ -231,7 +276,8 @@
     });
     days.forEach(d=>{d.qi=!d.club.match;d.weighIn=d.weekday===0;});
     delete days.nextClub;delete days.prevClub;delete days.maxMinutes;
-    return {monday,days,warnings,target:tgt,phase:built.current,skipped:all.filter(x=>skips.includes(x.key)).map(x=>x.label)};
+    const skillsWanted=all.filter(x=>x.type==='skills'&&!skips.includes(x.key)).length,skillsPlaced=placed.filter(x=>x.type==='skills').length;
+    return {monday,days,warnings,target:tgt,skills:{wanted:skillsWanted,placed:skillsPlaced},phase:built.current,skipped:all.filter(x=>skips.includes(x.key)).map(x=>x.label)};
   }
 
   // Contrôle d'un planning : utilisé par les tests et après chaque déplacement.
@@ -332,5 +378,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,ics,review,applySuggestion,target};
 });

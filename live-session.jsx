@@ -191,6 +191,7 @@ function PTSession({data,update,go,notify}) {
       {phase!=='warmup'&&<PTExerciseMetrics exercise={exercise} weight={row.weight||PT.loadAdvice(exercise,data,draft.check)?.value}/>}
       {upcoming&&<div className="next-up"><PTThumbnail exercise={upcoming.exercise}/><div><small>{phase==='warmup'?'Pour commencer':'Ensuite'}</small><strong>{upcoming.exercise.name}</strong><small>Série {upcoming.step.set+1} / {upcoming.exercise.sets}</small></div></div>}
       <p className="live-coach" aria-live="polite"><PTIcon name={phase==='rest'?'heart':'spark'} size={17}/>{coach}</p>
+      {phase==='work'&&exercise.sideNote&&<p className="notice side-note"><strong>{exercise.weakSide?'Jambe faible':'Équilibre gauche / droite'} · </strong>{exercise.sideNote}</p>}
       {blocked||!permitted?<div className="notice warning">{blocked?'Séance suspendue : fais le point sur la douleur signalée.':'Ce mouvement ne convient plus à tes contraintes actuelles.'}</div>:null}
       {phase==='work'&&exercise.unilateral&&exercise.measure==='seconds'&&<PTButton quiet disabled={paused} onClick={()=>setDraft(d=>({...d,timer:makeTimer(exercise.seconds,'Autre côté','work'),stageElapsed:0,stageStarted:Date.now()}))}>Minuter l’autre côté<PTIcon name="refresh" size={18}/></PTButton>}
       {phase==='work'&&exercise.audio&&<PTAudioCue/>}
