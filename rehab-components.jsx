@@ -28,10 +28,18 @@ function PTRehabRail(props) {
 }
 
 function PTWarmupRail(props) {
-  return <section className="scroll-reveal"><div className="section-head"><h2>WARM UP</h2><span className="caption">Avant de jouer</span></div>
-    <div className="workout-rail">
-      {RW.warmups.map(w => <button key={w.id} className="preset-workout" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))}><PTThumbnail exercise={rwThumb(w.thumb)}/><span className="preset-info"><small>{w.minutes} min</small><strong>{w.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>)}
-    </div></section>;
+  const {go} = props;
+  const tile = w => <button key={w.id} className="preset-workout" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))}><PTThumbnail exercise={rwThumb(w.thumb)}/><span className="preset-info"><small>{w.minutes} min</small><strong>{w.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>;
+  return <>
+    <section className="scroll-reveal"><div className="section-head"><h2>WARM UP</h2><span className="caption">Avant de jouer · change chaque jour</span></div>
+      <div className="workout-rail">{RW.warmups.map(tile)}</div></section>
+    {RW.cooldowns && <section className="scroll-reveal"><div className="section-head"><h2>ÉTIREMENTS & RÉCUP</h2><span className="caption">Après l’effort</span></div>
+      <div className="workout-rail">
+        {typeof PTStretchPicker === 'function' && <button className="preset-workout quiz-tile" onClick={() => go('stretch')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="body" size={44}/></span><span className="preset-info"><small>Sur le personnage</small><strong>Étirements ciblés</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>}
+        {typeof PTStretchPicker === 'function' && <button className="preset-workout" onClick={() => go('stretch', 'heavy')}><PTThumbnail exercise={rwThumb('legs-up-wall')}/><span className="preset-info"><small>Lourdeurs</small><strong>Jambes lourdes</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>}
+        {RW.cooldowns.map(tile)}
+      </div></section>}
+  </>;
 }
 
 function PTRehabSources({ids}) {

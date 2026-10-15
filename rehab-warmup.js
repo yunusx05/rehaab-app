@@ -315,43 +315,221 @@
   }
 
   // Échauffements basket : structure SHRed / FIFA 11+ / RAMP (élever, mobiliser, activer, potentialiser).
+  // Lot 18 : chaque phase pioche dans un réservoir de mouvements qui tourne chaque jour, pour ne jamais refaire deux fois le même échauffement.
+  // Mobiliser = étirements dynamiques (en mouvement) ; les étirements tenus vont au retour au calme (Behm 2016).
+  S.behm={label:'Behm et al. 2016 · étirements et performance : dynamiques avant, tenus après',url:'https://pubmed.ncbi.nlm.nih.gov/26642915/'};
+  S.foam={label:'Wiewelhove et al. 2019 · rouleau de massage, performance et récupération (méta-analyse)',url:'https://www.frontiersin.org/articles/10.3389/fphys.2019.00376/full'};
+  S.recovery={label:'Dupuy et al. 2018 · techniques de récupération après l’effort (méta-analyse)',url:'https://www.frontiersin.org/articles/10.3389/fphys.2018.00403/full'};
+  S.tens={label:'Johnson et al. 2022 · électrostimulation (TENS) et douleur (méta-analyse, BMJ Open)',url:'https://bmjopen.bmj.com/content/12/2/e051073'};
+  const POOLS = {
+    raise:['jog-court','butt-kicks','high-knees','rope-single','jumping-jack','bike'],
+    feet:['carioca','backpedal','lateral-shuffle','defensive-slide','skip-a','a-skip'],
+    mobLegs:['leg-swing-front','walking-quad','knee-hug-walk','hip-gate','spiderman-lunge','leg-swing-side','frankenstein','glute-cradle','lunge-twist','worlds-greatest','adductor-rockback','inchworm','hip-circles','ankle-mob'],
+    mobUpper:['arm-circles','torso-twist','band-dislocate','inchworm','quad-rotation','wall-slide','thoracic'],
+    actLegs:['monster-walk','single-bridge','single-leg-reach','hip-abduction','side-plank','clamshell','calf','tibialis','miniband-stance'],
+    actUpper:['band-pullapart','scap-pushup','band-er','plank-shoulder-tap','wall-slide','er-iso'],
+    power:['pogo','snap-down','skip-a','power-skip','accel-10','crossover-start','lateral-bound-stick','approach-jump','defensive-slide','a-skip'],
+    hands:['wrist-mob','finger-ext','forearm-stretch'],
+    stretchLegs:['quad-stretch','supine-hamstring','calf-stretch','hip-flexor','figure-four','butterfly','soleus-stretch','couch-stretch','side-lunge-stretch','hamstring','outer-hip-stretch','pigeon','downdog','shin-stretch'],
+    stretchUpper:['cross-body','lat-stretch','triceps-stretch','doorway-chest','neck-stretch','forearm-stretch','side-bend','childs-pose'],
+    stretchBack:['childs-pose','lying-twist','cobra','cat','figure-four'],
+    release:['foam-quads','foam-calves','foam-hamstrings','foam-glutes','foam-outer-thigh','foam-adductors','gun-calves','gun-quads','gun-hamstrings','gun-glutes'],
+    flush:['bike','march','walk'],
+    calm:['breath']
+  };
+  // Mouvement de repli quand tout le réservoir est écarté (matériel, douleur, impacts).
+  const POOL_FALLBACK = {raise:['march'],feet:['march'],power:['calf','a-march','march'],actLegs:['bridge','single-leg-stand'],actUpper:['wall-slide','scap-pushup'],mobLegs:['hip-circles','cat'],mobUpper:['thoracic','cat'],flush:['march']};
+  // Jour → nombre stable : le même échauffement toute la journée, un autre le lendemain.
+  const dayIndex = (date=today()) => Math.floor(Date.parse(`${date}T12:00:00Z`)/86400000);
+  const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
+  // Pioche count mouvements dans un réservoir, à partir d'un point qui avance chaque jour.
+  function rotate(list,seed,count) {const n=list.length;if(!n) return [];const start=((seed*Math.max(1,count))%n+n)%n;return [...list.slice(start),...list.slice(0,start)];}
+  // Une étape : [réservoir ou liste d'ids, nombre, secondes, options]. Renvoie des prescriptions d'une série, chronométrées si timed.
+  function routine(PT,JP,state,steps,{seed=dayIndex(),check,role='warmup',timed=false,exclude=[]}={}) {
+    const ctx=PT.context(state,check),all=PT.allExercises(state),safety=PT.safety(state);
+    const ok=x=>x&&PT.allowed(x,state,check,ctx)&&(!JP||JP.tolerates(x,safety.active));
+    const out=[],used=new Set(exclude);let missing=0,extra=0;
+    const keep=['raise','flush','calm'];
+    steps.forEach(([pool,count,seconds,o={}],i)=>{
+      const ids=Array.isArray(pool)?pool:POOLS[pool]||[];
+      const ordered=o.fixed?ids:rotate(ids,seed+hash(`${pool}${i}`),count);
+      let got=0;
+      for(const id of [...ordered,...(o.optional?[]:POOL_FALLBACK[pool]||[])]) {
+        if(got>=count) break;
+        const e=all.find(y=>y.id===id);
+        if(!ok(e)||used.has(e.id)) continue;
+        used.add(e.id);got++;
+        const sec=e.passive?(o.passiveSeconds||e.seconds):seconds;
+        const asTime=timed||e.measure==='seconds'||e.kind==='cardio'||e.passive;
+        if(o.optional) extra+=sec*(e.unilateral?2:1)+15;
+        out.push({...PT.makePrescription(e,'classic',10,ctx),sets:1,rest:o.rest??(role==='warmup'?10:5),measure:asTime?'seconds':e.measure,seconds:asTime?sec:e.seconds,
+          min:Math.min(e.min,8),max:Math.min(e.max,10),targetMin:Math.min(e.min,8),targetMax:Math.min(e.max,10),role,...(o.optional?{fixed:true}:{}),...(o.tag||keep.includes(pool)?{routineTag:o.tag||pool}:{})});
+      }
+      if(got<count&&!o.optional) missing+=count-got;
+    });
+    return {exercises:out,missing,extra};
+  }
+  const moveSeconds = list => list.reduce((n,e)=>n+(e.measure==='seconds'?e.seconds:(e.targetMax||e.max||10)*3)*(e.unilateral?2:1)+(e.rest||0),0);
+
+  // Échauffements à la carte (rail « Warm Up ») : 5 classiques + étirements dynamiques. Les ids restent stables (sauvegardes, tests).
   const warmups = [
-    {id:'practice',title:'Avant entraînement',minutes:10,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm'],
-      blocks:[['gun-legs',45,true],['jog-court',90],['carioca',20],['skip-a',20],['worlds-greatest',30],['monster-walk',30],['single-leg-reach',30],['snap-down',20],['pogo',20],['defensive-slide',20]]},
-    {id:'match',title:'Avant match',minutes:15,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm'],
-      blocks:[['gun-legs',45,true],['jog-court',120],['carioca',20],['backpedal',20],['skip-a',20],['worlds-greatest',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['single-leg-reach',30],['pogo',20],['snap-down',20],['defensive-slide',20],['accel-10',20],['crossover-start',20],['approach-jump',20]]},
-    {id:'express',title:'Express',minutes:6,thumb:'worlds-greatest',sources:['shred','fifa'],
-      blocks:[['jog-court',60],['worlds-greatest',30],['lateral-shuffle',20],['skip-a',20],['pogo',20],['defensive-slide',20]]},
-    {id:'legs',title:'Avant jambes ou sauts',minutes:8,thumb:'monster-walk',sources:['fifa','backman','percussion'],
-      blocks:[['gun-legs',45,true],['jog-court',90],['hip-circles',30],['ankle-mob',30],['monster-walk',30],['single-bridge',30],['squat',30],['snap-down',20],['pogo',20]]},
-    {id:'shoot',title:'Avant shoot',minutes:6,thumb:'band-dislocate',sources:['kuhn','orthoShoulder'],
-      blocks:[['thoracic',30],['wall-slide',30],['band-er',30],['band-pullapart',30],['scap-pushup',30],['wrist-mob',30],['finger-ext',20]]}
+    {id:'practice',title:'Avant entraînement',minutes:12,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm','behm'],
+      steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,90],['feet',2,20],['mobLegs',3,30],['actLegs',2,30],['power',2,20]]},
+    {id:'match',title:'Avant match',minutes:18,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm','behm'],
+      steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,120],['feet',3,20],[['ankle-mob'],1,30,{fixed:true}],['mobLegs',4,30],['mobUpper',1,30],['actLegs',3,30],['power',4,20]]},
+    {id:'express',title:'Express',minutes:7,thumb:'worlds-greatest',sources:['shred','fifa','behm'],
+      steps:[['raise',1,60],['mobLegs',2,30],['feet',1,20],['power',2,20]]},
+    {id:'legs',title:'Avant jambes ou sauts',minutes:10,thumb:'monster-walk',sources:['fifa','backman','percussion','behm'],
+      steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,90],[['ankle-mob','hip-circles'],1,30,{fixed:true}],['mobLegs',3,30],['actLegs',2,30],['power',2,20]]},
+    {id:'shoot',title:'Avant shoot',minutes:7,thumb:'band-dislocate',sources:['kuhn','orthoShoulder','behm'],
+      steps:[['mobUpper',3,30],['actUpper',2,30],['hands',2,25]]},
+    {id:'dynamic',title:'Étirements dynamiques',minutes:9,thumb:'worlds-greatest',sources:['behm','fifa'],
+      steps:[['raise',1,60],['mobLegs',5,30],['mobUpper',2,30]]}
   ];
-  // Repli quand un mouvement n'est pas possible (matériel, douleur, impacts).
-  const warmFallback = {'carioca':['lateral-shuffle','march'],'skip-a':['a-march','high-knees','march'],'backpedal':['march'],'jog-court':['march','bike'],'pogo':['calf'],'snap-down':['squat'],'defensive-slide':['lateral-shuffle','monster-walk'],'lateral-shuffle':['monster-walk'],'accel-10':['wall-drill','a-march'],'crossover-start':['lateral-shuffle','monster-walk'],'approach-jump':['calf'],'monster-walk':['hip-abduction','clamshell'],'single-leg-reach':['single-leg-stand'],'band-er':['er-iso'],'band-pullapart':['wall-slide'],'finger-ext':['wrist-mob'],'worlds-greatest':['hip-circles','cat'],'squat':['box-squat','wall-sit']};
-  function warmupPlan(PT,JP,state,id) {
-    const w=warmups.find(x=>x.id===id);if(!w) return {error:'Échauffement introuvable.'};
+  // Retours au calme à la carte : étirements tenus, rouleau ou pistolet si tu en as, respiration.
+  const cooldowns = [
+    {id:'after-practice',title:'Après entraînement',minutes:8,thumb:'quad-stretch',sources:['behm','recovery'],
+      steps:[['flush',1,90],['stretchLegs',4,30],['stretchUpper',1,30],['calm',1,60]]},
+    {id:'after-match',title:'Après match',minutes:14,thumb:'legs-up-wall',sources:['recovery','foam','behm'],
+      steps:[['flush',1,180],['release',2,45,{optional:true}],['stretchLegs',5,30],[['legs-up-wall'],1,120,{fixed:true}],['calm',1,60]]},
+    {id:'evening',title:'Avant de dormir',minutes:10,thumb:'childs-pose',sources:['behm'],
+      steps:[['stretchBack',3,40],['stretchLegs',3,40],[['legs-up-wall'],1,120,{fixed:true}],['calm',1,90]]}
+  ];
+  function warmupPlan(PT,JP,state,id,{date=today()}={}) {
+    const w=warmups.find(x=>x.id===id)||cooldowns.find(x=>x.id===id);if(!w) return {error:'Échauffement introuvable.'};
+    const cool=cooldowns.includes(w);
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
-    const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes:w.minutes,date:today(),guided:2,warmup:true};
-    const ctx=PT.context(state,check),all=PT.allExercises(state);
-    const ok=x=>x&&PT.allowed(x,state,check,ctx)&&(!JP||JP.tolerates(x,safety.active));
-    const exercises=[];let removed=0,extra=0;
-    // optional : bloc ajouté seulement si le matériel est là (pistolet de massage), sans compter comme un retrait.
-    w.blocks.forEach(([first,seconds,optional])=>{
-      const e=[first,...(warmFallback[first]||[])].map(i=>all.find(y=>y.id===i)).find(x=>ok(x)&&!exercises.some(y=>y.id===x.id));
-      if(!e){if(!optional)removed++;return;}
-      if(optional) extra+=seconds+15; // le pistolet ajoute son temps, il ne raccourcit pas l'échauffement actif
-      const timed=e.measure==='seconds'||e.kind==='cardio';
-      exercises.push({...PT.makePrescription(e,'classic',w.minutes,ctx),sets:1,rest:15,measure:timed?'seconds':e.measure,seconds:timed?seconds:e.seconds,min:Math.min(e.min,8),max:Math.min(e.max,10),targetMin:Math.min(e.min,8),targetMax:Math.min(e.max,10),role:'warmup',...(optional?{fixed:true}:{})});
-    });
+    const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes:w.minutes,date,guided:2,warmup:!cool};
+    const r=routine(PT,JP,state,w.steps,{seed:dayIndex(date)+hash(w.id),check,role:cool?'cooldown':'warmup',timed:true});
+    const exercises=r.exercises;
     // Trop long : durées raccourcies, l'ordre (élever, mobiliser, activer, potentialiser) ne bouge pas.
-    while(PT.estimateSeconds(exercises,'classic')>w.minutes*60+extra&&exercises.some(e=>!e.fixed&&e.measure==='seconds'&&e.seconds>20)) exercises.forEach(e=>{if(!e.fixed&&e.measure==='seconds'&&e.seconds>20)e.seconds=Math.max(20,e.seconds-10);});
+    const trimmable=e=>!e.fixed&&!e.routineTag&&e.measure==='seconds'&&e.seconds>20;
+    while(PT.estimateSeconds(exercises,'classic')>w.minutes*60+r.extra&&exercises.some(trimmable)) exercises.forEach(e=>{if(trimmable(e))e.seconds=Math.max(20,e.seconds-10);});
     if(exercises.length<3) return {error:'Pas assez de mouvements compatibles aujourd’hui. Vérifie tes douleurs et ton matériel.'};
-    const reasons=['Échauffement basket : on monte en température, on mobilise, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs.'];
+    const reasons=cool?['Retour au calme : le cœur redescend, puis des étirements tenus 30 à 45 secondes, sans forcer.','Les étirements tenus vont après l’effort : avant, ils peuvent faire perdre un peu de force et de détente.']
+      :['Échauffement basket : on monte en température, on mobilise en étirements dynamiques, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs.','Les mouvements changent chaque jour : même structure, jamais la même routine.'];
     if(exercises.some(e=>e.id==='gun-legs')) reasons.push('Pistolet de massage en ouverture : une minute à vitesse basse suffit. Il gagne un peu d’amplitude sans faire perdre de force, mais ne remplace pas l’échauffement actif.');
-    if(removed) reasons.push('Certains sauts ou mouvements ont été remplacés à cause de ton matériel ou de tes douleurs.');
-    return {id:uid(),title:`Warm Up · ${w.title}`,source:'warmup',warmupId:w.id,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    if(exercises.some(e=>e.tool==='foamroller')) reasons.push('Rouleau : lent, sur le muscle. Il diminue un peu les courbatures ressenties le lendemain.');
+    if(r.missing) reasons.push('Certains sauts ou mouvements ont été remplacés à cause de ton matériel ou de tes douleurs.');
+    return {id:uid(),title:`${cool?'Retour au calme':'Warm Up'} · ${w.title}`,source:'warmup',warmupId:w.id,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+  }
+
+  // Échauffement et retour au calme guidés d'une séance (parcours, muscu, skills, séance générée) : choisis selon ce que la séance sollicite.
+  const LOWER = ['squat','hinge','calf','jump','footwork','cardio','finish','defense','moves','coordination','react'];
+  const UPPER = ['push','pull','arms','shoot'];
+  // Muscles sollicités → étirements tenus prioritaires en fin de séance.
+  const STRETCH_FOR = {squat:['quad-stretch','couch-stretch','hip-flexor'],hinge:['supine-hamstring','figure-four','hamstring'],calf:['calf-stretch','soleus-stretch'],jump:['calf-stretch','quad-stretch','hip-flexor'],
+    footwork:['side-lunge-stretch','hip-flexor','soleus-stretch'],cardio:['calf-stretch','quad-stretch','supine-hamstring'],finish:['calf-stretch','hip-flexor','quad-stretch'],defense:['butterfly','side-lunge-stretch','figure-four'],
+    moves:['hip-flexor','calf-stretch'],coordination:['calf-stretch','forearm-stretch'],handle:['forearm-stretch','calf-stretch'],react:['calf-stretch','quad-stretch'],
+    push:['doorway-chest','triceps-stretch','cross-body'],pull:['lat-stretch','cross-body','neck-stretch'],arms:['forearm-stretch','triceps-stretch'],core:['cobra','lying-twist','childs-pose'],shoot:['forearm-stretch','cross-body','triceps-stretch']};
+  const ROUTINE_SKIP = ['rehab','warmup','recovery','quick'];
+  function sessionRoutines(PT,JP,state,plan,{date=today()}={}) {
+    if(!plan||plan.error||ROUTINE_SKIP.includes(plan.source)||plan.focus==='mobility') return {warmup:[],cooldown:[]};
+    const list=plan.exercises||[],count=p=>list.filter(e=>p.includes(e.skillArea||e.pattern)).length;
+    const legs=count(LOWER),arms=count(UPPER),jumps=list.some(e=>e.impact||e.pattern==='jump'||e.cuts);
+    const check={...(plan.check||state.checkIn),equipment:state.owned,focus:'mobility',format:'classic',minutes:10,date,guided:2,warmup:true};
+    const seed=dayIndex(date)+hash(plan.title||plan.source||'');
+    const budget=Number(plan.warmupSeconds)||0;
+    let warmup=[];
+    if(budget>0&&!plan.warmupSkipped) {
+      const short=budget<=150;
+      const steps=legs>=arms
+        ?(short?[['mobLegs',2,30],['actLegs',1,30]]:[['raise',1,60],['mobLegs',3,30],['mobUpper',arms?1:0,30],['actLegs',1,30],...(jumps?[['power',1,20]]:[])])
+        :(short?[['mobUpper',2,30],['actUpper',1,30]]:[['raise',1,60],['mobUpper',3,30],['actUpper',2,30],['mobLegs',1,30]]);
+      if(list.some(e=>['shoot','handle','coordination'].includes(e.skillArea))&&!short) steps.push(['hands',1,25]);
+      warmup=routine(PT,JP,state,steps.filter(s=>s[1]>0),{seed,check,role:'warmup',timed:true}).exercises;
+    }
+    // Retour au calme : 3 à 5 étirements tenus pour ce qui a travaillé, puis une minute de respiration.
+    const weights={};list.forEach(e=>{const k=e.skillArea||e.pattern;(STRETCH_FOR[k]||[]).forEach((id,i)=>{weights[id]=(weights[id]||0)+3-i;});});
+    const ranked=Object.keys(weights).sort((a,b)=>weights[b]-weights[a]||hash(a+seed)-hash(b+seed));
+    const n=list.length>=6?4:3;
+    const stretches=routine(PT,JP,state,[[ranked,n,30,{fixed:true}]],{seed,check:{...check,warmup:false},role:'cooldown',timed:true}).exercises;
+    // Rien de ciblé (séance atypique) : étirements des jambes du jour.
+    const more=stretches.length<n?routine(PT,JP,state,[['stretchLegs',n-stretches.length,30]],{seed,check:{...check,warmup:false},role:'cooldown',timed:true,exclude:stretches.map(e=>e.id)}).exercises:[];
+    const calm=routine(PT,JP,state,[['calm',1,60]],{seed,check:{...check,warmup:false},role:'cooldown',timed:true}).exercises;
+    return {warmup,cooldown:[...stretches,...more,...calm]};
+  }
+  // Ajoute les deux routines à une séance au moment de la lancer. L'échauffement guidé remplace le simple chrono.
+  function attachRoutines(PT,JP,state,plan,opts) {
+    if(!plan||plan.error||plan.warmupMoves) return plan;
+    const r=sessionRoutines(PT,JP,state,plan,opts);
+    const out={...plan,warmupMoves:r.warmup,cooldownMoves:r.cooldown};
+    if(r.warmup.length) out.warmupSeconds=moveSeconds(r.warmup);
+    return out;
+  }
+
+  // Récupération ciblée : zones choisies sur le corps + ressenti. Lourdeur, tension, courbatures ou grosse fatigue.
+  // release : rouleau, pistolet ; mobile : dynamique doux ; stretch : tenu ; tens : électrostimulation (zone principale).
+  const bodyZones = {
+    neck:{label:'Cou',region:'neck',rehab:'neck',release:['gun-upper-back'],mobile:['neck-mob','chin-tuck'],stretch:['neck-stretch'],tens:['tens-upper-back']},
+    shoulders:{label:'Épaules',region:'shoulder',rehab:'shoulder',release:['foam-lats','gun-upper-back'],mobile:['arm-circles','band-dislocate','wall-slide'],stretch:['cross-body','lat-stretch'],tens:['tens-upper-back']},
+    chest:{label:'Pectoraux',region:'shoulder',rehab:'shoulder',release:[],mobile:['arm-circles'],stretch:['doorway-chest'],tens:[]},
+    arms:{label:'Bras et avant-bras',region:'elbow',rehab:'hand',release:['gun-forearms'],mobile:['wrist-mob'],stretch:['forearm-stretch','triceps-stretch'],tens:[]},
+    upperback:{label:'Haut du dos',region:'back',rehab:'back',release:['foam-upper-back','gun-upper-back'],mobile:['thoracic','quad-rotation','cat'],stretch:['lat-stretch','childs-pose'],tens:['tens-upper-back']},
+    lowback:{label:'Bas du dos',region:'back',rehab:'back',release:[],mobile:['cat','hip-90-90'],stretch:['childs-pose','lying-twist','figure-four'],tens:['tens-lowback']},
+    abs:{label:'Abdominaux',region:'back',rehab:'back',release:[],mobile:['torso-twist','cat'],stretch:['cobra','side-bend'],tens:[]},
+    hipflex:{label:'Avant de hanche',region:'hip',rehab:'hip',release:[],mobile:['hip-circles','leg-swing-front'],stretch:['hip-flexor','couch-stretch'],tens:[]},
+    glutes:{label:'Fessiers',region:'hip',rehab:'hip',release:['foam-glutes','gun-glutes'],mobile:['glute-cradle','hip-90-90'],stretch:['figure-four','pigeon','outer-hip-stretch'],tens:[]},
+    adductors:{label:'Intérieur des cuisses',region:'hip',rehab:'hip',release:['foam-adductors','gun-adductors'],mobile:['leg-swing-side','hip-gate'],stretch:['butterfly','side-lunge-stretch'],tens:[]},
+    quads:{label:'Quadriceps',region:'knee',rehab:'knee',release:['foam-quads','gun-quads'],mobile:['walking-quad'],stretch:['quad-stretch','couch-stretch'],tens:['tens-quads']},
+    hamstrings:{label:'Ischio-jambiers',region:'hip',rehab:'hip',release:['foam-hamstrings','gun-hamstrings'],mobile:['frankenstein','leg-swing-front'],stretch:['supine-hamstring','hamstring'],tens:['tens-hamstrings']},
+    knees:{label:'Genoux',region:'knee',rehab:'knee',release:['foam-quads','gun-quads'],mobile:['walking-quad'],stretch:['quad-stretch'],tens:['tens-knee']},
+    calves:{label:'Mollets',region:'ankle',rehab:'foot',release:['foam-calves','gun-calves'],mobile:['ankle-mob','ankle-alphabet'],stretch:['calf-stretch','soleus-stretch'],tens:['tens-calves']},
+    shins:{label:'Tibias',region:'ankle',rehab:'foot',release:['foam-shins','gun-shins'],mobile:['ankle-alphabet'],stretch:['shin-stretch'],tens:[]},
+    feet:{label:'Chevilles et pieds',region:'ankle',rehab:'foot',release:[],mobile:['ankle-mob','ankle-alphabet','foot-doming'],stretch:['plantar-stretch','calf-stretch'],tens:[]}
+  };
+  const feelings = {
+    heavy:{label:'Lourdeur',short:'jambes lourdes',hint:'Jambes lourdes, sans entrain'},
+    tension:{label:'Tension',short:'tensions',hint:'Raide, ça tire'},
+    sore:{label:'Courbatures',short:'courbatures',hint:'Muscles douloureux au toucher, 1 à 3 jours après'},
+    tired:{label:'Grosse fatigue',short:'grosse fatigue',hint:'Tout le corps, sommeil ou semaine chargée'}
+  };
+  const LEG_ZONES = ['quads','hamstrings','calves'];
+  function recoveryPlan(PT,JP,state,{feel='sore',zones=[],minutes=20,tens=true,date=today()}={}) {
+    const f=feelings[feel]||feelings.sore;
+    const safety=PT.safety(state);
+    if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
+    const picked=(zones||[]).filter(z=>bodyZones[z]);
+    const list=picked.length?picked:feel==='tired'?['lowback','hipflex','hamstrings','calves']:LEG_ZONES;
+    const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes,date,guided:1,warmup:false};
+    const seed=dayIndex(date)+hash(feel+list.join(''));
+    const ids=k=>[...new Set(list.flatMap(z=>bodyZones[z][k]))];
+    const hold=feel==='tension'?45:feel==='heavy'?40:30;
+    const nStretch=Math.max(2,Math.min(list.length*2,minutes>=25?6:minutes>=15?4:3));
+    const steps=[];
+    // Grosse fatigue : on ne relance pas le cœur, on calme. Lourdeur et courbatures : quelques minutes faciles pour faire circuler.
+    if(feel==='tired') steps.push(['calm',1,90]);
+    else if(feel!=='tension') steps.push(['flush',1,minutes>=20?300:180]);
+    // Un seul outil par zone (rouleau, sinon pistolet), trois zones au plus.
+    list.slice(0,3).forEach(z=>steps.push([bodyZones[z].release,1,45,{fixed:true,optional:true}]));
+    if(feel!=='tired') list.slice(0,2).forEach(z=>steps.push([bodyZones[z].mobile,1,30,{fixed:true,optional:true}]));
+    steps.push([[...ids('stretch'),...POOLS.stretchLegs.filter(()=>!picked.length)],nStretch,hold,{fixed:true,tag:'stretch'}]);
+    if(feel==='heavy'||feel==='tired'||list.some(z=>LEG_ZONES.includes(z))&&minutes>=20) steps.push([['legs-up-wall'],1,feel==='heavy'?180:120,{fixed:true,optional:true}]);
+    if(tens) steps.push([(feel==='tired'||feel==='heavy'?['tens-calves']:[]).concat(ids('tens')),1,0,{fixed:true,optional:true,passiveSeconds:900,rest:0}]);
+    steps.push(['calm',1,60]);
+    const r=routine(PT,JP,state,steps,{seed,check,role:'recovery',timed:true});
+    let exercises=r.exercises;
+    // Trop long (hors électrostimulation, comptée à part) : étirements raccourcis, puis le dernier étirement retiré.
+    const active=()=>PT.estimateSeconds(exercises.filter(e=>!e.passive),'classic');
+    const soft=e=>!e.passive&&!e.routineTag?.match(/flush|calm/)&&e.seconds>25&&e.id!=='legs-up-wall';
+    while(active()>minutes*60&&exercises.some(soft)) exercises.forEach(e=>{if(soft(e))e.seconds-=5;});
+    while(active()>minutes*60&&exercises.filter(e=>e.routineTag==='stretch').length>2) {const i=exercises.map(e=>e.routineTag==='stretch').lastIndexOf(true);exercises.splice(i,1);}
+    if(exercises.filter(e=>!e.passive).length<3) return {error:'Pas assez de mouvements compatibles avec tes douleurs et ton matériel.'};
+    const names=picked.map(z=>bodyZones[z].label.toLowerCase());
+    const reasons=[
+      feel==='tired'?'Grosse fatigue : pas d’effort aujourd’hui. On calme le système nerveux (respiration lente), on relâche, on surélève les jambes.'
+        :feel==='heavy'?'Jambes lourdes : quelques minutes faciles pour faire circuler, puis on relâche et on surélève les jambes.'
+        :feel==='tension'?'Tensions : on relâche d’abord le muscle, puis étirements tenus 45 secondes, sans forcer.'
+        :'Courbatures : bouger doucement soulage mieux que le repos complet. Le massage (rouleau, pistolet) est ce qui marche le mieux contre les courbatures.',
+      names.length?`Zones ciblées : ${names.join(', ')}.`:'Zones par défaut : cuisses et mollets.',
+      'Étirement : une tension supportable, jamais une douleur. On respire et on relâche.'
+    ];
+    if(exercises.some(e=>e.passive)) reasons.push('Électrostimulation en fin de séance, allongé : programme récupération ou massage de ton appareil. Elle soulage, mais ne remplace ni le sommeil ni l’alimentation.');
+    else if(tens&&(state.owned||[]).includes('tens')) reasons.push('Pas d’électrostimulation possible sur ces zones (cou, poitrine) : on reste sur le relâchement manuel.');
+    const sources=['recovery','behm',...(exercises.some(e=>e.tool==='foamroller')?['foam']:[]),...(exercises.some(e=>e.passive)?['tens']:[])];
+    return {id:uid(),title:`Récup · ${f.label}`,source:'recovery',recoveryFeel:feel,recoveryZones:picked,sources,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,
+      estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   // Temps déjà fait aujourd'hui en rehab ou en warm-up, pas encore déduit ni refusé.
@@ -411,5 +589,5 @@
     return {rehab:{levels:{...r.levels,[protocolId]:next},log:log.slice(-300)},level:next,change};
   }
 
-  return {LEVELS,levelHints,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,protocolFor,careLevel,careBlock,withCare,warmups,warmupPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
+  return {LEVELS,levelHints,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,protocolFor,careLevel,careBlock,withCare,warmups,cooldowns,warmupPlan,POOLS,routine,sessionRoutines,attachRoutines,bodyZones,feelings,recoveryPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
 });

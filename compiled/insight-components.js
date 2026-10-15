@@ -134,7 +134,24 @@ function PTTodayPlan({
     id: "today-plan-title"
   }, excused.action === 'cancel' ? 'Séance annulée.' : 'Séance reportée.'), excused.why && /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, excused.why), /*#__PURE__*/React.createElement(PTButton, {
+  }, excused.why), RW && typeof ptRecoveryLaunch === 'function' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => ptRecoveryLaunch({
+      data,
+      update,
+      go,
+      notify
+    }, {
+      feel: 'tired',
+      minutes: 15
+    })
+  }, "R\xE9cup douce \xB7 15 min", /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('stretch')
+  }, "\xC9tirements cibl\xE9s (lourdeurs, tensions) \u2192")) : /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: () => quick('mobility', 15)
   }, "10 min de mobilit\xE9", /*#__PURE__*/React.createElement(PTIcon, {
@@ -183,7 +200,10 @@ function PTTodayPlan({
   })), !p && plan.action !== 'symptoms' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => go('pathway')
-  }, "Commencer le parcours Retour au jeu \u2192"), plannedToday.length > 0 && (!mishap ? /*#__PURE__*/React.createElement("button", {
+  }, "Commencer le parcours Retour au jeu \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
+    className: "text-button today-mishap",
+    onClick: () => go('mishap')
+  }, "Un impr\xE9vu aujourd\u2019hui ?") : plannedToday.length > 0 && (!mishap ? /*#__PURE__*/React.createElement("button", {
     className: "text-button today-mishap",
     "aria-expanded": "false",
     onClick: () => setMishap(true)

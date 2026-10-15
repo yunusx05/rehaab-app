@@ -85,7 +85,7 @@ function PTCalendar({data,update,go,notify}){
           <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
           {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
             {d.date===now&&<PTButton primary onClick={()=>launch(item,d)}>Lancer</PTButton>}
-            {d.date===now&&<button className="text-button" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
+            {d.date===now&&<button className="text-button" onClick={()=>typeof PTMishap==='function'?go('mishap'):cannot(item)}>Je ne peux pas aujourd’hui</button>}
             <button className="text-button" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
           {moving===item.key&&<div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>

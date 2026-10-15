@@ -357,7 +357,7 @@ function ptCoachLocal(c, data) {
   const message = {
     rest: 'Repos aujourd’hui. Si la douleur est forte, gonfle ou te réveille, fais-la examiner par un professionnel.',
     rehab: 'On soigne la zone qui gêne avant de forcer. Fais le protocole de soin.',
-    mobility: 'Grosse fatigue : 15 minutes de mobilité, pas plus.',
+    mobility: 'Grosse fatigue : une récup douce de 15 à 20 minutes, pas plus.',
     light: 'On garde la séance, en plus léger.',
     normal: 'Tout est au vert : séance prévue.'
   }[plan.decision];
@@ -367,6 +367,21 @@ function ptCoachLocal(c, data) {
     plan,
     offline: true
   };
+}
+
+// Décision « mobilité » : récup de rehab-warmup.js selon le bilan (courbatures fortes → anti-courbatures sur les jambes, sinon grosse fatigue).
+function ptCoachRecovery(state, c, minutes, check) {
+  const RW = window.RehabWarmup;
+  if (!RW || !RW.recoveryPlan) return PT.generate(state, {
+    ...check,
+    focus: 'mobility',
+    minutes
+  });
+  return RW.recoveryPlan(PT, window.PlayerProfile, state, {
+    feel: c.soreness === 'strong' ? 'sore' : 'tired',
+    minutes: Math.max(10, minutes),
+    tens: false
+  });
 }
 
 // Garde-fous codés : l'IA ne peut jamais passer outre une douleur forte ou un signe inhabituel.
@@ -452,11 +467,7 @@ function ptCoachApply({
     return;
   }
   let base;
-  if (plan.decision === 'mobility') base = PT.generate(state, {
-    ...check,
-    focus: 'mobility',
-    minutes: Math.min(20, check.minutes)
-  });else {
+  if (plan.decision === 'mobility') base = ptCoachRecovery(state, c, Math.min(20, check.minutes), check);else {
     const BP = window.BasketPathway,
       p = data.pathway,
       PP = window.PersonalPrograms,
@@ -634,7 +645,7 @@ function PTCoachQ({
 
 /* Bilan avant séance : la question « comment tu te sens » posée au moment de lancer la séance prévue.
    « Rien à signaler » ne touche à rien ; sinon le coach adapte CETTE séance (jamais une autre). */
-const PT_PRECHECK_SKIP = ['rehab', 'warmup'];
+const PT_PRECHECK_SKIP = ['rehab', 'warmup', 'recovery'];
 const ptPreCheckNeeded = plan => !!plan && plan.status !== 'active' && !plan.precheck && !plan.coach && !PT_PRECHECK_SKIP.includes(plan.source);
 // Basket hier / aujourd'hui / demain : lu dans le calendrier (club déclaré, matchs saisis), plus demandé.
 function ptPreCheckClub(data) {
@@ -769,12 +780,9 @@ function PTPreCheck({
     }
     let base = plan,
       adaptPlan = p;
+    // Grosse fatigue : une vraie récup (respiration, relâchement, étirements tenus), plus une simple séance de mobilité.
     if (p.decision === 'mobility') {
-      base = PT.generate(state, {
-        ...check,
-        focus: 'mobility',
-        minutes: Math.min(20, minutes)
-      });
+      base = ptCoachRecovery(state, c, Math.min(20, minutes), check);
       if (base.error) {
         setError(base.error);
         return;

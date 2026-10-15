@@ -90,8 +90,15 @@ function ptCoachLocal(c,data){
   else if(c.form===1)Object.assign(plan,{decision:'mobility',intensity:'reduced',setsFactor:.6,why:'Très fatigué : on récupère.'});
   else if(tired||c.basketSoon!=='none')Object.assign(plan,{decision:'light',intensity:'reduced',setsFactor:.7,restFactor:1.2,avoidImpact:c.basketSoon!=='none'||c.soreness==='strong',why:c.basketSoon!=='none'?'Basket proche : jambes fraîches.':'Fatigue : volume réduit.'});
   else plan.why='En forme : séance prévue.';
-  const message={rest:'Repos aujourd’hui. Si la douleur est forte, gonfle ou te réveille, fais-la examiner par un professionnel.',rehab:'On soigne la zone qui gêne avant de forcer. Fais le protocole de soin.',mobility:'Grosse fatigue : 15 minutes de mobilité, pas plus.',light:'On garde la séance, en plus léger.',normal:'Tout est au vert : séance prévue.'}[plan.decision];
+  const message={rest:'Repos aujourd’hui. Si la douleur est forte, gonfle ou te réveille, fais-la examiner par un professionnel.',rehab:'On soigne la zone qui gêne avant de forcer. Fais le protocole de soin.',mobility:'Grosse fatigue : une récup douce de 15 à 20 minutes, pas plus.',light:'On garde la séance, en plus léger.',normal:'Tout est au vert : séance prévue.'}[plan.decision];
   return {message:`${message} (coach hors ligne : règles simples)`,questions:[],plan,offline:true};
+}
+
+// Décision « mobilité » : récup de rehab-warmup.js selon le bilan (courbatures fortes → anti-courbatures sur les jambes, sinon grosse fatigue).
+function ptCoachRecovery(state,c,minutes,check){
+  const RW=window.RehabWarmup;
+  if(!RW||!RW.recoveryPlan)return PT.generate(state,{...check,focus:'mobility',minutes});
+  return RW.recoveryPlan(PT,window.PlayerProfile,state,{feel:c.soreness==='strong'?'sore':'tired',minutes:Math.max(10,minutes),tens:false});
 }
 
 // Garde-fous codés : l'IA ne peut jamais passer outre une douleur forte ou un signe inhabituel.
@@ -121,7 +128,7 @@ function ptCoachApply({data,update,go,notify},entry){
   // Douleur vive (4/10 et plus) : le protocole de soin seul. En dessous : la séance continue, avec le soin intégré.
   if(plan.decision==='rehab'&&!(c.pain==='yes'&&c.painLevel<4)){mark();const region=plan.rehabRegion||plan.avoidRegions[0];go('rehab',RW&&region?RW.zoneOfRegion[region]:undefined);return;}
   let base;
-  if(plan.decision==='mobility')base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,check.minutes)});
+  if(plan.decision==='mobility')base=ptCoachRecovery(state,c,Math.min(20,check.minutes),check);
   else{
     const BP=window.BasketPathway,p=data.pathway,PP=window.PersonalPrograms,prog=data.program?.status==='active'?data.program:null;
     // Séance skills : légère si le corps doit récupérer (sauts et changements de direction retirés).
@@ -178,7 +185,7 @@ function PTCoachQ({title,children}){return <div className="coach-q"><h3>{title}<
 
 /* Bilan avant séance : la question « comment tu te sens » posée au moment de lancer la séance prévue.
    « Rien à signaler » ne touche à rien ; sinon le coach adapte CETTE séance (jamais une autre). */
-const PT_PRECHECK_SKIP=['rehab','warmup'];
+const PT_PRECHECK_SKIP=['rehab','warmup','recovery'];
 const ptPreCheckNeeded=plan=>!!plan&&plan.status!=='active'&&!plan.precheck&&!plan.coach&&!PT_PRECHECK_SKIP.includes(plan.source);
 // Basket hier / aujourd'hui / demain : lu dans le calendrier (club déclaré, matchs saisis), plus demandé.
 function ptPreCheckClub(data){
@@ -216,7 +223,8 @@ function PTPreCheck({data,update,go,notify,plan}){
     const state={...data,checkIn:check};
     if(p.decision==='rest'||(p.decision==='rehab'&&!(c.pain==='yes'&&c.painLevel<4))){setResult(entry);return;}
     let base=plan,adaptPlan=p;
-    if(p.decision==='mobility'){base=PT.generate(state,{...check,focus:'mobility',minutes:Math.min(20,minutes)});if(base.error){setError(base.error);return;}}
+    // Grosse fatigue : une vraie récup (respiration, relâchement, étirements tenus), plus une simple séance de mobilité.
+    if(p.decision==='mobility'){base=ptCoachRecovery(state,c,Math.min(20,minutes),check);if(base.error){setError(base.error);return;}}
     else if(plan.source==='program-plan'&&window.PersonalPrograms&&data.program){
       // Muscu : la forme du jour passe par le dosage du programme (pas de double réduction des séries).
       const PP=window.PersonalPrograms,prog=data.program,checkP=PP.checkForSession(data,prog,{answers:ptPreCheckReadiness(c),minutes:Number(prog.minutes)||minutes});
