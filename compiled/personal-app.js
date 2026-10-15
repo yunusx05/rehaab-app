@@ -192,6 +192,36 @@ function PTIcon({
     }), /*#__PURE__*/React.createElement("path", {
       d: "M9 13l-1 8h4l1-8M17 10h4"
     })),
+    foam: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
+      x: "3",
+      y: "8",
+      width: "18",
+      height: "8",
+      rx: "4"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M7 8v8m5-8v8m5-8v8"
+    })),
+    tens: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
+      x: "7",
+      y: "3",
+      width: "10",
+      height: "8",
+      rx: "2"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M10 7h4M9 11v3l-4 4m10-7v3l4 4"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "2",
+      y: "17",
+      width: "5",
+      height: "4",
+      rx: "1"
+    }), /*#__PURE__*/React.createElement("rect", {
+      x: "17",
+      y: "17",
+      width: "5",
+      height: "4",
+      rx: "1"
+    })),
     slider: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("ellipse", {
       cx: "7",
       cy: "16",
@@ -870,18 +900,22 @@ function PTPreview({
       return;
     }
     update(s => {
-      const draft = PT.startDraft(plan, s);
+      const RWx = window.RehabWarmup,
+        ready = RWx ? RWx.attachRoutines(PT, window.PlayerProfile, s, plan) : plan,
+        draft = PT.startDraft(ready, s),
+        first = draft.warmupMoves && draft.warmupMoves[0];
       return {
         ...s,
         draft: {
           ...draft,
+          warmIndex: 0,
           stageElapsed: 0,
           stageStarted: Date.now(),
-          timer: {
+          timer: first && typeof ptRoutineTimer === 'function' ? ptRoutineTimer(first, 'warmup', false) : {
             id: PT.uid(),
-            endAt: Date.now() + plan.warmupSeconds * 1000,
-            remaining: plan.warmupSeconds,
-            duration: plan.warmupSeconds,
+            endAt: Date.now() + draft.warmupSeconds * 1000,
+            remaining: draft.warmupSeconds,
+            duration: draft.warmupSeconds,
             kind: 'warmup',
             label: 'Échauffement'
           }
@@ -894,7 +928,7 @@ function PTPreview({
   return /*#__PURE__*/React.createElement("div", {
     className: "visual-preview"
   }, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup'].includes(plan.source) ? 'today' : 'prepare'),
+    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup', 'recovery'].includes(plan.source) ? 'today' : 'prepare'),
     eyebrow: "Ta proposition",
     title: plan.title
   }), /*#__PURE__*/React.createElement("div", {
@@ -925,7 +959,10 @@ function PTPreview({
     className: "reason-list"
   }, plan.reasons.map((r, i) => /*#__PURE__*/React.createElement("li", {
     key: i
-  }, r))))), plan.warmupSeconds > 0 && /*#__PURE__*/React.createElement("div", {
+  }, r))))), typeof PTRoutinePreview === 'function' ? /*#__PURE__*/React.createElement(PTRoutinePreview, {
+    data: data,
+    plan: plan
+  }) : plan.warmupSeconds > 0 && /*#__PURE__*/React.createElement("div", {
     className: "warmup"
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "body",
@@ -969,7 +1006,9 @@ function PTPreview({
       className: "instruction-list"
     }, e.instructions.map((line, i) => /*#__PURE__*/React.createElement("li", {
       key: i
-    }, line))), advice && /*#__PURE__*/React.createElement("p", {
+    }, line))), e.warning && /*#__PURE__*/React.createElement("p", {
+      className: "notice warning"
+    }, e.warning), advice && /*#__PURE__*/React.createElement("p", {
       className: "fine"
     }, advice.text))), /*#__PURE__*/React.createElement("div", {
       className: "exercise-actions"
@@ -1068,7 +1107,7 @@ function PTPreview({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "play",
     size: 22
-  }), "D\xE9marrer la s\xE9ance")), !['program', 'program-plan', 'pathway', 'quick', 'rehab', 'warmup', 'skills'].includes(plan.source) && /*#__PURE__*/React.createElement(PTButton, {
+  }), "D\xE9marrer la s\xE9ance")), !['program', 'program-plan', 'pathway', 'quick', 'rehab', 'warmup', 'skills', 'recovery', 'match-intensity'].includes(plan.source) && /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: reroll
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -2411,7 +2450,11 @@ function PersonalApp() {
       'nutrition-q': PTNutritionQuiz,
       'shooting-new': PTShootingNew,
       'shooting-live': PTShootingLive,
-      weight: PTWeight
+      weight: PTWeight,
+      ...(typeof PTMishap === 'function' ? {
+        mishap: PTMishap,
+        stretch: PTStretchPicker
+      } : {})
     };
     const Screen = screens[route] || PTSportToday;
     content = /*#__PURE__*/React.createElement(Screen, _extends({

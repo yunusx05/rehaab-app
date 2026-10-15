@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v65-imprevus';
+const CACHE = 'rehaab-v66-recup';
 const PRECACHE = [
   './',
   './index.html',
@@ -26,6 +26,7 @@ const PRECACHE = [
   './drill-sources.js',
   './rehab-warmup.js',
   './compiled/rehab-components.js',
+  './compiled/recovery-components.js',
   './compiled/coach-components.js',
   './compiled/library-components.js',
   './compiled/program-components.js',

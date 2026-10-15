@@ -339,7 +339,7 @@ function PTCalendar({
     onClick: () => launch(item, d)
   }, "Lancer"), d.date === now && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
-    onClick: () => cannot(item)
+    onClick: () => typeof PTMishap === 'function' ? go('mishap') : cannot(item)
   }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     "aria-expanded": moving === item.key,

@@ -29,6 +29,7 @@ function PTSkillsHome({data,update,go,notify}){
       <PTButton primary disabled={day&&day.skills==='none'} onClick={()=>ptSkillsLaunch({data,update,go,notify},{light:day?.skills==='light'})}>{day?.skills==='light'?'Lancer la séance légère':'Lancer une séance skills'}<PTIcon name="arrow" size={18}/></PTButton>
       {day&&day.skills==='blocks'&&<button className="text-button" onClick={()=>ptSkillsLaunch({data,update,go,notify},{light:true,minutes:30})}>Une séance de plus quand même (30 min, légère)</button>}
     </section>
+    {SK.matchSession&&<PTMatchIntensityCard data={data} update={update} go={go} notify={notify} day={day}/>}
     <section className="stack"><h3>Mes paliers</h3>
       <div className="home-options">{Object.entries(SK.areas).map(([id,a])=><div key={id} className="home-action"><PTIcon name="basket"/><span><strong>{a.label} · {SK.TIERS[s.levels[id]-1]}</strong><small>{a.style?`Inspiration ${a.style} · `:''}{a.why}</small></span></div>)}</div>
       <p className="fine">Tu montes d’un palier après deux séances « trop facile » (ou 70 % de tirs réussis), tu redescends après deux « trop dur » (ou moins de 35 %).</p>
@@ -46,6 +47,25 @@ function PTSkillsHome({data,update,go,notify}){
       <button className="home-action" onClick={()=>go('library')}><PTIcon name="book"/><span><strong>Tous les exercices</strong><small>Onglet « Basket » de la bibliothèque.</small></span><PTIcon name="arrow" size={18}/></button>
     </div>
   </div></>;
+}
+
+// Intensité match : tir, dribble et finition sous fatigue, au rythme d'un match. Pas les jours de club, de match, ni en version légère.
+function PTMatchIntensityCard({data,update,go,notify,day}){
+  const SK=window.BasketSkills,[minutes,setMinutes]=usePTState(30);
+  const blocked=day&&day.skills==='none',light=day&&day.skills==='light';
+  const launch=()=>{
+    if(data.draft?.status==='active'){go('session');notify('Ta séance en cours est conservée.');return;}
+    const plan=SK.matchSession(PT,data,{minutes});
+    if(plan.error){notify(plan.error);return;}
+    update(s=>({...s,draft:plan}));go('preview');
+  };
+  return <section className="card stack-sm match-intensity"><span className="eyebrow">Haute intensité</span>
+    <strong>Intensité match</strong>
+    <p className="fine">Sprints, tirs, dribble et finitions enchaînés avec peu de récupération : ton pourcentage quand les jambes brûlent. Une à deux fois par semaine.</p>
+    <PTChips options={[20,30,45].map(n=>({value:n,label:`${n} min`}))} value={minutes} onChange={setMinutes}/>
+    {(blocked||light)&&<p className="notice warning">{blocked?'Club ou match aujourd’hui : le basket est déjà au programme. Garde l’intensité pour un autre jour.':'Jour léger conseillé (match proche ou jambes chargées) : évite l’intensité aujourd’hui.'}</p>}
+    <PTButton primary={!blocked&&!light} quiet={blocked||light} onClick={launch}>Lancer l’intensité match<PTIcon name="arrow" size={18}/></PTButton>
+  </section>;
 }
 
 function PTSkillsQuiz({data,update,go,notify}){
@@ -74,12 +94,13 @@ function PTSkillsQuiz({data,update,go,notify}){
 // Aperçu : « panier aujourd'hui » reconstruit la séance skills ou le bloc ajouté.
 function PTSkillsHoop({data,update,plan}){
   const SK=window.BasketSkills;
-  if(!SK||!plan||!(plan.source==='skills'||plan.exercises.some(e=>e.skillBlock)))return null;
+  if(!SK||!plan||!(plan.source==='skills'||plan.source==='match-intensity'||plan.exercises.some(e=>e.skillBlock)))return null;
   const hoop=SK.hoopToday(data.skills);
   const toggle=on=>update(s=>{
     const skills={...SK.validate(s.skills),hoopDate:on?PT.dateKey():null},st={...s,skills};
     let draft=s.draft;
-    if(draft.source==='skills'){const next=SK.session(PT,st,{minutes:draft.check?.minutes,light:draft.reasons.some(r=>r.startsWith('Version légère'))});if(!next.error)draft=next;}
+    if(draft.source==='match-intensity'){const next=SK.matchSession(PT,st,{minutes:draft.check?.minutes});if(!next.error)draft=next;}
+    else if(draft.source==='skills'){const next=SK.session(PT,st,{minutes:draft.check?.minutes,light:draft.reasons.some(r=>r.startsWith('Version légère'))});if(!next.error)draft=next;}
     else{const base={...draft,exercises:draft.exercises.filter(e=>!e.skillBlock),reasons:draft.reasons.filter(r=>!r.startsWith('Bloc skills')),estimatedMinutes:(draft.estimatedMinutes||0)-(draft.skillBlockMinutes||0)};draft=SK.withBlock(PT,st,base,{});}
     return {...st,draft};
   });

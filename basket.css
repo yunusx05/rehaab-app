@@ -516,3 +516,10 @@
 .nutri-supp.is-no{opacity:.75}
 .nutri-note{border-left:2px solid var(--accent);padding-left:.6rem}
 .side-note strong{color:var(--accent)}
+/* Lot 18 · échauffement et retour au calme dans l'aperçu, personnage à zones, imprévus, intensité match. */
+.routine-preview{gap:1rem}.routine-row+.routine-row{border-top:1px solid var(--line);padding-top:.9rem}.routine-row h3{font-size:.98rem;margin:0}.routine-row .fine{margin:.25rem 0 .5rem}
+.routine-chips{display:flex;flex-wrap:wrap;gap:.35rem;list-style:none;margin:0;padding:0}.routine-chips li{background:var(--raised);color:var(--sub);border-radius:40px;padding:.35rem .7rem;font-size:.74rem;line-height:1.2}
+.body-picker{display:grid;justify-items:center;gap:.4rem;background:var(--surface);border-radius:24px;padding:1rem .75rem}.body-picker .body-map{max-height:340px}.body-picker .rotate-body{width:auto}
+.pick-layer .pick-zone{fill-opacity:.12}.pick-layer .pick-zone.selected{fill-opacity:1}.pick-chips{flex-wrap:wrap;justify-content:center}.pick-chips .fine{text-align:center;margin:0}
+.mishap .choice{text-align:left;justify-items:start}.match-intensity strong{font-size:1.1rem}.match-intensity .chips{flex-wrap:wrap}
+.pick-hit{fill:transparent;stroke:none;pointer-events:all;cursor:pointer;outline:none}.pick-hit:focus-visible{stroke:var(--accent);stroke-width:1.5}

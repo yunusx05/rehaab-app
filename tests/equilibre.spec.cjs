@@ -146,6 +146,7 @@ test('imprévu : depuis l’accueil, reporter ou annuler la séance du jour, pui
   await page.clock.setFixedTime(new Date(`${day.date}T10:00:00`));
   await page.setViewportSize({width:390,height:844});await seed(page,s,'today');
   await page.getByRole('button',{name:'Un imprévu aujourd’hui ?'}).click();
+  await page.getByRole('button',{name:/Autre empêchement/}).click();
   await page.getByRole('button',{name:'Reporter',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Séance reportée.'})).toBeVisible();
   let saved=await state(page);expect(saved.calendar.excused.action).toBe('postpone');
@@ -154,6 +155,7 @@ test('imprévu : depuis l’accueil, reporter ou annuler la séance du jour, pui
   await expect(page.getByRole('button',{name:'Un imprévu aujourd’hui ?'})).toBeVisible();
   saved=await state(page);expect(saved.calendar.excused).toBe(null);
   await page.getByRole('button',{name:'Un imprévu aujourd’hui ?'}).click();
+  await page.getByRole('button',{name:/Autre empêchement/}).click();
   await page.getByRole('button',{name:'Annuler',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Séance annulée.'})).toBeVisible();
   await noOverflow(page);await page.screenshot({path:'test-results/imprevu-accueil.png'});expect(errors).toEqual([]);

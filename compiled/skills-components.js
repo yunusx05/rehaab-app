@@ -135,7 +135,13 @@ function PTSkillsHome({
       light: true,
       minutes: 30
     })
-  }, "Une s\xE9ance de plus quand m\xEAme (30 min, l\xE9g\xE8re)")), /*#__PURE__*/React.createElement("section", {
+  }, "Une s\xE9ance de plus quand m\xEAme (30 min, l\xE9g\xE8re)")), SK.matchSession && /*#__PURE__*/React.createElement(PTMatchIntensityCard, {
+    data: data,
+    update: update,
+    go: go,
+    notify: notify,
+    day: day
+  }), /*#__PURE__*/React.createElement("section", {
     className: "stack"
   }, /*#__PURE__*/React.createElement("h3", null, "Mes paliers"), /*#__PURE__*/React.createElement("div", {
     className: "home-options"
@@ -218,6 +224,62 @@ function PTSkillsHome({
     name: "arrow",
     size: 18
   })))));
+}
+
+// Intensité match : tir, dribble et finition sous fatigue, au rythme d'un match. Pas les jours de club, de match, ni en version légère.
+function PTMatchIntensityCard({
+  data,
+  update,
+  go,
+  notify,
+  day
+}) {
+  const SK = window.BasketSkills,
+    [minutes, setMinutes] = usePTState(30);
+  const blocked = day && day.skills === 'none',
+    light = day && day.skills === 'light';
+  const launch = () => {
+    if (data.draft?.status === 'active') {
+      go('session');
+      notify('Ta séance en cours est conservée.');
+      return;
+    }
+    const plan = SK.matchSession(PT, data, {
+      minutes
+    });
+    if (plan.error) {
+      notify(plan.error);
+      return;
+    }
+    update(s => ({
+      ...s,
+      draft: plan
+    }));
+    go('preview');
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: "card stack-sm match-intensity"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, "Haute intensit\xE9"), /*#__PURE__*/React.createElement("strong", null, "Intensit\xE9 match"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Sprints, tirs, dribble et finitions encha\xEEn\xE9s avec peu de r\xE9cup\xE9ration : ton pourcentage quand les jambes br\xFBlent. Une \xE0 deux fois par semaine."), /*#__PURE__*/React.createElement(PTChips, {
+    options: [20, 30, 45].map(n => ({
+      value: n,
+      label: `${n} min`
+    })),
+    value: minutes,
+    onChange: setMinutes
+  }), (blocked || light) && /*#__PURE__*/React.createElement("p", {
+    className: "notice warning"
+  }, blocked ? 'Club ou match aujourd’hui : le basket est déjà au programme. Garde l’intensité pour un autre jour.' : 'Jour léger conseillé (match proche ou jambes chargées) : évite l’intensité aujourd’hui.'), /*#__PURE__*/React.createElement(PTButton, {
+    primary: !blocked && !light,
+    quiet: blocked || light,
+    onClick: launch
+  }, "Lancer l\u2019intensit\xE9 match", /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })));
 }
 function PTSkillsQuiz({
   data,
@@ -317,7 +379,7 @@ function PTSkillsHoop({
   plan
 }) {
   const SK = window.BasketSkills;
-  if (!SK || !plan || !(plan.source === 'skills' || plan.exercises.some(e => e.skillBlock))) return null;
+  if (!SK || !plan || !(plan.source === 'skills' || plan.source === 'match-intensity' || plan.exercises.some(e => e.skillBlock))) return null;
   const hoop = SK.hoopToday(data.skills);
   const toggle = on => update(s => {
     const skills = {
@@ -329,7 +391,12 @@ function PTSkillsHoop({
         skills
       };
     let draft = s.draft;
-    if (draft.source === 'skills') {
+    if (draft.source === 'match-intensity') {
+      const next = SK.matchSession(PT, st, {
+        minutes: draft.check?.minutes
+      });
+      if (!next.error) draft = next;
+    } else if (draft.source === 'skills') {
       const next = SK.session(PT, st, {
         minutes: draft.check?.minutes,
         light: draft.reasons.some(r => r.startsWith('Version légère'))

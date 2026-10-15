@@ -101,15 +101,10 @@ function PTRehabRail(props) {
   })))))));
 }
 function PTWarmupRail(props) {
-  return /*#__PURE__*/React.createElement("section", {
-    className: "scroll-reveal"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "WARM UP"), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "Avant de jouer")), /*#__PURE__*/React.createElement("div", {
-    className: "workout-rail"
-  }, RW.warmups.map(w => /*#__PURE__*/React.createElement("button", {
+  const {
+    go
+  } = props;
+  const tile = w => /*#__PURE__*/React.createElement("button", {
     key: w.id,
     className: "preset-workout",
     onClick: () => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))
@@ -122,7 +117,52 @@ function PTWarmupRail(props) {
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "play",
     size: 17
-  })))))));
+  }))));
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
+    className: "scroll-reveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("h2", null, "WARM UP"), /*#__PURE__*/React.createElement("span", {
+    className: "caption"
+  }, "Avant de jouer \xB7 change chaque jour")), /*#__PURE__*/React.createElement("div", {
+    className: "workout-rail"
+  }, RW.warmups.map(tile))), RW.cooldowns && /*#__PURE__*/React.createElement("section", {
+    className: "scroll-reveal"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "section-head"
+  }, /*#__PURE__*/React.createElement("h2", null, "\xC9TIREMENTS & R\xC9CUP"), /*#__PURE__*/React.createElement("span", {
+    className: "caption"
+  }, "Apr\xE8s l\u2019effort")), /*#__PURE__*/React.createElement("div", {
+    className: "workout-rail"
+  }, typeof PTStretchPicker === 'function' && /*#__PURE__*/React.createElement("button", {
+    className: "preset-workout quiz-tile",
+    onClick: () => go('stretch')
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "quiz-tile-court",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "body",
+    size: 44
+  })), /*#__PURE__*/React.createElement("span", {
+    className: "preset-info"
+  }, /*#__PURE__*/React.createElement("small", null, "Sur le personnage"), /*#__PURE__*/React.createElement("strong", null, "\xC9tirements cibl\xE9s"), /*#__PURE__*/React.createElement("span", {
+    className: "preset-play"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 17
+  })))), typeof PTStretchPicker === 'function' && /*#__PURE__*/React.createElement("button", {
+    className: "preset-workout",
+    onClick: () => go('stretch', 'heavy')
+  }, /*#__PURE__*/React.createElement(PTThumbnail, {
+    exercise: rwThumb('legs-up-wall')
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "preset-info"
+  }, /*#__PURE__*/React.createElement("small", null, "Lourdeurs"), /*#__PURE__*/React.createElement("strong", null, "Jambes lourdes"), /*#__PURE__*/React.createElement("span", {
+    className: "preset-play"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 17
+  })))), RW.cooldowns.map(tile))));
 }
 function PTRehabSources({
   ids

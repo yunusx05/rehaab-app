@@ -59,7 +59,7 @@
   const D = (id,name,area,tier,tags,needs,instructions,o={}) => ({id,name,kind:'skill',pattern:area,area,tier,tags,needs,instructions,
     regions:o.regions||(area==='handle'?['wrist']:area==='shoot'?['wrist','elbow','shoulder']:['ankle','knee','wrist']),
     level:tier,impact:!!o.impact,measure:o.measure||'reps',sets:o.sets||3,min:o.min||8,max:o.max||12,rest:o.rest||30,seconds:o.seconds||30,
-    weighted:false,unilateral:!!o.unilateral,style:o.style||null,cuts:!!o.cuts,transfer:o.transfer||null,cues:o.cues||null,source:o.source||null});
+    weighted:false,unilateral:!!o.unilateral,style:o.style||null,cuts:!!o.cuts,transfer:o.transfer||null,cues:o.cues||null,source:o.source||null,intense:!!o.intense});
   const H = ['ball'], HH = ['ball','hoop'], HC = ['ball','court'];
   const shots = (sets,n,o={}) => ({measure:'shots',sets,min:n,max:n,seconds:n*6,rest:o.rest||30,...o});
 
@@ -185,7 +185,21 @@
     D('mv-fake-sidestep','Feinte de tir puis side-step','moves',3,['counter'],HH,['Feinte de tir crédible.','Le défenseur saute : side-step.','Tir équilibré.'],shots(3,5,{regions:['wrist','elbow','shoulder','knee','ankle'],cuts:true,transfer:'Punir le défenseur qui saute sur la feinte.',cues:['Jambes fléchies pendant la feinte','Pas latéral court']})),
     D('mv-in-out-cross','In-and-out puis crossover','moves',2,['combos'],HC,['In-and-out main droite.','Le défenseur bouge : crossover.','Attaque à gauche.'],{min:6,max:8,rest:30,cuts:true,regions:['wrist','ankle','knee'],transfer:'Deux feintes pour un seul vrai départ.',cues:['Épaules qui vendent','Crossover sous le genou']}),
     D('mv-snatch-cross','Snatch-back puis crossover','moves',3,['counter','combos'],HC,['Attaque, snatch-back pour reculer.','Le défenseur revient fort : crossover.','Attaque le côté libre.'],{min:6,max:8,rest:40,cuts:true,regions:['wrist','ankle','knee'],transfer:'Contrer le défenseur qui recolle vite.',cues:['Recul équilibré','Crossover dès qu’il avance']}),
-    D('mv-drive-read','Drive : finir ou passer','moves',3,['counter','readFoot'],['ball','hoop','court'],['Attaque le cercle.','L’aide arrive : passe au coin. Sinon, finis.','Seul : un partenaire lève la main pour l’aide.'],{min:6,max:8,rest:40,impact:true,cuts:true,regions:['wrist','ankle','knee'],transfer:'Lire l’aide au lieu de forcer.',cues:['Regarde l’aide, pas le cercle','Passe à deux mains']})
+    D('mv-drive-read','Drive : finir ou passer','moves',3,['counter','readFoot'],['ball','hoop','court'],['Attaque le cercle.','L’aide arrive : passe au coin. Sinon, finis.','Seul : un partenaire lève la main pour l’aide.'],{min:6,max:8,rest:40,impact:true,cuts:true,regions:['wrist','ankle','knee'],transfer:'Lire l’aide au lieu de forcer.',cues:['Regarde l’aide, pas le cercle','Passe à deux mains']}),
+    // Lot 18 · intensité match : efforts courts et répétés, récupération courte, gestes de match sous fatigue.
+    // intense : réservés à la séance « Intensité match » (matchSession), jamais tirés dans une séance skills ordinaire.
+    D('mi-dribble-2010','Intervalles de dribble 20/10','handle',2,['speedDribble','moves','weakHand'],H,['20 s à fond : crossover, entre les jambes, dans le dos.','10 secondes de récupération, balle en main.','Huit fois : le rythme d’une possession sous pression.'],{measure:'seconds',seconds:20,sets:8,rest:10,intense:true,transfer:'Garder une balle propre quand le souffle part.',cues:['Tête haute même fatigué','Balle sous le genou']}),
+    D('mi-full-court-attack','Contre-attaque en dribble tout terrain','handle',2,['speedDribble'],HC,['Dribble à pleine vitesse d’une ligne de fond à l’autre.','Crossover au milieu du terrain, sans ralentir.','Arrêt deux temps à la ligne des lancers, retour en trottinant.'],{min:4,max:6,rest:30,cuts:true,intense:true,regions:['wrist','ankle','knee'],transfer:'Pousser la balle en transition sans la perdre.',cues:['Balle devant toi, à hauteur de hanche','Arrêt équilibré malgré la vitesse']}),
+    D('mi-cone-attack','Attaque de plots sous fatigue','handle',3,['moves','pressure'],HC,['Trois plots en ligne, quatre mètres d’écart.','À chaque plot, un move différent à vitesse de match.','30 secondes de travail, 30 de récupération.'],{measure:'seconds',seconds:30,sets:5,rest:30,cuts:true,intense:true,regions:['wrist','ankle','knee'],transfer:'Créer avec le dribble au 4e quart-temps.',cues:['Move court près du plot','Accélère en sortie']}),
+    D('mi-sprint-shot','Sprint, catch & shoot','shoot',2,['catchShoot','onMove'],HH,['Sprint jusqu’au milieu du terrain et retour.','Lance-toi la balle, réception 1-2, tir à mi-distance ou à 3 points.','Cinq tirs par série, un sprint avant chaque tir.'],shots(4,5,{rest:45,cuts:true,intense:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Tirer juste en sortie de course, comme en transition.',cues:['Pieds prêts avant la balle','Souffle une fois avant de monter']})),
+    D('mi-1min-pullup','Minute folle : pull-ups','shoot',3,['pullup','onMove'],HH,['Une minute sans t’arrêter.','Attaque depuis la ligne à 3 points, un ou deux dribbles, pull-up.','Récupère, ressors au large, recommence. Compte les réussis.'],shots(3,10,{rest:60,cuts:true,intense:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Créer son tir quand les jambes brûlent.',cues:['Arrêt deux temps propre','Monte droit, même fatigué']})),
+    D('mi-3spot-race','Course aux trois spots','shoot',2,['catchShoot','onMove','range'],HH,['Corner, aile, haut de la raquette.','Un tir à chaque spot, sprint entre les spots, retour au corner.','Deux tours par série, note tes réussis.'],shots(4,6,{rest:45,cuts:true,intense:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Se replacer vite et tirer dans le rythme.',cues:['Arrive face au cercle','Même routine à chaque tir']})),
+    D('mi-closeout-shot','Closeout, glissés puis tir','shoot',2,['catchShoot'],HH,['Closeout sur un plot, trois glissés défensifs.','Sprint vers l’aile, réception et tir.','Défense puis attaque : une vraie possession.'],shots(4,4,{rest:40,cuts:true,intense:true,regions:['wrist','elbow','shoulder','knee','ankle','hip'],transfer:'Tirer juste après avoir défendu.',cues:['Bas en défense','Pieds prêts à la réception']})),
+    D('mi-suicide-ft','Navettes et lancers francs','shoot',2,['freeThrow'],HH,['Navette : ligne des lancers, milieu, ligne opposée, retour.','Enchaîne deux lancers francs, même routine, une grande expiration avant.','Comme en fin de match.'],shots(5,2,{rest:30,cuts:true,intense:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Mettre ses lancers quand le match se joue.',cues:['Une expiration, puis la routine','Fixe l’arrière du cercle']})),
+    D('mi-transition-layups','Transition : lay-ups tout terrain','finish',2,['explosive','weakFinish'],HH,['Dribble d’un panier à l’autre, lay-up.','Reprends la balle, repars, lay-up de l’autre main.','Quarante secondes sans t’arrêter.'],{measure:'seconds',seconds:40,sets:4,rest:40,impact:true,cuts:true,intense:true,regions:['ankle','knee','wrist'],transfer:'Finir en contre-attaque à pleine vitesse.',cues:['Dernier appui court','Main extérieure']}),
+    D('mi-mikan-sprint','Mikan puis sprint','finish',2,['weakFinish'],HH,['Vingt secondes de Mikan.','Sprint jusqu’à la ligne des lancers et retour, deux fois.','Encore vingt secondes de Mikan, mains douces malgré le souffle.'],{measure:'seconds',seconds:45,sets:4,rest:45,impact:true,cuts:true,intense:true,regions:['ankle','knee','wrist'],transfer:'Finir près du cercle en fin de possession.',cues:['Rythme régulier','Planche haute']}),
+    D('mi-drive-kick','Navette puis drive au cercle','finish',3,['explosive','contactFinish'],HH,['Navette rapide jusqu’au milieu et retour.','Reçois au large, attaque en deux dribbles.','Finis fort au cercle, main extérieure.'],{min:5,max:6,rest:45,impact:true,cuts:true,intense:true,regions:['ankle','knee','wrist'],transfer:'Attaquer le cercle quand la défense est fatiguée.',cues:['Premier pas long','Épaule devant']}),
+    D('mi-shell-slides','Possession défensive : glissés, closeout, rebond','defense',2,['onBall','closeout','boxout'],['ball','hoop','court'],['Glisse de la raquette au corner, closeout main haute.','Retour dans la raquette, box-out, rebond.','Ressors en dribble jusqu’au milieu : 30 secondes, comme une possession.'],{measure:'seconds',seconds:30,sets:5,rest:30,cuts:true,impact:true,intense:true,regions:['knee','hip','ankle','wrist'],transfer:'Tenir une possession défensive complète, puis relancer.',cues:['Bas tout du long','Contact avant la balle']})
   ];
   const byId = id => drills.find(d=>d.id===id)||null;
 
@@ -243,7 +257,7 @@
     const s=state.skills||blank(),tier=s.levels[area]||1,prio=priorities(s,state.player);
     const weight=d=>d.tags.reduce((n,t)=>n+((prio.find(p=>p.id===t)||{}).score||0),0);
     const pains=(state.symptoms||[]).filter(x=>x.active).map(x=>x.region);
-    return drills.filter(d=>d.area===area&&d.tier<=tier&&d.tier>=tier-1&&(hoop||!d.needs.includes('hoop'))&&!(hoop&&area==='shoot'&&!d.needs.includes('hoop'))&&!(noImpact&&(d.impact||d.cuts))&&!(stationary&&d.cuts)
+    return drills.filter(d=>d.area===area&&!d.intense&&d.tier<=tier&&d.tier>=tier-1&&(hoop||!d.needs.includes('hoop'))&&!(hoop&&area==='shoot'&&!d.needs.includes('hoop'))&&!(noImpact&&(d.impact||d.cuts))&&!(stationary&&d.cuts)
       &&!exclude.includes(d.id)&&!d.regions.some(r=>pains.includes(r)))
       .sort((a,b)=>(b.tier===tier)-(a.tier===tier)||(hoop?b.needs.includes('hoop')-a.needs.includes('hoop'):0)||weight(b)-weight(a)||a.id.localeCompare(b.id)).slice(0,count);
   }
@@ -290,6 +304,38 @@
     const counts={};plan.forEach(e=>counts[e.area]=(counts[e.area]||0)+1);
     const lead=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
     return {id:uid(),title:`Skills · ${areas[lead].short}${hoop?' + panier':''}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+  }
+
+  // Intensité match : efforts de 20 à 60 s, récupérations courtes, tir, dribble et finition sous fatigue.
+  // Le basket alterne des efforts très intenses et des récupérations incomplètes : on reproduit ce rythme ballon en main.
+  const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
+  function matchSession(PT,state,{minutes=30,date=today()}={}) {
+    const s=validate(state.skills),hoop=hoopToday(s,date),total=Number(minutes)||30;
+    const pains=(state.symptoms||[]).filter(x=>x.active);
+    if(pains.some(p=>['knee','ankle','hip','back'].includes(p.region)&&Number(p.severity)>=3)) return {error:'Douleur aux jambes ou au dos : pas d’intensité match aujourd’hui. Fais plutôt une séance skills légère ou ton soin.'};
+    const lvl=a=>Math.max(2,s.levels[a]||1);
+    const avail=d=>d.intense&&d.tier<=lvl(d.area)&&(hoop||!d.needs.includes('hoop'))&&!d.regions.some(r=>pains.some(p=>p.region===r));
+    const order=hoop?['handle','shoot','finish','shoot','defense','handle','finish']:['handle','handle','handle'];
+    const plan=[],used=new Set();
+    const add=d=>{used.add(d.id);plan.push({...dose(d,PT),sets:d.sets,rest:d.rest});};
+    for(const area of order){
+      if(estimate(plan)>=(total-6)*60) break;
+      const d=drills.filter(x=>x.area===area&&avail(x)&&!used.has(x.id)&&x.id!=='mi-suicide-ft').sort((a,b)=>hash(a.id+date)-hash(b.id+date))[0];
+      if(d) add(d);
+    }
+    // Sans panier : on complète avec la défense et la coordination ballon en main, à vitesse de match.
+    if(!hoop) ['df-slide-sprint','df-zigzag','co-figure8-cones'].forEach(id=>{const d=byId(id);if(d&&estimate(plan)<(total-6)*60&&!d.regions.some(r=>pains.some(p=>p.region===r)))add(d);});
+    // Avec un panier, on finit toujours par des lancers francs fatigué.
+    const ft=hoop?byId('mi-suicide-ft'):null;
+    if(ft) add(ft);
+    while(estimate(plan)>(total-5)*60&&plan.some(e=>e.sets>2)) {const e=[...plan].reverse().find(x=>x.sets>2);e.sets-=1;}
+    while(estimate(plan)>(total-5)*60&&plan.length>3) plan.splice(plan.length-(ft?2:1),1);
+    if(plan.length<2) return {error:'Pas assez d’exercices compatibles aujourd’hui (douleurs ou matériel).'};
+    const reasons=['Intensité match : efforts courts et répétés, récupération courte. C’est le rythme d’un vrai match, ballon en main.',
+      hoop?'Tirs, finitions et lancers francs sous fatigue : note tes réussis, c’est ton pourcentage quand les jambes brûlent.':'Sans panier : dribble, appuis et défense à vitesse de match. Coche « panier » pour ajouter tirs et finitions.',
+      'Une à deux fois par semaine au plus, jamais la veille d’un match ni sur des jambes lourdes.'];
+    if(state.pathway&&Number(state.pathway.step)<3) reasons.push('Ton parcours Retour au jeu n’est pas encore à l’étape 3 : une seule séance de ce type par semaine, et stop au moindre signal au genou ou à la cheville.');
+    return {id:uid(),title:`Intensité match${hoop?' · panier':''}`,source:'match-intensity',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:300,estimatedMinutes:Math.ceil((estimate(plan)+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   // Hôte d'un bloc : ce que la séance principale a déjà sollicité.
@@ -351,5 +397,5 @@
     return Object.entries(areas).map(([a,x])=>`${x.short} : ${TIERS[v.levels[a]-1].toLowerCase()}`).join(' ; ')+(v.program?` ; ${v.program.perWeek} séance(s) skills/semaine`:'')+'.';
   }
 
-  return {areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,hostOf,block,withBlock,record,summary,hoopToday,estimate};
+  return {areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
 });
