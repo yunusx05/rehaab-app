@@ -228,7 +228,10 @@ function PTSportToday({
   }), /*#__PURE__*/React.createElement("span", null, ctx.active.blocked ? 'Fais le point avant de démarrer' : symptoms.map(s => PT.regions[s.region]).join(' · ') + ' : séance adaptée'), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 16
-  })), data.draft && /*#__PURE__*/React.createElement("button", {
+  })), typeof PTDoneToday === 'function' && /*#__PURE__*/React.createElement(PTDoneToday, {
+    data: data,
+    go: go
+  }), data.draft && /*#__PURE__*/React.createElement("button", {
     className: "resume-workout sport-reveal",
     onClick: () => go(data.draft.status === 'active' ? 'session' : 'preview')
   }, /*#__PURE__*/React.createElement(PTThumbnail, {

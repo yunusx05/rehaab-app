@@ -250,7 +250,6 @@ function PTQiHome({data,update,go}) {
       </section>
       {section('En attaque', attack)}
       {section('En défense', defense)}
-      <label className="check-label"><input type="checkbox" checked={qi.rest !== false} onChange={e => update(s => ({...s, qi: {...s.qi, rest: e.target.checked}}))}/>Me poser une question pendant les temps de repos des séances</label>
     </div></>;
 }
 
@@ -318,15 +317,3 @@ function PTQiReview({data,update,go,notify}) {
     </div></>;
 }
 
-// Pendant le repos d'une séance : une question courte, sans schéma.
-function PTRestQuestion({data,update,seed}) {
-  const [question] = usePTState(() => QI.restQuestion(data.qi));
-  const [picked,setPicked] = usePTState(null);
-  if (data.qi?.rest === false) return null;
-  return <section className="rest-question" key={seed}>
-    <span className="caption">Question de repos · {question.title}</span>
-    <p>{question.prompt}</p>
-    <PTQiChoices choices={question.choices} picked={picked} onPick={i => {setPicked(i); update(s => ({...s, qi: QI.record(s.qi, {id: question.id, mode:'rest', theme: question.theme, correct: question.choices[i].ok})}));}}/>
-    {picked !== null && <p className="fine">{question.choices[picked].ok ? 'Oui. ' : ''}{question.lesson}</p>}
-  </section>;
-}

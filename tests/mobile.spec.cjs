@@ -37,10 +37,14 @@ for (const size of sizes) {
     await expect(page.getByRole('button', { name: 'Démarrer la séance' })).toBeVisible();
     await expectNoHorizontalOverflow(page);
     await page.getByRole('button', { name: 'Démarrer la séance' }).click();
+    // Rien ne tourne avant « Je suis prêt » : le matériel d'abord.
+    await expect(page.locator('.gear-list')).toBeVisible();
+    await page.getByRole('button', { name: 'Je suis prêt' }).click();
     // Échauffement guidé : un mouvement à la fois, puis la séance.
     await expect(page.locator('.live-position strong')).toContainText('Échauffement · 1 sur');
     await page.getByRole('button', { name: /Passer l’échauffement/ }).click();
-    await expect(page.getByRole('button', { name: 'Terminé', exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'C’est parti', exact: true }).click();
+    await expect(page.getByRole('button', { name: /^Fait/ })).toBeVisible();
     await expect(page.locator('.live-target, [role="timer"]').first()).toBeVisible();
     await expect(page.getByRole('button', { name: 'Mettre en pause', exact: true })).toBeVisible();
     await expectNoHorizontalOverflow(page);

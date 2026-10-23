@@ -24,14 +24,19 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:390,height:844});await seed(page,fixture());
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
+  // Toujours 5 s de préparation avant le travail ; « C’est parti » les saute.
+  await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Prépare-toi/);
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
   await expect(page.getByText('Exercice',{exact:false}).first()).toBeVisible();
   // Série en répétitions : l'objectif s'affiche en grand, pas un chrono qui monte.
   await expect(page.locator('.live-target')).toContainText('répétitions');
   await expect(page.locator('.bottom-nav')).toBeHidden();
-  const primary=page.getByRole('button',{name:'Terminé',exact:true});
+  const primary=page.getByRole('button',{name:'Fait',exact:true});
   const box=await primary.boundingBox();expect(box.y+box.height).toBeLessThanOrEqual(844);
   await page.screenshot({path:'test-results/seance-mobile.png'});
-  await primary.click();await expect(page.getByRole('dialog')).toBeVisible();
+  // « Fait » ne pose aucune question ; la saisie détaillée passe par « Ajuster la série ».
+  await page.getByRole('button',{name:'Ajuster la série',exact:true}).click();await expect(page.getByRole('dialog')).toBeVisible();
+  await page.getByLabel('Répétitions réalisées').fill('');
   await page.getByRole('button',{name:'Valider cette série'}).click();await expect(page.getByRole('alert')).toHaveText('Renseigne les répétitions réellement faites.');
   await page.getByLabel('Répétitions réalisées').fill('12');
   await page.getByLabel(/Charge \(/).fill('7.5');
@@ -48,8 +53,10 @@ test('séance : action fixe, résultats validés, repos, pause persistée, bilan
   await expect(page.getByRole('button',{name:'Reprendre la séance',exact:true})).toBeVisible({timeout:20000});
   expect((await state(page)).draft.timer.remaining).toBe(before.draft.timer.remaining);
   await page.getByRole('button',{name:'Reprendre la séance',exact:true}).click();
+  await expect(page.locator('.rest-question')).toHaveCount(0);
   await page.getByRole('button',{name:'Passer le repos',exact:true}).click();
-  await primary.click();
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
+  await page.getByRole('button',{name:'Ajuster la série',exact:true}).click();
   await page.getByLabel('Répétitions réalisées').fill('10');await page.getByLabel(/Charge \(/).fill('7.5');
   await page.getByRole('button',{name:'Oui, de justesse',exact:true}).click();await page.getByRole('button',{name:'Valider cette série'}).click();
   await expect(page.getByRole('heading',{name:'Bien joué.'})).toBeVisible();
@@ -71,14 +78,17 @@ test('séance : la flèche droite valide la série, précédent ne valide rien',
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
   await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await expect(page.getByRole('button',{name:'Série précédente'})).toBeDisabled();
-  await expect(page.locator('.next-up')).toContainText('Série 2 / 2');
+  // Pendant l'effort, rien d'autre que l'exercice : pas de carte « Ensuite ».
+  await expect(page.locator('.next-up')).toHaveCount(0);
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
+  await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Travail/);
+  await page.waitForTimeout(1200);
   await page.getByRole('button',{name:'Valider la série et passer à la suite'}).click();
   await expect(page.getByRole('button',{name:'Passer le repos',exact:true})).toBeVisible();
   const validated=await state(page);expect(validated.draft.cursor).toBe(1);
   expect(validated.draft.entries.plank[0].done).toBe(true);expect(Number(validated.draft.entries.plank[0].seconds)).toBeGreaterThan(0);expect(validated.draft.entries.plank[1].done).toBe(false);
   await page.getByRole('button',{name:'Passer le repos',exact:true}).click();
   await expect(page.locator('.live-position')).toContainText('Série 2 sur 2');
-  await expect(page.locator('.next-up')).toHaveCount(0);
   await page.getByRole('button',{name:'Série précédente'}).click();
   await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await page.getByRole('button',{name:'Mettre en pause',exact:true}).click();
@@ -106,11 +116,13 @@ test('accueil sportif : la séance active est reprise, jamais remplacée',async(
 test('petit écran : chronomètre de travail, dialogue clavier et retour à la séance',async({page})=>{
   await page.setViewportSize({width:320,height:568});await seed(page,fixture({timed:true,format:'hiit'}));
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
+  await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Prépare-toi : 0:0/);await noOverflow(page);
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
   await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Travail : 0:/);
-  await noOverflow(page);await page.getByRole('button',{name:'Terminé',exact:true}).click();
+  await noOverflow(page);await page.getByRole('button',{name:'Ajuster la série',exact:true}).click();
   await expect(page.getByRole('dialog')).toBeVisible();await noOverflow(page);
   await page.keyboard.press('Escape');await expect(page.getByRole('dialog')).toHaveCount(0);
-  await page.getByRole('button',{name:'Terminé',exact:true}).click();await page.getByLabel('Secondes réalisées',{exact:true}).fill('20');
+  await page.getByRole('button',{name:'Ajuster la série',exact:true}).click();await page.getByLabel('Secondes réalisées',{exact:true}).fill('20');
   await page.getByRole('button',{name:'Valider cette série'}).click();
   expect((await state(page)).draft.entries.plank[0].seconds).toBe('20');
 });
@@ -169,29 +181,34 @@ test('rejouer un favori réinitialise le bilan et les chronos sans toucher au pr
   expect(next.exercises.map(e=>e.id)).toEqual(prior.exercises.map(e=>e.id));expect(data.programWeek).toBe(1);
 });
 
-test('séance : position, écran de repos réglable, bips de chrono et plus de mode vocal',async({page})=>{
+test('séance : position, écran de repos réglable, bips de chrono, enchaînement seul et voix du coach',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.addInitScript(()=>{
     // Espion audio : chaque bip crée un oscillateur, on relève sa fréquence.
     window.__tones=[];const Real=window.AudioContext;
     window.AudioContext=class extends Real{createOscillator(){const o=super.createOscillator();const start=o.start.bind(o);o.start=(...a)=>{window.__tones.push(o.frequency.value);return start(...a);};return o;}};
+    // Espion voix : on garde chaque phrase du coach.
+    window.__said=[];if(window.speechSynthesis){speechSynthesis.speak=u=>{if(u.text)window.__said.push(u.text);};speechSynthesis.cancel=()=>{};}
   });
   await page.setViewportSize({width:390,height:844});
   const data=fixture({timed:true});data.draft.exercises[0].seconds=4;data.draft.exercises[0].rest=30;
   await seed(page,data);
-  await expect(page.getByText(/annonces vocales/i)).toHaveCount(0);
   await expect(page.locator('.live-position')).toContainText('Échauffement');
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
   await expect(page.locator('.live-position')).toContainText('Exercice 1 sur 1');
   await expect(page.locator('.live-position')).toContainText('Série 1 sur 2');
   await expect(page.locator('.live-progress .ex-seg.current i')).toHaveCount(2);
-  // Chrono de travail de 4 s : bip de départ (880 Hz), 3-2-1 (660 Hz), fin (990 puis 1320 Hz).
-  await expect.poll(()=>page.evaluate(()=>window.__tones.join(',')),{timeout:8000}).toContain('660,660,660,990,1320');
-  expect(await page.evaluate(()=>window.__tones[0])).toBe(880);
-  await page.getByRole('button',{name:'Terminé',exact:true}).click();
-  await page.getByRole('button',{name:'Fait comme prévu'}).click();
+  // « Prépare-toi » (5 s) : 3-2-1 seul (660 Hz). Puis chrono de travail de 4 s : départ (880 Hz), 3-2-1, fin (990 puis 1320 Hz).
+  await expect.poll(()=>page.evaluate(()=>window.__tones.join(',')),{timeout:14000}).toContain('660,660,660,880,660,660,660,990,1320');
+  // Fin du chrono : la série est validée seule et le repos démarre, sans un tap.
   const rest=page.locator('.rest-screen');
-  await expect(rest).toBeVisible();
+  await expect(rest).toBeVisible({timeout:5000});
+  await expect(rest.locator('.rest-question')).toHaveCount(0);
+  expect((await state(page)).draft.entries.plank[0]).toMatchObject({done:true,seconds:'4'});
+  const said=await page.evaluate(()=>window.__said.join(' | '));
+  expect(said).toMatch(/Prépare-toi\. /);expect(said).toMatch(/Repos, \d+ secondes\. Ensuite : /);
+  await page.getByRole('button',{name:'Couper la voix du coach'}).click();
+  await expect.poll(async()=>(await state(page)).preferences.voice).toBe(false);
   await expect(page.locator('.live-command')).toHaveCount(0);
   const seconds=async()=>{const [m,s]=(await rest.getByRole('timer').locator('strong').textContent()).split(':').map(Number);return m*60+s;};
   const before=await seconds();

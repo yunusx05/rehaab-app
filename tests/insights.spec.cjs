@@ -58,15 +58,16 @@ test('accueil : une seule réponse pour aujourd’hui',async({page})=>{
   await expect.poll(async()=>(await state(page)).draft?.focus).toBe('mobility');
 });
 
-test('séance : « Fait comme prévu » valide la série sans marge, donc sans hausse de charge',async({page})=>{
+test('séance : « Fait » valide la série comme prévu, sans marge, donc sans hausse de charge',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   const data=base();const e=PT.makePrescription(PT.catalog.find(x=>x.id==='curl'),'classic',30,PT.context(data));e.sets=2;
   data.draft=PT.startDraft({id:'quick',title:'Rapide',exercises:[e],format:'classic',focus:'muscle',source:'generated',check:data.checkIn,warmupSeconds:60,entries:{},status:'preview',reasons:[]},data);
   data.draft.entries.curl.forEach(r=>r.weight='10');
   await seed(page,data,'session');
   await page.getByRole('button',{name:'Échauffement effectué',exact:true}).click();
-  await page.getByRole('button',{name:'Terminé',exact:true}).click();
-  await page.getByRole('button',{name:'Fait comme prévu'}).click();
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
+  await page.getByRole('button',{name:'Fait',exact:true}).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.getByRole('timer')).toHaveAttribute('aria-label',/^Repos/);
   const row=(await state(page)).draft.entries.curl[0];
   expect(row).toMatchObject({done:true,result:'passed',rir:'',reps:String(e.targetMin),weight:'10'});

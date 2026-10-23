@@ -1,5 +1,31 @@
 /* Carte « Ta séance du jour » et mesure vidéo au ralenti. Réutilise les composants de personal-app.jsx. */
 
+// Lot 19 : ce qui a été fait aujourd'hui, validé noir sur blanc en haut de l'accueil (séances de l'app, pas les activités saisies à la main).
+function PTDoneToday({
+  data,
+  go
+}) {
+  const today = PT.dateKey(),
+    done = data.sessions.filter(s => s.date === today && s.source !== 'external');
+  if (!done.length) return null;
+  const last = done[done.length - 1],
+    sets = done.reduce((n, s) => n + Object.values(s.entries || {}).flat().filter(r => r.done && !r.pain).length, 0),
+    minutes = Math.round(done.reduce((n, s) => n + (Number(s.minutes) || 0), 0));
+  return /*#__PURE__*/React.createElement("section", {
+    className: "done-today sport-reveal",
+    "aria-label": "S\xE9ance du jour valid\xE9e"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "done-today-check"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "check",
+    size: 26
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, done.length > 1 ? `${done.length} séances validées aujourd’hui` : 'Séance du jour validée'), /*#__PURE__*/React.createElement("strong", null, last.title), /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, minutes, " min \xB7 ", sets, " s\xE9ries", last.effort ? ` · effort ${last.effort}/10` : '', last.partial ? ' · partielle' : '')), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('history', last.id)
+  }, "Voir le d\xE9tail"));
+}
 function PTTodayPlan({
   data,
   update,
