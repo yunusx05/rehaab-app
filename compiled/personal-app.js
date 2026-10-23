@@ -2380,6 +2380,11 @@ class PTErrorBoundary extends React.Component {
     }, this.props.children);
   }
 }
+const ptTabs = ['today', 'pathway', 'qi', 'nutrition', 'profile'];
+const ptPlanRoutes = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'];
+function ptTabOf(route) {
+  return ptPlanRoutes.includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route.startsWith('nutrition') ? 'nutrition' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
+}
 function PersonalApp() {
   const initial = usePTRef(null);
   if (!initial.current) initial.current = ptLoad();
@@ -2427,11 +2432,37 @@ function PersonalApp() {
     if (!storageError) storageBlocked.current = false;
   }, [storageError]);
   usePTEffect(() => {
+    // Les écrans glissent dans le sens du geste : onglet plus à droite ou écran ouvert = vers l'avant, retour à l'écran précédent = vers l'arrière.
+    const trail = [window.location.hash || '#today'];
     const changed = () => {
-      const [page, id] = window.location.hash.slice(1).split('/');
-      setRoute(page || 'today');
-      setDetailId(id || null);
-      window.scrollTo(0, 0);
+      const hash = window.location.hash || '#today',
+        [page, id] = hash.slice(1).split('/');
+      const apply = () => {
+        setRoute(page || 'today');
+        setDetailId(id || null);
+        window.scrollTo({
+          top: 0,
+          behavior: 'instant'
+        });
+      };
+      const previous = trail[trail.length - 2] === hash,
+        from = ptTabs.indexOf(ptTabOf(trail[trail.length - 1].slice(1).split('/')[0] || 'today')),
+        to = ptTabs.indexOf(ptTabOf(page || 'today'));
+      if (previous) trail.pop();else {
+        trail.push(hash);
+        if (trail.length > 30) trail.shift();
+      }
+      if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches || document.visibilityState !== 'visible') {
+        apply();
+        return;
+      }
+      const root = document.documentElement;
+      root.dataset.nav = (from !== to ? to < from : previous) ? 'back' : 'forward';
+      const transition = document.startViewTransition(() => ReactDOM.flushSync(apply));
+      transition.ready.catch(() => {});
+      transition.finished.finally(() => {
+        delete root.dataset.nav;
+      });
     };
     window.addEventListener('hashchange', changed);
     return () => window.removeEventListener('hashchange', changed);
@@ -2475,7 +2506,7 @@ function PersonalApp() {
     storageError,
     setStorageError
   };
-  const active = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'].includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route.startsWith('nutrition') ? 'nutrition' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
+  const active = ptTabOf(route);
   let content;
   // Premier lancement : le dossier joueur (ou la version rapide). Les écrans du dossier restent ouverts avant la fin de l'accueil.
   if (!data.profile.onboarded && !storageError && !['symptoms', 'dossier', 'dossier-q', 'dossier-synthese'].includes(route)) content = /*#__PURE__*/React.createElement(PTDossierWelcome, props);else {
@@ -2559,8 +2590,14 @@ function PersonalApp() {
     tabIndex: "-1"
   }, content), /*#__PURE__*/React.createElement("nav", {
     className: "bottom-nav",
-    "aria-label": "Navigation principale"
-  }, [{
+    "aria-label": "Navigation principale",
+    style: {
+      '--tab': ptTabs.indexOf(active)
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "nav-pill",
+    "aria-hidden": "true"
+  }), [{
     id: 'today',
     label: 'Aujourd’hui',
     icon: 'today'

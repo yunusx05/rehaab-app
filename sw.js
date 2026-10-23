@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v68-seance-fluide';
+const CACHE = 'rehaab-v71-feuille-de-match';
 const PRECACHE = [
   './',
   './index.html',
@@ -12,6 +12,8 @@ const PRECACHE = [
   './live-session.css',
   './sport.css',
   './basket.css',
+  './scoreboard.css',
+  './motion.css',
   './compiled/personal-app.js',
   './compiled/visual-components.js',
   './compiled/sport-components.js',

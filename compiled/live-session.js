@@ -120,6 +120,19 @@ const ptWhy = e => e ? e.transfer || PT.courtWhy?.[e.id] || PT.patternWhy?.[e.pa
 const ptGoWords = ['C’est parti !', 'Allez, on y va !', 'À toi !', 'Go !'],
   ptPush = ['Tiens bon.', 'Respire, reste gainé.', 'Super, continue.', 'Propre, garde le rythme.', 'Encore un peu, c’est bien.'];
 const ptPick = list => list[Math.floor(Math.random() * list.length)];
+// Feuille de match : un chiffre qui change monte depuis le bas (motion.css), le texte lu reste la valeur seule.
+function PTRoll({
+  value
+}) {
+  return /*#__PURE__*/React.createElement("span", {
+    className: "roll"
+  }, /*#__PURE__*/React.createElement("span", {
+    key: value,
+    className: "roll-in"
+  }, value));
+}
+// Objectif d'une série en une ligne courte : « 3 × 8–12 », « 3 × 40 s ».
+const ptSetLine = e => `${e.sets} × ${e.measure === 'seconds' ? `${e.seconds} s` : ptRepsGoal(e).split(' ')[0]}`;
 function PTSession({
   data,
   update,
@@ -316,7 +329,9 @@ function PTSession({
       className: "live-topbar-spacer"
     })), /*#__PURE__*/React.createElement("div", {
       className: "ready-hero"
-    }, /*#__PURE__*/React.createElement("h1", null, draft.title), /*#__PURE__*/React.createElement("p", null, draft.exercises.length, " exercices \xB7 ~", minutes, " min")), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("h1", null, draft.title), /*#__PURE__*/React.createElement("div", {
+      className: "ready-score"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, minutes), /*#__PURE__*/React.createElement("span", null, "min environ")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, draft.exercises.length), /*#__PURE__*/React.createElement("span", null, "exercices")))), /*#__PURE__*/React.createElement("div", {
       className: "stack-lg"
     }, typeof PTGearList === 'function' && /*#__PURE__*/React.createElement(PTGearList, {
       plan: draft
@@ -683,34 +698,32 @@ function PTSession({
     });
     window.scrollTo(0, 0);
   };
+  // Fin de séance : l'écran se remplit de citron, le titre déborde du cadre, puis le bilan sur fond charbon.
   if (finishing) return /*#__PURE__*/React.createElement("div", {
     className: "live-review"
-  }, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => {
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "finish-flood"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "back-link",
+    onClick: () => {
       setFinishing(false);
       setDraft(d => ({
         ...d,
         reviewing: false
       }));
-    },
-    eyebrow: "S\xE9ance termin\xE9e",
-    title: "Bien jou\xE9."
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "stack-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "finish-symbol"
+    }
   }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "check",
-    size: 42
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "stats-row"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, completed), /*#__PURE__*/React.createElement("small", null, "s\xE9ries valid\xE9es")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, timeLabel(elapsed)), /*#__PURE__*/React.createElement("small", null, "temps r\xE9el")), /*#__PURE__*/React.createElement("div", {
-    className: "stat"
-  }, /*#__PURE__*/React.createElement("strong", null, completed < total ? 'Partiel' : 'Fait'), /*#__PURE__*/React.createElement("small", null, "\xE0 ton rythme"))), /*#__PURE__*/React.createElement("section", {
+    name: "back",
+    size: 18
+  }), "Retour"), /*#__PURE__*/React.createElement("h1", {
+    className: "finish-title"
+  }, /*#__PURE__*/React.createElement("span", null, "Bien"), " ", /*#__PURE__*/React.createElement("span", null, "jou\xE9.")), /*#__PURE__*/React.createElement("p", {
+    className: "finish-sub"
+  }, "S\xE9ance termin\xE9e \xB7 ", draft.title), /*#__PURE__*/React.createElement("div", {
+    className: "finish-score"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, completed), /*#__PURE__*/React.createElement("small", null, "s\xE9ries valid\xE9es")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, timeLabel(elapsed)), /*#__PURE__*/React.createElement("small", null, "temps r\xE9el")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, completed < total ? 'Partiel' : 'Fait'), /*#__PURE__*/React.createElement("small", null, "\xE0 ton rythme")))), /*#__PURE__*/React.createElement("div", {
+    className: "stack-lg finish-form"
+  }, /*#__PURE__*/React.createElement("section", {
     className: "effort-picker stack"
   }, /*#__PURE__*/React.createElement("h2", null, "C\u2019\xE9tait comment ?"), /*#__PURE__*/React.createElement("div", {
     className: "effort-scale",
@@ -1028,6 +1041,13 @@ function PTSession({
     step
   } : null;
   const timerName = countdown ? draft.timer.label : phase === 'rest' ? 'Repos' : phase === 'warmup' ? 'Échauffement' : phase === 'cooldown' ? 'Retour au calme' : 'Travail';
+  // Mini-lecteur du dock : la série qui suit, pendant le travail seulement (le repos l'affiche déjà en grand).
+  const nextStep = nextIndex >= 0 ? steps[nextIndex] : null,
+    nextExercise = nextStep && draft.exercises.find(e => e.id === nextStep.id);
+  const dockNext = phase === 'work' && !countdown && nextExercise ? {
+    exercise: nextExercise,
+    meta: `Série ${nextStep.set + 1}/${nextExercise.sets}`
+  } : null;
   const toggleVoice = () => {
     const on = !voice;
     update(s => ({
@@ -1061,7 +1081,9 @@ function PTSession({
     className: "eyebrow"
   }, /*#__PURE__*/React.createElement("span", {
     className: `live-dot${paused ? ' paused' : ''}`
-  }), "Exercice ", exerciseIndex + 1, " sur ", draft.exercises.length), /*#__PURE__*/React.createElement("strong", null, "S\xE9rie ", step.set + 1, " sur ", exercise.sets))), /*#__PURE__*/React.createElement("div", {
+  }), "Exercice ", exerciseIndex + 1, " sur ", draft.exercises.length), /*#__PURE__*/React.createElement("strong", null, "S\xE9rie ", /*#__PURE__*/React.createElement(PTRoll, {
+    value: step.set + 1
+  }), " sur ", exercise.sets))), /*#__PURE__*/React.createElement("div", {
     className: "live-topbar-actions"
   }, /*#__PURE__*/React.createElement("button", {
     className: "icon-button",
@@ -1167,25 +1189,18 @@ function PTSession({
   }))))), phase === 'rest' ? /*#__PURE__*/React.createElement("section", {
     className: "rest-screen",
     "aria-live": "polite"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "rest-label"
-  }, timerLeft > 0 ? 'Repos' : 'Repos terminé'), /*#__PURE__*/React.createElement("div", {
-    className: `live-timer rest-timer${paused ? ' paused' : ''}`,
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `live-timer rest-timer score${paused ? ' paused' : ''}`,
     role: "timer",
     "aria-label": `Repos : ${timeLabel(timerLeft)}`
-  }, /*#__PURE__*/React.createElement("svg", {
-    viewBox: "0 0 220 150",
+  }, /*#__PURE__*/React.createElement("strong", null, timeLabel(timerLeft)), /*#__PURE__*/React.createElement("small", null, timerLeft > 0 ? 'Repos' : 'Repos terminé', " \xB7 ", paused ? 'en pause' : timerLeft > 0 ? 'souffle, relâche les épaules' : 'c’est reparti'), /*#__PURE__*/React.createElement("i", {
+    className: "score-bar",
     "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement("path", {
-    className: "dial-track",
-    d: "M30 131 A94 94 0 1 1 190 131",
-    pathLength: "100"
-  }), /*#__PURE__*/React.createElement("path", {
-    className: "dial-value",
-    d: "M30 131 A94 94 0 1 1 190 131",
-    pathLength: "100",
-    strokeDasharray: `${Math.min(100, timerLeft / (draft.timer.duration || 1) * 100)} 100`
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, paused ? 'En pause' : timerLeft > 0 ? 'Souffle, relâche les épaules' : 'C’est reparti'), /*#__PURE__*/React.createElement("strong", null, timeLabel(timerLeft)))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      transform: `scaleX(${Math.min(1, timerLeft / (draft.timer.duration || 1))})`
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "rest-adjust"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -1209,56 +1224,31 @@ function PTSession({
     exercise: restNext.exercise
   }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, "Ensuite \xB7 exercice ", exerciseIndex + 1, " sur ", draft.exercises.length), /*#__PURE__*/React.createElement("strong", null, restNext.exercise.name), /*#__PURE__*/React.createElement("small", null, "S\xE9rie ", restNext.step.set + 1, " sur ", restNext.exercise.sets, lastSet ? ' · dernière' : ''), ptWhy(restNext.exercise) && /*#__PURE__*/React.createElement("small", {
     className: "rest-why"
-  }, ptWhy(restNext.exercise))))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "live-visual"
-  }, guided ? /*#__PURE__*/React.createElement(PTDemo, {
-    minimal: true,
-    key: `${phase}-${move.id}`,
-    exercise: move
-  }) : phase === 'warmup' ? /*#__PURE__*/React.createElement("div", {
-    className: "warmup-visual"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "body",
-    size: 80
-  }), /*#__PURE__*/React.createElement("span", null, "On r\xE9veille le corps.")) : /*#__PURE__*/React.createElement(PTDemo, {
-    minimal: true,
-    key: exercise.id,
-    exercise: exercise
-  })), /*#__PURE__*/React.createElement("section", {
+  }, ptWhy(restNext.exercise))))) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
     className: "live-command"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "live-heading"
-  }, sideLabel && /*#__PURE__*/React.createElement("span", {
-    className: "side-badge"
-  }, sideLabel), /*#__PURE__*/React.createElement("h1", null, guided ? move.name : phase === 'warmup' ? 'On y va doucement.' : exercise.name), why && /*#__PURE__*/React.createElement("p", {
-    className: "live-why"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket",
-    size: 15
-  }), /*#__PURE__*/React.createElement("span", null, why))), countdown ? /*#__PURE__*/React.createElement("div", {
-    className: `live-countdown${paused ? ' paused' : ''}`,
+    className: "score-board"
+  }, countdown ? /*#__PURE__*/React.createElement("div", {
+    className: `live-countdown score${paused ? ' paused' : ''}`,
     role: "timer",
     "aria-label": `${timerName} : ${timeLabel(shownTime)}`
-  }, /*#__PURE__*/React.createElement("small", null, countdown === 'switch' ? 'Change de côté' : 'Prépare-toi'), /*#__PURE__*/React.createElement("strong", null, Math.max(0, shownTime))) : phase === 'work' && !activeTimer && exercise.measure !== 'seconds' ? /*#__PURE__*/React.createElement("div", {
-    className: "live-target",
+  }, /*#__PURE__*/React.createElement("strong", null, /*#__PURE__*/React.createElement(PTRoll, {
+    value: Math.max(0, shownTime)
+  })), /*#__PURE__*/React.createElement("small", null, countdown === 'switch' ? 'Change de côté' : 'Prépare-toi')) : phase === 'work' && !activeTimer && exercise.measure !== 'seconds' ? /*#__PURE__*/React.createElement("div", {
+    className: "live-target score",
     "aria-label": `Objectif : ${ptRepsGoal(exercise)}`
   }, /*#__PURE__*/React.createElement("strong", null, ptRepsGoal(exercise).split(' ')[0]), /*#__PURE__*/React.createElement("span", null, ptRepsGoal(exercise).split(' ').slice(1).join(' ').replace(' / côté', repsSides ? ' de ce côté' : ''))) : /*#__PURE__*/React.createElement("div", {
-    className: `live-timer${paused ? ' paused' : ''}`,
+    className: `live-timer score${paused ? ' paused' : ''}`,
     role: "timer",
     "aria-label": `${timerName} : ${timeLabel(shownTime)}`
-  }, /*#__PURE__*/React.createElement("svg", {
-    viewBox: "0 0 220 150",
+  }, /*#__PURE__*/React.createElement("strong", null, timeLabel(shownTime)), /*#__PURE__*/React.createElement("small", null, paused ? 'En pause' : activeTimer ? 'Temps restant' : 'Temps de série'), activeTimer && /*#__PURE__*/React.createElement("i", {
+    className: "score-bar",
     "aria-hidden": "true"
-  }, /*#__PURE__*/React.createElement("path", {
-    className: "dial-track",
-    d: "M30 131 A94 94 0 1 1 190 131",
-    pathLength: "100"
-  }), /*#__PURE__*/React.createElement("path", {
-    className: "dial-value",
-    d: "M30 131 A94 94 0 1 1 190 131",
-    pathLength: "100",
-    strokeDasharray: `${activeTimer ? Math.min(100, shownTime / (activeTimer.duration || 1) * 100) : 100} 100`
-  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("small", null, paused ? 'En pause' : activeTimer ? 'Temps restant' : 'Temps de série'), /*#__PURE__*/React.createElement("strong", null, timeLabel(shownTime)))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      transform: `scaleX(${Math.min(1, shownTime / (activeTimer.duration || 1))})`
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "session-transport"
   }, guided && /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -1308,7 +1298,33 @@ function PTSession({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 20
-  }))), /*#__PURE__*/React.createElement("p", {
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "live-heading"
+  }, sideLabel && /*#__PURE__*/React.createElement("span", {
+    className: "side-badge"
+  }, sideLabel), /*#__PURE__*/React.createElement("h1", null, guided ? move.name : phase === 'warmup' ? 'On y va doucement.' : exercise.name), why && /*#__PURE__*/React.createElement("p", {
+    className: "live-why"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "basket",
+    size: 15
+  }), /*#__PURE__*/React.createElement("span", null, why)))), /*#__PURE__*/React.createElement("div", {
+    className: "live-visual"
+  }, guided ? /*#__PURE__*/React.createElement(PTDemo, {
+    minimal: true,
+    key: `${phase}-${move.id}`,
+    exercise: move
+  }) : phase === 'warmup' ? /*#__PURE__*/React.createElement("div", {
+    className: "warmup-visual"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "body",
+    size: 80
+  }), /*#__PURE__*/React.createElement("span", null, "On r\xE9veille le corps.")) : /*#__PURE__*/React.createElement(PTDemo, {
+    minimal: true,
+    key: exercise.id,
+    exercise: exercise
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "live-cues"
+  }, /*#__PURE__*/React.createElement("p", {
     className: "live-coach",
     "aria-live": "polite"
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -1318,7 +1334,30 @@ function PTSession({
     className: "notice warning"
   }, blocked ? 'Séance suspendue : fais le point sur la douleur signalée.' : 'Ce mouvement ne convient plus à tes contraintes actuelles.') : null, phase === 'work' && exercise.audio && /*#__PURE__*/React.createElement(PTAudioCue, null), draft.blockTimer && draft.format !== 'amrap' && /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, "Bloc ", draft.format.toUpperCase(), " \xB7 ", timeLabel(remaining(draft.blockTimer))))), /*#__PURE__*/React.createElement("div", {
+  }, "Bloc ", draft.format.toUpperCase(), " \xB7 ", timeLabel(remaining(draft.blockTimer))))), (phase === 'work' || phase === 'rest') && /*#__PURE__*/React.createElement("section", {
+    className: "session-list",
+    "aria-label": "Ta s\xE9ance"
+  }, /*#__PURE__*/React.createElement("h2", null, "Ta s\xE9ance"), /*#__PURE__*/React.createElement("ol", null, exerciseSets.map(({
+    e,
+    rows
+  }, i) => {
+    const done = rows.length > 0 && rows.every(r => r.done || r.pain),
+      current = i === exerciseIndex && !done;
+    return /*#__PURE__*/React.createElement("li", {
+      key: e.id,
+      className: current ? 'is-current' : done ? 'is-done' : '',
+      "aria-current": current ? 'step' : undefined
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "session-list-n"
+    }, i + 1), /*#__PURE__*/React.createElement("span", {
+      className: "session-list-name"
+    }, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, current ? `Série ${step.set + 1} sur ${e.sets}` : ptSetLine(e))), done ? /*#__PURE__*/React.createElement(PTIcon, {
+      name: "check",
+      size: 20
+    }) : /*#__PURE__*/React.createElement("span", {
+      className: "session-list-sets"
+    }, rows.filter(r => r.done).length, "/", rows.length));
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "live-extras"
   }, upcoming && /*#__PURE__*/React.createElement("div", {
     className: "next-up"
@@ -1383,7 +1422,18 @@ function PTSession({
     }
   }, "Passer \xE0 un mouvement compatible")), /*#__PURE__*/React.createElement("footer", {
     className: "live-dock"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, dockNext && /*#__PURE__*/React.createElement("div", {
+    className: "dock-next"
+  }, /*#__PURE__*/React.createElement(PTThumbnail, {
+    exercise: dockNext.exercise
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("small", null, "Ensuite"), /*#__PURE__*/React.createElement("strong", null, dockNext.exercise.name)), /*#__PURE__*/React.createElement("em", null, dockNext.meta)), /*#__PURE__*/React.createElement("i", {
+    className: "dock-progress",
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement("b", {
+    style: {
+      transform: `scaleX(${total ? completed / total : 0})`
+    }
+  })), /*#__PURE__*/React.createElement("div", {
     className: "dock-caption"
   }, phase === 'work' && !countdown && !row.done && !allDone ? /*#__PURE__*/React.createElement("button", {
     className: "text-button",

@@ -241,11 +241,14 @@ function PTPathway({
       className: "exercise-number"
     }, day.key), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, day.name), /*#__PURE__*/React.createElement("p", null, plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`, done ? ' · faite' : status.next === day.key ? ' · conseillée' : ''))), plan.error ? /*#__PURE__*/React.createElement("p", {
       className: "fine"
-    }, plan.error) : /*#__PURE__*/React.createElement("ul", {
+    }, plan.error) : /*#__PURE__*/React.createElement("details", {
+      className: "dose-details",
+      open: !done && status.next === day.key
+    }, /*#__PURE__*/React.createElement("summary", null, "Les ", plan.exercises.length, " mouvements"), /*#__PURE__*/React.createElement("ul", {
       className: "dose-list"
     }, plan.exercises.map(e => /*#__PURE__*/React.createElement("li", {
       key: e.id
-    }, /*#__PURE__*/React.createElement("span", null, e.name), /*#__PURE__*/React.createElement("small", null, ptRoleLabel(e.pathwayRole), " \xB7 ", ptDoseLabel(e))))), confirm === day.key && /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", null, e.name), /*#__PURE__*/React.createElement("small", null, ptRoleLabel(e.pathwayRole), " \xB7 ", ptDoseLabel(e)))))), confirm === day.key && /*#__PURE__*/React.createElement("div", {
       className: "notice warning stack-sm"
     }, /*#__PURE__*/React.createElement("p", null, "Une s\xE9ance est en cours. La remplacer effacera ce qui n\u2019a pas \xE9t\xE9 enregistr\xE9."), /*#__PURE__*/React.createElement(PTButton, {
       quiet: true,

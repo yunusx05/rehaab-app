@@ -1,0 +1,92 @@
+/* Lot 20 — mouvement et praticité. Chargé en dernier : affine les couches précédentes sans les réécrire.
+   Règles : retour au toucher en moins de 200 ms, entrées plus longues que les sorties, rien au-delà de 450 ms (NN/g, durée des animations). */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-glide:cubic-bezier(.22,1,.36,1)}
+
+/* Changement d'écran : glissement court dans le sens de la navigation (data-nav posé par PersonalApp). */
+::view-transition-old(root){animation:180ms var(--ease-out) both vt-fade-out}
+::view-transition-new(root){animation:280ms var(--ease-out) both vt-fade-in}
+html[data-nav=forward]::view-transition-old(root){animation-name:vt-out-left}
+html[data-nav=forward]::view-transition-new(root){animation-name:vt-in-right}
+html[data-nav=back]::view-transition-old(root){animation-name:vt-out-right}
+html[data-nav=back]::view-transition-new(root){animation-name:vt-in-left}
+@keyframes vt-fade-out{to{opacity:0}}
+@keyframes vt-fade-in{from{opacity:0}}
+@keyframes vt-in-right{from{opacity:0;transform:translateX(32px)}}
+@keyframes vt-in-left{from{opacity:0;transform:translateX(-32px)}}
+@keyframes vt-out-left{to{opacity:0;transform:translateX(-16px)}}
+@keyframes vt-out-right{to{opacity:0;transform:translateX(16px)}}
+/* La barre et l'en-tête restent en place pendant le glissement ; seule la pastille de la barre bouge. */
+.bottom-nav{view-transition-name:tabbar}
+.shell-header{view-transition-name:shell-header}
+::view-transition-old(tabbar),::view-transition-old(shell-header){display:none}
+::view-transition-new(tabbar),::view-transition-new(shell-header),::view-transition-group(tabbar),::view-transition-group(shell-header){animation:none}
+
+/* Barre du bas : une seule pastille qui glisse vers l'onglet actif. La barre elle-même garde transform:none (bug iOS 26). */
+.nav-pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 22px)/5);border-radius:30px;background:var(--accent);transform:translateX(calc(var(--tab,0)*(100% + 2px)));transition:transform 420ms var(--ease-glide);pointer-events:none}
+.nav-button{position:relative;z-index:1;transition:color 220ms var(--ease-out),transform 160ms var(--ease-out),background-color 180ms}
+.nav-button[aria-current=page],.nav-button[aria-current=page]:hover{background:transparent;color:#17200d}
+.nav-button[aria-current=page] svg{animation:nav-pop 420ms var(--ease-glide)}
+@keyframes nav-pop{from{transform:scale(.8)}}
+
+/* Toucher : tout ce qui se presse s'enfonce légèrement, les grandes cartes moins que les boutons. */
+button:active:not(:disabled){transform:scale(.97)}
+.week-strip:active,.image-tile:active,.resume-workout:active,.btn:active:not(:disabled){transform:scale(.985)}
+.image-tile,.week-strip,.resume-workout{transition:transform 160ms var(--ease-out)}
+
+/* Progression : barres et anneaux se remplissent à l'apparition au lieu d'être déjà pleins. */
+.mini-progress i,.image-tile-progress>span{transform-origin:left;animation:fill-x 800ms var(--ease-out) 120ms backwards}
+.ring-value{animation:ring-in 900ms var(--ease-out) 100ms backwards}
+@keyframes fill-x{from{transform:scaleX(0)}}
+@keyframes ring-in{from{stroke-dasharray:0 100}}
+
+/* Ma semaine : vrais numéros de jour, aujourd'hui en pastille pleine, entrée en cascade. */
+.week-strip{box-shadow:inset 0 1px 0 #ffffff08}
+.week-strip-day{gap:.2rem;padding:.45rem 0 .4rem;border-radius:14px;transition:background-color 200ms}
+.week-strip-day em{font-family:'Barlow Condensed',sans-serif;font-style:normal;font-weight:700;font-size:1.15rem;line-height:1;font-variant-numeric:tabular-nums}
+.week-strip-day.is-today{background:var(--accent);color:#17200d}
+.week-strip-day.is-today small{color:#17200d;opacity:.75}
+.week-strip-day.is-today .dot{background:#17200d}
+.week-strip-day{animation:rise 360ms var(--ease-out) backwards}
+.week-strip-day:nth-child(2){animation-delay:30ms}.week-strip-day:nth-child(3){animation-delay:60ms}.week-strip-day:nth-child(4){animation-delay:90ms}.week-strip-day:nth-child(5){animation-delay:120ms}.week-strip-day:nth-child(6){animation-delay:150ms}.week-strip-day:nth-child(7){animation-delay:180ms}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+
+/* Plan : la liste des mouvements se replie, sauf pour la séance conseillée. */
+.dose-details summary{display:flex;align-items:center;justify-content:space-between;min-height:44px;list-style:none;cursor:pointer;color:var(--sub);font-size:.82rem;font-weight:600}
+.dose-details summary::-webkit-details-marker{display:none}
+.dose-details summary::after{content:'';width:7px;height:7px;margin-right:4px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform 240ms var(--ease-out)}
+.dose-details[open] summary::after{transform:translateY(2px) rotate(-135deg)}
+.dose-details[open] .dose-list{animation:rise 280ms var(--ease-out)}
+
+/* Carte joueur vide : pas de grand trou entre le nom et le pied de carte. */
+.player-card:has(.player-card-empty){min-height:300px}
+
+/* Messages : arrivent en glissant au lieu d'apparaître d'un coup. */
+.toast{animation:toast-in 380ms var(--ease-glide)}
+@keyframes toast-in{from{opacity:0;transform:translate(-50%,14px) scale(.96)}}
+
+/* Profondeur discrète : un liseré de lumière en haut des cartes. */
+.card{box-shadow:inset 0 1px 0 #ffffff08}
+
+/* Lot 21 — feuille de match. */
+/* Chiffre qui roule : la nouvelle valeur monte depuis le bas (pushr). Fréquent, donc court. */
+.roll{display:inline-block;overflow:hidden;vertical-align:bottom;line-height:inherit}
+.roll-in{display:inline-block;animation:roll-up 240ms var(--ease-out)}
+@keyframes roll-up{from{transform:translateY(70%);opacity:0}}
+/* L'exercice en cours : la bande citron balaie la ligne de gauche à droite. */
+.session-list li.is-current{animation:band-in 280ms var(--ease-out)}
+@keyframes band-in{from{clip-path:inset(0 100% 0 0)}}
+/* Fin de séance : l'aplat monte depuis le bouton, puis le titre arrive. */
+.finish-flood{animation:flood-in 360ms var(--ease-out)}
+.finish-title>span{animation:title-in 320ms var(--ease-out) 90ms backwards}
+.finish-title>span+span{animation-delay:150ms}
+.finish-score{animation:rise 280ms var(--ease-out) 220ms backwards}
+@keyframes flood-in{from{clip-path:circle(0 at 50% 100%)}to{clip-path:circle(150% at 50% 100%)}}
+@keyframes title-in{from{transform:translateX(-18%);opacity:0}}
+/* Teinte de phase : glisse d'une couleur à l'autre. */
+.live-session::before{transition:background-color 400ms var(--ease-out)}
+
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+  .roll-in,.session-list li.is-current,.finish-flood,.finish-title>span,.finish-score,.week-strip-day,.toast,.nav-button[aria-current=page] svg{animation:none}
+  .nav-pill,.score-bar>b,.dock-progress>b,.live-session::before{transition:none}
+}

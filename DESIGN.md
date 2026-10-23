@@ -28,8 +28,17 @@ Boutons d'au moins 44 px, focus visible, pression scale(.98), retour immédiat. 
 Mobile en premier, grille dense. Deux petites colonnes réservées aux contrôles et mesures ; cartes de contenu en une colonne sur petit écran. Bureau : 1080 px maximum. Aucune zone vide dans les grilles. Démonstrations (vidéos, positions) affichées entièrement à leur ratio, sur fond sombre. Vignettes et cartes : image fixe plein cadre recadrée (poster de la démo), jamais de vidéo ni de fond clair. Aucune image générée par IA : un mouvement sans démo réelle garde son icône et ses consignes.
 
 ## Mouvement
-Courbe cubic-bezier(.23,1,.32,1), pression 140 ms, entrées 240 ms, cascade 40 ms. GSAP ScrollTrigger pour les apparitions du contenu uniquement. Nettoyage au démontage. Aucun mouvement imposé pendant les entrées clavier. Respect de prefers-reduced-motion.
+Courbe cubic-bezier(.23,1,.32,1), pression 140 ms, entrées 240 ms, cascade 40 ms. Changement d’écran par View Transitions (motion.css) : glissement de 32 px dans le sens de la navigation (onglet à droite ou écran ouvert = vers l’avant, retour = vers l’arrière), 280 ms en entrée, 180 ms en sortie ; la barre du bas et l’en-tête ne bougent pas. Barre du bas : une seule pastille citron qui glisse vers l’onglet actif (ralenti exponentiel 420 ms, sans rebond), la barre garde transform:none (bug iOS 26). Pression : scale(.97) sur les boutons, .985 sur les grandes cartes. Barres et anneaux de progression se remplissent à l’apparition. Toute nouvelle animation va dans motion.css et reste sous 450 ms. GSAP ScrollTrigger pour les apparitions du contenu uniquement. Nettoyage au démontage. Aucun mouvement imposé pendant les entrées clavier. Respect de prefers-reduced-motion.
 Vidéos réservées à la présentation d'un exercice (bibliothèque dépliée, séance en direct) ; aucune vidéo dans les cartes et vignettes. Lecteurs muets, playsInline, autoplay, loop ; pause hors écran et onglet masqué. Échec : repli vers les positions exactes disponibles, sinon consignes explicites. Ne jamais substituer une variante différente à une démonstration manquante.
+
+## Feuille de match (lot 21, 23/10/2026)
+Brief : `~/.claude/skills/design-scout/bibliotheque/app-mobile-fitness-rehaab-2026-10-23.md`. Styles dans `scoreboard.css` (chargé avant `motion.css`).
+- Un chiffre géant par écran : Barlow Condensed 800 italique, chiffres tabulaires, clamp(5.25rem, 27vw, 7.25rem), aligné à gauche, libellé en capitales 11–12 px dessous. Valeurs secondaires grisées (#5d625e), comme un score perdant.
+- Chrono : jauge horizontale de 4 px qui se vide, plus de cadran.
+- Citron en aplat seulement aux moments forts : exercice en cours dans « Ta séance » (bande pleine largeur, texte #111212) et fin de séance (écran citron, « Bien joué. » qui déborde du cadre). Ailleurs, citron sur les actions.
+- Haut d'écran teinté par la phase (citron en travail, bleu #8fc3ff en repos), qui fond vers le charbon.
+- Lecteur : chiffre et commandes en tête (flèche de validation en citron plein, pause, série précédente en retrait), puis nom, démo, consigne du coach, liste « Ta séance ». Dock : mini-lecteur « Ensuite » + avancée de la séance + bouton principal.
+- À ne pas faire : orange ballon et interface de jeu vidéo (territoire HomeCourt), tuiles de stats toutes de même taille, confettis ou lueurs.
 
 ## Vérification
 Parcours à 320/390/1440 px, lecture réelle des vidéos, pause/reprise, séries et historique persistés, filtres musculaires clavier, création de séance sans perdre un brouillon actif, erreurs médias, mode hors connexion. Les nouveaux comptes doivent restaurer les données réelles, isoler les utilisateurs et refuser les conflits de synchronisation.

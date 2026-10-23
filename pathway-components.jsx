@@ -74,7 +74,7 @@ function PTPathway({data,update,go,notify}) {
           const done = status.done.includes(day.key);
           return <article key={day.key} className={`card stack-sm pathway-day${done ? ' is-done' : ''}`}>
             <div className="exercise-summary"><span className="exercise-number">{day.key}</span><div><h3>{day.name}</h3><p>{plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`}{done ? ' · faite' : status.next === day.key ? ' · conseillée' : ''}</p></div></div>
-            {plan.error ? <p className="fine">{plan.error}</p> : <ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul>}
+            {plan.error ? <p className="fine">{plan.error}</p> : <details className="dose-details" open={!done && status.next === day.key}><summary>Les {plan.exercises.length} mouvements</summary><ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul></details>}
             {confirm === day.key && <div className="notice warning stack-sm"><p>Une séance est en cours. La remplacer effacera ce qui n’a pas été enregistré.</p><PTButton quiet onClick={() => {setConfirm(null); go('session');}}>Reprendre la séance en cours</PTButton></div>}
             {!plan.error && <PTButton primary={!done && status.next === day.key} onClick={() => launch(day.key)}>{confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance'}<PTIcon name="arrow" size={18}/></PTButton>}
           </article>;
