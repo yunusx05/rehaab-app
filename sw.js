@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v70-feuille-de-match';
+const CACHE = 'rehaab-v71-feuille-de-match';
 const PRECACHE = [
   './',
   './index.html',
