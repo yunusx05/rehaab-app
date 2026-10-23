@@ -190,7 +190,9 @@ test('annuler la séance en cours reste visible, avec confirmation',async({page}
   await page.setViewportSize({width:390,height:844});
   const data=player();data.pathway=BP.create();data.draft=PT.startDraft(BP.sessionPlan(PT,JP,data,data.pathway,'A'),data);
   await seed(page,data,'session');
-  await page.getByRole('button',{name:'Annuler',exact:true}).click();
+  // Lot 19 : l'annulation vit dans le menu ⋯ de la barre du haut, toujours accessible.
+  await page.getByRole('button',{name:'Options de séance',exact:true}).click();
+  await page.getByRole('button',{name:'Annuler la séance',exact:true}).click();
   await page.getByRole('button',{name:'Oui, annuler sans enregistrer'}).click();
   await expect.poll(async()=>(await state(page)).draft).toBeNull();
   expect((await state(page)).pathway).not.toBeNull();

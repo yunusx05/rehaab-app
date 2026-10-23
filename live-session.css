@@ -24,7 +24,7 @@
 .visual-preview .exercise-summary{padding:.3rem .25rem}
 .visual-preview .demo{aspect-ratio:16/10}
 .visual-preview .movement-demo{min-width:0}
-.preview-start{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(calc(100% - 2rem),466px);z-index:9;padding:.8rem 0;background:var(--bg)}
+.preview-start{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:0;right:0;margin-inline:auto;width:min(calc(100% - 2rem),466px);z-index:9;padding:.8rem 0;background:var(--bg)}
 .preview-start>.btn{min-height:62px;border-radius:17px;font-size:1rem;font-weight:700;box-shadow:0 4px 26px #d7f43b1a}
 .is-live{padding:0 1.1rem calc(155px + env(safe-area-inset-bottom));background:#10120f}
 .is-live>.shell-header,.is-live>.bottom-nav{display:none}
@@ -68,7 +68,7 @@
 .live-command>.caption{text-align:center}
 .live-extras{display:grid;gap:.5rem;margin-top:.75rem}
 .live-extras .disclosure summary{font-size:.75rem}
-.live-dock{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,520px);padding:.5rem 1.1rem calc(1rem + env(safe-area-inset-bottom));background:#10120ff5;border-top:1px solid #30372a;z-index:12;backdrop-filter:blur(14px)}
+.live-dock{position:fixed;left:0;right:0;margin-inline:auto;bottom:0;width:min(100%,520px);padding:.5rem 1.1rem calc(1rem + env(safe-area-inset-bottom));background:#10120f;border-top:1px solid #30372a;z-index:12}
 .live-dock>.btn{min-height:64px;font-size:1.05rem;font-weight:700;border-radius:18px;background:#d7f43b;color:#171d08;border-color:#d7f43b;box-shadow:0 0 22px #d7f43b10}
 .live-dock>.btn:hover,.preview-start>.btn:hover{background:#e1ff53;border-color:#e1ff53}
 .dock-caption{display:flex;align-items:center;justify-content:space-between;gap:.8rem;min-height:30px}
@@ -93,3 +93,38 @@
 @keyframes warmupBreathe{50%{transform:scale(1.07)}}
 @media(max-width:350px){.is-live{padding-left:.85rem;padding-right:.85rem}.live-timer{width:215px;height:150px}.live-timer strong{font-size:3.2rem}.live-timer>div{inset:35px 0 0}.live-visual .demo{aspect-ratio:16/10}.live-topbar strong>span{font-size:.57rem}.live-topbar .eyebrow{font-size:.54rem}.exercise-metrics{gap:.3rem}.exercise-metrics>div{padding:.6rem .3rem}.exercise-metrics>div>span{font-size:.54rem;gap:.2rem}.exercise-metrics strong{font-size:1rem}.live-dock{padding-left:.85rem;padding-right:.85rem}.hero-athlete{right:0;opacity:.3}.live-review .stat strong{font-size:1.2rem}}
 @media(prefers-reduced-motion:reduce){.live-session *,.set-sheet,.movement-thumb *{animation:none!important;transition:none!important}}
+/* Lot 19 « séance fluide » : écran Prêt ?, comptes à rebours, côté en cours, utilité terrain, menu ⋯, vidéo sans contrôles. */
+.live-topbar-actions{display:flex;gap:.4rem}
+.live-topbar-actions>.icon-button,.live-topbar-spacer{background:#20251d;border-color:#30372a;border-radius:50%;padding:.6rem;min-width:44px;min-height:44px}
+.live-topbar-spacer{visibility:hidden}
+.live-topbar-actions>.icon-button[aria-pressed=false]{color:var(--muted)}
+.live-menu{margin:0 0 .8rem;padding:.8rem;border-radius:18px;background:var(--surface);border:1px solid #30372a}
+.side-badge{display:inline-block;margin-bottom:.35rem;padding:.3rem .7rem;border-radius:999px;background:var(--accent);color:#17200d;font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.live-why{display:block;text-align:center;margin:.5rem auto 0;max-width:34ch;font-size:.8rem;line-height:1.4;color:var(--sub);text-wrap:balance}
+.live-why>svg{display:inline;vertical-align:-2px;margin-right:.35rem;color:var(--accent)}
+.live-countdown{display:grid;justify-items:center;gap:.1rem;margin:.4rem auto;color:var(--accent)}
+.live-countdown small{font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.live-countdown strong{font-family:'Barlow Condensed',sans-serif;font-style:italic;font-weight:800;font-size:6.5rem;line-height:1;color:var(--text);font-variant-numeric:tabular-nums;animation:countPulse 1s ease-in-out infinite}
+.live-countdown.paused strong{animation:none;color:var(--muted)}
+.is-switch .live-countdown{color:#7cc4ff}
+.rest-next .rest-why{display:block;margin-top:.25rem;color:var(--sub);line-height:1.35}
+.ready-hero{padding:.6rem 0 1.4rem}
+.ready-hero h1{font-size:clamp(1.8rem,8vw,2.6rem);line-height:1;letter-spacing:-.04em;text-wrap:balance}
+.ready-hero p{margin-top:.5rem;color:var(--sub);font-size:.85rem}
+.live-ready-gate .live-dock>.btn{margin-top:.2rem}
+.gear-list h3{font-size:.95rem}
+.gear-items{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.gear-items button{display:flex;align-items:center;gap:.5rem;width:100%;min-height:48px;padding:.55rem .7rem;border-radius:14px;border:1px solid #30372a;background:#20251d;color:var(--text);font:inherit;font-size:.8rem;text-align:left}
+.gear-items button>span{flex:1;min-width:0}
+.gear-items button>i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid #4d5742;color:transparent;flex:none}
+.gear-items button[aria-pressed=true]{border-color:var(--accent);background:#d7f43b14}
+.gear-items button[aria-pressed=true]>i{background:var(--accent);border-color:var(--accent);color:#17200d}
+.demo-pause{position:absolute;right:.6rem;bottom:.6rem;z-index:2;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:0;background:#0c0e0acc;color:var(--text)}
+.done-today{display:flex;align-items:center;gap:.9rem;padding:1rem;border-radius:20px;background:linear-gradient(135deg,#d7f43b26,#d7f43b08 60%),var(--surface);border:1px solid #d7f43b40}
+.done-today-check{display:grid;place-items:center;width:50px;height:50px;flex:none;border-radius:50%;background:var(--accent);color:#17200d}
+.done-today>div{flex:1;min-width:0;display:grid;gap:.15rem}
+.done-today small{font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.done-today strong{font-size:1rem;line-height:1.2}
+.done-today>.text-button{flex:none;font-size:.75rem}
+@keyframes countPulse{0%{transform:scale(1)}15%{transform:scale(1.08)}100%{transform:scale(1)}}
+@media(max-width:350px){.gear-items{grid-template-columns:1fr}.live-countdown strong{font-size:5.2rem}.done-today{flex-wrap:wrap}}

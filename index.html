@@ -19,7 +19,7 @@
 <style>
 :root{--bg:#080908;--card:#111311;--card2:#191c19;--border:#2a2e2a;--text:#f4f5f0;--muted:#737973;--sub:#a7aca7;--accent:#d7f43b;--red:#ff5a50;--green:#49d67d;--orange:#f2a53a;--radius:12px;--radius-sm:8px}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
 button,input,a{touch-action:manipulation}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .app{width:100%;max-width:480px;margin:0 auto;min-height:100dvh;background:var(--bg);padding-bottom:calc(7rem + env(safe-area-inset-bottom,0px))}
@@ -96,7 +96,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(-
 <script src="compiled/personal-app.js"></script>
 <script>
 // Doit rester égale au nom de cache de sw.js (vérifié par les tests) : c'est elle qu'on compare entre téléphone et ordi dans Profil.
-window.REHAAB_VERSION='v67-demos-recup';
+window.REHAAB_VERSION='v68-seance-fluide';
 if('serviceWorker' in navigator){window.addEventListener('load',function(){
   // Une app installée sur l'écran d'accueil ne se recharge presque jamais : on cherche une nouvelle version à chaque retour au premier plan.
   // Jamais de rechargement en pleine séance : la nouvelle version s'applique à la prochaine ouverture.

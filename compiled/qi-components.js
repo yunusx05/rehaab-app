@@ -728,19 +728,7 @@ function PTQiHome({
     onClick: () => go(...m.route)
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: m.icon
-  }), /*#__PURE__*/React.createElement("strong", null, m.title), /*#__PURE__*/React.createElement("small", null, m.hint))))), section('En attaque', attack), section('En défense', defense), /*#__PURE__*/React.createElement("label", {
-    className: "check-label"
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "checkbox",
-    checked: qi.rest !== false,
-    onChange: e => update(s => ({
-      ...s,
-      qi: {
-        ...s.qi,
-        rest: e.target.checked
-      }
-    }))
-  }), "Me poser une question pendant les temps de repos des s\xE9ances")));
+  }), /*#__PURE__*/React.createElement("strong", null, m.title), /*#__PURE__*/React.createElement("small", null, m.hint))))), section('En attaque', attack), section('En défense', defense)));
 }
 function PTQiCards({
   data,
@@ -943,38 +931,4 @@ function PTQiReview({
       key: q.id
     }, /*#__PURE__*/React.createElement("strong", null, q.label), " : ", r.answers[q.id])))));
   }))));
-}
-
-// Pendant le repos d'une séance : une question courte, sans schéma.
-function PTRestQuestion({
-  data,
-  update,
-  seed
-}) {
-  const [question] = usePTState(() => QI.restQuestion(data.qi));
-  const [picked, setPicked] = usePTState(null);
-  if (data.qi?.rest === false) return null;
-  return /*#__PURE__*/React.createElement("section", {
-    className: "rest-question",
-    key: seed
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "Question de repos \xB7 ", question.title), /*#__PURE__*/React.createElement("p", null, question.prompt), /*#__PURE__*/React.createElement(PTQiChoices, {
-    choices: question.choices,
-    picked: picked,
-    onPick: i => {
-      setPicked(i);
-      update(s => ({
-        ...s,
-        qi: QI.record(s.qi, {
-          id: question.id,
-          mode: 'rest',
-          theme: question.theme,
-          correct: question.choices[i].ok
-        })
-      }));
-    }
-  }), picked !== null && /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, question.choices[picked].ok ? 'Oui. ' : '', question.lesson));
 }

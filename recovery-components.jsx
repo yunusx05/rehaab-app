@@ -15,6 +15,22 @@ function PTRoutinePreview({data,plan}){
   </section>;
 }
 
+// Lot 19 : le matériel à sortir avant de commencer (exercices + échauffement + retour au calme), à cocher.
+// En séance les routines sont déjà attachées ; dans l'aperçu on reprend celles du jour, comme PTRoutinePreview.
+function PTGearList({plan,data}){
+  const [ready,setReady]=usePTState([]);
+  if(!plan)return null;
+  let moves=[...(plan.warmupMoves||[]),...(plan.cooldownMoves||[])];
+  if(!moves.length&&data&&window.RehabWarmup){try{const r=window.RehabWarmup.sessionRoutines(PT,window.PlayerProfile,data,plan);moves=[...r.warmup,...r.cooldown];}catch(e){}}
+  const ids=[...new Set([...plan.exercises,...moves].flatMap(e=>e.needs||[]))].filter(id=>id!=='bodyweight');
+  const gear=PT.equipment.filter(e=>ids.includes(e.id));
+  if(!gear.length)return <section className="gear-list card stack-sm" aria-label="Matériel à préparer"><h3>Matériel à préparer</h3><p className="fine">Rien à sortir : poids du corps uniquement.</p></section>;
+  return <section className="gear-list card stack-sm" aria-label="Matériel à préparer">
+    <div className="topline"><h3>Matériel à préparer</h3><small className="caption">{ready.length}/{gear.length} prêt</small></div>
+    <ul className="gear-items">{gear.map(g=><li key={g.id}><button type="button" aria-pressed={ready.includes(g.id)} onClick={()=>setReady(list=>toggleId(list,g.id))}><PTIcon name={g.icon} size={20}/><span>{g.label}</span><i aria-hidden="true"><PTIcon name="check" size={14}/></i></button></li>)}</ul>
+  </section>;
+}
+
 // Personnage cliquable (mêmes rendus que la carte des muscles), plusieurs zones à la fois.
 // Points du côté gauche de l'image, en unités du viewBox ; « pair » = recopié en miroir, « center » = fermé sur l'axe.
 const ptPickZones={

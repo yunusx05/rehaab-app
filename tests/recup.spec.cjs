@@ -150,6 +150,8 @@ test('écran : séance avec échauffement guidé mouvement par mouvement',async(
   await expect(page.getByRole('heading',{name:/Échauffement guidé/})).toBeVisible();
   await expect(page.getByRole('heading',{name:/Retour au calme/})).toBeVisible();
   await page.getByRole('button',{name:/Démarrer la séance/}).click();
+  await page.getByRole('button',{name:'Je suis prêt',exact:true}).click();
+  await page.getByRole('button',{name:'C’est parti',exact:true}).click();
   await expect(page.locator('.live-position strong')).toContainText('Échauffement · 1 sur');
   const first=await page.locator('.live-heading h1').textContent();
   await page.getByRole('button',{name:'Mouvement suivant'}).first().click();

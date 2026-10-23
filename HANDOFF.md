@@ -307,3 +307,41 @@ Plan v3 (lots 12 → 17) : `~/.claude/plans/alors-j-ai-plusieurs-modifications-h
 - **`basket-scenes.js`** : `reads()` transforme chaque extrait en scène (niveau 1 ou 2, copie chronométrée niveau 3), `pool()` = extraits s'il y en a, sinon scènes 3D ; `byId`, `level`, `due`, `nextSet` passent par `pool()`.
 - **Écran** : `PTQiScenes` choisit `PTQiReads` (réutilise `PTQiVideoItem` : pause au moment de décider, choix, explication, suite de l'action) ou `PTQiScenes3D`. Tuile « Lis ton défenseur · vrais matchs ». Réponses dans `qi.answers` (`mode:'scene'`).
 - Tests : `qi-scenes.spec.cjs` (6 ; les tests 3D masquent `RehaabReads` par script d'initialisation). Suite complète : 148 réussis, 3 ignorés.
+
+## Lot 19 (23/10/2026) : séance fluide — branche `feature/seance-fluide`, cache v68
+Demande, après une vraie séance sur iPhone :
+- plus de questions pendant le repos ;
+- plus de « barre » de questions à chaque fin de série ;
+- le matériel avant de commencer ;
+- un chrono qui ne part pas tout seul ;
+- les changements de côté inclus dans le chrono ;
+- un coach dynamique ;
+- moins d'infos à l'écran, avec l'utilité basket de l'exercice ;
+- des vidéos sans contrôles parasites ;
+- une validation de la séance sur l'accueil ;
+- la barre du bas qui flottait au milieu de l'écran (iOS 26).
+
+Benchmark : NTC, Seven, Freeletics, Hevy/Strong et 21st.dev. Le MCP 21st était en panne (« catalog search failed ») ; le catalogue a été consulté par le web. Mobbin demande un abonnement payant.
+
+- **Segments** (`live-session.jsx`) :
+  - `ptReady` (5 s, `kind:'ready'`) précède **tout** travail : après le repos, après l'échauffement, après « Passer le repos ».
+  - `ptSwitch` (5 s, `kind:'switch'`) sépare les deux côtés.
+  - Un mouvement unilatéral minuté porte `side:1|2`. La durée affichée est celle d'un côté (`ptSideSeconds`) ; `ptMoveSeconds` compte toujours les deux côtés pour les aperçus.
+  - `segmentEnd` (une ref relue à chaque rendu) décide de la suite : ready, puis travail ; côté 1, puis switch, puis côté 2 ; travail, puis série validée seule (`quickRow`) et repos ; repos, puis ready ; dernier mouvement d'échauffement, puis travail ; dernier étirement, puis bilan.
+  - L'unilatéral en répétitions utilise `draft.side` : le premier « Fait » vaut pour le côté gauche.
+- **Écran « Prêt ? »** : `draft.ready===false` est posé par `PTPreview.start()`, avec le chrono à l'arrêt. On y voit le matériel (`PTGearList`, `recovery-components.jsx`), le premier mouvement et « Je suis prêt ». Les anciens brouillons, qui n'ont pas `ready`, sont repris tels quels.
+- **« Fait »** valide comme prévu, sans feuille.
+  - « Ajuster la série » ouvre `PTSetSheet`.
+  - Les tirs ouvrent toujours la feuille.
+  - Une charge inconnue laisse `weight:''` (`quickProblem`) ; `loadAdvice` ignore ces lignes.
+- **Supprimés** : `PTRestQuestion` et la case « question pendant les repos » (QI), la carte « Ensuite » et les métriques pendant le travail (déplacées dans « Comment faire »), le bouton « Minuter l'autre côté », le bip de mi-temps. « Options » et « Annuler » passent dans le menu ⋯ de la barre du haut.
+- **Voix du coach** (`ptSay`, `personal-app.jsx`) :
+  - `speechSynthesis` en fr-FR, débloquée au premier toucher (`ptSpeechPrime`).
+  - Réglage dans `preferences.voice`, à `true` par défaut, avec un bouton haut-parleur dans la barre du haut.
+  - Elle annonce : « Prépare-toi. <exercice> », « Change de côté », « Plus que 10 secondes », un encouragement à mi-temps, « Repos, N secondes. Ensuite : … », « Dernière série ».
+  - Le mode vocal avait été retiré le 07/10 ; l'utilisateur l'a redemandé le 23/10.
+- **« Pourquoi »** (`ptWhy`) : on prend `transfer` s'il existe, sinon `PT.courtWhy[id]` (196 textes écrits pour le parcours et la muscu, 14 mots maximum), sinon `PT.patternWhy[pattern]`. Les tables sont à part pour ne pas modifier les prescriptions ; le test `basket-removal` compare les prescriptions champ par champ.
+- **Vidéo** : `PTDemo minimal` (séance et aperçu) retire `controls` et la légende, désactive le PiP, et pose un seul bouton pause en bas à droite (`.demo-pause`).
+- **Accueil** : `PTDoneToday` (`insight-components.jsx`) affiche « Séance du jour validée ✓ » dès qu'une séance de l'app porte la date du jour.
+- **Barre du bas** : `.bottom-nav`, `.live-dock` et `.preview-start` sont centrés avec `left:0;right:0;margin-inline:auto`, sans `transform` ni `backdrop-filter` ; `html,body{overflow-x:clip}`. **C'est une hypothèse, à confirmer sur iPhone** : la cause exacte n'a pas pu être reproduite sur ordinateur.
+- **Tests** : nouveau `tests/seance-fluide.spec.cjs` (6 tests) ; `live-session`, `insights`, `mobile`, `recup` et `basket-return` ont été adaptés. Suite complète : 176 réussis et 3 ignorés. 1 échec existait déjà avant le lot (`poids-tir` : « une séance de tir par semaine… jamais un jour de club »).

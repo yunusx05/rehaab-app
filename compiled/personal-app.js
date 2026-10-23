@@ -182,6 +182,29 @@ function PTIcon({
     close: /*#__PURE__*/React.createElement("path", {
       d: "m6 6 12 12M6 18 18 6"
     }),
+    sound: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M4 9h4l5-4v14l-5-4H4z"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"
+    })),
+    mute: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M4 9h4l5-4v14l-5-4H4z"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "m16.5 9.5 5 5m0-5-5 5"
+    })),
+    more: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("circle", {
+      cx: "5",
+      cy: "12",
+      r: "1.4"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "12",
+      cy: "12",
+      r: "1.4"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "19",
+      cy: "12",
+      r: "1.4"
+    })),
     vest: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
       d: "M8 3 4 6v15h7V9L8 3zm8 0 4 3v15h-7V9l3-6zM8 3c1 2 3 3 4 3s3-1 4-3"
     }), /*#__PURE__*/React.createElement("path", {
@@ -370,8 +393,10 @@ function PTEquipment({
     onClick: () => setShowAll(!showAll)
   }, showAll ? 'Afficher seulement mon matériel' : 'Autre matériel disponible aujourd’hui'));
 }
+// minimal (séance, aperçu) : vidéo en boucle sans contrôles natifs ni légende, un seul bouton pause en bas à droite.
 function PTDemo({
-  exercise
+  exercise,
+  minimal = false
 }) {
   const reduced = usePTMotionPreference(),
     media = window.RehaabMedia?.[exercise.id],
@@ -416,7 +441,7 @@ function PTDemo({
     src: still,
     alt: `Illustration : ${exercise.name}`,
     onError: () => setStillFailed(true)
-  })), /*#__PURE__*/React.createElement("div", {
+  })), !minimal && /*#__PURE__*/React.createElement("div", {
     className: "demo-controls"
   }, /*#__PURE__*/React.createElement("span", null, "Illustration \xB7 suis les rep\xE8res ci-dessous")));
   if (!primary && !frames) return /*#__PURE__*/React.createElement("div", {
@@ -441,7 +466,9 @@ function PTDemo({
     muted: true,
     playsInline: true,
     loop: true,
-    controls: true,
+    controls: !minimal,
+    disablePictureInPicture: minimal,
+    disableRemotePlayback: minimal,
     preload: "metadata",
     poster: media?.poster,
     src: primary,
@@ -456,7 +483,15 @@ function PTDemo({
     src: `media/${frames}/1.webp`,
     alt: `${exercise.name} : arrivée`,
     onError: () => setPhotosFailed(true)
-  }))), /*#__PURE__*/React.createElement("div", {
+  })), minimal && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "demo-pause",
+    "aria-label": play ? 'Mettre la démo en pause' : 'Lire la démo',
+    onClick: () => setPlay(!play)
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: play ? 'pause' : 'play',
+    size: 18
+  }))), !minimal && /*#__PURE__*/React.createElement("div", {
     className: "demo-controls"
   }, /*#__PURE__*/React.createElement("span", null, primary ? 'Vidéo en boucle' : media?.generated ? 'Illustration IA · 2 positions' : 'Départ ↔ arrivée · 2 positions'), /*#__PURE__*/React.createElement("div", {
     className: "media-meta"
@@ -473,7 +508,7 @@ function PTDemo({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: play ? 'pause' : 'play',
     size: 16
-  }), play ? 'Pause démo' : 'Lire la démo'))), !primary && !play && /*#__PURE__*/React.createElement("div", {
+  }), play ? 'Pause démo' : 'Lire la démo'))), !primary && !play && !minimal && /*#__PURE__*/React.createElement("div", {
     className: "position-switch"
   }, /*#__PURE__*/React.createElement("button", {
     "aria-pressed": frame === 0,
@@ -904,16 +939,19 @@ function PTPreview({
         ready = RWx ? RWx.attachRoutines(PT, window.PlayerProfile, s, plan) : plan,
         draft = PT.startDraft(ready, s),
         first = draft.warmupMoves && draft.warmupMoves[0];
+      // Rien ne tourne avant « Je suis prêt » : la séance s'ouvre sur l'écran Prêt ? (matériel, puis compte à rebours).
       return {
         ...s,
         draft: {
           ...draft,
+          ready: false,
           warmIndex: 0,
+          clockStarted: null,
           stageElapsed: 0,
-          stageStarted: Date.now(),
-          timer: first && typeof ptRoutineTimer === 'function' ? ptRoutineTimer(first, 'warmup', false) : {
+          stageStarted: null,
+          timer: first && typeof ptRoutineTimer === 'function' ? ptRoutineTimer(first, 'warmup', true) : {
             id: PT.uid(),
-            endAt: Date.now() + draft.warmupSeconds * 1000,
+            endAt: null,
             remaining: draft.warmupSeconds,
             duration: draft.warmupSeconds,
             kind: 'warmup',
@@ -951,7 +989,10 @@ function PTPreview({
     className: "notice"
   }, "Ajust\xE9e : ", plan.creditApplied.saved, " min retir\xE9es, d\xE9j\xE0 faites aujourd\u2019hui (", plan.creditApplied.labels.join(' + '), ")."), /*#__PURE__*/React.createElement("div", {
     className: "plan-meta"
-  }, /*#__PURE__*/React.createElement("span", null, "~", minutes, " min"), /*#__PURE__*/React.createElement("span", null, PT.formats[plan.format]), /*#__PURE__*/React.createElement("span", null, plan.exercises.length, " exercices")), plan.check.motivation === 'low' && /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("span", null, "~", minutes, " min"), /*#__PURE__*/React.createElement("span", null, PT.formats[plan.format]), /*#__PURE__*/React.createElement("span", null, plan.exercises.length, " exercices")), typeof PTGearList === 'function' && /*#__PURE__*/React.createElement(PTGearList, {
+    plan: plan,
+    data: data
+  }), plan.check.motivation === 'low' && /*#__PURE__*/React.createElement("p", {
     className: "notice"
   }, "Tu n\u2019as rien \xE0 rattraper. Termine cette courte s\xE9ance ; tu d\xE9cideras ensuite si tu en veux plus."), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
@@ -988,6 +1029,7 @@ function PTPreview({
       className: "exercise-item",
       key: e.id
     }, /*#__PURE__*/React.createElement(PTDemo, {
+      minimal: true,
       exercise: e
     }), /*#__PURE__*/React.createElement("div", {
       className: "exercise-summary"
@@ -1136,10 +1178,38 @@ function ptAudioContext() {
   }
   return ptAudio;
 }
-['pointerdown', 'keydown'].forEach(type => window.addEventListener(type, () => ptAudioContext(), {
+// iOS ne parle aussi qu'après un geste : une phrase vide au premier toucher débloque la voix pour toute la séance.
+let ptSpeechReady = false;
+function ptSpeechPrime() {
+  if (ptSpeechReady) return;
+  try {
+    if (window.speechSynthesis && window.SpeechSynthesisUtterance) {
+      speechSynthesis.speak(new SpeechSynthesisUtterance(''));
+      ptSpeechReady = true;
+    }
+  } catch (e) {}
+}
+['pointerdown', 'keydown'].forEach(type => window.addEventListener(type, () => {
+  ptAudioContext();
+  ptSpeechPrime();
+}, {
   capture: true,
   passive: true
 }));
+// Voix du coach (lot 19) : phrases courtes en français, la nouvelle remplace celle en cours. Coupable depuis la séance.
+function ptSay(text) {
+  try {
+    const synth = window.speechSynthesis;
+    if (!text || !synth || !window.SpeechSynthesisUtterance) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'fr-FR';
+    u.rate = 1.05;
+    const voice = synth.getVoices().find(v => /^fr(-|_|$)/i.test(v.lang));
+    if (voice) u.voice = voice;
+    synth.cancel();
+    synth.speak(u);
+  } catch (e) {}
+}
 // Signaux sonores des chronos. start : départ (long, aigu) · tick : 3-2-1 (court) · end : fin (deux notes) · left/right : côté demandé.
 const ptCueTones = {
   start: [[880, .35]],

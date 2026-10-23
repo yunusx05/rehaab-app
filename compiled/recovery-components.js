@@ -37,6 +37,55 @@ function PTRoutinePreview({
   }, r.warmup.length > 0 && row('Échauffement guidé', 'Étirements dynamiques et activation, chronométrés. Il change chaque jour.', r.warmup), r.cooldown.length > 0 && row('Retour au calme', 'Étirements tenus pour ce qui a travaillé, puis une minute de respiration.', r.cooldown));
 }
 
+// Lot 19 : le matériel à sortir avant de commencer (exercices + échauffement + retour au calme), à cocher.
+// En séance les routines sont déjà attachées ; dans l'aperçu on reprend celles du jour, comme PTRoutinePreview.
+function PTGearList({
+  plan,
+  data
+}) {
+  const [ready, setReady] = usePTState([]);
+  if (!plan) return null;
+  let moves = [...(plan.warmupMoves || []), ...(plan.cooldownMoves || [])];
+  if (!moves.length && data && window.RehabWarmup) {
+    try {
+      const r = window.RehabWarmup.sessionRoutines(PT, window.PlayerProfile, data, plan);
+      moves = [...r.warmup, ...r.cooldown];
+    } catch (e) {}
+  }
+  const ids = [...new Set([...plan.exercises, ...moves].flatMap(e => e.needs || []))].filter(id => id !== 'bodyweight');
+  const gear = PT.equipment.filter(e => ids.includes(e.id));
+  if (!gear.length) return /*#__PURE__*/React.createElement("section", {
+    className: "gear-list card stack-sm",
+    "aria-label": "Mat\xE9riel \xE0 pr\xE9parer"
+  }, /*#__PURE__*/React.createElement("h3", null, "Mat\xE9riel \xE0 pr\xE9parer"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Rien \xE0 sortir : poids du corps uniquement."));
+  return /*#__PURE__*/React.createElement("section", {
+    className: "gear-list card stack-sm",
+    "aria-label": "Mat\xE9riel \xE0 pr\xE9parer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("h3", null, "Mat\xE9riel \xE0 pr\xE9parer"), /*#__PURE__*/React.createElement("small", {
+    className: "caption"
+  }, ready.length, "/", gear.length, " pr\xEAt")), /*#__PURE__*/React.createElement("ul", {
+    className: "gear-items"
+  }, gear.map(g => /*#__PURE__*/React.createElement("li", {
+    key: g.id
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-pressed": ready.includes(g.id),
+    onClick: () => setReady(list => toggleId(list, g.id))
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: g.icon,
+    size: 20
+  }), /*#__PURE__*/React.createElement("span", null, g.label), /*#__PURE__*/React.createElement("i", {
+    "aria-hidden": "true"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "check",
+    size: 14
+  })))))));
+}
+
 // Personnage cliquable (mêmes rendus que la carte des muscles), plusieurs zones à la fois.
 // Points du côté gauche de l'image, en unités du viewBox ; « pair » = recopié en miroir, « center » = fermé sur l'axe.
 const ptPickZones = {
