@@ -696,7 +696,7 @@ function PTWeekStrip({
   }, week.days.map(d => /*#__PURE__*/React.createElement("span", {
     key: d.date,
     className: `week-strip-day${d.date === now ? ' is-today' : ''}${d.club.match ? ' is-match' : ''}`
-  }, /*#__PURE__*/React.createElement("small", null, d.label.slice(0, 1)), /*#__PURE__*/React.createElement("i", null, d.items.filter(x => x.type !== 'care').map(x => /*#__PURE__*/React.createElement("b", {
+  }, /*#__PURE__*/React.createElement("small", null, d.label.slice(0, 1)), /*#__PURE__*/React.createElement("em", null, Number(d.date.slice(8))), /*#__PURE__*/React.createElement("i", null, d.items.filter(x => x.type !== 'care').map(x => /*#__PURE__*/React.createElement("b", {
     key: x.key,
     className: `dot is-${x.status} type-${x.type}`
   })), d.club.match && /*#__PURE__*/React.createElement("b", {
