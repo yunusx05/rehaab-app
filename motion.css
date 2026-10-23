@@ -1,6 +1,6 @@
 /* Lot 20 — mouvement et praticité. Chargé en dernier : affine les couches précédentes sans les réécrire.
    Règles : retour au toucher en moins de 200 ms, entrées plus longues que les sorties, rien au-delà de 450 ms (NN/g, durée des animations). */
-:root{--ease-out:cubic-bezier(.23,1,.32,1);--spring:cubic-bezier(.34,1.36,.5,1)}
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-glide:cubic-bezier(.22,1,.36,1)}
 
 /* Changement d'écran : glissement court dans le sens de la navigation (data-nav posé par PersonalApp). */
 ::view-transition-old(root){animation:180ms var(--ease-out) both vt-fade-out}
@@ -22,10 +22,10 @@ html[data-nav=back]::view-transition-new(root){animation-name:vt-in-left}
 ::view-transition-new(tabbar),::view-transition-new(shell-header),::view-transition-group(tabbar),::view-transition-group(shell-header){animation:none}
 
 /* Barre du bas : une seule pastille qui glisse vers l'onglet actif. La barre elle-même garde transform:none (bug iOS 26). */
-.nav-pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 22px)/5);border-radius:30px;background:var(--accent);transform:translateX(calc(var(--tab,0)*(100% + 2px)));transition:transform 420ms var(--spring);pointer-events:none}
+.nav-pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 22px)/5);border-radius:30px;background:var(--accent);transform:translateX(calc(var(--tab,0)*(100% + 2px)));transition:transform 420ms var(--ease-glide);pointer-events:none}
 .nav-button{position:relative;z-index:1;transition:color 220ms var(--ease-out),transform 160ms var(--ease-out),background-color 180ms}
 .nav-button[aria-current=page],.nav-button[aria-current=page]:hover{background:transparent;color:#17200d}
-.nav-button[aria-current=page] svg{animation:nav-pop 420ms var(--spring)}
+.nav-button[aria-current=page] svg{animation:nav-pop 420ms var(--ease-glide)}
 @keyframes nav-pop{0%{transform:scale(.72)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
 
 /* Toucher : tout ce qui se presse s'enfonce légèrement, les grandes cartes moins que les boutons. */
@@ -60,8 +60,8 @@ button:active:not(:disabled){transform:scale(.97)}
 /* Carte joueur vide : pas de grand trou entre le nom et le pied de carte. */
 .player-card:has(.player-card-empty){min-height:300px}
 
-/* Messages : arrivent avec un léger rebond au lieu d'apparaître d'un coup. */
-.toast{animation:toast-in 380ms var(--spring)}
+/* Messages : arrivent en glissant au lieu d'apparaître d'un coup. */
+.toast{animation:toast-in 380ms var(--ease-glide)}
 @keyframes toast-in{from{opacity:0;transform:translate(-50%,14px) scale(.96)}}
 
 /* Profondeur discrète : un liseré de lumière en haut des cartes. */
