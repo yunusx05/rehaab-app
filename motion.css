@@ -66,3 +66,27 @@ button:active:not(:disabled){transform:scale(.97)}
 
 /* Profondeur discrète : un liseré de lumière en haut des cartes. */
 .card{box-shadow:inset 0 1px 0 #ffffff08}
+
+/* Lot 21 — feuille de match. */
+/* Chiffre qui roule : la nouvelle valeur monte depuis le bas (pushr). Fréquent, donc court. */
+.roll{display:inline-block;overflow:hidden;vertical-align:bottom;line-height:inherit}
+.roll-in{display:inline-block;animation:roll-up 240ms var(--ease-out)}
+@keyframes roll-up{from{transform:translateY(70%);opacity:0}}
+/* L'exercice en cours : la bande citron balaie la ligne de gauche à droite. */
+.session-list li.is-current{animation:band-in 280ms var(--ease-out)}
+@keyframes band-in{from{clip-path:inset(0 100% 0 0)}}
+/* Fin de séance : l'aplat monte depuis le bouton, puis le titre arrive. */
+.finish-flood{animation:flood-in 360ms var(--ease-out)}
+.finish-title>span{animation:title-in 320ms var(--ease-out) 90ms backwards}
+.finish-title>span+span{animation-delay:150ms}
+.finish-score{animation:rise 280ms var(--ease-out) 220ms backwards}
+@keyframes flood-in{from{clip-path:circle(0 at 50% 100%)}to{clip-path:circle(150% at 50% 100%)}}
+@keyframes title-in{from{transform:translateX(-18%);opacity:0}}
+/* Teinte de phase : glisse d'une couleur à l'autre. */
+.live-session::before{transition:background-color 400ms var(--ease-out)}
+
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+  .roll-in,.session-list li.is-current,.finish-flood,.finish-title>span,.finish-score,.week-strip-day,.toast,.nav-button[aria-current=page] svg{animation:none}
+  .nav-pill,.score-bar>b,.dock-progress>b,.live-session::before{transition:none}
+}
