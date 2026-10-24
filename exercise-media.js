@@ -439,7 +439,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/band-shuffle.mp4",
     "poster": "media/videos/yt/band-shuffle.webp",
     "credit": "YouTube · Lateral band walks | Ohio State Sports Medicine",
-    "source": "https://www.youtube.com/watch?v=6eoK_yxY8Ak&t=6s"
+    "source": "https://www.youtube.com/watch?v=6eoK_yxY8Ak&t=36s"
   },
   "halo": {
     "video": "media/videos/yt/halo.mp4",
@@ -722,8 +722,8 @@ window.RehaabMedia = {
     ],
     "video": "media/videos/yt/db-single-rdl.mp4",
     "poster": "media/videos/yt/db-single-rdl.webp",
-    "credit": "YouTube · Dumbbell Single Leg RDL",
-    "source": "https://www.youtube.com/watch?v=lI8-igvsnVQ&t=17s"
+    "credit": "YouTube · Single-Leg Dumbbell RDL | Olympic Weightlifting Exercise Library",
+    "source": "https://www.youtube.com/watch?v=_DhDkij1vxY&t=12s"
   },
   "bb-rdl": {
     "frames": "Romanian_Deadlift",
@@ -1399,7 +1399,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/overhead-carry.mp4",
     "poster": "media/videos/yt/overhead-carry.webp",
     "credit": "YouTube · Dumbbell Single Arm Overhead Carry",
-    "source": "https://www.youtube.com/watch?v=IrsLq3H9E8M&t=62s"
+    "source": "https://www.youtube.com/watch?v=IrsLq3H9E8M&t=67s"
   },
   "single-leg-stand": {
     "video": "media/videos/yt/single-leg-stand.mp4",
@@ -2005,7 +2005,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/sk-wall-shot.mp4",
     "poster": "media/videos/yt/sk-wall-shot.webp",
     "credit": "YouTube · Best Shooting Drills WITHOUT a Hoop | Basketball Shooting Drills for Kids",
-    "source": "https://www.youtube.com/watch?v=OxdVkiKLKIE&t=39s"
+    "source": "https://www.youtube.com/watch?v=OxdVkiKLKIE&t=52s"
   },
   "sk-lying-form": {
     "video": "media/videos/yt/sk-lying-form.mp4",
@@ -2065,7 +2065,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/sk-shot-fake.mp4",
     "poster": "media/videos/yt/sk-shot-fake.webp",
     "credit": "YouTube · Fundamentals Of The Shot Fake",
-    "source": "https://www.youtube.com/watch?v=Uv323KLwytA&t=58s"
+    "source": "https://www.youtube.com/watch?v=Uv323KLwytA&t=57s"
   },
   "sled-push": {
     "video": "media/videos/yt/sled-push.mp4",
@@ -2545,7 +2545,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/sk-inside-hand.mp4",
     "poster": "media/videos/yt/sk-inside-hand.webp",
     "credit": "YouTube · Inside hand lay-up (power step)",
-    "source": "https://www.youtube.com/watch?v=YMULe_eEsOQ&t=20s"
+    "source": "https://www.youtube.com/watch?v=YMULe_eEsOQ&t=21s"
   },
   "sk-reverse-pivot": {
     "video": "media/videos/yt/sk-reverse-pivot.mp4",
@@ -2683,7 +2683,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/mv-spin-counter.mp4",
     "poster": "media/videos/yt/mv-spin-counter.webp",
     "credit": "YouTube · High Post Moves Counter: Spin Move to Fadeaway Jumpshot | Carmelo Anthony Kobe Bryant | Dre Baldwin",
-    "source": "https://www.youtube.com/watch?v=qwJj2JFt-Uw&t=10s"
+    "source": "https://www.youtube.com/watch?v=qwJj2JFt-Uw&t=4s"
   },
   "mv-fake-sidestep": {
     "video": "media/videos/yt/mv-fake-sidestep.mp4",
@@ -2790,8 +2790,8 @@ window.RehaabMedia = {
   "adductor-rockback": {
     "video": "media/videos/yt/adductor-rockback.mp4",
     "poster": "media/videos/yt/adductor-rockback.webp",
-    "credit": "YouTube · Adductor Quadruped Rockback - Hip Mobility Drill",
-    "source": "https://www.youtube.com/watch?v=yF8o6I6aSZg&t=23s"
+    "credit": "YouTube · Quadruped Adductor Rock Back",
+    "source": "https://www.youtube.com/watch?v=cNpdn-d3RUA&t=38s"
   },
   "arm-circles": {
     "video": "media/videos/yt/arm-circles.mp4",
@@ -2923,7 +2923,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/foam-quads.mp4",
     "poster": "media/videos/yt/foam-quads.webp",
     "credit": "YouTube · How To Foam Roll Your Quads with TriggerPoint RUSH",
-    "source": "https://www.youtube.com/watch?v=1XzS9y-vJD8&t=45s"
+    "source": "https://www.youtube.com/watch?v=1XzS9y-vJD8&t=26s"
   },
   "foam-calves": {
     "video": "media/videos/yt/foam-calves.mp4",
@@ -2940,8 +2940,8 @@ window.RehaabMedia = {
   "foam-adductors": {
     "video": "media/videos/yt/foam-adductors.mp4",
     "poster": "media/videos/yt/foam-adductors.webp",
-    "credit": "YouTube · How To Foam Roll Adductors with TriggerPoint RUSH",
-    "source": "https://www.youtube.com/watch?v=n5g0rjsTT1k&t=56s"
+    "credit": "YouTube · How to foam roll your inner thigh (adductor muscles)",
+    "source": "https://www.youtube.com/watch?v=hSxQuAYlPrE&t=20s"
   },
   "foam-outer-thigh": {
     "video": "media/videos/yt/foam-outer-thigh.mp4",
@@ -3031,7 +3031,7 @@ window.RehaabMedia = {
     "video": "media/videos/yt/mi-1min-pullup.mp4",
     "poster": "media/videos/yt/mi-1min-pullup.webp",
     "credit": "YouTube · Score EASY Buckets: The Art of the 1 & 2 Dribble Pull-Ups",
-    "source": "https://www.youtube.com/watch?v=AIyKluORl6w&t=8s"
+    "source": "https://www.youtube.com/watch?v=AIyKluORl6w&t=9s"
   },
   "mi-transition-layups": {
     "video": "media/videos/yt/mi-transition-layups.mp4",

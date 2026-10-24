@@ -1000,13 +1000,16 @@
   "query": "standing broad jump technique demonstration"
  },
  "db-single-rdl": {
-  "videoId": "lI8-igvsnVQ",
-  "duration": 25,
-  "title": "Dumbbell Single Leg RDL",
-  "start": 17,
+  "videoId": "_DhDkij1vxY",
+  "duration": 64,
+  "title": "Single-Leg Dumbbell RDL | Olympic Weightlifting Exercise Library",
+  "start": 12,
   "seen": "single leg dumbbell romanian deadlift",
   "quality": 5,
-  "size": 112182,
+  "size": 205238,
+  "rejected": [
+   "lI8-igvsnVQ"
+  ],
   "query": "single leg dumbbell romanian deadlift"
  },
  "sprint-20": {
@@ -1171,7 +1174,8 @@
   "seen": "resistance band seated row",
   "quality": 5,
   "size": 53239,
-  "query": "resistance band seated row"
+  "query": "resistance band seated row",
+  "rejected": []
  },
  "falling-start": {
   "videoId": "EK8jLSC8CaY",
@@ -1197,11 +1201,17 @@
   "videoId": "6eoK_yxY8Ak",
   "duration": 42,
   "title": "Lateral band walks | Ohio State Sports Medicine",
-  "start": 6,
+  "start": 36,
   "seen": "banded lateral walk",
   "quality": 5,
-  "size": 83737,
-  "query": "banded lateral walk"
+  "size": 174931,
+  "query": "banded lateral walk",
+  "rejected": [
+   "ESmDtnFmK0o",
+   "M5uxEQH5BUM",
+   "5VtGyiddPh4"
+  ],
+  "manual": true
  },
  "incline-pushup": {
   "videoId": "Me9bHFAxnCs",
@@ -2148,11 +2158,13 @@
   "videoId": "OxdVkiKLKIE",
   "duration": 383,
   "title": "Best Shooting Drills WITHOUT a Hoop | Basketball Shooting Drills for Kids",
-  "start": 39,
+  "start": 52,
   "seen": "wall shooting form drill basketball",
   "quality": 5,
-  "size": 172525,
-  "query": "wall shooting form drill basketball"
+  "size": 162542,
+  "query": "wall shooting form drill basketball",
+  "rejected": [],
+  "manual": true
  },
  "sk-lying-form": {
   "videoId": "5vZn2ZsNn0g",
@@ -2278,11 +2290,13 @@
   "videoId": "Uv323KLwytA",
   "duration": 72,
   "title": "Fundamentals Of The Shot Fake",
-  "start": 58,
+  "start": 57,
   "seen": "shot fake and drive drill",
   "quality": 5,
-  "size": 185584,
-  "query": "shot fake and drive drill"
+  "size": 183151,
+  "query": "shot fake and drive drill",
+  "rejected": [],
+  "manual": true
  },
  "sk-jump-stop": {
   "rejected": [
@@ -2730,11 +2744,13 @@
   "videoId": "IrsLq3H9E8M",
   "duration": 80,
   "title": "Dumbbell Single Arm Overhead Carry",
-  "start": 62,
+  "start": 67,
   "seen": "overhead dumbbell carry",
   "quality": 5,
-  "size": 137550,
-  "query": "overhead dumbbell carry"
+  "size": 106071,
+  "query": "overhead dumbbell carry",
+  "rejected": [],
+  "manual": true
  },
  "burpee-nojump": {
   "videoId": "we5OJ7-zb48",
@@ -3816,17 +3832,18 @@
   "videoId": "YMULe_eEsOQ",
   "duration": 28,
   "title": "Inside hand lay-up (power step)",
-  "start": 20,
+  "start": 21,
   "seen": "inside hand layup",
   "quality": 4,
-  "size": 231801,
+  "size": 214969,
   "rejected": [
    "zY_8QwPk78A",
    "jhS8JrDhDeI",
    "K_PFw1LDKDA",
    "PFZeeMgaXdE"
   ],
-  "query": "inside hand layup tutorial"
+  "query": "inside hand layup tutorial",
+  "manual": true
  },
  "sk-reverse-pivot": {
   "videoId": "U8J2-kwWl_g",
@@ -4132,11 +4149,13 @@
   "videoId": "qwJj2JFt-Uw",
   "duration": 24,
   "title": "High Post Moves Counter: Spin Move to Fadeaway Jumpshot | Carmelo Anthony Kobe Bryant | Dre Baldwin",
-  "start": 10,
+  "start": 4,
   "seen": "spin move counter basketball",
   "quality": 4,
-  "size": 84026,
-  "query": "spin move counter basketball"
+  "size": 75272,
+  "query": "spin move counter basketball",
+  "rejected": [],
+  "manual": true
  },
  "mv-fake-sidestep": {
   "videoId": "BIsu4PqSiWw",
@@ -4342,13 +4361,16 @@
   "query": "forward lunge with twist"
  },
  "adductor-rockback": {
-  "videoId": "yF8o6I6aSZg",
-  "duration": 45,
-  "title": "Adductor Quadruped Rockback - Hip Mobility Drill",
-  "start": 23,
-  "seen": "adductor quadruped rock back",
-  "quality": 4,
-  "size": 207924,
+  "videoId": "cNpdn-d3RUA",
+  "duration": 49,
+  "title": "Quadruped Adductor Rock Back",
+  "start": 38,
+  "seen": "adductor rock back quadruped",
+  "quality": 5,
+  "size": 113712,
+  "rejected": [
+   "yF8o6I6aSZg"
+  ],
   "query": "adductor rock back quadruped"
  },
  "arm-circles": {
@@ -4586,11 +4608,15 @@
   "videoId": "1XzS9y-vJD8",
   "duration": 82,
   "title": "How To Foam Roll Your Quads with TriggerPoint RUSH",
-  "start": 45,
+  "start": 26,
   "seen": "foam roll quads",
   "quality": 5,
-  "size": 123922,
-  "query": "foam roll quads"
+  "size": 116224,
+  "query": "foam roll quads",
+  "rejected": [
+   "_QFX0U1msUA"
+  ],
+  "manual": true
  },
  "foam-calves": {
   "videoId": "rpVMZziJeY8",
@@ -4613,13 +4639,16 @@
   "query": "foam roll glutes figure four"
  },
  "foam-adductors": {
-  "videoId": "n5g0rjsTT1k",
-  "duration": 73,
-  "title": "How To Foam Roll Adductors with TriggerPoint RUSH",
-  "start": 56,
+  "videoId": "hSxQuAYlPrE",
+  "duration": 60,
+  "title": "How to foam roll your inner thigh (adductor muscles)",
+  "start": 20,
   "seen": "foam roll adductors inner thigh",
-  "quality": 4,
-  "size": 143758,
+  "quality": 5,
+  "size": 106520,
+  "rejected": [
+   "n5g0rjsTT1k"
+  ],
   "query": "foam roll adductors inner thigh"
  },
  "foam-outer-thigh": {
@@ -4832,11 +4861,13 @@
   "videoId": "AIyKluORl6w",
   "duration": 349,
   "title": "Score EASY Buckets: The Art of the 1 & 2 Dribble Pull-Ups",
-  "start": 8,
+  "start": 9,
   "seen": "one minute pull up jumper basketball drill",
   "quality": 4,
-  "size": 214016,
-  "query": "one minute pull up jumper basketball drill"
+  "size": 195813,
+  "query": "one minute pull up jumper basketball drill",
+  "rejected": [],
+  "manual": true
  },
  "mi-drive-kick": {
   "videoId": "ty9aA4ccAQk",
