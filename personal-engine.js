@@ -489,7 +489,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null,seasonPlan:null,calendar:null,weeklyReviews:[],shooting:null,weightPrefs:null};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null,seasonPlan:null,calendar:null,weeklyReviews:[],shooting:null,weightPrefs:null,cardio:{perWeek:2}};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -563,6 +563,9 @@
     // Skills basket : questionnaire, paliers, programme et journal, absents des anciennes sauvegardes.
     const skillsLib=globals.BasketSkills||tryRequire('./basket-skills.js');
     s.skills=s.skills&&skillsLib?skillsLib.validate(s.skills):(s.skills&&typeof s.skills==='object'?s.skills:null);
+    // Lot 22 : cardio régulier (corde, course fractionnée), absent des anciennes sauvegardes.
+    const cardio=globals.BasketCardio||tryRequire('./basket-cardio.js');
+    s.cardio=cardio?cardio.validate(s.cardio):(s.cardio&&typeof s.cardio==='object'?s.cardio:null);
     return {...base,...s,profile:{...base.profile,...s.profile}};
   }
   function validateEntries(entries) {
@@ -605,7 +608,8 @@
     // Quick Rehab : la zone ciblée suit son protocole ; les autres douleurs gardent la règle habituelle.
     const pains=check&&check.rehabRegion?ctx.active.active.filter(p=>p.region!==check.rehabRegion):ctx.active.active;
     if(tol?!tol.tolerates(exercise,pains):exercise.regions.some(r=>pains.some(p=>p.region===r))) return false;
-    if(exercise.impact && (ctx.avoidImpact || check.constraints.includes('no-impact') || check.constraints.includes('quiet'))) return false;
+    // impactCleared : le cardio régulier (basket-cardio.js) décide lui-même des impacts d'après le parcours et les douleurs ; les choix du joueur (sans impact, silencieux) restent prioritaires.
+    if(exercise.impact && ((ctx.avoidImpact && !check.impactCleared) || check.constraints.includes('no-impact') || check.constraints.includes('quiet'))) return false;
     if(exercise.floor && check.constraints.includes('no-floor')) return false;
     if(exercise.level>1 && state.profile.experience==='beginner' && !(Number(check&&check.guided)>=2)) return false;
     if(exercise.needsSafety && !state.profile.safeties) return false;

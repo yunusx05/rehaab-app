@@ -141,7 +141,7 @@ function ptMishapDay(state){const SPx=window.SeasonPlan,now=PT.dateKey();return 
 function PTMishap(props){
   const {data,update,go,notify}=props,SPL=window.SeasonPlan,RW=window.RehabWarmup,now=PT.dateKey();
   const planned=SPL?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.status==='planned'):[];
-  const main=planned.find(x=>['pathway','muscu','skills','reset','vivacite'].includes(x.type))||planned[0]||null;
+  const main=planned.find(x=>['pathway','muscu','skills','reset','vivacite','cardio'].includes(x.type))||planned[0]||null;
   const [reason,setReason]=usePTState(null),[minutes,setMinutes]=usePTState(20),[zones,setZones]=usePTState([]),[kind,setKind]=usePTState('match');
   const [feel,setFeel]=usePTState(null);
   // Report de la séance prévue (si elle existe), appliqué à l'état passé en paramètre.

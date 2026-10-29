@@ -6,6 +6,7 @@ const ptCalIcon = {
   reset: 'body',
   muscu: 'weight',
   vivacite: 'spark',
+  cardio: 'run',
   skills: 'court',
   care: 'heart',
   shooting: 'basket'
@@ -47,6 +48,10 @@ function ptCalendarPlan(data, item, day) {
     };
   }
   if (item.type === 'vivacite') return BP.quickPlan(PT, JP, data, 'vivacite');
+  if (item.type === 'cardio' && window.BasketCardio) return window.BasketCardio.plan(PT, JP, data, item.kind, {
+    phase: item.phase,
+    soft: item.soft
+  });
   if (item.type === 'skills' && SK) return SK.session(PT, data, {
     minutes: item.minutes
   });
@@ -216,7 +221,17 @@ function PTCalendar({
     ptDownload(`rehaab-plan-${now}.ics`, SP.ics(data, now, 4), 'text/calendar');
     notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');
   };
-  const physCount = week.days.flatMap(d => d.items).filter(x => x.physical).length;
+  const physCount = week.days.flatMap(d => d.items).filter(x => x.physical).length,
+    cardioCount = week.days.flatMap(d => d.items).filter(x => x.type === 'cardio').length;
+  const BC = window.BasketCardio,
+    cardioPerWeek = BC ? BC.perWeek(data) : 0;
+  const setCardioPerWeek = n => update(s => ({
+    ...s,
+    cardio: {
+      ...(s.cardio || {}),
+      perWeek: n
+    }
+  }));
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
@@ -241,7 +256,7 @@ function PTCalendar({
     size: 18
   }))), /*#__PURE__*/React.createElement("p", {
     className: "calendar-balance"
-  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), BC && /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, cardioCount), " cardio"), /*#__PURE__*/React.createElement("span", {
     className: "fine"
   }, "cette semaine")), week.skills.placed < week.skills.wanted && /*#__PURE__*/React.createElement("p", {
     className: "notice warning"
@@ -270,6 +285,17 @@ function PTCalendar({
     value: perWeek,
     onChange: v => setLife('sessions', String(v)),
     options: [2, 3, 4, 5, 6].map(n => ({
+      value: n,
+      label: String(n)
+    }))
+  })), BC && /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Cardio (corde, course) / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+    value: cardioPerWeek,
+    onChange: setCardioPerWeek,
+    options: [0, 1, 2].map(n => ({
       value: n,
       label: String(n)
     }))
