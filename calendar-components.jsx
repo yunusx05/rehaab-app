@@ -1,7 +1,7 @@
 /* Lot 14 : calendrier de la semaine (route « calendar ») et plan de saison (route « plan »).
    Toute la logique est dans season-plan.js ; ces écrans affichent, lancent et déplacent les séances. */
 const SP=window.SeasonPlan;
-const ptCalIcon={pathway:'weight',reset:'body',muscu:'weight',vivacite:'spark',skills:'court',care:'heart',shooting:'basket'};
+const ptCalIcon={pathway:'weight',reset:'body',muscu:'weight',vivacite:'spark',cardio:'run',skills:'court',care:'heart',shooting:'basket'};
 const ptCalStatus={done:'Faite',missed:'Manquée',planned:'Prévue'};
 const ptShortDay=date=>`${date.slice(8,10)}/${date.slice(5,7)}`;
 
@@ -20,6 +20,7 @@ function ptCalendarPlan(data,item,day){
     return {...plan,id:PT.uid(),source:'reset',pathwayId:undefined,pathwayStep:undefined,pathwayDay:undefined,title:item.label,exercises,reasons:['Remise en route : aucun saut ni sprint, les tendons d’abord.',...(plan.reasons||[]).filter(r=>!/saut|impact/i.test(r))],estimatedMinutes:Math.max(10,Math.round(PT.estimateSeconds(exercises,'classic')/60)+5)};
   }
   if(item.type==='vivacite')return BP.quickPlan(PT,JP,data,'vivacite');
+  if(item.type==='cardio'&&window.BasketCardio)return window.BasketCardio.plan(PT,JP,data,item.kind,{phase:item.phase,soft:item.soft});
   if(item.type==='skills'&&SK)return SK.session(PT,data,{minutes:item.minutes});
   return null;
 }
@@ -59,11 +60,13 @@ function PTCalendar({data,update,go,notify}){
   const sk=data.skills?.program;
   const setSkillsPerWeek=n=>update(s=>({...s,skills:{...s.skills,program:{...s.skills.program,perWeek:n,status:'active'}}}));
   const exportIcs=()=>{ptDownload(`rehaab-plan-${now}.ics`,SP.ics(data,now,4),'text/calendar');notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');};
-  const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length;
+  const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length,cardioCount=week.days.flatMap(d=>d.items).filter(x=>x.type==='cardio').length;
+  const BC=window.BasketCardio,cardioPerWeek=BC?BC.perWeek(data):0;
+  const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n}}));
   return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Muscu et skills dans un seul planning. Règle chaque jour : muscu, skills, les deux ou repos.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
-      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span><span className="fine">cette semaine</span></p>
+      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span>{BC&&<span><strong>{cardioCount}</strong> cardio</span>}<span className="fine">cette semaine</span></p>
       {week.skills.placed<week.skills.wanted&&<p className="notice warning">{week.skills.wanted-week.skills.placed} séance{week.skills.wanted-week.skills.placed>1?'s':''} skills sans place cette semaine : règle un jour sur « Skills » ou « Muscu + skills ».</p>}
       <details className="card stack-sm calendar-life disclosure">
         <summary><strong>Ma semaine type</strong><small>Le type de chaque jour, toutes les semaines</small></summary>
@@ -71,6 +74,7 @@ function PTCalendar({data,update,go,notify}){
           <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setMode(SP.at(monday,i),e.target.value,true)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
           <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique.</p>
           <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
+          {BC&&<div className="topline"><span className="fine">Cardio (corde, course) / semaine</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2].map(n=>({value:n,label:String(n)}))}/></div>}
           {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
             :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
         </div>

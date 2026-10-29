@@ -25,6 +25,7 @@
   const PTL = () => lib('PersonalTraining','./personal-engine.js');
   const SKL = () => lib('BasketSkills','./basket-skills.js');
   const SHL = () => lib('Shooting','./shooting.js');
+  const CARL = () => lib('BasketCardio','./basket-cardio.js');
 
   // Développement : cycles de 4 semaines après le retour au jeu, la 4e allégée. En saison, l'entretien prend le relais.
   const CYCLES = [
@@ -146,7 +147,7 @@
     const find=id=>PT&&PT.catalog.find(e=>e.id===id);
     return ids.map(find).filter(e=>e&&(['squat','hinge','jump'].includes(e.pattern)||e.impact||e.kind==='plyo')).length;
   }
-  function items(state, built) {
+  function items(state, built, monday) {
     const BP=BPL(), PT=PTL(), out=[], p=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
     const a=state.dossier&&state.dossier.answers||{};
     const max=Number(a.maxMinutes)||Number(state.checkIn&&state.checkIn.minutes)||45;
@@ -163,6 +164,12 @@
     // Vivacité : à partir de l'étape 2 (ou en développement), une à deux fois par semaine.
     const step=p?p.step:cur.startsWith('dev')?5:0;
     if(step>=2) for(let i=0;i<(cur==='dev-quick'?2:1);i++) out.push({key:`V${i+1}`,type:'vivacite',label:'Vivacité · 15 min',legs:'impact',minutes:15});
+    // Cardio régulier (lot 22) : corde et course fractionnée. Sans impact en « Remise en route » ou avec une douleur du bas du corps.
+    const CAR=CARL();
+    if(CAR) CAR.weekKinds(CAR.perWeek(state),monday).forEach(kind=>{
+      const k=CAR.KINDS[kind];
+      out.push({key:k.key,type:'cardio',kind,phase:cur,label:`Cardio · ${k.label.toLowerCase()}`,legs:CAR.impactStatus(state,cur).ok?'impact':'light',minutes:20});
+    });
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
     if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills basket',legs:'light',minutes:Math.min(max,sk.minutes||45)});
     const hoop=a.hoop&&['daily','weekly'].includes(a.hoop);
@@ -205,6 +212,13 @@
     if(item.legs==='heavy'&&placed.some(x=>x!==item&&x.legs==='heavy'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances de jambes lourdes.';
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
+    // Cardio à impacts (corde, course) : jamais deux jours de suite, ni avec des jambes lourdes, ni un jour de club ou au lendemain d'un match.
+    if(item.type==='cardio'&&item.legs==='impact'){
+      if(placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Cardio à impacts et jambes lourdes le même jour : trop de charge.';
+      if(placed.some(x=>x!==item&&(x.type==='cardio'||x.type==='vivacite')&&x.legs==='impact'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances à impacts (corde, course, vivacité).';
+      if(d.club.practice) return 'Entraînement au club ce jour-là : pas de cardio à impacts en plus.';
+      if(prev.club.match) return 'Lendemain de match : récupération, pas d’impacts.';
+    }
     // Les skills raccourcies pour accompagner une séance physique ne comptent pas dans la durée du jour.
     const total=placed.filter(x=>x!==item&&x.date===date&&x.type!=='care'&&!(x.type==='skills'&&(mode==='both'||x.combined))).reduce((n,x)=>n+x.minutes,0);
     // Muscu + skills le même jour : la séance skills est raccourcie pour tenir dans ta durée (voir weekSchedule).
@@ -222,7 +236,7 @@
     // « Auto » choisi pour un seul jour le rend disponible, même hors de tes jours habituels.
     const days=Array.from({length:7},(_,i)=>{const date=at(monday,i),mode=dayMode(state,date);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),mode,free:mode==='off'?false:mode==='auto'?free.includes(i)||cal.dates[date]==='auto':true,items:[]};});
     days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));
-    const built=build(state,now),all=items(state,built),tgt=target(state),warnings=[];
+    const built=build(state,now),all=items(state,built,monday),tgt=target(state),warnings=[];
     const ans=state.dossier&&state.dossier.answers||{};days.maxMinutes=Math.max(30,Math.round((Number(ans.maxMinutes)||75)*1.15));
     // Semaine du début : les jours d'avant ne comptent pas (rien de « manqué » avant d'avoir commencé).
     days.forEach(d=>{if(diff(d.date,built.start)<0){d.before=true;d.free=false;}});
@@ -233,7 +247,7 @@
     if(physical.length>tgt){physical.filter(x=>x.extra).slice(0,physical.length-tgt).forEach(x=>x.dropped=true);physical=physical.filter(x=>!x.dropped);}
     if(physical.length>tgt) physical=physical.slice(0,tgt);
     const rest=all.filter(x=>!x.physical);
-    const queue=[...physical.sort((a,b)=>(b.legs==='heavy')-(a.legs==='heavy')),...rest.filter(x=>x.type==='vivacite'),...rest.filter(x=>x.type==='skills'),...rest.filter(x=>x.type==='shooting'),...rest.filter(x=>x.type==='care')].filter(x=>!skips.includes(x.key));
+    const queue=[...physical.sort((a,b)=>(b.legs==='heavy')-(a.legs==='heavy')),...rest.filter(x=>x.type==='vivacite'),...rest.filter(x=>x.type==='cardio'),...rest.filter(x=>x.type==='skills'),...rest.filter(x=>x.type==='shooting'),...rest.filter(x=>x.type==='care')].filter(x=>!skips.includes(x.key));
     const placed=[];
     for(const item of queue){
       const moved=moves[item.key];
@@ -243,7 +257,7 @@
       if(moved&&forced.includes(item.key)&&days.some(d=>d.date===moved)){placed.push({...item,date:moved,moved:true,forced:true,warning:broken});continue;}
       if(moved) warnings.push(`${item.label} : déplacement annulé (${ruleBreak(item,moved,placed,days)})`);
       // Meilleur jour : libre, sans règle enfreinte, le plus éloigné des autres séances du même type de charge.
-      const options=days.filter(d=>(d.free||item.type==='care')&&!(cal.excused&&cal.excused.date===d.date)&&!ruleBreak(item,d.date,placed,days)&&!(item.type==='care'&&placed.some(x=>x.date===d.date))).map(d=>{
+      const optionsFor=item=>days.filter(d=>(d.free||item.type==='care')&&!(cal.excused&&cal.excused.date===d.date)&&!ruleBreak(item,d.date,placed,days)&&!(item.type==='care'&&placed.some(x=>x.date===d.date))).map(d=>{
         const same=placed.filter(x=>x.physical===item.physical||x.legs===item.legs);
         const gap=same.length?Math.min(...same.map(x=>Math.abs(diff(x.date,d.date)))):7;
         const load=placed.filter(x=>x.date===d.date).length;
@@ -252,6 +266,12 @@
         const wanted=d.mode==='both'||d.mode==='skills'&&skillsType||d.mode==='muscu'&&!skillsType;
         return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
       }).sort((a,b)=>b.score-a.score||a.d.weekday-b.d.weekday);
+      const options=optionsFor(item);
+      // Cardio à impacts sans jour compatible (semaine de club et de match, jambes lourdes partout) : même séance, version sans impact.
+      if(!options.length&&item.type==='cardio'&&item.legs==='impact'){
+        const lite={...item,legs:'light',soft:true,label:`${item.label} · sans impact`},alt=optionsFor(lite);
+        if(alt.length){placed.push({...lite,date:alt[0].d.date});continue;}
+      }
       // Skills sans jour à elles : elles passent après une séance physique, en version courte, plutôt que de disparaître.
       const paired=!options.length&&item.type==='skills'?days.filter(d=>d.free&&!ruleBreak(item,d.date,placed,days,{ignoreMinutes:true})&&!placed.some(x=>x.date===d.date&&x.type==='skills')).sort((a,b)=>placed.filter(x=>x.date===a.date).length-placed.filter(x=>x.date===b.date).length||a.weekday-b.weekday):[];
       if(options.length) placed.push({...item,date:options[0].d.date});
@@ -272,7 +292,7 @@
     const match=item=>sessions.find(s=>!used.has(s.id)&&(
       item.type==='pathway'&&s.source==='pathway'&&s.pathwayDay===item.day||item.type==='reset'&&['reset','pathway'].includes(s.source)||
       item.type==='muscu'&&s.source==='program-plan'||item.type==='skills'&&s.source==='skills'||
-      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
+      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='cardio'&&s.source==='cardio'&&s.cardioKind===item.kind||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
     placed.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{
       const s=match(item);if(s)used.add(s.id);
       item.status=s?'done':diff(item.date,now)<0?'missed':'planned';item.doneDate=s?s.date:null;

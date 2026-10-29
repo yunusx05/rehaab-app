@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v72-demos-corrigees';
+const CACHE = 'rehaab-v73-cardio';
 const PRECACHE = [
   './',
   './index.html',
@@ -35,6 +35,7 @@ const PRECACHE = [
   './compiled/court-components.js',
   './compiled/skills-components.js',
   './basket-skills.js',
+  './basket-cardio.js',
   './basket-profile.js',
   './player-dossier.js',
   './season-plan.js',

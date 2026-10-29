@@ -966,7 +966,7 @@ function PTPreview({
   return /*#__PURE__*/React.createElement("div", {
     className: "visual-preview"
   }, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup', 'recovery'].includes(plan.source) ? 'today' : 'prepare'),
+    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup', 'recovery'].includes(plan.source) ? 'today' : plan.source === 'cardio' ? 'calendar' : 'prepare'),
     eyebrow: "Ta proposition",
     title: plan.title
   }), /*#__PURE__*/React.createElement("div", {

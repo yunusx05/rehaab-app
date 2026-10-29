@@ -52,6 +52,14 @@ function PTTodayPlan({data,update,go,notify}) {
   const plannedToday=SPL&&!excused&&plan.kind!=='blocked'?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.status==='planned'):[];
   const excuse=action=>{const r=SPL.excuse(data,action,now);if(r.ok)update(s=>({...s,calendar:r.calendar}));setMishap(false);notify(r.why);};
   const unexcuse=()=>{update(s=>({...s,calendar:SPL.unexcuse(s,now)}));notify('Séance rétablie aujourd’hui.');};
+  // Cardio prévu aujourd'hui (corde ou course fractionnée) : lancé d'ici, comme depuis le planning.
+  const cardioToday=plannedToday.find(x=>x.type==='cardio');
+  const launchCardio=()=>{
+    if(data.draft?.status==='active'){go('session');return;}
+    const plan=typeof ptCalendarPlan==='function'?ptCalendarPlan(data,cardioToday,null):null;
+    if(!plan||plan.error){notify(plan?.error||'Séance indisponible aujourd’hui.');return;}
+    update(s=>({...s,draft:plan}));go('preview');
+  };
   if(excused)return <section className="today-plan kind-rest sport-reveal" aria-labelledby="today-plan-title">
     <span className="today-plan-tag">Repos</span>
     <h2 id="today-plan-title">{excused.action==='cancel'?'Séance annulée.':'Séance reportée.'}</h2>
@@ -71,6 +79,7 @@ function PTTodayPlan({data,update,go,notify}) {
     {plan.why.length>2&&<details className="today-plan-more"><summary>Pourquoi cette séance</summary><ul className="reason-list">{plan.why.slice(2).map(w=><li key={w}>{w}</li>)}</ul></details>}
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
     {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
+    {cardioToday&&<button className="text-button" onClick={launchCardio}>Cardio prévu aujourd’hui : {cardioToday.label.replace('Cardio · ','')} →</button>}
     {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
     :plannedToday.length>0&&(!mishap?<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>
       :<div className="today-mishap-panel stack-sm" role="group" aria-label="Imprévu aujourd’hui"><p className="fine">{plannedToday.map(x=>x.label).join(' · ')}</p>

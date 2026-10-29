@@ -151,6 +151,24 @@ function PTTodayPlan({
     }));
     notify('Séance rétablie aujourd’hui.');
   };
+  // Cardio prévu aujourd'hui (corde ou course fractionnée) : lancé d'ici, comme depuis le planning.
+  const cardioToday = plannedToday.find(x => x.type === 'cardio');
+  const launchCardio = () => {
+    if (data.draft?.status === 'active') {
+      go('session');
+      return;
+    }
+    const plan = typeof ptCalendarPlan === 'function' ? ptCalendarPlan(data, cardioToday, null) : null;
+    if (!plan || plan.error) {
+      notify(plan?.error || 'Séance indisponible aujourd’hui.');
+      return;
+    }
+    update(s => ({
+      ...s,
+      draft: plan
+    }));
+    go('preview');
+  };
   if (excused) return /*#__PURE__*/React.createElement("section", {
     className: "today-plan kind-rest sport-reveal",
     "aria-labelledby": "today-plan-title"
@@ -226,7 +244,10 @@ function PTTodayPlan({
   })), !p && plan.action !== 'symptoms' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => go('pathway')
-  }, "Commencer le parcours Retour au jeu \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
+  }, "Commencer le parcours Retour au jeu \u2192"), cardioToday && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: launchCardio
+  }, "Cardio pr\xE9vu aujourd\u2019hui : ", cardioToday.label.replace('Cardio · ', ''), " \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
     className: "text-button today-mishap",
     onClick: () => go('mishap')
   }, "Un impr\xE9vu aujourd\u2019hui ?") : plannedToday.length > 0 && (!mishap ? /*#__PURE__*/React.createElement("button", {
