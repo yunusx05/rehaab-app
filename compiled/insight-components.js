@@ -134,7 +134,25 @@ function PTTodayPlan({
   const excused = SPL ? SPL.excusedToday(data, now) : null;
   const plannedToday = SPL && !excused && plan.kind !== 'blocked' ? (SPL.weekSchedule(data, now, now).days.find(d => d.date === now)?.items || []).filter(x => x.status === 'planned') : [];
   // Programme du jour (lot 24) : tout ce que le calendrier prévoit aujourd'hui, lisible sans ouvrir le calendrier.
-  const dayItems = SPL && plan.kind !== 'blocked' ? (SPL.weekSchedule(data, now, now).days.find(d => d.date === now)?.items || []).filter(x => x.type !== 'care') : [];
+  const dayObj = SPL && plan.kind !== 'blocked' ? SPL.weekSchedule(data, now, now).days.find(d => d.date === now) : null;
+  const dayItems = (dayObj?.items || []).filter(x => x.type !== 'care');
+  // Lot 25 : le calendrier est la référence. Si une séance y est prévue aujourd'hui, le titre et le bouton la suivent (avant : l'accueil calculait sa propre séance et pouvait dire « skills » quand le planning disait « muscu »).
+  const ORDER = ['pathway', 'reset', 'muscu', 'skills'];
+  // Choix de Yunus : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.
+  const calPrimary = ['train', 'light'].includes(plan.kind) ? [...dayItems].filter(x => x.status === 'planned' && ORDER.includes(x.type) && !(showPathway && x.type === 'reset')).sort((a, b) => ORDER.indexOf(a.type) - ORDER.indexOf(b.type))[0] || null : null;
+  const calAction = !calPrimary ? null : {
+    muscu: ['Préparer ma séance muscu', actions.program[1]],
+    skills: ['Lancer ma séance skills', null],
+    pathway: ['Préparer ma séance', null],
+    reset: ['Préparer ma séance', null]
+  }[calPrimary.type];
+  const runCal = () => {
+    if (calAction[1]) {
+      calAction[1]();
+      return;
+    }
+    launch(ptCalendarPlan(data, calPrimary, dayObj));
+  };
   const excuse = action => {
     const r = SPL.excuse(data, action, now);
     if (r.ok) update(s => ({
@@ -213,7 +231,7 @@ function PTTodayPlan({
     className: "today-plan-line"
   }, /*#__PURE__*/React.createElement("span", {
     className: "today-plan-tag"
-  }, plan.kind === 'rest' ? 'Repos' : plan.kind === 'light' ? 'Version légère' : plan.kind === 'blocked' ? 'À vérifier' : 'Aujourd’hui'), plan.why.length > 0 && /*#__PURE__*/React.createElement("details", {
+  }, plan.kind === 'rest' ? 'Repos' : plan.kind === 'light' ? 'Version légère' : plan.kind === 'blocked' ? 'À vérifier' : 'Aujourd’hui', calPrimary ? ` · ${calPrimary.minutes} min` : ''), plan.why.length > 0 && /*#__PURE__*/React.createElement("details", {
     className: "today-plan-more"
   }, /*#__PURE__*/React.createElement("summary", null, "Pourquoi ?"), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
@@ -221,20 +239,20 @@ function PTTodayPlan({
     key: w
   }, w))))), /*#__PURE__*/React.createElement("h2", {
     id: "today-plan-title"
-  }, showPathway ? next.day.name : plan.title), plan.action === 'program' && muscu && /*#__PURE__*/React.createElement("p", {
+  }, calPrimary ? calPrimary.label : showPathway ? next.day.name : plan.title), !calPrimary && plan.action === 'program' && muscu && /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, muscu.family?.short, " \xB7 semaine ", muscu.progress.currentWeek, "/", prog.weeks, " \xB7 ", muscu.family?.days.find(d => d.key === muscu.progress.nextDay)?.name), showPathway && /*#__PURE__*/React.createElement("p", {
+  }, muscu.family?.short, " \xB7 semaine ", muscu.progress.currentWeek, "/", prog.weeks, " \xB7 ", muscu.family?.days.find(d => d.key === muscu.progress.nextDay)?.name), !calPrimary && showPathway && /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, "\xC9tape ", next.step.id, " \xB7 ", next.step.name, " \xB7 semaine ", next.status.week, ready ? ` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices` : ''), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
-    onClick: run
-  }, label, /*#__PURE__*/React.createElement(PTIcon, {
+    onClick: calPrimary ? runCal : run
+  }, calPrimary ? calAction[0] : label, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })), dayItems.length > 0 && /*#__PURE__*/React.createElement("ul", {
+  })), dayItems.filter(x => x !== calPrimary).length > 0 && /*#__PURE__*/React.createElement("ul", {
     className: "today-program",
     "aria-label": "Programme du jour"
-  }, dayItems.map(x => /*#__PURE__*/React.createElement("li", {
+  }, dayItems.filter(x => x !== calPrimary).map(x => /*#__PURE__*/React.createElement("li", {
     key: x.key,
     className: x.status === 'done' ? 'is-done' : ''
   }, /*#__PURE__*/React.createElement("span", {
@@ -246,7 +264,7 @@ function PTTodayPlan({
     className: "today-program-min"
   }, x.minutes, " min")))), /*#__PURE__*/React.createElement("div", {
     className: "today-plan-links"
-  }, cardioToday && /*#__PURE__*/React.createElement("button", {
+  }, cardioToday && calPrimary?.type !== 'cardio' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: launchCardio
   }, "Lancer le cardio \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {

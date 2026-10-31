@@ -2,6 +2,18 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-10-31 — Lot 25 : l'accueil suit le calendrier (muscu au planning ≠ skills à l'accueil)
+
+**Fait**
+- Branche `fix/planning-accord` (non commitée), cache `v76-accord-planning`.
+- Cause : la carte « Aujourd'hui » (`todayPlan` + `training-load.js`) et le calendrier (`season-plan.js`) décidaient chacun de leur côté. Le planning disait « Muscu complémentaire », l'accueil « Séance skills basket ».
+- Maintenant, quand le calendrier prévoit aujourd'hui une séance principale (parcours, remise en route, muscu, skills) et que l'accueil est en mode séance (train/light), titre, durée et bouton suivent le calendrier (`calPrimary`, insight-components.jsx). Sécurité, match, douleur, repos : inchangés. Cardio, vivacité, tir : restent secondaires.
+- Effet de bord assumé : à l'étape 1, le calendrier prévoit la « Remise en route » (sans saut, rien n'est validé dans le parcours) ; l'accueil lance donc cette séance et non plus celle du parcours.
+- Tests : `accord-planning.spec.cjs` (2, vérifiés échouant sur l'ancien code) ; basket-return:213 mis à jour. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` (déjà KO avant).
+
+**Prochaine action**
+- Attendre son « push ».
+
 ## 2026-10-31 — Lot 24 « programme du jour + toile » : l'accueil montre la séance du jour et la progression
 
 **Fait**
@@ -65,3 +77,5 @@ Entrées empilées de la plus récente à la plus ancienne.
 
 **Prochaine action**
 - Relancer `/design-scout` sur Rehaab (accueil, lecteur de séance, profil, progression) via Refero iOS, montrer au moins 6 captures à l'utilisateur et faire valider la direction avant de coder. Ne fusionner `feature/design-motion` dans `main` que s'il dit « push ».
+
+- Choix de Yunus (31/10) : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.

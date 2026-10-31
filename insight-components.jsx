@@ -51,7 +51,17 @@ function PTTodayPlan({data,update,go,notify}) {
   const excused=SPL?SPL.excusedToday(data,now):null;
   const plannedToday=SPL&&!excused&&plan.kind!=='blocked'?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.status==='planned'):[];
   // Programme du jour (lot 24) : tout ce que le calendrier prévoit aujourd'hui, lisible sans ouvrir le calendrier.
-  const dayItems=SPL&&plan.kind!=='blocked'?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.type!=='care'):[];
+  const dayObj=SPL&&plan.kind!=='blocked'?SPL.weekSchedule(data,now,now).days.find(d=>d.date===now):null;
+  const dayItems=(dayObj?.items||[]).filter(x=>x.type!=='care');
+  // Lot 25 : le calendrier est la référence. Si une séance y est prévue aujourd'hui, le titre et le bouton la suivent (avant : l'accueil calculait sa propre séance et pouvait dire « skills » quand le planning disait « muscu »).
+  const ORDER=['pathway','reset','muscu','skills'];
+  // Choix de Yunus : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.
+  const calPrimary=['train','light'].includes(plan.kind)?[...dayItems].filter(x=>x.status==='planned'&&ORDER.includes(x.type)&&!(showPathway&&x.type==='reset')).sort((a,b)=>ORDER.indexOf(a.type)-ORDER.indexOf(b.type))[0]||null:null;
+  const calAction=!calPrimary?null:{
+    muscu:['Préparer ma séance muscu',actions.program[1]],
+    skills:['Lancer ma séance skills',null],pathway:['Préparer ma séance',null],reset:['Préparer ma séance',null]
+  }[calPrimary.type];
+  const runCal=()=>{if(calAction[1]){calAction[1]();return;}launch(ptCalendarPlan(data,calPrimary,dayObj));};
   const excuse=action=>{const r=SPL.excuse(data,action,now);if(r.ok)update(s=>({...s,calendar:r.calendar}));setMishap(false);notify(r.why);};
   const unexcuse=()=>{update(s=>({...s,calendar:SPL.unexcuse(s,now)}));notify('Séance rétablie aujourd’hui.');};
   // Cardio prévu aujourd'hui (corde ou course fractionnée) : lancé d'ici, comme depuis le planning.
@@ -72,15 +82,15 @@ function PTTodayPlan({data,update,go,notify}) {
   </section>;
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
   return <section className={`today-plan kind-${plan.kind}`} aria-labelledby="today-plan-title">
-    <div className="today-plan-line"><span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}</span>
+    <div className="today-plan-line"><span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}{calPrimary?` · ${calPrimary.minutes} min`:''}</span>
       {plan.why.length>0&&<details className="today-plan-more"><summary>Pourquoi ?</summary><ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul></details>}</div>
-    <h2 id="today-plan-title">{showPathway?next.day.name:plan.title}</h2>
-    {plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
-    {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
-    <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
-    {dayItems.length>0&&<ul className="today-program" aria-label="Programme du jour">{dayItems.map(x=><li key={x.key} className={x.status==='done'?'is-done':''}><span className="today-program-label">{x.status==='done'&&<PTIcon name="check" size={13}/>}{x.label}</span><span className="today-program-min">{x.minutes} min</span></li>)}</ul>}
+    <h2 id="today-plan-title">{calPrimary?calPrimary.label:showPathway?next.day.name:plan.title}</h2>
+    {!calPrimary&&plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
+    {!calPrimary&&showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
+    <PTButton primary onClick={calPrimary?runCal:run}>{calPrimary?calAction[0]:label}<PTIcon name="arrow" size={18}/></PTButton>
+    {dayItems.filter(x=>x!==calPrimary).length>0&&<ul className="today-program" aria-label="Programme du jour">{dayItems.filter(x=>x!==calPrimary).map(x=><li key={x.key} className={x.status==='done'?'is-done':''}><span className="today-program-label">{x.status==='done'&&<PTIcon name="check" size={13}/>}{x.label}</span><span className="today-program-min">{x.minutes} min</span></li>)}</ul>}
     <div className="today-plan-links">
-      {cardioToday&&<button className="text-button" onClick={launchCardio}>Lancer le cardio →</button>}
+      {cardioToday&&calPrimary?.type!=='cardio'&&<button className="text-button" onClick={launchCardio}>Lancer le cardio →</button>}
       {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
       :plannedToday.length>0&&!mishap&&<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>}
     </div>

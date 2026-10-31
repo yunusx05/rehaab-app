@@ -210,13 +210,14 @@ test('douleur de hanche / aine : renforcement ciblé au lieu d’une séance vid
   expect(new Set(plan.exercises.map(e=>e.id)).size).toBe(plan.exercises.length);
 });
 
-test('accueil allégé : la séance du jour lance directement la séance du parcours',async({page})=>{
+// Lot 25 : l'accueil suit le calendrier. Choix de Yunus : quand le parcours est la séance du jour, l'accueil lance celle du parcours (pas la « Remise en route » du calendrier).
+test('accueil allégé : la séance du jour lance directement la séance prévue au calendrier',async({page})=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:390,height:844});
   const data=player();data.pathway=BP.create();
   await seed(page,data,'today');
   const card=page.locator('.today-plan');
-  await expect(card).toContainText('Étape 1 · Fondations');
+  await expect(card.locator('h2')).toHaveText('Jambes & tendons');
   await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Nutrition','Moi']);
   await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
   await card.getByRole('button',{name:/Préparer ma séance/}).click();
