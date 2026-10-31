@@ -2,6 +2,18 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-10-31 — Lot 24 « programme du jour + toile » : l'accueil montre la séance du jour et la progression
+
+**Fait**
+- Branche `feature/programme-du-jour` (non commitée), cache `v75-programme-jour`.
+- Le lien « Commencer le parcours Retour au jeu » est remplacé par le programme du jour : une ligne par séance prévue (nom + durée), lue dans `SeasonPlan.weekSchedule` (insight-components.jsx). Le lien cardio devient « Lancer le cardio ».
+- Sous « Ma séance » : bloc toile « Ma progression » (`PTRadarBlock`, player-components.jsx) = mini toile + 7 qualités avec leur niveau (3 repères) et flèches de tendance ; sur petit écran, un résumé (« 2 points forts · 1 à travailler »). Un appui ouvre la carte joueur.
+- Tuiles « Lire le jeu » et « Ma carte » retirées : il reste 4 tuiles sur une ligne (Activation, Warm-up, Étirements, Quick rehab). La tuile Quick rehab garde « Ta douleur : … » même sur petit écran.
+- Tests : accueil.spec.cjs et interface.spec.cjs mis à jour. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` (déjà KO avant). Vérifié sans défilement en 390 × 844 et 375 × 667 avec un jour à deux séances.
+
+**Prochaine action**
+- Attendre son « push » (commit, fusion dans `main`, push), puis `npx vercel --prod` lancé par lui (la v74 n'est pas encore en ligne : "Not authorized" côté outil).
+
 ## 2026-10-31 — Lot 23 « accueil compact » : tout tient dans l’écran, activation du bas du corps, variantes de corde
 
 **Fait**

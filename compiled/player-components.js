@@ -506,6 +506,56 @@ function ptPlayerRows(data) {
     any: rows.some(q => q.level !== null && q.level !== undefined)
   };
 }
+// Bloc de l'accueil (lot 24) : la toile pour suivre ta progression, sous « Ma séance ». Un appui ouvre ta carte joueur en grand.
+function PTRadarBlock({
+  data,
+  go
+}) {
+  const {
+    rows,
+    any
+  } = ptPlayerRows(data);
+  const strong = rows.filter(q => q.level === 2).length,
+    weak = rows.filter(q => q.level === 0).length,
+    summary = [strong ? `${strong} point${strong > 1 ? 's' : ''} fort${strong > 1 ? 's' : ''}` : '', weak ? `${weak} à travailler` : ''].filter(Boolean).join(' · ') || 'Niveau correct partout';
+  const levelText = q => q.level === null || q.level === undefined ? 'pas évalué' : q.levelLabel.toLowerCase();
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "radar-block sport-reveal",
+    onClick: () => go('card'),
+    "aria-label": any ? 'Ma progression : ouvrir ma carte joueur' : 'Ma progression : faire mon bilan'
+  }, /*#__PURE__*/React.createElement(PTPlayerRadar, {
+    rows: rows,
+    mini: true
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "radar-block-body"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "radar-block-head"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, "Ma progression"), /*#__PURE__*/React.createElement("span", {
+    className: "radar-block-open"
+  }, "Ma carte \u2192")), any ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("ul", {
+    className: "radar-block-list"
+  }, rows.map(q => /*#__PURE__*/React.createElement("li", {
+    key: q.id,
+    className: q.level === null || q.level === undefined ? 'is-none' : ''
+  }, /*#__PURE__*/React.createElement("span", null, PT_RADAR_SHORT[q.id] || q.label), /*#__PURE__*/React.createElement("span", {
+    className: `radar-pips level-${q.level ?? 'none'}`,
+    role: "img",
+    "aria-label": levelText(q)
+  }, /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null), /*#__PURE__*/React.createElement("i", null)), q.trend === 'up' && /*#__PURE__*/React.createElement("b", {
+    className: "trend-up",
+    "aria-label": "en progr\xE8s"
+  }, "\u2191"), q.trend === 'down' && /*#__PURE__*/React.createElement("b", {
+    className: "trend-down",
+    "aria-label": "en baisse"
+  }, "\u2193")))), /*#__PURE__*/React.createElement("span", {
+    className: "radar-block-sum"
+  }, summary)) : /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Fais ton bilan physique et enregistre tes tirs : ta toile se dessine ici et montre ta progression.")));
+}
 function PTPlayerCard({
   data,
   go

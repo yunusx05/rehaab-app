@@ -47,7 +47,7 @@ function PTRoutines(props) {
     <div className="routine-grid">{block.tiles(props)}</div></div>;
 }
 
-// Accueil : six tuiles qui tiennent dans l'écran. Trois ouvrent un bloc, l'activation se lance directement, la toile ouvre la carte joueur.
+// Accueil : quatre tuiles sur une ligne. Trois ouvrent un bloc, l'activation se lance directement.
 const rwPhoto = id => {const m = window.RehaabMedia?.[id]; return m?.card || m?.poster || (m?.frames ? `media/${m.frames}/0.webp` : null);};
 function PTHomeTile({photo, title, text, badge, onClick, children, className = ''}) {
   const [failed, setFailed] = usePTState(false);
@@ -60,20 +60,14 @@ function PTHomeTile({photo, title, text, badge, onClick, children, className = '
   </button>;
 }
 function PTHomeBlocks(props) {
-  const {data, go} = props, player = data.player || {}, JP = window.PlayerProfile, QI = window.BasketQI;
+  const {data, go} = props;
   const pains = RW ? RW.activeZones(data) : [];
   const painLabel = pains.length ? RW.zones.find(z => z.id === pains[0])?.label : null;
-  let qi = null;
-  if (player.position && JP && QI) {const daily = QI.dailySet(data.qi, player, JP.qiThemes(player)); qi = daily.items.length - daily.done;}
-  const radar = typeof ptPlayerRows === 'function' ? ptPlayerRows(data) : null;
   return <nav className="home-blocks sport-reveal" aria-label="Raccourcis">
     {RW && <PTHomeTile className="is-activation" photo={rwPhoto('single-bridge')} title="Activation" text="Bas du corps" badge="Lancer" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, 'activation'))}/>}
     {RW && <PTHomeTile photo={rwPhoto('lateral-shuffle')} title="Warm-up" text={`${RW.warmups.length} routines`} onClick={() => go('routines', 'warmup')}/>}
     {RW && <PTHomeTile photo={rwPhoto('quad-stretch')} title="Étirements" text="& récup" onClick={() => go('routines', 'recup')}/>}
-    {RW && <PTHomeTile photo={rwPhoto('ankle-mob')} title="Quick rehab" text={painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?'} onClick={() => go('routines', 'rehab')}/>}
-    {player.position ? <PTHomeTile photo={ptHub('qi')} title={qi ? 'Lire le jeu' : 'QI fait'} text={qi ? `${qi} à lire` : 'À demain'} onClick={() => go('qi-run', 'daily')}/>
-      : <PTHomeTile photo={ptHub('card')} title="Mon dossier" text="Poste, gabarit" onClick={() => go('dossier')}/>}
-    <PTHomeTile className="is-radar" title="Ma carte" text={radar?.any ? 'Joueur' : 'À évaluer'} onClick={() => go('card')}>{radar && typeof PTPlayerRadar === 'function' && <PTPlayerRadar rows={radar.rows} mini/>}</PTHomeTile>
+    {RW && <PTHomeTile className={painLabel ? 'has-pain' : ''} photo={rwPhoto('ankle-mob')} title="Quick rehab" text={painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?'} onClick={() => go('routines', 'rehab')}/>}
   </nav>;
 }
 

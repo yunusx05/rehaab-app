@@ -133,6 +133,8 @@ function PTTodayPlan({
     now = PT.dateKey();
   const excused = SPL ? SPL.excusedToday(data, now) : null;
   const plannedToday = SPL && !excused && plan.kind !== 'blocked' ? (SPL.weekSchedule(data, now, now).days.find(d => d.date === now)?.items || []).filter(x => x.status === 'planned') : [];
+  // Programme du jour (lot 24) : tout ce que le calendrier prévoit aujourd'hui, lisible sans ouvrir le calendrier.
+  const dayItems = SPL && plan.kind !== 'blocked' ? (SPL.weekSchedule(data, now, now).days.find(d => d.date === now)?.items || []).filter(x => x.type !== 'care') : [];
   const excuse = action => {
     const r = SPL.excuse(data, action, now);
     if (r.ok) update(s => ({
@@ -229,15 +231,25 @@ function PTTodayPlan({
   }, label, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })), /*#__PURE__*/React.createElement("div", {
+  })), dayItems.length > 0 && /*#__PURE__*/React.createElement("ul", {
+    className: "today-program",
+    "aria-label": "Programme du jour"
+  }, dayItems.map(x => /*#__PURE__*/React.createElement("li", {
+    key: x.key,
+    className: x.status === 'done' ? 'is-done' : ''
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "today-program-label"
+  }, x.status === 'done' && /*#__PURE__*/React.createElement(PTIcon, {
+    name: "check",
+    size: 13
+  }), x.label), /*#__PURE__*/React.createElement("span", {
+    className: "today-program-min"
+  }, x.minutes, " min")))), /*#__PURE__*/React.createElement("div", {
     className: "today-plan-links"
-  }, !p && plan.action !== 'symptoms' && /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('pathway')
-  }, "Commencer le parcours Retour au jeu \u2192"), cardioToday && /*#__PURE__*/React.createElement("button", {
+  }, cardioToday && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: launchCardio
-  }, "Cardio : ", cardioToday.label.replace('Cardio · ', ''), " \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
+  }, "Lancer le cardio \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
     className: "text-button today-mishap",
     onClick: () => go('mishap')
   }, "Un impr\xE9vu aujourd\u2019hui ?") : plannedToday.length > 0 && !mishap && /*#__PURE__*/React.createElement("button", {

@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v74-accueil';
+const CACHE = 'rehaab-v75-programme-jour';
 const PRECACHE = [
   './',
   './index.html',

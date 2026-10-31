@@ -180,7 +180,7 @@ function PTRoutines(props) {
   }, block.tiles(props)));
 }
 
-// Accueil : six tuiles qui tiennent dans l'écran. Trois ouvrent un bloc, l'activation se lance directement, la toile ouvre la carte joueur.
+// Accueil : quatre tuiles sur une ligne. Trois ouvrent un bloc, l'activation se lance directement.
 const rwPhoto = id => {
   const m = window.RehaabMedia?.[id];
   return m?.card || m?.poster || (m?.frames ? `media/${m.frames}/0.webp` : null);
@@ -216,20 +216,11 @@ function PTHomeTile({
 }
 function PTHomeBlocks(props) {
   const {
-      data,
-      go
-    } = props,
-    player = data.player || {},
-    JP = window.PlayerProfile,
-    QI = window.BasketQI;
+    data,
+    go
+  } = props;
   const pains = RW ? RW.activeZones(data) : [];
   const painLabel = pains.length ? RW.zones.find(z => z.id === pains[0])?.label : null;
-  let qi = null;
-  if (player.position && JP && QI) {
-    const daily = QI.dailySet(data.qi, player, JP.qiThemes(player));
-    qi = daily.items.length - daily.done;
-  }
-  const radar = typeof ptPlayerRows === 'function' ? ptPlayerRows(data) : null;
   return /*#__PURE__*/React.createElement("nav", {
     className: "home-blocks sport-reveal",
     "aria-label": "Raccourcis"
@@ -251,29 +242,12 @@ function PTHomeBlocks(props) {
     text: "& r\xE9cup",
     onClick: () => go('routines', 'recup')
   }), RW && /*#__PURE__*/React.createElement(PTHomeTile, {
+    className: painLabel ? 'has-pain' : '',
     photo: rwPhoto('ankle-mob'),
     title: "Quick rehab",
     text: painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?',
     onClick: () => go('routines', 'rehab')
-  }), player.position ? /*#__PURE__*/React.createElement(PTHomeTile, {
-    photo: ptHub('qi'),
-    title: qi ? 'Lire le jeu' : 'QI fait',
-    text: qi ? `${qi} à lire` : 'À demain',
-    onClick: () => go('qi-run', 'daily')
-  }) : /*#__PURE__*/React.createElement(PTHomeTile, {
-    photo: ptHub('card'),
-    title: "Mon dossier",
-    text: "Poste, gabarit",
-    onClick: () => go('dossier')
-  }), /*#__PURE__*/React.createElement(PTHomeTile, {
-    className: "is-radar",
-    title: "Ma carte",
-    text: radar?.any ? 'Joueur' : 'À évaluer',
-    onClick: () => go('card')
-  }, radar && typeof PTPlayerRadar === 'function' && /*#__PURE__*/React.createElement(PTPlayerRadar, {
-    rows: radar.rows,
-    mini: true
-  })));
+  }));
 }
 function PTRehabSources({
   ids

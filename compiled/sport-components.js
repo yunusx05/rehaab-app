@@ -268,7 +268,10 @@ function PTSportToday({
     update: update,
     go: go,
     notify: notify
-  })), typeof PTHomeBlocks === 'function' && /*#__PURE__*/React.createElement(PTHomeBlocks, {
+  })), typeof PTRadarBlock === 'function' && /*#__PURE__*/React.createElement(PTRadarBlock, {
+    data: data,
+    go: go
+  }), typeof PTHomeBlocks === 'function' && /*#__PURE__*/React.createElement(PTHomeBlocks, {
     data: data,
     update: update,
     go: go,

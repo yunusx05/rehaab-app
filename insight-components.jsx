@@ -50,6 +50,8 @@ function PTTodayPlan({data,update,go,notify}) {
   const SPL=window.SeasonPlan,now=PT.dateKey();
   const excused=SPL?SPL.excusedToday(data,now):null;
   const plannedToday=SPL&&!excused&&plan.kind!=='blocked'?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.status==='planned'):[];
+  // Programme du jour (lot 24) : tout ce que le calendrier prévoit aujourd'hui, lisible sans ouvrir le calendrier.
+  const dayItems=SPL&&plan.kind!=='blocked'?(SPL.weekSchedule(data,now,now).days.find(d=>d.date===now)?.items||[]).filter(x=>x.type!=='care'):[];
   const excuse=action=>{const r=SPL.excuse(data,action,now);if(r.ok)update(s=>({...s,calendar:r.calendar}));setMishap(false);notify(r.why);};
   const unexcuse=()=>{update(s=>({...s,calendar:SPL.unexcuse(s,now)}));notify('Séance rétablie aujourd’hui.');};
   // Cardio prévu aujourd'hui (corde ou course fractionnée) : lancé d'ici, comme depuis le planning.
@@ -76,9 +78,9 @@ function PTTodayPlan({data,update,go,notify}) {
     {plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
     {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
+    {dayItems.length>0&&<ul className="today-program" aria-label="Programme du jour">{dayItems.map(x=><li key={x.key} className={x.status==='done'?'is-done':''}><span className="today-program-label">{x.status==='done'&&<PTIcon name="check" size={13}/>}{x.label}</span><span className="today-program-min">{x.minutes} min</span></li>)}</ul>}
     <div className="today-plan-links">
-      {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
-      {cardioToday&&<button className="text-button" onClick={launchCardio}>Cardio : {cardioToday.label.replace('Cardio · ','')} →</button>}
+      {cardioToday&&<button className="text-button" onClick={launchCardio}>Lancer le cardio →</button>}
       {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
       :plannedToday.length>0&&!mishap&&<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>}
     </div>
