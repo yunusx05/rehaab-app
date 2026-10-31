@@ -140,6 +140,21 @@ function ptPlayerRows(data){
   const rows=[...physical,shooting];
   return {rows,assessed,any:rows.some(q=>q.level!==null&&q.level!==undefined)};
 }
+// Bloc de l'accueil (lot 24) : la toile pour suivre ta progression, sous « Ma séance ». Un appui ouvre ta carte joueur en grand.
+function PTRadarBlock({data,go}){
+  const {rows,any}=ptPlayerRows(data);
+  const strong=rows.filter(q=>q.level===2).length,weak=rows.filter(q=>q.level===0).length,summary=[strong?`${strong} point${strong>1?'s':''} fort${strong>1?'s':''}`:'',weak?`${weak} à travailler`:''].filter(Boolean).join(' · ')||'Niveau correct partout';
+  const levelText=q=>q.level===null||q.level===undefined?'pas évalué':q.levelLabel.toLowerCase();
+  return <button type="button" className="radar-block sport-reveal" onClick={()=>go('card')} aria-label={any?'Ma progression : ouvrir ma carte joueur':'Ma progression : faire mon bilan'}>
+    <PTPlayerRadar rows={rows} mini/>
+    <span className="radar-block-body">
+      <span className="radar-block-head"><span className="eyebrow">Ma progression</span><span className="radar-block-open">Ma carte →</span></span>
+      {any?<><ul className="radar-block-list">{rows.map(q=><li key={q.id} className={q.level===null||q.level===undefined?'is-none':''}><span>{PT_RADAR_SHORT[q.id]||q.label}</span><span className={`radar-pips level-${q.level??'none'}`} role="img" aria-label={levelText(q)}><i/><i/><i/></span>{q.trend==='up'&&<b className="trend-up" aria-label="en progrès">↑</b>}{q.trend==='down'&&<b className="trend-down" aria-label="en baisse">↓</b>}</li>)}</ul><span className="radar-block-sum">{summary}</span></>
+        :<span className="fine">Fais ton bilan physique et enregistre tes tirs : ta toile se dessine ici et montre ta progression.</span>}
+    </span>
+  </button>;
+}
+
 function PTPlayerCard({data,go}){
   const JP=window.PlayerProfile,player=data.player||{};
   const pos=JP&&JP.positions[player.position],[failed,setFailed]=usePTState(false);

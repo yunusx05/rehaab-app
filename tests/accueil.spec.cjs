@@ -51,7 +51,10 @@ test(`accueil : tout tient dans l'écran sans défiler (${size.width}×${size.he
   await expect(page.locator('.today-plan.has-photo')).toHaveCount(0);
   await expect(page.locator('.week-hub .week-strip')).toBeVisible();
   await expect(page.locator('.week-hub .today-plan').getByRole('button',{name:/Préparer ma séance/})).toBeVisible();
-  await expect(page.locator('.home-blocks .home-tile')).toHaveCount(6);
+  await expect(page.locator('.home-blocks .home-tile')).toHaveCount(4);
+  // La toile de progression est sous « Ma séance » ; Lire le jeu et Ma carte ne sont plus des tuiles.
+  await expect(page.locator('.radar-block .player-radar.is-mini')).toBeVisible();
+  await expect(page.locator('.home-blocks').getByRole('button',{name:/Lire le jeu|Ma carte/})).toHaveCount(0);
   await page.waitForTimeout(700);
   const m=await page.evaluate(()=>({scroll:document.documentElement.scrollHeight,inner:innerHeight,tiles:document.querySelector('.home-blocks').getBoundingClientRect().bottom,nav:document.querySelector('.bottom-nav').getBoundingClientRect().top}));
   expect(m.scroll).toBeLessThanOrEqual(m.inner+1);
@@ -80,9 +83,10 @@ test('accueil : les blocs ouvrent leurs entraînements, l’activation se lance,
   await expect(page.locator('.routine-grid')).toContainText('Trouver mon protocole');
   await page.getByRole('button',{name:'Retour'}).click();
 
-  // La toile est dessinée sur la tuile (le bilan contient des réponses), un appui ouvre la carte joueur.
-  await expect(tiles.locator('.player-radar.is-mini .radar-shape')).toHaveCount(1);
-  await tiles.getByRole('button',{name:/Ma carte/}).click();
+  // La toile (sous « Ma séance ») montre la progression ; un appui ouvre la carte joueur.
+  await expect(page.locator('.radar-block .radar-shape')).toHaveCount(1);
+  await expect(page.locator('.radar-block-list li')).toHaveCount(7);
+  await page.locator('.radar-block').click();
   await expect(page.locator('.player-card')).toBeVisible();
   await expect(page.locator('.player-card .player-radar')).toBeVisible();
   await page.getByRole('button',{name:'Retour'}).click();

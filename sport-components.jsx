@@ -76,6 +76,7 @@ function PTSportToday({data,update,go,notify}){
       {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify} compact/>}
       {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
     </section>
+    {typeof PTRadarBlock==='function'&&<PTRadarBlock data={data} go={go}/>}
     {typeof PTHomeBlocks==='function'&&<PTHomeBlocks data={data} update={update} go={go} notify={notify}/>}
   </div></PTSportMotion>;
 }
