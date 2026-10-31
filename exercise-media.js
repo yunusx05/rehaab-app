@@ -338,6 +338,24 @@ window.RehaabMedia = {
       "quadriceps"
     ]
   },
+  "rope-run": {
+    "frames": "Rope_Jumping",
+    "muscles": [
+      "calves"
+    ]
+  },
+  "rope-lateral": {
+    "frames": "Rope_Jumping",
+    "muscles": [
+      "calves"
+    ]
+  },
+  "rope-fb": {
+    "frames": "Rope_Jumping",
+    "muscles": [
+      "calves"
+    ]
+  },
   "ankle-mob": {
     "video": "media/videos/yt/ankle-mob.mp4",
     "poster": "media/videos/yt/ankle-mob.webp",

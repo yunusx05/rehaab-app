@@ -2,6 +2,23 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-10-31 — Lot 23 « accueil compact » : tout tient dans l’écran, activation du bas du corps, variantes de corde
+
+**Fait**
+- Branche `feature/accueil-compact` (non commitée), cache `v74-accueil`, nouveau `home.css` (chargé après `motion.css`, précaché dans `sw.js`).
+- Accueil : la grande carte photo de la séance du jour est retirée. « Ma semaine » devient le bloc central (`.week-hub`) : les 7 jours en haut (un appui ouvre le calendrier), la séance du jour juste dessous en version courte (« Pourquoi ? » replié).
+- Six tuiles (`PTHomeBlocks`, `rehab-components.jsx`) : Activation (lance directement), Warm-up, Étirements & récup, Quick rehab (ouvrent la route `routines/<warmup|recup|rehab>`), Lire le jeu, Ma carte (mini toile → route `card`). Les rangées horizontales Warm up / Étirements / Quick rehab ne sont plus sur l’accueil.
+- `ptPlayerRows` (player-components) : calcul des 7 axes partagé entre la carte joueur et la mini toile.
+- Protocole `activation` dans `RW.warmups` (14 min) : montée en température → 2 mobilités → pied/cheville → hanche → gainage latéral/adducteurs → équilibre une jambe → isométrie → petits rebonds. Majorité unilatérale, change chaque jour.
+- Corde à sauter : déjà dans le matériel. Ajout de `rope-run`, `rope-lateral`, `rope-fb` (catalogue 400 → 403), dans les réservoirs d’échauffement `raise` et `feet` ; démo = positions de la corde classique (`Rope_Jumping`), pas de vidéo propre.
+- Tests : `tests/accueil.spec.cjs` (4) ; mis à jour : interface, rehab-warmup, basket-removal. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` (déjà KO avant).
+
+**À savoir**
+- Vérifié sans défilement en 390 × 844 et 375 × 667 (aperçu Chrome), pas sur iPhone. Les cartes qui apparaissent ponctuellement (bilan de la semaine, séance validée, douleur) peuvent encore pousser l’écran à défiler ces jours-là.
+
+**Prochaine action**
+- Attendre son « push » : commit, fusion dans `main`, push ; mise en ligne par `npx vercel --prod` dans le sous-dossier.
+
 ## 2026-10-29 — Lot 22 « cardio régulier » : corde et course fractionnée au planning
 
 **Fait**

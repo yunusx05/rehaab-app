@@ -31,8 +31,8 @@ test('accueil, hub Plan et Moi : photos, carte joueur fidèle au bilan, sans dé
   const data=joueur();
   for(const width of [320,430,1440]){
     await open(page,data,'today',width);
-    await expect(page.locator('.today-plan.has-photo img')).toHaveCount(1);
-    await expect(page.locator('.home-duo .image-tile')).toHaveCount(2);
+    await expect(page.locator('.week-hub .today-plan')).toHaveCount(1);
+    await expect(page.locator('.home-blocks .home-tile')).toHaveCount(6);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#pathway');
     await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(8);

@@ -33,7 +33,7 @@
     decel:['landing','depth-drop','reverse-lunge','split-squat','bulgarian','db-bulgarian','walking-lunge','single-rdl','step-down','decel-stick','snap-down','lateral-decel'],
     unilateral:['split-squat','bulgarian','db-bulgarian','step-up','db-step-up','single-rdl','db-single-rdl','single-bridge','assisted-pistol','legpress-single','single-calf','airplane','step-down','iso-split'],
     ankle:['calf','single-calf','db-calf','seated-calf','calf-hold','tibialis','pogo','ankle-mob','single-leg-stand','single-leg-eyes','single-pogo','foot-doming'],
-    reactive:['pogo','lateral-hop','rope','split-jump','lateral-bound-stick','single-pogo','drop-jump','a-skip'],
+    reactive:['pogo','lateral-hop','rope','rope-lateral','rope-fb','split-jump','lateral-bound-stick','single-pogo','drop-jump','a-skip'],
     vertical:['box-jump-step','broad-jump','split-jump','kb-swing','hip-thrust','db-hip-thrust','bb-hip-thrust','front-squat','push-press','vertical-jump','approach-jump','single-leg-vertical','db-jump','drop-jump'],
     strength:['bb-squat','front-squat','deadlift','sumo-deadlift','bb-rdl','legpress','bb-hip-thrust','bb-press','bb-row','pullup','goblet'],
     antirot:['pallof','pallof-cable','suitcase-carry','side-plank','side-plank-lift','bird-dog','deadbug','plank-shoulder-tap','halo'],

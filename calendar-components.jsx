@@ -205,7 +205,7 @@ function PTWeekStrip({data,go}){
   const now=PT.dateKey(),week=SP.weekSchedule(data,now,now),today=week.days.find(d=>d.date===now);
   const next=today?.items.find(x=>x.status==='planned');
   return <button className="week-strip sport-reveal" onClick={()=>go('calendar')} aria-label="Ouvrir ma semaine">
-    <span className="week-strip-head"><span className="eyebrow">Ma semaine</span><strong>{next?`Aujourd’hui : ${next.label}`:today?.club.match?'Jour de match':today?.club.practice?'Club ce soir':'Repos aujourd’hui'}</strong></span>
+    <span className="week-strip-head"><span className="eyebrow">Ma semaine<em className="week-strip-open">Calendrier →</em></span><strong>{next?`Aujourd’hui : ${next.label}`:today?.club.match?'Jour de match':today?.club.practice?'Club ce soir':'Repos aujourd’hui'}</strong></span>
     <span className="week-strip-days">{week.days.map(d=><span key={d.date} className={`week-strip-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}><small>{d.label.slice(0,1)}</small><em>{Number(d.date.slice(8))}</em><i>{d.items.filter(x=>x.type!=='care').map(x=><b key={x.key} className={`dot is-${x.status} type-${x.type}`}/>)}{d.club.match&&<b className="dot is-match"/>}</i></span>)}</span>
   </button>;
 }

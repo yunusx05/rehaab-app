@@ -329,10 +329,14 @@ function PTBodyMind({
 function PTDraftCancel({
   update,
   notify,
-  after
+  after,
+  compact = false
 }) {
   const [confirm, setConfirm] = usePTState(false);
-  if (!confirm) return /*#__PURE__*/React.createElement(PTButton, {
+  if (!confirm) return compact ? /*#__PURE__*/React.createElement("button", {
+    className: "text-button draft-cancel-link",
+    onClick: () => setConfirm(true)
+  }, "Annuler la s\xE9ance en cours") : /*#__PURE__*/React.createElement(PTButton, {
     danger: true,
     onClick: () => setConfirm(true)
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -371,8 +375,10 @@ const PT_RADAR_SHORT = {
   shooting: 'Tir'
 };
 // Toile d'araignée : un axe par qualité, trois anneaux = les trois niveaux. « À travailler » reste visible (1er anneau) ; non évaluée = centre.
+// mini : la toile seule (sans libellés), pour la tuile de l'accueil.
 function PTPlayerRadar({
-  rows
+  rows,
+  mini = false
 }) {
   const W = 300,
     H = 250,
@@ -388,6 +394,28 @@ function PTPlayerRadar({
   const val = q => q.level === null || q.level === undefined ? 0 : q.level + 1;
   const shape = rows.map((q, i) => pt(i, R * val(q) / 3).join(',')).join(' ');
   const label = rows.map(q => `${q.label} : ${q.levelLabel}`).join(', ');
+  if (mini) return /*#__PURE__*/React.createElement("svg", {
+    className: "player-radar is-mini",
+    viewBox: `${cx - R - 6} ${cy - R - 6} ${2 * R + 12} ${2 * R + 12}`,
+    "aria-hidden": "true"
+  }, [1, 2, 3].map(k => /*#__PURE__*/React.createElement("polygon", {
+    key: k,
+    points: ring(k),
+    className: `radar-ring ring-${k}`
+  })), rows.map((_, i) => {
+    const [x, y] = pt(i, R);
+    return /*#__PURE__*/React.createElement("line", {
+      key: i,
+      x1: cx,
+      y1: cy,
+      x2: x,
+      y2: y,
+      className: "radar-axis"
+    });
+  }), /*#__PURE__*/React.createElement("polygon", {
+    points: shape,
+    className: "radar-shape"
+  }));
   return /*#__PURE__*/React.createElement("svg", {
     className: "player-radar",
     viewBox: `0 0 ${W} ${H}`,
@@ -434,16 +462,10 @@ function PTPlayerRadar({
 }
 // Carte joueur : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests, les réponses du bilan et les tirs enregistrés.
 // Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée.
-function PTPlayerCard({
-  data,
-  go
-}) {
-  const JP = window.PlayerProfile,
-    AP = window.AthleticProfile,
-    SH = window.Shooting,
-    player = data.player || {};
-  const pos = JP && JP.positions[player.position],
-    [failed, setFailed] = usePTState(false);
+// Les 7 axes de la toile, notés d'après les tests, les réponses du bilan et les tirs. Partagé par la carte et la tuile de l'accueil.
+function ptPlayerRows(data) {
+  const AP = window.AthleticProfile,
+    SH = window.Shooting;
   const assessed = AP && data.athletic ? AP.assess(data.athletic).qualities : null;
   const source = q => q.failed.length || q.passed.length ? `test : ${(q.failed[0] || q.passed[0]).label.toLowerCase()}` : q.answer !== null && q.answer !== undefined ? 'd’après ta réponse' : 'pas encore évalué';
   const trend = q => {
@@ -477,8 +499,26 @@ function PTPlayerCard({
     trend: sh.trend,
     source: sh.level === null ? sh.attempts ? `${sh.attempts} tirs sur 4 semaines : 50 minimum` : 'enregistre tes séances de tir' : `${sh.pct} % sur 4 semaines (${sh.attempts} tirs)`
   };
-  const rows = [...physical, shooting],
-    any = rows.some(q => q.level !== null && q.level !== undefined);
+  const rows = [...physical, shooting];
+  return {
+    rows,
+    assessed,
+    any: rows.some(q => q.level !== null && q.level !== undefined)
+  };
+}
+function PTPlayerCard({
+  data,
+  go
+}) {
+  const JP = window.PlayerProfile,
+    player = data.player || {};
+  const pos = JP && JP.positions[player.position],
+    [failed, setFailed] = usePTState(false);
+  const {
+    rows,
+    assessed,
+    any
+  } = ptPlayerRows(data);
   const name = (data.profile.name || 'Joueur').toUpperCase();
   return /*#__PURE__*/React.createElement("section", {
     className: "player-card",
@@ -529,6 +569,23 @@ function PTPlayerCard({
     className: "text-button",
     onClick: () => go('bilan')
   }, assessed ? 'Mettre à jour' : 'Faire mon bilan')));
+}
+
+// Écran « Ma carte joueur » ouvert depuis la toile de l'accueil.
+function PTPlayerCardScreen({
+  data,
+  go
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "stack-lg"
+  }, /*#__PURE__*/React.createElement(PTPageHead, {
+    eyebrow: "Ma carte joueur",
+    title: "Mon profil athl\xE9tique.",
+    onBack: () => go('today')
+  }), /*#__PURE__*/React.createElement(PTPlayerCard, {
+    data: data,
+    go: go
+  }));
 }
 
 // Tous les questionnaires au même endroit (onglet Moi) : ce qui reste à faire en premier, puis ce qui est fait.

@@ -191,6 +191,8 @@ function PTBodyMap({
     "aria-pressed": onSelect ? selected === id : undefined
   }, /*#__PURE__*/React.createElement("title", null, label)))));
 }
+// Accueil (lot 23) : tout tient dans l'écran du téléphone, sans défiler. « Ma semaine » est au centre et porte la séance du jour ;
+// en dessous, six tuiles : activation, warm-up, étirements, quick rehab, lecture du jeu, carte joueur (toile).
 function PTSportToday({
   data,
   update,
@@ -204,7 +206,7 @@ function PTSportToday({
   return /*#__PURE__*/React.createElement(PTSportMotion, {
     identity: "today"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "sport-home stack-lg"
+    className: "sport-home home-fit"
   }, /*#__PURE__*/React.createElement("div", {
     className: "sport-greeting sport-reveal"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
@@ -231,8 +233,18 @@ function PTSportToday({
   })), typeof PTDoneToday === 'function' && /*#__PURE__*/React.createElement(PTDoneToday, {
     data: data,
     go: go
+  }), typeof PTWeekReview === 'function' && /*#__PURE__*/React.createElement(PTWeekReview, {
+    data: data,
+    update: update,
+    notify: notify
+  }), /*#__PURE__*/React.createElement("section", {
+    className: "week-hub sport-reveal",
+    "aria-label": "Ma semaine et la s\xE9ance du jour"
+  }, typeof PTWeekStrip === 'function' && /*#__PURE__*/React.createElement(PTWeekStrip, {
+    data: data,
+    go: go
   }), data.draft && /*#__PURE__*/React.createElement("button", {
-    className: "resume-workout sport-reveal",
+    className: "resume-workout",
     onClick: () => go(data.draft.status === 'active' ? 'session' : 'preview')
   }, /*#__PURE__*/React.createElement(PTThumbnail, {
     exercise: data.draft.exercises[0]
@@ -249,28 +261,14 @@ function PTSportToday({
     size: 20
   }))), data.draft && typeof PTDraftCancel === 'function' && /*#__PURE__*/React.createElement(PTDraftCancel, {
     update: update,
-    notify: notify
+    notify: notify,
+    compact: true
   }), !data.draft && typeof PTTodayPlan === 'function' && /*#__PURE__*/React.createElement(PTTodayPlan, {
     data: data,
     update: update,
     go: go,
     notify: notify
-  }), typeof PTWeekReview === 'function' && /*#__PURE__*/React.createElement(PTWeekReview, {
-    data: data,
-    update: update,
-    notify: notify
-  }), typeof PTWeekStrip === 'function' && /*#__PURE__*/React.createElement(PTWeekStrip, {
-    data: data,
-    go: go
-  }), typeof PTBodyMind === 'function' && /*#__PURE__*/React.createElement(PTBodyMind, {
-    data: data,
-    go: go
-  }), typeof PTWarmupRail === 'function' && /*#__PURE__*/React.createElement(PTWarmupRail, {
-    data: data,
-    update: update,
-    go: go,
-    notify: notify
-  }), typeof PTRehabRail === 'function' && /*#__PURE__*/React.createElement(PTRehabRail, {
+  })), typeof PTHomeBlocks === 'function' && /*#__PURE__*/React.createElement(PTHomeBlocks, {
     data: data,
     update: update,
     go: go,

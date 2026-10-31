@@ -2552,6 +2552,8 @@ function PersonalApp() {
       'shooting-new': PTShootingNew,
       'shooting-live': PTShootingLive,
       weight: PTWeight,
+      routines: PTRoutines,
+      card: PTPlayerCardScreen,
       ...(typeof PTMishap === 'function' ? {
         mishap: PTMishap,
         stretch: PTStretchPicker

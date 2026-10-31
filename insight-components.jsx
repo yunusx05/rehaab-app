@@ -45,7 +45,7 @@ function PTTodayPlan({data,update,go,notify}) {
   };
   const [label,run]=actions[plan.action]||actions.session;
   const showPathway=plan.action==='pathway'&&next;
-  const photo=ptTodayPhoto(plan.action,data),[photoFailed,setPhotoFailed]=usePTState(false),[mishap,setMishap]=usePTState(false);
+  const [mishap,setMishap]=usePTState(false);
   // Imprévu : la séance prévue au planning aujourd'hui est annulée ou reportée en un geste, et peut être rétablie dans la journée.
   const SPL=window.SeasonPlan,now=PT.dateKey();
   const excused=SPL?SPL.excusedToday(data,now):null;
@@ -60,7 +60,7 @@ function PTTodayPlan({data,update,go,notify}) {
     if(!plan||plan.error){notify(plan?.error||'Séance indisponible aujourd’hui.');return;}
     update(s=>({...s,draft:plan}));go('preview');
   };
-  if(excused)return <section className="today-plan kind-rest sport-reveal" aria-labelledby="today-plan-title">
+  if(excused)return <section className="today-plan kind-rest" aria-labelledby="today-plan-title">
     <span className="today-plan-tag">Repos</span>
     <h2 id="today-plan-title">{excused.action==='cancel'?'Séance annulée.':'Séance reportée.'}</h2>
     {excused.why&&<p className="fine">{excused.why}</p>}
@@ -68,24 +68,24 @@ function PTTodayPlan({data,update,go,notify}) {
       :<PTButton primary onClick={()=>quick('mobility',15)}>10 min de mobilité<PTIcon name="arrow" size={18}/></PTButton>}
     <button className="text-button" onClick={unexcuse}>Finalement, je peux m’entraîner</button>
   </section>;
-  return <section className={`today-plan kind-${plan.kind} has-photo sport-reveal`} aria-labelledby="today-plan-title">
-    {!photoFailed&&<img className="today-plan-photo" src={photo} alt="" decoding="async" onError={()=>setPhotoFailed(true)}/>}
-    <span className="today-plan-shade" aria-hidden="true"/>
-    <span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}</span>
+  // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
+  return <section className={`today-plan kind-${plan.kind}`} aria-labelledby="today-plan-title">
+    <div className="today-plan-line"><span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}</span>
+      {plan.why.length>0&&<details className="today-plan-more"><summary>Pourquoi ?</summary><ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul></details>}</div>
     <h2 id="today-plan-title">{showPathway?next.day.name:plan.title}</h2>
     {plan.action==='program'&&muscu&&<p className="fine">{muscu.family?.short} · semaine {muscu.progress.currentWeek}/{prog.weeks} · {muscu.family?.days.find(d=>d.key===muscu.progress.nextDay)?.name}</p>}
     {showPathway&&<p className="fine">Étape {next.step.id} · {next.step.name} · semaine {next.status.week}{ready?` · ~${next.plan.estimatedMinutes} min, ${next.plan.exercises.length} exercices`:''}</p>}
-    <ul className="reason-list">{plan.why.slice(0,2).map(w=><li key={w}>{w}</li>)}</ul>
-    {plan.why.length>2&&<details className="today-plan-more"><summary>Pourquoi cette séance</summary><ul className="reason-list">{plan.why.slice(2).map(w=><li key={w}>{w}</li>)}</ul></details>}
     <PTButton primary onClick={run}>{label}<PTIcon name="arrow" size={18}/></PTButton>
-    {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
-    {cardioToday&&<button className="text-button" onClick={launchCardio}>Cardio prévu aujourd’hui : {cardioToday.label.replace('Cardio · ','')} →</button>}
-    {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
-    :plannedToday.length>0&&(!mishap?<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>
-      :<div className="today-mishap-panel stack-sm" role="group" aria-label="Imprévu aujourd’hui"><p className="fine">{plannedToday.map(x=>x.label).join(' · ')}</p>
+    <div className="today-plan-links">
+      {!p&&plan.action!=='symptoms'&&<button className="text-button" onClick={()=>go('pathway')}>Commencer le parcours Retour au jeu →</button>}
+      {cardioToday&&<button className="text-button" onClick={launchCardio}>Cardio : {cardioToday.label.replace('Cardio · ','')} →</button>}
+      {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
+      :plannedToday.length>0&&!mishap&&<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>}
+    </div>
+    {plannedToday.length>0&&typeof PTMishap!=='function'&&mishap&&<div className="today-mishap-panel stack-sm" role="group" aria-label="Imprévu aujourd’hui"><p className="fine">{plannedToday.map(x=>x.label).join(' · ')}</p>
         <div className="button-row"><PTButton onClick={()=>excuse('postpone')}><PTIcon name="clock" size={18}/>Reporter</PTButton><PTButton danger onClick={()=>excuse('cancel')}><PTIcon name="close" size={18}/>Annuler</PTButton></div>
         <p className="fine">Reporter : prochain jour libre qui respecte les règles de charge. Annuler : la séance saute cette semaine, sans rattrapage.</p>
-        <button className="text-button" onClick={()=>setMishap(false)}>Je garde ma séance</button></div>)}
+        <button className="text-button" onClick={()=>setMishap(false)}>Je garde ma séance</button></div>}
   </section>;
 }
 

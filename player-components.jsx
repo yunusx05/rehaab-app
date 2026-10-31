@@ -89,9 +89,10 @@ function PTBodyMind({data,go}) {
 }
 
 // Annuler la séance en cours : visible partout où une séance attend, toujours avec confirmation.
-function PTDraftCancel({update,notify,after}) {
+function PTDraftCancel({update,notify,after,compact=false}) {
   const [confirm,setConfirm]=usePTState(false);
-  if(!confirm) return <PTButton danger onClick={()=>setConfirm(true)}><PTIcon name="close" size={18}/>Annuler la séance en cours</PTButton>;
+  if(!confirm) return compact?<button className="text-button draft-cancel-link" onClick={()=>setConfirm(true)}>Annuler la séance en cours</button>
+    :<PTButton danger onClick={()=>setConfirm(true)}><PTIcon name="close" size={18}/>Annuler la séance en cours</PTButton>;
   return <div className="notice warning stack-sm"><p>Annuler sans enregistrer ? Les séries déjà faites seront perdues. Ton parcours et tes programmes ne changent pas.</p>
     <PTButton danger onClick={()=>{update(s=>({...s,draft:null}));setConfirm(false);notify('Séance annulée.');if(after)after();}}>Oui, annuler la séance</PTButton>
     <PTButton quiet onClick={()=>setConfirm(false)}>Garder ma séance</PTButton></div>;
@@ -102,13 +103,19 @@ function PTDraftCancel({update,notify,after}) {
 const PT_CARD_QUALITIES=['vertical','firststep','decel','reactive','strength','endurance'];
 const PT_RADAR_SHORT={vertical:'Détente',firststep:'1er pas',decel:'Appuis',reactive:'Chevilles',strength:'Force',endurance:'Souffle',shooting:'Tir'};
 // Toile d'araignée : un axe par qualité, trois anneaux = les trois niveaux. « À travailler » reste visible (1er anneau) ; non évaluée = centre.
-function PTPlayerRadar({rows}){
+// mini : la toile seule (sans libellés), pour la tuile de l'accueil.
+function PTPlayerRadar({rows,mini=false}){
   const W=300,H=250,cx=150,cy=128,R=82,n=rows.length;
   const pt=(i,r)=>{const a=(-90+i*360/n)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];};
   const ring=k=>rows.map((_,i)=>pt(i,R*k/3).join(',')).join(' ');
   const val=q=>q.level===null||q.level===undefined?0:q.level+1;
   const shape=rows.map((q,i)=>pt(i,R*val(q)/3).join(',')).join(' ');
   const label=rows.map(q=>`${q.label} : ${q.levelLabel}`).join(', ');
+  if(mini)return <svg className="player-radar is-mini" viewBox={`${cx-R-6} ${cy-R-6} ${2*R+12} ${2*R+12}`} aria-hidden="true">
+    {[1,2,3].map(k=><polygon key={k} points={ring(k)} className={`radar-ring ring-${k}`}/>)}
+    {rows.map((_,i)=>{const [x,y]=pt(i,R);return <line key={i} x1={cx} y1={cy} x2={x} y2={y} className="radar-axis"/>;})}
+    <polygon points={shape} className="radar-shape"/>
+  </svg>;
   return <svg className="player-radar" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Profil athlétique. ${label}.`}>
     {[1,2,3].map(k=><polygon key={k} points={ring(k)} className={`radar-ring ring-${k}`}/>)}
     {rows.map((_,i)=>{const [x,y]=pt(i,R);return <line key={i} x1={cx} y1={cy} x2={x} y2={y} className="radar-axis"/>;})}
@@ -120,9 +127,9 @@ function PTPlayerRadar({rows}){
 }
 // Carte joueur : poste, profil de jeu et qualités notées UNIQUEMENT depuis les tests, les réponses du bilan et les tirs enregistrés.
 // Trois niveaux (à travailler, correct, point fort), jamais de note chiffrée inventée.
-function PTPlayerCard({data,go}){
-  const JP=window.PlayerProfile,AP=window.AthleticProfile,SH=window.Shooting,player=data.player||{};
-  const pos=JP&&JP.positions[player.position],[failed,setFailed]=usePTState(false);
+// Les 7 axes de la toile, notés d'après les tests, les réponses du bilan et les tirs. Partagé par la carte et la tuile de l'accueil.
+function ptPlayerRows(data){
+  const AP=window.AthleticProfile,SH=window.Shooting;
   const assessed=AP&&data.athletic?AP.assess(data.athletic).qualities:null;
   const source=q=>q.failed.length||q.passed.length?`test : ${(q.failed[0]||q.passed[0]).label.toLowerCase()}`:q.answer!==null&&q.answer!==undefined?'d’après ta réponse':'pas encore évalué';
   const trend=q=>{for(const t of [...q.passed,...q.failed]){const tr=AP.trend(t.id,data.athletic.tests?.[t.id]);if(tr)return tr.change>0?'up':tr.change<-5?'down':null;}return null;};
@@ -130,7 +137,13 @@ function PTPlayerCard({data,go}){
   const physical=PT_CARD_QUALITIES.map(id=>assessed?.[id]?{...assessed[id],trend:trend(assessed[id]),source:source(assessed[id])}:{id,label:PT_RADAR_SHORT[id],level:null,levelLabel:'Pas encore évalué',source:'pas encore évalué'});
   const sh=SH?.level?SH.level(data.shooting):{level:null,attempts:0};
   const shooting={id:'shooting',label:'Tir',level:sh.level,levelLabel:sh.level===null?'Pas encore évalué':levels[sh.level],trend:sh.trend,source:sh.level===null?(sh.attempts?`${sh.attempts} tirs sur 4 semaines : 50 minimum`:'enregistre tes séances de tir'):`${sh.pct} % sur 4 semaines (${sh.attempts} tirs)`};
-  const rows=[...physical,shooting],any=rows.some(q=>q.level!==null&&q.level!==undefined);
+  const rows=[...physical,shooting];
+  return {rows,assessed,any:rows.some(q=>q.level!==null&&q.level!==undefined)};
+}
+function PTPlayerCard({data,go}){
+  const JP=window.PlayerProfile,player=data.player||{};
+  const pos=JP&&JP.positions[player.position],[failed,setFailed]=usePTState(false);
+  const {rows,assessed,any}=ptPlayerRows(data);
   const name=(data.profile.name||'Joueur').toUpperCase();
   return <section className="player-card" aria-label="Ma carte joueur">
     {!failed&&<img src={ptHub('card')} alt="" decoding="async" onError={()=>setFailed(true)}/>}
@@ -148,6 +161,11 @@ function PTPlayerCard({data,go}){
     </>:<p className="player-card-empty">Fais ton bilan physique et enregistre tes tirs : tes qualités apparaîtront ici en toile, notées d’après tes tests, tes réponses et tes pourcentages.</p>}
     <div className="player-card-foot"><p>Notes tirées de tes tests, de tes réponses et de tes tirs, rien d’inventé.</p><button className="text-button" onClick={()=>go('bilan')}>{assessed?'Mettre à jour':'Faire mon bilan'}</button></div>
   </section>;
+}
+
+// Écran « Ma carte joueur » ouvert depuis la toile de l'accueil.
+function PTPlayerCardScreen({data,go}){
+  return <div className="stack-lg"><PTPageHead eyebrow="Ma carte joueur" title="Mon profil athlétique." onBack={()=>go('today')}/><PTPlayerCard data={data} go={go}/></div>;
 }
 
 // Tous les questionnaires au même endroit (onglet Moi) : ce qui reste à faire en premier, puis ce qui est fait.
