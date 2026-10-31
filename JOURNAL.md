@@ -5,7 +5,7 @@ Entrées empilées de la plus récente à la plus ancienne.
 ## 2026-10-31 — Lot 23 « accueil compact » : tout tient dans l’écran, activation du bas du corps, variantes de corde
 
 **Fait**
-- Branche `feature/accueil-compact` (non commitée), cache `v74-accueil`, nouveau `home.css` (chargé après `motion.css`, précaché dans `sw.js`).
+- Branche `feature/accueil-compact`, commit `c9d31a6`, fusionnée dans `main` (`8ca1582`) et poussée le 31/10, cache `v74-accueil`, nouveau `home.css` (chargé après `motion.css`, précaché dans `sw.js`).
 - Accueil : la grande carte photo de la séance du jour est retirée. « Ma semaine » devient le bloc central (`.week-hub`) : les 7 jours en haut (un appui ouvre le calendrier), la séance du jour juste dessous en version courte (« Pourquoi ? » replié).
 - Six tuiles (`PTHomeBlocks`, `rehab-components.jsx`) : Activation (lance directement), Warm-up, Étirements & récup, Quick rehab (ouvrent la route `routines/<warmup|recup|rehab>`), Lire le jeu, Ma carte (mini toile → route `card`). Les rangées horizontales Warm up / Étirements / Quick rehab ne sont plus sur l’accueil.
 - `ptPlayerRows` (player-components) : calcul des 7 axes partagé entre la carte joueur et la mini toile.
@@ -17,7 +17,7 @@ Entrées empilées de la plus récente à la plus ancienne.
 - Vérifié sans défilement en 390 × 844 et 375 × 667 (aperçu Chrome), pas sur iPhone. Les cartes qui apparaissent ponctuellement (bilan de la semaine, séance validée, douleur) peuvent encore pousser l’écran à défiler ces jours-là.
 
 **Prochaine action**
-- Attendre son « push » : commit, fusion dans `main`, push ; mise en ligne par `npx vercel --prod` dans le sous-dossier.
+- Mise en ligne : `npx vercel --prod` lancé par lui dans le sous-dossier `reeducation-app`, puis test sur iPhone.
 
 ## 2026-10-29 — Lot 22 « cardio régulier » : corde et course fractionnée au planning
 
