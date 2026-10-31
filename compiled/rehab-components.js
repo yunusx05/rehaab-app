@@ -38,7 +38,9 @@ function rwLaunch({
   }));
   go('preview');
 }
-function PTRehabRail(props) {
+
+// Les entraînements de chaque bloc (lot 23) : rangés derrière une tuile de l'accueil, affichés quand on l'ouvre.
+function rwRehabTiles(props) {
   const {
     data,
     go
@@ -49,15 +51,8 @@ function PTRehabRail(props) {
   const lastProtocol = last && RW.byId(last.protocolId);
   const lastLevel = lastProtocol ? data.rehab.levels[lastProtocol.id] ?? last.level : 0;
   const resume = () => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, lastProtocol.id, lastLevel, 15));
-  return /*#__PURE__*/React.createElement("section", {
-    className: "scroll-reveal rehab-rail"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "QUICK REHAB"), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "Une douleur, un protocole")), /*#__PURE__*/React.createElement("div", {
-    className: "workout-rail"
-  }, lastProtocol && /*#__PURE__*/React.createElement("button", {
+  return [lastProtocol && /*#__PURE__*/React.createElement("button", {
+    key: "resume",
     className: "preset-workout",
     onClick: resume
   }, /*#__PURE__*/React.createElement(PTThumbnail, {
@@ -70,6 +65,7 @@ function PTRehabRail(props) {
     name: "play",
     size: 17
   })))), /*#__PURE__*/React.createElement("button", {
+    key: "quiz",
     className: "preset-workout quiz-tile",
     onClick: () => go('rehab')
   }, /*#__PURE__*/React.createElement("span", {
@@ -85,7 +81,7 @@ function PTRehabRail(props) {
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 17
-  })))), zones.map(z => /*#__PURE__*/React.createElement("button", {
+  })))), ...zones.map(z => /*#__PURE__*/React.createElement("button", {
     key: z.id,
     className: "preset-workout",
     onClick: () => go('rehab', z.id)
@@ -98,43 +94,28 @@ function PTRehabRail(props) {
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 17
-  })))))));
+  })))))].filter(Boolean);
 }
-function PTWarmupRail(props) {
+const rwRoutineTile = (props, w) => /*#__PURE__*/React.createElement("button", {
+  key: w.id,
+  className: "preset-workout",
+  onClick: () => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))
+}, /*#__PURE__*/React.createElement(PTThumbnail, {
+  exercise: rwThumb(w.thumb)
+}), /*#__PURE__*/React.createElement("span", {
+  className: "preset-info"
+}, /*#__PURE__*/React.createElement("small", null, w.minutes, " min"), /*#__PURE__*/React.createElement("strong", null, w.title), /*#__PURE__*/React.createElement("span", {
+  className: "preset-play"
+}, /*#__PURE__*/React.createElement(PTIcon, {
+  name: "play",
+  size: 17
+}))));
+function rwRecupTiles(props) {
   const {
     go
   } = props;
-  const tile = w => /*#__PURE__*/React.createElement("button", {
-    key: w.id,
-    className: "preset-workout",
-    onClick: () => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))
-  }, /*#__PURE__*/React.createElement(PTThumbnail, {
-    exercise: rwThumb(w.thumb)
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "preset-info"
-  }, /*#__PURE__*/React.createElement("small", null, w.minutes, " min"), /*#__PURE__*/React.createElement("strong", null, w.title), /*#__PURE__*/React.createElement("span", {
-    className: "preset-play"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "play",
-    size: 17
-  }))));
-  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("section", {
-    className: "scroll-reveal"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "WARM UP"), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "Avant de jouer \xB7 change chaque jour")), /*#__PURE__*/React.createElement("div", {
-    className: "workout-rail"
-  }, RW.warmups.map(tile))), RW.cooldowns && /*#__PURE__*/React.createElement("section", {
-    className: "scroll-reveal"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "section-head"
-  }, /*#__PURE__*/React.createElement("h2", null, "\xC9TIREMENTS & R\xC9CUP"), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "Apr\xE8s l\u2019effort")), /*#__PURE__*/React.createElement("div", {
-    className: "workout-rail"
-  }, typeof PTStretchPicker === 'function' && /*#__PURE__*/React.createElement("button", {
+  return [typeof PTStretchPicker === 'function' && /*#__PURE__*/React.createElement("button", {
+    key: "stretch",
     className: "preset-workout quiz-tile",
     onClick: () => go('stretch')
   }, /*#__PURE__*/React.createElement("span", {
@@ -151,6 +132,7 @@ function PTWarmupRail(props) {
     name: "arrow",
     size: 17
   })))), typeof PTStretchPicker === 'function' && /*#__PURE__*/React.createElement("button", {
+    key: "heavy",
     className: "preset-workout",
     onClick: () => go('stretch', 'heavy')
   }, /*#__PURE__*/React.createElement(PTThumbnail, {
@@ -162,7 +144,136 @@ function PTWarmupRail(props) {
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 17
-  })))), RW.cooldowns.map(tile))));
+  })))), ...(RW.cooldowns || []).map(w => rwRoutineTile(props, w))].filter(Boolean);
+}
+const RW_BLOCKS = {
+  warmup: {
+    eyebrow: 'Warm-up',
+    title: 'Avant de jouer.',
+    text: 'Même structure, mouvements différents chaque jour. L’activation du bas du corps est en tête.',
+    tiles: props => [...RW.warmups].sort((a, b) => (b.id === 'activation') - (a.id === 'activation')).map(w => rwRoutineTile(props, w))
+  },
+  recup: {
+    eyebrow: 'Étirements & récup',
+    title: 'Après l’effort.',
+    text: 'Retour au calme, étirements tenus, jambes lourdes.',
+    tiles: rwRecupTiles
+  },
+  rehab: {
+    eyebrow: 'Quick rehab',
+    title: 'Une douleur, un protocole.',
+    text: 'Deux minutes de questions, puis un protocole publié, adapté à ton matériel.',
+    tiles: rwRehabTiles
+  }
+};
+// Écran d'un bloc : la liste de ses entraînements en grille, un appui lance ou ouvre.
+function PTRoutines(props) {
+  const block = RW_BLOCKS[props.id] || RW_BLOCKS.warmup;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "stack-lg routines-screen"
+  }, /*#__PURE__*/React.createElement(PTPageHead, {
+    eyebrow: block.eyebrow,
+    title: block.title,
+    onBack: () => props.go('today')
+  }, block.text), /*#__PURE__*/React.createElement("div", {
+    className: "routine-grid"
+  }, block.tiles(props)));
+}
+
+// Accueil : six tuiles qui tiennent dans l'écran. Trois ouvrent un bloc, l'activation se lance directement, la toile ouvre la carte joueur.
+const rwPhoto = id => {
+  const m = window.RehaabMedia?.[id];
+  return m?.card || m?.poster || (m?.frames ? `media/${m.frames}/0.webp` : null);
+};
+function PTHomeTile({
+  photo,
+  title,
+  text,
+  badge,
+  onClick,
+  children,
+  className = ''
+}) {
+  const [failed, setFailed] = usePTState(false);
+  return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: `home-tile ${className}`,
+    onClick: onClick
+  }, photo && !failed && /*#__PURE__*/React.createElement("img", {
+    src: photo,
+    alt: "",
+    loading: "lazy",
+    decoding: "async",
+    onError: () => setFailed(true)
+  }), children, /*#__PURE__*/React.createElement("span", {
+    className: "home-tile-shade",
+    "aria-hidden": "true"
+  }), badge && /*#__PURE__*/React.createElement("span", {
+    className: "home-tile-badge"
+  }, badge), /*#__PURE__*/React.createElement("span", {
+    className: "home-tile-body"
+  }, /*#__PURE__*/React.createElement("strong", null, title), text && /*#__PURE__*/React.createElement("small", null, text)));
+}
+function PTHomeBlocks(props) {
+  const {
+      data,
+      go
+    } = props,
+    player = data.player || {},
+    JP = window.PlayerProfile,
+    QI = window.BasketQI;
+  const pains = RW ? RW.activeZones(data) : [];
+  const painLabel = pains.length ? RW.zones.find(z => z.id === pains[0])?.label : null;
+  let qi = null;
+  if (player.position && JP && QI) {
+    const daily = QI.dailySet(data.qi, player, JP.qiThemes(player));
+    qi = daily.items.length - daily.done;
+  }
+  const radar = typeof ptPlayerRows === 'function' ? ptPlayerRows(data) : null;
+  return /*#__PURE__*/React.createElement("nav", {
+    className: "home-blocks sport-reveal",
+    "aria-label": "Raccourcis"
+  }, RW && /*#__PURE__*/React.createElement(PTHomeTile, {
+    className: "is-activation",
+    photo: rwPhoto('single-bridge'),
+    title: "Activation",
+    text: "Bas du corps",
+    badge: "Lancer",
+    onClick: () => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, 'activation'))
+  }), RW && /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: rwPhoto('lateral-shuffle'),
+    title: "Warm-up",
+    text: `${RW.warmups.length} routines`,
+    onClick: () => go('routines', 'warmup')
+  }), RW && /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: rwPhoto('quad-stretch'),
+    title: "\xC9tirements",
+    text: "& r\xE9cup",
+    onClick: () => go('routines', 'recup')
+  }), RW && /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: rwPhoto('ankle-mob'),
+    title: "Quick rehab",
+    text: painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?',
+    onClick: () => go('routines', 'rehab')
+  }), player.position ? /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: ptHub('qi'),
+    title: qi ? 'Lire le jeu' : 'QI fait',
+    text: qi ? `${qi} à lire` : 'À demain',
+    onClick: () => go('qi-run', 'daily')
+  }) : /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: ptHub('card'),
+    title: "Mon dossier",
+    text: "Poste, gabarit",
+    onClick: () => go('dossier')
+  }), /*#__PURE__*/React.createElement(PTHomeTile, {
+    className: "is-radar",
+    title: "Ma carte",
+    text: radar?.any ? 'Joueur' : 'À évaluer',
+    onClick: () => go('card')
+  }, radar && typeof PTPlayerRadar === 'function' && /*#__PURE__*/React.createElement(PTPlayerRadar, {
+    rows: radar.rows,
+    mini: true
+  })));
 }
 function PTRehabSources({
   ids

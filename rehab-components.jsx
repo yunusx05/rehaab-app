@@ -11,7 +11,8 @@ function rwLaunch({data, update, go, notify}, build) {
   update(s => ({...s, draft: plan})); go('preview');
 }
 
-function PTRehabRail(props) {
+// Les entraînements de chaque bloc (lot 23) : rangés derrière une tuile de l'accueil, affichés quand on l'ouvre.
+function rwRehabTiles(props) {
   const {data, go} = props;
   const painZones = RW.activeZones(data);
   const zones = [...RW.zones].sort((a, b) => painZones.includes(b.id) - painZones.includes(a.id));
@@ -19,27 +20,61 @@ function PTRehabRail(props) {
   const lastProtocol = last && RW.byId(last.protocolId);
   const lastLevel = lastProtocol ? (data.rehab.levels[lastProtocol.id] ?? last.level) : 0;
   const resume = () => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, lastProtocol.id, lastLevel, 15));
-  return <section className="scroll-reveal rehab-rail"><div className="section-head"><h2>QUICK REHAB</h2><span className="caption">Une douleur, un protocole</span></div>
-    <div className="workout-rail">
-      {lastProtocol && <button className="preset-workout" onClick={resume}><PTThumbnail exercise={rwThumb(lastProtocol.levels[lastLevel][0][0] || lastProtocol.levels[lastLevel][0].ids[0])}/><span className="preset-info"><small>Reprendre · {RW.LEVELS[lastLevel]}</small><strong>{lastProtocol.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>}
-      <button className="preset-workout quiz-tile" onClick={() => go('rehab')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="pain" size={44}/></span><span className="preset-info"><small>2 min de questions</small><strong>Trouver mon protocole</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>
-      {zones.map(z => <button key={z.id} className="preset-workout" onClick={() => go('rehab', z.id)}><PTThumbnail exercise={rwThumb(z.thumb)}/><span className="preset-info"><small>{painZones.includes(z.id) ? 'Ta douleur' : 'Questionnaire ciblé'}</small><strong>{z.label}</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>)}
-    </div></section>;
+  return [
+    lastProtocol && <button key="resume" className="preset-workout" onClick={resume}><PTThumbnail exercise={rwThumb(lastProtocol.levels[lastLevel][0][0] || lastProtocol.levels[lastLevel][0].ids[0])}/><span className="preset-info"><small>Reprendre · {RW.LEVELS[lastLevel]}</small><strong>{lastProtocol.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>,
+    <button key="quiz" className="preset-workout quiz-tile" onClick={() => go('rehab')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="pain" size={44}/></span><span className="preset-info"><small>2 min de questions</small><strong>Trouver mon protocole</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>,
+    ...zones.map(z => <button key={z.id} className="preset-workout" onClick={() => go('rehab', z.id)}><PTThumbnail exercise={rwThumb(z.thumb)}/><span className="preset-info"><small>{painZones.includes(z.id) ? 'Ta douleur' : 'Questionnaire ciblé'}</small><strong>{z.label}</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>)
+  ].filter(Boolean);
+}
+const rwRoutineTile = (props, w) => <button key={w.id} className="preset-workout" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))}><PTThumbnail exercise={rwThumb(w.thumb)}/><span className="preset-info"><small>{w.minutes} min</small><strong>{w.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>;
+function rwRecupTiles(props) {
+  const {go} = props;
+  return [
+    typeof PTStretchPicker === 'function' && <button key="stretch" className="preset-workout quiz-tile" onClick={() => go('stretch')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="body" size={44}/></span><span className="preset-info"><small>Sur le personnage</small><strong>Étirements ciblés</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>,
+    typeof PTStretchPicker === 'function' && <button key="heavy" className="preset-workout" onClick={() => go('stretch', 'heavy')}><PTThumbnail exercise={rwThumb('legs-up-wall')}/><span className="preset-info"><small>Lourdeurs</small><strong>Jambes lourdes</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>,
+    ...(RW.cooldowns || []).map(w => rwRoutineTile(props, w))
+  ].filter(Boolean);
+}
+const RW_BLOCKS = {
+  warmup: {eyebrow: 'Warm-up', title: 'Avant de jouer.', text: 'Même structure, mouvements différents chaque jour. L’activation du bas du corps est en tête.', tiles: props => [...RW.warmups].sort((a, b) => (b.id === 'activation') - (a.id === 'activation')).map(w => rwRoutineTile(props, w))},
+  recup: {eyebrow: 'Étirements & récup', title: 'Après l’effort.', text: 'Retour au calme, étirements tenus, jambes lourdes.', tiles: rwRecupTiles},
+  rehab: {eyebrow: 'Quick rehab', title: 'Une douleur, un protocole.', text: 'Deux minutes de questions, puis un protocole publié, adapté à ton matériel.', tiles: rwRehabTiles}
+};
+// Écran d'un bloc : la liste de ses entraînements en grille, un appui lance ou ouvre.
+function PTRoutines(props) {
+  const block = RW_BLOCKS[props.id] || RW_BLOCKS.warmup;
+  return <div className="stack-lg routines-screen"><PTPageHead eyebrow={block.eyebrow} title={block.title} onBack={() => props.go('today')}>{block.text}</PTPageHead>
+    <div className="routine-grid">{block.tiles(props)}</div></div>;
 }
 
-function PTWarmupRail(props) {
-  const {go} = props;
-  const tile = w => <button key={w.id} className="preset-workout" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, w.id))}><PTThumbnail exercise={rwThumb(w.thumb)}/><span className="preset-info"><small>{w.minutes} min</small><strong>{w.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>;
-  return <>
-    <section className="scroll-reveal"><div className="section-head"><h2>WARM UP</h2><span className="caption">Avant de jouer · change chaque jour</span></div>
-      <div className="workout-rail">{RW.warmups.map(tile)}</div></section>
-    {RW.cooldowns && <section className="scroll-reveal"><div className="section-head"><h2>ÉTIREMENTS & RÉCUP</h2><span className="caption">Après l’effort</span></div>
-      <div className="workout-rail">
-        {typeof PTStretchPicker === 'function' && <button className="preset-workout quiz-tile" onClick={() => go('stretch')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="body" size={44}/></span><span className="preset-info"><small>Sur le personnage</small><strong>Étirements ciblés</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>}
-        {typeof PTStretchPicker === 'function' && <button className="preset-workout" onClick={() => go('stretch', 'heavy')}><PTThumbnail exercise={rwThumb('legs-up-wall')}/><span className="preset-info"><small>Lourdeurs</small><strong>Jambes lourdes</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>}
-        {RW.cooldowns.map(tile)}
-      </div></section>}
-  </>;
+// Accueil : six tuiles qui tiennent dans l'écran. Trois ouvrent un bloc, l'activation se lance directement, la toile ouvre la carte joueur.
+const rwPhoto = id => {const m = window.RehaabMedia?.[id]; return m?.card || m?.poster || (m?.frames ? `media/${m.frames}/0.webp` : null);};
+function PTHomeTile({photo, title, text, badge, onClick, children, className = ''}) {
+  const [failed, setFailed] = usePTState(false);
+  return <button type="button" className={`home-tile ${className}`} onClick={onClick}>
+    {photo && !failed && <img src={photo} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)}/>}
+    {children}
+    <span className="home-tile-shade" aria-hidden="true"/>
+    {badge && <span className="home-tile-badge">{badge}</span>}
+    <span className="home-tile-body"><strong>{title}</strong>{text && <small>{text}</small>}</span>
+  </button>;
+}
+function PTHomeBlocks(props) {
+  const {data, go} = props, player = data.player || {}, JP = window.PlayerProfile, QI = window.BasketQI;
+  const pains = RW ? RW.activeZones(data) : [];
+  const painLabel = pains.length ? RW.zones.find(z => z.id === pains[0])?.label : null;
+  let qi = null;
+  if (player.position && JP && QI) {const daily = QI.dailySet(data.qi, player, JP.qiThemes(player)); qi = daily.items.length - daily.done;}
+  const radar = typeof ptPlayerRows === 'function' ? ptPlayerRows(data) : null;
+  return <nav className="home-blocks sport-reveal" aria-label="Raccourcis">
+    {RW && <PTHomeTile className="is-activation" photo={rwPhoto('single-bridge')} title="Activation" text="Bas du corps" badge="Lancer" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, 'activation'))}/>}
+    {RW && <PTHomeTile photo={rwPhoto('lateral-shuffle')} title="Warm-up" text={`${RW.warmups.length} routines`} onClick={() => go('routines', 'warmup')}/>}
+    {RW && <PTHomeTile photo={rwPhoto('quad-stretch')} title="Étirements" text="& récup" onClick={() => go('routines', 'recup')}/>}
+    {RW && <PTHomeTile photo={rwPhoto('ankle-mob')} title="Quick rehab" text={painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?'} onClick={() => go('routines', 'rehab')}/>}
+    {player.position ? <PTHomeTile photo={ptHub('qi')} title={qi ? 'Lire le jeu' : 'QI fait'} text={qi ? `${qi} à lire` : 'À demain'} onClick={() => go('qi-run', 'daily')}/>
+      : <PTHomeTile photo={ptHub('card')} title="Mon dossier" text="Poste, gabarit" onClick={() => go('dossier')}/>}
+    <PTHomeTile className="is-radar" title="Ma carte" text={radar?.any ? 'Joueur' : 'À évaluer'} onClick={() => go('card')}>{radar && typeof PTPlayerRadar === 'function' && <PTPlayerRadar rows={radar.rows} mini/>}</PTHomeTile>
+  </nav>;
 }
 
 function PTRehabSources({ids}) {

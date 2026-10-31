@@ -126,8 +126,8 @@ test('écran : questionnaire genou jusqu’à la séance, sans erreur ni débord
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width:320,height:640});
   await seed(page,athlete({pains:[{region:'knee',severity:4}]}),'today');
-  await expect(page.getByRole('heading',{name:'QUICK REHAB'})).toBeVisible();
-  await expect(page.getByRole('heading',{name:'WARM UP'})).toBeVisible();
+  await expect(page.locator('.home-blocks').getByRole('button',{name:/Quick rehab.*Ta douleur/})).toBeVisible();
+  await expect(page.locator('.home-blocks').getByRole('button',{name:/Warm-up/})).toBeVisible();
   await page.goto('/#rehab/knee');
   await expect(page.getByText('Pré-rempli avec la douleur déjà signalée')).toBeVisible();
   await page.getByRole('button',{name:/Juste sous la rotule/}).click();

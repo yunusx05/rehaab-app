@@ -60,20 +60,22 @@ function PTBodyMap({selected='all',onSelect,back=false}){
     </g>
   </svg>;
 }
+// Accueil (lot 23) : tout tient dans l'écran du téléphone, sans défiler. « Ma semaine » est au centre et porte la séance du jour ;
+// en dessous, six tuiles : activation, warm-up, étirements, quick rehab, lecture du jeu, carte joueur (toile).
 function PTSportToday({data,update,go,notify}){
   const ctx=PT.context(data),symptoms=PT.activeSymptoms(data);
   const done=data.draft?Object.values(data.draft.entries).flat().filter(r=>r.done).length:0,total=data.draft?Object.values(data.draft.entries).flat().length:0;
-  return <PTSportMotion identity="today"><div className="sport-home stack-lg">
+  return <PTSportMotion identity="today"><div className="sport-home home-fit">
     <div className="sport-greeting sport-reveal"><div><span className="caption">{new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</span><h1>{data.profile.name?`À TOI DE JOUER, ${data.profile.name}.`:'À TOI DE JOUER.'}</h1></div><button className="avatar-button" aria-label="Ouvrir mon profil" onClick={()=>go('profile')}>{data.profile.name?.slice(0,1).toUpperCase()||<PTIcon name="profile"/>}</button></div>
     {symptoms.length>0&&<button className="constraint-strip" onClick={()=>go('symptoms')}><PTIcon name="pain" size={18}/><span>{ctx.active.blocked?'Fais le point avant de démarrer':symptoms.map(s=>PT.regions[s.region]).join(' · ')+' : séance adaptée'}</span><PTIcon name="arrow" size={16}/></button>}
     {typeof PTDoneToday==='function'&&<PTDoneToday data={data} go={go}/>}
-    {data.draft&&<button className="resume-workout sport-reveal" onClick={()=>go(data.draft.status==='active'?'session':'preview')}><PTThumbnail exercise={data.draft.exercises[0]}/><span><small>{data.draft.status==='active'?'Reprendre la séance':'Ta séance est prête'}</small><strong>{data.draft.title}</strong><span className="mini-progress"><i style={{transform:`scaleX(${total?done/total:0})`}}/></span></span><span className="round-play"><PTIcon name="play" size={20}/></span></button>}
-    {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify}/>}
-    {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
     {typeof PTWeekReview==='function'&&<PTWeekReview data={data} update={update} notify={notify}/>}
-    {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}
-    {typeof PTBodyMind==='function'&&<PTBodyMind data={data} go={go}/>}
-    {typeof PTWarmupRail==='function'&&<PTWarmupRail data={data} update={update} go={go} notify={notify}/>}
-    {typeof PTRehabRail==='function'&&<PTRehabRail data={data} update={update} go={go} notify={notify}/>}
+    <section className="week-hub sport-reveal" aria-label="Ma semaine et la séance du jour">
+      {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}
+      {data.draft&&<button className="resume-workout" onClick={()=>go(data.draft.status==='active'?'session':'preview')}><PTThumbnail exercise={data.draft.exercises[0]}/><span><small>{data.draft.status==='active'?'Reprendre la séance':'Ta séance est prête'}</small><strong>{data.draft.title}</strong><span className="mini-progress"><i style={{transform:`scaleX(${total?done/total:0})`}}/></span></span><span className="round-play"><PTIcon name="play" size={20}/></span></button>}
+      {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify} compact/>}
+      {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}
+    </section>
+    {typeof PTHomeBlocks==='function'&&<PTHomeBlocks data={data} update={update} go={go} notify={notify}/>}
   </div></PTSportMotion>;
 }

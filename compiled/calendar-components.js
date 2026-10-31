@@ -717,7 +717,9 @@ function PTWeekStrip({
     className: "week-strip-head"
   }, /*#__PURE__*/React.createElement("span", {
     className: "eyebrow"
-  }, "Ma semaine"), /*#__PURE__*/React.createElement("strong", null, next ? `Aujourd’hui : ${next.label}` : today?.club.match ? 'Jour de match' : today?.club.practice ? 'Club ce soir' : 'Repos aujourd’hui')), /*#__PURE__*/React.createElement("span", {
+  }, "Ma semaine", /*#__PURE__*/React.createElement("em", {
+    className: "week-strip-open"
+  }, "Calendrier \u2192")), /*#__PURE__*/React.createElement("strong", null, next ? `Aujourd’hui : ${next.label}` : today?.club.match ? 'Jour de match' : today?.club.practice ? 'Club ce soir' : 'Repos aujourd’hui')), /*#__PURE__*/React.createElement("span", {
     className: "week-strip-days"
   }, week.days.map(d => /*#__PURE__*/React.createElement("span", {
     key: d.date,

@@ -322,8 +322,8 @@
   S.recovery={label:'Dupuy et al. 2018 · techniques de récupération après l’effort (méta-analyse)',url:'https://www.frontiersin.org/articles/10.3389/fphys.2018.00403/full'};
   S.tens={label:'Johnson et al. 2022 · électrostimulation (TENS) et douleur (méta-analyse, BMJ Open)',url:'https://bmjopen.bmj.com/content/12/2/e051073'};
   const POOLS = {
-    raise:['jog-court','butt-kicks','high-knees','rope-single','jumping-jack','bike'],
-    feet:['carioca','backpedal','lateral-shuffle','defensive-slide','skip-a','a-skip'],
+    raise:['jog-court','butt-kicks','high-knees','rope-single','jumping-jack','bike','rope','rope-run'],
+    feet:['carioca','backpedal','lateral-shuffle','defensive-slide','skip-a','a-skip','rope-lateral','rope-fb'],
     mobLegs:['leg-swing-front','walking-quad','knee-hug-walk','hip-gate','spiderman-lunge','leg-swing-side','frankenstein','glute-cradle','lunge-twist','worlds-greatest','adductor-rockback','inchworm','hip-circles','ankle-mob'],
     mobUpper:['arm-circles','torso-twist','band-dislocate','inchworm','quad-rotation','wall-slide','thoracic'],
     actLegs:['monster-walk','single-bridge','single-leg-reach','hip-abduction','side-plank','clamshell','calf','tibialis','miniband-stance'],
@@ -381,6 +381,11 @@
       steps:[['raise',1,60],['mobLegs',2,30],['feet',1,20],['power',2,20]]},
     {id:'legs',title:'Avant jambes ou sauts',minutes:10,thumb:'monster-walk',sources:['fifa','backman','percussion','behm'],
       steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,90],[['ankle-mob','hip-circles'],1,30,{fixed:true}],['mobLegs',3,30],['actLegs',2,30],['power',2,20]]},
+    // Activation du bas du corps : du pied vers la hanche, puis l'équilibre, l'isométrie et enfin le réflexe des chevilles.
+    // Unilatéral en majorité : chaque côté travaille seul (la jambe droite, en retrait, ne se cache pas derrière la gauche).
+    {id:'activation',title:'Activation bas du corps',minutes:14,thumb:'single-bridge',sources:['shred','fifa','mckeon','copenhagen','rio','behm'],
+      steps:[['raise',1,60],[['hip-gate','glute-cradle','leg-swing-side','worlds-greatest','hip-circles'],2,30],[['tibialis','single-calf','calf','ankle-mob'],2,30],[['single-bridge','monster-walk','hip-abduction','clamshell','bridge'],2,30],[['copenhagen','ham-iso-bridge','side-plank'],1,20],
+        [['single-leg-stand','sl-balance-perturb','airplane'],1,30],[['iso-split','soleus-wall-iso','wall-sit'],1,30],[['pogo','single-hop-stick','snap-down'],1,20]]},
     {id:'shoot',title:'Avant shoot',minutes:7,thumb:'band-dislocate',sources:['kuhn','orthoShoulder','behm'],
       steps:[['mobUpper',3,30],['actUpper',2,30],['hands',2,25]]},
     {id:'dynamic',title:'Étirements dynamiques',minutes:9,thumb:'worlds-greatest',sources:['behm','fifa'],
@@ -407,7 +412,8 @@
     const trimmable=e=>!e.fixed&&!e.routineTag&&e.measure==='seconds'&&e.seconds>20;
     while(PT.estimateSeconds(exercises,'classic')>w.minutes*60+r.extra&&exercises.some(trimmable)) exercises.forEach(e=>{if(trimmable(e))e.seconds=Math.max(20,e.seconds-10);});
     if(exercises.length<3) return {error:'Pas assez de mouvements compatibles aujourd’hui. Vérifie tes douleurs et ton matériel.'};
-    const reasons=cool?['Retour au calme : le cœur redescend, puis des étirements tenus 30 à 45 secondes, sans forcer.','Les étirements tenus vont après l’effort : avant, ils peuvent faire perdre un peu de force et de détente.']
+    const reasons=w.id==='activation'?['Activation : on réveille les muscles qui tiennent le genou et la cheville (pied, mollets, fessiers, adducteurs) avant de leur demander de sauter.','Ordre fixe : mobilité → pied → hanche → équilibre sur une jambe → effort tenu → petits rebonds. Chaque côté travaille seul.','À faire avant une séance de jambes, un entraînement ou un match, ou seule les jours de repos pour garder des jambes vivantes.']
+      :cool?['Retour au calme : le cœur redescend, puis des étirements tenus 30 à 45 secondes, sans forcer.','Les étirements tenus vont après l’effort : avant, ils peuvent faire perdre un peu de force et de détente.']
       :['Échauffement basket : on monte en température, on mobilise en étirements dynamiques, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs.','Les mouvements changent chaque jour : même structure, jamais la même routine.'];
     if(exercises.some(e=>e.id==='gun-legs')) reasons.push('Pistolet de massage en ouverture : une minute à vitesse basse suffit. Il gagne un peu d’amplitude sans faire perdre de force, mais ne remplace pas l’échauffement actif.');
     if(exercises.some(e=>e.tool==='foamroller')) reasons.push('Rouleau : lent, sur le muscle. Il diminue un peu les courbatures ressenties le lendemain.');
