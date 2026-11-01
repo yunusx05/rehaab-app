@@ -14,7 +14,7 @@ Entrées empilées de la plus récente à la plus ancienne.
 - Tests : nouveau `tests/skills-cooper.spec.cjs` (3, dont la voix réellement captée pendant le circuit). Suite complète : 212 OK, 9 ignorés, 1 KO (`poids-tir.spec.cjs:55`, déjà KO avant).
 
 **À savoir**
-- Pas de nouvelles démos vidéo pour ces drills : plusieurs séances de Danny Cooper montrent des joueuses, donc rien n'est découpé (règle hommes uniquement). Le lien « Vu chez » pointe vers la vidéo, il n'est pas lu dans l'app.
+- Pas de nouvelles démos vidéo pour ces drills : d'après les transcriptions (« Jess », « elle »), plusieurs séances de Danny Cooper font travailler des joueuses ; images non vérifiées, donc rien n'est découpé (règle hommes uniquement). Le lien « Vu chez » pointe vers la vidéo, il n'est pas lu dans l'app.
 - Non fait : environ 20 shorts Daryl de plus (verdict déjà clair : consignes, pas drills) ; séance « Stop on a dime » (27 min, transcription échouée) et séance main faible (non lue, les 8 drills suffisaient pour ce lot).
 
 ## 2026-11-01 — Lot 27 : renfo basket GBG Hoops (tout le corps)
