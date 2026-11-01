@@ -32,7 +32,11 @@ test('activation du bas du corps : du pied à la hanche, chaque jour différente
   // L'ordre : montée en température, mobilité, pieds/chevilles, puis hanches.
   const ids=plan.exercises.map(e=>e.id);
   expect(RW.POOLS.mobLegs).toContain(ids[1]);
-  const foot=ids.findIndex(id=>['tibialis','single-calf','calf','ankle-mob'].includes(id)),hip=ids.findIndex(id=>['single-bridge','monster-walk','hip-abduction','clamshell','bridge'].includes(id));
+  // Listes lues dans la définition (lot 26 : pont du pied, mollet sur coussin, cercles à quatre pattes, abduction couché).
+  const steps=RW.warmups.find(w=>w.id==='activation').steps;
+  expect(steps[2][0]).toEqual(expect.arrayContaining(['foot-bridge','pad-single-calf']));
+  expect(steps[3][0]).toEqual(expect.arrayContaining(['quadruped-hip-car','side-lying-abduction']));
+  const foot=ids.findIndex(id=>steps[2][0].includes(id)),hip=ids.findIndex(id=>steps[3][0].includes(id));
   expect(foot).toBeGreaterThan(1);expect(hip).toBeGreaterThan(foot);
   expect(plan.exercises.filter(e=>e.unilateral).length).toBeGreaterThanOrEqual(2);
   const tomorrow=RW.warmupPlan(PT,JP,data,'activation',{date:PT.dateKey(new Date(Date.now()+86400000))});

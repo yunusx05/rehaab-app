@@ -40,6 +40,8 @@
     {id:'squat',qualities:['mobility'],label:'Squat profond, talons au sol, buste droit',options:[['easy','Facilement',2],['heels','Les talons décollent',1],['no','Impossible ou douloureux',0]]},
     {id:'stiff',qualities:['mobility'],multi:true,optional:true,label:'Où te sens-tu raide ?',options:[['ankle','Chevilles'],['hip','Hanches'],['hamstring','Arrière des cuisses'],['back','Dos'],['shoulder','Épaules']]},
     {id:'weakLeg',qualities:[],optional:true,label:'Une jambe moins forte ou moins explosive que l’autre ?',options:[['none','Non, elles se valent'],['left','Oui, la gauche'],['right','Oui, la droite'],['unknown','Je ne sais pas']]},
+    // Lot 26 : axe du genou. Un genou qui part sur le côté reçoit un exercice d'alignement en tête de séance (bloc kiné), son côté en premier.
+    {id:'kneeTrack',qualities:[],optional:true,label:'En marchant ou en atterrissant, un genou part-il sur le côté ?',options:[['none','Non, ils restent dans l’axe'],['right-out','Oui, le droit, vers l’extérieur'],['right-in','Oui, le droit, vers l’intérieur'],['left-out','Oui, le gauche, vers l’extérieur'],['left-in','Oui, le gauche, vers l’intérieur'],['unknown','Je ne sais pas']]},
     {id:'mindset',qualities:[],label:'Ton état d’esprit pour la reprise',options:[['confident','Confiant'],['careful','Un peu d’appréhension'],['afraid','Peur de me blesser']]}
   ];
 
@@ -203,11 +205,11 @@
   // Candidats du créneau « point faible », par qualité puis par étape (1, 2, 3, 4 et plus). L'étape 1 reste sans impact.
   const focusLists = {
     firststep:[['knee-drive-iso','iso-wall-drive','psoas-march','a-march'],['a-march','wall-drill','iso-wall-drive','knee-drive-iso'],['half-kneel-start','falling-start','split-start','reaction-start','a-skip','wall-drill'],['sled-push','reaction-start','hip-open-start','band-resisted-start','mb-sprint-start','drop-step-start','split-start','falling-start']],
-    vertical:[['sl-hip-thrust','db-hip-thrust','hip-thrust','single-bridge'],['mb-scoop','snap-down','box-jump-step','kb-swing'],['penultimate-step','seated-box-jump','vertical-jump','step-up-hop','db-jump','box-jump-step'],['approach-jump','power-skip','rim-touches','single-leg-vertical','trapbar-jump','band-assisted-jump','vertical-jump']],
+    vertical:[['sl-hip-thrust','db-hip-thrust','hip-thrust','single-bridge'],['mb-scoop','snap-down','kneel-jump-squat','box-jump-step','kb-swing'],['penultimate-step','seated-box-jump','vertical-jump','step-up-hop','db-jump','box-jump-step'],['approach-jump','power-skip','rim-touches','single-leg-vertical','trapbar-jump','band-assisted-jump','vertical-jump']],
     decel:[['ecc-split-squat','step-down','iso-split','miniband-stance'],['drop-squat','snap-down','lateral-lunge','reverse-lunge'],['drop-lunge','lateral-decel','lateral-drop-stick','decel-stick','lateral-bound-stick'],['cut-45-stick','lateral-decel','sprint-backpedal','decel-stick','drop-step-start']],
     reactive:[['soleus-wall-iso','calf-hold','foot-doming','single-calf'],['pogo-forward','pogo','pogo-lateral','single-calf'],['square-hops','single-pogo','lateral-hop','rope-single','pogo'],['hurdle-hops','drop-jump','lateral-bounds','single-pogo','lateral-hop']],
     strength:[['split-squat','step-up','single-bridge'],['b-stance-rdl','single-rdl','db-single-rdl','db-step-up','step-up'],['trapbar-deadlift','db-single-rdl','landmine-reverse-lunge','lateral-box-step-up','db-bulgarian','step-up'],['trapbar-deadlift','db-single-rdl','lateral-box-step-up','db-bulgarian','step-up']],
-    balance:[['single-leg-eyes','single-leg-stand'],['single-leg-reach','airplane'],['single-hop-stick','single-leg-reach'],['single-hop-stick','single-leg-reach']],
+    balance:[['single-leg-eyes','single-leg-stand','foot-bridge'],['single-leg-reach','airplane','foot-bridge'],['single-hop-stick','single-leg-reach'],['single-hop-stick','single-leg-reach']],
     core:[['deadbug','bird-dog','side-plank'],['pallof','suitcase-carry','side-plank'],['landmine-rotation','mb-rotational','pallof-cable','side-plank-full','halo'],['mb-single-leg-rot','landmine-rotation','pallof-cable','side-plank-full','halo']],
     contact:[['carry','bear-hold'],['carry','mb-chest-pass','suitcase-carry'],['landmine-press','mb-slam','carry','overhead-carry'],['landmine-press','mb-overhead','carry','overhead-carry']],
     endurance:[['bike','march','tempo-court'],['bike-sprints','bike-interval','rower-interval'],['slide-intervals','run-interval','bike-interval'],['seventeens','ball-shuttles','run-interval','bike-interval']]
@@ -262,7 +264,8 @@
     const detail=id=>evaluate(id,latest(a,id),a.tests[id]).detail;
     const out=[];
     if(failed('kneewall')||failed('deepsquat')||stiff.includes('ankle')||['heels','no'].includes(a.answers.squat)) out.push({area:'ankle',ids:['ankle-mob','calf-stretch'],why:failed('kneewall')?`cheville (genou au mur ${detail('kneewall')})`:'mobilité de cheville'});
-    if(failed('thomas')||stiff.includes('hip')) out.push({area:'hip',ids:['couch-stretch','hip-flexor'],why:'avant de hanche'});
+    // Hanches raides (déclaré) : mobilité active d'abord (décollés, cercles), l'étirement tenu ensuite. Test de Thomas raté : avant de hanche.
+    if(failed('thomas')||stiff.includes('hip')) out.push({area:'hip',ids:[...(stiff.includes('hip')?['hip-90-90-liftoff','quadruped-hip-car']:[]),...(failed('thomas')?['couch-stretch','hip-flexor']:['hip-flexor'])],why:failed('thomas')?'avant de hanche':'hanches raides'});
     if(failed('aslr')||stiff.includes('hamstring')) out.push({area:'hamstring',ids:['active-slr','hamstring'],why:'arrière de cuisse'});
     if(stiff.includes('back')) out.push({area:'back',ids:['cat','thoracic'],why:'dos'});
     if(stiff.includes('shoulder')) out.push({area:'shoulder',ids:['band-dislocate','shoulder-mob'],why:'épaules'});
@@ -274,20 +277,40 @@
     B:[['facepull','band-pullapart'],'épaules'],
     C:[['calf-hold','foot-doming','tibialis'],'tendon d’Achille et pied']
   };
-  // Bloc kiné : la zone douloureuse d'abord, puis la mobilité qui manque, puis les tendons sollicités par la séance.
+  // Genou qui part sur le côté (question kneeTrack) : {side, dir} ou null.
+  function kneeTrack(a) {
+    const m=/^(left|right)-(in|out)$/.exec(a&&a.answers&&a.answers.kneeTrack||'');
+    return m?{side:m[1],dir:m[2]}:null;
+  }
+  // Alignement : vers l'extérieur = bord du pied, intérieur des cuisses, côté de la hanche ; vers l'intérieur = voûte du pied et fessiers.
+  const alignLists = {
+    out:['band-split-squat-out','foot-bridge','pad-single-calf','side-lying-abduction','lateral-step-down'],
+    in:['foot-doming','foot-bridge','side-lying-abduction','monster-walk']
+  };
+  const kneeTrackLabel = t => t?`genou ${t.side==='left'?'gauche':'droit'} qui part vers l’${t.dir==='out'?'extérieur':'intérieur'}`:'';
+  // Bloc kiné : la zone douloureuse d'abord, puis l'alignement du genou, puis la mobilité qui manque, puis les tendons sollicités par la séance.
   // present : exercices déjà dans la séance. Une zone qu'ils couvrent déjà n'est pas doublée.
-  function kineBlock(state,{step=1,day=null,available=()=>true,present=()=>false,count=2,pains}={}) {
+  function kineBlock(state,{step=1,day=null,available=()=>true,present=()=>false,count=2,pains,date}={}) {
     const J=JP(), a=state.athletic, out=[];
-    const push=(id,source,why)=>{ if(out.length<count&&!out.some(x=>x.id===id)&&available(id)){out.push({id,source,why});return true;} return false; };
+    // Un genou qui part sur le côté ajoute un mouvement (4 au plus) : l'alignement ne prend pas la place du tendon.
+    const track=kneeTrack(a),cap=track&&count<4?count+1:count;
+    const push=(id,source,why,extra={})=>{ if(out.length<cap&&!out.some(x=>x.id===id)&&available(id)){out.push({id,source,why,...extra});return true;} return false; };
     const active=pains||(state.symptoms||[]).filter(s=>s.active);
     if(J) J.rehabBlock(active,id=>!out.some(x=>x.id===id)&&available(id),1).forEach(id=>push(id,'pain','zone signalée'));
     if(!a) return out;
+    if(track) {
+      // Le mouvement change chaque jour : même liste, point de départ différent.
+      const list=alignLists[track.dir],day0=Math.floor(Date.parse(`${date||today()}T12:00:00Z`)/86400000)||0;
+      const start=((day0%list.length)+list.length)%list.length,ordered=[...list.slice(start),...list.slice(0,start)];
+      if(!ordered.some(present)) ordered.some(id=>push(id,'alignment',kneeTrackLabel(track),{side:track.side}));
+    }
     deficits(a).filter(d=>!d.ids.some(present)).forEach(d=>d.ids.some(id=>push(id,'mobility',d.why)));
     const tendons=day==='all'?[tendonLists.A,tendonLists.C]:day==='B'?[tendonLists.B]:day==='C'?[tendonLists.C]:[Number(step)>=3?tendonLists.A3:tendonLists.A];
     tendons.filter(([ids])=>!ids.some(present)).forEach(([ids,why])=>ids.some(id=>push(id,'tendon',why)));
     return out;
   }
   function kineCount(state,minutes) {
+    // (L'alignement du genou ajoute lui-même son mouvement dans kineBlock.)
     const a=state.athletic;
     if(minutes&&minutes<=30) return 2;
     return (!minutes||minutes>45||a&&a.answers.mindset==='afraid')?3:2;
@@ -353,5 +376,5 @@
   }
   function answered(a) { return questions.filter(q=>!q.optional).every(q=>a.answers[q.id]!==undefined); }
 
-  return {weakLeg,sideLabel,legBalanceLists,legBalanceSlot,meetsBase,trend,qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
+  return {kneeTrack,kneeTrackLabel,alignLists,weakLeg,sideLabel,legBalanceLists,legBalanceSlot,meetsBase,trend,qualities,levelLabels,questions,ownTests,sharedIds,groups,testQualities,allTests,create,latest,recordTest,evaluate,canMax,testGroups,assess,weights,targets,recommendedStart,focusLists,dosesFor,focusSlots,focusSlot,deficits,kineBlock,kineCount,seedPathwayTests,finalize,previousValue,validateAthletic,answered};
 });

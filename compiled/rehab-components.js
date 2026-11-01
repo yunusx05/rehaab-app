@@ -51,6 +51,12 @@ function rwRehabTiles(props) {
   const lastProtocol = last && RW.byId(last.protocolId);
   const lastLevel = lastProtocol ? data.rehab.levels[lastProtocol.id] ?? last.level : 0;
   const resume = () => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, lastProtocol.id, lastLevel, 15));
+  // Lot 26 : deux blocs sans douleur en tête, lancés au niveau atteint (20 min pour garder les mouvements clés des deux côtés).
+  const blocks = [['foot-knee', 'foot-bridge', 'single-calf'], ['hips', 'quadruped-hip-car', 'hip-circles']].map(([pid, ...thumbs]) => ({
+    p: RW.byId(pid),
+    thumb: thumbs.find(id => window.RehaabMedia?.[id]) || thumbs[0]
+  })).filter(b => b.p && b.p.id !== lastProtocol?.id);
+  const blockLevel = p => data.rehab?.levels?.[p.id] ?? 0;
   return [lastProtocol && /*#__PURE__*/React.createElement("button", {
     key: "resume",
     className: "preset-workout",
@@ -59,12 +65,28 @@ function rwRehabTiles(props) {
     exercise: rwThumb(lastProtocol.levels[lastLevel][0][0] || lastProtocol.levels[lastLevel][0].ids[0])
   }), /*#__PURE__*/React.createElement("span", {
     className: "preset-info"
-  }, /*#__PURE__*/React.createElement("small", null, "Reprendre \xB7 ", RW.LEVELS[lastLevel]), /*#__PURE__*/React.createElement("strong", null, lastProtocol.title), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("small", null, "Reprendre \xB7 ", RW.levelName(lastProtocol, lastLevel)), /*#__PURE__*/React.createElement("strong", null, lastProtocol.title), /*#__PURE__*/React.createElement("span", {
     className: "preset-play"
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "play",
     size: 17
-  })))), /*#__PURE__*/React.createElement("button", {
+  })))), ...blocks.map(({
+    p,
+    thumb
+  }) => /*#__PURE__*/React.createElement("button", {
+    key: p.id,
+    className: "preset-workout",
+    onClick: () => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, p.id, blockLevel(p), 20))
+  }, /*#__PURE__*/React.createElement(PTThumbnail, {
+    exercise: rwThumb(thumb)
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "preset-info"
+  }, /*#__PURE__*/React.createElement("small", null, RW.levelName(p, blockLevel(p)), " \xB7 20 min"), /*#__PURE__*/React.createElement("strong", null, p.title), /*#__PURE__*/React.createElement("span", {
+    className: "preset-play"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "play",
+    size: 17
+  }))))), /*#__PURE__*/React.createElement("button", {
     key: "quiz",
     className: "preset-workout quiz-tile",
     onClick: () => go('rehab')
@@ -498,14 +520,14 @@ function PTRehabQuiz({
     columns: 3,
     value: chosenLevel,
     onChange: setLevel,
-    options: RW.LEVELS.map((label, i) => ({
+    options: [0, 1, 2].map(i => ({
       value: i,
-      label,
+      label: RW.levelName(result.protocol, i),
       hint: i === result.level ? 'Conseillé' : undefined
     }))
   }), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, RW.levelHints[chosenLevel]), chosenLevel > result.level && /*#__PURE__*/React.createElement("p", {
+  }, RW.levelHint(result.protocol, chosenLevel)), chosenLevel > result.level && /*#__PURE__*/React.createElement("p", {
     className: "notice warning"
   }, "Plus haut que le niveau conseill\xE9 : arr\xEAte d\xE8s que la douleur d\xE9passe 2/10.")), /*#__PURE__*/React.createElement("section", {
     className: "stack-sm"

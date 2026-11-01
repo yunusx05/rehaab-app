@@ -253,7 +253,7 @@ function ptCoachContext(data) {
     muscu: ptCoachMuscu(data),
     care: Object.entries(data.rehab?.levels || {}).map(([protocol, level]) => ({
       protocol,
-      level: window.RehabWarmup?.LEVELS[level] || level
+      level: window.RehabWarmup?.levelName?.(protocol, level) || level
     })),
     season: ptCoachSeason(data, today),
     shooting: window.Shooting?.summary(data.shooting) || null,

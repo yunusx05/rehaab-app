@@ -41,11 +41,36 @@
     cuffIso:{label:'Isométrique ou isotonique pour la coiffe (protocole 2023)',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC10642785/'},
     orthoShoulder:{label:'OrthoInfo (AAOS) · programme coiffe et épaule',url:'https://www.orthoinfo.org/recovery/rotator-cuff-and-shoulder-conditioning-program/'},
     tyler:{label:'Tyler et al. 2010 · excentrique des extenseurs du poignet et coude',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC2971639/'},
-    neck:{label:'Recommandations JOSPT 2017 · douleur du cou',url:'https://www.jospt.org/doi/10.2519/jospt.2017.0302'}
+    neck:{label:'Recommandations JOSPT 2017 · douleur du cou',url:'https://www.jospt.org/doi/10.2519/jospt.2017.0302'},
+    // Lot 26 : pieds et hanches. Deux créateurs (exercices repris, démonstrations non reprises) et deux travaux publiés.
+    mckeonFoot:{label:'McKeon et al. 2015 · les muscles du pied, socle de la stabilité (BJSM)',url:'https://pubmed.ncbi.nlm.nih.gov/24659509/'},
+    footMeta:{label:'Méta-analyse · renforcer les muscles du pied améliore son fonctionnement et l’équilibre',url:'https://pmc.ncbi.nlm.nih.gov/articles/PMC9020712/'},
+    myobjFoot:{label:'MyObjectiv (Richard, kiné du sport) · pied plat, voûte et genou',url:'https://www.instagram.com/p/DeCYnSJIrFV/'},
+    hipVideo:{label:'cleopatra.niaa · mobilité de hanche : amplitude, contrôle et charge',url:'https://www.instagram.com/p/DcyzD_2Ok1R/'}
   };
 
   // Un créneau : liste d'ids par ordre de préférence, ou {ids, sets, seconds, min, max, rest}.
   const protocols = [
+    // Lot 26 : deux blocs sans douleur obligatoire. Noms de niveaux propres (levelNames) : « Calmer » n'a pas de sens pour de la mobilité.
+    {id:'hips',zone:'hip',region:'hip',title:'Hanches mobiles et fortes',short:'Hanches raides ou faibles, sans douleur nette',sources:['hipVideo','holmich','fifa'],
+      levelNames:['Explorer','Contrôler','Charger'],
+      levelHints:['Amplitude et cercles lents : on découvre jusqu’où va la hanche, sans forcer.','Décollés, maintiens et avion : la hanche apprend à tenir chaque position.','Mobilité chargée et saut : de la force au bout de l’amplitude, comme en match.'],
+      basis:'Exercices repris d’une routine de mobilité de hanche et de travaux publiés sur l’entraînement actif de la hanche, adaptés à ton matériel. Ça ne remplace pas l’avis d’un kiné.',
+      levels:[
+        [['quadruped-hip-car','hip-circles'],['hip-90-90'],['deep-squat-shift','deep-squat-hold'],['straddle-lean','adductor-rockback'],['box-pigeon','pigeon','figure-four']],
+        [['hip-90-90-liftoff','hip-90-90'],['airplane','single-rdl'],['quadruped-hip-car','hip-circles'],['side-lying-abduction','hip-abduction'],['box-figure-four','figure-four'],['squat-kneel-stand','deep-squat-shift']],
+        [['cossack-kb','cossack'],['deep-squat-shift'],['box-figure-four','hip-90-90-liftoff'],['airplane','single-rdl'],['kneel-jump-squat','squat-kneel-stand'],['copenhagen','side-plank-full']]
+      ]},
+    {id:'foot-knee',zone:'knee',region:'knee',title:'Pieds, chevilles et genou dans l’axe',short:'Le genou part sur le côté en marchant ou en atterrissant',sources:['mckeonFoot','footMeta','pfp','myobjFoot'],
+      levelNames:['Réveiller','Renforcer','Rebondir'],
+      levelHints:['Voûte du pied, bord du pied et hanche : on réveille ce qui garde le genou au-dessus du pied.','Une jambe à la fois, plus lourd : mollet, soulevé, descente de marche, fente avec élastique.','Petits rebonds et réceptions, genou au-dessus du 2e orteil : l’axe tient à vitesse de match.'],
+      why:['Partout : appui sur le gros orteil et le 2e orteil, genou au-dessus du 2e orteil. Le pied ne roule pas sur son bord extérieur.','Genou qui part vers l’extérieur : on renforce le bord du pied, l’intérieur des cuisses et le côté de la hanche. Genou qui rentre : même travail, voûte du pied en priorité.','Douleur qui dure plus de 2 à 3 semaines, genou qui gonfle ou qui bloque : montre-le à un kiné.'],
+      basis:'Exercices repris d’un kiné du sport et de travaux publiés sur les muscles du pied et la douleur du genou, adaptés à ton matériel. L’app ne pose pas de diagnostic.',
+      levels:[
+        [['foot-bridge','foot-doming'],['side-lying-abduction','clamshell'],['band-eversion','tibialis'],['single-leg-stand','sl-balance-perturb'],['foot-doming']],
+        [['band-split-squat-out','split-squat'],['pad-single-calf','single-calf'],['side-lying-abduction','hip-abduction'],['foot-bridge-rdl','single-rdl'],['step-down','lateral-step-down'],['inversion-sl-balance','sl-balance-perturb']],
+        [['pad-single-calf','single-calf'],['band-split-squat-out','split-squat'],['snap-down','landing','step-down'],['pogo','single-pogo','calf'],['single-hop-stick','lateral-bound-stick','single-leg-reach'],['kb-single-rdl','foot-bridge-rdl','single-rdl']]
+      ]},
     {id:'knee-patellar',zone:'knee',region:'knee',title:'Tendon rotulien (genou du sauteur)',short:'Sous la rotule, en sautant ou en atterrissant',sources:['rio','patLoad','decline','backman'],
       levels:[
         [{ids:['spanish-squat','wall-sit'],sets:5,seconds:45,rest:60},['single-bridge','bridge'],['hip-abduction','clamshell'],{ids:['calf-hold','calf'],sets:3},['ankle-mob']],
@@ -162,9 +187,9 @@
   const zoneOfRegion = {knee:'knee',ankle:'foot',hip:'hip',back:'back',shoulder:'shoulder',wrist:'hand',elbow:'hand',neck:'neck'};
   // Endroit précis : chaque réponse renvoie vers un protocole.
   const where = {
-    knee:[['knee-patellar','Juste sous la rotule, sur le tendon'],['knee-pfp','Autour ou derrière la rotule'],['knee-control','Pas de douleur nette : le genou rentre, je veux le protéger'],['unknown','Je ne sais pas']],
-    foot:[['ankle-sprain','Cheville, après une ou plusieurs entorses'],['ankle-stiff','Cheville raide, sans vraie douleur'],['achilles','Tendon d’Achille, derrière le talon'],['plantar','Sous le talon ou la voûte'],['shin','Long du tibia'],['unknown','Je ne sais pas']],
-    hip:[['groin','Aine, intérieur de cuisse'],['hip-flexor','Pli de l’aine, devant la hanche'],['hip-lateral','Côté de la hanche'],['hamstring','Arrière de cuisse'],['unknown','Je ne sais pas']],
+    knee:[['knee-patellar','Juste sous la rotule, sur le tendon'],['knee-pfp','Autour ou derrière la rotule'],['knee-control','Pas de douleur nette : le genou rentre, je veux le protéger'],['foot-knee','Le genou part sur le côté en marchant (pied, cheville)'],['unknown','Je ne sais pas']],
+    foot:[['ankle-sprain','Cheville, après une ou plusieurs entorses'],['ankle-stiff','Cheville raide, sans vraie douleur'],['achilles','Tendon d’Achille, derrière le talon'],['plantar','Sous le talon ou la voûte'],['shin','Long du tibia'],['foot-knee','Pied qui s’écrase ou qui roule, genou qui part sur le côté'],['unknown','Je ne sais pas']],
+    hip:[['groin','Aine, intérieur de cuisse'],['hip-flexor','Pli de l’aine, devant la hanche'],['hip-lateral','Côté de la hanche'],['hamstring','Arrière de cuisse'],['hips','Hanches raides ou faibles, sans douleur nette'],['unknown','Je ne sais pas']],
     back:[['low-back','Bas du dos'],['neck','Haut du dos, entre les omoplates']],
     shoulder:[['shoulder','Épaule']],
     hand:[['hand','Doigts ou poignet'],['elbow','Coude']],
@@ -182,12 +207,16 @@
     return (where[zone]||[])[0]?.[0]||null;
   }
   function byId(id) {return protocols.find(p=>p.id===id)||null;}
+  // Nom et explication d'un niveau : ceux du protocole s'il en a (hanches, pieds), sinon Calmer / Renforcer / Retour terrain.
+  const levelName=(p,l)=>{const x=typeof p==='string'?byId(p):p;return (x&&x.levelNames||LEVELS)[l]||LEVELS[l]||'';};
+  const levelHint=(p,l)=>{const x=typeof p==='string'?byId(p):p;return (x&&x.levelHints||levelHints)[l]||levelHints[l]||'';};
   // Pré-remplissage : douleur active déclarée, sinon indices du bilan athlétique.
   function prefill(state) {
     const pains=(state.symptoms||[]).filter(s=>s.active).sort((a,b)=>Number(b.severity)-Number(a.severity));
     if(pains[0]) {const p=pains[0];return {zone:zoneOfRegion[p.region]||null,side:p.side||'both',severity:Number(p.severity),onset:p.onset==='new'?'acute':'chronic',fromSymptom:p.id,known:true};}
     const a=state.athletic&&state.athletic.answers||{};
     const stiff=Array.isArray(a.stiff)?a.stiff:[];
+    if(/^(left|right)-(in|out)$/.test(a.kneeTrack||'')) return {zone:'knee',where:'foot-knee',known:false};
     if(a.brake==='knee') return {zone:'knee',where:'knee-control',known:false};
     if(a.contact==='back') return {zone:'back',where:'low-back',known:false};
     if(stiff.includes('ankle')) return {zone:'foot',where:'ankle-stiff',known:false};
@@ -241,9 +270,10 @@
     while(over()&&trim(2,false));
     if(exercises.length<2) return {error:'Pas assez de mouvements compatibles avec ton matériel et tes douleurs. Ajoute du matériel dans ton profil ou demande l’avis d’un kiné.'};
     const reasons=[
-      `${LEVELS[level]} : ${levelHints[level]}`,
+      `${levelName(protocol,level)} : ${levelHint(protocol,level)}`,
+      ...(protocol.why||[]),
       'Douleur tolérée pendant l’effort : 2/10 au maximum, revenue à la normale le lendemain. Au-delà, arrête le mouvement.',
-      'Protocole issu de travaux publiés, adapté à ton matériel. Il ne remplace pas l’avis d’un kiné.'
+      protocol.basis||'Protocole issu de travaux publiés, adapté à ton matériel. Il ne remplace pas l’avis d’un kiné.'
     ];
     return {id:uid(),title:`Rehab · ${protocol.title}`,source:'rehab',protocolId:protocol.id,rehabLevel:level,focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:0,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+60)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
@@ -303,7 +333,7 @@
       // Renforcer : la suite du niveau atteint (au moins le niveau 1 « Calmer » quand la douleur est vive).
       const strong=level===0?calm.slice(2):protocol.levels[level];
       let m=0;for(const slot of strong){if(m>=2)break;if(take(slot,'strength'))m++;}
-      if(n||m) notes.push(`${protocol.title} · ${LEVELS[level].toLowerCase()}`);
+      if(n||m) notes.push(`${protocol.title} · ${levelName(protocol,level).toLowerCase()}`);
     }
     return {head,tail,protocols:[...done],note:notes.length?`Soin intégré (${notes.join(' ; ')}) : on calme la zone en début de séance et on la renforce en fin. Douleur tolérée pendant l’effort : 2/10 au maximum. Ça ne remplace pas l’avis d’un kiné.`:null};
   }
@@ -330,6 +360,9 @@
     actUpper:['band-pullapart','scap-pushup','band-er','plank-shoulder-tap','wall-slide','er-iso'],
     power:['pogo','snap-down','skip-a','power-skip','accel-10','crossover-start','lateral-bound-stick','approach-jump','defensive-slide','a-skip'],
     hands:['wrist-mob','finger-ext','forearm-stretch'],
+    // Lot 26 : un mouvement de hanche et un de pied au début de chaque séance (hanches mobiles et contrôlées, genou au-dessus du pied).
+    hipPrep:['quadruped-hip-car','side-lying-abduction','hip-90-90-liftoff','airplane','deep-squat-shift','box-figure-four'],
+    footPrep:['foot-bridge','pad-single-calf','inversion-sl-balance','foot-doming','band-eversion'],
     stretchLegs:['quad-stretch','supine-hamstring','calf-stretch','hip-flexor','figure-four','butterfly','soleus-stretch','couch-stretch','side-lunge-stretch','hamstring','outer-hip-stretch','pigeon','downdog','shin-stretch'],
     stretchUpper:['cross-body','lat-stretch','triceps-stretch','doorway-chest','neck-stretch','forearm-stretch','side-bend','childs-pose'],
     stretchBack:['childs-pose','lying-twist','cobra','cat','figure-four'],
@@ -338,7 +371,7 @@
     calm:['breath']
   };
   // Mouvement de repli quand tout le réservoir est écarté (matériel, douleur, impacts).
-  const POOL_FALLBACK = {raise:['march'],feet:['march'],power:['calf','a-march','march'],actLegs:['bridge','single-leg-stand'],actUpper:['wall-slide','scap-pushup'],mobLegs:['hip-circles','cat'],mobUpper:['thoracic','cat'],flush:['march']};
+  const POOL_FALLBACK = {hipPrep:['hip-circles','hip-90-90'],footPrep:['foot-doming','single-leg-stand'],raise:['march'],feet:['march'],power:['calf','a-march','march'],actLegs:['bridge','single-leg-stand'],actUpper:['wall-slide','scap-pushup'],mobLegs:['hip-circles','cat'],mobUpper:['thoracic','cat'],flush:['march']};
   // Jour → nombre stable : le même échauffement toute la journée, un autre le lendemain.
   const dayIndex = (date=today()) => Math.floor(Date.parse(`${date}T12:00:00Z`)/86400000);
   const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
@@ -384,7 +417,7 @@
     // Activation du bas du corps : du pied vers la hanche, puis l'équilibre, l'isométrie et enfin le réflexe des chevilles.
     // Unilatéral en majorité : chaque côté travaille seul (la jambe droite, en retrait, ne se cache pas derrière la gauche).
     {id:'activation',title:'Activation bas du corps',minutes:14,thumb:'single-bridge',sources:['shred','fifa','mckeon','copenhagen','rio','behm'],
-      steps:[['raise',1,60],[['hip-gate','glute-cradle','leg-swing-side','worlds-greatest','hip-circles'],2,30],[['tibialis','single-calf','calf','ankle-mob'],2,30],[['single-bridge','monster-walk','hip-abduction','clamshell','bridge'],2,30],[['copenhagen','ham-iso-bridge','side-plank'],1,20],
+      steps:[['raise',1,60],[['hip-gate','glute-cradle','leg-swing-side','worlds-greatest','hip-circles'],2,30],[['foot-bridge','pad-single-calf','tibialis','single-calf','calf','ankle-mob'],2,30],[['quadruped-hip-car','side-lying-abduction','single-bridge','monster-walk','hip-abduction','clamshell','bridge'],2,30],[['copenhagen','ham-iso-bridge','side-plank'],1,20],
         [['single-leg-stand','sl-balance-perturb','airplane'],1,30],[['iso-split','soleus-wall-iso','wall-sit'],1,30],[['pogo','single-hop-stick','snap-down'],1,20]]},
     {id:'shoot',title:'Avant shoot',minutes:7,thumb:'band-dislocate',sources:['kuhn','orthoShoulder','behm'],
       steps:[['mobUpper',3,30],['actUpper',2,30],['hands',2,25]]},
@@ -440,11 +473,15 @@
     let warmup=[];
     if(budget>0&&!plan.warmupSkipped) {
       const short=budget<=150;
+      // Lot 26 : jambes = 1 hanche + 1 pied à la place d'un étirement dynamique et de l'activation générique (même nombre de mouvements) ;
+      // haut du corps = 1 seul, hanche et pied un jour sur deux, à la place de la mobilité des jambes.
+      const prep=dayIndex(date)%2?'hipPrep':'footPrep';
       const steps=legs>=arms
-        ?(short?[['mobLegs',2,30],['actLegs',1,30]]:[['raise',1,60],['mobLegs',3,30],['mobUpper',arms?1:0,30],['actLegs',1,30],...(jumps?[['power',1,20]]:[])])
-        :(short?[['mobUpper',2,30],['actUpper',1,30]]:[['raise',1,60],['mobUpper',3,30],['actUpper',2,30],['mobLegs',1,30]]);
+        ?(short?[['mobLegs',1,30],['hipPrep',1,25],['footPrep',1,25]]:[['raise',1,60],['mobLegs',2,30],['mobUpper',arms?1:0,30],['hipPrep',1,25],['footPrep',1,25],...(jumps?[['power',1,20]]:[])])
+        :(short?[['mobUpper',2,30],['actUpper',1,30]]:[['raise',1,60],['mobUpper',3,30],['actUpper',2,30],[prep,1,25]]);
       if(list.some(e=>['shoot','handle','coordination'].includes(e.skillArea))&&!short) steps.push(['hands',1,25]);
-      warmup=routine(PT,JP,state,steps.filter(s=>s[1]>0),{seed,check,role:'warmup',timed:true}).exercises;
+      // Rien de ce que la séance contient déjà (bloc kiné, soin) : l'échauffement ajoute du neuf.
+      warmup=routine(PT,JP,state,steps.filter(s=>s[1]>0),{seed,check,role:'warmup',timed:true,exclude:list.map(e=>e.id)}).exercises;
     }
     // Retour au calme : 3 à 5 étirements tenus pour ce qui a travaillé, puis une minute de respiration.
     const weights={};list.forEach(e=>{const k=e.skillArea||e.pattern;(STRETCH_FOR[k]||[]).forEach((id,i)=>{weights[id]=(weights[id]||0)+3-i;});});
@@ -595,5 +632,5 @@
     return {rehab:{levels:{...r.levels,[protocolId]:next},log:log.slice(-300)},level:next,change};
   }
 
-  return {LEVELS,levelHints,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,protocolFor,careLevel,careBlock,withCare,warmups,cooldowns,warmupPlan,POOLS,routine,sessionRoutines,attachRoutines,bodyZones,feelings,recoveryPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
+  return {LEVELS,levelHints,levelName,levelHint,sources:S,protocols,zones,where,triggers,redFlags,onsets,zoneOfRegion,byId,prefill,activeZones,pick,guessProtocol,rehabPlan,protocolFor,careLevel,careBlock,withCare,warmups,cooldowns,warmupPlan,POOLS,routine,sessionRoutines,attachRoutines,bodyZones,feelings,recoveryPlan,pendingCredit,canCredit,applyCredit,validateRehab,record};
 });

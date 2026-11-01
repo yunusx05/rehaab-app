@@ -296,8 +296,9 @@
     // Bloc kiné en tête. Sans bilan : renforcement de la zone douloureuse seul, comme avant.
     let kineNote=null;
     if(athletic){
-      const items=AP.kineBlock(state,{step:step.id,day:day.key,pains:cared?[]:pains,count:AP.kineCount(state,minutes),available:id=>usable(find(id))&&!exercises.some(x=>x.id===id)&&!(cared&&[...care.head,...care.tail].some(x=>x.id===id)),present:id=>exercises.some(x=>x.id===id)});
-      items.slice().reverse().forEach(x=>exercises.unshift({...PT.makePrescription(find(x.id),'classic',check.minutes,ctx),sets:x.source==='mobility'?2:3,pathwayRole:'kiné',kineSource:x.source,key:x.source==='pain'||x===items[0]}));
+      const items=AP.kineBlock(state,{step:step.id,day:day.key,date:check.date,pains:cared?[]:pains,count:AP.kineCount(state,minutes),available:id=>usable(find(id))&&!exercises.some(x=>x.id===id)&&!(cared&&[...care.head,...care.tail].some(x=>x.id===id)),present:id=>exercises.some(x=>x.id===id)});
+      // Lot 26 : l'alignement du genou est gardé même quand la séance est raccourcie, et commence par le côté qui part.
+      items.slice().reverse().forEach(x=>exercises.unshift({...PT.makePrescription(find(x.id),'classic',check.minutes,ctx),sets:x.source==='mobility'?2:3,pathwayRole:'kiné',kineSource:x.source,key:x.source==='pain'||x.source==='alignment'||x===items[0],...alignSide(find(x.id),x)}));
       if(items.length) kineNote=`Bloc kiné (${items.length} mouvement${items.length>1?'s':''}) : ${[...new Set(items.map(x=>x.why))].join(', ')}. Il ne remplace pas l’avis d’un kiné.`;
     } else if(PP&&pains.length&&!cared){
       const rehabIds=PP.rehabBlock(pains,id=>usable(find(id))&&!exercises.some(x=>x.id===id),1);
@@ -325,6 +326,12 @@
     return {id:uid(),title:`${step.short} · ${day.name}`,source:'pathway',pathwayId:p.id,pathwayStep:step.id,pathwayWeek:week,pathwayDay:day.key,focus:'muscle',format:'classic',exercises,check,reasons:reasons.concat(changes),warmupSeconds:300,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
+  // Exercice d'alignement du genou (bloc kiné) : le côté concerné en premier, avec une série de plus pour lui.
+  function alignSide(e,item) {
+    if(!e||!item||item.source!=='alignment'||!item.side) return {};
+    const side=item.side==='left'?'gauche':'droite';
+    return e.unilateral?{sideNote:`Commence par la jambe ${side}, puis termine par une série de plus sur la jambe ${side} seule : c’est ce genou qui part sur le côté. Genou au-dessus du 2e orteil.`}:{sideNote:`Genou ${side==='gauche'?'gauche':'droit'} au-dessus du 2e orteil tout du long : c’est lui qui part sur le côté.`};
+  }
   function markCompleted(p,{step,week,day,sessionId,date,partial}) {
     if(p.completed.some(c=>c.sessionId===sessionId)) return p;
     return {...p,completed:[...p.completed,{step,week,day,sessionId,date,partial:!!partial}]};
@@ -426,11 +433,11 @@
     const noImpact=q.impactFromStep&&(state.pathway?.step||1)<q.impactFromStep;
     const ok=x=>x&&PT.allowed(x,state,check,ctx)&&(!PP||PP.tolerates(x,safety.active))&&!(noImpact&&x.impact);
     const AP=q.id==='kine'?athleticLib():null;
-    const kine=AP?AP.kineBlock(state,{day:'all',count:6,pains:safety.active,available:id=>ok(all.find(y=>y.id===id))}):[];
+    const kine=AP?AP.kineBlock(state,{day:'all',count:6,pains:safety.active,date:check.date,available:id=>ok(all.find(y=>y.id===id))}):[];
     const exercises=[];
     kine.map(x=>[x.id]).concat(q.ids).forEach(options=>{
       const e=options.map(x=>all.find(y=>y.id===x)).find(x=>ok(x)&&!exercises.some(y=>y.id===x.id));
-      if(e) exercises.push({...PT.makePrescription(e,'classic',q.minutes,ctx),sets:2,rest:Math.min(e.rest,40)});
+      if(e) exercises.push({...PT.makePrescription(e,'classic',q.minutes,ctx),sets:2,rest:Math.min(e.rest,40),...alignSide(e,kine.find(x=>x.id===e.id))});
     });
     if(exercises[0]&&exercises[0].kind==='cardio'){exercises[0].sets=1;exercises[0].seconds=300;}
     while(PT.estimateSeconds(exercises,'classic')>q.minutes*60&&exercises.length>2) exercises.pop();

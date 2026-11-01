@@ -20,8 +20,12 @@ function rwRehabTiles(props) {
   const lastProtocol = last && RW.byId(last.protocolId);
   const lastLevel = lastProtocol ? (data.rehab.levels[lastProtocol.id] ?? last.level) : 0;
   const resume = () => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, lastProtocol.id, lastLevel, 15));
+  // Lot 26 : deux blocs sans douleur en tête, lancés au niveau atteint (20 min pour garder les mouvements clés des deux côtés).
+  const blocks = [['foot-knee', 'foot-bridge', 'single-calf'], ['hips', 'quadruped-hip-car', 'hip-circles']].map(([pid, ...thumbs]) => ({p: RW.byId(pid), thumb: thumbs.find(id => window.RehaabMedia?.[id]) || thumbs[0]})).filter(b => b.p && b.p.id !== lastProtocol?.id);
+  const blockLevel = p => data.rehab?.levels?.[p.id] ?? 0;
   return [
-    lastProtocol && <button key="resume" className="preset-workout" onClick={resume}><PTThumbnail exercise={rwThumb(lastProtocol.levels[lastLevel][0][0] || lastProtocol.levels[lastLevel][0].ids[0])}/><span className="preset-info"><small>Reprendre · {RW.LEVELS[lastLevel]}</small><strong>{lastProtocol.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>,
+    lastProtocol && <button key="resume" className="preset-workout" onClick={resume}><PTThumbnail exercise={rwThumb(lastProtocol.levels[lastLevel][0][0] || lastProtocol.levels[lastLevel][0].ids[0])}/><span className="preset-info"><small>Reprendre · {RW.levelName(lastProtocol, lastLevel)}</small><strong>{lastProtocol.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>,
+    ...blocks.map(({p, thumb}) => <button key={p.id} className="preset-workout" onClick={() => rwLaunch(props, s => RW.rehabPlan(PT, window.PlayerProfile, s, p.id, blockLevel(p), 20))}><PTThumbnail exercise={rwThumb(thumb)}/><span className="preset-info"><small>{RW.levelName(p, blockLevel(p))} · 20 min</small><strong>{p.title}</strong><span className="preset-play"><PTIcon name="play" size={17}/></span></span></button>),
     <button key="quiz" className="preset-workout quiz-tile" onClick={() => go('rehab')}><span className="quiz-tile-court" aria-hidden="true"><PTIcon name="pain" size={44}/></span><span className="preset-info"><small>2 min de questions</small><strong>Trouver mon protocole</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>,
     ...zones.map(z => <button key={z.id} className="preset-workout" onClick={() => go('rehab', z.id)}><PTThumbnail exercise={rwThumb(z.thumb)}/><span className="preset-info"><small>{painZones.includes(z.id) ? 'Ta douleur' : 'Questionnaire ciblé'}</small><strong>{z.label}</strong><span className="preset-play"><PTIcon name="arrow" size={17}/></span></span></button>)
   ].filter(Boolean);
@@ -134,8 +138,8 @@ function PTRehabQuiz({data, update, go, notify, id}) {
         <div className="button-row"><PTButton primary onClick={() => go('symptoms')}>Signaler cette douleur</PTButton><PTButton quiet onClick={() => go('today')}>Revenir à aujourd’hui</PTButton></div>
       </section> : result.error ? <p className="error" role="alert">{result.error}</p> : <section className="stack-lg">
         <div className="card stack-sm"><div className="eyebrow">{RW.zones.find(z => z.id === result.protocol.zone)?.label}</div><h2>{result.protocol.title}</h2><p className="fine">{result.protocol.short}.</p></div>
-        <section className="stack-sm"><h3>Niveau</h3><PTChoices columns={3} value={chosenLevel} onChange={setLevel} options={RW.LEVELS.map((label, i) => ({value:i, label, hint:i === result.level ? 'Conseillé' : undefined}))}/>
-          <p className="fine">{RW.levelHints[chosenLevel]}</p>
+        <section className="stack-sm"><h3>Niveau</h3><PTChoices columns={3} value={chosenLevel} onChange={setLevel} options={[0, 1, 2].map(i => ({value:i, label:RW.levelName(result.protocol, i), hint:i === result.level ? 'Conseillé' : undefined}))}/>
+          <p className="fine">{RW.levelHint(result.protocol, chosenLevel)}</p>
           {chosenLevel > result.level && <p className="notice warning">Plus haut que le niveau conseillé : arrête dès que la douleur dépasse 2/10.</p>}</section>
         <section className="stack-sm"><h3>Durée</h3><PTChips value={answers.minutes} onChange={v => set('minutes', v)} options={[{value:10, label:'≈ 10 min'}, {value:15, label:'≈ 15 min'}, {value:20, label:'≈ 20 min'}]}/></section>
         {!hasSymptom && Number(answers.severity) > 0 && <label className="check-label"><input type="checkbox" checked={save} onChange={e => setSave(e.target.checked)}/> Ajouter cette douleur à mon suivi ({answers.severity}/10). Les séances du programme en tiendront compte.</label>}

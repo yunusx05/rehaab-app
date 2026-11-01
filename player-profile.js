@@ -151,11 +151,16 @@
     // Douleur : le protocole de soin complet est ajouté après génération (calmer en tête, renforcer en fin).
     const RW=pains.length?rehabLib():null;
     // Avec un bilan : bloc kiné complet (mobilité qui manque, tendons ; la douleur passe par le soin). Sans bilan ni soin : renforcement de la zone douloureuse seul.
-    const kine=AP?AP.kineBlock(state,{day:'all',available:id=>pool.some(e=>e.id===id),count:minutes>=30||!minutes?2:1,pains:RW?[]:pains}):null;
+    const kine=AP?AP.kineBlock(state,{day:'all',date:check.date,available:id=>pool.some(e=>e.id===id),count:minutes>=30||!minutes?2:1,pains:RW?[]:pains}):null;
     const rehabIds=kine?kine.map(x=>x.id):RW?[]:rehabBlock(pains,id=>pool.some(e=>e.id===id),minutes>=30||!minutes?2:1);
     const wantsPower=['meneur','ailier','pivot'].includes(player.position)||(player.archetypes||[]).some(a=>['athlete','slasher','rebondeur'].includes(a));
     const power=pains.some(p=>['knee','ankle'].includes(p.region)) && wantsPower?hipPower.filter(id=>pool.some(e=>e.id===id)).slice(0,1):[];
-    const pinned=rehabIds.concat(power).map(id=>PT.makePrescription(pool.find(e=>e.id===id),'classic',check.minutes,ctx));
+    // Lot 26 : l'exercice d'alignement du genou commence par le côté qui part, avec une série de plus pour lui.
+    const pinned=rehabIds.concat(power).map(id=>{
+      const p=PT.makePrescription(pool.find(e=>e.id===id),'classic',check.minutes,ctx),k=kine&&kine.find(x=>x.id===id);
+      if(k&&k.source==='alignment'&&k.side){const side=k.side==='left'?'gauche':'droite';p.sideNote=p.unilateral?`Commence par la jambe ${side}, puis termine par une série de plus sur la jambe ${side} seule : c’est ce genou qui part sur le côté. Genou au-dessus du 2e orteil.`:`Genou ${k.side==='left'?'gauche':'droit'} au-dessus du 2e orteil tout du long : c’est lui qui part sur le côté.`;}
+      return p;
+    });
     shadow.preferences={
       likes:state.preferences.likes.concat(ranked.slice(4,10).map(x=>x.id)),
       avoids:state.preferences.avoids.concat(PT.allExercises(state).filter(e=>!tolerates(e,pains)).map(e=>e.id)),
