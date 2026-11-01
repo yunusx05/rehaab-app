@@ -1,11 +1,188 @@
 {
- "sk-fake-pullup": [{"videoId": "SmspzPf7PPU", "start": 14}],
- "sk-hang-pullup": [{"videoId": "SmspzPf7PPU", "start": 141}],
- "mv-hesi-read": [{"videoId": "SmspzPf7PPU", "start": 141}, {"videoId": "7PeXI6RLzQc", "start": 148}],
- "mv-jab-cross": [{"videoId": "7PeXI6RLzQc", "start": 117}],
- "sk-stepback": [{"videoId": "SmspzPf7PPU", "start": 293}],
- "sk-euro-counter": [{"videoId": "gElBtcfpKlE", "start": 130}],
- "mv-snatch-cross": [{"videoId": "Q8mQSyZCHB8", "start": 587}],
- "cut-45-stick": [{"videoId": "wH8uL5hTQz4", "start": 149}],
- "penultimate-step": [{"videoId": "rp-fnzx5lr8", "start": 408}]
+ "sk-fake-pullup": [
+  {
+   "videoId": "SmspzPf7PPU",
+   "start": 14
+  }
+ ],
+ "sk-hang-pullup": [
+  {
+   "videoId": "SmspzPf7PPU",
+   "start": 141
+  }
+ ],
+ "mv-hesi-read": [
+  {
+   "videoId": "SmspzPf7PPU",
+   "start": 141
+  },
+  {
+   "videoId": "7PeXI6RLzQc",
+   "start": 148
+  }
+ ],
+ "mv-jab-cross": [
+  {
+   "videoId": "7PeXI6RLzQc",
+   "start": 117
+  }
+ ],
+ "sk-stepback": [
+  {
+   "videoId": "SmspzPf7PPU",
+   "start": 293
+  }
+ ],
+ "sk-euro-counter": [
+  {
+   "videoId": "gElBtcfpKlE",
+   "start": 130
+  }
+ ],
+ "mv-snatch-cross": [
+  {
+   "videoId": "Q8mQSyZCHB8",
+   "start": 587
+  }
+ ],
+ "cut-45-stick": [
+  {
+   "videoId": "wH8uL5hTQz4",
+   "start": 149
+  }
+ ],
+ "penultimate-step": [
+  {
+   "videoId": "rp-fnzx5lr8",
+   "start": 408
+  }
+ ],
+ "sk-between-shift": [
+  {
+   "videoId": "zQDOc-2FJY8",
+   "start": 0,
+   "channel": "Danny Cooper",
+   "title": "How to Create Space Off the Dribble | Weight Shifts & Luka Change of Direction"
+  }
+ ],
+ "sk-cross-hardstop": [
+  {
+   "videoId": "zQDOc-2FJY8",
+   "start": 220,
+   "channel": "Danny Cooper",
+   "title": "How to Create Space Off the Dribble | Weight Shifts & Luka Change of Direction"
+  }
+ ],
+ "sk-float-space": [
+  {
+   "videoId": "oFf4FbY4lDs",
+   "start": 0,
+   "channel": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble"
+  }
+ ],
+ "sk-high-low": [
+  {
+   "videoId": "oFf4FbY4lDs",
+   "start": 130,
+   "channel": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble"
+  }
+ ],
+ "mv-flip-feet": [
+  {
+   "videoId": "oFf4FbY4lDs",
+   "start": 231,
+   "channel": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble"
+  }
+ ],
+ "sk-kill-dribble": [
+  {
+   "videoId": "y6rKGk1ZdfE",
+   "start": 0,
+   "channel": "Danny Cooper",
+   "title": "MUST HAVE Finishing Options IN The Paint! (Step Thru's, Pivots, etc.)"
+  }
+ ],
+ "sk-step-through-3": [
+  {
+   "videoId": "y6rKGk1ZdfE",
+   "start": 90,
+   "channel": "Danny Cooper",
+   "title": "MUST HAVE Finishing Options IN The Paint! (Step Thru's, Pivots, etc.)"
+  }
+ ],
+ "sk-grounded-feet": [
+  {
+   "videoId": "R3Blaarxqdw",
+   "start": 0,
+   "channel": "Danny Cooper",
+   "title": "Get Shifty With Better Footwork | Dribble Timing & Change of Direction"
+  }
+ ],
+ "toe-rock": [
+  {
+   "videoId": "iqqoKp4Gflo",
+   "start": 72,
+   "channel": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)"
+  }
+ ],
+ "knee-over-toe-rock": [
+  {
+   "videoId": "iqqoKp4Gflo",
+   "start": 192,
+   "channel": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)"
+  }
+ ],
+ "credit-card-hop": [
+  {
+   "videoId": "iqqoKp4Gflo",
+   "start": 428,
+   "channel": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)"
+  }
+ ],
+ "rfe-quad-hold": [
+  {
+   "videoId": "iqqoKp4Gflo",
+   "start": 582,
+   "channel": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)"
+  }
+ ],
+ "plank-db-row": [
+  {
+   "videoId": "0G84C4v-sCU",
+   "start": 70,
+   "channel": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season"
+  }
+ ],
+ "sa-db-press": [
+  {
+   "videoId": "0G84C4v-sCU",
+   "start": 125,
+   "channel": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season"
+  }
+ ],
+ "kneel-hip-press": [
+  {
+   "videoId": "0G84C4v-sCU",
+   "start": 200,
+   "channel": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season"
+  }
+ ],
+ "sl-hinge-seesaw-row": [
+  {
+   "videoId": "0G84C4v-sCU",
+   "start": 250,
+   "channel": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season"
+  }
+ ]
 }
