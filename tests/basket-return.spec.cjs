@@ -43,7 +43,8 @@ test('le poste change les priorités et les variantes de séance',()=>{
   const p={...BP.create(),step:3};
   const guard=BP.sessionPlan(PT,JP,player({position:'meneur'}),p,'C').exercises.map(e=>e.id);
   const big=BP.sessionPlan(PT,JP,player({position:'pivot',archetypes:['rebondeur']}),p,'C').exercises.map(e=>e.id);
-  expect(guard).toContain('decel-stick');expect(big).toContain('split-jump');expect(guard).not.toEqual(big);
+  // Lot 27 : pour un arrière, l'arrêt-relance sur un pied (GBG) passe devant le freinage en trois appuis.
+  expect(guard.some(id=>['stop-go-single-leg','decel-stick'].includes(id))).toBe(true);expect(big).toContain('split-jump');expect(guard).not.toEqual(big);
   expect(JP.qiThemes({position:'meneur'})[0]).toBe('pnr-handler');
   expect(JP.qiThemes({position:'pivot'})[0]).toBe('pnr-screener');
 });

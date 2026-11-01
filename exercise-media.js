@@ -3086,5 +3086,53 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/deep-squat-shift.webp",
     "credit": "YouTube · Deep Squat Weight Shifting",
     "source": "https://www.youtube.com/watch?v=Z1JuTFnh8-k&t=38s"
+  },
+  "toe-rock": {
+    "video": "media/videos/yt/toe-rock.mp4",
+    "poster": "media/videos/yt/toe-rock.webp",
+    "credit": "YouTube · GBG Hoops · The Perfect Hoopers Warm Up",
+    "source": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=72s"
+  },
+  "knee-over-toe-rock": {
+    "video": "media/videos/yt/knee-over-toe-rock.mp4",
+    "poster": "media/videos/yt/knee-over-toe-rock.webp",
+    "credit": "YouTube · GBG Hoops · The Perfect Hoopers Warm Up",
+    "source": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=192s"
+  },
+  "credit-card-hop": {
+    "video": "media/videos/yt/credit-card-hop.mp4",
+    "poster": "media/videos/yt/credit-card-hop.webp",
+    "credit": "YouTube · GBG Hoops · The Perfect Hoopers Warm Up",
+    "source": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=428s"
+  },
+  "rfe-quad-hold": {
+    "video": "media/videos/yt/rfe-quad-hold.mp4",
+    "poster": "media/videos/yt/rfe-quad-hold.webp",
+    "credit": "YouTube · GBG Hoops · The Perfect Hoopers Warm Up",
+    "source": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=582s"
+  },
+  "plank-db-row": {
+    "video": "media/videos/yt/plank-db-row.mp4",
+    "poster": "media/videos/yt/plank-db-row.webp",
+    "credit": "YouTube · GBG Hoops · How to Train Your Upper Body for Basketball Season",
+    "source": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=70s"
+  },
+  "sa-db-press": {
+    "video": "media/videos/yt/sa-db-press.mp4",
+    "poster": "media/videos/yt/sa-db-press.webp",
+    "credit": "YouTube · GBG Hoops · How to Train Your Upper Body for Basketball Season",
+    "source": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=125s"
+  },
+  "kneel-hip-press": {
+    "video": "media/videos/yt/kneel-hip-press.mp4",
+    "poster": "media/videos/yt/kneel-hip-press.webp",
+    "credit": "YouTube · GBG Hoops · How to Train Your Upper Body for Basketball Season",
+    "source": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=200s"
+  },
+  "sl-hinge-seesaw-row": {
+    "video": "media/videos/yt/sl-hinge-seesaw-row.mp4",
+    "poster": "media/videos/yt/sl-hinge-seesaw-row.webp",
+    "credit": "YouTube · GBG Hoops · How to Train Your Upper Body for Basketball Season",
+    "source": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=250s"
   }
 };

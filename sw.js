@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v77-hanches-pieds';
+const CACHE = 'rehaab-v78-renfo-gbg';
 const PRECACHE = [
   './',
   './index.html',
@@ -1053,7 +1053,23 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/quadruped-hip-car.mp4',
   './media/videos/yt/quadruped-hip-car.webp',
   './media/videos/yt/deep-squat-shift.mp4',
-  './media/videos/yt/deep-squat-shift.webp'
+  './media/videos/yt/deep-squat-shift.webp',
+  './media/videos/yt/toe-rock.mp4',
+  './media/videos/yt/toe-rock.webp',
+  './media/videos/yt/knee-over-toe-rock.mp4',
+  './media/videos/yt/knee-over-toe-rock.webp',
+  './media/videos/yt/credit-card-hop.mp4',
+  './media/videos/yt/credit-card-hop.webp',
+  './media/videos/yt/rfe-quad-hold.mp4',
+  './media/videos/yt/rfe-quad-hold.webp',
+  './media/videos/yt/plank-db-row.mp4',
+  './media/videos/yt/plank-db-row.webp',
+  './media/videos/yt/sa-db-press.mp4',
+  './media/videos/yt/sa-db-press.webp',
+  './media/videos/yt/kneel-hip-press.mp4',
+  './media/videos/yt/kneel-hip-press.webp',
+  './media/videos/yt/sl-hinge-seesaw-row.mp4',
+  './media/videos/yt/sl-hinge-seesaw-row.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

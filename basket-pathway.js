@@ -56,7 +56,7 @@
           S('épaule',['facepull','rear-delt-fly','band-pullapart'],['3x15','3x15','3x15','2x15'])]},
         {key:'C',name:'Déplacements & souffle',slots:[
           S('unilatéral',['db-lunge','reverse-lunge'],['3x8','3x10','4x10','2x8']),
-          S('réception',['box-jump-step','landing'],['3x5','3x5','4x5','2x5']),
+          S('réception',['step-off-3d','box-jump-step','landing'],['3x5','3x5','4x5','2x5']),
           S('puissance',['kb-swing','mb-scoop','db-hip-thrust','hip-thrust'],['3x12','4x12','4x15','3x12']),
           S('latéral',['band-shuffle','monster-walk','lateral-lunge'],['3x1','3x1','4x1','2x1'],[30,40,45,30],{guard:['lateral-lunge','band-shuffle','monster-walk'],big:['monster-walk','band-shuffle','lateral-lunge']}),
           S('cheville',['lateral-hop','pogo'],['2x8','3x8','3x10','2x8']),
@@ -72,7 +72,7 @@
           S('détente',['seated-box-jump','box-jump-step','broad-jump'],['4x4','4x5','5x5','3x4'],null,{big:['box-jump-step','split-jump','broad-jump']}),
           S('force',['trapbar-deadlift','bb-rdl','rdl','kb-rdl'],['3x8','3x6','4x6','3x6']),
           S('unilatéral',['single-hop-stick','lateral-bound-stick'],['3x3','3x4','4x4','2x4']),
-          S('gainage',['copenhagen','side-plank-full'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
+          S('gainage',['copenhagen-long','copenhagen','side-plank-full'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
         {key:'B',name:'Haut du corps · puissance',slots:[
           S('puissance',['push-press','kb-press','db-shoulder'],['4x5','4x5','5x4','3x5']),
           S('force',['bb-press','db-press','floor-press'],['4x5','4x5','5x4','3x5']),
@@ -82,7 +82,7 @@
         {key:'C',name:'Accélération & freinage',slots:[
           S('vitesse',['wall-drill'],['3x1','3x1','3x1','2x1'],[20,20,20,20]),
           S('vitesse',['sled-push','accel-10','run-interval','bike-interval'],['1x4','1x5','1x6','1x4']),
-          S('freinage',['decel-stick','lateral-bound-stick'],['3x4','3x5','4x5','2x4'],null,{guard:['decel-stick','crossover-start'],big:['box-jump-step','decel-stick']}),
+          S('freinage',['stop-go-single-leg','decel-stick','lateral-bound-stick'],['3x4','3x5','4x5','2x4'],null,{guard:['stop-go-single-leg','decel-stick','crossover-start'],big:['box-jump-step','decel-stick']}),
           S('latéral',['lateral-bound-stick','lateral-hop'],['3x4','3x5','3x6','2x4'],null,{big:['split-jump','landing']}),
           S('puissance',['mb-scoop','kb-swing','db-hip-thrust'],['4x10','4x10','5x10','3x10']),
           S('tendon',['single-calf','db-calf'],['3x15','3x15','3x20','2x15'])]}
@@ -97,18 +97,18 @@
           S('détente',['trapbar-jump','broad-jump','box-jump-step'],['4x4','4x4','5x4','3x3'],null,{big:['box-jump-step','split-jump']}),
           S('unilatéral',['db-single-rdl','single-rdl'],['3x8','3x8','3x6','2x6']),
           S('unilatéral',['single-hop-stick','lateral-bound-stick'],['3x4','3x5','3x5','2x4']),
-          S('gainage',['copenhagen','side-plank'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
+          S('gainage',['copenhagen-long','copenhagen','side-plank'],['3x1','3x1','3x1','2x1'],[35,40,40,30])]},
         {key:'B',name:'Haut du corps & gainage',slots:[
-          S('force',['db-press','incline','bb-press'],['4x6','4x6','4x5','3x6']),
-          S('force',['db-row','bb-row','band-row'],['4x8','4x8','4x6','3x8']),
-          S('puissance',['push-press','db-shoulder','kb-press'],['3x6','3x6','4x5','3x5']),
+          S('force',['sa-db-press','db-press','incline','bb-press'],['4x6','4x6','4x5','3x6']),
+          S('force',['plank-db-row','db-row','bb-row','band-row'],['4x8','4x8','4x6','3x8']),
+          S('puissance',['kneel-hip-press','push-press','db-shoulder','kb-press'],['3x6','3x6','4x5','3x5']),
           S('gainage',['pallof','halo','pallof-cable'],['3x12','3x12','3x12','2x10']),
           S('épaule',['facepull','band-pullapart'],['3x15','3x15','3x15','2x15'])]},
         {key:'C',name:'Vitesse & condition match',slots:[
           S('vitesse',['wall-drill'],['2x1','2x1','2x1','2x1'],[20,20,20,20]),
-          S('vitesse',['sprint-20','accel-10','run-interval'],['1x3','1x4','1x5','1x3']),
+          S('vitesse',['sprint-20','hill-sprint','accel-10','run-interval'],['1x3','1x4','1x5','1x3']),
           S('appuis',['shuttle-5105','decel-stick'],['1x3','1x3','1x4','1x2'],null,{guard:['shuttle-5105','crossover-start','decel-stick'],big:['decel-stick','box-jump-step']}),
-          S('appuis',['crossover-start','lateral-bound-stick'],['3x4','3x5','3x5','2x4'],null,{big:['split-jump','lateral-bound-stick']}),
+          S('appuis',['split-push-step','crossover-start','lateral-bound-stick'],['3x4','3x5','3x5','2x4'],null,{big:['split-jump','lateral-bound-stick']}),
           S('cardio',['run-interval','bike-interval','rower-interval'],['1x1','1x1','1x1','1x1'],[600,720,840,600])]}
       ],
       tests:['shuttle','rsa','sprint10','pain']},
@@ -119,8 +119,8 @@
         {key:'A',name:'Force entretien',slots:[
           S('force',['bb-squat','db-squat','goblet'],['3x5','3x4','3x4','2x4']),
           S('force',['trapbar-deadlift','bb-rdl','rdl','kb-rdl'],['3x6','3x5','3x5','2x5']),
-          S('force',['bb-press','db-press','pushup'],['3x5','3x5','3x5','2x5']),
-          S('force',['pullup','chinup','pulldown','db-row'],['3x5','3x5','3x5','2x5']),
+          S('force',['sa-db-press','bb-press','db-press','pushup'],['3x5','3x5','3x5','2x5']),
+          S('force',['sl-hinge-seesaw-row','pullup','chinup','pulldown','db-row'],['3x5','3x5','3x5','2x5']),
           S('gainage',['copenhagen','side-plank'],['2x1','2x1','2x1','2x1'],[30,30,30,30]),
           S('tendon',['single-calf','db-calf'],['2x15','2x15','2x15','2x12'])]},
         {key:'C',name:'Vitesse & réactivité',slots:[
