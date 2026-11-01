@@ -2,6 +2,21 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-01 — Lot 27 : renfo basket GBG Hoops (tout le corps)
+
+**Fait**
+- Branche `feature/renfo-gbg`, cache `v78-renfo-gbg`. Sources : vidéos GBG Hoops (échauffement pieds nus, saison, après-match, mobilité, haut du corps), consignes MyObjectiv.
+- 27 exercices (catalogue 417 → 444) : bascule sur les orteils, genou au-delà des orteils, mini-rebonds genou verrouillé, fente pied arrière surélevé tenue, mollet lourd tenu, fente bulgare tenue, canapé genou décollé, grenouille, ischios « stretching gas », soulevé une jambe + arcs, squat skater genou devant, descente de box en 3 directions, split step + push step, arrêt-relance sur un pied, coupe en ciseau, hop step (seul et avec haltères), Copenhague levier long, fente latérale landmine, planche genou tenu, montées de genou assis, planche inversée, inclinaison latérale lente, et 4 exercices haut du corps GBG (rowing en position de pompe, développé un bras, poussée de hanches à genoux + développé, rowing alterné penché sur une jambe).
+- Remplacés (même id) : `hip-flexor` en version active, `pigeon` avec cercles, `iso-split` à la façon GBG (genou arrière à 5 cm, fesse serrée).
+- Fusionnés au lieu de doublons : « box-ankle-pogo » = `credit-card-hop` ; « wall-split-iso », « split-iso-calf » et « kneel-hover-iso » = `iso-split` amélioré + `heavy-calf-iso`. « push-step-low » = consigne de `split-push-step`. Non faits : « walkout-sl-rdl » (mouvement pas assez clair dans la vidéo).
+- Routines : nouvel échauffement « Pieds nus · chevilles et genoux » (10 min) ; avant-match avec 2 isométriques de 35 s (affiché 20 min au lieu de 18, durée réelle) ; nouveau retour au calme « Après match · isométriques » (12 min). Réservoirs enrichis (hop step, push step, genou au-delà des orteils, canapé décollé, grenouille, mini-rebonds). Rappel « les étirements tenus seuls ne préviennent pas les blessures » ; avant jambes : poussée isométrique de 10 s avant la première série lourde.
+- Parcours : descente de box en 3 directions avant la réception simple (étape 2 ; l’étape 1 garde sa règle « pas d’autre saut que réception et rebonds »), arrêt-relance sur un pied (étape 3, aussi pour les arrières), push step (étape 4), Copenhague long (étapes 3-4), sprint en côte en option (étape 4). Haut du corps : versions GBG en étape 4 (pré-saison) et 5 (saison), parce qu'elles ajoutent du gainage anti-rotation ou une jambe au même effort ; les étapes 2-3 gardent le lourd classique.
+- Bilan : mini-rebonds en tête de « chevilles réactives » (étape 2), squat skater et coupe en ciseau dans « freinage », mollet lourd tenu en tête des tendons du jour C, fente isométrique dans les tendons du genou à partir de l'étape 3.
+- Format « 1 × 20 » dans la séance libre : une série de 20 répétitions par exercice de force, avec le conseil de prendre plus lourd si les 20 passent. Pas de hausse automatique de charge (règle de l'app). Pas mis par défaut en remise en route : ça aurait changé les doses du parcours validées.
+- Démos (hommes, vérifiées à l'œil, Gemini indisponible en 503) : 8 extraits GBG (4 de l'échauffement pieds nus, 4 du haut du corps). Les autres nouveaux : icône + consignes.
+- Suite complète : 209 OK, 9 ignorés, 1 KO (`poids-tir.spec.cjs:55`, déjà KO avant).
+- Tests : nouveau `tests/renfo-gbg.spec.cjs` (5) ; catalogue 444 dans `basket-removal` ; `basket-return` accepte l’arrêt-relance sur un pied pour un arrière. « Après match · isométriques » garde 3 étirements tenus (règle des retours au calme).
+
 ## 2026-11-01 — Lot 26 : hanches, pieds et genou droit qui part vers l'extérieur
 
 **Fait**

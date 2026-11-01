@@ -158,6 +158,21 @@ Raideur, après un contact ou une mauvaise nuit.
 - [Kuhn 2009 · protocole d’exercices pour la coiffe des rotateurs](https://pubmed.ncbi.nlm.nih.gov/18835532/)
 - [OrthoInfo (AAOS) · programme coiffe et épaule](https://www.orthoinfo.org/recovery/rotator-cuff-and-shoulder-conditioning-program/)
 
+### Pieds nus · chevilles et genoux (10 min) — lot 27
+
+- [GBG Hoops · échauffement de 20 min, pieds nus d’abord](https://www.youtube.com/watch?v=iqqoKp4Gflo) (exercices repris ; 4 démos découpées dans cette vidéo, démonstrateur homme)
+- [Backman et Danielson 2011 · cheville raide et genou du sauteur en basket](https://doi.org/10.1177/0363546511420552)
+
+L'avant-match ajoute deux isométriques de 35 s avant les sauts : [GBG Hoops · rester fort toute la saison](https://www.youtube.com/watch?v=QFWxz3gqKuc).
+
+## Retours au calme
+
+### Après match · isométriques (12 min) — lot 27
+
+- [GBG Hoops · après le match : la mobilité, c’est de la force](https://www.youtube.com/watch?v=kS-x3r0z3CU)
+- [GBG Hoops · rester fort toute la saison : isométriques lourds de 35 s](https://www.youtube.com/watch?v=QFWxz3gqKuc)
+- [Rio et al. 2019 · isométriques et tendon rotulien en saison](https://pubmed.ncbi.nlm.nih.gov/31033611/)
+
 ## Notes
 
 - Le Nordic hamstring, le Copenhagen et le squat espagnol sont des exercices de prévention et de rééducation très étudiés ; leur effet sur la performance est plus discuté, ce qui n'est pas leur but ici.

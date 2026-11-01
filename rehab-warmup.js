@@ -351,14 +351,18 @@
   S.foam={label:'Wiewelhove et al. 2019 · rouleau de massage, performance et récupération (méta-analyse)',url:'https://www.frontiersin.org/articles/10.3389/fphys.2019.00376/full'};
   S.recovery={label:'Dupuy et al. 2018 · techniques de récupération après l’effort (méta-analyse)',url:'https://www.frontiersin.org/articles/10.3389/fphys.2018.00403/full'};
   S.tens={label:'Johnson et al. 2022 · électrostimulation (TENS) et douleur (méta-analyse, BMJ Open)',url:'https://bmjopen.bmj.com/content/12/2/e051073'};
+  // Lot 27 : préparateur basket GBG Hoops (vidéos YouTube, exercices repris et réécrits ; démonstrations non reprises).
+  S.gbgWarm={label:'GBG Hoops · échauffement de 20 min, pieds nus d’abord',url:'https://www.youtube.com/watch?v=iqqoKp4Gflo'};
+  S.gbgSeason={label:'GBG Hoops · rester fort toute la saison : isométriques lourds de 35 s',url:'https://www.youtube.com/watch?v=QFWxz3gqKuc'};
+  S.gbgPost={label:'GBG Hoops · après le match : la mobilité, c’est de la force',url:'https://www.youtube.com/watch?v=kS-x3r0z3CU'};
   const POOLS = {
-    raise:['jog-court','butt-kicks','high-knees','rope-single','jumping-jack','bike','rope','rope-run'],
-    feet:['carioca','backpedal','lateral-shuffle','defensive-slide','skip-a','a-skip','rope-lateral','rope-fb'],
-    mobLegs:['leg-swing-front','walking-quad','knee-hug-walk','hip-gate','spiderman-lunge','leg-swing-side','frankenstein','glute-cradle','lunge-twist','worlds-greatest','adductor-rockback','inchworm','hip-circles','ankle-mob'],
+    raise:['jog-court','butt-kicks','high-knees','rope-single','jumping-jack','bike','rope','rope-run','hop-step-rhythm'],
+    feet:['carioca','backpedal','lateral-shuffle','defensive-slide','skip-a','a-skip','rope-lateral','rope-fb','split-push-step'],
+    mobLegs:['leg-swing-front','walking-quad','knee-hug-walk','hip-gate','spiderman-lunge','leg-swing-side','frankenstein','glute-cradle','lunge-twist','worlds-greatest','adductor-rockback','inchworm','hip-circles','ankle-mob','knee-over-toe-rock','couch-lift','frog-rock'],
     mobUpper:['arm-circles','torso-twist','band-dislocate','inchworm','quad-rotation','wall-slide','thoracic'],
-    actLegs:['monster-walk','single-bridge','single-leg-reach','hip-abduction','side-plank','clamshell','calf','tibialis','miniband-stance'],
+    actLegs:['monster-walk','single-bridge','single-leg-reach','hip-abduction','side-plank','clamshell','calf','tibialis','miniband-stance','sl-rdl-crescent','skater-ankle-rock'],
     actUpper:['band-pullapart','scap-pushup','band-er','plank-shoulder-tap','wall-slide','er-iso'],
-    power:['pogo','snap-down','skip-a','power-skip','accel-10','crossover-start','lateral-bound-stick','approach-jump','defensive-slide','a-skip'],
+    power:['credit-card-hop','pogo','snap-down','skip-a','power-skip','accel-10','crossover-start','lateral-bound-stick','approach-jump','defensive-slide','a-skip'],
     hands:['wrist-mob','finger-ext','forearm-stretch'],
     // Lot 26 : un mouvement de hanche et un de pied au début de chaque séance (hanches mobiles et contrôlées, genou au-dessus du pied).
     hipPrep:['quadruped-hip-car','side-lying-abduction','hip-90-90-liftoff','airplane','deep-squat-shift','box-figure-four'],
@@ -408,8 +412,9 @@
   const warmups = [
     {id:'practice',title:'Avant entraînement',minutes:12,thumb:'lateral-shuffle',sources:['shred','fifaBasket','ankleWarm','behm'],
       steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,90],['feet',2,20],['mobLegs',3,30],['actLegs',2,30],['power',2,20]]},
-    {id:'match',title:'Avant match',minutes:18,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm','behm'],
-      steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,120],['feet',3,20],[['ankle-mob'],1,30,{fixed:true}],['mobLegs',4,30],['mobUpper',1,30],['actLegs',3,30],['power',4,20]]},
+    {id:'match',title:'Avant match',minutes:20,thumb:'carioca',sources:['shred','fifaBasket','ankleWarm','behm'],
+      // Lot 27 : deux isométriques de 35 s avant les sauts (GBG, avant-match) : tendons du genou et du mollet prêts, sans fatigue.
+      steps:[[['gun-legs'],1,45,{optional:true,fixed:true}],['raise',1,120],['feet',3,20],[['ankle-mob'],1,30,{fixed:true}],['mobLegs',4,30],['mobUpper',1,30],['actLegs',2,30],[['iso-split','soleus-wall-iso','wall-sit'],2,35,{fixed:true}],['power',4,20]]},
     {id:'express',title:'Express',minutes:7,thumb:'worlds-greatest',sources:['shred','fifa','behm'],
       steps:[['raise',1,60],['mobLegs',2,30],['feet',1,20],['power',2,20]]},
     {id:'legs',title:'Avant jambes ou sauts',minutes:10,thumb:'monster-walk',sources:['fifa','backman','percussion','behm'],
@@ -419,6 +424,9 @@
     {id:'activation',title:'Activation bas du corps',minutes:14,thumb:'single-bridge',sources:['shred','fifa','mckeon','copenhagen','rio','behm'],
       steps:[['raise',1,60],[['hip-gate','glute-cradle','leg-swing-side','worlds-greatest','hip-circles'],2,30],[['foot-bridge','pad-single-calf','tibialis','single-calf','calf','ankle-mob'],2,30],[['quadruped-hip-car','side-lying-abduction','single-bridge','monster-walk','hip-abduction','clamshell','bridge'],2,30],[['copenhagen','ham-iso-bridge','side-plank'],1,20],
         [['single-leg-stand','sl-balance-perturb','airplane'],1,30],[['iso-split','soleus-wall-iso','wall-sit'],1,30],[['pogo','single-hop-stick','snap-down'],1,20]]},
+    // Lot 27 : échauffement pieds nus de GBG Hoops. Orteils, chevilles, genoux, puis petits rebonds et quadriceps tenus, avant de mettre les chaussures.
+    {id:'barefoot',title:'Pieds nus · chevilles et genoux',minutes:10,thumb:'knee-over-toe-rock',sources:['gbgWarm','backman','behm'],
+      steps:[[['toe-rock','calf'],1,30,{fixed:true}],[['knee-over-toe-rock','ankle-mob'],1,30,{fixed:true}],[['credit-card-hop','pogo','calf'],1,30,{fixed:true}],[['rfe-quad-hold','couch-lift','couch-stretch'],1,60,{fixed:true}],['mobLegs',2,30],['actLegs',1,30]]},
     {id:'shoot',title:'Avant shoot',minutes:7,thumb:'band-dislocate',sources:['kuhn','orthoShoulder','behm'],
       steps:[['mobUpper',3,30],['actUpper',2,30],['hands',2,25]]},
     {id:'dynamic',title:'Étirements dynamiques',minutes:9,thumb:'worlds-greatest',sources:['behm','fifa'],
@@ -430,6 +438,9 @@
       steps:[['flush',1,90],['stretchLegs',4,30],['stretchUpper',1,30],['calm',1,60]]},
     {id:'after-match',title:'Après match',minutes:14,thumb:'legs-up-wall',sources:['recovery','foam','behm'],
       steps:[['flush',1,180],['release',2,45,{optional:true}],['stretchLegs',5,30],[['legs-up-wall'],1,120,{fixed:true}],['calm',1,60]]},
+    // Lot 27 : après match, des positions tenues sous tension (GBG) en plus des étirements : moins de raideur le lendemain.
+    {id:'after-match-iso',title:'Après match · isométriques',minutes:12,thumb:'iso-split',sources:['gbgPost','gbgSeason','rio'],
+      steps:[['flush',1,120],[['iso-split'],1,45,{fixed:true}],[['single-wall-sit','wall-sit'],1,30,{fixed:true}],[['rfe-goblet-hold','rfe-quad-hold','iso-split'],1,40,{fixed:true}],['stretchLegs',3,30],['calm',1,60]]},
     {id:'evening',title:'Avant de dormir',minutes:10,thumb:'childs-pose',sources:['behm'],
       steps:[['stretchBack',3,40],['stretchLegs',3,40],[['legs-up-wall'],1,120,{fixed:true}],['calm',1,90]]}
   ];
@@ -445,9 +456,13 @@
     const trimmable=e=>!e.fixed&&!e.routineTag&&e.measure==='seconds'&&e.seconds>20;
     while(PT.estimateSeconds(exercises,'classic')>w.minutes*60+r.extra&&exercises.some(trimmable)) exercises.forEach(e=>{if(trimmable(e))e.seconds=Math.max(20,e.seconds-10);});
     if(exercises.length<3) return {error:'Pas assez de mouvements compatibles aujourd’hui. Vérifie tes douleurs et ton matériel.'};
-    const reasons=w.id==='activation'?['Activation : on réveille les muscles qui tiennent le genou et la cheville (pied, mollets, fessiers, adducteurs) avant de leur demander de sauter.','Ordre fixe : mobilité → pied → hanche → équilibre sur une jambe → effort tenu → petits rebonds. Chaque côté travaille seul.','À faire avant une séance de jambes, un entraînement ou un match, ou seule les jours de repos pour garder des jambes vivantes.']
+    const reasons=w.id==='barefoot'?['Pieds nus : les gros orteils, les chevilles et les genoux bougent mieux sans chaussures. On prépare le pied avant le terrain.','Orteils, cheville au-delà des orteils, mini-rebonds genou verrouillé, puis quadriceps tenus 60 secondes. Chaussures ensuite.','Sol propre et sans risque pour les pieds. Rebonds seulement s’ils ne font pas mal.']
+      :w.id==='after-match-iso'?['Après match : des positions tenues sous tension, en plus des étirements. La mobilité, c’est aussi de la force.','Isométriques de 30 à 45 secondes, sans aller jusqu’à l’épuisement. Ils calment souvent le tendon du genou.','Puis trois étirements tenus et une minute de respiration.']
+      :w.id==='activation'?['Activation : on réveille les muscles qui tiennent le genou et la cheville (pied, mollets, fessiers, adducteurs) avant de leur demander de sauter.','Ordre fixe : mobilité → pied → hanche → équilibre sur une jambe → effort tenu → petits rebonds. Chaque côté travaille seul.','À faire avant une séance de jambes, un entraînement ou un match, ou seule les jours de repos pour garder des jambes vivantes.']
       :cool?['Retour au calme : le cœur redescend, puis des étirements tenus 30 à 45 secondes, sans forcer.','Les étirements tenus vont après l’effort : avant, ils peuvent faire perdre un peu de force et de détente.']
-      :['Échauffement basket : on monte en température, on mobilise en étirements dynamiques, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs.','Les mouvements changent chaque jour : même structure, jamais la même routine.'];
+      :['Échauffement basket : on monte en température, on mobilise en étirements dynamiques, on active, puis on finit par des appuis et des sauts.','Les échauffements neuromusculaires de ce type réduisent les blessures de genou et de cheville chez les basketteurs. Les étirements tenus seuls, eux, ne les préviennent pas.','Les mouvements changent chaque jour : même structure, jamais la même routine.'];
+    if(w.id==='legs') reasons.push('Avant ta première série lourde : une poussée isométrique de 10 secondes à fond (contre une barre bloquée ou un mur) réveille les muscles.');
+    if(w.id==='match') reasons.push('Deux isométriques de 35 secondes avant les sauts : les tendons du genou et du mollet sont prêts, sans fatigue (GBG).');
     if(exercises.some(e=>e.id==='gun-legs')) reasons.push('Pistolet de massage en ouverture : une minute à vitesse basse suffit. Il gagne un peu d’amplitude sans faire perdre de force, mais ne remplace pas l’échauffement actif.');
     if(exercises.some(e=>e.tool==='foamroller')) reasons.push('Rouleau : lent, sur le muscle. Il diminue un peu les courbatures ressenties le lendemain.');
     if(r.missing) reasons.push('Certains sauts ou mouvements ont été remplacés à cause de ton matériel ou de tes douleurs.');
@@ -510,10 +525,10 @@
     chest:{label:'Pectoraux',region:'shoulder',rehab:'shoulder',release:[],mobile:['arm-circles'],stretch:['doorway-chest'],tens:[]},
     arms:{label:'Bras et avant-bras',region:'elbow',rehab:'hand',release:['gun-forearms'],mobile:['wrist-mob'],stretch:['forearm-stretch','triceps-stretch'],tens:[]},
     upperback:{label:'Haut du dos',region:'back',rehab:'back',release:['foam-upper-back','gun-upper-back'],mobile:['thoracic','quad-rotation','cat'],stretch:['lat-stretch','childs-pose'],tens:['tens-upper-back']},
-    lowback:{label:'Bas du dos',region:'back',rehab:'back',release:[],mobile:['cat','hip-90-90'],stretch:['childs-pose','lying-twist','figure-four'],tens:['tens-lowback']},
+    lowback:{label:'Bas du dos',region:'back',rehab:'back',release:[],mobile:['cat','hip-90-90-liftoff','hip-90-90'],stretch:['childs-pose','lying-twist','figure-four'],tens:['tens-lowback']},
     abs:{label:'Abdominaux',region:'back',rehab:'back',release:[],mobile:['torso-twist','cat'],stretch:['cobra','side-bend'],tens:[]},
     hipflex:{label:'Avant de hanche',region:'hip',rehab:'hip',release:[],mobile:['hip-circles','leg-swing-front'],stretch:['hip-flexor','couch-stretch'],tens:[]},
-    glutes:{label:'Fessiers',region:'hip',rehab:'hip',release:['foam-glutes','gun-glutes'],mobile:['glute-cradle','hip-90-90'],stretch:['figure-four','pigeon','outer-hip-stretch'],tens:[]},
+    glutes:{label:'Fessiers',region:'hip',rehab:'hip',release:['foam-glutes','gun-glutes'],mobile:['glute-cradle','hip-90-90-liftoff','hip-90-90'],stretch:['figure-four','pigeon','outer-hip-stretch'],tens:[]},
     adductors:{label:'Intérieur des cuisses',region:'hip',rehab:'hip',release:['foam-adductors','gun-adductors'],mobile:['leg-swing-side','hip-gate'],stretch:['butterfly','side-lunge-stretch'],tens:[]},
     quads:{label:'Quadriceps',region:'knee',rehab:'knee',release:['foam-quads','gun-quads'],mobile:['walking-quad'],stretch:['quad-stretch','couch-stretch'],tens:['tens-quads']},
     hamstrings:{label:'Ischio-jambiers',region:'hip',rehab:'hip',release:['foam-hamstrings','gun-hamstrings'],mobile:['frankenstein','leg-swing-front'],stretch:['supine-hamstring','hamstring'],tens:['tens-hamstrings']},

@@ -204,10 +204,10 @@
 
   // Candidats du créneau « point faible », par qualité puis par étape (1, 2, 3, 4 et plus). L'étape 1 reste sans impact.
   const focusLists = {
-    firststep:[['knee-drive-iso','iso-wall-drive','psoas-march','a-march'],['a-march','wall-drill','iso-wall-drive','knee-drive-iso'],['half-kneel-start','falling-start','split-start','reaction-start','a-skip','wall-drill'],['sled-push','reaction-start','hip-open-start','band-resisted-start','mb-sprint-start','drop-step-start','split-start','falling-start']],
+    firststep:[['knee-drive-iso','iso-wall-drive','psoas-march','a-march','bench-hip-flexion','psoas-plank'],['a-march','wall-drill','iso-wall-drive','knee-drive-iso'],['half-kneel-start','falling-start','split-start','reaction-start','a-skip','wall-drill'],['sled-push','reaction-start','hip-open-start','band-resisted-start','mb-sprint-start','drop-step-start','split-start','falling-start']],
     vertical:[['sl-hip-thrust','db-hip-thrust','hip-thrust','single-bridge'],['mb-scoop','snap-down','kneel-jump-squat','box-jump-step','kb-swing'],['penultimate-step','seated-box-jump','vertical-jump','step-up-hop','db-jump','box-jump-step'],['approach-jump','power-skip','rim-touches','single-leg-vertical','trapbar-jump','band-assisted-jump','vertical-jump']],
-    decel:[['ecc-split-squat','step-down','iso-split','miniband-stance'],['drop-squat','snap-down','lateral-lunge','reverse-lunge'],['drop-lunge','lateral-decel','lateral-drop-stick','decel-stick','lateral-bound-stick'],['cut-45-stick','lateral-decel','sprint-backpedal','decel-stick','drop-step-start']],
-    reactive:[['soleus-wall-iso','calf-hold','foot-doming','single-calf'],['pogo-forward','pogo','pogo-lateral','single-calf'],['square-hops','single-pogo','lateral-hop','rope-single','pogo'],['hurdle-hops','drop-jump','lateral-bounds','single-pogo','lateral-hop']],
+    decel:[['ecc-split-squat','step-down','iso-split','miniband-stance'],['drop-squat','snap-down','skater-ankle-rock','lateral-lunge','reverse-lunge'],['drop-lunge','stop-go-single-leg','lateral-decel','lateral-drop-stick','decel-stick','lateral-bound-stick'],['scissor-cut','cut-45-stick','lateral-decel','sprint-backpedal','decel-stick','drop-step-start']],
+    reactive:[['soleus-wall-iso','calf-hold','foot-doming','single-calf'],['credit-card-hop','pogo-forward','pogo','pogo-lateral','single-calf'],['square-hops','single-pogo','lateral-hop','rope-single','pogo'],['hurdle-hops','drop-jump','lateral-bounds','single-pogo','lateral-hop']],
     strength:[['split-squat','step-up','single-bridge'],['b-stance-rdl','single-rdl','db-single-rdl','db-step-up','step-up'],['trapbar-deadlift','db-single-rdl','landmine-reverse-lunge','lateral-box-step-up','db-bulgarian','step-up'],['trapbar-deadlift','db-single-rdl','lateral-box-step-up','db-bulgarian','step-up']],
     balance:[['single-leg-eyes','single-leg-stand','foot-bridge'],['single-leg-reach','airplane','foot-bridge'],['single-hop-stick','single-leg-reach'],['single-hop-stick','single-leg-reach']],
     core:[['deadbug','bird-dog','side-plank'],['pallof','suitcase-carry','side-plank'],['landmine-rotation','mb-rotational','pallof-cable','side-plank-full','halo'],['mb-single-leg-rot','landmine-rotation','pallof-cable','side-plank-full','halo']],
@@ -273,9 +273,9 @@
   }
   const tendonLists = {
     A:[['spanish-squat','wall-sit','slant-squat'],'tendon rotulien'],
-    A3:[['slant-squat','reverse-nordic','spanish-squat'],'tendon rotulien'],
+    A3:[['slant-squat','reverse-nordic','spanish-squat','iso-split'],'tendon rotulien'],
     B:[['facepull','band-pullapart'],'épaules'],
-    C:[['calf-hold','foot-doming','tibialis'],'tendon d’Achille et pied']
+    C:[['heavy-calf-iso','calf-hold','foot-doming','tibialis'],'tendon d’Achille et pied']
   };
   // Genou qui part sur le côté (question kneeTrack) : {side, dir} ou null.
   function kneeTrack(a) {
