@@ -2,6 +2,23 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-01 — Lot 26 : hanches, pieds et genou droit qui part vers l'extérieur
+
+**Fait**
+- Branche `feature/hanches-pieds`, cache `v77-hanches-pieds`. Sources : vidéo hanches (cleopatra.niaa), kiné MyObjectiv (« Pied plat ? »), GBG Hoops (fente avec élastique au genou, mollet sur coussin).
+- 14 exercices (catalogue 403 → 417) : squat profond avec transfert, cercles de hanche à quatre pattes, demi-grand écart, pigeon sur banc, figure 4 debout, accroupi-genoux-debout, saut des genoux, pont du pied, soulevé une jambe en pont du pied, soulevé une jambe kettlebell, fente élastique qui tire le genou dehors, abduction couché jambe tendue, mollet une jambe sur coussin, équilibre pied penché.
+- Améliorés (même id) : `airplane` devient l'avion de hanche en rotation (5 à 8 rép.), `single-calf` (gros orteil et 2e orteil), `hip-abduction` (pointe jamais vers l'extérieur), `hip-circles` (pied au-dessus d'un banc en option). La consigne « pointe neutre » prévue sur le gainage latéral et la coquille n'a pas été ajoutée : ces exercices n'ont pas de jambe qui s'écarte pointe libre.
+- Quick rehab : protocoles `hips` (Explorer, Contrôler, Charger) et `foot-knee` (Réveiller, Renforcer, Rebondir), avec noms de niveaux propres (`levelNames`, `RW.levelName`). Deux tuiles en tête de Quick rehab, lancées au niveau atteint (20 min). Ajoutés aux choix « Où exactement ? », à la liste blanche du coach et à `REHAB-SOURCES.md`.
+- Début de séance : réservoirs `hipPrep` et `footPrep`. Jambes = 1 hanche + 1 pied (à la place d'une mobilité et de l'activation générique) ; haut du corps = 1, en alternance. L'échauffement n'ajoute plus un mouvement déjà présent dans la séance. Activation : pont du pied, mollet sur coussin, cercles à quatre pattes, abduction couché.
+- Programme général : question du bilan `kneeTrack` (« un genou part-il sur le côté ? »). Réponse côté + sens → 1 exercice d'alignement en tête (bloc kiné, +1 mouvement, 4 au plus), qui change chaque jour, avec « commence par la jambe droite, une série de plus ». Parcours, remise en route, séance du joueur et séance kiné. Quick rehab propose alors directement `foot-knee`. Hanches raides déclarées → décollés 90/90 et cercles avant l'étirement tenu.
+- Démos (hommes uniquement, vérifiées à l'œil) : pont du pied et soulevé une jambe kettlebell = extraits de la vidéo du kiné (`media/videos/ig/`) ; cercles à quatre pattes et squat profond avec transfert = YouTube. Les 10 autres : icône + consignes (quota Gemini épuisé, 429).
+- Hors sujet mais bloquant : un plan commencé un dimanche empilait corde + course le même jour (3 séances à l'accueil, l'écran défilait). Règle ajoutée dans `season-plan.js` : un seul cardio par jour. Test `cardio.spec.cjs` ajouté (vérifié en échec sur l'ancien code) ; `cardio-ui.spec.cjs` rendu indépendant du jour de la semaine.
+- Tests : nouveau `tests/hanches-pieds.spec.cjs` (6) ; `accueil.spec.cjs` lit l'ordre de l'activation dans sa définition ; catalogue 417 dans `basket-removal`. Suite complète : 204 OK, 9 ignorés, 1 KO (`poids-tir.spec.cjs:55`, déjà KO avant). Captures 390 px vérifiées (Quick rehab, séance du parcours jour A avec genou droit).
+
+**À savoir**
+- La vidéo du kiné vise le pied plat (genou qui rentre). Pour son genou droit qui sort, la consigne est inversée : ne pas rouler sur le bord extérieur, renforcer en plus le bord du pied, l'intérieur des cuisses et le côté de la hanche. L'app ne pose pas de diagnostic.
+- Il doit répondre à la nouvelle question dans son bilan (Moi → bilan physique) pour que l'alignement apparaisse dans son programme.
+
 ## 2026-10-31 — Lot 25 : l'accueil suit le calendrier (muscu au planning ≠ skills à l'accueil)
 
 **Fait**

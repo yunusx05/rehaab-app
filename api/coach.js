@@ -33,7 +33,7 @@ Règles :
 Zones possibles pour avoidRegions : neck, shoulder, elbow, wrist, back, hip, knee, ankle.`;
 
 // Protocoles de soin connus de l'app (rehab-warmup.js) : l'IA ne peut en citer aucun autre.
-const PROTOCOLS = ['knee-patellar', 'knee-pfp', 'knee-control', 'ankle-sprain', 'ankle-stiff', 'achilles', 'plantar', 'shin', 'groin', 'hip-flexor', 'hip-lateral', 'hamstring', 'low-back', 'shoulder', 'hand', 'elbow', 'neck'];
+const PROTOCOLS = ['hips', 'foot-knee', 'knee-patellar', 'knee-pfp', 'knee-control', 'ankle-sprain', 'ankle-stiff', 'achilles', 'plantar', 'shin', 'groin', 'hip-flexor', 'hip-lateral', 'hamstring', 'low-back', 'shoulder', 'hand', 'elbow', 'neck'];
 
 const SCHEMA = {
   type: 'OBJECT',

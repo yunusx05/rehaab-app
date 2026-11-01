@@ -189,3 +189,14 @@ test('séance faite : reconnue comme faite dans le planning, et la sauvegarde ga
   const old=JSON.parse(JSON.stringify(s));delete old.cardio;
   expect(PT.validateState(old).cardio).toEqual({perWeek:2});
 });
+
+// Lot 26 : un plan commencé un dimanche n'a qu'un jour dans sa première semaine. On n'y empile plus corde + course.
+test('un seul cardio par jour, même la semaine de départ réduite à un jour',()=>{
+  const s=joueur({step:1});s.pathway=BP.create({startStep:1,now:'2026-10-18'});
+  const w=SP.weekSchedule(s,MONDAY,'2026-10-18');
+  const sunday=items(w).filter(x=>x.type==='cardio'&&x.date==='2026-10-18');
+  expect(sunday.length).toBeLessThanOrEqual(1);
+  // Une semaine entière garde ses deux cardios, sur deux jours différents.
+  const full=items(SP.weekSchedule(joueur(),MONDAY,MONDAY)).filter(x=>x.type==='cardio');
+  expect(full).toHaveLength(2);expect(new Set(full.map(x=>x.date)).size).toBe(2);
+});

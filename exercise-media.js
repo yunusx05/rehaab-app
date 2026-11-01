@@ -3062,5 +3062,29 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/lying-twist.webp",
     "credit": "YouTube · Spinal Twist, Supine",
     "source": "https://www.youtube.com/watch?v=6SZNflspv_U&t=21s"
+  },
+  "foot-bridge": {
+    "video": "media/videos/ig/foot-bridge.mp4",
+    "poster": "media/videos/ig/foot-bridge.webp",
+    "credit": "Instagram · MyObjectiv, pont du pied",
+    "source": "https://www.instagram.com/p/DeCYnSJIrFV/"
+  },
+  "kb-single-rdl": {
+    "video": "media/videos/ig/kb-single-rdl.mp4",
+    "poster": "media/videos/ig/kb-single-rdl.webp",
+    "credit": "Instagram · MyObjectiv, soulevé une jambe",
+    "source": "https://www.instagram.com/p/DeCYnSJIrFV/"
+  },
+  "quadruped-hip-car": {
+    "video": "media/videos/yt/quadruped-hip-car.mp4",
+    "poster": "media/videos/yt/quadruped-hip-car.webp",
+    "credit": "YouTube · Quadruped Hip CAR's",
+    "source": "https://www.youtube.com/watch?v=9hmX3xwrUh0&t=18s"
+  },
+  "deep-squat-shift": {
+    "video": "media/videos/yt/deep-squat-shift.mp4",
+    "poster": "media/videos/yt/deep-squat-shift.webp",
+    "credit": "YouTube · Deep Squat Weight Shifting",
+    "source": "https://www.youtube.com/watch?v=Z1JuTFnh8-k&t=38s"
   }
 };

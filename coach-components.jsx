@@ -55,7 +55,7 @@ function ptCoachContext(data){
     skills:window.BasketSkills?.summary(data.skills)||null,
     week:ptCoachWeek(data),
     muscu:ptCoachMuscu(data),
-    care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.LEVELS[level]||level})),
+    care:Object.entries(data.rehab?.levels||{}).map(([protocol,level])=>({protocol,level:window.RehabWarmup?.levelName?.(protocol,level)||level})),
     season:ptCoachSeason(data,today),
     shooting:window.Shooting?.summary(data.shooting)||null,
     weight:(()=>{const BW=window.BodyWeight;if(!BW)return null;const s=BW.summary(data);return s.avg===null?null:{avg7:s.avg,trendPerWeek:s.trend,playWeight:s.playWeight,gap:s.gap};})(),

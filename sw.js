@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v76-accord-planning';
+const CACHE = 'rehaab-v77-hanches-pieds';
 const PRECACHE = [
   './',
   './index.html',
@@ -171,6 +171,10 @@ const PRECACHE = [
 // Illustrations du catalogue : mises en cache en arrière-plan après l'activation, jamais attendues à l'installation.
 // Sans cela, la première ouverture après une mise à jour télécharge des dizaines de Mo avant d'être utilisable.
 const PRECACHE_MEDIA = [
+  './media/videos/ig/kb-single-rdl.webp',
+  './media/videos/ig/kb-single-rdl.mp4',
+  './media/videos/ig/foot-bridge.webp',
+  './media/videos/ig/foot-bridge.mp4',
   './media/3d/player.glb',
   './vendor/three.min.js',
   './media/ui/hub/card.webp',
@@ -1045,7 +1049,11 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/mi-transition-layups.mp4',
   './media/videos/yt/mi-transition-layups.webp',
   './media/videos/yt/lying-twist.mp4',
-  './media/videos/yt/lying-twist.webp'
+  './media/videos/yt/lying-twist.webp',
+  './media/videos/yt/quadruped-hip-car.mp4',
+  './media/videos/yt/quadruped-hip-car.webp',
+  './media/videos/yt/deep-squat-shift.mp4',
+  './media/videos/yt/deep-squat-shift.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

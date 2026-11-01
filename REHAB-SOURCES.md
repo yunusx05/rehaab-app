@@ -6,6 +6,23 @@ Liens vérifiés en ligne le 2026-10-01 (présence de la page et du titre).
 
 ## Protocoles Quick Rehab
 
+### Hanches mobiles et fortes (`hips`) — lot 26
+Hanches raides ou faibles, sans douleur nette. Niveaux : Explorer, Contrôler, Charger.
+
+- [cleopatra.niaa · mobilité de hanche : amplitude, contrôle et charge](https://www.instagram.com/p/DcyzD_2Ok1R/) (exercices repris ; la démonstration n'est pas reprise dans l'app)
+- [Hölmich et al. 1999 · entraînement actif et douleur de l’aine](https://pubmed.ncbi.nlm.nih.gov/9989713/)
+- [FIFA 11+ · BJSM 2015](https://bjsm.bmj.com/content/49/9/577)
+
+### Pieds, chevilles et genou dans l’axe (`foot-knee`) — lot 26
+Le genou part sur le côté en marchant ou en atterrissant. Niveaux : Réveiller, Renforcer, Rebondir. Consigne commune : appui sur le gros orteil et le 2e orteil, genou au-dessus du 2e orteil.
+
+- [McKeon et al. 2015 · les muscles du pied, socle de la stabilité (BJSM)](https://pubmed.ncbi.nlm.nih.gov/24659509/) — vérifié en ligne le 2026-11-01
+- [Méta-analyse · renforcer les muscles du pied améliore son fonctionnement et l’équilibre](https://pmc.ncbi.nlm.nih.gov/articles/PMC9020712/) — vérifié en ligne le 2026-11-01
+- [Recommandations JOSPT 2019 · douleur fémoro-patellaire](https://www.jospt.org/doi/10.2519/jospt.2019.0302)
+- [MyObjectiv (Richard, kiné du sport) · pied plat, voûte et genou](https://www.instagram.com/p/DeCYnSJIrFV/) (exercices repris ; démos du pont du pied et du soulevé une jambe reprises, démonstrateur homme)
+
+La vidéo du kiné parle du pied plat (genou qui rentre). Pour un genou qui part vers l'extérieur, les mêmes exercices restent utiles, avec la consigne inversée : ne pas rouler sur le bord extérieur du pied, et renforcer en plus le bord du pied (éversion), l'intérieur des cuisses (fente avec élastique qui tire le genou dehors) et le côté de la hanche (abduction couché, pointe neutre).
+
 ### Tendon rotulien (genou du sauteur) (`knee-patellar`)
 Sous la rotule, en sautant ou en atterrissant.
 

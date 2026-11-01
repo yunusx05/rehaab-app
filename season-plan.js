@@ -212,6 +212,8 @@
     if(item.legs==='heavy'&&placed.some(x=>x!==item&&x.legs==='heavy'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances de jambes lourdes.';
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
+    // Lot 26 : un seul cardio par jour, même sans impact (un plan commencé un dimanche empilait corde + course le même jour).
+    if(item.type==='cardio'&&placed.some(x=>x!==item&&x.type==='cardio'&&x.date===date)) return 'Une seule séance de cardio par jour.';
     // Cardio à impacts (corde, course) : jamais deux jours de suite, ni avec des jambes lourdes, ni un jour de club ou au lendemain d'un match.
     if(item.type==='cardio'&&item.legs==='impact'){
       if(placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Cardio à impacts et jambes lourdes le même jour : trop de charge.';

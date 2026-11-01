@@ -11,7 +11,9 @@ function joueur(){
   s.owned=home;s.checkIn.equipment=home;
   s.player=JP.validatePlayer({position:'meneur'});
   s.pathway=BP.create({startStep:3});
-  s.seasonPlan={resetWeeks:0};
+  // Plan commencé la semaine dernière : la semaine en cours a ses 7 jours, quel que soit le jour où le test tourne
+  // (un plan commencé un dimanche n'a qu'un jour, donc un seul cardio depuis le lot 26).
+  s.seasonPlan={resetWeeks:0,start:PT.dateKey(new Date(Date.now()-8*86400000))};
   return s;
 }
 const seed=(page,data)=>page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('seeded')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('seeded','1');}},{data,key:PT.STORAGE_KEY});

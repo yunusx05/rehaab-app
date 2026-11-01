@@ -4920,5 +4920,56 @@
   "quality": 5,
   "size": 103125,
   "query": "lying knee drop spinal twist stretch"
+ },
+ "box-pigeon": {
+  "rejected": []
+ },
+ "straddle-lean": {
+  "rejected": [
+   "OF20FvBeM94"
+  ]
+ },
+ "box-figure-four": {
+  "rejected": []
+ },
+ "squat-kneel-stand": {
+  "rejected": []
+ },
+ "kneel-jump-squat": {
+  "rejected": []
+ },
+ "quadruped-hip-car": {
+  "videoId": "9hmX3xwrUh0",
+  "duration": 73,
+  "title": "Quadruped Hip CAR's",
+  "start": 18,
+  "seen": "quadruped hip CARs",
+  "quality": 5,
+  "size": 59701,
+  "query": "quadruped hip CARs controlled articular rotations"
+ },
+ "band-split-squat-out": {
+  "rejected": []
+ },
+ "deep-squat-shift": {
+  "videoId": "Z1JuTFnh8-k",
+  "duration": 72,
+  "title": "Deep Squat Weight Shifting",
+  "start": 38,
+  "seen": "deep squat lateral weight shift hip mobility",
+  "quality": 5,
+  "size": 98005,
+  "query": "deep squat lateral weight shift hip mobility"
+ },
+ "side-lying-abduction": {
+  "rejected": []
+ },
+ "pad-single-calf": {
+  "rejected": []
+ },
+ "inversion-sl-balance": {
+  "rejected": [
+   "DWsYuA6BBgk"
+  ]
  }
 }
