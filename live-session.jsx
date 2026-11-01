@@ -18,10 +18,15 @@ function PTSetSheet({exercise,row,onChange,onSave,onQuick,onClose,error}) {
 const ptSideSeconds=m=>m.measure==='seconds'?m.seconds:(m.targetMax||m.max||10)*3;
 const ptMoveSeconds=m=>ptSideSeconds(m)*(m.unilateral?2:1);
 const ptTimer=(seconds,label,kind,extra={},paused=false)=>({id:PT.uid(),endAt:paused?null:Date.now()+seconds*1000,remaining:seconds,duration:seconds,label,kind,...extra});
-const ptFromTemplate=(t,paused=false)=>t?ptTimer(t.seconds,t.label,t.kind,t.side?{side:t.side}:{},paused):null;
+const ptFromTemplate=(t,paused=false)=>t?ptTimer(t.seconds,t.label,t.kind,{...(t.side?{side:t.side}:{}),...(t.calls?{calls:t.calls}:{})},paused):null;
 const ptRoutineTemplate=(m,kind)=>({seconds:ptSideSeconds(m),label:kind==='warmup'?'Échauffement':'Retour au calme',kind,...(m.unilateral?{side:1}:{})});
 const ptRoutineTimer=(m,kind,paused)=>ptFromTemplate(ptRoutineTemplate(m,kind),paused);
-const ptWorkTemplate=e=>e&&e.measure==='seconds'?{seconds:e.seconds,label:e.unilateral?'Côté gauche':'Temps de travail',kind:'work',...(e.unilateral?{side:1}:{})}:null;
+const ptWorkTemplate=e=>e&&e.measure==='seconds'?{seconds:e.seconds,label:e.unilateral?'Côté gauche':'Temps de travail',kind:'work',...(e.unilateral?{side:1}:{}),...(Array.isArray(e.calls)&&e.calls.length?{calls:e.calls}:{})}:null;
+// Circuit à l'appel (lot 28) : pendant le travail, la voix annonce un move au hasard toutes les 2 à 4 secondes.
+// Calendrier fixe pour un chrono donné (même annonce si l'écran se recharge), jamais dans les 2 dernières secondes.
+const ptHash=s=>[...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
+const ptCallDue=(t,left)=>{const el=t.duration-left;if(left<=2||el<2)return false;let s=2;while(s<el)s+=2+ptHash(t.id+s)%3;return s===el;};
+const ptCallWord=(t,left)=>t.calls[ptHash(`${t.id}w${left}`)%t.calls.length];
 const ptReady=(next,paused=false)=>ptTimer(5,'Prépare-toi','ready',{next},paused);
 const ptSwitch=(next,paused=false)=>ptTimer(5,'Change de côté','switch',{next},paused);
 function ptRoutineStep(d,delta){
@@ -74,6 +79,7 @@ function PTSession({data,update,go,notify}) {
     if(timerLeft===0){if(!countdown)fire(`${t.id}-end`,'end');}
     else if(timerLeft<=3&&timerLeft<t.duration)fire(`${t.id}-${timerLeft}`,'tick');
     else if(timerLeft>=t.duration-1){if(fire(`${t.id}-start`,countdown?(t.kind==='switch'?'end':null):'start'))announce.current?.('start',t);}
+    else if(t.kind==='work'&&Array.isArray(t.calls)&&t.calls.length){if(ptCallDue(t,timerLeft)&&fire(`${t.id}-call-${timerLeft}`))say(ptCallWord(t,timerLeft));}
     else if(t.kind==='work'&&t.duration>=20&&timerLeft===10){if(fire(`${t.id}-ten`))say('Plus que 10 secondes.');}
     else if(t.kind==='work'&&t.duration>=30&&timerLeft===Math.ceil(t.duration/2)){if(fire(`${t.id}-half`))say(ptPick(ptPush));}
   },[timerLeft,draft?.timer?.id,draft?.timer?.endAt,finishing]);

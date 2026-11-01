@@ -2,6 +2,21 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-01 — Lot 28 : skills Danny Cooper, consignes Daryl McCoy, circuit à l'appel
+
+**Fait**
+- Branche `feature/skills-cooper-mccoy`, cache `v79-skills`. Drills 120 → 130 (`basket-skills.js`).
+- 8 drills Danny Cooper, tirés de 4 séances (transcriptions lues) : entre les jambes avec transfert de poids sur place, haut-bas, crossover + arrêt net sur la jambe intérieure (« Luka », pied qui pivote au sol au lieu de sautiller), float pieds ancrés + un dribble et tir, float + décalage + deux dribbles et tir en fade, sonder puis couper le dribble (arrêt un-deux, « Brunson »), arrêt un-deux et trois step-through, pieds qui changent puis une des trois options. Chacun crédité « Vu chez Danny Cooper » avec la minute (`scripts/drill-sources-manual.json` → `drill-sources.js`).
+- Daryl McCoy : pas de drill copié (ce sont des corrections en 1 contre 1). Ses consignes ajoutées aux drills existants : changer de rythme quand le défenseur se relâche, « float » seulement avec l'avantage, le jab ouvre les hanches, in-and-out pour faire ouvrir la hanche, spin quand il colle, premier dribble devant soi, en défense se caler sur la hanche intérieure.
+- Circuit à l'appel (`mv-call-circuit`) : pendant le chrono, la voix du coach annonce un move au hasard toutes les 2 à 4 secondes (crossover, in-and-out, entre les jambes, reset, attaque, recule, hesi, dans le dos). Lecteur de séance : champ `calls` transmis au chrono de travail (`live-session.jsx`), calendrier fixe par chrono, rien dans les 2 dernières secondes. Respecte le bouton « couper la voix ».
+- Coordination (reliquat du lot 27) : `co-hop-step`, hop step en dribblant.
+- « Vu chez GBG Hoops » ajouté sur les 8 exercices GBG du lot 27 qui ont une minute précise.
+- Tests : nouveau `tests/skills-cooper.spec.cjs` (3, dont la voix réellement captée pendant le circuit). Suite complète : 212 OK, 9 ignorés, 1 KO (`poids-tir.spec.cjs:55`, déjà KO avant).
+
+**À savoir**
+- Pas de nouvelles démos vidéo pour ces drills : plusieurs séances de Danny Cooper montrent des joueuses, donc rien n'est découpé (règle hommes uniquement). Le lien « Vu chez » pointe vers la vidéo, il n'est pas lu dans l'app.
+- Non fait : environ 20 shorts Daryl de plus (verdict déjà clair : consignes, pas drills) ; séance « Stop on a dime » (27 min, transcription échouée) et séance main faible (non lue, les 8 drills suffisaient pour ce lot).
+
 ## 2026-11-01 — Lot 27 : renfo basket GBG Hoops (tout le corps)
 
 **Fait**

@@ -24,6 +24,30 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=rp-fnzx5lr8&t=256s"
   }
  ],
+ "active-slr": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=212s"
+  },
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=40s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=734s"
+  }
+ ],
+ "ankle-mob": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=0s"
+  }
+ ],
  "approach-jump": [
   {
    "creator": "PJF Performance",
@@ -51,6 +75,11 @@ window.RehaabSources = {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=558s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=283s"
   }
  ],
  "atg-split-squat": [
@@ -72,6 +101,11 @@ window.RehaabSources = {
    "creator": "Nathanael Morton",
    "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=470s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "url": "https://www.youtube.com/watch?v=BW_L2Njcwgc&t=153s"
   }
  ],
  "backpedal": [
@@ -79,6 +113,11 @@ window.RehaabSources = {
    "creator": "By Any Means Basketball",
    "title": "The Deceleration Workout That Every Hooper Needs!",
    "url": "https://www.youtube.com/watch?v=LOPAZXBsG4I&t=181s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=399s"
   }
  ],
  "band-assisted-jump": [
@@ -86,6 +125,11 @@ window.RehaabSources = {
    "creator": "Nathanael Morton",
    "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=667s"
+  },
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=237s"
   }
  ],
  "band-hinge": [
@@ -95,11 +139,37 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=421s"
   }
  ],
+ "band-pullapart": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=50s"
+  }
+ ],
+ "band-pulldown": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=1525s"
+  }
+ ],
+ "band-pushup": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=1746s"
+  }
+ ],
  "band-shuffle": [
   {
    "creator": "PJF Performance",
    "title": "Anyone Can Jump 40+ Inches (If You Do THESE 5 Things)",
    "url": "https://www.youtube.com/watch?v=rp-fnzx5lr8&t=416s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=106s"
   }
  ],
  "band-squat": [
@@ -161,11 +231,23 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=37s"
   }
  ],
+ "bridge": [
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=510s"
+  }
+ ],
  "broad-jump": [
   {
    "creator": "Garage Strength",
    "title": "3 Exercises is All You Need To Get Athletic",
    "url": "https://www.youtube.com/watch?v=Bv6hOHBf_Dg&t=1041s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=545s"
   }
  ],
  "bulgarian": [
@@ -178,6 +260,11 @@ window.RehaabSources = {
    "creator": "Overtime Athletes",
    "title": "Top 3 Plyo Drills for Deceleration to Improve Athleticism",
    "url": "https://www.youtube.com/watch?v=DT_e5_ZDOVY&t=179s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=728s"
   }
  ],
  "cable-crunch": [
@@ -185,6 +272,20 @@ window.RehaabSources = {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=821s"
+  }
+ ],
+ "calf": [
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=752s"
+  }
+ ],
+ "carioca": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=59s"
   }
  ],
  "carry": [
@@ -201,6 +302,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=S2g6XxJoHBo&t=12s"
   }
  ],
+ "chest-supported-row": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=500s"
+  }
+ ],
  "copenhagen": [
   {
    "creator": "KP Sports Performance",
@@ -213,6 +321,27 @@ window.RehaabSources = {
    "creator": "PJF Performance",
    "title": "Full 15 Minute Hip Mobility and Strengthening Workout for Athletes (With NBA Trainer Paul Fabritz)",
    "url": "https://www.youtube.com/watch?v=4vd8wHcvqgk&t=134s"
+  }
+ ],
+ "credit-card-hop": [
+  {
+   "creator": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)",
+   "url": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=428s"
+  }
+ ],
+ "curl": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=100s"
+  }
+ ],
+ "curl-up": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=337s"
   }
  ],
  "cut-45-stick": [
@@ -237,6 +366,11 @@ window.RehaabSources = {
    "creator": "TrenchBoyz",
    "title": "EXPLOSIVE SINGLE LEG WORKOUT FOR BASKETBALL PLAYERS! | INCREASE YOUR VERTICAL JUMP! | DUNK UNDER 6FT",
    "url": "https://www.youtube.com/watch?v=GUiH-HOwq-o&t=3s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=332s"
   }
  ],
  "db-jump": [
@@ -287,11 +421,25 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=909s"
   }
  ],
+ "db-shoulder": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=112s"
+  }
+ ],
  "db-single-rdl": [
   {
    "creator": "Nathanael Morton",
    "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=340s"
+  }
+ ],
+ "db-squat": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=226s"
   }
  ],
  "db-step-up": [
@@ -304,6 +452,20 @@ window.RehaabSources = {
    "creator": "Nathanael Morton",
    "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=284s"
+  }
+ ],
+ "dead-hang": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=144s"
+  }
+ ],
+ "deadbug": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=119s"
   }
  ],
  "decel-stick": [
@@ -333,6 +495,11 @@ window.RehaabSources = {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=321s"
+  },
+  {
+   "creator": "Good Drill",
+   "title": "5 Tips to Eliminating Knee Pain While Jumping for Hoopers",
+   "url": "https://www.youtube.com/watch?v=-pgljYtFuUU&t=348s"
   }
  ],
  "df-mirror": [
@@ -352,6 +519,11 @@ window.RehaabSources = {
    "creator": "Matt Tometz",
    "title": "Deceleration Training Explained: Techniques and Drills for Athletes for Speed and Agility",
    "url": "https://www.youtube.com/watch?v=SpJX-LllC4M&t=380s"
+  },
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=218s"
   }
  ],
  "drop-lunge": [
@@ -359,6 +531,13 @@ window.RehaabSources = {
    "creator": "Vernon Griffith II",
    "title": "PLYOMETRICS FOR ATHLETES with NBA Director for the Detroit Pistons",
    "url": "https://www.youtube.com/watch?v=stEl62af_BE&t=243s"
+  }
+ ],
+ "drop-squat": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=529s"
   }
  ],
  "drop-step-start": [
@@ -439,11 +618,30 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=W2h4sG3dO8E&t=46s"
   }
  ],
+ "hip-abduction": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=133s"
+  }
+ ],
+ "hip-circles": [
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=671s"
+  }
+ ],
  "hurdle-hops": [
   {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=338s"
+  },
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=600s"
   }
  ],
  "incline-pushup": [
@@ -453,11 +651,51 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=Bv6hOHBf_Dg&t=643s"
   }
  ],
- "iso-split": [
+ "kb-swing": [
   {
-   "creator": "Garage Strength",
-   "title": "7 Plyometric Exercises Everyone Over 40 Should Do!",
-   "url": "https://www.youtube.com/watch?v=LUAuHBz1N_M&t=121s"
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=304s"
+  }
+ ],
+ "knee-drive-step-up": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=256s"
+  },
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=706s"
+  }
+ ],
+ "knee-over-toe-rock": [
+  {
+   "creator": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)",
+   "url": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=192s"
+  }
+ ],
+ "kneel-hip-press": [
+  {
+   "creator": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season",
+   "url": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=200s"
+  }
+ ],
+ "landmine-press": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=1500s"
+  }
+ ],
+ "lateral": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=151s"
   }
  ],
  "lateral-bound-stick": [
@@ -515,6 +753,18 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=GUiH-HOwq-o&t=138s"
   }
  ],
+ "leg-raise": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=340s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "url": "https://www.youtube.com/watch?v=BW_L2Njcwgc&t=292s"
+  }
+ ],
  "legcurl": [
   {
    "creator": "Overtime Athletes",
@@ -534,11 +784,32 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=adaqWTgGTXY&t=251s"
   }
  ],
+ "mb-rotational": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=254s"
+  }
+ ],
+ "mb-slam": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=627s"
+  }
+ ],
  "monster-walk": [
   {
    "creator": "Nathanael Morton",
    "title": "These 12 Exercises Got Me a 43 Inch Vertical Jump",
    "url": "https://www.youtube.com/watch?v=WA564xCGgnc&t=547s"
+  }
+ ],
+ "mv-flip-feet": [
+  {
+   "creator": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble",
+   "url": "https://www.youtube.com/watch?v=oFf4FbY4lDs&t=231s"
   }
  ],
  "mv-hesi-read": [
@@ -567,6 +838,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=Q8mQSyZCHB8&t=587s"
   }
  ],
+ "overhead-carry": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=617s"
+  }
+ ],
  "pallof": [
   {
    "creator": "Overtime Athletes",
@@ -591,11 +869,18 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=rp-fnzx5lr8&t=408s"
   }
  ],
- "pigeon": [
+ "plank": [
   {
-   "creator": "PJF Performance",
-   "title": "Full 15 Minute Hip Mobility and Strengthening Workout for Athletes (With NBA Trainer Paul Fabritz)",
-   "url": "https://www.youtube.com/watch?v=4vd8wHcvqgk&t=398s"
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=347s"
+  }
+ ],
+ "plank-db-row": [
+  {
+   "creator": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season",
+   "url": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=70s"
   }
  ],
  "pogo": [
@@ -641,11 +926,35 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=111s"
   }
  ],
+ "pulldown": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=506s"
+  }
+ ],
+ "pullup": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=123s"
+  }
+ ],
  "pushup": [
   {
    "creator": "Garage Strength",
    "title": "3 Exercises is All You Need To Get Athletic",
    "url": "https://www.youtube.com/watch?v=Bv6hOHBf_Dg&t=490s"
+  },
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=133s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "url": "https://www.youtube.com/watch?v=BW_L2Njcwgc&t=41s"
   }
  ],
  "quad-rotation": [
@@ -655,11 +964,37 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=S2g6XxJoHBo&t=28s"
   }
  ],
+ "rdl": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=311s"
+  }
+ ],
+ "reverse-lunge": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=47s"
+  }
+ ],
  "reverse-walk": [
   {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=250s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=432s"
+  }
+ ],
+ "rfe-quad-hold": [
+  {
+   "creator": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)",
+   "url": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=582s"
   }
  ],
  "rope": [
@@ -667,6 +1002,18 @@ window.RehaabSources = {
    "creator": "Garage Strength",
    "title": "3 Exercises is All You Need To Get Athletic",
    "url": "https://www.youtube.com/watch?v=Bv6hOHBf_Dg&t=145s"
+  },
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=321s"
+  }
+ ],
+ "run": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=44s"
   }
  ],
  "run-interval": [
@@ -676,11 +1023,30 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=RUdn3W9zzPg&t=216s"
   }
  ],
+ "russian-twist": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=344s"
+  }
+ ],
+ "sa-db-press": [
+  {
+   "creator": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season",
+   "url": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=125s"
+  }
+ ],
  "seated-calf": [
   {
    "creator": "Isaiah Rivera",
    "title": "Highest Jumper In The World Breaks Down His Workout Routine",
    "url": "https://www.youtube.com/watch?v=adaqWTgGTXY&t=375s"
+  },
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=218s"
   }
  ],
  "shin-box": [
@@ -697,11 +1063,23 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=SpJX-LllC4M&t=191s"
   }
  ],
+ "side-lying-adduction": [
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=134s"
+  }
+ ],
  "single-box-jump": [
   {
    "creator": "Overtime Athletes",
    "title": "Vertical Jump Training for Basketball Athletes",
    "url": "https://www.youtube.com/watch?v=bWp6KcDu9-c&t=164s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=637s"
   }
  ],
  "single-hop-stick": [
@@ -726,6 +1104,11 @@ window.RehaabSources = {
    "creator": "PJF Performance",
    "title": "Full 15 Minute Hip Mobility and Strengthening Workout for Athletes (With NBA Trainer Paul Fabritz)",
    "url": "https://www.youtube.com/watch?v=4vd8wHcvqgk&t=503s"
+  },
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=621s"
   }
  ],
  "single-leg-stand": [
@@ -733,6 +1116,16 @@ window.RehaabSources = {
    "creator": "Garage Strength",
    "title": "7 Plyometric Exercises Everyone Over 40 Should Do!",
    "url": "https://www.youtube.com/watch?v=LUAuHBz1N_M&t=217s"
+  },
+  {
+   "creator": "Alex Crockford",
+   "title": "Knee Strength Workout | 20 Minute Rehabilitation to Improve Knee Pain",
+   "url": "https://www.youtube.com/watch?v=-6W03QOix3M&t=471s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=398s"
   }
  ],
  "single-leg-vertical": [
@@ -776,6 +1169,13 @@ window.RehaabSources = {
    "creator": "SportsEdTV Basketball Training",
    "title": "Establishing A Quick & Effective First Step In Basketball",
    "url": "https://www.youtube.com/watch?v=4a7a5ajzVCk&t=21s"
+  }
+ ],
+ "sk-between-shift": [
+  {
+   "creator": "Danny Cooper",
+   "title": "How to Create Space Off the Dribble | Weight Shifts & Luka Change of Direction",
+   "url": "https://www.youtube.com/watch?v=zQDOc-2FJY8&t=0s"
   }
  ],
  "sk-btb-stand": [
@@ -845,6 +1245,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=gtImFoRoPQI&t=403s"
   }
  ],
+ "sk-cross-hardstop": [
+  {
+   "creator": "Danny Cooper",
+   "title": "How to Create Space Off the Dribble | Weight Shifts & Luka Change of Direction",
+   "url": "https://www.youtube.com/watch?v=zQDOc-2FJY8&t=220s"
+  }
+ ],
  "sk-cross-stand": [
   {
    "creator": "Get Handles",
@@ -862,6 +1269,11 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "How To Finish Layups In Traffic",
    "url": "https://www.youtube.com/watch?v=gtImFoRoPQI&t=870s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How to: Finish At The RIM!!! Daily 3 Minute LAYUP ROUTINE (Basketball Training Drills AT HOME)",
+   "url": "https://www.youtube.com/watch?v=N8omkdkVLRE&t=260s"
   }
  ],
  "sk-euro-counter": [
@@ -876,6 +1288,13 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "Why You Can't Shoot In Games",
    "url": "https://www.youtube.com/watch?v=SmspzPf7PPU&t=14s"
+  }
+ ],
+ "sk-float-space": [
+  {
+   "creator": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble",
+   "url": "https://www.youtube.com/watch?v=oFf4FbY4lDs&t=0s"
   }
  ],
  "sk-floater": [
@@ -902,6 +1321,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=gP_wFMTp894&t=26s"
   }
  ],
+ "sk-grounded-feet": [
+  {
+   "creator": "Danny Cooper",
+   "title": "Get Shifty With Better Footwork | Dribble Timing & Change of Direction",
+   "url": "https://www.youtube.com/watch?v=R3Blaarxqdw&t=0s"
+  }
+ ],
  "sk-hang-pullup": [
   {
    "creator": "Get Handles",
@@ -921,6 +1347,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=n1T4RAWua78&t=500s"
   }
  ],
+ "sk-high-low": [
+  {
+   "creator": "Danny Cooper",
+   "title": "How to Get Shifty and Create Space Off the Dribble",
+   "url": "https://www.youtube.com/watch?v=oFf4FbY4lDs&t=130s"
+  }
+ ],
  "sk-jab": [
   {
    "creator": "ShotMechanics",
@@ -933,11 +1366,23 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=n1T4RAWua78&t=533s"
   }
  ],
+ "sk-kill-dribble": [
+  {
+   "creator": "Danny Cooper",
+   "title": "MUST HAVE Finishing Options IN The Paint! (Step Thru's, Pivots, etc.)",
+   "url": "https://www.youtube.com/watch?v=y6rKGk1ZdfE&t=0s"
+  }
+ ],
  "sk-layup2": [
   {
    "creator": "Get Handles",
    "title": "This Is RUINING Your Handle",
    "url": "https://www.youtube.com/watch?v=gtXoehJVkak&t=40s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How to: Finish At The RIM!!! Daily 3 Minute LAYUP ROUTINE (Basketball Training Drills AT HOME)",
+   "url": "https://www.youtube.com/watch?v=N8omkdkVLRE&t=82s"
   }
  ],
  "sk-low-fast": [
@@ -945,6 +1390,13 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "This Is RUINING Your Handle",
    "url": "https://www.youtube.com/watch?v=gtXoehJVkak&t=338s"
+  }
+ ],
+ "sk-mikan": [
+  {
+   "creator": "Pro Training Basketball",
+   "title": "3 Finishing Drills For BEGINNERS | How To Make A Lay-Up | Pro Training Basketball",
+   "url": "https://www.youtube.com/watch?v=_sf0CrcVtZA&t=68s"
   }
  ],
  "sk-pound": [
@@ -988,6 +1440,11 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "How To Finish Layups In Traffic",
    "url": "https://www.youtube.com/watch?v=gtImFoRoPQI&t=810s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How to: Finish At The RIM!!! Daily 3 Minute LAYUP ROUTINE (Basketball Training Drills AT HOME)",
+   "url": "https://www.youtube.com/watch?v=N8omkdkVLRE&t=162s"
   }
  ],
  "sk-rip": [
@@ -995,6 +1452,18 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "How To Dribble A Basketball For Beginners",
    "url": "https://www.youtube.com/watch?v=n1T4RAWua78&t=560s"
+  },
+  {
+   "creator": "PGC Coaching",
+   "title": "Perfect Basketball Layup Drill For Your Team",
+   "url": "https://www.youtube.com/watch?v=Xmzh33PWeJk&t=34s"
+  }
+ ],
+ "sk-rose": [
+  {
+   "creator": "PGC Coaching",
+   "title": "Perfect Basketball Layup Drill For Your Team",
+   "url": "https://www.youtube.com/watch?v=Xmzh33PWeJk&t=16s"
   }
  ],
  "sk-shot-fake": [
@@ -1023,11 +1492,25 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=gtXoehJVkak&t=148s"
   }
  ],
+ "sk-step-through-3": [
+  {
+   "creator": "Danny Cooper",
+   "title": "MUST HAVE Finishing Options IN The Paint! (Step Thru's, Pivots, etc.)",
+   "url": "https://www.youtube.com/watch?v=y6rKGk1ZdfE&t=90s"
+  }
+ ],
  "sk-stepback": [
   {
    "creator": "Get Handles",
    "title": "ULTIMATE James Harden Dribbling Breakdown [SECRETS]",
    "url": "https://www.youtube.com/watch?v=Q8mQSyZCHB8&t=316s"
+  }
+ ],
+ "sk-tight-combos": [
+  {
+   "creator": "PGC Coaching",
+   "title": "Perfect Basketball Layup Drill For Your Team",
+   "url": "https://www.youtube.com/watch?v=Xmzh33PWeJk&t=142s"
   }
  ],
  "sk-weak-court": [
@@ -1054,6 +1537,39 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=flm5f7bn6SY&t=436s"
   }
  ],
+ "sl-hinge-seesaw-row": [
+  {
+   "creator": "GBG Hoops",
+   "title": "How to Train Your Upper Body for Basketball Season",
+   "url": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=250s"
+  }
+ ],
+ "sled-march": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=1813s"
+  },
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=604s"
+  }
+ ],
+ "sled-push": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=527s"
+  }
+ ],
+ "slider-ham-curl": [
+  {
+   "creator": "The Movement System",
+   "title": "How To Train For Basketball (Strength & Conditioning)",
+   "url": "https://www.youtube.com/watch?v=5QY2uJ832YA&t=512s"
+  }
+ ],
  "snap-down": [
   {
    "creator": "Matt Tometz",
@@ -1073,6 +1589,16 @@ window.RehaabSources = {
    "creator": "Garage Strength",
    "title": "3 Exercises is All You Need To Get Athletic",
    "url": "https://www.youtube.com/watch?v=Bv6hOHBf_Dg&t=209s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "url": "https://www.youtube.com/watch?v=BW_L2Njcwgc&t=219s"
+  },
+  {
+   "creator": "Good Drill",
+   "title": "5 Tips to Eliminating Knee Pain While Jumping for Hoopers",
+   "url": "https://www.youtube.com/watch?v=-pgljYtFuUU&t=262s"
   }
  ],
  "split-start": [
@@ -1094,6 +1620,16 @@ window.RehaabSources = {
    "creator": "Isaiah Rivera",
    "title": "Highest Jumper In The World Breaks Down His Workout Routine",
    "url": "https://www.youtube.com/watch?v=adaqWTgGTXY&t=288s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How To: Top 5 Explosive Basketball Strength Exercises For Basketball Players At Home!",
+   "url": "https://www.youtube.com/watch?v=BW_L2Njcwgc&t=96s"
+  },
+  {
+   "creator": "Good Drill",
+   "title": "5 Tips to Eliminating Knee Pain While Jumping for Hoopers",
+   "url": "https://www.youtube.com/watch?v=-pgljYtFuUU&t=223s"
   }
  ],
  "step-down": [
@@ -1101,6 +1637,18 @@ window.RehaabSources = {
    "creator": "Overtime Athletes",
    "title": "Vertical Jump Training for Basketball Athletes",
    "url": "https://www.youtube.com/watch?v=bWp6KcDu9-c&t=377s"
+  },
+  {
+   "creator": "Seth Thomas",
+   "title": "Knee Strengthening Exercises For Basketball Players | AT HOME!!",
+   "url": "https://www.youtube.com/watch?v=D3GD5fcjw3E&t=815s"
+  }
+ ],
+ "step-up": [
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=527s"
   }
  ],
  "step-up-hop": [
@@ -1127,6 +1675,20 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=S2g6XxJoHBo&t=270s"
   }
  ],
+ "toe-rock": [
+  {
+   "creator": "GBG Hoops",
+   "title": "The Perfect Hoopers Warm Up (under 20 mins)",
+   "url": "https://www.youtube.com/watch?v=iqqoKp4Gflo&t=72s"
+  }
+ ],
+ "trapbar-deadlift": [
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=1200s"
+  }
+ ],
  "trapbar-jump": [
   {
    "creator": "Isaiah Rivera",
@@ -1134,11 +1696,23 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=adaqWTgGTXY&t=333s"
   }
  ],
+ "triceps": [
+  {
+   "creator": "Dakota Rivers",
+   "title": "Pro Full Body Lifting Routine: NBA G-League Basketball Player",
+   "url": "https://www.youtube.com/watch?v=t0xEqm-0CTw&t=203s"
+  }
+ ],
  "vertical-jump": [
   {
    "creator": "BreakthroughBBall",
    "title": "9 Important Plyometric Exercises for Basketball Players",
    "url": "https://www.youtube.com/watch?v=flm5f7bn6SY&t=501s"
+  },
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=732s"
   }
  ],
  "vest-pullup": [
@@ -1158,6 +1732,18 @@ window.RehaabSources = {
    "creator": "KP Sports Performance",
    "title": "Explosive Plyometric Workout | Basketball Training",
    "url": "https://www.youtube.com/watch?v=mCF6dSlSGHU&t=208s"
+  },
+  {
+   "creator": "Adonis Harrison",
+   "title": "Full Injury Prevention Workout To: Develop Knee Strength, Speed, and Explosiveness",
+   "url": "https://www.youtube.com/watch?v=rbiy887jcGQ&t=51s"
+  }
+ ],
+ "wall-sit": [
+  {
+   "creator": "Good Drill",
+   "title": "5 Tips to Eliminating Knee Pain While Jumping for Hoopers",
+   "url": "https://www.youtube.com/watch?v=-pgljYtFuUU&t=136s"
   }
  ],
  "wide-pushup": [
@@ -1172,6 +1758,11 @@ window.RehaabSources = {
    "creator": "PJF Performance",
    "title": "Full 15 Minute Hip Mobility and Strengthening Workout for Athletes (With NBA Trainer Paul Fabritz)",
    "url": "https://www.youtube.com/watch?v=4vd8wHcvqgk&t=55s"
+  },
+  {
+   "creator": "Overtime Athletes",
+   "title": "Off-Season Plyometric Training For Basketball",
+   "url": "https://www.youtube.com/watch?v=qcDfjK_CdtA&t=45s"
   }
  ]
 };
