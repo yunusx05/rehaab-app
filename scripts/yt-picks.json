@@ -5215,5 +5215,35 @@
   "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
   "size": 163450,
   "query": "cable overhead side bend"
+ },
+ "duck-walk": {
+  "videoId": "qM3GNLKI9rg",
+  "duration": 16,
+  "title": "DUCK WALK",
+  "start": 1,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 117783,
+  "query": "duck walk exercise deep squat walk"
+ },
+ "duck-walk-kb": {
+  "videoId": "M4tCEXSf9RI",
+  "duration": 12,
+  "title": "Goblet Squat - Duck Walk",
+  "start": 3,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 138631,
+  "query": "goblet squat duck walk kettlebell"
+ },
+ "box-pigeon-kb": {
+  "videoId": "pNBa49KZxn4",
+  "duration": 21,
+  "title": "Kettlebell \"Loaded Pigeon\" for Hip Mobility",
+  "start": 1,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 83496,
+  "query": "weighted pigeon stretch on box kettlebell"
  }
 }

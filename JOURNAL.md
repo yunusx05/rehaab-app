@@ -2,6 +2,18 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-02 — Lot 29 : les exercices chargés de la vidéo hanches
+
+**Fait**
+- Demande : « je ne vois pas tous les exos de la fille, comme la marche du canard lestée ou les exos avec la kettlebell ». Vidéo revue (cleopatra.niaa, 11 exercices) : 7 étaient repris au lot 26 ; manquaient la marche du canard lestée (sac sur les épaules), le papillon avec une kettlebell sur chaque genou, le pigeon sur box et la figure 4 debout à la kettlebell, la fente genou au sol avec bascule de hanche.
+- Branche `feature/hanches-kettlebell`, cache `v82-hanches-kb`. 5 exercices (catalogue 444 → 449) : `duck-walk`, `duck-walk-kb`, `butterfly-kb`, `box-pigeon-kb`, `box-figure-four-kb`. Fente genou au sol = `hip-flexor` existant.
+- Bloc `hips` : Explorer + `hip-flexor` et `butterfly` ; Contrôler + `duck-walk` ; Charger = canard lesté, figure 4 et pigeon à la kettlebell, papillon lesté, cossack kettlebell, saut des genoux, Copenhague (repli sans charge si pas de kettlebell ou de banc). `duck-walk` ajouté au début des séances (`hipPrep`).
+- Démos (homme, vérifiées sur planche) : marche du canard, canard lesté (goblet), pigeon chargé sur banc. Sans démo : papillon lesté, figure 4 chargée (aucune vidéo correcte trouvée).
+- Tests : nouveau `tests/hanches-kettlebell.spec.cjs` (2) ; `basket-removal` compte 449. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` et `season-plan.spec.cjs:155` (ce dernier échoue aussi sur la version d'avant le lot : dépend de la date du jour, à corriger).
+
+**Prochaine action**
+- Mise en ligne : `npx vercel --prod` lancé par lui dans le sous-dossier `reeducation-app`.
+
 ## 2026-11-02 — Démos des lots 26-28 (fin) : 10 extraits de plus
 
 **Fait**

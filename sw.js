@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v81-demos';
+const CACHE = 'rehaab-v82-hanches-kb';
 const PRECACHE = [
   './',
   './index.html',
@@ -1099,7 +1099,13 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/bench-hip-flexion.mp4',
   './media/videos/yt/bench-hip-flexion.webp',
   './media/videos/yt/overhead-side-bend-ecc.mp4',
-  './media/videos/yt/overhead-side-bend-ecc.webp'
+  './media/videos/yt/overhead-side-bend-ecc.webp',
+  './media/videos/yt/duck-walk.mp4',
+  './media/videos/yt/duck-walk.webp',
+  './media/videos/yt/duck-walk-kb.mp4',
+  './media/videos/yt/duck-walk-kb.webp',
+  './media/videos/yt/box-pigeon-kb.mp4',
+  './media/videos/yt/box-pigeon-kb.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

@@ -3224,5 +3224,23 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/overhead-side-bend-ecc.webp",
     "credit": "YouTube · Overhead Cable Side Bend (Straddle)",
     "source": "https://www.youtube.com/watch?v=_8M--zoZY2I&t=9s"
+  },
+  "duck-walk": {
+    "video": "media/videos/yt/duck-walk.mp4",
+    "poster": "media/videos/yt/duck-walk.webp",
+    "credit": "YouTube · DUCK WALK",
+    "source": "https://www.youtube.com/watch?v=qM3GNLKI9rg&t=1s"
+  },
+  "duck-walk-kb": {
+    "video": "media/videos/yt/duck-walk-kb.mp4",
+    "poster": "media/videos/yt/duck-walk-kb.webp",
+    "credit": "YouTube · Goblet Squat - Duck Walk",
+    "source": "https://www.youtube.com/watch?v=M4tCEXSf9RI&t=3s"
+  },
+  "box-pigeon-kb": {
+    "video": "media/videos/yt/box-pigeon-kb.mp4",
+    "poster": "media/videos/yt/box-pigeon-kb.webp",
+    "credit": "YouTube · Kettlebell \"Loaded Pigeon\" for Hip Mobility",
+    "source": "https://www.youtube.com/watch?v=pNBa49KZxn4&t=1s"
   }
 };
