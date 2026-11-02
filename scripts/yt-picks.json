@@ -4922,18 +4922,31 @@
   "query": "lying knee drop spinal twist stretch"
  },
  "box-pigeon": {
-  "rejected": []
+  "videoId": "lR2NSnvuGnM",
+  "duration": 29,
+  "title": "Elevated Bench Pigeon 2 Ways",
+  "start": 17,
+  "seen": "elevated pigeon stretch on bench",
+  "quality": 5,
+  "size": 145183,
+  "rejected": [],
+  "query": "elevated pigeon stretch on bench"
  },
  "straddle-lean": {
   "rejected": [
-   "OF20FvBeM94"
+   "OF20FvBeM94",
+   "7kgWVtG7ZYo"
   ]
  },
  "box-figure-four": {
-  "rejected": []
+  "rejected": [
+   "Xb5gHdYtHnk"
+  ]
  },
  "squat-kneel-stand": {
-  "rejected": []
+  "rejected": [
+   "-CiWQ2IvY34"
+  ]
  },
  "kneel-jump-squat": {
   "rejected": []
@@ -4949,7 +4962,15 @@
   "query": "quadruped hip CARs controlled articular rotations"
  },
  "band-split-squat-out": {
-  "rejected": []
+  "videoId": "nEKdad5jlrs",
+  "duration": 28,
+  "title": "Laterally Banded Split Squat � Build Knee Control, Hip Stability & Single-Leg Strength",
+  "start": 16,
+  "seen": "banded split squat with band pulling knee laterally",
+  "quality": 5,
+  "size": 147679,
+  "rejected": [],
+  "query": "banded split squat band pulling knee laterally"
  },
  "deep-squat-shift": {
   "videoId": "Z1JuTFnh8-k",
@@ -4962,7 +4983,15 @@
   "query": "deep squat lateral weight shift hip mobility"
  },
  "side-lying-abduction": {
-  "rejected": []
+  "videoId": "-rDiQXjeXO0",
+  "duration": 48,
+  "title": "Foolproof Guide to Side Lying Hip Abduction",
+  "start": 36,
+  "seen": "side lying hip abduction straight leg",
+  "quality": 5,
+  "size": 162623,
+  "rejected": [],
+  "query": "side lying hip abduction straight leg"
  },
  "pad-single-calf": {
   "rejected": []
@@ -5035,5 +5064,75 @@
   "manual": true,
   "seen": "choisi à l’œil, démonstrateur homme",
   "size": 137188
+ },
+ "heavy-calf-iso": {
+  "rejected": []
+ },
+ "frog-rock": {
+  "rejected": [
+   "P9np6qXl3Ko"
+  ]
+ },
+ "ham-pails": {
+  "rejected": []
+ },
+ "rfe-goblet-hold": {
+  "videoId": "GGyLiSssxaE",
+  "duration": 12,
+  "title": "Bulgarian Split Squat With 10-Sec Isometric Hold At Bottom",
+  "start": 1,
+  "seen": "bulgarian split squat isometric hold bottom goblet",
+  "quality": 5,
+  "size": 154156,
+  "query": "bulgarian split squat isometric hold bottom goblet"
+ },
+ "sl-rdl-crescent": {
+  "rejected": []
+ },
+ "skater-ankle-rock": {
+  "rejected": []
+ },
+ "step-off-3d": {
+  "rejected": []
+ },
+ "split-push-step": {
+  "rejected": []
+ },
+ "stop-go-single-leg": {
+  "rejected": []
+ },
+ "couch-lift": {
+  "videoId": "wHNFVLc1X5g",
+  "duration": 20,
+  "title": "Short hamstring couch stretch lift offs with iso hold",
+  "start": 4,
+  "seen": "couch stretch knee lift off active",
+  "quality": 5,
+  "size": 123775,
+  "query": "couch stretch knee lift off active"
+ },
+ "scissor-cut": {
+  "rejected": []
+ },
+ "hop-step-rhythm": {
+  "rejected": []
+ },
+ "copenhagen-long": {
+  "rejected": []
+ },
+ "landmine-lateral-lunge": {
+  "rejected": []
+ },
+ "psoas-plank": {
+  "rejected": []
+ },
+ "bench-hip-flexion": {
+  "rejected": []
+ },
+ "reverse-plank": {
+  "rejected": []
+ },
+ "overhead-side-bend-ecc": {
+  "rejected": []
  }
 }

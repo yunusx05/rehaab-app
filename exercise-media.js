@@ -3134,5 +3134,35 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/sl-hinge-seesaw-row.webp",
     "credit": "YouTube · GBG Hoops · How to Train Your Upper Body for Basketball Season",
     "source": "https://www.youtube.com/watch?v=0G84C4v-sCU&t=250s"
+  },
+  "box-pigeon": {
+    "video": "media/videos/yt/box-pigeon.mp4",
+    "poster": "media/videos/yt/box-pigeon.webp",
+    "credit": "YouTube · Elevated Bench Pigeon 2 Ways",
+    "source": "https://www.youtube.com/watch?v=lR2NSnvuGnM&t=17s"
+  },
+  "band-split-squat-out": {
+    "video": "media/videos/yt/band-split-squat-out.mp4",
+    "poster": "media/videos/yt/band-split-squat-out.webp",
+    "credit": "YouTube · Laterally Banded Split Squat � Build Knee Control, Hip Stability & Single-Leg Strength",
+    "source": "https://www.youtube.com/watch?v=nEKdad5jlrs&t=16s"
+  },
+  "side-lying-abduction": {
+    "video": "media/videos/yt/side-lying-abduction.mp4",
+    "poster": "media/videos/yt/side-lying-abduction.webp",
+    "credit": "YouTube · Foolproof Guide to Side Lying Hip Abduction",
+    "source": "https://www.youtube.com/watch?v=-rDiQXjeXO0&t=36s"
+  },
+  "rfe-goblet-hold": {
+    "video": "media/videos/yt/rfe-goblet-hold.mp4",
+    "poster": "media/videos/yt/rfe-goblet-hold.webp",
+    "credit": "YouTube · Bulgarian Split Squat With 10-Sec Isometric Hold At Bottom",
+    "source": "https://www.youtube.com/watch?v=GGyLiSssxaE&t=1s"
+  },
+  "couch-lift": {
+    "video": "media/videos/yt/couch-lift.mp4",
+    "poster": "media/videos/yt/couch-lift.webp",
+    "credit": "YouTube · Short hamstring couch stretch lift offs with iso hold",
+    "source": "https://www.youtube.com/watch?v=wHNFVLc1X5g&t=4s"
   }
 };
