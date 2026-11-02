@@ -164,3 +164,10 @@ Entrées empilées de la plus récente à la plus ancienne.
 - Relancer `/design-scout` sur Rehaab (accueil, lecteur de séance, profil, progression) via Refero iOS, montrer au moins 6 captures à l'utilisateur et faire valider la direction avant de coder. Ne fusionner `feature/design-motion` dans `main` que s'il dit « push ».
 
 - Choix de Yunus (31/10) : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.
+
+## Lot 30 — Planche d'équilibre (02/11/2026)
+- Matériel : « Planche d'équilibre » (planche ronde qui bascule), avec son icône.
+- 6 exercices : équilibre deux pieds, bascules contrôlées, squat, équilibre une jambe, une jambe avec ballon, montée stabilisée.
+- Quick rehab : la planche passe en premier si on l'a (entorse de cheville niveaux 1-2, genou dans l'axe niveau 1, genou qui rentre niveau 2) ; sans planche, rien ne change.
+- Échauffement des pieds : 2 exercices de planche ajoutés à la rotation.
+- Pas encore de vidéo de démo pour ces 6 exercices (icône + consignes).

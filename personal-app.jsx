@@ -37,6 +37,7 @@ function PTIcon({name,size=22}) {
     more:<><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></>,
     vest:<><path d="M8 3 4 6v15h7V9L8 3zm8 0 4 3v15h-7V9l3-6zM8 3c1 2 3 3 4 3s3-1 4-3"/><path d="M5 13h5m4 0h5"/></>,
     gun:<><path d="M3 7h11a3 3 0 0 1 0 6H3z"/><path d="M9 13l-1 8h4l1-8M17 10h4"/></>,
+    board:<><rect x="3" y="9" width="18" height="2.5" rx="1"/><path d="M8 11.5a4 4 0 0 0 8 0M5 20h14"/></>,
     foam:<><rect x="3" y="8" width="18" height="8" rx="4"/><path d="M7 8v8m5-8v8m5-8v8"/></>,
     tens:<><rect x="7" y="3" width="10" height="8" rx="2"/><path d="M10 7h4M9 11v3l-4 4m10-7v3l4 4"/><rect x="2" y="17" width="5" height="4" rx="1"/><rect x="17" y="17" width="5" height="4" rx="1"/></>,
     slider:<><ellipse cx="7" cy="16" rx="5" ry="2.2"/><ellipse cx="17" cy="16" rx="5" ry="2.2"/><path d="M5 10h4m6 0h4M7 7v3m10-3v3"/></>,
