@@ -2,6 +2,18 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-02 — Démos des lots 26-28 (suite)
+
+**Fait**
+- Branche `feature/demos-26-28`, cache `v80-demos`. 5 démos YouTube ajoutées (Gemini revenu, puis vérifiées à l'œil, hommes uniquement) : abduction couché jambe tendue, pigeon sur banc, fente avec élastique au genou, fente bulgare tenue, canapé genou décollé. 18 nouvelles recherches dans `scripts/yt-queries.json`.
+- Tests ciblés OK (lecteur de séance, version, lots 26 et 27).
+
+**Bloqué**
+- Quota Gemini de nouveau épuisé (429) après ces 5. Restent sans démo : demi-grand écart, figure 4 debout, accroupi-genoux-debout, saut des genoux, mollet sur coussin, équilibre pied penché, mollet lourd tenu, grenouille, ischios « stretching gas », soulevé + arcs, squat skater, descente de box 3 directions, push step, arrêt-relance, coupe en ciseau, hop step, Copenhague long, fente latérale landmine, planche genou tenu, montées de genou assis, planche inversée, inclinaison poulie, pont du pied + soulevé.
+
+**Prochaine action**
+- Relancer `node scripts/fetch-yt-demos.cjs <dossier> <ids…>` un autre jour (quota), vérifier chaque extrait à l'œil, puis `node scripts/install-yt-demos.cjs`. Attendre son « push ».
+
 ## 2026-11-01 — Lot 28 : skills Danny Cooper, consignes Daryl McCoy, circuit à l'appel
 
 **Fait**
