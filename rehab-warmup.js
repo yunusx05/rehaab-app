@@ -57,9 +57,10 @@
       levelHints:['Amplitude et cercles lents : on découvre jusqu’où va la hanche, sans forcer.','Décollés, maintiens et avion : la hanche apprend à tenir chaque position.','Mobilité chargée et saut : de la force au bout de l’amplitude, comme en match.'],
       basis:'Exercices repris d’une routine de mobilité de hanche et de travaux publiés sur l’entraînement actif de la hanche, adaptés à ton matériel. Ça ne remplace pas l’avis d’un kiné.',
       levels:[
-        [['quadruped-hip-car','hip-circles'],['hip-90-90'],['deep-squat-shift','deep-squat-hold'],['straddle-lean','adductor-rockback'],['box-pigeon','pigeon','figure-four']],
-        [['hip-90-90-liftoff','hip-90-90'],['airplane','single-rdl'],['quadruped-hip-car','hip-circles'],['side-lying-abduction','hip-abduction'],['box-figure-four','figure-four'],['squat-kneel-stand','deep-squat-shift']],
-        [['cossack-kb','cossack'],['deep-squat-shift'],['box-figure-four','hip-90-90-liftoff'],['airplane','single-rdl'],['kneel-jump-squat','squat-kneel-stand'],['copenhagen','side-plank-full']]
+        [['quadruped-hip-car','hip-circles'],['hip-90-90'],['deep-squat-shift','deep-squat-hold'],['straddle-lean','adductor-rockback'],['box-pigeon','pigeon','figure-four'],['hip-flexor'],['butterfly']],
+        [['hip-90-90-liftoff','hip-90-90'],['airplane','single-rdl'],['quadruped-hip-car','hip-circles'],['duck-walk','deep-squat-hold'],['side-lying-abduction','hip-abduction'],['box-figure-four','figure-four'],['squat-kneel-stand','deep-squat-shift']],
+        // Lot 29 : « Charger » reprend la partie chargée de la vidéo (canard lesté, figure 4 et pigeon à la kettlebell, papillon lesté).
+        [['duck-walk-kb','duck-walk'],['box-figure-four-kb','box-figure-four'],['box-pigeon-kb','box-pigeon'],['butterfly-kb','butterfly'],['cossack-kb','cossack'],['kneel-jump-squat','squat-kneel-stand'],['copenhagen','side-plank-full']]
       ]},
     {id:'foot-knee',zone:'knee',region:'knee',title:'Pieds, chevilles et genou dans l’axe',short:'Le genou part sur le côté en marchant ou en atterrissant',sources:['mckeonFoot','footMeta','pfp','myobjFoot'],
       levelNames:['Réveiller','Renforcer','Rebondir'],
@@ -365,7 +366,7 @@
     power:['credit-card-hop','pogo','snap-down','skip-a','power-skip','accel-10','crossover-start','lateral-bound-stick','approach-jump','defensive-slide','a-skip'],
     hands:['wrist-mob','finger-ext','forearm-stretch'],
     // Lot 26 : un mouvement de hanche et un de pied au début de chaque séance (hanches mobiles et contrôlées, genou au-dessus du pied).
-    hipPrep:['quadruped-hip-car','side-lying-abduction','hip-90-90-liftoff','airplane','deep-squat-shift','box-figure-four'],
+    hipPrep:['quadruped-hip-car','side-lying-abduction','hip-90-90-liftoff','airplane','deep-squat-shift','box-figure-four','duck-walk'],
     footPrep:['foot-bridge','pad-single-calf','inversion-sl-balance','foot-doming','band-eversion'],
     stretchLegs:['quad-stretch','supine-hamstring','calf-stretch','hip-flexor','figure-four','butterfly','soleus-stretch','couch-stretch','side-lunge-stretch','hamstring','outer-hip-stretch','pigeon','downdog','shin-stretch'],
     stretchUpper:['cross-body','lat-stretch','triceps-stretch','doorway-chest','neck-stretch','forearm-stretch','side-bend','childs-pose'],
