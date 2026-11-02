@@ -3164,5 +3164,65 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/couch-lift.webp",
     "credit": "YouTube · Short hamstring couch stretch lift offs with iso hold",
     "source": "https://www.youtube.com/watch?v=wHNFVLc1X5g&t=4s"
+  },
+  "kneel-jump-squat": {
+    "video": "media/videos/yt/kneel-jump-squat.mp4",
+    "poster": "media/videos/yt/kneel-jump-squat.webp",
+    "credit": "YouTube · Kneeling Jump Squat | Plyometric | Strength and Conditioning Exercises",
+    "source": "https://www.youtube.com/watch?v=4qK55avGyy4&t=6s"
+  },
+  "frog-rock": {
+    "video": "media/videos/yt/frog-rock.mp4",
+    "poster": "media/videos/yt/frog-rock.webp",
+    "credit": "YouTube · Frog Rocks | Hip Mobility | Tight Hips Relief",
+    "source": "https://www.youtube.com/watch?v=uGu1TAmVgc4&t=15s"
+  },
+  "ham-pails": {
+    "video": "media/videos/yt/ham-pails.mp4",
+    "poster": "media/videos/yt/ham-pails.webp",
+    "credit": "YouTube · Pails Rails Hamstring Supine",
+    "source": "https://www.youtube.com/watch?v=JvR7rZDqLIw&t=18s"
+  },
+  "skater-ankle-rock": {
+    "video": "media/videos/yt/skater-ankle-rock.mp4",
+    "poster": "media/videos/yt/skater-ankle-rock.webp",
+    "credit": "YouTube · Skater Squat with Knee Raise",
+    "source": "https://www.youtube.com/watch?v=7GzQ5E26RGk&t=3s"
+  },
+  "step-off-3d": {
+    "video": "media/videos/yt/step-off-3d.mp4",
+    "poster": "media/videos/yt/step-off-3d.webp",
+    "credit": "YouTube · Box Step Off to Landing",
+    "source": "https://www.youtube.com/watch?v=CbwmTXV6i5Q&t=1s"
+  },
+  "copenhagen-long": {
+    "video": "media/videos/yt/copenhagen-long.mp4",
+    "poster": "media/videos/yt/copenhagen-long.webp",
+    "credit": "YouTube · Copenhagen Plank Long lever | Step-by-Step Tutorial",
+    "source": "https://www.youtube.com/watch?v=aGuAemGeyvA&t=11s"
+  },
+  "landmine-lateral-lunge": {
+    "video": "media/videos/yt/landmine-lateral-lunge.mp4",
+    "poster": "media/videos/yt/landmine-lateral-lunge.webp",
+    "credit": "YouTube · Landmine Lateral Lunges",
+    "source": "https://www.youtube.com/watch?v=C4A6HAFXiIs&t=2s"
+  },
+  "psoas-plank": {
+    "video": "media/videos/yt/psoas-plank.mp4",
+    "poster": "media/videos/yt/psoas-plank.webp",
+    "credit": "YouTube · Banded Psoas Plank March",
+    "source": "https://www.youtube.com/watch?v=-J-99Oy1Hlc&t=3s"
+  },
+  "bench-hip-flexion": {
+    "video": "media/videos/yt/bench-hip-flexion.mp4",
+    "poster": "media/videos/yt/bench-hip-flexion.webp",
+    "credit": "YouTube · Weighted hip flexor sit-ups on bench",
+    "source": "https://www.youtube.com/watch?v=ZdpVZu-VDdQ&t=3s"
+  },
+  "overhead-side-bend-ecc": {
+    "video": "media/videos/yt/overhead-side-bend-ecc.mp4",
+    "poster": "media/videos/yt/overhead-side-bend-ecc.webp",
+    "credit": "YouTube · Overhead Cable Side Bend (Straddle)",
+    "source": "https://www.youtube.com/watch?v=_8M--zoZY2I&t=9s"
   }
 };

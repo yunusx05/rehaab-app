@@ -4945,11 +4945,20 @@
  },
  "squat-kneel-stand": {
   "rejected": [
-   "-CiWQ2IvY34"
+   "-CiWQ2IvY34",
+   "t34oevgm_6A"
   ]
  },
  "kneel-jump-squat": {
-  "rejected": []
+  "videoId": "4qK55avGyy4",
+  "duration": 42,
+  "title": "Kneeling Jump Squat | Plyometric | Strength and Conditioning Exercises",
+  "start": 6,
+  "seen": "kneeling jump to squat",
+  "quality": 5,
+  "size": 162493,
+  "rejected": [],
+  "query": "kneeling jump to squat"
  },
  "quadruped-hip-car": {
   "videoId": "9hmX3xwrUh0",
@@ -5071,10 +5080,26 @@
  "frog-rock": {
   "rejected": [
    "P9np6qXl3Ko"
-  ]
+  ],
+  "videoId": "uGu1TAmVgc4",
+  "duration": 62,
+  "title": "Frog Rocks | Hip Mobility | Tight Hips Relief",
+  "start": 15,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 100729,
+  "query": "frog stretch rocking hip mobility"
  },
  "ham-pails": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "JvR7rZDqLIw",
+  "duration": 74,
+  "title": "Pails Rails Hamstring Supine",
+  "start": 18,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 109147,
+  "query": "hamstring PAILs RAILs lying strap"
  },
  "rfe-goblet-hold": {
   "videoId": "GGyLiSssxaE",
@@ -5090,10 +5115,26 @@
   "rejected": []
  },
  "skater-ankle-rock": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "7GzQ5E26RGk",
+  "duration": 13,
+  "title": "Skater Squat with Knee Raise",
+  "start": 3,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 121977,
+  "query": "skater squat knee over toe"
  },
  "step-off-3d": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "CbwmTXV6i5Q",
+  "duration": 12,
+  "title": "Box Step Off to Landing",
+  "start": 1,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 198303,
+  "query": "drop landing single leg stick box step off"
  },
  "split-push-step": {
   "rejected": []
@@ -5118,21 +5159,61 @@
   "rejected": []
  },
  "copenhagen-long": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "aGuAemGeyvA",
+  "duration": 45,
+  "title": "Copenhagen Plank Long lever | Step-by-Step Tutorial",
+  "start": 11,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 136866,
+  "query": "copenhagen plank long lever"
  },
  "landmine-lateral-lunge": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "C4A6HAFXiIs",
+  "duration": 29,
+  "title": "Landmine Lateral Lunges",
+  "start": 2,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 132712,
+  "query": "landmine lateral lunge"
  },
  "psoas-plank": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "-J-99Oy1Hlc",
+  "duration": 19,
+  "title": "Banded Psoas Plank March",
+  "start": 3,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 132303,
+  "query": "plank with knee drive hold psoas"
  },
  "bench-hip-flexion": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "ZdpVZu-VDdQ",
+  "duration": 18,
+  "title": "Weighted hip flexor sit-ups on bench",
+  "start": 3,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 127691,
+  "query": "seated hip flexor knee raise bench lean back"
  },
  "reverse-plank": {
   "rejected": []
  },
  "overhead-side-bend-ecc": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "_8M--zoZY2I",
+  "duration": 35,
+  "title": "Overhead Cable Side Bend (Straddle)",
+  "start": 9,
+  "manual": true,
+  "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
+  "size": 163450,
+  "query": "cable overhead side bend"
  }
 }

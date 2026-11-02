@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v80-demos';
+const CACHE = 'rehaab-v81-demos';
 const PRECACHE = [
   './',
   './index.html',
@@ -1052,6 +1052,8 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/lying-twist.webp',
   './media/videos/yt/box-pigeon.mp4',
   './media/videos/yt/box-pigeon.webp',
+  './media/videos/yt/kneel-jump-squat.mp4',
+  './media/videos/yt/kneel-jump-squat.webp',
   './media/videos/yt/quadruped-hip-car.mp4',
   './media/videos/yt/quadruped-hip-car.webp',
   './media/videos/yt/band-split-squat-out.mp4',
@@ -1076,10 +1078,28 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/kneel-hip-press.webp',
   './media/videos/yt/sl-hinge-seesaw-row.mp4',
   './media/videos/yt/sl-hinge-seesaw-row.webp',
+  './media/videos/yt/frog-rock.mp4',
+  './media/videos/yt/frog-rock.webp',
+  './media/videos/yt/ham-pails.mp4',
+  './media/videos/yt/ham-pails.webp',
   './media/videos/yt/rfe-goblet-hold.mp4',
   './media/videos/yt/rfe-goblet-hold.webp',
+  './media/videos/yt/skater-ankle-rock.mp4',
+  './media/videos/yt/skater-ankle-rock.webp',
+  './media/videos/yt/step-off-3d.mp4',
+  './media/videos/yt/step-off-3d.webp',
   './media/videos/yt/couch-lift.mp4',
-  './media/videos/yt/couch-lift.webp'
+  './media/videos/yt/couch-lift.webp',
+  './media/videos/yt/copenhagen-long.mp4',
+  './media/videos/yt/copenhagen-long.webp',
+  './media/videos/yt/landmine-lateral-lunge.mp4',
+  './media/videos/yt/landmine-lateral-lunge.webp',
+  './media/videos/yt/psoas-plank.mp4',
+  './media/videos/yt/psoas-plank.webp',
+  './media/videos/yt/bench-hip-flexion.mp4',
+  './media/videos/yt/bench-hip-flexion.webp',
+  './media/videos/yt/overhead-side-bend-ecc.mp4',
+  './media/videos/yt/overhead-side-bend-ecc.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

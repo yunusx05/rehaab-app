@@ -2,6 +2,20 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-02 — Démos des lots 26-28 (fin) : 10 extraits de plus
+
+**Fait**
+- Branche `feature/demos-26-28-b`, cache `v81-demos`. Gemini n'a validé qu'une démo (saut à genoux vers squat) avant le quota (429, toujours épuisé à 9 h 50). Les 9 autres sont choisies à la main : 2 candidates par exercice, planche de 12 images horodatées (script de repérage dans le scratchpad), puis planche finale des extraits vérifiée à l'œil. Notées `"manual": true` dans `scripts/yt-picks.json`.
+- Nouvelles démos : saut à genoux vers squat, grenouille en bascule, ischios allongé (PAILs/RAILs), descente de box et réception, squat skater, Copenhague long, fente latérale landmine, planche genou tenu à l'élastique, montées de genou assis sur banc, inclinaison latérale à la poulie bras tendus.
+- Tests ciblés OK (23 : version, lecteur de séance, médias, lots 26 et 27).
+
+**Refusés (restent avec icône + consignes)**
+- Femme dans la vidéo : demi-grand écart, figure 4 debout, mollet sur coussin, équilibre pied penché, mollet lourd tenu, planche inversée.
+- Mauvais mouvement ou silhouette trop petite : accroupi-genoux-debout, soulevé + arcs, split step + push step, arrêt-relance sur un pied, coupe en ciseau, hop step en rythme (résultats de danse).
+
+**Prochaine action**
+- Mise en ligne : `npx vercel --prod` lancé par lui dans le sous-dossier `reeducation-app`.
+
 ## 2026-11-02 — Démos des lots 26-28 (suite)
 
 **Fait**
