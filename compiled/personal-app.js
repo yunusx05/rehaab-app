@@ -215,6 +215,15 @@ function PTIcon({
     }), /*#__PURE__*/React.createElement("path", {
       d: "M9 13l-1 8h4l1-8M17 10h4"
     })),
+    board: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
+      x: "3",
+      y: "9",
+      width: "18",
+      height: "2.5",
+      rx: "1"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M8 11.5a4 4 0 0 0 8 0M5 20h14"
+    })),
     foam: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
       x: "3",
       y: "8",

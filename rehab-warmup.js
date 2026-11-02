@@ -68,7 +68,7 @@
       why:['Partout : appui sur le gros orteil et le 2e orteil, genou au-dessus du 2e orteil. Le pied ne roule pas sur son bord extérieur.','Genou qui part vers l’extérieur : on renforce le bord du pied, l’intérieur des cuisses et le côté de la hanche. Genou qui rentre : même travail, voûte du pied en priorité.','Douleur qui dure plus de 2 à 3 semaines, genou qui gonfle ou qui bloque : montre-le à un kiné.'],
       basis:'Exercices repris d’un kiné du sport et de travaux publiés sur les muscles du pied et la douleur du genou, adaptés à ton matériel. L’app ne pose pas de diagnostic.',
       levels:[
-        [['foot-bridge','foot-doming'],['side-lying-abduction','clamshell'],['band-eversion','tibialis'],['single-leg-stand','sl-balance-perturb'],['foot-doming']],
+        [['foot-bridge','foot-doming'],['side-lying-abduction','clamshell'],['band-eversion','tibialis'],['wobble-squat','single-leg-stand','sl-balance-perturb'],['foot-doming']],
         [['band-split-squat-out','split-squat'],['pad-single-calf','single-calf'],['side-lying-abduction','hip-abduction'],['foot-bridge-rdl','single-rdl'],['step-down','lateral-step-down'],['inversion-sl-balance','sl-balance-perturb']],
         [['pad-single-calf','single-calf'],['band-split-squat-out','split-squat'],['snap-down','landing','step-down'],['pogo','single-pogo','calf'],['single-hop-stick','lateral-bound-stick','single-leg-reach'],['kb-single-rdl','foot-bridge-rdl','single-rdl']]
       ]},
@@ -87,13 +87,13 @@
     {id:'knee-control',zone:'knee',region:'knee',title:'Genou qui rentre à la réception',short:'Prévention des entorses du genou et du LCA',sources:['fifaBasket','fifa','shred'],
       levels:[
         [['monster-walk','hip-abduction','clamshell'],['single-leg-stand'],['single-bridge'],['nordic-assisted','slider-ham-curl','bridge'],['side-plank']],
-        [['single-leg-reach','single-leg-stand'],['step-down'],['nordic-assisted','slider-ham-curl','single-bridge'],['snap-down','iso-split'],['monster-walk','hip-abduction']],
+        [['wobble-step-stick','single-leg-reach','single-leg-stand'],['step-down'],['nordic-assisted','slider-ham-curl','single-bridge'],['snap-down','iso-split'],['monster-walk','hip-abduction']],
         [['snap-down','squat'],['lateral-bound-stick','single-leg-reach'],['single-hop-stick','step-down'],['decel-stick','lateral-shuffle'],['nordic-assisted','slider-ham-curl']]
       ]},
     {id:'ankle-sprain',zone:'foot',region:'ankle',title:'Entorse de cheville (récente ou à répétition)',short:'Torsion sur un pied, cheville qui lâche',sources:['mckeon','eils','plisky','ankleWarm'],
       levels:[
-        [['ankle-alphabet','ankle-mob'],['seated-calf','calf-hold'],['tibialis'],['single-leg-stand','tandem-stand'],['foot-doming']],
-        [['single-leg-eyes','single-leg-stand'],['calf','single-calf'],['band-eversion','single-leg-reach'],['sl-balance-perturb','heel-toe-walk'],['band-inversion','tibialis']],
+        [['wobble-tilts','ankle-alphabet','ankle-mob'],['seated-calf','calf-hold'],['tibialis'],['wobble-two-feet','single-leg-stand','tandem-stand'],['foot-doming']],
+        [['single-leg-eyes','single-leg-stand'],['calf','single-calf'],['band-eversion','single-leg-reach'],['wobble-single-leg','sl-balance-perturb','heel-toe-walk'],['band-inversion','tibialis']],
         [['single-calf','calf'],['pogo','single-leg-reach'],['star-hop-stick','lateral-bound-stick','single-leg-eyes'],['single-hop-stick','heel-toe-walk'],['defensive-slide','lateral-shuffle']]
       ]},
     {id:'ankle-stiff',zone:'foot',region:'ankle',title:'Cheville raide',short:'Genou qui n’avance pas au-dessus du pied',sources:['backman','ankleWarm'],
@@ -367,7 +367,7 @@
     hands:['wrist-mob','finger-ext','forearm-stretch'],
     // Lot 26 : un mouvement de hanche et un de pied au début de chaque séance (hanches mobiles et contrôlées, genou au-dessus du pied).
     hipPrep:['quadruped-hip-car','side-lying-abduction','hip-90-90-liftoff','airplane','deep-squat-shift','box-figure-four','duck-walk'],
-    footPrep:['foot-bridge','pad-single-calf','inversion-sl-balance','foot-doming','band-eversion'],
+    footPrep:['foot-bridge','pad-single-calf','inversion-sl-balance','foot-doming','band-eversion','wobble-single-leg','wobble-sl-ball'],
     stretchLegs:['quad-stretch','supine-hamstring','calf-stretch','hip-flexor','figure-four','butterfly','soleus-stretch','couch-stretch','side-lunge-stretch','hamstring','outer-hip-stretch','pigeon','downdog','shin-stretch'],
     stretchUpper:['cross-body','lat-stretch','triceps-stretch','doorway-chest','neck-stretch','forearm-stretch','side-bend','childs-pose'],
     stretchBack:['childs-pose','lying-twist','cobra','cat','figure-four'],

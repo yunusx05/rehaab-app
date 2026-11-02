@@ -8,7 +8,7 @@ const previous=baseline.module.exports;
 require('../program-data.js');
 
 test('catalogue sans basket et ancien focus compatible',()=>{
-  expect(PT.catalog).toHaveLength(449); // +5 : hanches chargées (lot 29) ; +27 : renfo GBG (lot 27) ; +14 : hanches et pieds (lot 26) ; +3 : variantes de corde à sauter (lot 23) ; +47 : étirements, rouleau et électrostimulation (lot 18) ; +63 : bibliothèque basket (lot 13) ; +9 : pistolet de massage (lot 12) ; +28 : gilet lesté, disques slide, Quick Rehab et Warm Up ; +19 : étirements chargés, chevilles, durabilité
+  expect(PT.catalog).toHaveLength(455); // +6 : planche d’équilibre (lot 30) ; +5 : hanches chargées (lot 29) ; +27 : renfo GBG (lot 27) ; +14 : hanches et pieds (lot 26) ; +3 : variantes de corde à sauter (lot 23) ; +47 : étirements, rouleau et électrostimulation (lot 18) ; +63 : bibliothèque basket (lot 13) ; +9 : pistolet de massage (lot 12) ; +28 : gilet lesté, disques slide, Quick Rehab et Warm Up ; +19 : étirements chargés, chevilles, durabilité
   expect(PT.catalog.some(e=>e.kind==='basket')).toBe(false);
   const state=PT.initialState();state.checkIn.focus='basket';
   expect(PT.validateState(state).checkIn.focus).toBe('mixed');

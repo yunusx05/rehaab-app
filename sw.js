@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v82-hanches-kb';
+const CACHE = 'rehaab-v83-planche-equilibre';
 const PRECACHE = [
   './',
   './index.html',
