@@ -1115,25 +1115,25 @@ function PTSession({
     name: voice ? 'sound' : 'mute',
     size: 20
   })), /*#__PURE__*/React.createElement("button", {
-    className: "icon-button",
-    "aria-label": "Options de s\xE9ance",
+    className: "live-stop",
     "aria-expanded": menu,
     onClick: () => {
       setMenu(!menu);
       setAbandon(false);
     }
   }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "more",
-    size: 20
-  })))), menu && /*#__PURE__*/React.createElement("div", {
+    name: menu ? 'close' : 'stop',
+    size: 16
+  }), menu ? 'Fermer' : 'Arrêter'))), menu && /*#__PURE__*/React.createElement("div", {
     className: "live-menu stack-sm",
     role: "group",
-    "aria-label": "Options de s\xE9ance"
+    "aria-label": "Arr\xEAter ou all\xE9ger la s\xE9ance"
   }, abandon ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning stack-sm live-cancel-confirm",
     role: "alert"
   }, /*#__PURE__*/React.createElement("p", null, "Annuler la s\xE9ance sans enregistrer ? Les s\xE9ries faites seront perdues."), /*#__PURE__*/React.createElement(PTButton, {
     danger: true,
+    className: "btn danger solid",
     onClick: () => {
       update(s => ({
         ...s,
@@ -1145,9 +1145,12 @@ function PTSession({
     quiet: true,
     onClick: () => setAbandon(false)
   }, "Garder ma s\xE9ance")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTButton, {
-    quiet: true,
+    primary: true,
     onClick: review
-  }, "Terminer ici"), /*#__PURE__*/React.createElement(PTButton, {
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "check",
+    size: 18
+  }), "Terminer ici et enregistrer"), /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: () => {
       setMenu(false);
@@ -1195,7 +1198,9 @@ function PTSession({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "close",
     size: 18
-  }), "Annuler la s\xE9ance"))), /*#__PURE__*/React.createElement("div", {
+  }), "Annuler la s\xE9ance"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Terminer ici garde tout ce que tu as fait. Annuler efface la s\xE9ance."))), /*#__PURE__*/React.createElement("div", {
     className: "live-progress",
     "aria-label": `${completed} séries validées sur ${total}`
   }, exerciseSets.map(({
@@ -1457,12 +1462,18 @@ function PTSession({
   })), /*#__PURE__*/React.createElement("div", {
     className: "dock-caption"
   }, phase === 'work' && !countdown && !row.done && !allDone ? /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
+    className: "dock-chip",
     onClick: openLog
-  }, "Ajuster la s\xE9rie") : /*#__PURE__*/React.createElement("span", null, phase === 'rest' ? 'Repos en cours' : phase === 'warmup' ? 'Prépare-toi' : phase === 'cooldown' ? 'Retour au calme' : `${completed}/${total} séries validées`), /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "edit",
+    size: 15
+  }), "Ajuster la s\xE9rie") : /*#__PURE__*/React.createElement("span", null, phase === 'rest' ? 'Repos en cours' : phase === 'warmup' ? 'Prépare-toi' : phase === 'cooldown' ? 'Retour au calme' : `${completed}/${total} séries validées`), /*#__PURE__*/React.createElement("button", {
+    className: "dock-chip pain",
     onClick: reportPain
-  }, "Une douleur ?")), /*#__PURE__*/React.createElement(PTButton, {
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "pain",
+    size: 15
+  }), "Une douleur ?")), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: mainAction
   }, /*#__PURE__*/React.createElement(PTIcon, {

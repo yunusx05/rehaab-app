@@ -364,10 +364,10 @@ function PTCalendar({
     primary: true,
     onClick: () => launch(item, d)
   }, "Lancer"), d.date === now && /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
+    className: "chip-action",
     onClick: () => typeof PTMishap === 'function' ? go('mishap') : cannot(item)
   }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
+    className: "chip-action",
     "aria-expanded": moving === item.key,
     onClick: () => {
       setConfirm(null);
@@ -555,7 +555,9 @@ function PTSeasonPlan({
     className: "badge"
   }, "Tu es ici \xB7 semaine ", built.current.week, built.deload ? ' · semaine allégée' : ''), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, ph.goal), i === built.current.index && ph.rules && /*#__PURE__*/React.createElement("ul", {
+  }, ph.goal), ph.why?.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, /*#__PURE__*/React.createElement("strong", null, "Pourquoi un d\xE9part prudent :"), " ", ph.why.join(' ')), i === built.current.index && ph.rules && /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
   }, ph.rules.map(r => /*#__PURE__*/React.createElement("li", {
     key: r
@@ -565,15 +567,7 @@ function PTSeasonPlan({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "spark",
     size: 16
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Accent de l\u2019architecte"), a.text))))))), built.current.id === 'reset' && /*#__PURE__*/React.createElement(PTButton, {
-    quiet: true,
-    onClick: () => {
-      set({
-        resetDone: PT.dateKey()
-      });
-      notify('Remise en route terminée : place au parcours.');
-    }
-  }, "La remise en route est faite, je passe au parcours"), gate?.last && gate.ready && !data.seasonPlan?.devStart && /*#__PURE__*/React.createElement(PTButton, {
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Accent de l\u2019architecte"), a.text))))))), gate?.last && gate.ready && !data.seasonPlan?.devStart && /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: () => {
       set({

@@ -223,11 +223,28 @@ function PTTodayPlan({
     className: "text-button",
     onClick: unexcuse
   }, "Finalement, je peux m\u2019entra\xEEner"));
+  // Lot 31 : pluie notée aujourd'hui (depuis « Un imprévu ») : rappel, et retour en arrière possible.
+  const rain = SPL && SPL.rainOn ? SPL.rainOn(data, now) : false;
+  const rainNote = rain && /*#__PURE__*/React.createElement("p", {
+    className: "rain-note"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "rain",
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", null, "Pluie not\xE9e : ce qui se fait dehors (course, panier, sable) passe en int\xE9rieur ou glisse \xE0 un autre jour."), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => {
+      update(s => ({
+        ...s,
+        calendar: SPL.setRain(s, false, now)
+      }));
+      notify('Pluie retirée : tes séances dehors reviennent.');
+    }
+  }, "Il ne pleut plus"));
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
   return /*#__PURE__*/React.createElement("section", {
     className: `today-plan kind-${plan.kind}`,
     "aria-labelledby": "today-plan-title"
-  }, /*#__PURE__*/React.createElement("div", {
+  }, rainNote, /*#__PURE__*/React.createElement("div", {
     className: "today-plan-line"
   }, /*#__PURE__*/React.createElement("span", {
     className: "today-plan-tag"
@@ -268,9 +285,15 @@ function PTTodayPlan({
     className: "text-button",
     onClick: launchCardio
   }, "Lancer le cardio \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
-    className: "text-button today-mishap",
+    className: "today-mishap-btn",
     onClick: () => go('mishap')
-  }, "Un impr\xE9vu aujourd\u2019hui ?") : plannedToday.length > 0 && !mishap && /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "today",
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Un impr\xE9vu aujourd\u2019hui ?"), /*#__PURE__*/React.createElement("small", null, "Pluie, fatigue, peu de temps, douleur\u2026")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 16
+  })) : plannedToday.length > 0 && !mishap && /*#__PURE__*/React.createElement("button", {
     className: "text-button today-mishap",
     "aria-expanded": "false",
     onClick: () => setMishap(true)

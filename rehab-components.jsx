@@ -69,6 +69,7 @@ function PTHomeBlocks(props) {
   const painLabel = pains.length ? RW.zones.find(z => z.id === pains[0])?.label : null;
   return <nav className="home-blocks sport-reveal" aria-label="Raccourcis">
     {RW && <PTHomeTile className="is-activation" photo={rwPhoto('single-bridge')} title="Activation" text="Bas du corps" badge="Lancer" onClick={() => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, 'activation'))}/>}
+    {RW && window.BasketCore && <PTHomeTile photo={rwPhoto('plank')} title="Abdos" text="Core workout" onClick={() => rwLaunch(props, s => window.BasketCore.workout(PT, s, {minutes:12}))}/>}
     {RW && <PTHomeTile photo={rwPhoto('lateral-shuffle')} title="Warm-up" text={`${RW.warmups.length} routines`} onClick={() => go('routines', 'warmup')}/>}
     {RW && <PTHomeTile photo={rwPhoto('quad-stretch')} title="Étirements" text="& récup" onClick={() => go('routines', 'recup')}/>}
     {RW && <PTHomeTile className={painLabel ? 'has-pain' : ''} photo={rwPhoto('ankle-mob')} title="Quick rehab" text={painLabel ? `Ta douleur : ${painLabel.toLowerCase()}` : 'Une douleur ?'} onClick={() => go('routines', 'rehab')}/>}

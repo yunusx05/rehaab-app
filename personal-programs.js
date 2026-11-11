@@ -396,7 +396,11 @@
     return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date});
   }
   function sessionPlan(program, week, dayKey, state, check = checkFor(state, program)) {
-    return withSkills(PT, state, sessionPlanCore(program, week, dayKey, state, check), check.date);
+    // Lot 31 : finisher abdos en fin de séance muscu (sangle abdominale, point faible).
+    const CORE=(typeof globalThis!=='undefined'&&globalThis.BasketCore)||(()=>{try{return typeof require==='function'?require('./basket-core.js'):null;}catch(e){return null;}})();
+    // Pas de finisher sur une séance courte (moins de 40 min) ni un jour de petite forme.
+    const core=CORE&&Number(check.minutes)>=40&&check.energy!=='low'?CORE.withFinisher(PT,state,sessionPlanCore(program, week, dayKey, state, check),{date:check.date}):sessionPlanCore(program, week, dayKey, state, check);
+    return withSkills(PT, state, core, check.date);
   }
   function sessionPlanCore(program, week, dayKey, state, check) {
     check = {...check};

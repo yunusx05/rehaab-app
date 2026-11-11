@@ -114,6 +114,7 @@ function PTStretchPicker(props){
 
 // Route « mishap » : un imprévu. La raison d'abord, puis la solution qui va avec.
 const ptMishapReasons=[
+  {value:'rain',label:'Il pleut',hint:'Ce qui se fait dehors passe en intérieur',icon:'rain'},
   {value:'time',label:'Pas assez de temps',hint:'Une version courte de ta séance',icon:'clock'},
   {value:'tired',label:'Grosse fatigue',hint:'Une récup douce à la place',icon:'heart'},
   {value:'sore',label:'Courbatures',hint:'Une séance pour les soulager',icon:'body'},
@@ -123,6 +124,14 @@ const ptMishapReasons=[
   {value:'nogym',label:'Pas de salle ni de matériel',hint:'Ta séance, au poids du corps',icon:'body'},
   {value:'busy',label:'Autre empêchement',hint:'Reporter ou annuler',icon:'today'}
 ];
+// Lot 31 : ce que la pluie change pour chaque séance prévue aujourd'hui.
+function ptRainEffect(item){
+  if(item.type==='shooting')return 'glisse au prochain jour sans pluie (panier dehors)';
+  if(item.type==='cardio')return item.kind==='rope'?'se fait à l’abri (garage, préau, salle)':'passe en intérieur : course sur place genoux hauts';
+  if(item.type==='skills')return 'sur place, sans panier ni coupe';
+  if(item.type==='vivacite')return 'sans sprint ni coupe sur sol mouillé';
+  return 'inchangée, sauf les exercices prévus dehors';
+}
 // Séance prévue aujourd'hui, refaite en plus court ou avec un autre matériel.
 function ptMishapPlan(data,item,{minutes,state=data}){
   const BP=window.BasketPathway,JP=window.PlayerProfile,PP=window.PersonalPrograms,SK=window.BasketSkills;
@@ -159,6 +168,12 @@ function PTMishap(props){
     <div className="stack-lg mishap">
       {main&&<p className="fine">Prévu aujourd’hui : {planned.map(x=>x.label).join(' · ')}.</p>}
       {!reason&&<PTChoices columns={1} value={reason} onChange={pick} options={ptMishapReasons}/>}
+      {reason==='rain'&&<section className="stack">
+        <p className="notice">Sous la pluie, on ne fait rien dehors : sol glissant, panier du playground et sable indisponibles. Ta journée s’adapte, rien n’est annulé.</p>
+        {planned.length>0?<ul className="reason-list">{planned.map(x=><li key={x.key}><strong>{x.label}</strong> : {ptRainEffect(x)}.</li>)}</ul>:<p className="fine">Rien n’est prévu aujourd’hui : la pluie sera prise en compte si tu lances une séance.</p>}
+        <PTButton primary onClick={()=>{update(s=>({...s,calendar:SPL.setRain(s,true,now)}));notify('Pluie notée : ta journée passe en intérieur. Tu peux revenir en arrière depuis l’accueil.');go('today');}}><PTIcon name="rain" size={18}/>Noter la pluie et adapter ma journée</PTButton>
+        {planned.length>0&&<div className="button-row"><PTButton quiet onClick={()=>simple('postpone')}>Plutôt tout reporter</PTButton></div>}
+      </section>}
       {reason==='time'&&<section className="stack">
         <PTCoachQ title="Combien de temps as-tu ?"><PTChips options={[10,15,20,30].map(n=>({value:n,label:`${n} min`}))} value={minutes} onChange={setMinutes}/></PTCoachQ>
         <p className="fine">Même séance, resserrée sur l’essentiel : les mouvements clés restent, les séries et les accessoires sautent en premier.</p>

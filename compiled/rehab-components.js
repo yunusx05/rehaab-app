@@ -253,6 +253,13 @@ function PTHomeBlocks(props) {
     text: "Bas du corps",
     badge: "Lancer",
     onClick: () => rwLaunch(props, s => RW.warmupPlan(PT, window.PlayerProfile, s, 'activation'))
+  }), RW && window.BasketCore && /*#__PURE__*/React.createElement(PTHomeTile, {
+    photo: rwPhoto('plank'),
+    title: "Abdos",
+    text: "Core workout",
+    onClick: () => rwLaunch(props, s => window.BasketCore.workout(PT, s, {
+      minutes: 12
+    }))
   }), RW && /*#__PURE__*/React.createElement(PTHomeTile, {
     photo: rwPhoto('lateral-shuffle'),
     title: "Warm-up",

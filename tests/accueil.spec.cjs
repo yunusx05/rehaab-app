@@ -55,7 +55,7 @@ test(`accueil : tout tient dans l'écran sans défiler (${size.width}×${size.he
   await expect(page.locator('.today-plan.has-photo')).toHaveCount(0);
   await expect(page.locator('.week-hub .week-strip')).toBeVisible();
   await expect(page.locator('.week-hub .today-plan').getByRole('button',{name:/Préparer ma séance/})).toBeVisible();
-  await expect(page.locator('.home-blocks .home-tile')).toHaveCount(4);
+  await expect(page.locator('.home-blocks .home-tile')).toHaveCount(5); // lot 31 : + Abdos
   // La toile de progression est sous « Ma séance » ; Lire le jeu et Ma carte ne sont plus des tuiles.
   await expect(page.locator('.radar-block .player-radar.is-mini')).toBeVisible();
   await expect(page.locator('.home-blocks').getByRole('button',{name:/Lire le jeu|Ma carte/})).toHaveCount(0);

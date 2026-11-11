@@ -19,16 +19,16 @@ const MONDAY='2026-10-12';
 function meneur(){let s=PT.initialState();s.profile.name='Y';for(const [c,a] of Object.entries(persona))s=PD.saveChapter(s,c,a);s.pathway=BP.create({startStep:1,now:'2026-10-05'});return s;}
 const items=w=>w.days.flatMap(d=>d.items.map(x=>({...x,day:d.weekday})));
 
-test('meneur type : remise en route d’abord, sans saut, expliquée', ()=>{
+// Lot 31 : plus de phase « Remise en route » (jugée trop simple) : Fondations d'emblée, départ prudent expliqué sur la phase.
+test('meneur type : Fondations d’emblée, départ prudent expliqué', ()=>{
   const s=meneur(),b=SP.build(s,MONDAY);
-  expect(b.current.id).toBe('reset');
-  expect(b.resetWeeks).toBeGreaterThanOrEqual(2);
-  expect(b.need.reasons.join(' ')).toMatch(/24 mois/);
-  expect(b.need.reasons.join(' ')).toMatch(/genou 3\/10/);
-  expect(b.need.reasons.join(' ')).toMatch(/10 kg/);
+  expect(b.current.id).toBe('step1');
+  expect(b.phases.some(p=>p.id==='reset')).toBe(false);
+  const why=b.phases[0].why.join(' ');
+  expect(why).toMatch(/24 mois/);expect(why).toMatch(/genou 3\/10/);expect(why).toMatch(/10 kg/);
   const w=SP.weekSchedule(s,MONDAY,MONDAY);
-  expect(items(w).filter(x=>x.physical).map(x=>x.day).sort()).toEqual([0,2,4]);
-  expect(items(w).every(x=>x.legs!=='heavy')).toBe(true);
+  expect(items(w).filter(x=>x.physical).every(x=>x.type==='pathway')).toBe(true);
+  expect(items(w).filter(x=>x.physical).length).toBe(3);
   expect(SP.violations(s,w)).toEqual([]);
 });
 

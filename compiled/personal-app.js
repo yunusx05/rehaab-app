@@ -182,6 +182,35 @@ function PTIcon({
     close: /*#__PURE__*/React.createElement("path", {
       d: "m6 6 12 12M6 18 18 6"
     }),
+    stop: /*#__PURE__*/React.createElement("rect", {
+      x: "6",
+      y: "6",
+      width: "12",
+      height: "12",
+      rx: "2"
+    }),
+    edit: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M4 20h4L19 9l-4-4L4 16z"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "m13 7 4 4"
+    })),
+    rain: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M7 15a4 4 0 0 1 .5-8A5 5 0 0 1 17 8a3.5 3.5 0 0 1 0 7z"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "m8 18-1 2m5-2-1 2m5-2-1 2"
+    })),
+    restart: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
+      d: "M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5"
+    })),
+    core: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("rect", {
+      x: "8",
+      y: "4",
+      width: "8",
+      height: "16",
+      rx: "3"
+    }), /*#__PURE__*/React.createElement("path", {
+      d: "M8 10h8M8 14h8M12 4v16"
+    })),
     sound: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
       d: "M4 9h4l5-4v14l-5-4H4z"
     }), /*#__PURE__*/React.createElement("path", {
@@ -2260,7 +2289,14 @@ function PTProfile({
       sessions: prev.sessions.some(x => x.id === s.id) ? prev.sessions : [...prev.sessions, s],
       trash: prev.trash.filter(x => x.id !== s.id)
     }))
-  }, "Restaurer")))))), /*#__PURE__*/React.createElement("details", {
+  }, "Restaurer")))))), typeof PTRestartProgram === 'function' && /*#__PURE__*/React.createElement("section", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("h3", null, "Mon programme"), /*#__PURE__*/React.createElement(PTRestartProgram, {
+    data: data,
+    update: update,
+    notify: notify,
+    go: go
+  })), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Repartir \xE0 z\xE9ro"), /*#__PURE__*/React.createElement("div", {
     className: "stack"

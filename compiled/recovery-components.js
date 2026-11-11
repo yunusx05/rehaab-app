@@ -366,6 +366,11 @@ function PTStretchPicker(props) {
 
 // Route « mishap » : un imprévu. La raison d'abord, puis la solution qui va avec.
 const ptMishapReasons = [{
+  value: 'rain',
+  label: 'Il pleut',
+  hint: 'Ce qui se fait dehors passe en intérieur',
+  icon: 'rain'
+}, {
   value: 'time',
   label: 'Pas assez de temps',
   hint: 'Une version courte de ta séance',
@@ -406,6 +411,14 @@ const ptMishapReasons = [{
   hint: 'Reporter ou annuler',
   icon: 'today'
 }];
+// Lot 31 : ce que la pluie change pour chaque séance prévue aujourd'hui.
+function ptRainEffect(item) {
+  if (item.type === 'shooting') return 'glisse au prochain jour sans pluie (panier dehors)';
+  if (item.type === 'cardio') return item.kind === 'rope' ? 'se fait à l’abri (garage, préau, salle)' : 'passe en intérieur : course sur place genoux hauts';
+  if (item.type === 'skills') return 'sur place, sans panier ni coupe';
+  if (item.type === 'vivacite') return 'sans sprint ni coupe sur sol mouillé';
+  return 'inchangée, sauf les exercices prévus dehors';
+}
 // Séance prévue aujourd'hui, refaite en plus court ou avec un autre matériel.
 function ptMishapPlan(data, item, {
   minutes,
@@ -528,7 +541,35 @@ function PTMishap(props) {
     value: reason,
     onChange: pick,
     options: ptMishapReasons
-  }), reason === 'time' && /*#__PURE__*/React.createElement("section", {
+  }), reason === 'rain' && /*#__PURE__*/React.createElement("section", {
+    className: "stack"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "notice"
+  }, "Sous la pluie, on ne fait rien dehors : sol glissant, panier du playground et sable indisponibles. Ta journ\xE9e s\u2019adapte, rien n\u2019est annul\xE9."), planned.length > 0 ? /*#__PURE__*/React.createElement("ul", {
+    className: "reason-list"
+  }, planned.map(x => /*#__PURE__*/React.createElement("li", {
+    key: x.key
+  }, /*#__PURE__*/React.createElement("strong", null, x.label), " : ", ptRainEffect(x), "."))) : /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Rien n\u2019est pr\xE9vu aujourd\u2019hui : la pluie sera prise en compte si tu lances une s\xE9ance."), /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => {
+      update(s => ({
+        ...s,
+        calendar: SPL.setRain(s, true, now)
+      }));
+      notify('Pluie notée : ta journée passe en intérieur. Tu peux revenir en arrière depuis l’accueil.');
+      go('today');
+    }
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "rain",
+    size: 18
+  }), "Noter la pluie et adapter ma journ\xE9e"), planned.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => simple('postpone')
+  }, "Plut\xF4t tout reporter"))), reason === 'time' && /*#__PURE__*/React.createElement("section", {
     className: "stack"
   }, /*#__PURE__*/React.createElement(PTCoachQ, {
     title: "Combien de temps as-tu ?"
