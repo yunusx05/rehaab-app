@@ -29,7 +29,11 @@ window.RehaabMedia = {
     "frames": "Dumbbell_Floor_Press",
     "muscles": [
       "triceps"
-    ]
+    ],
+    "video": "media/videos/yt/floor-press.mp4",
+    "poster": "media/videos/yt/floor-press.webp",
+    "credit": "YouTube · DUMBBELL FLOOR PRESS",
+    "source": "https://www.youtube.com/watch?v=lNdi7VEf2Ew&t=22s"
   },
   "bb-press": {
     "frames": "Barbell_Bench_Press_-_Medium_Grip",
@@ -227,7 +231,11 @@ window.RehaabMedia = {
     "frames": "Leg_Extensions",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/legextension.mp4",
+    "poster": "media/videos/yt/legextension.webp",
+    "credit": "YouTube · How To Do A Leg Extension",
+    "source": "https://www.youtube.com/watch?v=4ZDm5EbiFI8&t=2s"
   },
   "legcurl": {
     "frames": "Lying_Leg_Curls",
@@ -318,7 +326,11 @@ window.RehaabMedia = {
     "frames": "Rowing_Stationary",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/rower.mp4",
+    "poster": "media/videos/yt/rower.webp",
+    "credit": "YouTube · British Rowing Indoor Championships Technique",
+    "source": "https://www.youtube.com/watch?v=uM06MQqEN0E&t=51s"
   },
   "march": {
     "video": "media/videos/yt/march.mp4",
@@ -547,7 +559,11 @@ window.RehaabMedia = {
     "frames": "Cable_Chest_Press",
     "muscles": [
       "chest"
-    ]
+    ],
+    "video": "media/videos/yt/cable-press.mp4",
+    "poster": "media/videos/yt/cable-press.webp",
+    "credit": "YouTube · How To Do A Cable Chest Press",
+    "source": "https://www.youtube.com/watch?v=sh92B-_2O48&t=8s"
   },
   "db-fly": {
     "frames": "Dumbbell_Flyes",
@@ -579,7 +595,11 @@ window.RehaabMedia = {
     "frames": "Shoulder_Press_-_With_Bands",
     "muscles": [
       "shoulders"
-    ]
+    ],
+    "video": "media/videos/yt/band-ohp.mp4",
+    "poster": "media/videos/yt/band-ohp.webp",
+    "credit": "YouTube · Band Overhead Press",
+    "source": "https://www.youtube.com/watch?v=Zli1UXH9ZeE&t=8s"
   },
   "front-raise": {
     "video": "media/videos/yt/front-raise.mp4",
@@ -591,13 +611,21 @@ window.RehaabMedia = {
     "frames": "Lateral_Raise_-_With_Bands",
     "muscles": [
       "shoulders"
-    ]
+    ],
+    "video": "media/videos/yt/band-lateral.mp4",
+    "poster": "media/videos/yt/band-lateral.webp",
+    "credit": "YouTube · How To Do Side Lateral Raises With Resistance Band | Shoulder Workout | Fitness My Life",
+    "source": "https://www.youtube.com/watch?v=aWZUEr7Jfx0&t=13s"
   },
   "close-grip-press": {
     "frames": "Close-Grip_Barbell_Bench_Press",
     "muscles": [
       "triceps"
-    ]
+    ],
+    "video": "media/videos/yt/close-grip-press.mp4",
+    "poster": "media/videos/yt/close-grip-press.webp",
+    "credit": "YouTube · Close Grip Bench Press",
+    "source": "https://www.youtube.com/watch?v=XEFDMwmrLAM&t=3s"
   },
   "chinup": {
     "frames": "Chin-Up",
@@ -609,13 +637,21 @@ window.RehaabMedia = {
     "frames": "Inverted_Row",
     "muscles": [
       "middle back"
-    ]
+    ],
+    "video": "media/videos/yt/inverted-row.mp4",
+    "poster": "media/videos/yt/inverted-row.webp",
+    "credit": "YouTube · Inverted Row",
+    "source": "https://www.youtube.com/watch?v=KOaCM1HMwU0&t=2s"
   },
   "scap-pullup": {
     "frames": "Scapular_Pull-Up",
     "muscles": [
       "traps"
-    ]
+    ],
+    "video": "media/videos/yt/scap-pullup.mp4",
+    "poster": "media/videos/yt/scap-pullup.webp",
+    "credit": "YouTube · Scapular Pull Ups",
+    "source": "https://www.youtube.com/watch?v=pE8PJsWEV7k&t=3s"
   },
   "band-pulldown": {
     "frames": "Wide-Grip_Lat_Pulldown",
@@ -631,7 +667,11 @@ window.RehaabMedia = {
     "frames": "Face_Pull",
     "muscles": [
       "shoulders"
-    ]
+    ],
+    "video": "media/videos/yt/facepull-cable.mp4",
+    "poster": "media/videos/yt/facepull-cable.webp",
+    "credit": "YouTube · How To Do Cable Face Pulls",
+    "source": "https://www.youtube.com/watch?v=0Po47vvj9g4&t=2s"
   },
   "band-pullapart": {
     "frames": "Band_Pull_Apart",
@@ -647,7 +687,11 @@ window.RehaabMedia = {
     "frames": "Lying_Rear_Delt_Raise",
     "muscles": [
       "shoulders"
-    ]
+    ],
+    "video": "media/videos/yt/rear-delt-fly.mp4",
+    "poster": "media/videos/yt/rear-delt-fly.webp",
+    "credit": "YouTube · DB Bent Over Rear Delt Fly",
+    "source": "https://www.youtube.com/watch?v=lFJBHzGIKIE&t=14s"
   },
   "db-pullover": {
     "frames": "Bent-Arm_Dumbbell_Pullover",
@@ -663,13 +707,21 @@ window.RehaabMedia = {
     "frames": "Straight-Arm_Dumbbell_Pullover",
     "muscles": [
       "chest"
-    ]
+    ],
+    "video": "media/videos/yt/straight-arm-pulldown.mp4",
+    "poster": "media/videos/yt/straight-arm-pulldown.webp",
+    "credit": "YouTube · Cable Straight Arm Rope Pulldown",
+    "source": "https://www.youtube.com/watch?v=zYbaRQAbul0&t=2s"
   },
   "bb-shrug": {
     "frames": "Barbell_Shrug",
     "muscles": [
       "traps"
-    ]
+    ],
+    "video": "media/videos/yt/bb-shrug.mp4",
+    "poster": "media/videos/yt/bb-shrug.webp",
+    "credit": "YouTube · Barbell Shrug",
+    "source": "https://www.youtube.com/watch?v=M_MjF5Nm_h4&t=2s"
   },
   "box-squat": {
     "frames": "Barbell_Squat_To_A_Bench",
@@ -705,7 +757,11 @@ window.RehaabMedia = {
     "frames": "Front_Squat_Clean_Grip",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/front-squat.mp4",
+    "poster": "media/videos/yt/front-squat.webp",
+    "credit": "YouTube · The Front Squat",
+    "source": "https://www.youtube.com/watch?v=uYumuL_G_V0&t=28s"
   },
   "kb-front-squat": {
     "frames": "Front_Squats_With_Two_Kettlebells",
@@ -717,13 +773,21 @@ window.RehaabMedia = {
     "frames": "Goblet_Squat",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/goblet-db.mp4",
+    "poster": "media/videos/yt/goblet-db.webp",
+    "credit": "YouTube · Dumbbell Goblet Squat",
+    "source": "https://www.youtube.com/watch?v=meJSJEG_sT0&t=17s"
   },
   "step-up": {
     "frames": "Step-up_with_Knee_Raise",
     "muscles": [
       "glutes"
-    ]
+    ],
+    "video": "media/videos/yt/step-up.mp4",
+    "poster": "media/videos/yt/step-up.webp",
+    "credit": "YouTube · Dumbbell Step-up - How To",
+    "source": "https://www.youtube.com/watch?v=9ZknEYboBOQ&t=7s"
   },
   "db-step-up": {
     "frames": "Dumbbell_Step_Ups",
@@ -739,7 +803,11 @@ window.RehaabMedia = {
     "frames": "Bodyweight_Walking_Lunge",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/walking-lunge.mp4",
+    "poster": "media/videos/yt/walking-lunge.webp",
+    "credit": "YouTube · Walking Lunge",
+    "source": "https://www.youtube.com/watch?v=tQNktxPkSeE&t=0s"
   },
   "db-single-rdl": {
     "frames": "Stiff-Legged_Dumbbell_Deadlift",
@@ -771,7 +839,11 @@ window.RehaabMedia = {
     "frames": "Good_Morning",
     "muscles": [
       "hamstrings"
-    ]
+    ],
+    "video": "media/videos/yt/good-morning.mp4",
+    "poster": "media/videos/yt/good-morning.webp",
+    "credit": "YouTube · How To Do A Barbell Good Morning",
+    "source": "https://www.youtube.com/watch?v=nWyx81AfTos&t=2s"
   },
   "db-hip-thrust": {
     "card": "media/wger/db-hip-thrust.webp",
@@ -811,7 +883,11 @@ window.RehaabMedia = {
     "frames": "Hyperextensions_Back_Extensions",
     "muscles": [
       "lower back"
-    ]
+    ],
+    "video": "media/videos/yt/back-extension.mp4",
+    "poster": "media/videos/yt/back-extension.webp",
+    "credit": "YouTube · Incline Bench Back Extension",
+    "source": "https://www.youtube.com/watch?v=TL3oQn7YsJg&t=3s"
   },
   "single-calf": {
     "frames": "Standing_Dumbbell_Calf_Raise",
@@ -853,13 +929,21 @@ window.RehaabMedia = {
     "frames": "Alternate_Incline_Dumbbell_Curl",
     "muscles": [
       "biceps"
-    ]
+    ],
+    "video": "media/videos/yt/incline-curl.mp4",
+    "poster": "media/videos/yt/incline-curl.webp",
+    "credit": "YouTube · Incline Dumbell Curl Nasl Yaplr?",
+    "source": "https://www.youtube.com/watch?v=tmxgffAanu0&t=11s"
   },
   "concentration-curl": {
     "frames": "Concentration_Curls",
     "muscles": [
       "biceps"
-    ]
+    ],
+    "video": "media/videos/yt/concentration-curl.mp4",
+    "poster": "media/videos/yt/concentration-curl.webp",
+    "credit": "YouTube · CONCENTRATION CURL",
+    "source": "https://www.youtube.com/watch?v=VMbDQ8PZazY&t=4s"
   },
   "reverse-curl": {
     "frames": "Standing_Dumbbell_Reverse_Curl",
@@ -875,7 +959,11 @@ window.RehaabMedia = {
     "frames": "Cable_Hammer_Curls_-_Rope_Attachment",
     "muscles": [
       "biceps"
-    ]
+    ],
+    "video": "media/videos/yt/cable-curl.mp4",
+    "poster": "media/videos/yt/cable-curl.webp",
+    "credit": "YouTube · How to PROPERLY Cable Bicep Curl For Bigger Biceps (EASY FIX)",
+    "source": "https://www.youtube.com/watch?v=2MUEL4nL6hA&t=26s"
   },
   "skullcrusher": {
     "frames": "Lying_Dumbbell_Tricep_Extension",
@@ -967,7 +1055,11 @@ window.RehaabMedia = {
     "frames": "Pallof_Press",
     "muscles": [
       "abdominals"
-    ]
+    ],
+    "video": "media/videos/yt/pallof-cable.mp4",
+    "poster": "media/videos/yt/pallof-cable.webp",
+    "credit": "YouTube · Cable Pallof press (mid body cable)",
+    "source": "https://www.youtube.com/watch?v=-0N2xTi69t8&t=5s"
   },
   "monster-walk": {
     "frames": "Monster_Walk",
@@ -1036,7 +1128,11 @@ window.RehaabMedia = {
     "frames": "Childs_Pose",
     "muscles": [
       "lower back"
-    ]
+    ],
+    "video": "media/videos/yt/childs-pose.mp4",
+    "poster": "media/videos/yt/childs-pose.webp",
+    "credit": "YouTube · Child Pose",
+    "source": "https://www.youtube.com/watch?v=kH12QrSGedM&t=14s"
   },
   "calf-stretch": {
     "frames": "Calf_Stretch_Elbows_Against_Wall",
@@ -3557,5 +3653,35 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/co-hop-step.webp",
     "credit": "YouTube · Jumpstop - Pro Hop - Hop Step Move Tutorial | Basketball Scoring Drills | Dre Baldwin",
     "source": "https://www.youtube.com/watch?v=8Vt77jBPZQs&t=12s"
+  },
+  "pad-single-calf": {
+    "video": "media/videos/yt/pad-single-calf.mp4",
+    "poster": "media/videos/yt/pad-single-calf.webp",
+    "credit": "YouTube · Balance Pad  Single Leg Calf Raise",
+    "source": "https://www.youtube.com/watch?v=b69MsfsWNWs&t=5s"
+  },
+  "heavy-calf-iso": {
+    "video": "media/videos/yt/heavy-calf-iso.mp4",
+    "poster": "media/videos/yt/heavy-calf-iso.webp",
+    "credit": "YouTube · Isometric Single Leg Calf Raise with Knee and Hip Flexion Overcoming)",
+    "source": "https://www.youtube.com/watch?v=cBnxPJghHEw&t=8s"
+  },
+  "sl-rdl-crescent": {
+    "video": "media/videos/yt/sl-rdl-crescent.mp4",
+    "poster": "media/videos/yt/sl-rdl-crescent.webp",
+    "credit": "YouTube · Dumbbell Single Leg RDL",
+    "source": "https://www.youtube.com/watch?v=lI8-igvsnVQ&t=11s"
+  },
+  "stop-go-single-leg": {
+    "video": "media/videos/yt/stop-go-single-leg.mp4",
+    "poster": "media/videos/yt/stop-go-single-leg.webp",
+    "credit": "YouTube · How to Improve Sports Deceleration - Partner Drills - Training Aspects Performance",
+    "source": "https://www.youtube.com/watch?v=fpN1tcbm9QY&t=6s"
+  },
+  "scissor-cut": {
+    "video": "media/videos/yt/scissor-cut.mp4",
+    "poster": "media/videos/yt/scissor-cut.webp",
+    "credit": "YouTube · How To Do FAST FEET SCISSOR HOPS | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=wKv5xJdJ5Hw&t=13s"
   }
 };

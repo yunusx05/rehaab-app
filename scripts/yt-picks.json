@@ -5118,7 +5118,15 @@
   "query": "side lying hip abduction straight leg"
  },
  "pad-single-calf": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "b69MsfsWNWs",
+  "start": 5,
+  "title": "Balance Pad  Single Leg Calf Raise",
+  "duration": 12,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 194574,
+  "query": "single leg calf raise on balance pad"
  },
  "inversion-sl-balance": {
   "rejected": [
@@ -5190,7 +5198,15 @@
   "size": 137188
  },
  "heavy-calf-iso": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "cBnxPJghHEw",
+  "start": 8,
+  "title": "Isometric Single Leg Calf Raise with Knee and Hip Flexion Overcoming)",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 105846,
+  "query": "single leg calf raise isometric hold heavy dumbbell"
  },
  "frog-rock": {
   "rejected": [
@@ -5227,7 +5243,15 @@
   "query": "bulgarian split squat isometric hold bottom goblet"
  },
  "sl-rdl-crescent": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "lI8-igvsnVQ",
+  "start": 11,
+  "title": "Dumbbell Single Leg RDL",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 107808,
+  "query": "single leg RDL with leg swing balance"
  },
  "skater-ankle-rock": {
   "rejected": [],
@@ -5252,10 +5276,28 @@
   "query": "drop landing single leg stick box step off"
  },
  "split-push-step": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "hjYOjmQ6XVQ",
+  "start": 21,
+  "title": "Cross Over Step Drill - Basketball Manitoba Quick Hitter with coach Dan Becker",
+  "duration": 59,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 110280,
+  "query": "basketball defensive push step drill",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : pas le bon mouvement"
  },
  "stop-go-single-leg": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "fpN1tcbm9QY",
+  "start": 6,
+  "title": "How to Improve Sports Deceleration - Partner Drills - Training Aspects Performance",
+  "duration": 45,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 162147,
+  "query": "single leg deceleration stop and push off drill"
  },
  "couch-lift": {
   "videoId": "wHNFVLc1X5g",
@@ -5268,7 +5310,15 @@
   "query": "couch stretch knee lift off active"
  },
  "scissor-cut": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "wKv5xJdJ5Hw",
+  "start": 13,
+  "title": "How To Do FAST FEET SCISSOR HOPS | Exercise Demonstration Video and Guide",
+  "duration": 46,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 205237,
+  "query": "scissor hop change of direction cut drill"
  },
  "hop-step-rhythm": {
   "rejected": []
@@ -5832,5 +5882,269 @@
   "seen": "choix manuel sur planche",
   "size": 90934,
   "query": "hop step basketball dribble footwork"
+ },
+ "back-extension": {
+  "videoId": "TL3oQn7YsJg",
+  "start": 3,
+  "title": "Incline Bench Back Extension",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 129420,
+  "query": "back extension bench hyperextension"
+ },
+ "band-lateral": {
+  "videoId": "aWZUEr7Jfx0",
+  "start": 13,
+  "title": "How To Do Side Lateral Raises With Resistance Band | Shoulder Workout | Fitness My Life",
+  "duration": 37,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 97469,
+  "query": "resistance band lateral raise"
+ },
+ "band-ohp": {
+  "videoId": "Zli1UXH9ZeE",
+  "start": 8,
+  "title": "Band Overhead Press",
+  "duration": 38,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 56813,
+  "query": "resistance band overhead press"
+ },
+ "bb-curl": {
+  "videoId": "ZQWL7omZh94",
+  "start": 6,
+  "title": "Barbell Curl: Good vs. Bad Form",
+  "duration": 41,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 108230,
+  "query": "barbell curl proper form",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : pas le bon mouvement"
+ },
+ "bb-shrug": {
+  "videoId": "M_MjF5Nm_h4",
+  "start": 2,
+  "title": "Barbell Shrug",
+  "duration": 11,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 152763,
+  "query": "barbell shrug"
+ },
+ "butterfly-kb": {
+  "videoId": "9gyQsDaUnKo",
+  "start": 23,
+  "title": "Kettlebell Adductor Stretch",
+  "duration": 53,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 174093,
+  "query": "weighted butterfly stretch kettlebells on knees",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : pas le bon mouvement"
+ },
+ "cable-curl": {
+  "videoId": "2MUEL4nL6hA",
+  "start": 26,
+  "title": "How to PROPERLY Cable Bicep Curl For Bigger Biceps (EASY FIX)",
+  "duration": 73,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 305034,
+  "query": "cable bicep curl"
+ },
+ "cable-press": {
+  "videoId": "sh92B-_2O48",
+  "start": 8,
+  "title": "How To Do A Cable Chest Press",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 154843,
+  "query": "standing cable chest press"
+ },
+ "childs-pose": {
+  "videoId": "kH12QrSGedM",
+  "start": 14,
+  "title": "Child Pose",
+  "duration": 49,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 126652,
+  "query": "child's pose stretch"
+ },
+ "close-grip-press": {
+  "videoId": "XEFDMwmrLAM",
+  "start": 3,
+  "title": "Close Grip Bench Press",
+  "duration": 18,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 82819,
+  "query": "close grip bench press"
+ },
+ "concentration-curl": {
+  "videoId": "VMbDQ8PZazY",
+  "start": 4,
+  "title": "CONCENTRATION CURL",
+  "duration": 27,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 82604,
+  "query": "concentration curl"
+ },
+ "facepull-cable": {
+  "videoId": "0Po47vvj9g4",
+  "start": 2,
+  "title": "How To Do Cable Face Pulls",
+  "duration": 15,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 165927,
+  "query": "cable face pull proper form"
+ },
+ "floor-press": {
+  "videoId": "lNdi7VEf2Ew",
+  "start": 22,
+  "title": "DUMBBELL FLOOR PRESS",
+  "duration": 81,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 146672,
+  "query": "dumbbell floor press"
+ },
+ "front-squat": {
+  "videoId": "uYumuL_G_V0",
+  "start": 28,
+  "title": "The Front Squat",
+  "duration": 66,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 78472,
+  "query": "barbell front squat form"
+ },
+ "goblet-db": {
+  "videoId": "meJSJEG_sT0",
+  "start": 17,
+  "title": "Dumbbell Goblet Squat",
+  "duration": 38,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 160176,
+  "query": "dumbbell goblet squat"
+ },
+ "good-morning": {
+  "videoId": "nWyx81AfTos",
+  "start": 2,
+  "title": "How To Do A Barbell Good Morning",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 144836,
+  "query": "barbell good morning exercise"
+ },
+ "incline-curl": {
+  "videoId": "tmxgffAanu0",
+  "start": 11,
+  "title": "Incline Dumbell Curl Nasl Yaplr?",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 135582,
+  "query": "incline dumbbell curl"
+ },
+ "inverted-row": {
+  "videoId": "KOaCM1HMwU0",
+  "start": 2,
+  "title": "Inverted Row",
+  "duration": 13,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 186167,
+  "query": "inverted row barbell bodyweight"
+ },
+ "legextension": {
+  "videoId": "4ZDm5EbiFI8",
+  "start": 2,
+  "title": "How To Do A Leg Extension",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 217256,
+  "query": "leg extension machine proper form"
+ },
+ "pallof-cable": {
+  "videoId": "-0N2xTi69t8",
+  "start": 5,
+  "title": "Cable Pallof press (mid body cable)",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 169345,
+  "query": "cable pallof press"
+ },
+ "rear-delt-fly": {
+  "videoId": "lFJBHzGIKIE",
+  "start": 14,
+  "title": "DB Bent Over Rear Delt Fly",
+  "duration": 31,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 141372,
+  "query": "bent over dumbbell rear delt fly"
+ },
+ "rower": {
+  "videoId": "uM06MQqEN0E",
+  "start": 51,
+  "title": "British Rowing Indoor Championships Technique",
+  "duration": 87,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 104045,
+  "query": "rowing machine technique"
+ },
+ "scap-pullup": {
+  "videoId": "pE8PJsWEV7k",
+  "start": 3,
+  "title": "Scapular Pull Ups",
+  "duration": 23,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 87825,
+  "query": "scapular pull ups"
+ },
+ "step-up": {
+  "videoId": "9ZknEYboBOQ",
+  "start": 7,
+  "title": "Dumbbell Step-up - How To",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 126948,
+  "query": "dumbbell step up on bench"
+ },
+ "straight-arm-pulldown": {
+  "videoId": "zYbaRQAbul0",
+  "start": 2,
+  "title": "Cable Straight Arm Rope Pulldown",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 108405,
+  "query": "straight arm cable pulldown"
+ },
+ "walking-lunge": {
+  "videoId": "tQNktxPkSeE",
+  "start": 0,
+  "title": "Walking Lunge",
+  "duration": 8,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 92739,
+  "query": "walking lunges exercise"
  }
 }
