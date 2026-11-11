@@ -2,6 +2,19 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-11 (soir) — Démos vidéo des exercices qui n'en avaient pas (v87, branche `feature/demos-manquantes`)
+
+**Fait**
+- 98 nouvelles démos (extraits YouTube muets de 6 s) : abdos, sable, cardio, corde, planche d'équilibre, pistolet de massage, drills basket (tir, dribble, coordination, défense, intensité match), muscu classique.
+- Gemini en quota (3.6/3.5) puis saturé (3.8) : choix faits à la main sur planche (2 candidates × 12 images), puis contrôle de chaque extrait découpé. Hommes uniquement : toute vidéo avec une femme, même au fond, écartée.
+- Refusés après contrôle de l'extrait : vélo, balancier de jambe, pieds qui changent, curl barre, papillon lesté, split/push step (`refused` dans `yt-picks.json`).
+- Tests : suite complète OK sauf `poids-tir.spec.cjs:55` (déjà KO, dépend de la date).
+
+**Reste sans vidéo (≈ 52)**
+- Catalogue (42) : squat barre, développé militaire, tractions supination, dips, soulevé sumo, extension de hanche élastique, relevés de genoux, rotations russes, jumping jacks, sable (ours, fentes, pogo, sprint, bonds latéraux), navettes terrain, planche inversée, hip dips, hollow rock, dead bug élastique, etc. 13 ont encore leurs photos.
+- Drills (10) : main faible tout terrain, tour du plot, ligne, huit, passe-attaque, tour du monde, arrêts, couper le dribble, pieds qui changent, circuit à l'appel.
+- Outils : `manual-scout.cjs` / `decide.cjs` / `stack.sh` dans le `scripts/manual/`.
+
 ## 2026-11-11 (suite) — Jour « Shooting » au planning + pluie limitée à la course dehors (v86, en ligne)
 
 **Fait**
