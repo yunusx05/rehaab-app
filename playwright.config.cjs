@@ -7,7 +7,9 @@ module.exports = defineConfig({
     baseURL: 'http://127.0.0.1:4173',
     channel: 'chrome',
     locale: 'fr-FR',
-    colorScheme: 'dark'
+    colorScheme: 'dark',
+    // Son coupé pendant les tests (vidéos, bips).
+    launchOptions: { args: ['--mute-audio'] }
   },
   webServer: {
     command: 'npm start -- --listen 4173',

@@ -127,11 +127,14 @@ function ptAudioContext() {
 }
 // iOS ne parle aussi qu'après un geste : une phrase vide au premier toucher débloque la voix pour toute la séance.
 let ptSpeechReady=false;
-function ptSpeechPrime(){if(ptSpeechReady)return;try{if(window.speechSynthesis&&window.SpeechSynthesisUtterance){speechSynthesis.speak(new SpeechSynthesisUtterance(''));ptSpeechReady=true;}}catch(e){}}
+// Navigateur piloté par les tests automatiques : le coach se tait (il parlait dans les haut-parleurs de l'ordinateur),
+// sauf si le test écoute lui-même ce qui est dit (window.__said).
+const ptMuted=()=>!!(navigator.webdriver&&!window.__said);
+function ptSpeechPrime(){if(ptSpeechReady||ptMuted())return;try{if(window.speechSynthesis&&window.SpeechSynthesisUtterance){speechSynthesis.speak(new SpeechSynthesisUtterance(''));ptSpeechReady=true;}}catch(e){}}
 ['pointerdown','keydown'].forEach(type=>window.addEventListener(type,()=>{ptAudioContext();ptSpeechPrime();},{capture:true,passive:true}));
 // Voix du coach (lot 19) : phrases courtes en français, la nouvelle remplace celle en cours. Coupable depuis la séance.
 function ptSay(text){
-  try{const synth=window.speechSynthesis;if(!text||!synth||!window.SpeechSynthesisUtterance)return;
+  try{const synth=window.speechSynthesis;if(!text||!synth||!window.SpeechSynthesisUtterance||ptMuted())return;
     const u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=1.05;
     const voice=synth.getVoices().find(v=>/^fr(-|_|$)/i.test(v.lang));if(voice)u.voice=voice;
     synth.cancel();synth.speak(u);}catch(e){}
