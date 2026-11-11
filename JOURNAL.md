@@ -2,6 +2,18 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-11 (suite) — Jour « Shooting » au planning + pluie limitée à la course dehors (v86, en ligne)
+
+**Fait**
+- Branche `feature/jour-shooting` fusionnée dans main et poussée ; v86 vérifiée en ligne.
+- Jour « Shooting » dans le type de jour du planning (`SeasonPlan.MODES.shooting`) : ce jour-là, seule la séance de tir ; autant de séances de tir que de jours « Shooting » dans la semaine (sinon 1 placée seule). Permis même un jour de club. Accueil : « Lancer ma séance de tir ».
+- Pluie : le terrain de basket est couvert. Seuls la course dehors (`outdoor`) et le sable (`sand`) sortent. Le fractionné passe en navettes sur le terrain (`court-shuttle`, nouvel exercice), ou course sur place sans « Terrain / espace ». Skills, panier, corde et séance de tir inchangés.
+- Tests : 2 ajoutés (jour Shooting), test pluie réécrit. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` (déjà KO, dépend de la date).
+
+**À savoir**
+- Sable supposé dehors (bloqué sous la pluie) : à retirer de `OUTDOOR` dans `personal-engine.js` si le terrain de beach-volley est couvert.
+- Pas testé sur iPhone ; pas de démo vidéo pour les navettes.
+
 ## 2026-11-11 — Lot 31 « retours terrain » : boutons visibles, pluie, sable, abdos, skills / tir, recommencer, Fondations
 
 **Fait**
