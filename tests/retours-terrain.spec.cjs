@@ -15,21 +15,25 @@ function joueur(owned=['bodyweight','dumbbells','bands','kettlebell','bench','pu
   s.pathway=BP.create({startStep:1,now:'2026-10-05'});return s;
 }
 
-test('pluie : rien de ce qui se fait dehors, cardio en intérieur, tir déplacé, skills sans panier',()=>{
-  const s=joueur([...joueur().owned,'outdoor','hoop','sand']),day=PT.dateKey();
+// Terrain de basket couvert : la pluie ne touche que la course dehors et le sable.
+test('pluie : course dehors et sable remplacés par des navettes sur le terrain couvert, le reste inchangé',()=>{
+  const s=joueur([...joueur().owned,'outdoor','hoop','sand','court']),day=PT.dateKey();
   s.calendar=SP.setRain(s,true,day);
   expect(SP.rainOn(s,day)).toBe(true);
   const check={...s.checkIn,equipment:s.owned,guided:2,date:day};
   ['run','sand-sprint','sand-pogo'].forEach(id=>expect(PT.allowed(PT.catalog.find(e=>e.id===id),s,check),id).toBe(false));
+  expect(PT.allowed(PT.catalog.find(e=>e.id==='court-shuttle'),s,check)).toBe(true);
   const run=BC.plan(PT,JP,{...s,pathway:{...s.pathway,step:3}},'run',{phase:'step3'});
-  expect(run.exercises[0].id).toBe('run-in-place');
-  expect(run.reasons.join(' ')).toMatch(/Pluie/);
+  expect(run.exercises[0].id).toBe('court-shuttle');
+  expect(run.reasons.join(' ')).toMatch(/terrain couvert/);
+  const sand=BC.plan(PT,JP,{...s,pathway:{...s.pathway,step:3}},'sand',{phase:'step3'});
+  expect(sand.exercises[0].id).toBe('court-shuttle');
+  // Skills et tir : rien ne change, le panier reste disponible.
   s.skills=SK.saveProfile(SK.blank(),{answers:{},tests:{},date:day});s.skills.hoopDate=day;
-  const sk=SK.session(PT,s,{minutes:45});
-  expect(sk.exercises.some(e=>(e.needs||[]).includes('hoop'))).toBe(false);
-  // Le tir ne va jamais un jour de pluie.
-  const monday=SP.mondayOf(day),w=SP.weekSchedule(s,monday,monday);
-  expect(items(w).filter(x=>x.type==='shooting').every(x=>w.days[x.day].date!==day)).toBe(true);
+  expect(SK.session(PT,s,{minutes:45}).exercises.some(e=>(e.needs||[]).includes('hoop'))).toBe(true);
+  s.calendar={...SP.setRain(s,true,day),week:{[SP.weekday(day)]:'shooting'}};
+  const monday=SP.mondayOf(day),w=SP.weekSchedule(s,monday,day);
+  expect(w.days[SP.weekday(day)].items.some(x=>x.type==='shooting')).toBe(true);
   // « Il ne pleut plus » : retour en arrière.
   s.calendar=SP.setRain(s,false,day);expect(SP.rainOn(s,day)).toBe(false);
 });
@@ -106,4 +110,28 @@ test('écrans : « Il pleut » noté depuis l’imprévu puis retiré, « Recomm
   const st=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);
   expect(st.pathway.step).toBe(1);
   expect(errors).toEqual([]);
+});
+
+test('jour « Shooting » : réglé à la main, la séance de tir y va, deux jours = deux séances, rien d’autre ce jour-là',()=>{
+  const s=joueur();s.skills=SK.saveProfile(SK.blank(),{answers:{},tests:{},date:'2026-10-05'});
+  expect(SP.MODES.shooting).toBe('Shooting');
+  s.calendar={...SP.blankCalendar(),week:{2:'shooting'}};
+  let w=SP.weekSchedule(s,MONDAY,MONDAY);
+  expect(w.days[2].items.map(x=>x.type)).toEqual(['shooting']);
+  expect(items(w).filter(x=>x.type==='shooting').length).toBe(1);
+  s.calendar={...SP.blankCalendar(),week:{2:'shooting',5:'shooting'}};
+  w=SP.weekSchedule(s,MONDAY,MONDAY);
+  expect(items(w).filter(x=>x.type==='shooting').map(x=>x.day).sort()).toEqual([2,5]);
+  expect(SP.violations(s,w)).toEqual([]);
+});
+
+test('accueil : un jour « Shooting », le bouton principal lance la séance de tir',async({page})=>{
+  test.setTimeout(90000);
+  const s=joueur();s.profile.name='Test';s.skills=SK.saveProfile(SK.blank(),{answers:{},tests:{},date:PT.dateKey()});
+  s.calendar=SP.setDayMode(s,PT.dateKey(),'shooting');
+  await page.setViewportSize({width:390,height:844});
+  await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('s')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('s','1');}},{data:s,key:PT.STORAGE_KEY});
+  await page.goto('/#today');await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
+  await page.getByRole('button',{name:/Lancer ma séance de tir/}).click();
+  await expect(page.getByRole('heading',{name:/Mes séances de tir/})).toBeVisible();
 });

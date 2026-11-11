@@ -573,6 +573,8 @@
   ex('sand-squat-jump','Squats sautés dans le sable','plyo','jump',['sand'],lower,['Descends en squat, saute le plus haut possible.','Réception souple dans le sable, genoux au-dessus des pieds.','Pause d’une seconde avant le saut suivant.'],{cues:['Réception souple','Genoux au-dessus des pieds'],impact:true,level:2,min:5,max:6,rest:75,transfer:'La détente travaillée avec des réceptions amorties.',qualities:['vertical']});
   ex('sand-lateral-bound','Bonds latéraux dans le sable','plyo','jump',['sand'],lower,['Bond d’une jambe sur l’autre, sur le côté.','Tiens la réception une seconde avant de repartir.','Le sable glisse : genou dans l’axe du pied.'],{cues:['Tiens la réception','Genou dans l’axe'],impact:true,level:2,unilateral:true,min:4,max:6,rest:75,transfer:'Changer de direction avec plus de force latérale.',qualities:['lateral']});
   ex('sand-broad-jump','Sauts en longueur dans le sable','plyo','jump',['sand'],lower,['Pieds largeur de hanches, balancer de bras.','Saute le plus loin possible, réception sur les deux pieds.','Reviens en marchant entre chaque saut.'],{cues:['Bras qui lancent','Réception deux pieds'],impact:true,level:3,min:4,max:5,rest:90,transfer:'Puissance horizontale pour l’attaque du cercle.',qualities:['vertical','firststep']});
+  // Lot 31 : fractionné quand il pleut, sur le terrain couvert (navettes) ou sur place.
+  ex('court-shuttle','Navettes sur le terrain','cardio','cardio',['court'],lower,['D’une ligne de fond à l’autre, allure soutenue.','Ralentis avant la ligne, pose le pied et repars.','Récupère en marchant.'],{measure:'seconds',seconds:30,rest:60,impact:true});
   // Lot 31 : cardio en intérieur, quand il pleut et qu’aucun vélo n’est disponible.
   ex('run-in-place','Course sur place · genoux hauts','cardio','cardio',['bodyweight'],lower,['Course sur place, genoux à hauteur de hanche, bras actifs.','Reste sur l’avant des pieds, réception légère.','Récupère en marchant sur place.'],{measure:'seconds',seconds:30,rest:60,impact:true});
   // Lot 19 : « Sur le terrain » des exercices du parcours et de la muscu basket sans `transfer` (14 mots max).
@@ -699,14 +701,15 @@
     if(check&&check.warmup) return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:false,avoidImpact:active.active.length>0 && !tol};
     return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
   }
-  // Lot 31 : jour de pluie, noté depuis « Un imprévu » (calendar.rain). Ce qui se fait dehors sort de la séance.
-  const OUTDOOR=['outdoor','hoop','sand'];
+  // Lot 31 : jour de pluie, noté depuis « Un imprévu » (calendar.rain). Le terrain de basket est couvert :
+  // seuls la course dehors (piste, parcours extérieur) et le sable sortent de la séance.
+  const OUTDOOR=['outdoor','sand'];
   function rainOn(state,date) {const r=state&&state.calendar&&state.calendar.rain;return Array.isArray(r)&&r.includes(date||dateKey());}
   function allowed(exercise,state,check=state.checkIn,ctx=context(state,check)) {
     if(ctx.active.blocked) return false;
     if(!exercise.needs.every(id=>id==='bodyweight'||check.equipment.includes(id))) return false;
-    // Pluie : rien de ce qui se fait dehors, et pas de sprint ni de coupe sur un sol mouillé.
-    if(rainOn(state,check&&check.date)&&(exercise.needs.some(id=>OUTDOOR.includes(id))||exercise.needs.includes('court')&&exercise.impact)) return false;
+    // Pluie : pas de course dehors ni de sable (le terrain couvert reste disponible).
+    if(rainOn(state,check&&check.date)&&exercise.needs.some(id=>OUTDOOR.includes(id))) return false;
     const tol=tolerance(state);
     // Quick Rehab : la zone ciblée suit son protocole ; les autres douleurs gardent la règle habituelle.
     const pains=check&&check.rehabRegion?ctx.active.active.filter(p=>p.region!==check.rehabRegion):ctx.active.active;

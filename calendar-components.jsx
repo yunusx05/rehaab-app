@@ -63,10 +63,10 @@ function PTCalendar({data,update,go,notify}){
   const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length,cardioCount=week.days.flatMap(d=>d.items).filter(x=>x.type==='cardio').length;
   const BC=window.BasketCardio,cardioPerWeek=BC?BC.perWeek(data):0;
   const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n}}));
-  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Muscu et skills dans un seul planning. Règle chaque jour : muscu, skills, les deux ou repos.</PTPageHead>
+  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Muscu, skills et tir dans un seul planning. Règle chaque jour : muscu, skills, shooting, les deux ou repos.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
-      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span>{BC&&<span><strong>{cardioCount}</strong> cardio</span>}<span className="fine">cette semaine</span></p>
+      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span><span><strong>{week.days.flatMap(d=>d.items).filter(x=>x.type==='shooting').length}</strong> tir</span>{BC&&<span><strong>{cardioCount}</strong> cardio</span>}<span className="fine">cette semaine</span></p>
       {week.skills.placed<week.skills.wanted&&<p className="notice warning">{week.skills.wanted-week.skills.placed} séance{week.skills.wanted-week.skills.placed>1?'s':''} skills sans place cette semaine : règle un jour sur « Skills » ou « Muscu + skills ».</p>}
       <details className="card stack-sm calendar-life disclosure">
         <summary><strong>Ma semaine type</strong><small>Le type de chaque jour, toutes les semaines</small></summary>

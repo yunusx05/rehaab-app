@@ -137,14 +137,15 @@ function PTTodayPlan({
   const dayObj = SPL && plan.kind !== 'blocked' ? SPL.weekSchedule(data, now, now).days.find(d => d.date === now) : null;
   const dayItems = (dayObj?.items || []).filter(x => x.type !== 'care');
   // Lot 25 : le calendrier est la référence. Si une séance y est prévue aujourd'hui, le titre et le bouton la suivent (avant : l'accueil calculait sa propre séance et pouvait dire « skills » quand le planning disait « muscu »).
-  const ORDER = ['pathway', 'reset', 'muscu', 'skills'];
+  const ORDER = ['pathway', 'muscu', 'skills', 'shooting'];
   // Choix de Yunus : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.
   const calPrimary = ['train', 'light'].includes(plan.kind) ? [...dayItems].filter(x => x.status === 'planned' && ORDER.includes(x.type) && !(showPathway && x.type === 'reset')).sort((a, b) => ORDER.indexOf(a.type) - ORDER.indexOf(b.type))[0] || null : null;
   const calAction = !calPrimary ? null : {
     muscu: ['Préparer ma séance muscu', actions.program[1]],
     skills: ['Lancer ma séance skills', null],
     pathway: ['Préparer ma séance', null],
-    reset: ['Préparer ma séance', null]
+    // Lot 31 bis : un jour « Shooting », le bouton ouvre les séances de tir (dribble d'abord, puis les tirs comptés).
+    shooting: ['Lancer ma séance de tir', () => go('shooting')]
   }[calPrimary.type];
   const runCal = () => {
     if (calAction[1]) {
@@ -230,14 +231,14 @@ function PTTodayPlan({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "rain",
     size: 18
-  }), /*#__PURE__*/React.createElement("span", null, "Pluie not\xE9e : ce qui se fait dehors (course, panier, sable) passe en int\xE9rieur ou glisse \xE0 un autre jour."), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement("span", null, "Pluie not\xE9e : la course dehors et le sable passent en navettes sur le terrain couvert."), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => {
       update(s => ({
         ...s,
         calendar: SPL.setRain(s, false, now)
       }));
-      notify('Pluie retirée : tes séances dehors reviennent.');
+      notify('Pluie retirée : ta course dehors revient.');
     }
   }, "Il ne pleut plus"));
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.

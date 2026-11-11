@@ -236,7 +236,7 @@ function PTCalendar({
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
     title: "Mon planning."
-  }, "Muscu et skills dans un seul planning. R\xE8gle chaque jour : muscu, skills, les deux ou repos."), /*#__PURE__*/React.createElement("div", {
+  }, "Muscu, skills et tir dans un seul planning. R\xE8gle chaque jour : muscu, skills, shooting, les deux ou repos."), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "calendar-nav"
@@ -256,7 +256,7 @@ function PTCalendar({
     size: 18
   }))), /*#__PURE__*/React.createElement("p", {
     className: "calendar-balance"
-  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), BC && /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, cardioCount), " cardio"), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.days.flatMap(d => d.items).filter(x => x.type === 'shooting').length), " tir"), BC && /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, cardioCount), " cardio"), /*#__PURE__*/React.createElement("span", {
     className: "fine"
   }, "cette semaine")), week.skills.placed < week.skills.wanted && /*#__PURE__*/React.createElement("p", {
     className: "notice warning"
