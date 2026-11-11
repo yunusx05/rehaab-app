@@ -76,7 +76,8 @@
   }
   // Type de journée choisi par l'utilisateur : auto (l'app décide), muscu, skills, les deux, ou repos.
   // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
-  const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',both:'Muscu + skills',off:'Repos'};
+  // Lot 31 bis : « Shooting » = jour réservé à la séance de tir (placée à la main), comme un jour skills mais seulement le tir.
+  const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',shooting:'Shooting',both:'Muscu + skills',off:'Repos'};
   function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
@@ -117,6 +118,7 @@
   function fitsMode(item,mode) {
     if(item.type==='care') return true;
     if(mode==='off') return false;
+    if(mode==='shooting') return item.type==='shooting';
     if(item.type==='skills'||item.type==='shooting') return ['auto','skills','both'].includes(mode);
     return ['auto','muscu','both'].includes(mode);
   }
@@ -178,7 +180,10 @@
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
     if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills · dribble, tir, lay-up',legs:'light',minutes:Math.min(max,sk.minutes||45)});
     const hoop=a.hoop&&['daily','weekly'].includes(a.hoop);
-    if(hoop||sk||(state.shooting&&(state.shooting.sessions||[]).length)) out.push({key:'T1',type:'shooting',label:'Séance de tir · dribble puis full shoot',legs:'light',minutes:Math.min(max,40)});
+    // Autant de séances de tir que de jours réglés sur « Shooting » cette semaine ; sinon une, placée par l'app.
+    const shootDays=Array.from({length:7},(_,i)=>dayMode(state,at(monday,i))).filter(m=>m==='shooting').length;
+    const shots=Math.max(shootDays,hoop||sk||(state.shooting&&(state.shooting.sessions||[]).length)?1:0);
+    for(let i=0;i<shots;i++) out.push({key:`T${i+1}`,type:'shooting',label:'Séance de tir · dribble puis full shoot',legs:'light',minutes:Math.min(max,40)});
     if(activePains(state).length) out.push({key:'C1',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10},{key:'C2',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10});
     return out;
   }
@@ -213,7 +218,8 @@
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';
     if(item.legs==='heavy'&&d.club.practice) return 'Entraînement au club ce jour-là : pas de jambes lourdes en plus.';
     // Un jour de club, les skills ne passent que si tu l'as demandé (jour réglé sur « Skills » ou « Muscu + skills »).
-    if((item.type==='skills'||item.type==='shooting')&&(d.club.match||d.club.practice&&!['skills','both'].includes(mode))) return 'Pas de skills ni de tir un jour de club : le basket y est déjà.';
+    if((item.type==='skills'||item.type==='shooting')&&(d.club.match||d.club.practice&&!['skills','both','shooting'].includes(mode))) return 'Pas de skills ni de tir un jour de club : le basket y est déjà.';
+    if(item.type==='shooting'&&placed.some(x=>x!==item&&x.type==='shooting'&&x.date===date)) return 'Déjà une séance de tir ce jour-là.';
     if((item.type==='shooting'||item.type==='skills')&&placed.some(x=>x!==item&&x.type==='skills'&&x.date===date)) return 'Déjà une séance skills ce jour-là.';
     if(item.legs==='heavy'&&placed.some(x=>x!==item&&x.legs==='heavy'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances de jambes lourdes.';
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
@@ -272,7 +278,7 @@
         // Un jour que tu as réglé pour ce type de séance passe devant.
         const skillsType=item.type==='skills'||item.type==='shooting';
         const wanted=d.mode==='both'||d.mode==='skills'&&skillsType||d.mode==='muscu'&&!skillsType;
-        return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
+        return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(d.mode==='shooting'&&item.type==='shooting'?12:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
       }).sort((a,b)=>b.score-a.score||a.d.weekday-b.d.weekday);
       const options=optionsFor(item);
       // Cardio à impacts sans jour compatible (semaine de club et de match, jambes lourdes partout) : même séance, version sans impact.

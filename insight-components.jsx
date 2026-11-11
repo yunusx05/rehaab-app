@@ -54,12 +54,14 @@ function PTTodayPlan({data,update,go,notify}) {
   const dayObj=SPL&&plan.kind!=='blocked'?SPL.weekSchedule(data,now,now).days.find(d=>d.date===now):null;
   const dayItems=(dayObj?.items||[]).filter(x=>x.type!=='care');
   // Lot 25 : le calendrier est la référence. Si une séance y est prévue aujourd'hui, le titre et le bouton la suivent (avant : l'accueil calculait sa propre séance et pouvait dire « skills » quand le planning disait « muscu »).
-  const ORDER=['pathway','reset','muscu','skills'];
+  const ORDER=['pathway','muscu','skills','shooting'];
   // Choix de Yunus : quand le parcours est la séance du jour, l'accueil lance celle du parcours, pas la « Remise en route » du calendrier.
   const calPrimary=['train','light'].includes(plan.kind)?[...dayItems].filter(x=>x.status==='planned'&&ORDER.includes(x.type)&&!(showPathway&&x.type==='reset')).sort((a,b)=>ORDER.indexOf(a.type)-ORDER.indexOf(b.type))[0]||null:null;
   const calAction=!calPrimary?null:{
     muscu:['Préparer ma séance muscu',actions.program[1]],
-    skills:['Lancer ma séance skills',null],pathway:['Préparer ma séance',null],reset:['Préparer ma séance',null]
+    skills:['Lancer ma séance skills',null],pathway:['Préparer ma séance',null],
+    // Lot 31 bis : un jour « Shooting », le bouton ouvre les séances de tir (dribble d'abord, puis les tirs comptés).
+    shooting:['Lancer ma séance de tir',()=>go('shooting')]
   }[calPrimary.type];
   const runCal=()=>{if(calAction[1]){calAction[1]();return;}launch(ptCalendarPlan(data,calPrimary,dayObj));};
   const excuse=action=>{const r=SPL.excuse(data,action,now);if(r.ok)update(s=>({...s,calendar:r.calendar}));setMishap(false);notify(r.why);};

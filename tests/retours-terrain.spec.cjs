@@ -107,3 +107,27 @@ test('écrans : « Il pleut » noté depuis l’imprévu puis retiré, « Recomm
   expect(st.pathway.step).toBe(1);
   expect(errors).toEqual([]);
 });
+
+test('jour « Shooting » : réglé à la main, la séance de tir y va, deux jours = deux séances, rien d’autre ce jour-là',()=>{
+  const s=joueur();s.skills=SK.saveProfile(SK.blank(),{answers:{},tests:{},date:'2026-10-05'});
+  expect(SP.MODES.shooting).toBe('Shooting');
+  s.calendar={...SP.blankCalendar(),week:{2:'shooting'}};
+  let w=SP.weekSchedule(s,MONDAY,MONDAY);
+  expect(w.days[2].items.map(x=>x.type)).toEqual(['shooting']);
+  expect(items(w).filter(x=>x.type==='shooting').length).toBe(1);
+  s.calendar={...SP.blankCalendar(),week:{2:'shooting',5:'shooting'}};
+  w=SP.weekSchedule(s,MONDAY,MONDAY);
+  expect(items(w).filter(x=>x.type==='shooting').map(x=>x.day).sort()).toEqual([2,5]);
+  expect(SP.violations(s,w)).toEqual([]);
+});
+
+test('accueil : un jour « Shooting », le bouton principal lance la séance de tir',async({page})=>{
+  test.setTimeout(90000);
+  const s=joueur();s.profile.name='Test';s.skills=SK.saveProfile(SK.blank(),{answers:{},tests:{},date:PT.dateKey()});
+  s.calendar=SP.setDayMode(s,PT.dateKey(),'shooting');
+  await page.setViewportSize({width:390,height:844});
+  await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('s')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('s','1');}},{data:s,key:PT.STORAGE_KEY});
+  await page.goto('/#today');await expect(page.locator('.personal-app')).toBeVisible({timeout:20000});
+  await page.getByRole('button',{name:/Lancer ma séance de tir/}).click();
+  await expect(page.getByRole('heading',{name:/Mes séances de tir/})).toBeVisible();
+});
