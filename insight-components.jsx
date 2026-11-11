@@ -84,7 +84,7 @@ function PTTodayPlan({data,update,go,notify}) {
   </section>;
   // Lot 31 : pluie notée aujourd'hui (depuis « Un imprévu ») : rappel, et retour en arrière possible.
   const rain=SPL&&SPL.rainOn?SPL.rainOn(data,now):false;
-  const rainNote=rain&&<p className="rain-note"><PTIcon name="rain" size={18}/><span>Pluie notée : ce qui se fait dehors (course, panier, sable) passe en intérieur ou glisse à un autre jour.</span><button className="text-button" onClick={()=>{update(s=>({...s,calendar:SPL.setRain(s,false,now)}));notify('Pluie retirée : tes séances dehors reviennent.');}}>Il ne pleut plus</button></p>;
+  const rainNote=rain&&<p className="rain-note"><PTIcon name="rain" size={18}/><span>Pluie notée : la course dehors et le sable passent en navettes sur le terrain couvert.</span><button className="text-button" onClick={()=>{update(s=>({...s,calendar:SPL.setRain(s,false,now)}));notify('Pluie retirée : ta course dehors revient.');}}>Il ne pleut plus</button></p>;
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
   return <section className={`today-plan kind-${plan.kind}`} aria-labelledby="today-plan-title">
     {rainNote}

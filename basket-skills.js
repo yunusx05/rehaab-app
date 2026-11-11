@@ -264,9 +264,9 @@
     return {...clean,levels:initialLevels(clean.profile),program:clean.program||{perWeek:2,minutes:45,blocks:true,blockMinutes:15,status:'active',startDate:today()}};
   }
   const hoopToday = (skills,date=today()) => !!(skills&&skills.hoopDate===date);
-  // Lot 31 : jour de pluie noté (calendar.rain) : le panier du playground n'est pas utilisable, on reste sur place.
+  // Lot 31 : jour de pluie noté (calendar.rain). Le terrain est couvert : la pluie ne change rien aux skills.
   const rainy = (state,date=today()) => !!(state&&state.calendar&&Array.isArray(state.calendar.rain)&&state.calendar.rain.includes(date));
-  const hoopOn = (state,s,date=today()) => hoopToday(s,date)&&!rainy(state,date);
+  const hoopOn = (state,s,date=today()) => hoopToday(s,date);
   // Lot 31 : quelques minutes de dribble avant tout travail basket, même court (séance de tir comprise).
   function dribbleWarm(PT,state,{count=2,date=today()}={}) {
     return pick(state,{area:'handle',count,stationary:true}).map(d=>({...dose(d,PT),sets:1,rest:20,dribbleWarm:true}));
@@ -299,10 +299,9 @@
   // Séance skills complète. light : la veille d'un match ou jambes protégées (aucun saut ni changement de direction).
   function session(PT,state,{minutes,light=false,date=today()}={}) {
     const s=validate(state.skills),prog=s.program||{minutes:45};
-    const rain=rainy(state,date),total=Number(minutes)||prog.minutes||45,hoop=hoopOn(state,s,date),prio=priorities(s,state.player);
+    const total=Number(minutes)||prog.minutes||45,hoop=hoopOn(state,s,date),prio=priorities(s,state.player);
     const main=prio[0]?prio[0].area:'handle',second=(prio.find(p=>p.area!==main)||{area:hoop?'shoot':'footwork'}).area;
-    // Sous la pluie : sur place, sans coupe ni saut (garage, salle, préau).
-    const opts={hoop,noImpact:light||rain,stationary:rain};
+    const opts={hoop,noImpact:light};
     const used=hoop?['sk-ft']:[],take=(area,count)=>{const list=pick(state,{...opts,area,count,exclude:used});list.forEach(d=>used.push(d.id));return list.map(d=>dose(d,PT));};
     // Lot 31 : une séance skills mélange dribble, tir et lay-up. Toujours du dribble d'abord, puis la coordination tant qu'elle est faible,
     // le point faible, et avec un panier au moins un exercice de lay-up et un de tir.
@@ -323,14 +322,14 @@
     if(plan[0]&&plan[0].area==='handle') plan[0]={...plan[0],dribbleWarm:true};
     const reasons=[`Point faible travaillé : ${areas[main].label.toLowerCase()} (palier ${TIERS[s.levels[main]-1].toLowerCase()})${!hoop&&['shoot','finish'].includes(main)?', au panier dès que tu en as un':''}.`,
       'Dribble d’abord : quelques minutes balle en main avant tout le reste.',
-      rain?'Pluie notée aujourd’hui : séance sur place, sans panier, sans coupe ni saut.':hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
+      hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
       'Note tes tirs réussis et tentés : ils font évoluer ton palier.'];
     if(light) reasons.push('Version légère : ni saut ni changement de direction, tes jambes restent fraîches.');
     const styles=[...new Set(plan.map(e=>e.style).filter(Boolean))];
     if(styles.length) reasons.push(`Inspiration : ${styles.join(', ')} (style de jeu, pas un programme officiel).`);
     const counts={};plan.forEach(e=>counts[e.area]=(counts[e.area]||0)+1);
     const lead=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
-    return {id:uid(),title:hoop?'Skills · dribble, tir, lay-up':`Skills · ${areas[lead].short}${rain?' · à l’abri':''}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    return {id:uid(),title:hoop?'Skills · dribble, tir, lay-up':`Skills · ${areas[lead].short}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   // Intensité match : efforts de 20 à 60 s, récupérations courtes, tir, dribble et finition sous fatigue.

@@ -102,7 +102,7 @@
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
     const owned=state.owned||['bodyweight'];
-    // Lot 31 : jour de pluie noté. Course et sable passent en intérieur ; la corde se fait à l'abri.
+    // Lot 31 : jour de pluie noté. Course et sable passent sur le terrain couvert (navettes) ; la corde ne change pas.
     const rain=!!(PT.rainOn&&PT.rainOn(state,now));
     // Courir dehors ne demande rien : le parcours extérieur est toujours disponible (sauf sous la pluie).
     const equipment=[...new Set([...owned,...(rain?[]:['outdoor'])])];
@@ -119,10 +119,10 @@
     const reasons=['Séance cardio régulière, hors parcours : elle ne fait pas avancer ton programme.'];
     let chosen=null,soft=false;
     const indoor=rain&&k.id==='run';
-    if(rain) reasons.push(k.id==='run'?'Pluie notée aujourd’hui : le fractionné se fait en intérieur, course sur place genoux hauts.':'Pluie notée aujourd’hui : fais ta corde à l’abri (garage, préau, salle).');
+    if(rain&&k.id==='run') reasons.push(owned.includes('court')?'Pluie notée aujourd’hui : le fractionné se fait en navettes sur ton terrain couvert.':'Pluie notée aujourd’hui : le fractionné se fait en intérieur, course sur place genoux hauts.');
     if(kind==='sand'&&!rain) reasons.push('Pas de terrain de sable dans ton matériel aujourd’hui : course fractionnée à la place.');
     if(impact.ok){
-      const wanted=find(all,indoor?'run-in-place':k.impactId);
+      const wanted=find(all,indoor?(owned.includes('court')?'court-shuttle':'run-in-place'):k.impactId);
       if(ok(wanted)) chosen=wanted;
       else if(kind==='rope'&&!owned.includes('rope')) reasons.push('Pas de corde à sauter dans ton matériel : ajoute-la dans ton profil pour la débloquer. En attendant, cardio sans impact.');
     } else reasons.push(impact.why);
@@ -145,7 +145,7 @@
     if(lv.held) reasons.push('Dernière fois, une douleur a été signalée : le niveau ne monte pas avant une séance propre.');
     else if(!soft&&lv.next) reasons.push(`Encore ${lv.next} séance${lv.next>1?'s':''} sans douleur avant le niveau suivant.`);
     const exercises=[ex];
-    return {id:PT.uid(),title:soft?`Cardio · ${chosen.id==='bike-interval'?'vélo par intervalles':'marche vive'}`:indoor?'Cardio · fractionné en intérieur':k.title,source:'cardio',cardioKind:kind,cardioLevel:level,cardioSoft:soft,
+    return {id:PT.uid(),title:soft?`Cardio · ${chosen.id==='bike-interval'?'vélo par intervalles':'marche vive'}`:indoor?'Cardio · fractionné sur le terrain couvert':k.title,source:'cardio',cardioKind:kind,cardioLevel:level,cardioSoft:soft,
       focus:'cardio',format:'classic',exercises,check,reasons,warmupSeconds:240,estimatedMinutes:Math.ceil((240+PT.estimateSeconds(exercises,'classic'))/60)+3,
       status:'preview',entries:{},createdAt:new Date().toISOString()};
   }

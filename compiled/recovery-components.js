@@ -368,7 +368,7 @@ function PTStretchPicker(props) {
 const ptMishapReasons = [{
   value: 'rain',
   label: 'Il pleut',
-  hint: 'Ce qui se fait dehors passe en intérieur',
+  hint: 'La course dehors passe sur le terrain couvert',
   icon: 'rain'
 }, {
   value: 'time',
@@ -413,11 +413,9 @@ const ptMishapReasons = [{
 }];
 // Lot 31 : ce que la pluie change pour chaque séance prévue aujourd'hui.
 function ptRainEffect(item) {
-  if (item.type === 'shooting') return 'glisse au prochain jour sans pluie (panier dehors)';
-  if (item.type === 'cardio') return item.kind === 'rope' ? 'se fait à l’abri (garage, préau, salle)' : 'passe en intérieur : course sur place genoux hauts';
-  if (item.type === 'skills') return 'sur place, sans panier ni coupe';
-  if (item.type === 'vivacite') return 'sans sprint ni coupe sur sol mouillé';
-  return 'inchangée, sauf les exercices prévus dehors';
+  // Le terrain de basket est couvert : seule la course dehors (et le sable) change.
+  if (item.type === 'cardio' && item.kind !== 'rope') return 'passe sur le terrain couvert : fractionné en navettes';
+  return 'inchangée, sur le terrain couvert';
 }
 // Séance prévue aujourd'hui, refaite en plus court ou avec un autre matériel.
 function ptMishapPlan(data, item, {
@@ -545,7 +543,7 @@ function PTMishap(props) {
     className: "stack"
   }, /*#__PURE__*/React.createElement("p", {
     className: "notice"
-  }, "Sous la pluie, on ne fait rien dehors : sol glissant, panier du playground et sable indisponibles. Ta journ\xE9e s\u2019adapte, rien n\u2019est annul\xE9."), planned.length > 0 ? /*#__PURE__*/React.createElement("ul", {
+  }, "Ton terrain est couvert : la pluie ne change que la course dehors (piste) et le sable, qui passent en navettes sur le terrain. Rien n\u2019est annul\xE9."), planned.length > 0 ? /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
   }, planned.map(x => /*#__PURE__*/React.createElement("li", {
     key: x.key
@@ -558,7 +556,7 @@ function PTMishap(props) {
         ...s,
         calendar: SPL.setRain(s, true, now)
       }));
-      notify('Pluie notée : ta journée passe en intérieur. Tu peux revenir en arrière depuis l’accueil.');
+      notify('Pluie notée : ta course dehors passe sur le terrain couvert. Tu peux revenir en arrière depuis l’accueil.');
       go('today');
     }
   }, /*#__PURE__*/React.createElement(PTIcon, {

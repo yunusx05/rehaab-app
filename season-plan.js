@@ -212,7 +212,6 @@
     if(!fitsMode(item,mode)) return `Jour réglé sur « ${MODES[mode]} ».`;
     const prev=days[i-1]||{club:days.prevClub||{match:false,practice:false}},next=days[i+1]||{club:clubOfNext(days,i)};
     if(d.club.match&&item.type!=='care') return 'Jour de match : seulement l’échauffement.';
-    if(d.rain&&item.type==='shooting') return 'Pluie ce jour-là : pas de tir au panier dehors.';
     if(item.legs==='heavy'&&next.club.match) return 'Veille de match : pas de jambes lourdes.';
     if(item.legs==='impact'&&next.club.match) return 'Veille de match : pas d’impacts répétés.';
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';

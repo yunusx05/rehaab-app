@@ -231,14 +231,14 @@ function PTTodayPlan({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "rain",
     size: 18
-  }), /*#__PURE__*/React.createElement("span", null, "Pluie not\xE9e : ce qui se fait dehors (course, panier, sable) passe en int\xE9rieur ou glisse \xE0 un autre jour."), /*#__PURE__*/React.createElement("button", {
+  }), /*#__PURE__*/React.createElement("span", null, "Pluie not\xE9e : la course dehors et le sable passent en navettes sur le terrain couvert."), /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: () => {
       update(s => ({
         ...s,
         calendar: SPL.setRain(s, false, now)
       }));
-      notify('Pluie retirée : tes séances dehors reviennent.');
+      notify('Pluie retirée : ta course dehors revient.');
     }
   }, "Il ne pleut plus"));
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
