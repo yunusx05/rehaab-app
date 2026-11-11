@@ -168,7 +168,11 @@ window.RehaabMedia = {
     "frames": "Barbell_Full_Squat",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/bb-squat.mp4",
+    "poster": "media/videos/yt/bb-squat.webp",
+    "credit": "YouTube · How To: Deep Barbell Back Squat",
+    "source": "https://www.youtube.com/watch?v=SW_C1A-rejs&t=108s"
   },
   "reverse-lunge": {
     "video": "media/videos/yt/reverse-lunge.mp4",
@@ -368,13 +372,21 @@ window.RehaabMedia = {
     "frames": "Rope_Jumping",
     "muscles": [
       "calves"
-    ]
+    ],
+    "video": "media/videos/yt/rope-lateral.mp4",
+    "poster": "media/videos/yt/rope-lateral.webp",
+    "credit": "YouTube · How To Do A SIDE TO SIDE JUMP ROPE | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=LSlVQkBwwDM&t=9s"
   },
   "rope-fb": {
     "frames": "Rope_Jumping",
     "muscles": [
       "calves"
-    ]
+    ],
+    "video": "media/videos/yt/rope-fb.mp4",
+    "poster": "media/videos/yt/rope-fb.webp",
+    "credit": "YouTube · Right Foot Forward and Back Hop Jump Roping",
+    "source": "https://www.youtube.com/watch?v=orxpriTQedI&t=9s"
   },
   "ankle-mob": {
     "video": "media/videos/yt/ankle-mob.mp4",
@@ -495,7 +507,11 @@ window.RehaabMedia = {
     "frames": "Bench_Dips",
     "muscles": [
       "triceps"
-    ]
+    ],
+    "video": "media/videos/yt/dips.mp4",
+    "poster": "media/videos/yt/dips.webp",
+    "credit": "YouTube · Bench Dips For HUGE Triceps: How To Do Them PROPERLY",
+    "source": "https://www.youtube.com/watch?v=XUhIlfbVxVU&t=55s"
   },
   "knee-pushup": {
     "video": "media/videos/yt/knee-pushup.mp4",
@@ -631,7 +647,11 @@ window.RehaabMedia = {
     "frames": "Chin-Up",
     "muscles": [
       "lats"
-    ]
+    ],
+    "video": "media/videos/yt/chinup.mp4",
+    "poster": "media/videos/yt/chinup.webp",
+    "credit": "YouTube · Underhand Chin Ups",
+    "source": "https://www.youtube.com/watch?v=-sRUrQ9W0os&t=27s"
   },
   "inverted-row": {
     "frames": "Inverted_Row",
@@ -767,7 +787,11 @@ window.RehaabMedia = {
     "frames": "Front_Squats_With_Two_Kettlebells",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/kb-front-squat.mp4",
+    "poster": "media/videos/yt/kb-front-squat.webp",
+    "credit": "YouTube · Double front squats 2x48 kettlebells",
+    "source": "https://www.youtube.com/watch?v=UcR_mzk2ONI&t=28s"
   },
   "goblet-db": {
     "frames": "Goblet_Squat",
@@ -923,7 +947,11 @@ window.RehaabMedia = {
     "frames": "Barbell_Curl",
     "muscles": [
       "biceps"
-    ]
+    ],
+    "video": "media/videos/yt/bb-curl.mp4",
+    "poster": "media/videos/yt/bb-curl.webp",
+    "credit": "YouTube · How To: Inside-Grip Bicep Curl With E-Z Bar Curl",
+    "source": "https://www.youtube.com/watch?v=zG2xJ0Q5QtI&t=59s"
   },
   "incline-curl": {
     "frames": "Alternate_Incline_Dumbbell_Curl",
@@ -1043,13 +1071,21 @@ window.RehaabMedia = {
     "frames": "Hanging_Leg_Raise",
     "muscles": [
       "abdominals"
-    ]
+    ],
+    "video": "media/videos/yt/hanging-knee-raise.mp4",
+    "poster": "media/videos/yt/hanging-knee-raise.webp",
+    "credit": "YouTube · How To Do HANGING KNEE RAISES | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=dPwg1E_ygjc&t=30s"
   },
   "russian-twist": {
     "frames": "Russian_Twist",
     "muscles": [
       "abdominals"
-    ]
+    ],
+    "video": "media/videos/yt/russian-twist.mp4",
+    "poster": "media/videos/yt/russian-twist.webp",
+    "credit": "YouTube · Russian Twists with Kettlebell for Complete Core Strength",
+    "source": "https://www.youtube.com/watch?v=SigTyTv0TQQ&t=44s"
   },
   "pallof-cable": {
     "frames": "Pallof_Press",
@@ -1074,7 +1110,10 @@ window.RehaabMedia = {
   "jumping-jack": {
     "card": "media/wger/jumping-jack.webp",
     "wgerExercise": 320,
-    "credit": "wger · CC BY-SA 4.0"
+    "credit": "YouTube · How to do a Jumping Jack  | Proper Form & Technique | NASM",
+    "video": "media/videos/yt/jumping-jack.mp4",
+    "poster": "media/videos/yt/jumping-jack.webp",
+    "source": "https://www.youtube.com/watch?v=uLVt6u15L98&t=1s"
   },
   "high-knees": {
     "card": "media/wger/high-knees.webp",
@@ -3683,5 +3722,197 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/scissor-cut.webp",
     "credit": "YouTube · How To Do FAST FEET SCISSOR HOPS | Exercise Demonstration Video and Guide",
     "source": "https://www.youtube.com/watch?v=wKv5xJdJ5Hw&t=13s"
+  },
+  "sk-around3": {
+    "video": "media/videos/yt/sk-around3.mp4",
+    "poster": "media/videos/yt/sk-around3.webp",
+    "credit": "YouTube · Shooting Drill - Around the World, 5-Minutes!!",
+    "source": "https://www.youtube.com/watch?v=iP2ozbyfbYU&t=3s"
+  },
+  "rim-touches": {
+    "video": "media/videos/yt/rim-touches.mp4",
+    "poster": "media/videos/yt/rim-touches.webp",
+    "credit": "YouTube · Activ8 | Broad Jump to Rim Touch:",
+    "source": "https://www.youtube.com/watch?v=wSlqwDEiWuo&t=2s"
+  },
+  "tempo-court": {
+    "video": "media/videos/yt/tempo-court.mp4",
+    "poster": "media/videos/yt/tempo-court.webp",
+    "credit": "YouTube · Basketball Suicide Sprint Test",
+    "source": "https://www.youtube.com/watch?v=6XYSqfInJFU&t=15s"
+  },
+  "leg-swing-front": {
+    "video": "media/videos/yt/leg-swing-front.mp4",
+    "poster": "media/videos/yt/leg-swing-front.webp",
+    "credit": "YouTube · Leg Swings Front and Back",
+    "source": "https://www.youtube.com/watch?v=MYDGfnYhhz4&t=3s"
+  },
+  "inversion-sl-balance": {
+    "video": "media/videos/yt/inversion-sl-balance.mp4",
+    "poster": "media/videos/yt/inversion-sl-balance.webp",
+    "credit": "YouTube · Ankle & foot pain - single leg balance",
+    "source": "https://www.youtube.com/watch?v=y81I6jBEzgc&t=5s"
+  },
+  "split-push-step": {
+    "video": "media/videos/yt/split-push-step.mp4",
+    "poster": "media/videos/yt/split-push-step.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=3s"
+  },
+  "hollow-rock": {
+    "video": "media/videos/yt/hollow-rock.mp4",
+    "poster": "media/videos/yt/hollow-rock.webp",
+    "credit": "YouTube · The Hollow Rock",
+    "source": "https://www.youtube.com/watch?v=SfkuOb_1GK8&t=20s"
+  },
+  "band-deadbug": {
+    "video": "media/videos/yt/band-deadbug.mp4",
+    "poster": "media/videos/yt/band-deadbug.webp",
+    "credit": "YouTube · How to do a Dead Bug Pallof Press",
+    "source": "https://www.youtube.com/watch?v=Vfs3yxy3PLs&t=13s"
+  },
+  "sand-pogo": {
+    "video": "media/videos/yt/sand-pogo.mp4",
+    "poster": "media/videos/yt/sand-pogo.webp",
+    "credit": "YouTube · Jumping exercises on the sand to develop explosiveness",
+    "source": "https://www.youtube.com/watch?v=33te1VnmXio&t=50s"
+  },
+  "butterfly-kb": {
+    "video": "media/videos/yt/butterfly-kb.mp4",
+    "poster": "media/videos/yt/butterfly-kb.webp",
+    "credit": "YouTube · Elevated Weighted Butterfly Stretch",
+    "source": "https://www.youtube.com/watch?v=xbnHG-q15Is&t=79s"
+  },
+  "gun-upper-back": {
+    "video": "media/videos/yt/gun-upper-back.mp4",
+    "poster": "media/videos/yt/gun-upper-back.webp",
+    "credit": "YouTube · Massage Gun for Neck Pain | Self-Care Routine & Stretches",
+    "source": "https://www.youtube.com/watch?v=gc2ZK6yxzFk&t=48s"
+  },
+  "foot-bridge-rdl": {
+    "video": "media/videos/yt/foot-bridge-rdl.mp4",
+    "poster": "media/videos/yt/foot-bridge-rdl.webp",
+    "credit": "YouTube · Barefoot Single Leg Deadlift",
+    "source": "https://www.youtube.com/watch?v=A2g-8CtQGUM&t=1s"
+  },
+  "box-figure-four-kb": {
+    "video": "media/videos/yt/box-figure-four-kb.mp4",
+    "poster": "media/videos/yt/box-figure-four-kb.webp",
+    "credit": "YouTube · Kettlebell Staggered Stance Hip Hinge",
+    "source": "https://www.youtube.com/watch?v=vX-7pEHBoY4&t=5s"
+  },
+  "wobble-single-leg": {
+    "video": "media/videos/yt/wobble-single-leg.mp4",
+    "poster": "media/videos/yt/wobble-single-leg.webp",
+    "credit": "YouTube · ANKLE REHABILITATION  SINGLE LEG BALANCE  STABILITY BOARD",
+    "source": "https://www.youtube.com/watch?v=Z6_xt82VyAc&t=9s"
+  },
+  "sand-sprint": {
+    "video": "media/videos/yt/sand-sprint.mp4",
+    "poster": "media/videos/yt/sand-sprint.webp",
+    "credit": "YouTube · Best of Training Session in the Sand | Doha 2017",
+    "source": "https://www.youtube.com/watch?v=N4-_l0HoJ4w&t=3s"
+  },
+  "court-shuttle": {
+    "video": "media/videos/yt/court-shuttle.mp4",
+    "poster": "media/videos/yt/court-shuttle.webp",
+    "credit": "YouTube · Basketball Suicide Sprint Test",
+    "source": "https://www.youtube.com/watch?v=6XYSqfInJFU&t=3s"
+  },
+  "co-cone-walk": {
+    "video": "media/videos/yt/co-cone-walk.mp4",
+    "poster": "media/videos/yt/co-cone-walk.webp",
+    "credit": "YouTube · Hesitation Dribble Drill Hard Past Cones",
+    "source": "https://www.youtube.com/watch?v=vZQYR2qgY1M&t=1s"
+  },
+  "sk-kill-dribble": {
+    "video": "media/videos/yt/sk-kill-dribble.mp4",
+    "poster": "media/videos/yt/sk-kill-dribble.webp",
+    "credit": "YouTube · Train with Phenom Hoops: Jump Stop vs Stride Stop",
+    "source": "https://www.youtube.com/watch?v=v2Hyl6q6jwc&t=17s"
+  },
+  "mv-call-circuit": {
+    "video": "media/videos/yt/mv-call-circuit.mp4",
+    "poster": "media/videos/yt/mv-call-circuit.webp",
+    "credit": "YouTube · This 5 Minute DRIBBLING WORKOUT Changes Your Game FOREVER ",
+    "source": "https://www.youtube.com/watch?v=oADaM2L1YLc&t=41s"
+  },
+  "sk-low-fast": {
+    "video": "media/videos/yt/sk-low-fast.mp4",
+    "poster": "media/videos/yt/sk-low-fast.webp",
+    "credit": "YouTube · PSB Drills - Pound Dribbles",
+    "source": "https://www.youtube.com/watch?v=xaOeh5CEc68&t=12s"
+  },
+  "sk-100": {
+    "video": "media/videos/yt/sk-100.mp4",
+    "poster": "media/videos/yt/sk-100.webp",
+    "credit": "YouTube · Improve Your Off Hand Dribble!   WEAK HAND DRIBBLING WORKOUT!",
+    "source": "https://www.youtube.com/watch?v=TQZoa9p5Mfk&t=93s"
+  },
+  "sk-pullup1": {
+    "video": "media/videos/yt/sk-pullup1.mp4",
+    "poster": "media/videos/yt/sk-pullup1.webp",
+    "credit": "YouTube · Perimeter Shooting Drills: 1 Dribble Pull-Ups",
+    "source": "https://www.youtube.com/watch?v=2wRnQ_iqiMY&t=24s"
+  },
+  "sk-catch-mid": {
+    "video": "media/videos/yt/sk-catch-mid.mp4",
+    "poster": "media/videos/yt/sk-catch-mid.webp",
+    "credit": "YouTube · Improve Your Shooting Footwork With Derrick White",
+    "source": "https://www.youtube.com/watch?v=N2j_HGoV9hY&t=13s"
+  },
+  "sk-catch-3": {
+    "video": "media/videos/yt/sk-catch-3.mp4",
+    "poster": "media/videos/yt/sk-catch-3.webp",
+    "credit": "YouTube · Shooting Drill for Catch & Shoot | HoopStudy Basketball",
+    "source": "https://www.youtube.com/watch?v=r6plGsE7gO0&t=38s"
+  },
+  "sk-floater": {
+    "video": "media/videos/yt/sk-floater.mp4",
+    "poster": "media/videos/yt/sk-floater.webp",
+    "credit": "YouTube · MASTER your floaters with this workout!",
+    "source": "https://www.youtube.com/watch?v=n1TLF05SJKs&t=24s"
+  },
+  "sk-weak-finish": {
+    "video": "media/videos/yt/sk-weak-finish.mp4",
+    "poster": "media/videos/yt/sk-weak-finish.webp",
+    "credit": "YouTube · SLAM x BODYARMOR Basketball Training Drills: Weak Hand Finishing",
+    "source": "https://www.youtube.com/watch?v=n7RNBlG3seA&t=28s"
+  },
+  "sk-rip": {
+    "video": "media/videos/yt/sk-rip.mp4",
+    "poster": "media/videos/yt/sk-rip.webp",
+    "credit": "YouTube · Rip-Pivot Sweep Drill with Luke Meier of Thrive3 Basketball",
+    "source": "https://www.youtube.com/watch?v=0-z74YL03HI&t=53s"
+  },
+  "mi-3spot-race": {
+    "video": "media/videos/yt/mi-3spot-race.mp4",
+    "poster": "media/videos/yt/mi-3spot-race.webp",
+    "credit": "YouTube · Partner Shooting Drill - Basketball",
+    "source": "https://www.youtube.com/watch?v=nGJofQSSYRA&t=50s"
+  },
+  "mi-closeout-shot": {
+    "video": "media/videos/yt/mi-closeout-shot.mp4",
+    "poster": "media/videos/yt/mi-closeout-shot.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=2s"
+  },
+  "mi-drive-kick": {
+    "video": "media/videos/yt/mi-drive-kick.mp4",
+    "poster": "media/videos/yt/mi-drive-kick.webp",
+    "credit": "YouTube · Kentucky running a timed layup drill to see how many they can make in a minute",
+    "source": "https://www.youtube.com/watch?v=RalqWFceGW0&t=14s"
+  },
+  "mi-shell-slides": {
+    "video": "media/videos/yt/mi-shell-slides.mp4",
+    "poster": "media/videos/yt/mi-shell-slides.webp",
+    "credit": "YouTube · Defensive Slide Drill",
+    "source": "https://www.youtube.com/watch?v=IjGJ_CF5hcA&t=6s"
+  },
+  "df-box-out": {
+    "video": "media/videos/yt/df-box-out.mp4",
+    "poster": "media/videos/yt/df-box-out.webp",
+    "credit": "YouTube · Blake Griffin - Rebounding: Box-Out Drill - Nike Basketball Pro Training",
+    "source": "https://www.youtube.com/watch?v=-TLWi7uOI3s&t=32s"
   }
 };
