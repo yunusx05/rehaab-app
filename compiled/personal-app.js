@@ -1218,8 +1218,11 @@ function ptAudioContext() {
 }
 // iOS ne parle aussi qu'après un geste : une phrase vide au premier toucher débloque la voix pour toute la séance.
 let ptSpeechReady = false;
+// Navigateur piloté par les tests automatiques : le coach se tait (il parlait dans les haut-parleurs de l'ordinateur),
+// sauf si le test écoute lui-même ce qui est dit (window.__said).
+const ptMuted = () => !!(navigator.webdriver && !window.__said);
 function ptSpeechPrime() {
-  if (ptSpeechReady) return;
+  if (ptSpeechReady || ptMuted()) return;
   try {
     if (window.speechSynthesis && window.SpeechSynthesisUtterance) {
       speechSynthesis.speak(new SpeechSynthesisUtterance(''));
@@ -1238,7 +1241,7 @@ function ptSpeechPrime() {
 function ptSay(text) {
   try {
     const synth = window.speechSynthesis;
-    if (!text || !synth || !window.SpeechSynthesisUtterance) return;
+    if (!text || !synth || !window.SpeechSynthesisUtterance || ptMuted()) return;
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'fr-FR';
     u.rate = 1.05;

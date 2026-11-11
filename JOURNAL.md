@@ -2,6 +2,20 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-11 (soir) — Démos vidéo des exercices qui n'en avaient pas (v87, branche `feature/demos-manquantes`)
+
+**Fait**
+- 98 nouvelles démos (extraits YouTube muets de 6 s) : abdos, sable, cardio, corde, planche d'équilibre, pistolet de massage, drills basket (tir, dribble, coordination, défense, intensité match), muscu classique.
+- Gemini en quota (3.6/3.5) puis saturé (3.8) : choix faits à la main sur planche (2 candidates × 12 images), puis contrôle de chaque extrait découpé. Hommes uniquement : toute vidéo avec une femme, même au fond, écartée.
+- Refusés après contrôle de l'extrait : vélo, balancier de jambe, pieds qui changent, curl barre, papillon lesté, split/push step (`refused` dans `yt-picks.json`).
+- Tests : suite complète OK sauf `poids-tir.spec.cjs:55` (déjà KO, dépend de la date).
+
+**Deuxième passe (même soir)** : 34 démos de plus (5 trouvées par Gemini, le reste à la main). Bug corrigé : 13 démos validées gardaient une ancienne marque « refused » d’une vidéo écartée lors d’une session précédente (elles n’apparaissaient pas). Total réel : 125 démos visibles ajoutées ce soir (90 exercices + 35 drills).
+
+**Reste sans vidéo (24)** : vélo, développé militaire barre, soulevé sumo, extension de hanche élastique, marche gilet lesté, éversion de cheville, marche arrière, lay-ups tout terrain, étirement fessier allongé, électrostimulation bas du dos, hop step en rythme, hop step + poussée, planche inversée, planche rotations de hanches, ours / fentes / bonds latéraux dans le sable ; drills : main faible en déplacement, ligne, huit autour de deux plots, passe-attaque, arrêts, closeout et contestation, pieds qui changent. Raison principale : seules des femmes, des groupes non vérifiables ou une personne minuscule à l’écran dans les vidéos trouvées.
+
+- Outils : `manual-scout.cjs` / `decide.cjs` / `stack.sh` dans le `scripts/manual/`.
+
 ## 2026-11-11 (suite) — Jour « Shooting » au planning + pluie limitée à la course dehors (v86, en ligne)
 
 **Fait**

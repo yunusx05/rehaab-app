@@ -1130,11 +1130,11 @@
  },
  "bike": {
   "rejected": [
+   "gWosN1CY4bg",
+   "aU7OGLF4JZA",
    "-nQGge9rou0",
-   "T_0Y9K45Nak",
-   "aU7OGLF4JZA"
-  ],
-  "query": "stationary bike"
+   "T_0Y9K45Nak"
+  ]
  },
  "suitcase-carry": {
   "videoId": "bAnCoDrvXc4",
@@ -1729,10 +1729,13 @@
  },
  "band-eversion": {
   "rejected": [
+   "YGPnqHVgohk",
+   "2bfxL8gt55c",
    "xfrncpP5ONQ",
    "QFgPY6oJWcA",
    "50YDq8_OA_w",
-   "wJXzCKIjaT4"
+   "wJXzCKIjaT4",
+   "K_iDi5roZSE"
   ]
  },
  "band-inversion": {
@@ -1811,18 +1814,30 @@
    "Ejq_HWd3CIs",
    "z6DHB9VNFuA",
    "d_5V7WR2d-Y"
-  ]
+  ],
+  "videoId": "zOgmrQ7CyT8",
+  "start": 37,
+  "title": "Single Arm Bentover Row from Single Leg RDL Hold",
+  "duration": 63,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 235644,
+  "query": "single leg RDL to bent over row dumbbell"
  },
  "reverse-walk": {
-  "videoId": "BGoW1IQ4y2E",
-  "duration": 66,
-  "title": "Rebuild Your Knees With Backwards Walking & Tib Raises",
-  "start": 46,
-  "seen": "backward walking knee exercise",
-  "quality": 5,
-  "size": 301772,
-  "query": "backward walking knee exercise",
-  "refused": true
+  "rejected": [
+   "BGoW1IQ4y2E"
+  ],
+  "videoId": "iAkAPxkMAAM",
+  "start": 87,
+  "title": "Fix your knees -  walking backwards uphill!",
+  "duration": 172,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 286085,
+  "query": "backward walking exercise knee rehab",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : personne trop petite ou coupe en plein milieu"
  },
  "side-lying-adduction": {
   "videoId": "-X3sDsQ4QhI",
@@ -1885,15 +1900,15 @@
   "query": "pound dribble drill basketball one hand"
  },
  "sk-low-fast": {
-  "videoId": "o4d8IZqyZhc",
-  "duration": 238,
-  "title": "A Dribbling Drill that Promotes Staying Low! - Basketball 2016 #59",
-  "start": 103,
-  "seen": "low fast dribble drill basketball",
+  "videoId": "xaOeh5CEc68",
+  "duration": 58,
+  "title": "PSB Drills - Pound Dribbles",
+  "start": 12,
+  "seen": "choix manuel sur planche",
   "quality": 5,
-  "size": 123773,
-  "query": "low fast dribble drill basketball",
-  "refused": true
+  "size": 174783,
+  "query": "low fast pound dribble basketball drill",
+  "manual": true
  },
  "sk-cross-stand": {
   "videoId": "h7s31K0kPh4",
@@ -1906,15 +1921,15 @@
   "query": "stationary crossover dribble drill"
  },
  "sk-100": {
-  "videoId": "K1vAmgLhfRw",
-  "duration": 337,
-  "title": "The Best 2 Ball Dribbling Drills (D1 Point Guard)",
-  "start": 65,
-  "seen": "basketball dribbling drill",
+  "videoId": "TQZoa9p5Mfk",
+  "duration": 543,
+  "title": "Improve Your Off Hand Dribble!   WEAK HAND DRIBBLING WORKOUT!",
+  "start": 93,
+  "seen": "choix manuel sur planche",
   "quality": 5,
-  "size": 152427,
+  "size": 165550,
   "query": "100 dribbles each hand basketball drill",
-  "refused": true
+  "manual": true
  },
  "sk-eyes-up": {
   "videoId": "pv21L8RMJ_M",
@@ -1988,11 +2003,23 @@
  },
  "sk-weak-court": {
   "rejected": [
+   "TEM4RPqrbWA",
+   "Ae02fpLRsns",
    "zmHcuu6ugeg",
    "UCSg5eSnUfQ",
    "yiUoBqtlCqg",
    "Q9GhaXd18hE"
-  ]
+  ],
+  "videoId": "36guV6WeRm0",
+  "start": 11,
+  "title": "Dribbling Full Court Right & Left Hand",
+  "duration": 36,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 98461,
+  "query": "left hand dribble full court basketball",
+  "refused": true,
+  "refusedWhy": "joueur trop petit à l’écran"
  },
  "sk-snatch": {
   "videoId": "pwUDY1c8iQk",
@@ -2050,40 +2077,48 @@
    "-qySIh0H1Ug",
    "L-FsEoMqZU8",
    "00faEIjInkc"
-  ]
+  ],
+  "videoId": "0343D3fjPnQ",
+  "start": 200,
+  "title": "How to Make More Free Throws: Basketball Shooting Tips",
+  "duration": 396,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 173901,
+  "query": "basketball free throw form"
  },
  "sk-pullup1": {
-  "videoId": "JExhyUuVqVA",
-  "duration": 15,
-  "title": "1 Dribble Pull-ups",
-  "start": 7,
-  "seen": "one dribble pull up jumper drill",
+  "videoId": "2wRnQ_iqiMY",
+  "duration": 46,
+  "title": "Perimeter Shooting Drills: 1 Dribble Pull-Ups",
+  "start": 24,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 262517,
+  "size": 210898,
   "query": "one dribble pull up jumper drill",
-  "refused": true
+  "manual": true
  },
  "sk-catch-mid": {
-  "videoId": "jOQaGagaFZc",
-  "duration": 261,
-  "title": "Catch and Shoot [Mid-Range] (Team): Goalrilla G Trainer Basketball Drill",
-  "start": 15,
-  "seen": "catch and shoot mid range self pass drill",
+  "videoId": "N2j_HGoV9hY",
+  "duration": 45,
+  "title": "Improve Your Shooting Footwork With Derrick White",
+  "start": 13,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 198965,
-  "query": "catch and shoot mid range self pass drill",
-  "refused": true
+  "size": 233735,
+  "query": "catch and shoot mid range basketball drill",
+  "manual": true
  },
  "sk-catch-3": {
   "videoId": "r6plGsE7gO0",
   "duration": 51,
   "title": "Shooting Drill for Catch & Shoot | HoopStudy Basketball",
-  "start": 35,
-  "seen": "catch and shoot three point drill",
+  "start": 38,
+  "seen": "choix manuel sur planche",
   "quality": 5,
-  "size": 202289,
-  "query": "catch and shoot three point drill",
-  "refused": true
+  "size": 210240,
+  "query": "catch and shoot three pointer drill",
+  "manual": true
  },
  "sk-relocate": {
   "videoId": "u26gG3oAXKo",
@@ -2101,7 +2136,15 @@
    "OcjmoZHUB4o",
    "tb4KnoS8cXg",
    "TXRGIMIFEls"
-  ]
+  ],
+  "videoId": "H4CEMwMWfoE",
+  "start": 13,
+  "title": "Basketball Conditioning Drill: Sprints and Freethrows",
+  "duration": 37,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 275762,
+  "query": "free throws after sprints conditioning basketball"
  },
  "sk-stepback": {
   "videoId": "eSER3JvKb1g",
@@ -2136,13 +2179,29 @@
  "sk-around3": {
   "rejected": [
    "uNAOI7bYCVs",
-   "BmF18A8sytM",
    "KCYAeuepnNw",
+   "BmF18A8sytM",
    "t2ylGIvgvHE"
-  ]
+  ],
+  "videoId": "iP2ozbyfbYU",
+  "start": 3,
+  "title": "Shooting Drill - Around the World, 5-Minutes!!",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 48818,
+  "query": "around the world shooting drill solo"
  },
  "sk-mikan-rev": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "R3Yk8tis-rQ",
+  "start": 20,
+  "title": "Reverse Mikan Drill (Beginner Shooting w/ Hoop)",
+  "duration": 55,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 120796,
+  "query": "reverse mikan drill basketball"
  },
  "sk-mikan": {
   "videoId": "_VcY9M49JAs",
@@ -2197,26 +2256,26 @@
   "query": "power layup two feet drill"
  },
  "sk-floater": {
-  "videoId": "d2tpyrd2CtA",
-  "duration": 78,
-  "title": "Floater Drill | Basketball Handling Tutorials | Jr. NBA at Home",
-  "start": 33,
-  "seen": "floater drill basketball",
+  "videoId": "n1TLF05SJKs",
+  "duration": 69,
+  "title": "MASTER your floaters with this workout!",
+  "start": 24,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 320357,
-  "query": "floater drill basketball",
-  "refused": true
+  "size": 276127,
+  "query": "basketball floater drill",
+  "manual": true
  },
  "sk-weak-finish": {
   "videoId": "n7RNBlG3seA",
   "duration": 80,
   "title": "SLAM x BODYARMOR Basketball Training Drills: Weak Hand Finishing",
-  "start": 20,
-  "seen": "weak hand finishing drill basketball",
+  "start": 28,
+  "seen": "choix manuel sur planche",
   "quality": 5,
-  "size": 122002,
-  "query": "weak hand finishing drill basketball",
-  "refused": true
+  "size": 154262,
+  "query": "weak hand layup finishing drill",
+  "manual": true
  },
  "sk-euro": {
   "videoId": "OPAp7Ro3Xk4",
@@ -2244,7 +2303,15 @@
    "LHV1Yt4pcTo",
    "hp6hO_iSzQU",
    "OPAp7Ro3Xk4"
-  ]
+  ],
+  "videoId": "D4ejs4JkLEo",
+  "start": 20,
+  "title": "Basketball Drill: \"Layup Without Dribble\" is an important basic skill that should not be overlooked",
+  "duration": 38,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 184191,
+  "query": "layup footwork without ball basketball"
  },
  "sk-contact": {
   "videoId": "X4gLTAvPa44",
@@ -2300,6 +2367,7 @@
  },
  "sk-jump-stop": {
   "rejected": [
+   "pCsm1-4TgsA",
    "v2Hyl6q6jwc",
    "bscEcF95EA8",
    "qan-CH6gYZo",
@@ -2307,15 +2375,15 @@
   ]
  },
  "sk-rip": {
-  "videoId": "Pc89DY6_o1Y",
-  "duration": 12,
-  "title": "DRIVE Basketball Drills: Floater",
-  "start": 1,
-  "seen": "rip through drive drill basketball",
+  "videoId": "0-z74YL03HI",
+  "duration": 105,
+  "title": "Rip-Pivot Sweep Drill with Luke Meier of Thrive3 Basketball",
+  "start": 53,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 140586,
-  "query": "rip through drive drill basketball",
-  "refused": true
+  "size": 91922,
+  "query": "rip through jab and drive basketball",
+  "manual": true
  },
  "kb-deadlift": {
   "videoId": "l6gDwf3xC6s",
@@ -2522,7 +2590,15 @@
    "RqUGaKsi1vE",
    "0pTBkUPuMkk",
    "eDf49a4Vx5k"
-  ]
+  ],
+  "videoId": "XOTO2qWRy9U",
+  "start": 35,
+  "title": "Dumbbell Jump Squat | Exercise Guide",
+  "duration": 65,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 96618,
+  "query": "dumbbell jump squat"
  },
  "reverse-nordic": {
   "videoId": "6WXRylUxQ48",
@@ -3201,6 +3277,7 @@
  },
  "rim-touches": {
   "rejected": [
+   "-I7Mc8hBUAs",
    "tbqtVPHBsIw",
    "fCYjvUR0hpE",
    "_9aV3FZxkDo",
@@ -3209,7 +3286,15 @@
    "qyxI8Nyv1CY",
    "5gGVYR_Bk8g",
    "pix1YFsf8N8"
-  ]
+  ],
+  "videoId": "wSlqwDEiWuo",
+  "start": 2,
+  "title": "Activ8 | Broad Jump to Rim Touch:",
+  "duration": 11,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 126836,
+  "query": "basketball jump touch rim repeated"
  },
  "bounding": {
   "videoId": "b3124L0KK3Q",
@@ -3583,22 +3668,13 @@
   "query": "defensive slide conditioning drill"
  },
  "full-court-layups": {
-  "videoId": "RINtrtNXsrc",
-  "duration": 24,
-  "title": "Layup drill to end Pacers practice",
-  "start": 15,
-  "seen": "full court layups drill",
-  "quality": 4,
-  "size": 350413,
   "rejected": [
+   "RINtrtNXsrc",
    "HxLe8kw44zE",
    "WukAhG9mc_8",
    "RalqWFceGW0",
    "Xx281oJMbBk"
-  ],
-  "query": "full court layups drill",
-  "refused": true,
-  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+  ]
  },
  "ball-shuttles": {
   "videoId": "i_v1lPYbPE0",
@@ -3612,6 +3688,8 @@
  },
  "tempo-court": {
   "rejected": [
+   "QBU0Z0SW8Qk",
+   "UdCkSww1D9g",
    "UWIOAwWjRXc",
    "d0HFzz_emUQ",
    "S_iQysDbBrE",
@@ -3620,7 +3698,15 @@
    "Gjt2-xMiOQM",
    "9pb6JX2ulDU",
    "IaHrfPgey08"
-  ]
+  ],
+  "videoId": "6XYSqfInJFU",
+  "start": 15,
+  "title": "Basketball Suicide Sprint Test",
+  "duration": 35,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 187362,
+  "query": "basketball court sprints conditioning drill player"
  },
  "bike-sprints": {
   "videoId": "PHReR7tC_tw",
@@ -4003,19 +4089,20 @@
   "videoId": "EUh5awh8MYc",
   "duration": 25,
   "title": "Shooting Drill: 2-2 Closeout",
-  "start": 17,
-  "seen": "closeout contest shot basketball drill",
+  "start": 9,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 199804,
+  "size": 204462,
   "rejected": [
    "4C6PmJoueqY",
    "yxR0y-F2lF4",
    "gIFeKew26O0",
    "YrDwmKgkpe8"
   ],
-  "query": "closeout contest shot basketball drill",
+  "query": "basketball closeout drill contest shot",
   "refused": true,
-  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation",
+  "manual": true
  },
  "df-drop-step": {
   "videoId": "q5z-WcLbCso",
@@ -4036,7 +4123,15 @@
    "KJM9701zZaU",
    "IHA67P2d-Xc",
    "dFR5l4fZNa4"
-  ]
+  ],
+  "videoId": "pj4m7swZC2E",
+  "start": 3,
+  "title": "2 vs 2 help and recover drill - pressuring the ball",
+  "duration": 20,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 130592,
+  "query": "basketball help and recover defense drill"
  },
  "df-mirror": {
   "videoId": "Pb15pCX16H8",
@@ -4098,22 +4193,21 @@
   "query": "denial defense drill basketball"
  },
  "df-box-out": {
-  "videoId": "bhTAm_1UflA",
-  "duration": 260,
-  "title": "3-Second Box Out Drill",
-  "start": 120,
-  "seen": "box out drill basketball",
+  "videoId": "-TLWi7uOI3s",
+  "duration": 55,
+  "title": "Blake Griffin - Rebounding: Box-Out Drill - Nike Basketball Pro Training",
+  "start": 32,
+  "seen": "choix manuel sur planche",
   "quality": 5,
-  "size": 289641,
+  "size": 245453,
   "rejected": [
    "fscBc6hO8z0",
    "5TLz4R3SJ_w",
    "Sv_5k2tMcuU",
    "b_w5mEYGQ3I"
   ],
-  "query": "box out drill basketball",
-  "refused": true,
-  "refusedWhy": "planche : plusieurs personnes non vérifiables ou animation"
+  "query": "basketball box out rebound drill",
+  "manual": true
  },
  "mv-hesi-read": {
   "videoId": "3ZhWV4BjoeA",
@@ -4283,20 +4377,22 @@
   "query": "lateral leg swings side to side warm up"
  },
  "leg-swing-front": {
-  "duration": 19,
-  "title": "Dynamic Warm Up- Leg Swings Front to Back / Side to Side",
-  "start": 0,
-  "seen": "front to back leg swings dynamic warm up",
-  "quality": 4,
-  "size": 252817,
-  "query": "front to back leg swings dynamic warm up",
   "rejected": [
+   "naW8u72lOzI",
+   "y-dZ7RP9Ji4",
    "8_-3xijRzVE",
    "M8mqe9Lxcbw",
-   "naW8u72lOzI",
    "E68-pMl1Im8",
    "pNOs9cFdkGU"
-  ]
+  ],
+  "videoId": "MYDGfnYhhz4",
+  "start": 3,
+  "title": "Leg Swings Front and Back",
+  "duration": 12,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 193217,
+  "query": "leg swings warm up soccer player front back"
  },
  "knee-hug-walk": {
   "videoId": "eLwUaJJvMDo",
@@ -4448,9 +4544,9 @@
  },
  "figure-four": {
   "rejected": [
-   "2VE_NLcNMvQ",
-   "-g0nuyTHMrI",
    "Xb5gHdYtHnk",
+   "-g0nuyTHMrI",
+   "2VE_NLcNMvQ",
    "eJbtHXHWWck",
    "xVq2-g_leTI",
    "THeoEsh_Trw",
@@ -4732,17 +4828,11 @@
   "query": "TENS electrode placement trapezius shoulders"
  },
  "tens-lowback": {
-  "duration": 277,
-  "title": "sciatica treatment | Tens for sciatica pain in hindi",
-  "start": 83,
-  "seen": "TENS unit lower back electrode placement",
-  "quality": 4,
-  "size": 183711,
-  "query": "TENS unit lower back electrode placement",
   "rejected": [
+   "zdpdFwCBpgI",
+   "niqWrbVIKSA",
    "9605uio-kl8",
    "axLjV-68LoQ",
-   "zdpdFwCBpgI",
    "qExntJEFnj0",
    "sZUVolFU1F4"
   ]
@@ -4804,27 +4894,27 @@
   "query": "full court speed dribble basketball drill"
  },
  "mi-3spot-race": {
-  "videoId": "z7lgAGKDE_0",
-  "duration": 43,
-  "title": "Basketball Drill: Sprint, Pass, Shoot! Multiple purpose drill combining multiple basketball skills.",
-  "start": 17,
-  "seen": "basketball sprint pass shoot drill",
+  "videoId": "nGJofQSSYRA",
+  "duration": 117,
+  "title": "Partner Shooting Drill - Basketball",
+  "start": 50,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 202073,
-  "query": "basketball 3 spot shooting drill sprint",
+  "size": 127701,
+  "query": "three spot shooting drill race basketball",
   "rejected": [
    "z7lgAGKDE_0"
   ],
-  "refused": true
+  "manual": true
  },
  "mi-closeout-shot": {
-  "videoId": "EUh5awh8MYc",
-  "duration": 25,
-  "title": "Shooting Drill: 2-2 Closeout",
-  "start": 8,
-  "seen": "closeout and shoot basketball drill",
+  "videoId": "IjGJ_CF5hcA",
+  "duration": 14,
+  "title": "Defensive Slide Drill",
+  "start": 2,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 205687,
+  "size": 103995,
   "rejected": [
    "bI5LEzN8_08",
    "jSPADTvRPPM",
@@ -4832,8 +4922,8 @@
    "4Z8bWFQAtrc",
    "EUh5awh8MYc"
   ],
-  "query": "closeout and shoot basketball drill",
-  "refused": true
+  "query": "defensive slides closeout then shoot drill",
+  "manual": true
  },
  "mi-suicide-ft": {
   "rejected": [
@@ -4845,7 +4935,15 @@
    "3WDgTuq1LOM",
    "tb4KnoS8cXg",
    "H4CEMwMWfoE"
-  ]
+  ],
+  "videoId": "4enmmok6CP0",
+  "start": 8,
+  "title": "Free Throw Sprint (Acceleration Work)",
+  "duration": 71,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 184658,
+  "query": "suicide sprint then free throw basketball"
  },
  "mi-mikan-sprint": {
   "videoId": "_VcY9M49JAs",
@@ -4870,13 +4968,13 @@
   "manual": true
  },
  "mi-drive-kick": {
-  "videoId": "ty9aA4ccAQk",
-  "duration": 21,
-  "title": "Youth Basketball Drills: 1v1 Chaser Layup Races",
-  "start": 7,
-  "seen": "basketball conditioning drill attack the rim layup",
+  "videoId": "RalqWFceGW0",
+  "duration": 49,
+  "title": "Kentucky running a timed layup drill to see how many they can make in a minute",
+  "start": 14,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 250946,
+  "size": 206470,
   "rejected": [
    "6XYSqfInJFU",
    "Is2epnrOisM",
@@ -4884,8 +4982,8 @@
    "juZVELfYjhI",
    "ty9aA4ccAQk"
   ],
-  "query": "basketball conditioning drill attack the rim layup",
-  "refused": true
+  "query": "sprint then drive to rim layup drill",
+  "manual": true
  },
  "mi-transition-layups": {
   "videoId": "BFIpl98f1xg",
@@ -4898,18 +4996,18 @@
   "query": "full court layups basketball conditioning drill"
  },
  "mi-shell-slides": {
-  "videoId": "_R5NMwf1YTk",
-  "duration": 23,
-  "title": "CloseOut BoxOut Slide and Shoot drill #CoachSherman",
-  "start": 15,
-  "seen": "basketball defensive slides closeout box out rebound drill",
+  "videoId": "IjGJ_CF5hcA",
+  "duration": 14,
+  "title": "Defensive Slide Drill",
+  "start": 6,
+  "seen": "choix manuel sur planche",
   "quality": 4,
-  "size": 126378,
-  "query": "basketball defensive slides closeout box out rebound drill",
+  "size": 105519,
+  "query": "defensive slides closeout rebound drill basketball",
   "rejected": [
    "_R5NMwf1YTk"
   ],
-  "refused": true
+  "manual": true
  },
  "lying-twist": {
   "videoId": "6SZNflspv_U",
@@ -4936,18 +5034,42 @@
   "rejected": [
    "OF20FvBeM94",
    "7kgWVtG7ZYo"
-  ]
+  ],
+  "videoId": "6DRsO2sY9io",
+  "start": 14,
+  "title": "Upavistha Konasana | How To Do Upavistha Konasana | Hip Opening in Wide Angle Seated Forward Bend",
+  "duration": 24,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 115374,
+  "query": "seated straddle stretch forward fold"
  },
  "box-figure-four": {
   "rejected": [
    "Xb5gHdYtHnk"
-  ]
+  ],
+  "videoId": "lHiAZG5oikI",
+  "start": 8,
+  "title": "Standing Figure 4 Stretch",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 54924,
+  "query": "elevated figure four stretch standing"
  },
  "squat-kneel-stand": {
   "rejected": [
    "-CiWQ2IvY34",
    "t34oevgm_6A"
-  ]
+  ],
+  "videoId": "jC5OCkuvfP4",
+  "start": 12,
+  "title": "How to Progress to a Lunge - Kneel to Stand Drill",
+  "duration": 40,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 81559,
+  "query": "squat to kneel to stand drill"
  },
  "kneel-jump-squat": {
   "videoId": "4qK55avGyy4",
@@ -5003,12 +5125,30 @@
   "query": "side lying hip abduction straight leg"
  },
  "pad-single-calf": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "b69MsfsWNWs",
+  "start": 5,
+  "title": "Balance Pad  Single Leg Calf Raise",
+  "duration": 12,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 194574,
+  "query": "single leg calf raise on balance pad"
  },
  "inversion-sl-balance": {
   "rejected": [
+   "06cqmzQY9r4",
+   "CN7qsk3qbK8",
    "DWsYuA6BBgk"
-  ]
+  ],
+  "videoId": "y81I6jBEzgc",
+  "start": 5,
+  "title": "Ankle & foot pain - single leg balance",
+  "duration": 23,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 51126,
+  "query": "single leg balance on wedge ankle"
  },
  "toe-rock": {
   "videoId": "iqqoKp4Gflo",
@@ -5075,7 +5215,15 @@
   "size": 137188
  },
  "heavy-calf-iso": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "cBnxPJghHEw",
+  "start": 8,
+  "title": "Isometric Single Leg Calf Raise with Knee and Hip Flexion Overcoming)",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 105846,
+  "query": "single leg calf raise isometric hold heavy dumbbell"
  },
  "frog-rock": {
   "rejected": [
@@ -5112,7 +5260,15 @@
   "query": "bulgarian split squat isometric hold bottom goblet"
  },
  "sl-rdl-crescent": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "lI8-igvsnVQ",
+  "start": 11,
+  "title": "Dumbbell Single Leg RDL",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 107808,
+  "query": "single leg RDL with leg swing balance"
  },
  "skater-ankle-rock": {
   "rejected": [],
@@ -5137,10 +5293,29 @@
   "query": "drop landing single leg stick box step off"
  },
  "split-push-step": {
-  "rejected": []
+  "rejected": [
+   "hjYOjmQ6XVQ",
+   "j7JUvMrXLRk"
+  ],
+  "videoId": "IjGJ_CF5hcA",
+  "start": 3,
+  "title": "Defensive Slide Drill",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 105287,
+  "query": "basketball defensive stance push step slide drill"
  },
  "stop-go-single-leg": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "fpN1tcbm9QY",
+  "start": 6,
+  "title": "How to Improve Sports Deceleration - Partner Drills - Training Aspects Performance",
+  "duration": 45,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 162147,
+  "query": "single leg deceleration stop and push off drill"
  },
  "couch-lift": {
   "videoId": "wHNFVLc1X5g",
@@ -5153,10 +5328,21 @@
   "query": "couch stretch knee lift off active"
  },
  "scissor-cut": {
-  "rejected": []
+  "rejected": [],
+  "videoId": "wKv5xJdJ5Hw",
+  "start": 13,
+  "title": "How To Do FAST FEET SCISSOR HOPS | Exercise Demonstration Video and Guide",
+  "duration": 46,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 205237,
+  "query": "scissor hop change of direction cut drill"
  },
  "hop-step-rhythm": {
-  "rejected": []
+  "rejected": [
+   "oJUIg7kSpXo",
+   "aPq08RB9aeI"
+  ]
  },
  "copenhagen-long": {
   "rejected": [],
@@ -5203,7 +5389,10 @@
   "query": "seated hip flexor knee raise bench lean back"
  },
  "reverse-plank": {
-  "rejected": []
+  "rejected": [
+   "ZNAxdJ6Bt00",
+   "PgezBeNqke0"
+  ]
  },
  "overhead-side-bend-ecc": {
   "rejected": [],
@@ -5245,5 +5434,1113 @@
   "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
   "size": 83496,
   "query": "weighted pigeon stretch on box kettlebell"
+ },
+ "bicycle-crunch": {
+  "videoId": "eqg47ZuGZXQ",
+  "duration": 59,
+  "title": "Strengthening the core: Bicycle Crunch",
+  "start": 30,
+  "seen": "bicycle crunch",
+  "quality": 5,
+  "size": 114564,
+  "query": "bicycle crunch exercise form"
+ },
+ "band-crunch": {
+  "videoId": "g3EVVCKsfmw",
+  "duration": 45,
+  "title": "How To Do A KNEELING RESISTANCE BAND CRUNCH | Exercise Demonstration Video and Guide",
+  "start": 25,
+  "seen": "kneeling resistance band crunch",
+  "quality": 5,
+  "size": 129434,
+  "query": "kneeling resistance band crunch"
+ },
+ "heel-touch": {
+  "rejected": [
+   "PtX0z5_6sdM",
+   "V87VgAcB6CY"
+  ],
+  "videoId": "hl-Q2AgCneY",
+  "start": 20,
+  "title": "How to do Heel Touches for Abs",
+  "duration": 56,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 96124,
+  "query": "heel touches ab exercise"
+ },
+ "crunch": {
+  "videoId": "9T4WQGlKCRk",
+  "duration": 40,
+  "title": "How to Do Crunches Properly for Stronger Abs | Workout for Beginners | Abs Workout @cult.official",
+  "start": 27,
+  "seen": "crunch exercise",
+  "quality": 5,
+  "size": 66548,
+  "query": "crunch exercise proper form"
+ },
+ "plank-hip-dip": {
+  "rejected": [
+   "em4gADvYvMA",
+   "XAT8SDAj5EM"
+  ]
+ },
+ "side-plank-reach": {
+  "rejected": [
+   "TfLt8orAiiQ"
+  ],
+  "videoId": "yaiF53lSVHI",
+  "start": 10,
+  "title": "Side Plank Thread the Needle",
+  "duration": 31,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 235850,
+  "query": "side plank reach through thread the needle"
+ },
+ "hollow-rock": {
+  "rejected": [
+   "p7j02V1fIzU",
+   "HPnFTmjjDDA"
+  ],
+  "videoId": "SfkuOb_1GK8",
+  "start": 20,
+  "title": "The Hollow Rock",
+  "duration": 45,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 66902,
+  "query": "hollow rocks crossfit"
+ },
+ "v-up": {
+  "rejected": [],
+  "videoId": "oirraQEz-74",
+  "start": 14,
+  "title": "Tuck Up and V Up Progression",
+  "duration": 23,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 121554,
+  "query": "v-up ab exercise"
+ },
+ "band-woodchop": {
+  "videoId": "Yp2DmHk3KnY",
+  "duration": 36,
+  "title": "How to do a Wood Chopper with resistance bands | YuryFit",
+  "start": 16,
+  "seen": "resistance band woodchop",
+  "quality": 5,
+  "size": 89880,
+  "query": "resistance band woodchop exercise"
+ },
+ "band-deadbug": {
+  "rejected": [
+   "YFMjQ5lSfmQ",
+   "tZ4vYUYFRJI"
+  ],
+  "videoId": "Vfs3yxy3PLs",
+  "start": 13,
+  "title": "How to do a Dead Bug Pallof Press",
+  "duration": 35,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 122150,
+  "query": "dead bug with band pallof"
+ },
+ "hanging-leg-raise": {
+  "rejected": [],
+  "videoId": "_jLskVdzS4o",
+  "start": 25,
+  "title": "Hanging leg raise tutorial",
+  "duration": 45,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 98143,
+  "query": "hanging leg raise proper form"
+ },
+ "plank-drag": {
+  "rejected": [],
+  "videoId": "Zko5x2SoQmo",
+  "start": 1,
+  "title": "Plank DB Pull Through",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 103393,
+  "query": "plank pull through dumbbell drag"
+ },
+ "sand-barefoot-walk": {
+  "rejected": [],
+  "videoId": "EZ7KbRc545I",
+  "start": 76,
+  "title": "How to strengthen weak feet.....using sand",
+  "duration": 225,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 178323,
+  "query": "barefoot walking in sand training"
+ },
+ "sand-shuffle": {
+  "rejected": [],
+  "videoId": "KhPFE3uMUrU",
+  "start": 2,
+  "title": "Sand Soccer Training III - Lateral Speed No Ball",
+  "duration": 12,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 202459,
+  "query": "lateral shuffle in sand beach workout"
+ },
+ "sand-bear-crawl": {
+  "rejected": [
+   "6KsoSQcWstw",
+   "i8lDrUsjVIw"
+  ],
+  "videoId": "jyL-gUGfXhA",
+  "start": 54,
+  "title": "Total Body Beach Workout: Sandbag Presses And Bear Crawls",
+  "duration": 84,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 141760,
+  "query": "bear crawl beach sand",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : personne trop petite ou coupe en plein milieu"
+ },
+ "sand-lunge-walk": {
+  "rejected": [
+   "8J9V_7SZNok",
+   "pyulUgkngH4"
+  ]
+ },
+ "sand-pogo": {
+  "rejected": [
+   "j0nl5dWuqN4",
+   "alnA52i0sSE"
+  ],
+  "videoId": "33te1VnmXio",
+  "start": 50,
+  "title": "Jumping exercises on the sand to develop explosiveness",
+  "duration": 117,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 292802,
+  "query": "beach sand plyometrics jumps football"
+ },
+ "sand-squat-jump": {
+  "videoId": "CkkXhTyCHBU",
+  "start": 2,
+  "title": "Squat Jumps on sand.",
+  "duration": 13,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 239625,
+  "query": "squat jumps on sand beach workout"
+ },
+ "sand-broad-jump": {
+  "videoId": "CAkTnVN2dCc",
+  "start": 8,
+  "title": "Plyometrics tripple broad jump on sand",
+  "duration": 19,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 147091,
+  "query": "broad jumps sand beach workout"
+ },
+ "run-in-place": {
+  "videoId": "QPfOZ0e30xg",
+  "start": 20,
+  "title": "Best Cardio Exercises: High Knees Running In Place",
+  "duration": 68,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 129899,
+  "query": "high knees running in place exercise"
+ },
+ "high-knees": {
+  "videoId": "ymdS7tM0zws",
+  "start": 9,
+  "title": "high knee exercise and warm-up",
+  "duration": 30,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 89163,
+  "query": "high knees exercise"
+ },
+ "mountain-climber": {
+  "videoId": "ruQ4ZwncXBg",
+  "start": 9,
+  "title": "Marines Force Fitness-Mountain Climbers",
+  "duration": 24,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 103446,
+  "query": "mountain climbers exercise proper form"
+ },
+ "rope": {
+  "videoId": "Zjq9NJDphTM",
+  "start": 2,
+  "title": "Jump Rope - Single Bounce",
+  "duration": 27,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 72331,
+  "query": "jump rope basic bounce"
+ },
+ "rope-run": {
+  "videoId": "Lpxv4BF9JVM",
+  "start": 12,
+  "title": "Jump Rope: Alternating Leg",
+  "duration": 42,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 148294,
+  "query": "jump rope running step alternate foot"
+ },
+ "wobble-two-feet": {
+  "videoId": "Lx5ykCjizpk",
+  "start": 19,
+  "title": "How to use a Therapy in Motion Balance Wobble Board",
+  "duration": 39,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 88444,
+  "query": "wobble board balance two feet"
+ },
+ "wobble-tilts": {
+  "videoId": "XM9NjA69-Oo",
+  "start": 11,
+  "title": "Wobble board global ankle movements (side view)",
+  "duration": 55,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 127578,
+  "query": "wobble board ankle tilts front back side"
+ },
+ "wobble-sl-ball": {
+  "videoId": "FXaoe-1QtgA",
+  "start": 10,
+  "title": "Freestyle Single Leg Ball Catch",
+  "duration": 28,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 89130,
+  "query": "single leg wobble board ball catch"
+ },
+ "gun-quads": {
+  "videoId": "nyI3_5QXxcE",
+  "start": 8,
+  "title": "How to Massage your Quads with massage gun | OPOVE M3 Pro Max",
+  "duration": 65,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 115166,
+  "query": "massage gun quads"
+ },
+ "gun-calves": {
+  "videoId": "I9nu18uEZBE",
+  "start": 116,
+  "title": "How to Use a Massage Gun On Calf Muscle Pain",
+  "duration": 463,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 141028,
+  "query": "massage gun calves"
+ },
+ "gun-adductors": {
+  "videoId": "V5kVgG9ZFmg",
+  "start": 16,
+  "title": "Mini massage Gun - Adductors - Pulseroll",
+  "duration": 57,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 73495,
+  "query": "massage gun adductors inner thigh"
+ },
+ "gun-glutes": {
+  "videoId": "HEmsss7Hdak",
+  "start": 29,
+  "title": "How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+  "duration": 108,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 174620,
+  "query": "massage gun glutes"
+ },
+ "gun-hamstrings": {
+  "videoId": "HEmsss7Hdak",
+  "start": 44,
+  "title": "How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+  "duration": 108,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 116180,
+  "query": "massage gun hamstrings"
+ },
+ "gun-forearms": {
+  "videoId": "im4OryPZT2o",
+  "start": 14,
+  "title": "Mini Massage Gun - Forearms - Pulseroll",
+  "duration": 51,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 94406,
+  "query": "massage gun forearms"
+ },
+ "gun-legs": {
+  "videoId": "6nl1qO81igw",
+  "start": 20,
+  "title": "Optimize Your Running Warm-up: Quad Massage Gun Techniques | How To Use a Massage Gun On The Quads",
+  "duration": 73,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 142394,
+  "query": "massage gun legs warm up"
+ },
+ "gun-shins": {
+  "videoId": "Q3KRQhtvLvg",
+  "start": 75,
+  "title": "Massage gun: Tibialis Anterior Release 1",
+  "duration": 172,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 96030,
+  "query": "massage gun shins tibialis"
+ },
+ "wobble-step-stick": {
+  "videoId": "vCUTNl9QEsI",
+  "start": 6,
+  "title": "How to Do a Squat using a Wobble Cushion",
+  "duration": 69,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 54439,
+  "query": "step up onto wobble board balance"
+ },
+ "wobble-squat": {
+  "videoId": "vCUTNl9QEsI",
+  "start": 26,
+  "title": "How to Do a Squat using a Wobble Cushion",
+  "duration": 69,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 45894,
+  "query": "wobble board squat"
+ },
+ "co-wall-catch": {
+  "videoId": "MEfbnNR6pOk",
+  "start": 3,
+  "title": "Basketball Drill - Passing - Chest / Wall Pass",
+  "duration": 18,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 111774,
+  "query": "basketball wall pass catch two hands drill"
+ },
+ "co-one-hand-catch": {
+  "videoId": "K7bcKYgSHEo",
+  "start": 5,
+  "title": "Central Sports Partnership School Games Challenge - Basketball-  One Hand Passing",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 178524,
+  "query": "one hand wall pass catch basketball"
+ },
+ "co-toss-catch": {
+  "videoId": "AJ3a7ac9GFs",
+  "start": 5,
+  "title": "Bouncing and catching while walking",
+  "duration": 35,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 171960,
+  "query": "basketball toss and catch while walking"
+ },
+ "co-catch-turn": {
+  "videoId": "0-z74YL03HI",
+  "start": 45,
+  "title": "Rip-Pivot Sweep Drill with Luke Meier of Thrive3 Basketball",
+  "duration": 105,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 125221,
+  "query": "basketball catch pivot and drive drill"
+ },
+ "co-reaction-catch": {
+  "videoId": "w_9gZHIOxU0",
+  "start": 6,
+  "title": "Ball Drop Reaction Time Sprint",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 145200,
+  "query": "reaction ball catch drill basketball"
+ },
+ "sk-between-shift": {
+  "videoId": "C6lxQZNxopc",
+  "start": 5,
+  "title": "Basketball Footwork Training: 1- 4 Drop Thru | ZVD Basketball Training Mat",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 270608,
+  "query": "between the legs dribble stationary weight shift"
+ },
+ "sk-high-low": {
+  "videoId": "P9qHpEIDQEs",
+  "start": 30,
+  "title": "Control dribble,speed dribble and change of pace dribble",
+  "duration": 85,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 245643,
+  "query": "high low dribble change of pace basketball"
+ },
+ "sk-cross-hardstop": {
+  "videoId": "cVKbw90HNyM",
+  "start": 2,
+  "title": "In and Out Crossover Move Hard to Basket Drill",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 132323,
+  "query": "crossover hard stop basketball move"
+ },
+ "sk-grounded-feet": {
+  "videoId": "2wRnQ_iqiMY",
+  "start": 31,
+  "title": "Perimeter Shooting Drills: 1 Dribble Pull-Ups",
+  "duration": 46,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 184224,
+  "query": "basketball float one dribble pull up drill"
+ },
+ "sk-float-space": {
+  "videoId": "vo5VVNZbKPA",
+  "start": 1,
+  "title": "Basketball Drill  Pull-Ups with a Side Step - Shooting Drills  Basketball Training, Shooting Skills",
+  "duration": 11,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 124296,
+  "query": "two dribble pull up side step space basketball"
+ },
+ "sk-step-through-3": {
+  "videoId": "-MfvDPdQQTg",
+  "start": 6,
+  "title": "Upgraded Basketball Footwork Training: 4-2 Partial Step+thru | ZVD Basketball Training Mat",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 267335,
+  "query": "step through move basketball post footwork"
+ },
+ "mv-flip-feet": {
+  "rejected": [
+   "k4V9sUNngNk",
+   "dVe3dqkET5Q"
+  ]
+ },
+ "co-hop-step": {
+  "videoId": "8Vt77jBPZQs",
+  "start": 12,
+  "title": "Jumpstop - Pro Hop - Hop Step Move Tutorial | Basketball Scoring Drills | Dre Baldwin",
+  "duration": 59,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 90934,
+  "query": "hop step basketball dribble footwork"
+ },
+ "back-extension": {
+  "videoId": "TL3oQn7YsJg",
+  "start": 3,
+  "title": "Incline Bench Back Extension",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 129420,
+  "query": "back extension bench hyperextension"
+ },
+ "band-lateral": {
+  "videoId": "aWZUEr7Jfx0",
+  "start": 13,
+  "title": "How To Do Side Lateral Raises With Resistance Band | Shoulder Workout | Fitness My Life",
+  "duration": 37,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 97469,
+  "query": "resistance band lateral raise"
+ },
+ "band-ohp": {
+  "videoId": "Zli1UXH9ZeE",
+  "start": 8,
+  "title": "Band Overhead Press",
+  "duration": 38,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 56813,
+  "query": "resistance band overhead press"
+ },
+ "bb-curl": {
+  "rejected": [
+   "ZQWL7omZh94",
+   "kwG2ipFRgfo"
+  ],
+  "videoId": "zG2xJ0Q5QtI",
+  "start": 59,
+  "title": "How To: Inside-Grip Bicep Curl With E-Z Bar Curl",
+  "duration": 100,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 269069,
+  "query": "barbell bicep curl scott herman"
+ },
+ "bb-shrug": {
+  "videoId": "M_MjF5Nm_h4",
+  "start": 2,
+  "title": "Barbell Shrug",
+  "duration": 11,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 152763,
+  "query": "barbell shrug"
+ },
+ "butterfly-kb": {
+  "rejected": [
+   "9gyQsDaUnKo",
+   "Cs9s92Y2DkE"
+  ],
+  "videoId": "xbnHG-q15Is",
+  "start": 79,
+  "title": "Elevated Weighted Butterfly Stretch",
+  "duration": 106,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 75878,
+  "query": "weighted butterfly stretch"
+ },
+ "cable-curl": {
+  "videoId": "2MUEL4nL6hA",
+  "start": 26,
+  "title": "How to PROPERLY Cable Bicep Curl For Bigger Biceps (EASY FIX)",
+  "duration": 73,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 305034,
+  "query": "cable bicep curl"
+ },
+ "cable-press": {
+  "videoId": "sh92B-_2O48",
+  "start": 8,
+  "title": "How To Do A Cable Chest Press",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 154843,
+  "query": "standing cable chest press"
+ },
+ "childs-pose": {
+  "videoId": "kH12QrSGedM",
+  "start": 14,
+  "title": "Child Pose",
+  "duration": 49,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 126652,
+  "query": "child's pose stretch"
+ },
+ "close-grip-press": {
+  "videoId": "XEFDMwmrLAM",
+  "start": 3,
+  "title": "Close Grip Bench Press",
+  "duration": 18,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 82819,
+  "query": "close grip bench press"
+ },
+ "concentration-curl": {
+  "videoId": "VMbDQ8PZazY",
+  "start": 4,
+  "title": "CONCENTRATION CURL",
+  "duration": 27,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 82604,
+  "query": "concentration curl"
+ },
+ "facepull-cable": {
+  "videoId": "0Po47vvj9g4",
+  "start": 2,
+  "title": "How To Do Cable Face Pulls",
+  "duration": 15,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 165927,
+  "query": "cable face pull proper form"
+ },
+ "floor-press": {
+  "videoId": "lNdi7VEf2Ew",
+  "start": 22,
+  "title": "DUMBBELL FLOOR PRESS",
+  "duration": 81,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 146672,
+  "query": "dumbbell floor press"
+ },
+ "front-squat": {
+  "videoId": "uYumuL_G_V0",
+  "start": 28,
+  "title": "The Front Squat",
+  "duration": 66,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 78472,
+  "query": "barbell front squat form"
+ },
+ "goblet-db": {
+  "videoId": "meJSJEG_sT0",
+  "start": 17,
+  "title": "Dumbbell Goblet Squat",
+  "duration": 38,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 160176,
+  "query": "dumbbell goblet squat"
+ },
+ "good-morning": {
+  "videoId": "nWyx81AfTos",
+  "start": 2,
+  "title": "How To Do A Barbell Good Morning",
+  "duration": 16,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 144836,
+  "query": "barbell good morning exercise"
+ },
+ "incline-curl": {
+  "videoId": "tmxgffAanu0",
+  "start": 11,
+  "title": "Incline Dumbell Curl Nasl Yaplr?",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 135582,
+  "query": "incline dumbbell curl"
+ },
+ "inverted-row": {
+  "videoId": "KOaCM1HMwU0",
+  "start": 2,
+  "title": "Inverted Row",
+  "duration": 13,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 186167,
+  "query": "inverted row barbell bodyweight"
+ },
+ "legextension": {
+  "videoId": "4ZDm5EbiFI8",
+  "start": 2,
+  "title": "How To Do A Leg Extension",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 217256,
+  "query": "leg extension machine proper form"
+ },
+ "pallof-cable": {
+  "videoId": "-0N2xTi69t8",
+  "start": 5,
+  "title": "Cable Pallof press (mid body cable)",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 169345,
+  "query": "cable pallof press"
+ },
+ "rear-delt-fly": {
+  "videoId": "lFJBHzGIKIE",
+  "start": 14,
+  "title": "DB Bent Over Rear Delt Fly",
+  "duration": 31,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 141372,
+  "query": "bent over dumbbell rear delt fly"
+ },
+ "rower": {
+  "videoId": "uM06MQqEN0E",
+  "start": 51,
+  "title": "British Rowing Indoor Championships Technique",
+  "duration": 87,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 104045,
+  "query": "rowing machine technique"
+ },
+ "scap-pullup": {
+  "videoId": "pE8PJsWEV7k",
+  "start": 3,
+  "title": "Scapular Pull Ups",
+  "duration": 23,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 87825,
+  "query": "scapular pull ups"
+ },
+ "step-up": {
+  "videoId": "9ZknEYboBOQ",
+  "start": 7,
+  "title": "Dumbbell Step-up - How To",
+  "duration": 25,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 126948,
+  "query": "dumbbell step up on bench"
+ },
+ "straight-arm-pulldown": {
+  "videoId": "zYbaRQAbul0",
+  "start": 2,
+  "title": "Cable Straight Arm Rope Pulldown",
+  "duration": 21,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 108405,
+  "query": "straight arm cable pulldown"
+ },
+ "walking-lunge": {
+  "videoId": "tQNktxPkSeE",
+  "start": 0,
+  "title": "Walking Lunge",
+  "duration": 8,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 92739,
+  "query": "walking lunges exercise"
+ },
+ "bb-squat": {
+  "videoId": "SW_C1A-rejs",
+  "duration": 155,
+  "title": "How To: Deep Barbell Back Squat",
+  "start": 108,
+  "seen": "barbell back squat",
+  "quality": 5,
+  "size": 150043,
+  "rejected": [
+   "9PV96eMj_m4",
+   "rrJIyZGlK8c"
+  ],
+  "query": "scott herman barbell back squat"
+ },
+ "dips": {
+  "videoId": "XUhIlfbVxVU",
+  "duration": 83,
+  "title": "Bench Dips For HUGE Triceps: How To Do Them PROPERLY",
+  "start": 55,
+  "seen": "bench dips triceps",
+  "quality": 5,
+  "size": 163005,
+  "rejected": [
+   "LlH-NDypZa4",
+   "oA8Sxv2WeOs"
+  ],
+  "query": "bench dips triceps tutorial man"
+ },
+ "bb-ohp": {
+  "rejected": [
+   "KP1sYz2VICk",
+   "G2qpTG1Eh40",
+   "t9GuiNQo1O4"
+  ]
+ },
+ "chinup": {
+  "videoId": "-sRUrQ9W0os",
+  "duration": 37,
+  "title": "Underhand Chin Ups",
+  "start": 27,
+  "seen": "underhand grip chin ups",
+  "quality": 4,
+  "size": 217803,
+  "rejected": [
+   "mRy9m2Q9_1I",
+   "Ln3gAdHr8MM"
+  ],
+  "query": "chin up tutorial underhand grip man"
+ },
+ "kb-front-squat": {
+  "videoId": "UcR_mzk2ONI",
+  "duration": 56,
+  "title": "Double front squats 2x48 kettlebells",
+  "start": 28,
+  "seen": "double kettlebell front squat",
+  "quality": 5,
+  "size": 106954,
+  "rejected": [
+   "SDMfFxedTjM",
+   "T12D1FT2wtw"
+  ],
+  "query": "double kettlebell front squat"
+ },
+ "sumo-deadlift": {
+  "rejected": [
+   "JbY72Him34Q",
+   "1ltxpKdXkG4"
+  ]
+ },
+ "glute-kickback": {
+  "rejected": [
+   "O5-ROTyo2dA",
+   "pdP0uJXvc44",
+   "TI5djGHdBWA",
+   "kK5RKh_abCE"
+  ]
+ },
+ "hanging-knee-raise": {
+  "videoId": "dPwg1E_ygjc",
+  "duration": 42,
+  "title": "How To Do HANGING KNEE RAISES | Exercise Demonstration Video and Guide",
+  "start": 30,
+  "seen": "hanging knee raises",
+  "quality": 5,
+  "size": 137797,
+  "rejected": [
+   "l7OroezzX9k",
+   "RD_A-Z15ER4"
+  ],
+  "query": "hanging knee raises tutorial man"
+ },
+ "russian-twist": {
+  "rejected": [
+   "PkGPokybYaU",
+   "d3WDSMpMcS4"
+  ],
+  "videoId": "SigTyTv0TQQ",
+  "start": 44,
+  "title": "Russian Twists with Kettlebell for Complete Core Strength",
+  "duration": 104,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 86897,
+  "query": "russian twist kettlebell man seated"
+ },
+ "jumping-jack": {
+  "rejected": [
+   "XR0xeuK5zBU",
+   "nGaXj3kkmrU"
+  ],
+  "videoId": "uLVt6u15L98",
+  "start": 1,
+  "title": "How to do a Jumping Jack  | Proper Form & Technique | NASM",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 83564,
+  "query": "jumping jacks warm up man"
+ },
+ "gun-upper-back": {
+  "rejected": [
+   "IOxdQozf8mU",
+   "9902baVFUDk",
+   "aybUcUva0XY"
+  ],
+  "videoId": "gc2ZK6yxzFk",
+  "start": 48,
+  "title": "Massage Gun for Neck Pain | Self-Care Routine & Stretches",
+  "duration": 551,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 100925,
+  "query": "massage gun upper trapezius self massage"
+ },
+ "vest-march": {
+  "rejected": [
+   "DK475eqe8Hw",
+   "tC3wv-dT-A0",
+   "SnmW13lorOQ"
+  ],
+  "videoId": "SnmW13lorOQ",
+  "start": 77,
+  "title": "Rucking Weight Vest and Curved Ruck Plates Explained",
+  "duration": 105,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 256996,
+  "query": "weighted vest walking rucking",
+  "refused": true,
+  "refusedWhy": "extrait vérifié : personne trop petite ou coupe en plein milieu"
+ },
+ "rope-lateral": {
+  "rejected": [
+   "Inb2czI5r7I",
+   "c5F8UH2MKeM"
+  ],
+  "videoId": "LSlVQkBwwDM",
+  "start": 9,
+  "title": "How To Do A SIDE TO SIDE JUMP ROPE | Exercise Demonstration Video and Guide",
+  "duration": 41,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 262791,
+  "query": "jump rope side to side boxer"
+ },
+ "rope-fb": {
+  "rejected": [
+   "uvwTrWAr3o8",
+   "DKekkKw_8l0"
+  ],
+  "videoId": "orxpriTQedI",
+  "start": 9,
+  "title": "Right Foot Forward and Back Hop Jump Roping",
+  "duration": 43,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 64613,
+  "query": "jump rope front back hops"
+ },
+ "foot-bridge-rdl": {
+  "rejected": [
+   "nukAjwLApto",
+   "uVlgmHYtz-U"
+  ],
+  "videoId": "A2g-8CtQGUM",
+  "start": 1,
+  "title": "Barefoot Single Leg Deadlift",
+  "duration": 19,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 131426,
+  "query": "single leg romanian deadlift barefoot foot arch"
+ },
+ "box-figure-four-kb": {
+  "rejected": [
+   "2W_gXhut5S8",
+   "M6fGnnNR4bQ"
+  ],
+  "videoId": "vX-7pEHBoY4",
+  "start": 5,
+  "title": "Kettlebell Staggered Stance Hip Hinge",
+  "duration": 22,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 60375,
+  "query": "figure 4 hip hinge stretch kettlebell"
+ },
+ "wobble-single-leg": {
+  "rejected": [
+   "Lx5ykCjizpk",
+   "kvF9i7ijgIs"
+  ],
+  "videoId": "Z6_xt82VyAc",
+  "start": 9,
+  "title": "ANKLE REHABILITATION  SINGLE LEG BALANCE  STABILITY BOARD",
+  "duration": 27,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 101906,
+  "query": "single leg stance balance board ankle rehab"
+ },
+ "hop-step-press": {
+  "rejected": [
+   "GJh8Pr6t-RY",
+   "MGILuPvsjos",
+   "mVKNYn45FxA"
+  ]
+ },
+ "sand-sprint": {
+  "rejected": [
+   "yiC428YS88k",
+   "2vA2EvoQou0"
+  ],
+  "videoId": "N4-_l0HoJ4w",
+  "start": 3,
+  "title": "Best of Training Session in the Sand | Doha 2017",
+  "duration": 64,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 169526,
+  "query": "sand sprint training football"
+ },
+ "sand-lateral-bound": {
+  "rejected": [
+   "wVU08hvtUHw",
+   "zy-eL9iI3IA"
+  ]
+ },
+ "court-shuttle": {
+  "rejected": [
+   "z-kxZZRy_dE",
+   "FivEX0sJsbo"
+  ],
+  "videoId": "6XYSqfInJFU",
+  "start": 3,
+  "title": "Basketball Suicide Sprint Test",
+  "duration": 35,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 168227,
+  "query": "basketball suicide sprints drill"
+ },
+ "co-cone-walk": {
+  "rejected": [
+   "IYZRTe2viUc",
+   "CyuAlk6uMU0"
+  ],
+  "videoId": "vZQYR2qgY1M",
+  "start": 1,
+  "title": "Hesitation Dribble Drill Hard Past Cones",
+  "duration": 13,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 101060,
+  "query": "basketball dribble around a cone drill"
+ },
+ "co-line-dribble": {
+  "rejected": [
+   "NFP7zCMy7L0",
+   "WK5XFcmxS7A"
+  ]
+ },
+ "co-figure8-cones": {
+  "rejected": [
+   "yCS_aw-BLiM",
+   "ogZq4uHa23Y"
+  ]
+ },
+ "co-pass-attack": {
+  "rejected": [
+   "ZRZcAxhROJw",
+   "eKWNesu5RGc"
+  ]
+ },
+ "sk-kill-dribble": {
+  "rejected": [
+   "HEbWicuJR6s",
+   "wBzaDMjklBk"
+  ],
+  "videoId": "v2Hyl6q6jwc",
+  "start": 17,
+  "title": "Train with Phenom Hoops: Jump Stop vs Stride Stop",
+  "duration": 46,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 127166,
+  "query": "pick up dribble two foot stop basketball"
+ },
+ "mv-call-circuit": {
+  "rejected": [
+   "-jQb0i7GYts",
+   "hbnjKnNvuS4"
+  ],
+  "videoId": "oADaM2L1YLc",
+  "start": 41,
+  "title": "This 5 Minute DRIBBLING WORKOUT Changes Your Game FOREVER ",
+  "duration": 463,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 199688,
+  "query": "basketball dribble moves circuit solo workout"
  }
 }
