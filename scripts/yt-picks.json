@@ -5245,5 +5245,345 @@
   "seen": "choix manuel, vérifié sur planche (homme, bon mouvement)",
   "size": 83496,
   "query": "weighted pigeon stretch on box kettlebell"
+ },
+ "bicycle-crunch": {
+  "videoId": "eqg47ZuGZXQ",
+  "duration": 59,
+  "title": "Strengthening the core: Bicycle Crunch",
+  "start": 30,
+  "seen": "bicycle crunch",
+  "quality": 5,
+  "size": 114564,
+  "query": "bicycle crunch exercise form"
+ },
+ "band-crunch": {
+  "videoId": "g3EVVCKsfmw",
+  "duration": 45,
+  "title": "How To Do A KNEELING RESISTANCE BAND CRUNCH | Exercise Demonstration Video and Guide",
+  "start": 25,
+  "seen": "kneeling resistance band crunch",
+  "quality": 5,
+  "size": 129434,
+  "query": "kneeling resistance band crunch"
+ },
+ "heel-touch": {
+  "rejected": [
+   "PtX0z5_6sdM",
+   "V87VgAcB6CY"
+  ],
+  "videoId": "hl-Q2AgCneY",
+  "start": 20,
+  "title": "How to do Heel Touches for Abs",
+  "duration": 56,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 96124,
+  "query": "heel touches ab exercise"
+ },
+ "crunch": {
+  "videoId": "9T4WQGlKCRk",
+  "duration": 40,
+  "title": "How to Do Crunches Properly for Stronger Abs | Workout for Beginners | Abs Workout @cult.official",
+  "start": 27,
+  "seen": "crunch exercise",
+  "quality": 5,
+  "size": 66548,
+  "query": "crunch exercise proper form"
+ },
+ "plank-hip-dip": {
+  "rejected": []
+ },
+ "side-plank-reach": {
+  "rejected": [
+   "TfLt8orAiiQ"
+  ],
+  "videoId": "yaiF53lSVHI",
+  "start": 10,
+  "title": "Side Plank Thread the Needle",
+  "duration": 31,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 235850,
+  "query": "side plank reach through thread the needle"
+ },
+ "hollow-rock": {
+  "rejected": []
+ },
+ "v-up": {
+  "rejected": [],
+  "videoId": "oirraQEz-74",
+  "start": 14,
+  "title": "Tuck Up and V Up Progression",
+  "duration": 23,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 121554,
+  "query": "v-up ab exercise"
+ },
+ "band-woodchop": {
+  "videoId": "Yp2DmHk3KnY",
+  "duration": 36,
+  "title": "How to do a Wood Chopper with resistance bands | YuryFit",
+  "start": 16,
+  "seen": "resistance band woodchop",
+  "quality": 5,
+  "size": 89880,
+  "query": "resistance band woodchop exercise"
+ },
+ "band-deadbug": {
+  "rejected": []
+ },
+ "hanging-leg-raise": {
+  "rejected": [],
+  "videoId": "_jLskVdzS4o",
+  "start": 25,
+  "title": "Hanging leg raise tutorial",
+  "duration": 45,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 98143,
+  "query": "hanging leg raise proper form"
+ },
+ "plank-drag": {
+  "rejected": [],
+  "videoId": "Zko5x2SoQmo",
+  "start": 1,
+  "title": "Plank DB Pull Through",
+  "duration": 14,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 103393,
+  "query": "plank pull through dumbbell drag"
+ },
+ "sand-barefoot-walk": {
+  "rejected": [],
+  "videoId": "EZ7KbRc545I",
+  "start": 76,
+  "title": "How to strengthen weak feet.....using sand",
+  "duration": 225,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 178323,
+  "query": "barefoot walking in sand training"
+ },
+ "sand-shuffle": {
+  "rejected": [],
+  "videoId": "KhPFE3uMUrU",
+  "start": 2,
+  "title": "Sand Soccer Training III - Lateral Speed No Ball",
+  "duration": 12,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 202459,
+  "query": "lateral shuffle in sand beach workout"
+ },
+ "sand-bear-crawl": {
+  "rejected": []
+ },
+ "sand-lunge-walk": {
+  "rejected": []
+ },
+ "sand-pogo": {
+  "rejected": []
+ },
+ "sand-squat-jump": {
+  "videoId": "CkkXhTyCHBU",
+  "start": 2,
+  "title": "Squat Jumps on sand.",
+  "duration": 13,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 239625,
+  "query": "squat jumps on sand beach workout"
+ },
+ "sand-broad-jump": {
+  "videoId": "CAkTnVN2dCc",
+  "start": 8,
+  "title": "Plyometrics tripple broad jump on sand",
+  "duration": 19,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 147091,
+  "query": "broad jumps sand beach workout"
+ },
+ "run-in-place": {
+  "videoId": "QPfOZ0e30xg",
+  "start": 20,
+  "title": "Best Cardio Exercises: High Knees Running In Place",
+  "duration": 68,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 129899,
+  "query": "high knees running in place exercise"
+ },
+ "high-knees": {
+  "videoId": "ymdS7tM0zws",
+  "start": 9,
+  "title": "high knee exercise and warm-up",
+  "duration": 30,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 89163,
+  "query": "high knees exercise"
+ },
+ "mountain-climber": {
+  "videoId": "ruQ4ZwncXBg",
+  "start": 9,
+  "title": "Marines Force Fitness-Mountain Climbers",
+  "duration": 24,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 103446,
+  "query": "mountain climbers exercise proper form"
+ },
+ "rope": {
+  "videoId": "Zjq9NJDphTM",
+  "start": 2,
+  "title": "Jump Rope - Single Bounce",
+  "duration": 27,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 72331,
+  "query": "jump rope basic bounce"
+ },
+ "rope-run": {
+  "videoId": "Lpxv4BF9JVM",
+  "start": 12,
+  "title": "Jump Rope: Alternating Leg",
+  "duration": 42,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 148294,
+  "query": "jump rope running step alternate foot"
+ },
+ "wobble-two-feet": {
+  "videoId": "Lx5ykCjizpk",
+  "start": 19,
+  "title": "How to use a Therapy in Motion Balance Wobble Board",
+  "duration": 39,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 88444,
+  "query": "wobble board balance two feet"
+ },
+ "wobble-tilts": {
+  "videoId": "XM9NjA69-Oo",
+  "start": 11,
+  "title": "Wobble board global ankle movements (side view)",
+  "duration": 55,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 127578,
+  "query": "wobble board ankle tilts front back side"
+ },
+ "wobble-sl-ball": {
+  "videoId": "FXaoe-1QtgA",
+  "start": 10,
+  "title": "Freestyle Single Leg Ball Catch",
+  "duration": 28,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 89130,
+  "query": "single leg wobble board ball catch"
+ },
+ "gun-quads": {
+  "videoId": "nyI3_5QXxcE",
+  "start": 8,
+  "title": "How to Massage your Quads with massage gun | OPOVE M3 Pro Max",
+  "duration": 65,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 115166,
+  "query": "massage gun quads"
+ },
+ "gun-calves": {
+  "videoId": "I9nu18uEZBE",
+  "start": 116,
+  "title": "How to Use a Massage Gun On Calf Muscle Pain",
+  "duration": 463,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 141028,
+  "query": "massage gun calves"
+ },
+ "gun-adductors": {
+  "videoId": "V5kVgG9ZFmg",
+  "start": 16,
+  "title": "Mini massage Gun - Adductors - Pulseroll",
+  "duration": 57,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 73495,
+  "query": "massage gun adductors inner thigh"
+ },
+ "gun-glutes": {
+  "videoId": "HEmsss7Hdak",
+  "start": 29,
+  "title": "How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+  "duration": 108,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 174620,
+  "query": "massage gun glutes"
+ },
+ "gun-hamstrings": {
+  "videoId": "HEmsss7Hdak",
+  "start": 44,
+  "title": "How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+  "duration": 108,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 116180,
+  "query": "massage gun hamstrings"
+ },
+ "gun-forearms": {
+  "videoId": "im4OryPZT2o",
+  "start": 14,
+  "title": "Mini Massage Gun - Forearms - Pulseroll",
+  "duration": 51,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 94406,
+  "query": "massage gun forearms"
+ },
+ "gun-legs": {
+  "videoId": "6nl1qO81igw",
+  "start": 20,
+  "title": "Optimize Your Running Warm-up: Quad Massage Gun Techniques | How To Use a Massage Gun On The Quads",
+  "duration": 73,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 142394,
+  "query": "massage gun legs warm up"
+ },
+ "gun-shins": {
+  "videoId": "Q3KRQhtvLvg",
+  "start": 75,
+  "title": "Massage gun: Tibialis Anterior Release 1",
+  "duration": 172,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 96030,
+  "query": "massage gun shins tibialis"
+ },
+ "wobble-step-stick": {
+  "videoId": "vCUTNl9QEsI",
+  "start": 6,
+  "title": "How to Do a Squat using a Wobble Cushion",
+  "duration": 69,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 54439,
+  "query": "step up onto wobble board balance"
+ },
+ "wobble-squat": {
+  "videoId": "vCUTNl9QEsI",
+  "start": 26,
+  "title": "How to Do a Squat using a Wobble Cushion",
+  "duration": 69,
+  "manual": true,
+  "seen": "choix manuel sur planche",
+  "size": 45894,
+  "query": "wobble board squat"
  }
 }

@@ -336,13 +336,21 @@ window.RehaabMedia = {
     "frames": "Rope_Jumping",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/rope.mp4",
+    "poster": "media/videos/yt/rope.webp",
+    "credit": "YouTube · Jump Rope - Single Bounce",
+    "source": "https://www.youtube.com/watch?v=Zjq9NJDphTM&t=2s"
   },
   "rope-run": {
     "frames": "Rope_Jumping",
     "muscles": [
       "calves"
-    ]
+    ],
+    "video": "media/videos/yt/rope-run.mp4",
+    "poster": "media/videos/yt/rope-run.webp",
+    "credit": "YouTube · Jump Rope: Alternating Leg",
+    "source": "https://www.youtube.com/watch?v=Lpxv4BF9JVM&t=12s"
   },
   "rope-lateral": {
     "frames": "Rope_Jumping",
@@ -979,13 +987,20 @@ window.RehaabMedia = {
   "high-knees": {
     "card": "media/wger/high-knees.webp",
     "wgerExercise": 1965,
-    "credit": "wger · CC BY-SA 4.0"
+    "credit": "YouTube · high knee exercise and warm-up",
+    "video": "media/videos/yt/high-knees.mp4",
+    "poster": "media/videos/yt/high-knees.webp",
+    "source": "https://www.youtube.com/watch?v=ymdS7tM0zws&t=9s"
   },
   "mountain-climber": {
     "frames": "Mountain_Climbers",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/mountain-climber.mp4",
+    "poster": "media/videos/yt/mountain-climber.webp",
+    "credit": "YouTube · Marines Force Fitness-Mountain Climbers",
+    "source": "https://www.youtube.com/watch?v=ruQ4ZwncXBg&t=9s"
   },
   "box-jump-step": {
     "frames": "Front_Box_Jump",
@@ -3242,5 +3257,167 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/box-pigeon-kb.webp",
     "credit": "YouTube · Kettlebell \"Loaded Pigeon\" for Hip Mobility",
     "source": "https://www.youtube.com/watch?v=pNBa49KZxn4&t=1s"
+  },
+  "bicycle-crunch": {
+    "video": "media/videos/yt/bicycle-crunch.mp4",
+    "poster": "media/videos/yt/bicycle-crunch.webp",
+    "credit": "YouTube · Strengthening the core: Bicycle Crunch",
+    "source": "https://www.youtube.com/watch?v=eqg47ZuGZXQ&t=30s"
+  },
+  "band-crunch": {
+    "video": "media/videos/yt/band-crunch.mp4",
+    "poster": "media/videos/yt/band-crunch.webp",
+    "credit": "YouTube · How To Do A KNEELING RESISTANCE BAND CRUNCH | Exercise Demonstration Video and Guide",
+    "source": "https://www.youtube.com/watch?v=g3EVVCKsfmw&t=25s"
+  },
+  "heel-touch": {
+    "video": "media/videos/yt/heel-touch.mp4",
+    "poster": "media/videos/yt/heel-touch.webp",
+    "credit": "YouTube · How to do Heel Touches for Abs",
+    "source": "https://www.youtube.com/watch?v=hl-Q2AgCneY&t=20s"
+  },
+  "crunch": {
+    "video": "media/videos/yt/crunch.mp4",
+    "poster": "media/videos/yt/crunch.webp",
+    "credit": "YouTube · How to Do Crunches Properly for Stronger Abs | Workout for Beginners | Abs Workout @cult.official",
+    "source": "https://www.youtube.com/watch?v=9T4WQGlKCRk&t=27s"
+  },
+  "side-plank-reach": {
+    "video": "media/videos/yt/side-plank-reach.mp4",
+    "poster": "media/videos/yt/side-plank-reach.webp",
+    "credit": "YouTube · Side Plank Thread the Needle",
+    "source": "https://www.youtube.com/watch?v=yaiF53lSVHI&t=10s"
+  },
+  "v-up": {
+    "video": "media/videos/yt/v-up.mp4",
+    "poster": "media/videos/yt/v-up.webp",
+    "credit": "YouTube · Tuck Up and V Up Progression",
+    "source": "https://www.youtube.com/watch?v=oirraQEz-74&t=14s"
+  },
+  "band-woodchop": {
+    "video": "media/videos/yt/band-woodchop.mp4",
+    "poster": "media/videos/yt/band-woodchop.webp",
+    "credit": "YouTube · How to do a Wood Chopper with resistance bands | YuryFit",
+    "source": "https://www.youtube.com/watch?v=Yp2DmHk3KnY&t=16s"
+  },
+  "hanging-leg-raise": {
+    "video": "media/videos/yt/hanging-leg-raise.mp4",
+    "poster": "media/videos/yt/hanging-leg-raise.webp",
+    "credit": "YouTube · Hanging leg raise tutorial",
+    "source": "https://www.youtube.com/watch?v=_jLskVdzS4o&t=25s"
+  },
+  "plank-drag": {
+    "video": "media/videos/yt/plank-drag.mp4",
+    "poster": "media/videos/yt/plank-drag.webp",
+    "credit": "YouTube · Plank DB Pull Through",
+    "source": "https://www.youtube.com/watch?v=Zko5x2SoQmo&t=1s"
+  },
+  "sand-barefoot-walk": {
+    "video": "media/videos/yt/sand-barefoot-walk.mp4",
+    "poster": "media/videos/yt/sand-barefoot-walk.webp",
+    "credit": "YouTube · How to strengthen weak feet.....using sand",
+    "source": "https://www.youtube.com/watch?v=EZ7KbRc545I&t=76s"
+  },
+  "sand-shuffle": {
+    "video": "media/videos/yt/sand-shuffle.mp4",
+    "poster": "media/videos/yt/sand-shuffle.webp",
+    "credit": "YouTube · Sand Soccer Training III - Lateral Speed No Ball",
+    "source": "https://www.youtube.com/watch?v=KhPFE3uMUrU&t=2s"
+  },
+  "sand-squat-jump": {
+    "video": "media/videos/yt/sand-squat-jump.mp4",
+    "poster": "media/videos/yt/sand-squat-jump.webp",
+    "credit": "YouTube · Squat Jumps on sand.",
+    "source": "https://www.youtube.com/watch?v=CkkXhTyCHBU&t=2s"
+  },
+  "sand-broad-jump": {
+    "video": "media/videos/yt/sand-broad-jump.mp4",
+    "poster": "media/videos/yt/sand-broad-jump.webp",
+    "credit": "YouTube · Plyometrics tripple broad jump on sand",
+    "source": "https://www.youtube.com/watch?v=CAkTnVN2dCc&t=8s"
+  },
+  "run-in-place": {
+    "video": "media/videos/yt/run-in-place.mp4",
+    "poster": "media/videos/yt/run-in-place.webp",
+    "credit": "YouTube · Best Cardio Exercises: High Knees Running In Place",
+    "source": "https://www.youtube.com/watch?v=QPfOZ0e30xg&t=20s"
+  },
+  "wobble-two-feet": {
+    "video": "media/videos/yt/wobble-two-feet.mp4",
+    "poster": "media/videos/yt/wobble-two-feet.webp",
+    "credit": "YouTube · How to use a Therapy in Motion Balance Wobble Board",
+    "source": "https://www.youtube.com/watch?v=Lx5ykCjizpk&t=19s"
+  },
+  "wobble-tilts": {
+    "video": "media/videos/yt/wobble-tilts.mp4",
+    "poster": "media/videos/yt/wobble-tilts.webp",
+    "credit": "YouTube · Wobble board global ankle movements (side view)",
+    "source": "https://www.youtube.com/watch?v=XM9NjA69-Oo&t=11s"
+  },
+  "wobble-sl-ball": {
+    "video": "media/videos/yt/wobble-sl-ball.mp4",
+    "poster": "media/videos/yt/wobble-sl-ball.webp",
+    "credit": "YouTube · Freestyle Single Leg Ball Catch",
+    "source": "https://www.youtube.com/watch?v=FXaoe-1QtgA&t=10s"
+  },
+  "gun-quads": {
+    "video": "media/videos/yt/gun-quads.mp4",
+    "poster": "media/videos/yt/gun-quads.webp",
+    "credit": "YouTube · How to Massage your Quads with massage gun | OPOVE M3 Pro Max",
+    "source": "https://www.youtube.com/watch?v=nyI3_5QXxcE&t=8s"
+  },
+  "gun-calves": {
+    "video": "media/videos/yt/gun-calves.mp4",
+    "poster": "media/videos/yt/gun-calves.webp",
+    "credit": "YouTube · How to Use a Massage Gun On Calf Muscle Pain",
+    "source": "https://www.youtube.com/watch?v=I9nu18uEZBE&t=116s"
+  },
+  "gun-adductors": {
+    "video": "media/videos/yt/gun-adductors.mp4",
+    "poster": "media/videos/yt/gun-adductors.webp",
+    "credit": "YouTube · Mini massage Gun - Adductors - Pulseroll",
+    "source": "https://www.youtube.com/watch?v=V5kVgG9ZFmg&t=16s"
+  },
+  "gun-glutes": {
+    "video": "media/videos/yt/gun-glutes.mp4",
+    "poster": "media/videos/yt/gun-glutes.webp",
+    "credit": "YouTube · How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+    "source": "https://www.youtube.com/watch?v=HEmsss7Hdak&t=29s"
+  },
+  "gun-hamstrings": {
+    "video": "media/videos/yt/gun-hamstrings.mp4",
+    "poster": "media/videos/yt/gun-hamstrings.webp",
+    "credit": "YouTube · How to Use a Massage Gun on Your Glutes and Hamstrings: Step-by-Step Guide",
+    "source": "https://www.youtube.com/watch?v=HEmsss7Hdak&t=44s"
+  },
+  "gun-forearms": {
+    "video": "media/videos/yt/gun-forearms.mp4",
+    "poster": "media/videos/yt/gun-forearms.webp",
+    "credit": "YouTube · Mini Massage Gun - Forearms - Pulseroll",
+    "source": "https://www.youtube.com/watch?v=im4OryPZT2o&t=14s"
+  },
+  "gun-legs": {
+    "video": "media/videos/yt/gun-legs.mp4",
+    "poster": "media/videos/yt/gun-legs.webp",
+    "credit": "YouTube · Optimize Your Running Warm-up: Quad Massage Gun Techniques | How To Use a Massage Gun On The Quads",
+    "source": "https://www.youtube.com/watch?v=6nl1qO81igw&t=20s"
+  },
+  "gun-shins": {
+    "video": "media/videos/yt/gun-shins.mp4",
+    "poster": "media/videos/yt/gun-shins.webp",
+    "credit": "YouTube · Massage gun: Tibialis Anterior Release 1",
+    "source": "https://www.youtube.com/watch?v=Q3KRQhtvLvg&t=75s"
+  },
+  "wobble-step-stick": {
+    "video": "media/videos/yt/wobble-step-stick.mp4",
+    "poster": "media/videos/yt/wobble-step-stick.webp",
+    "credit": "YouTube · How to Do a Squat using a Wobble Cushion",
+    "source": "https://www.youtube.com/watch?v=vCUTNl9QEsI&t=6s"
+  },
+  "wobble-squat": {
+    "video": "media/videos/yt/wobble-squat.mp4",
+    "poster": "media/videos/yt/wobble-squat.webp",
+    "credit": "YouTube · How to Do a Squat using a Wobble Cushion",
+    "source": "https://www.youtube.com/watch?v=vCUTNl9QEsI&t=26s"
   }
 };
