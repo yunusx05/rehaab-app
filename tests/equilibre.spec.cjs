@@ -77,7 +77,9 @@ test('coordination : nouveau domaine, échauffement de chaque séance skills tan
   const s=PT.initialState();s.owned=['bodyweight','ball','court'];
   s.skills=SK.saveProfile(SK.blank(),{answers:{weakHand:0}});
   expect(s.skills.levels.coordination).toBe(1);
-  expect(SK.session(PT,s,{minutes:45}).exercises[0].skillArea).toBe('coordination');
+  // Lot 31 : le dribble ouvre toujours la séance, la coordination suit.
+  expect(SK.session(PT,s,{minutes:45}).exercises[0].skillArea).toBe('handle');
+  expect(SK.session(PT,s,{minutes:45}).exercises[1].skillArea).toBe('coordination');
   // Réception et plot notés « Difficile » : la coordination devient le cœur de la séance.
   s.skills=SK.saveProfile(SK.blank(),{answers:{catchTwo:0,coneHands:0,feetHands:0}});
   expect(SK.session(PT,s,{minutes:45}).exercises.filter(e=>e.skillArea==='coordination').length).toBeGreaterThanOrEqual(3);

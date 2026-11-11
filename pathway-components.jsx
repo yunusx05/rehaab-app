@@ -35,6 +35,18 @@ function PTPathwayIntro({data,update,go}) {
     </div></>;
 }
 
+// Lot 31 : recommencer le programme en cours au jour 1, sans toucher au profil. Utilisé dans le parcours et dans « Moi ».
+function PTRestartProgram({data,update,notify,go}) {
+  const SPx=window.SeasonPlan;
+  const [asking,setAsking]=usePTState(false);
+  if(!SPx||!SPx.restart||!(data.pathway||data.program||data.seasonPlan))return null;
+  const scope=SPx.restartScope(data),live=data.draft?.status==='active';
+  const run=()=>{update(s=>SPx.restart(s,PT.dateKey()));setAsking(false);notify('Programme recommencé au jour 1. Ton profil, tes tests et ton historique sont gardés.');go('today');};
+  return asking
+    ?<div className="notice warning stack-sm restart-confirm" role="alert"><p><strong>Recommencer au jour 1 ?</strong> {scope.join(', ')}.</p><p className="fine">Gardés : ton profil, ton bilan, tes questionnaires, tes tests, ton matériel et ton historique de séances.{live?' Ta séance en cours est gardée.':''}</p>
+      <div className="button-row"><PTButton danger className="btn danger solid" onClick={run}><PTIcon name="restart" size={18}/>Oui, recommencer</PTButton><PTButton quiet onClick={()=>setAsking(false)}>Annuler</PTButton></div></div>
+    :<button className="home-action restart-action" onClick={()=>setAsking(true)}><PTIcon name="restart"/><span><strong>Recommencer au jour 1</strong><small>Le programme repart de zéro. Ton profil reste.</small></span><PTIcon name="arrow" size={18}/></button>;
+}
 function PTPathway({data,update,go,notify}) {
   const p = data.pathway;
   const [minutes,setMinutes] = usePTState(0);
@@ -56,7 +68,7 @@ function PTPathway({data,update,go,notify}) {
 
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
-      <PTPlanArsenal data={data} go={go}/>
+      <PTPlanArsenal data={data} go={go} update={update} notify={notify}/>
       <div className="step-track pathway-track">{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
       <section className="card stack-sm">
         <div className="topline"><strong>Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''}</strong><span className="caption">{status.sessions} / {status.needed} séances</span></div>
@@ -102,6 +114,7 @@ function PTPathway({data,update,go,notify}) {
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
         </div>
+        <PTRestartProgram data={data} update={update} notify={notify} go={go}/>
         {stopping
           ? <div className="notice warning stack-sm"><p>Arrêter le parcours ? Il est archivé avec tes tests et ton avancement : tu pourras le reprendre à la même étape. Tes séances restent dans l’historique.</p>
               <PTButton danger onClick={() => {update(s => ({...s, pathway:null, pathwayArchive:[...(s.pathwayArchive || []), {...s.pathway, stoppedAt: PT.dateKey()}].slice(-10), draft: s.draft?.source === 'pathway' && s.draft.status !== 'active' ? null : s.draft})); notify('Parcours arrêté et archivé.'); go('today');}}>Oui, arrêter le parcours</PTButton>
@@ -181,7 +194,7 @@ function PTPathwayTest({data,update,go,notify,id}) {
 }
 
 // Hub Plan (lot 15) : tout ce qui se lance ou se règle autour du parcours, en tuiles photo.
-function PTPlanArsenal({data,go}){
+function PTPlanArsenal({data,go,update,notify}){
   const PPR=window.PersonalPrograms,prog=data.program&&data.program.status!=='archived'?data.program:null,SK=window.BasketSkills,C=window.BasketProfile;
   const SP=window.SeasonPlan,phase=SP?SP.build(data).current:null;
   const tests=data.pathway?Object.values(data.pathway.tests||{}).reduce((n,l)=>n+(l||[]).length,0):0;
@@ -192,6 +205,7 @@ function PTPlanArsenal({data,go}){
     <PTImageTile photo={ptHub('skills')} title="Mes skills basket" text={SK?.complete(data.skills)?'Dribble, tir, finition, défense, moves.':'Questionnaire puis programme à ton niveau.'} onClick={()=>go('skills')}/>
     <PTImageTile photo={ptHub('tests')} badge={tests?`${tests} mesure${tests>1?'s':''}`:null} title="Mesurer ma détente et mes tests" text="Saut, sprint, RSI : un mur, un mètre ou une vidéo." onClick={()=>go('bilan','tests')}/>
     <PTImageTile photo={ptHub('library')} title="Tous les exercices" text={`${PT.allExercises(data).length+(window.BasketSkills?.drills.length||0)} mouvements, filtres basket.`} onClick={()=>go('library')}/>
+    {window.BasketCore&&update&&<PTImageTile photo={rwPhoto('plank')||'media/ui/dossier/body.webp'} title="Abdos & gainage" text={`Core workout complet · ~20 min, niveau ${window.BasketCore.level(data)} sur 3.`} onClick={()=>rwLaunch({data,update,go,notify},s=>window.BasketCore.workout(PT,s,{minutes:20}))}/>}
     <PTImageTile photo={ptHub('shooting')} title="Mes séances de tir" text={window.Shooting?.summary(data.shooting)||'Compteur en direct, % par semaine, carte de tir.'} onClick={()=>go('shooting')}/>
     <PTImageTile photo="media/ui/dossier/body.webp" title="Poids de forme" text="Ton poids face à ton poids de jeu." onClick={()=>go('weight')}/>
   </div>;

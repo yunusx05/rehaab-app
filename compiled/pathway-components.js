@@ -133,6 +133,52 @@ function PTPathwayIntro({
     size: 18
   })))));
 }
+
+// Lot 31 : recommencer le programme en cours au jour 1, sans toucher au profil. Utilisé dans le parcours et dans « Moi ».
+function PTRestartProgram({
+  data,
+  update,
+  notify,
+  go
+}) {
+  const SPx = window.SeasonPlan;
+  const [asking, setAsking] = usePTState(false);
+  if (!SPx || !SPx.restart || !(data.pathway || data.program || data.seasonPlan)) return null;
+  const scope = SPx.restartScope(data),
+    live = data.draft?.status === 'active';
+  const run = () => {
+    update(s => SPx.restart(s, PT.dateKey()));
+    setAsking(false);
+    notify('Programme recommencé au jour 1. Ton profil, tes tests et ton historique sont gardés.');
+    go('today');
+  };
+  return asking ? /*#__PURE__*/React.createElement("div", {
+    className: "notice warning stack-sm restart-confirm",
+    role: "alert"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Recommencer au jour 1 ?"), " ", scope.join(', '), "."), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Gard\xE9s : ton profil, ton bilan, tes questionnaires, tes tests, ton mat\xE9riel et ton historique de s\xE9ances.", live ? ' Ta séance en cours est gardée.' : ''), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    danger: true,
+    className: "btn danger solid",
+    onClick: run
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "restart",
+    size: 18
+  }), "Oui, recommencer"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setAsking(false)
+  }, "Annuler"))) : /*#__PURE__*/React.createElement("button", {
+    className: "home-action restart-action",
+    onClick: () => setAsking(true)
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "restart"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Recommencer au jour 1"), /*#__PURE__*/React.createElement("small", null, "Le programme repart de z\xE9ro. Ton profil reste.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }));
+}
 function PTPathway({
   data,
   update,
@@ -181,7 +227,9 @@ function PTPathway({
     className: "stack-lg"
   }, /*#__PURE__*/React.createElement(PTPlanArsenal, {
     data: data,
-    go: go
+    go: go,
+    update: update,
+    notify: notify
   }), /*#__PURE__*/React.createElement("div", {
     className: "step-track pathway-track"
   }, BP.steps.map(s => /*#__PURE__*/React.createElement("span", {
@@ -346,7 +394,12 @@ function PTPathway({
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), stopping ? /*#__PURE__*/React.createElement("div", {
+  }))), /*#__PURE__*/React.createElement(PTRestartProgram, {
+    data: data,
+    update: update,
+    notify: notify,
+    go: go
+  }), stopping ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning stack-sm"
   }, /*#__PURE__*/React.createElement("p", null, "Arr\xEAter le parcours ? Il est archiv\xE9 avec tes tests et ton avancement : tu pourras le reprendre \xE0 la m\xEAme \xE9tape. Tes s\xE9ances restent dans l\u2019historique."), /*#__PURE__*/React.createElement(PTButton, {
     danger: true,
@@ -626,7 +679,9 @@ function PTPathwayTest({
 // Hub Plan (lot 15) : tout ce qui se lance ou se règle autour du parcours, en tuiles photo.
 function PTPlanArsenal({
   data,
-  go
+  go,
+  update,
+  notify
 }) {
   const PPR = window.PersonalPrograms,
     prog = data.program && data.program.status !== 'archived' ? data.program : null,
@@ -671,6 +726,18 @@ function PTPlanArsenal({
     title: "Tous les exercices",
     text: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} mouvements, filtres basket.`,
     onClick: () => go('library')
+  }), window.BasketCore && update && /*#__PURE__*/React.createElement(PTImageTile, {
+    photo: rwPhoto('plank') || 'media/ui/dossier/body.webp',
+    title: "Abdos & gainage",
+    text: `Core workout complet · ~20 min, niveau ${window.BasketCore.level(data)} sur 3.`,
+    onClick: () => rwLaunch({
+      data,
+      update,
+      go,
+      notify
+    }, s => window.BasketCore.workout(PT, s, {
+      minutes: 20
+    }))
   }), /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('shooting'),
     title: "Mes s\xE9ances de tir",

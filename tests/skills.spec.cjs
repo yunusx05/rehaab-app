@@ -61,7 +61,8 @@ test('skills : blocs après muscu haut du corps, footing et jambes ; rien les jo
   const upper=SK.block(PT,data,{exercises:[{id:'db-press',pattern:'push'},{id:'db-row',pattern:'pull'}]});
   expect(new Set(upper.exercises.map(e=>e.area))).toEqual(new Set(['handle','shoot']));
   const cardio=SK.block(PT,data,{exercises:[{id:'run',pattern:'cardio'}]});
-  expect(cardio.exercises[0].area).toBe('finish');
+  // Lot 31 : le dribble ouvre toujours le bloc, la finition suit.
+  expect(cardio.exercises[0].area).toBe('handle');expect(cardio.exercises.some(e=>e.area==='finish')).toBe(true);
   const legs=SK.block(PT,data,{exercises:[{pattern:'squat'},{pattern:'hinge'}]});
   expect(legs.exercises.some(e=>e.impact||e.cuts)).toBe(false);
   data.program=PP.createProgram(data,{familyId:'basket',weeks:8,daysPerWeek:3,minutes:45,equipment:data.owned}).program;

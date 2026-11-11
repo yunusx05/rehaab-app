@@ -323,7 +323,10 @@
     if(legNote) reasons.push(legNote);
     if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
     reasons.push(...step.rules);
-    return {id:uid(),title:`${step.short} · ${day.name}`,source:'pathway',pathwayId:p.id,pathwayStep:step.id,pathwayWeek:week,pathwayDay:day.key,focus:'muscle',format:'classic',exercises,check,reasons:reasons.concat(changes),warmupSeconds:300,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    // Lot 31 : finisher abdos en fin de séance (sangle abdominale, point faible), sauf version courte.
+    const CORE=(typeof globalThis!=='undefined'&&globalThis.BasketCore)||(()=>{try{return typeof require==='function'?require('./basket-core.js'):null;}catch(e){return null;}})();
+    const withCore=out=>CORE&&(!minutes||minutes>=45)?CORE.withFinisher(PT,state,out,{date:check.date}):out;
+    return withCore({id:uid(),title:`${step.short} · ${day.name}`,source:'pathway',pathwayId:p.id,pathwayStep:step.id,pathwayWeek:week,pathwayDay:day.key,focus:'muscle',format:'classic',exercises,check,reasons:reasons.concat(changes),warmupSeconds:300,estimatedMinutes:Math.ceil((PT.estimateSeconds(exercises,'classic')+360)/60),status:'preview',entries:{},createdAt:new Date().toISOString()});
   }
 
   // Exercice d'alignement du genou (bloc kiné) : le côté concerné en premier, avec une série de plus pour lui.

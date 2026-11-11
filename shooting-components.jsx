@@ -90,6 +90,15 @@ function PTShootingNew({data,update,go,notify}){
     </div></>;
 }
 
+// Lot 31 : toujours un peu de dribble avant de tirer, même pour une séance full shoot.
+function PTDribbleWarm({data}){
+  const SK=window.BasketSkills;
+  const [list]=usePTState(()=>SK&&SK.dribbleWarm?SK.dribbleWarm(PT,data,{count:3}):[]);
+  if(!list.length)return null;
+  return <section className="dribble-warm stack-sm" aria-label="Dribble avant de tirer"><span className="eyebrow">Avant de tirer · 3 min</span><h2>Dribble d’abord.</h2>
+    <ol className="reason-list">{list.map(e=><li key={e.id}><strong>{e.name}</strong> · {e.measure==='seconds'?`${e.seconds} s`:`${e.targetMax||e.max} rép.`}{e.unilateral?' par main':''}</li>)}</ol>
+    <p className="fine">Balle en main, les poignets et les yeux se réveillent : ton premier tir part mieux. Puis compte tes tirs ci-dessous.</p></section>;
+}
 function PTShootingLive({data,update,go,notify}){
   const sh=SH.validate(data.shooting)||SH.blank(),d=sh.draft;
   if(!d)return <><PTPageHead onBack={()=>go('shooting')} title="Séance de tir."/><p className="empty">Aucune séance en cours.</p><PTButton primary onClick={()=>go('shooting')}>Choisir une routine</PTButton></>;
@@ -103,6 +112,7 @@ function PTShootingLive({data,update,go,notify}){
   };
   return <><PTPageHead onBack={()=>go('shooting')} title={d.title}>{`Ligne ${d.cursor+1} sur ${d.items.length}`}</PTPageHead>
     <div className="stack-lg shot-live">
+      {t.attempts===0&&<PTDribbleWarm data={data}/>}
       <section className="shot-now"><span className="shot-zone-name">{SH.ZONES[it.zone].label}</span><strong>{SH.drillLabel(it.drill,sh.custom)}</strong>
         <span className="shot-count"><b>{it.made}</b>/{it.attempts}<small> sur {it.target}</small></span>
         <span className="mini-progress"><i style={{transform:`scaleX(${Math.min(1,it.attempts/it.target)})`}}/></span>

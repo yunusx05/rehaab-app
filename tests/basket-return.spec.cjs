@@ -192,7 +192,7 @@ test('annuler la séance en cours reste visible, avec confirmation',async({page}
   const data=player();data.pathway=BP.create();data.draft=PT.startDraft(BP.sessionPlan(PT,JP,data,data.pathway,'A'),data);
   await seed(page,data,'session');
   // Lot 19 : l'annulation vit dans le menu ⋯ de la barre du haut, toujours accessible.
-  await page.getByRole('button',{name:'Options de séance',exact:true}).click();
+  await page.getByRole('button',{name:'Arrêter',exact:true}).click();
   await page.getByRole('button',{name:'Annuler la séance',exact:true}).click();
   await page.getByRole('button',{name:'Oui, annuler sans enregistrer'}).click();
   await expect.poll(async()=>(await state(page)).draft).toBeNull();
@@ -218,7 +218,7 @@ test('accueil allégé : la séance du jour lance directement la séance prévue
   const data=player();data.pathway=BP.create();
   await seed(page,data,'today');
   const card=page.locator('.today-plan');
-  await expect(card.locator('h2')).toHaveText('Jambes & tendons');
+  await expect(card.locator('h2')).toHaveText('Fondations · Jambes & tendons');
   await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Nutrition','Moi']);
   await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
   await card.getByRole('button',{name:/Préparer ma séance/}).click();

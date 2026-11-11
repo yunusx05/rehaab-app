@@ -357,6 +357,29 @@ function PTShootingNew({
     size: 18
   }))));
 }
+
+// Lot 31 : toujours un peu de dribble avant de tirer, même pour une séance full shoot.
+function PTDribbleWarm({
+  data
+}) {
+  const SK = window.BasketSkills;
+  const [list] = usePTState(() => SK && SK.dribbleWarm ? SK.dribbleWarm(PT, data, {
+    count: 3
+  }) : []);
+  if (!list.length) return null;
+  return /*#__PURE__*/React.createElement("section", {
+    className: "dribble-warm stack-sm",
+    "aria-label": "Dribble avant de tirer"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow"
+  }, "Avant de tirer \xB7 3 min"), /*#__PURE__*/React.createElement("h2", null, "Dribble d\u2019abord."), /*#__PURE__*/React.createElement("ol", {
+    className: "reason-list"
+  }, list.map(e => /*#__PURE__*/React.createElement("li", {
+    key: e.id
+  }, /*#__PURE__*/React.createElement("strong", null, e.name), " \xB7 ", e.measure === 'seconds' ? `${e.seconds} s` : `${e.targetMax || e.max} rép.`, e.unilateral ? ' par main' : ''))), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Balle en main, les poignets et les yeux se r\xE9veillent : ton premier tir part mieux. Puis compte tes tirs ci-dessous."));
+}
 function PTShootingLive({
   data,
   update,
@@ -413,7 +436,9 @@ function PTShootingLive({
     title: d.title
   }, `Ligne ${d.cursor + 1} sur ${d.items.length}`), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg shot-live"
-  }, /*#__PURE__*/React.createElement("section", {
+  }, t.attempts === 0 && /*#__PURE__*/React.createElement(PTDribbleWarm, {
+    data: data
+  }), /*#__PURE__*/React.createElement("section", {
     className: "shot-now"
   }, /*#__PURE__*/React.createElement("span", {
     className: "shot-zone-name"

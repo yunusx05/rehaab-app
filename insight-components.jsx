@@ -80,8 +80,12 @@ function PTTodayPlan({data,update,go,notify}) {
       :<PTButton primary onClick={()=>quick('mobility',15)}>10 min de mobilité<PTIcon name="arrow" size={18}/></PTButton>}
     <button className="text-button" onClick={unexcuse}>Finalement, je peux m’entraîner</button>
   </section>;
+  // Lot 31 : pluie notée aujourd'hui (depuis « Un imprévu ») : rappel, et retour en arrière possible.
+  const rain=SPL&&SPL.rainOn?SPL.rainOn(data,now):false;
+  const rainNote=rain&&<p className="rain-note"><PTIcon name="rain" size={18}/><span>Pluie notée : ce qui se fait dehors (course, panier, sable) passe en intérieur ou glisse à un autre jour.</span><button className="text-button" onClick={()=>{update(s=>({...s,calendar:SPL.setRain(s,false,now)}));notify('Pluie retirée : tes séances dehors reviennent.');}}>Il ne pleut plus</button></p>;
   // Lot 23 : plus de grande photo. La séance du jour tient en quelques lignes sous « Ma semaine », le « pourquoi » reste à un appui.
   return <section className={`today-plan kind-${plan.kind}`} aria-labelledby="today-plan-title">
+    {rainNote}
     <div className="today-plan-line"><span className="today-plan-tag">{plan.kind==='rest'?'Repos':plan.kind==='light'?'Version légère':plan.kind==='blocked'?'À vérifier':'Aujourd’hui'}{calPrimary?` · ${calPrimary.minutes} min`:''}</span>
       {plan.why.length>0&&<details className="today-plan-more"><summary>Pourquoi ?</summary><ul className="reason-list">{plan.why.map(w=><li key={w}>{w}</li>)}</ul></details>}</div>
     <h2 id="today-plan-title">{calPrimary?calPrimary.label:showPathway?next.day.name:plan.title}</h2>
@@ -91,7 +95,7 @@ function PTTodayPlan({data,update,go,notify}) {
     {dayItems.filter(x=>x!==calPrimary).length>0&&<ul className="today-program" aria-label="Programme du jour">{dayItems.filter(x=>x!==calPrimary).map(x=><li key={x.key} className={x.status==='done'?'is-done':''}><span className="today-program-label">{x.status==='done'&&<PTIcon name="check" size={13}/>}{x.label}</span><span className="today-program-min">{x.minutes} min</span></li>)}</ul>}
     <div className="today-plan-links">
       {cardioToday&&calPrimary?.type!=='cardio'&&<button className="text-button" onClick={launchCardio}>Lancer le cardio →</button>}
-      {plannedToday.length>0&&typeof PTMishap==='function'?<button className="text-button today-mishap" onClick={()=>go('mishap')}>Un imprévu aujourd’hui ?</button>
+      {plannedToday.length>0&&typeof PTMishap==='function'?<button className="today-mishap-btn" onClick={()=>go('mishap')}><PTIcon name="today" size={18}/><span><strong>Un imprévu aujourd’hui ?</strong><small>Pluie, fatigue, peu de temps, douleur…</small></span><PTIcon name="arrow" size={16}/></button>
       :plannedToday.length>0&&!mishap&&<button className="text-button today-mishap" aria-expanded="false" onClick={()=>setMishap(true)}>Un imprévu aujourd’hui ?</button>}
     </div>
     {plannedToday.length>0&&typeof PTMishap!=='function'&&mishap&&<div className="today-mishap-panel stack-sm" role="group" aria-label="Imprévu aujourd’hui"><p className="fine">{plannedToday.map(x=>x.label).join(' · ')}</p>

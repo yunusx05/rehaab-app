@@ -110,3 +110,34 @@
 .trend-up{color:var(--accent)}.trend-down{color:#f0a35e}
 @media(max-height:740px){.radar-block{grid-template-columns:72px minmax(0,1fr);padding:.45rem .7rem;gap:.55rem}.radar-block .player-radar.is-mini{width:72px}.radar-block-list{display:none}.radar-block-sum{display:block}.home-tile{min-height:62px}.week-hub .today-plan .fine{display:none}.home-tile-body small{display:none}.home-tile.has-pain .home-tile-body small{display:block;color:var(--accent)}}
 @media(prefers-reduced-motion:reduce){.radar-block{transition:none}.radar-block:active{transform:none}}
+
+/* Lot 31 : boutons importants visibles. Arrêter une séance, signaler une douleur, un imprévu, recommencer : on les trouve sans chercher. */
+.live-stop{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:0 .95rem;border-radius:999px;border:1.5px solid #ff8f78;background:#ff8f7814;color:#ffb1a1;font-weight:700;font-size:.8rem;letter-spacing:.01em}
+.live-stop[aria-expanded=true]{background:var(--raised);border-color:#ffffff30;color:var(--text)}
+.live-menu .fine{text-align:center}
+.btn.danger{border:1.5px solid #ff8f78;color:#ffb1a1;background:#ff8f7812;font-weight:700}
+.btn.danger.solid{background:#ff7a61;border-color:#ff7a61;color:#1d0f0b}
+.btn.danger.solid:hover{background:#ff9480}
+.dock-caption{min-height:44px;gap:.6rem}
+.dock-caption>.dock-chip{display:inline-flex;align-items:center;gap:.4rem;min-height:40px;padding:0 .85rem;border-radius:999px;border:1px solid #ffffff2a;background:#ffffff0d;color:var(--text);font-size:.78rem;font-weight:600}
+.dock-caption>.dock-chip.pain{margin-left:auto;border-color:#ffb46b80;background:#ffb46b17;color:#ffc58a}
+.today-mishap-btn{display:flex;align-items:center;gap:.7rem;width:100%;min-height:52px;margin-top:.15rem;padding:.6rem .85rem;border-radius:14px;border:1.5px solid #ffffff26;background:#ffffff0a;color:var(--text);text-align:left}
+.today-mishap-btn>span{flex:1;display:grid;gap:.1rem;min-width:0}
+.today-mishap-btn strong{font-size:.88rem}
+.today-mishap-btn small{font-size:.72rem;color:var(--sub)}
+.today-mishap-btn>svg:first-child{color:#ffc58a;flex:none}
+.today-plan-links:has(.today-mishap-btn){display:grid;gap:.4rem}
+.rain-note{display:flex;align-items:flex-start;flex-wrap:wrap;gap:.5rem;padding:.7rem .8rem;border-radius:12px;background:#7fb4ff14;border:1px solid #7fb4ff45;color:var(--text);font-size:.78rem;line-height:1.45}
+.rain-note>svg{color:#9cc4ff;flex:none;margin-top:.1rem}
+.rain-note>span{flex:1;min-width:0}
+.rain-note .text-button{min-height:40px;padding:.3rem 0;color:#9cc4ff;font-weight:600}
+.chip-action{display:inline-flex;align-items:center;min-height:40px;padding:0 .85rem;border-radius:999px;border:1px solid #ffffff2a;background:#ffffff0d;color:var(--text);font-size:.76rem;font-weight:600}
+.calendar-actions{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center}
+.restart-action{border:1.5px solid #ffffff26}
+.restart-action>svg:first-child{color:var(--accent)}
+.dribble-warm{padding:1rem;border-radius:16px;border:1.5px solid var(--accent);background:#c3e65a0f}
+.dribble-warm h2{font-size:1.25rem}
+/* Lot 31 : cinq raccourcis (Abdos ajouté). Bande qui défile sur le côté : le 5e dépasse un peu, pour montrer qu'il y en a d'autres. */
+.home-blocks{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:calc((100% - 1.35rem) / 4.35);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.home-blocks::-webkit-scrollbar{display:none}
+.home-blocks>*{scroll-snap-align:start}

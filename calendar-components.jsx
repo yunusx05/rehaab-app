@@ -89,8 +89,8 @@ function PTCalendar({data,update,go,notify}){
           <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
           {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
             {d.date===now&&<PTButton primary onClick={()=>launch(item,d)}>Lancer</PTButton>}
-            {d.date===now&&<button className="text-button" onClick={()=>typeof PTMishap==='function'?go('mishap'):cannot(item)}>Je ne peux pas aujourd’hui</button>}
-            <button className="text-button" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
+            {d.date===now&&<button className="chip-action" onClick={()=>typeof PTMishap==='function'?go('mishap'):cannot(item)}>Je ne peux pas aujourd’hui</button>}
+            <button className="chip-action" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
           {moving===item.key&&<div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
             <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,here=x.date===d.date,rule=!past&&!here?SP.ruleBreakAt(data,monday,item.key,x.date):null;
@@ -148,10 +148,10 @@ function PTSeasonPlan({data,update,go,notify}){
         <div className="stack-sm"><div className="topline"><strong>{ph.name}</strong><span className="caption">{ph.weeks}</span></div>
           {i===built.current.index&&<p className="badge">Tu es ici · semaine {built.current.week}{built.deload?' · semaine allégée':''}</p>}
           <p className="fine">{ph.goal}</p>
+          {ph.why?.length>0&&<p className="fine"><strong>Pourquoi un départ prudent :</strong> {ph.why.join(' ')}</p>}
           {i===built.current.index&&ph.rules&&<ul className="reason-list">{ph.rules.map(r=><li key={r}>{r}</li>)}</ul>}
           {arch?.accents?.filter(a=>ph.name.toLowerCase().includes(a.phase.toLowerCase())||a.phase===ph.id).map(a=><p key={a.text} className="court-transfer"><PTIcon name="spark" size={16}/><span><strong>Accent de l’architecte</strong>{a.text}</span></p>)}
         </div></li>)}</ol>
-      {built.current.id==='reset'&&<PTButton quiet onClick={()=>{set({resetDone:PT.dateKey()});notify('Remise en route terminée : place au parcours.');}}>La remise en route est faite, je passe au parcours</PTButton>}
       {gate?.last&&gate.ready&&!data.seasonPlan?.devStart&&<PTButton primary onClick={()=>{set({devStart:PT.dateKey()});notify('Phase de développement lancée : cycles de 4 semaines.');}}>Commencer le développement</PTButton>}
       <p className="fine">Prochain point de test : {ptShortDay(built.nextTest)}. Détente, sprint et douleur font avancer le plan.</p>
       <section className="card stack">

@@ -140,14 +140,17 @@ test('semaine chargée (club, match) : le cardio reste au planning en version sa
   expect(SP.violations(s,w)).toEqual([]);
 });
 
-test('planning : en remise en route le cardio reste sans impact',()=>{
+// Lot 31 : la remise en route est fusionnée dans Fondations. Après une longue pause, on démarre en Fondations, cardio en allure facile.
+test('planning : après une longue pause, Fondations d’emblée et cardio en allure facile',()=>{
   const s=joueur({step:1});
   s.dossier=PD.saveChapter(s,'break',{layoffMonths:24,layoffReason:'work',dropped:[]}).dossier;
   const w=SP.weekSchedule(s,MONDAY,MONDAY);
-  expect(w.phase.id).toBe('reset');
+  expect(w.phase.id).toBe('step1');
   const cardio=items(w).filter(x=>x.type==='cardio');
   expect(cardio.length).toBe(2);
-  expect(cardio.every(x=>x.legs==='light')).toBe(true);
+  const p=BC.plan(PT,JP,s,'run',{phase:'step1'});
+  expect(p.cardioLevel).toBeLessThanOrEqual(1);
+  expect(p.reasons.join(' ')).toMatch(/allure facile/);
 });
 
 test('fréquence au choix : 0 retire le cardio, 1 alterne corde et course d’une semaine à l’autre',()=>{

@@ -264,6 +264,13 @@
     return {...clean,levels:initialLevels(clean.profile),program:clean.program||{perWeek:2,minutes:45,blocks:true,blockMinutes:15,status:'active',startDate:today()}};
   }
   const hoopToday = (skills,date=today()) => !!(skills&&skills.hoopDate===date);
+  // Lot 31 : jour de pluie noté (calendar.rain) : le panier du playground n'est pas utilisable, on reste sur place.
+  const rainy = (state,date=today()) => !!(state&&state.calendar&&Array.isArray(state.calendar.rain)&&state.calendar.rain.includes(date));
+  const hoopOn = (state,s,date=today()) => hoopToday(s,date)&&!rainy(state,date);
+  // Lot 31 : quelques minutes de dribble avant tout travail basket, même court (séance de tir comprise).
+  function dribbleWarm(PT,state,{count=2,date=today()}={}) {
+    return pick(state,{area:'handle',count,stationary:true}).map(d=>({...dose(d,PT),sets:1,rest:20,dribbleWarm:true}));
+  }
 
   // Choix des exercices : domaine, palier atteint (on reprend aussi le palier du dessous), points faibles, panier, sauts.
   function pick(state,{area,count=2,hoop=false,noImpact=false,exclude=[],stationary=false}) {
@@ -292,38 +299,45 @@
   // Séance skills complète. light : la veille d'un match ou jambes protégées (aucun saut ni changement de direction).
   function session(PT,state,{minutes,light=false,date=today()}={}) {
     const s=validate(state.skills),prog=s.program||{minutes:45};
-    const total=Number(minutes)||prog.minutes||45,hoop=hoopToday(s,date),prio=priorities(s,state.player);
+    const rain=rainy(state,date),total=Number(minutes)||prog.minutes||45,hoop=hoopOn(state,s,date),prio=priorities(s,state.player);
     const main=prio[0]?prio[0].area:'handle',second=(prio.find(p=>p.area!==main)||{area:hoop?'shoot':'footwork'}).area;
-    const opts={hoop,noImpact:light};
+    // Sous la pluie : sur place, sans coupe ni saut (garage, salle, préau).
+    const opts={hoop,noImpact:light||rain,stationary:rain};
     const used=hoop?['sk-ft']:[],take=(area,count)=>{const list=pick(state,{...opts,area,count,exclude:used});list.forEach(d=>used.push(d.id));return list.map(d=>dose(d,PT));};
-    // Échauffement balle en main, cœur sur le point faible, deuxième domaine, puis lancers francs ou tir de forme pour finir.
-    // Échauffement : coordination et réception tant qu'elles ne sont pas un point fort, sinon maniement.
-    const warm=(s.levels.coordination||1)<3&&main!=='coordination'?'coordination':'handle';
-    const plan=[...take(warm,1),...take(main,total>=45?3:2),...take(second,total>=45?2:1)];
+    // Lot 31 : une séance skills mélange dribble, tir et lay-up. Toujours du dribble d'abord, puis la coordination tant qu'elle est faible,
+    // le point faible, et avec un panier au moins un exercice de lay-up et un de tir.
+    const plan=[...take('handle',1)];
+    if((s.levels.coordination||1)<3&&main!=='coordination') plan.push(...take('coordination',1));
+    plan.push(...take(main,total>=45?2:1));
+    if(hoop){if(!plan.some(e=>e.area==='finish'))plan.push(...take('finish',1));if(!plan.some(e=>e.area==='shoot'))plan.push(...take('shoot',1));}
+    plan.push(...take(second,1));
     if(total>=60) plan.push(...take(main==='shoot'?'finish':'shoot',1),...take('footwork',1));
     // Avec un panier, la séance se termine toujours par des lancers francs (routine sous fatigue légère).
     const ft=hoop?dose(byId('sk-ft'),PT):null;
     fill(state,plan,(total-5)*60-(ft?estimate([ft]):0),[main,second,hoop?'shoot':'handle','footwork'],{...opts,exclude:ft?['sk-ft']:[],PT});
     if(ft) plan.push(ft);
-    while(estimate(plan)>(total-5)*60&&plan.length>3) plan.splice(plan.length-2,1);
+    // On raccourcit par la fin, sans jamais retirer le dribble du début.
+    while(estimate(plan)>(total-5)*60&&plan.length>3) plan.splice(Math.max(1,plan.length-2),1);
     while(estimate(plan)>(total-5)*60&&plan.some(e=>e.sets>2)) {const e=[...plan].reverse().find(x=>x.sets>2);e.sets-=1;}
     if(plan.length<2) return {error:'Pas assez d’exercices compatibles aujourd’hui (douleurs ou matériel).'};
+    if(plan[0]&&plan[0].area==='handle') plan[0]={...plan[0],dribbleWarm:true};
     const reasons=[`Point faible travaillé : ${areas[main].label.toLowerCase()} (palier ${TIERS[s.levels[main]-1].toLowerCase()})${!hoop&&['shoot','finish'].includes(main)?', au panier dès que tu en as un':''}.`,
-      hoop?'Panier disponible aujourd’hui : tir et finition au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
+      'Dribble d’abord : quelques minutes balle en main avant tout le reste.',
+      rain?'Pluie notée aujourd’hui : séance sur place, sans panier, sans coupe ni saut.':hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
       'Note tes tirs réussis et tentés : ils font évoluer ton palier.'];
     if(light) reasons.push('Version légère : ni saut ni changement de direction, tes jambes restent fraîches.');
     const styles=[...new Set(plan.map(e=>e.style).filter(Boolean))];
     if(styles.length) reasons.push(`Inspiration : ${styles.join(', ')} (style de jeu, pas un programme officiel).`);
     const counts={};plan.forEach(e=>counts[e.area]=(counts[e.area]||0)+1);
     const lead=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
-    return {id:uid(),title:`Skills · ${areas[lead].short}${hoop?' + panier':''}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    return {id:uid(),title:hoop?'Skills · dribble, tir, lay-up':`Skills · ${areas[lead].short}${rain?' · à l’abri':''}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   // Intensité match : efforts de 20 à 60 s, récupérations courtes, tir, dribble et finition sous fatigue.
   // Le basket alterne des efforts très intenses et des récupérations incomplètes : on reproduit ce rythme ballon en main.
   const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
   function matchSession(PT,state,{minutes=30,date=today()}={}) {
-    const s=validate(state.skills),hoop=hoopToday(s,date),total=Number(minutes)||30;
+    const s=validate(state.skills),hoop=hoopOn(state,s,date),total=Number(minutes)||30;
     const pains=(state.symptoms||[]).filter(x=>x.active);
     if(pains.some(p=>['knee','ankle','hip','back'].includes(p.region)&&Number(p.severity)>=3)) return {error:'Douleur aux jambes ou au dos : pas d’intensité match aujourd’hui. Fais plutôt une séance skills légère ou ton soin.'};
     const lvl=a=>Math.max(2,s.levels[a]||1);
@@ -363,14 +377,15 @@
   function block(PT,state,{exercises=[],minutes,protectLegs=false,date=today()}={}) {
     const s=validate(state.skills);
     if(!s.program||s.program.status!=='active'||!s.program.blocks) return null;
-    const hoop=hoopToday(s,date),host=hostOf(exercises),m=Number(minutes)||s.program.blockMinutes||15;
+    const hoop=hoopOn(state,s,date),host=hostOf(exercises),m=Number(minutes)||s.program.blockMinutes||15;
     const legs=protectLegs||host==='legs',count=m>=20?3:2,used=exercises.map(e=>e.id);
-    const areasFor=host==='cardio'?(hoop?['finish','handle']:['handle','footwork']):host==='legs'?['shoot','handle']:['handle','shoot'];
+    // Lot 31 : le dribble ouvre toujours le bloc, même court.
+    const areasFor=host==='cardio'?(hoop?['handle','finish']:['handle','footwork']):host==='legs'?['handle','shoot']:['handle','shoot'];
     const list=[];
     areasFor.forEach((area,i)=>pick(state,{area,count:i===0?count-1:1,hoop,noImpact:legs,stationary:legs,exclude:used.concat(list.map(d=>d.id))}).forEach(d=>list.push(d)));
     if(!list.length) return null;
     const items=fill(state,list.map(d=>dose(d,PT)),m*60,areasFor,{hoop,noImpact:legs,stationary:legs,PT}).map(e=>({...e,skillBlock:true}));
-    const label={upper:'après le haut du corps : dribble puis tir',cardio:hoop?'jour de footing : finition au cercle':'jour de footing : dribble en mouvement',legs:'après les jambes : tir de forme et dribble sur place, sans saut'}[host];
+    const label={upper:'après le haut du corps : dribble puis tir',cardio:hoop?'jour de footing : dribble puis finition au cercle':'jour de footing : dribble en mouvement',legs:'après les jambes : dribble sur place puis tir de forme, sans saut'}[host];
     return {exercises:items,minutes:Math.ceil(estimate(items)/60),note:`Bloc skills (${label}, ~${Math.ceil(estimate(items)/60)} min)${hoop?'':' — sans panier aujourd’hui'}.`};
   }
   // Ajoute le bloc à une séance déjà construite (sans le doubler).
@@ -410,5 +425,5 @@
     return Object.entries(areas).map(([a,x])=>`${x.short} : ${TIERS[v.levels[a]-1].toLowerCase()}`).join(' ; ')+(v.program?` ; ${v.program.perWeek} séance(s) skills/semaine`:'')+'.';
   }
 
-  return {areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
+  return {dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
 });

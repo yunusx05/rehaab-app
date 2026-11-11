@@ -77,7 +77,7 @@
   // Type de journée choisi par l'utilisateur : auto (l'app décide), muscu, skills, les deux, ou repos.
   // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
   const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',both:'Muscu + skills',off:'Repos'};
-  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null};}
+  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
     const moves={},skips={},forced={};
@@ -92,7 +92,14 @@
     const e=v.excused;
     const excused=e&&typeof e==='object'&&isDay(e.date)&&['cancel','postpone'].includes(e.action)&&Array.isArray(e.keys)
       ?{date:e.date,action:e.action,keys:e.keys.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,10),prev:MODES[e.prev]?e.prev:null,why:typeof e.why==='string'?e.why.slice(0,400):''}:null;
-    return {moves,skips,forced,week,dates,excused};
+    // Lot 31 : jours de pluie (notés depuis « Un imprévu ») : ce qui se fait dehors passe en intérieur ou glisse.
+    const rain=(Array.isArray(v.rain)?v.rain:[]).filter(isDay).sort().slice(-30);
+    return {moves,skips,forced,week,dates,excused,rain};
+  }
+  function rainOn(state,date=today()) {const cal=validateCalendar(state.calendar);return !!(cal&&cal.rain.includes(date));}
+  function setRain(state,on,date=today()) {
+    const cal=validateCalendar(state.calendar)||blankCalendar(),list=cal.rain.filter(d=>d!==date);
+    return {...cal,rain:on?[...list,date].sort():list};
   }
   function dayMode(state,date) {
     const cal=validateCalendar(state.calendar)||blankCalendar();
@@ -118,26 +125,25 @@
     const sp=validate(state.seasonPlan)||blank(), BP=BPL(), need=resetNeed(state), p=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
     const firstSession=(state.sessions||[]).map(s=>s.date).filter(isDay).sort()[0];
     const start=sp.start||(p&&p.startedAt)||(state.dossier&&isDay(state.dossier.date)&&state.dossier.date)||firstSession||now;
-    const resetWeeks=sp.resetWeeks!==null?sp.resetWeeks:need.weeks;
+    // Lot 31 : la « Remise en route » est fusionnée dans Fondations (jugée trop simple). Ses raisons (longue pause, douleur, poids)
+    // restent affichées sur Fondations, qui prépare déjà les tendons sans sprint ni saut maximal et progresse semaine après semaine.
+    const resetWeeks=0;
     const phases=[];
-    if(resetWeeks>0) phases.push({id:'reset',name:'Remise en route',weeks:resetWeeks>=4?'4 semaines':`${resetWeeks} à 4 semaines`,goal:'Préparer les tendons, retrouver le souffle et la mobilité, sans saut ni sprint.',rules:['Aucun saut ni sprint.','Marche, vélo, tendons, mobilité, haut du corps.','Douleur à 2/10 au maximum pendant l’effort, revenue à la normale le lendemain.'],why:need.reasons});
-    (BP?BP.steps:[]).forEach(s=>phases.push({id:`step${s.id}`,step:s.id,name:s.name,weeks:`${s.minWeeks} semaines minimum, validées par tes tests`,goal:s.goal,rules:s.rules}));
+    (BP?BP.steps:[]).forEach(s=>phases.push({id:`step${s.id}`,step:s.id,name:s.name,weeks:`${s.minWeeks} semaines minimum, validées par tes tests`,goal:s.goal,rules:s.rules,...(s.id===1&&need.reasons.length?{why:need.reasons}:{})}));
     CYCLES.forEach(c=>phases.push({...c,weeks:'4 semaines, la dernière allégée',rules:['Semaine 4 allégée : volume réduit d’un tiers.','Tests de détente et de sprint en fin de cycle.']}));
     // Position actuelle.
     let current;
-    const resetEnd=at(start,resetWeeks*7);
-    if(resetWeeks>0&&!sp.resetDone&&diff(now,resetEnd)<0) current={id:'reset',week:Math.floor(diff(now,start)/7)+1,of:resetWeeks};
-    else if(sp.devStart){
+    if(sp.devStart){
       const weeks=Math.max(0,Math.floor(diff(now,sp.devStart)/7)),inSeason=state.basketProfile&&state.basketProfile.season==='in';
       const c=inSeason?CYCLES[3]:CYCLES[Math.floor(weeks/4)%3];
       current={id:c.id,week:weeks%4+1,of:4};
     }
     else if(p&&BP) current={id:`step${p.step}`,week:BP.weekOf(p),of:BP.stepById(p.step).minWeeks};
-    else current={id:resetWeeks>0?'reset':'step1',week:1,of:resetWeeks||3};
+    else current={id:'step1',week:1,of:BP?BP.stepById(1).minWeeks:3};
     const index=phases.findIndex(x=>x.id===current.id);
     // Tests toutes les 4 semaines depuis le début du plan.
     const elapsed=Math.max(0,diff(now,start)),nextTest=at(start,(Math.floor(elapsed/28)+1)*28);
-    const minWeeks=phases.filter((x,i)=>i>=Math.max(0,index)&&x.step).reduce((n,x)=>n+(BP.stepById(x.step).minWeeks),0)+(current.id==='reset'?Math.max(0,resetWeeks-current.week+1):0);
+    const minWeeks=phases.filter((x,i)=>i>=Math.max(0,index)&&x.step).reduce((n,x)=>n+(BP.stepById(x.step).minWeeks),0);
     return {start,resetWeeks,need,phases,current:{...current,index,phase:phases[index]||null},nextTest,deload:current.week%4===0,
       returnRange:minWeeks?{min:minWeeks,max:Math.round(minWeeks*1.5)}:null};
   }
@@ -152,10 +158,7 @@
     const a=state.dossier&&state.dossier.answers||{};
     const max=Number(a.maxMinutes)||Number(state.checkIn&&state.checkIn.minutes)||45;
     const cur=built.current.id;
-    if(cur==='reset'){
-      // Les jours du parcours, étape 1, sans saut : tendons, haut du corps, souffle.
-      [['A','Tendons & jambes sans saut'],['B','Haut du corps & gainage'],['C','Souffle, chevilles & mobilité']].forEach(([d,label])=>out.push({key:`R${d}`,type:'reset',day:d,label:`Remise en route · ${label}`,legs:'light',minutes:Math.min(max,40),physical:true}));
-    } else if(BP&&(p||cur.startsWith('dev'))){
+    if(BP&&(p||cur.startsWith('dev'))){
       const step=BP.stepById(p?p.step:BP.steps.length);
       step.days.forEach(d=>out.push({key:`P${d.key}`,type:'pathway',day:d.key,label:`${step.short} · ${d.name}`,legs:legLoad(PT,d.slots.map(s=>s.ids[0]))>=2?'heavy':'light',minutes:Math.min(max,60),physical:true}));
     }
@@ -166,14 +169,16 @@
     if(step>=2) for(let i=0;i<(cur==='dev-quick'?2:1);i++) out.push({key:`V${i+1}`,type:'vivacite',label:'Vivacité · 15 min',legs:'impact',minutes:15});
     // Cardio régulier (lot 22) : corde et course fractionnée. Sans impact en « Remise en route » ou avec une douleur du bas du corps.
     const CAR=CARL();
-    if(CAR) CAR.weekKinds(CAR.perWeek(state),monday).forEach(kind=>{
+    if(CAR) CAR.weekKinds(CAR.perWeek(state),monday,state).forEach(kind=>{
       const k=CAR.KINDS[kind];
-      out.push({key:k.key,type:'cardio',kind,phase:cur,label:`Cardio · ${k.label.toLowerCase()}`,legs:CAR.impactStatus(state,cur).ok?'impact':'light',minutes:20});
+      out.push({key:k.key,type:'cardio',kind,phase:cur,label:`Cardio · ${k.label.toLowerCase()}`,legs:CAR.impactStatus(state,cur).ok?'impact':'light',minutes:kind==='sand'?30:20});
     });
+    // Lot 31 : deux sortes de séances basket. Les skills mélangent dribble, tir et lay-up ; la séance de tir (une par semaine) ne fait que tirer.
+    // Toutes commencent par quelques minutes de dribble.
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
-    if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills basket',legs:'light',minutes:Math.min(max,sk.minutes||45)});
+    if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills · dribble, tir, lay-up',legs:'light',minutes:Math.min(max,sk.minutes||45)});
     const hoop=a.hoop&&['daily','weekly'].includes(a.hoop);
-    if(hoop||(state.shooting&&(state.shooting.sessions||[]).length)) out.push({key:'T1',type:'shooting',label:'Séance de tir',legs:'light',minutes:Math.min(max,40)});
+    if(hoop||sk||(state.shooting&&(state.shooting.sessions||[]).length)) out.push({key:'T1',type:'shooting',label:'Séance de tir · dribble puis full shoot',legs:'light',minutes:Math.min(max,40)});
     if(activePains(state).length) out.push({key:'C1',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10},{key:'C2',type:'care',label:'Soin de la zone sensible',legs:'light',minutes:10});
     return out;
   }
@@ -202,6 +207,7 @@
     if(!fitsMode(item,mode)) return `Jour réglé sur « ${MODES[mode]} ».`;
     const prev=days[i-1]||{club:days.prevClub||{match:false,practice:false}},next=days[i+1]||{club:clubOfNext(days,i)};
     if(d.club.match&&item.type!=='care') return 'Jour de match : seulement l’échauffement.';
+    if(d.rain&&item.type==='shooting') return 'Pluie ce jour-là : pas de tir au panier dehors.';
     if(item.legs==='heavy'&&next.club.match) return 'Veille de match : pas de jambes lourdes.';
     if(item.legs==='impact'&&next.club.match) return 'Veille de match : pas d’impacts répétés.';
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';
@@ -236,7 +242,7 @@
     monday=mondayOf(monday);
     const free=freeDays(state),cal=validateCalendar(state.calendar)||blankCalendar();
     // « Auto » choisi pour un seul jour le rend disponible, même hors de tes jours habituels.
-    const days=Array.from({length:7},(_,i)=>{const date=at(monday,i),mode=dayMode(state,date);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),mode,free:mode==='off'?false:mode==='auto'?free.includes(i)||cal.dates[date]==='auto':true,items:[]};});
+    const days=Array.from({length:7},(_,i)=>{const date=at(monday,i),mode=dayMode(state,date);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),mode,rain:cal.rain.includes(date),free:mode==='off'?false:mode==='auto'?free.includes(i)||cal.dates[date]==='auto':true,items:[]};});
     days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));
     const built=build(state,now),all=items(state,built,monday),tgt=target(state),warnings=[];
     const ans=state.dossier&&state.dossier.answers||{};days.maxMinutes=Math.max(30,Math.round((Number(ans.maxMinutes)||75)*1.15));
@@ -393,6 +399,28 @@
     return cal&&cal.excused&&cal.excused.date===now?cal.excused:null;
   }
 
+  // Lot 31 : recommencer le programme en cours au jour 1, sans toucher au profil (dossier, bilan, questionnaires, matériel, historique).
+  // Parcours : étape 1, aucune séance comptée, tests gardés. Muscu : semaine 1. Planning : déplacements et reports oubliés, semaine type gardée.
+  function restart(state, now=today()) {
+    const BP=BPL(),next={...state};
+    const p=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
+    if(p&&BP){const fresh=BP.create({startStep:1,now});next.pathway={...fresh,tests:p.tests||{},history:[...(p.history||[]),{step:1,date:now,restart:true}].slice(-40)};}
+    next.seasonPlan={...(validate(state.seasonPlan)||blank()),start:now,resetWeeks:null,resetDone:null,devStart:null};
+    const cal=validateCalendar(state.calendar)||blankCalendar();
+    next.calendar={...cal,moves:{},skips:{},forced:{},excused:null};
+    if(state.program&&state.program.status!=='archived') next.program={...state.program,completed:[],startDate:now,status:'active',pausedAt:null};
+    if(state.draft&&state.draft.status!=='active') next.draft=null;
+    return next;
+  }
+  // Ce que « Recommencer au jour 1 » remet à zéro, pour l'écran de confirmation.
+  function restartScope(state) {
+    const out=[];
+    if(state.pathway&&state.pathway.status!=='archived') out.push(`ton parcours repart à l’étape 1, semaine 1 (tu es à l’étape ${state.pathway.step})`);
+    if(state.program&&state.program.status!=='archived') out.push('ta muscu repart à la semaine 1');
+    out.push('ton planning repart de cette semaine');
+    return out;
+  }
+
   // Export .ics des prochaines semaines (rappels dans l'agenda du téléphone).
   function ics(state, from=today(), weeks=4) {
     const esc=s=>String(s).replace(/[\\;,]/g,m=>'\\'+m).replace(/\n/g,'\\n');
@@ -439,5 +467,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,MODES,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
 });

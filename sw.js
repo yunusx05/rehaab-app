@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v83-planche-equilibre';
+const CACHE = 'rehaab-v84-retours-terrain';
 const PRECACHE = [
   './',
   './index.html',
@@ -37,6 +37,7 @@ const PRECACHE = [
   './compiled/skills-components.js',
   './basket-skills.js',
   './basket-cardio.js',
+  './basket-core.js',
   './basket-profile.js',
   './player-dossier.js',
   './season-plan.js',

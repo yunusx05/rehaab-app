@@ -2,6 +2,23 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-11 — Lot 31 « retours terrain » : boutons visibles, pluie, sable, abdos, skills / tir, recommencer, Fondations
+
+**Fait**
+- Branche `feature/lot31-retours`, cache `v84-retours-terrain`, nouveau `basket-core.js` (chargé dans index.html, précaché dans sw.js).
+- Boutons visibles : en séance, le « ⋯ » devient « Arrêter » (rouge) ; menu « Terminer ici et enregistrer » (citron) / « Annuler la séance ». « Ajuster la série » et « Une douleur ? » en pastilles. Accueil : « Un imprévu aujourd’hui ? » en vrai bouton. Calendrier : « Je ne peux pas aujourd’hui » / « Choisir le jour » en pastilles. Styles dans home.css.
+- Pluie : raison « Il pleut » en tête de l’imprévu → `calendar.rain` (`SeasonPlan.setRain` / `rainOn`). Moteur : `allowed()` retire outdoor / hoop / sand et les exercices d’impact sur « court ». Course → course sur place (`run-in-place`), corde à l’abri, skills sur place sans panier, séance de tir jamais un jour de pluie. Bandeau sur l’accueil avec « Il ne pleut plus ».
+- Sable : matériel `sand`, 9 exercices `sand-*`, cardio `sand` (K3) en circuit par niveau ; remplace la course fractionnée quand le sable est dans le matériel ; pas de sauts à l’étape 1.
+- Abdos : 12 exercices (crunch, crunch élastique, bûcheron, V-up, bascule creuse…). `BasketCore.workout` (circuit 12 ou 20 min, niveau 1 à 3 selon le nombre de séances abdos) : tuile « Abdos » sur l’accueil, « Abdos & gainage » dans le Plan. Finisher abdos (~6 min) en fin de séance du parcours (≥ 45 min) et de la muscu (≥ 40 min, pas en petite forme), jamais un jour de soin ni si la séance a déjà 2 exercices abdos.
+- Skills : chaque séance commence par du dribble ; avec panier, au moins un lay-up et un tir. Blocs skills après une séance : dribble d’abord. Séance de tir 1×/semaine dès qu’un programme skills est actif, avec « Dribble d’abord » (3 exercices) avant le premier tir.
+- Recommencer au jour 1 (`SeasonPlan.restart`) : dans le parcours et dans Moi. Parcours étape 1 (tests gardés), muscu semaine 1, planning sans déplacements ; profil, bilan, questionnaires, matériel et historique gardés.
+- Remise en route fusionnée dans Fondations : plus de phase `reset` ; ses raisons s’affichent sur Fondations (« Pourquoi un départ prudent »). Cardio en allure facile à l’étape 1.
+- Tests : nouveau `tests/retours-terrain.spec.cjs` (6). Mis à jour : accueil, interface, basket-removal, basket-return, cardio, equilibre, season-plan, skills. Suite complète : tout passe sauf `poids-tir.spec.cjs:55` (déjà KO avant, dépend de la date) ; `season-plan.spec.cjs:155` repasse.
+
+**À savoir**
+- Pas testé sur iPhone. Pas de démo vidéo pour les exercices sable et les nouveaux abdos (icône + consignes).
+- Pluie : « Terrain / espace » reste permis, sauf sprints et coupes (sol mouillé).
+
 ## 2026-11-02 — Lot 29 : les exercices chargés de la vidéo hanches
 
 **Fait**
