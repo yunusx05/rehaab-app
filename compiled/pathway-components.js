@@ -219,50 +219,43 @@ function PTPathway({
     }));
     go('preview');
   };
+
+  // Lot 33 « Plan épuré » : d'abord la séance à faire, puis la progression, puis les outils ; la gestion du parcours est repliée.
+  const vivacite = () => {
+    if (data.draft?.status === 'active') {
+      setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.');
+      return;
+    }
+    const plan = BP.quickPlan(PT, JP, data, 'vivacite');
+    if (plan.error) {
+      setError(plan.error);
+      return;
+    }
+    update(s => ({
+      ...s,
+      draft: plan
+    }));
+    go('preview');
+  };
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('today'),
     eyebrow: `Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`,
     title: `${step.name}.`
   }, step.goal), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
-  }, /*#__PURE__*/React.createElement(PTPlanArsenal, {
-    data: data,
-    go: go,
-    update: update,
-    notify: notify
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "step-track pathway-track"
-  }, BP.steps.map(s => /*#__PURE__*/React.createElement("span", {
-    key: s.id,
-    className: s.id <= p.step ? 'done' : ''
-  }))), /*#__PURE__*/React.createElement("section", {
-    className: "card stack-sm"
+  }, /*#__PURE__*/React.createElement("section", {
+    className: "stack plan-week"
   }, /*#__PURE__*/React.createElement("div", {
     className: "topline"
-  }, /*#__PURE__*/React.createElement("strong", null, "Semaine ", status.week, status.week > step.minWeeks ? ' · consolidation' : ''), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("h2", null, "Cette semaine"), /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, status.sessions, " / ", status.needed, " s\xE9ances")), /*#__PURE__*/React.createElement("span", {
+  }, "Semaine ", status.week, status.week > step.minWeeks ? ' · consolidation' : '', " \xB7 ", status.sessions, "/", status.needed, " s\xE9ances")), /*#__PURE__*/React.createElement("span", {
     className: "mini-progress"
   }, /*#__PURE__*/React.createElement("i", {
     style: {
       transform: `scaleX(${Math.min(1, status.sessions / status.needed)})`
     }
-  })), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Trois s\xE9ances par semaine", step.days.length === 2 ? ' (deux à cette étape)' : '', ", dans l\u2019ordre que tu veux. Laisse au moins un jour entre deux s\xE9ances de jambes.")), /*#__PURE__*/React.createElement(PTAssessmentSummary, {
-    data: data,
-    go: go
-  }), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles de cette \xE9tape"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
-    className: "reason-list"
-  }, step.rules.map(r => /*#__PURE__*/React.createElement("li", {
-    key: r
-  }, r))))), /*#__PURE__*/React.createElement("section", {
-    className: "stack"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("h2", null, "Cette semaine")), /*#__PURE__*/React.createElement(PTChips, {
+  })), /*#__PURE__*/React.createElement(PTChips, {
     value: minutes,
     onChange: setMinutes,
     options: [{
@@ -279,72 +272,85 @@ function PTPathway({
     const plan = BP.sessionPlan(PT, JP, data, p, day.key, {
       minutes: minutes || undefined
     });
-    const done = status.done.includes(day.key);
+    const done = status.done.includes(day.key),
+      main = !done && status.next === day.key;
+    const label = confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance';
     return /*#__PURE__*/React.createElement("article", {
       key: day.key,
-      className: `card stack-sm pathway-day${done ? ' is-done' : ''}`
+      className: `card stack-sm pathway-day${done ? ' is-done' : ''}${main ? ' is-main' : ' is-compact'}`
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-summary"
     }, /*#__PURE__*/React.createElement("span", {
       className: "exercise-number"
-    }, day.key), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, day.name), /*#__PURE__*/React.createElement("p", null, plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`, done ? ' · faite' : status.next === day.key ? ' · conseillée' : ''))), plan.error ? /*#__PURE__*/React.createElement("p", {
+    }, done ? /*#__PURE__*/React.createElement(PTIcon, {
+      name: "check",
+      size: 16
+    }) : day.key), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, day.name), /*#__PURE__*/React.createElement("p", null, plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`, done ? ' · faite' : main ? ' · conseillée' : '')), !main && !plan.error && /*#__PURE__*/React.createElement("button", {
+      className: "icon-button pathway-day-go",
+      "aria-label": `${label} · ${day.name}`,
+      onClick: () => launch(day.key)
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: "arrow",
+      size: 18
+    }))), plan.error ? /*#__PURE__*/React.createElement("p", {
       className: "fine"
     }, plan.error) : /*#__PURE__*/React.createElement("details", {
       className: "dose-details",
-      open: !done && status.next === day.key
+      open: main
     }, /*#__PURE__*/React.createElement("summary", null, "Les ", plan.exercises.length, " mouvements"), /*#__PURE__*/React.createElement("ul", {
       className: "dose-list"
     }, plan.exercises.map(e => /*#__PURE__*/React.createElement("li", {
       key: e.id
     }, /*#__PURE__*/React.createElement("span", null, e.name), /*#__PURE__*/React.createElement("small", null, ptRoleLabel(e.pathwayRole), " \xB7 ", ptDoseLabel(e)))))), confirm === day.key && /*#__PURE__*/React.createElement("div", {
       className: "notice warning stack-sm"
-    }, /*#__PURE__*/React.createElement("p", null, "Une s\xE9ance est en cours. La remplacer effacera ce qui n\u2019a pas \xE9t\xE9 enregistr\xE9."), /*#__PURE__*/React.createElement(PTButton, {
+    }, /*#__PURE__*/React.createElement("p", null, "Une s\xE9ance est en cours. La remplacer effacera ce qui n\u2019a pas \xE9t\xE9 enregistr\xE9."), !main && /*#__PURE__*/React.createElement(PTButton, {
+      onClick: () => launch(day.key)
+    }, "Remplacer et pr\xE9parer"), /*#__PURE__*/React.createElement(PTButton, {
       quiet: true,
       onClick: () => {
         setConfirm(null);
         go('session');
       }
-    }, "Reprendre la s\xE9ance en cours")), !plan.error && /*#__PURE__*/React.createElement(PTButton, {
-      primary: !done && status.next === day.key,
+    }, "Reprendre la s\xE9ance en cours")), main && !plan.error && /*#__PURE__*/React.createElement(PTButton, {
+      primary: true,
       onClick: () => launch(day.key)
-    }, confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance', /*#__PURE__*/React.createElement(PTIcon, {
+    }, label, /*#__PURE__*/React.createElement(PTIcon, {
       name: "arrow",
       size: 18
     })));
   }), error && /*#__PURE__*/React.createElement("p", {
     className: "error",
     role: "alert"
-  }, error), /*#__PURE__*/React.createElement("button", {
+  }, error), /*#__PURE__*/React.createElement("div", {
+    className: "home-options"
+  }, /*#__PURE__*/React.createElement("button", {
     className: "home-action",
-    onClick: () => {
-      if (data.draft?.status === 'active') {
-        setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.');
-        return;
-      }
-      const plan = BP.quickPlan(PT, JP, data, 'vivacite');
-      if (plan.error) {
-        setError(plan.error);
-        return;
-      }
-      update(s => ({
-        ...s,
-        draft: plan
-      }));
-      go('preview');
-    }
+    onClick: vivacite
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "spark"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Vivacit\xE9 \xB7 15 min"), /*#__PURE__*/React.createElement("small", null, p.step < 2 ? 'Appuis et chevilles en version isométrique, sans saut à cette étape.' : 'Pogos, départs au signal, freinages : jusqu’à 3 fois par semaine, ou juste après l’échauffement.')), /*#__PURE__*/React.createElement(PTIcon, {
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Vivacit\xE9 \xB7 15 min"), /*#__PURE__*/React.createElement("small", null, p.step < 2 ? 'Appuis et chevilles, sans saut à cette étape.' : 'Pogos, départs, freinages. Jusqu’à 3 fois par semaine.')), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), p.step === BP.steps.length && /*#__PURE__*/React.createElement(PTPathwayLadder, {
+  }))), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles de cette \xE9tape"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
+    className: "reason-list"
+  }, /*#__PURE__*/React.createElement("li", null, "Trois s\xE9ances par semaine", step.days.length === 2 ? ' (deux à cette étape)' : '', ", dans l\u2019ordre que tu veux. Au moins un jour entre deux s\xE9ances de jambes."), step.rules.map(r => /*#__PURE__*/React.createElement("li", {
+    key: r
+  }, r)))))), p.step === BP.steps.length && /*#__PURE__*/React.createElement(PTPathwayLadder, {
     data: data,
     update: update,
     go: go,
     notify: notify
   }), /*#__PURE__*/React.createElement("section", {
     className: "stack"
-  }, /*#__PURE__*/React.createElement("h2", null, gate.last ? 'Pour boucler le parcours' : `Pour passer à l’étape ${next.id}`), /*#__PURE__*/React.createElement("ul", {
+  }, /*#__PURE__*/React.createElement("h2", null, gate.last ? 'Pour boucler le parcours' : `Pour passer à l’étape ${next.id}`), /*#__PURE__*/React.createElement("div", {
+    className: "step-track pathway-track",
+    "aria-label": `Étape ${p.step} sur ${BP.steps.length}`
+  }, BP.steps.map(s => /*#__PURE__*/React.createElement("span", {
+    key: s.id,
+    className: s.id <= p.step ? 'done' : ''
+  }))), /*#__PURE__*/React.createElement("ul", {
     className: "criteria-list"
   }, gate.criteria.map(c => /*#__PURE__*/React.createElement("li", {
     key: c.id,
@@ -357,9 +363,7 @@ function PTPathway({
   })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, c.label), /*#__PURE__*/React.createElement("small", null, c.detail)), BP.tests[c.id] && !['pain', 'ladder'].includes(c.id) && /*#__PURE__*/React.createElement("button", {
     className: "chip",
     onClick: () => go('pathway-test', c.id)
-  }, BP.latest(p, c.id) ? 'Remesurer' : 'Mesurer')))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Ces rep\xE8res d\u2019entra\xEEnement ne sont pas des normes m\xE9dicales. Un kin\xE9 peut les remplacer par ses propres tests."), gate.ready && !gate.last && /*#__PURE__*/React.createElement(PTButton, {
+  }, BP.latest(p, c.id) ? 'Remesurer' : 'Mesurer')))), gate.ready && !gate.last && /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: () => {
       update(s => ({
@@ -374,11 +378,25 @@ function PTPathway({
     size: 18
   })), gate.ready && gate.last && /*#__PURE__*/React.createElement("p", {
     className: "notice"
-  }, "Parcours boucl\xE9. Garde deux s\xE9ances de renforcement par semaine pendant la saison : c\u2019est ce qui \xE9vite la blessure suivante."), !gate.ready && /*#__PURE__*/React.createElement("p", {
+  }, "Parcours boucl\xE9. Garde deux s\xE9ances de renforcement par semaine pendant la saison : c\u2019est ce qui \xE9vite la blessure suivante."), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Tu peux rester sur cette \xE9tape aussi longtemps que n\xE9cessaire : les semaines suppl\xE9mentaires passent en consolidation.")), /*#__PURE__*/React.createElement("section", {
+  }, !gate.ready && 'Pas de limite de temps : les semaines en plus servent à consolider. ', "Rep\xE8res d\u2019entra\xEEnement, pas des normes m\xE9dicales."), /*#__PURE__*/React.createElement("div", {
+    className: "home-options"
+  }, /*#__PURE__*/React.createElement(PTAssessmentSummary, {
+    data: data,
+    go: go
+  }))), /*#__PURE__*/React.createElement("section", {
     className: "stack"
-  }, /*#__PURE__*/React.createElement("h3", null, "G\xE9rer le parcours"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("h2", null, "Tes outils"), /*#__PURE__*/React.createElement(PTPlanArsenal, {
+    data: data,
+    go: go,
+    update: update,
+    notify: notify
+  })), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure plan-manage"
+  }, /*#__PURE__*/React.createElement("summary", null, "G\xE9rer le parcours"), /*#__PURE__*/React.createElement("div", {
+    className: "stack"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "home-options"
   }, p.step > 1 && /*#__PURE__*/React.createElement("button", {
     className: "home-action",
@@ -394,13 +412,16 @@ function PTPathway({
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure pathway-jump"
-  }, /*#__PURE__*/React.createElement("summary", null, "Aller directement \xE0 une autre \xE9tape"), /*#__PURE__*/React.createElement("div", {
-    className: "stack-sm"
-  }, /*#__PURE__*/React.createElement("p", {
+  })), /*#__PURE__*/React.createElement(PTRestartProgram, {
+    data: data,
+    update: update,
+    notify: notify,
+    go: go
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm pathway-jump"
+  }, /*#__PURE__*/React.createElement("strong", null, "Aller directement \xE0 une autre \xE9tape"), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Pour un joueur qui joue d\xE9j\xE0 en club : inutile de refaire les \xE9tapes que le terrain a d\xE9j\xE0 valid\xE9es. Tes s\xE9ances, tes tests et ton historique sont gard\xE9s. Tu peux revenir en arri\xE8re \xE0 tout moment."), /*#__PURE__*/React.createElement("div", {
+  }, "Tu joues d\xE9j\xE0 en club ? Saute les \xE9tapes que le terrain a valid\xE9es. Tout est gard\xE9."), /*#__PURE__*/React.createElement("div", {
     className: "chips"
   }, BP.steps.filter(s => s.id !== p.step).map(s => /*#__PURE__*/React.createElement("button", {
     key: s.id,
@@ -413,12 +434,7 @@ function PTPathway({
       notify(`Étape ${s.id} · ${s.name} : c’est parti.`);
       window.scrollTo(0, 0);
     }
-  }, "\xC9tape ", s.id, " \xB7 ", s.short))))), /*#__PURE__*/React.createElement(PTRestartProgram, {
-    data: data,
-    update: update,
-    notify: notify,
-    go: go
-  }), stopping ? /*#__PURE__*/React.createElement("div", {
+  }, "\xC9tape ", s.id, " \xB7 ", s.short)))), stopping ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning stack-sm"
   }, /*#__PURE__*/React.createElement("p", null, "Arr\xEAter le parcours ? Il est archiv\xE9 avec tes tests et ton avancement : tu pourras le reprendre \xE0 la m\xEAme \xE9tape. Tes s\xE9ances restent dans l\u2019historique."), /*#__PURE__*/React.createElement(PTButton, {
     danger: true,
@@ -444,7 +460,7 @@ function PTPathway({
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "close",
     size: 18
-  }), "Arr\xEAter le parcours"))));
+  }), "Arr\xEAter le parcours")))));
 }
 function PTPathwayLadder({
   data,
@@ -712,13 +728,11 @@ function PTPlanArsenal({
   return /*#__PURE__*/React.createElement("div", {
     className: "image-grid plan-arsenal"
   }, /*#__PURE__*/React.createElement(PTImageTile, {
-    tall: true,
     photo: ptHub('week'),
     title: "Mon planning",
     text: "Choisis tes jours et place chaque s\xE9ance o\xF9 tu veux.",
     onClick: () => go('calendar')
   }), /*#__PURE__*/React.createElement(PTImageTile, {
-    tall: true,
     photo: ptHub('season'),
     badge: phase?.phase ? `Semaine ${phase.week}` : null,
     title: "Mon plan de saison",

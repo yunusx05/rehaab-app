@@ -2,6 +2,14 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 33 « Plan épuré » : la séance d'abord (v89)
+
+**Demande** : écrans trop chargés ; on les reprend un par un (impeccable distill + principes minimalist-ui, palette et polices actuelles gardées). Captures de tous les écrans : `../../captures-ecrans/` (script `tests/zz-shots-all.spec.cjs`, non suivi).
+
+**Fait** (branche `feature/lot33-plan-epure`, cache `v89-plan-epure`) : écran Plan réordonné — « Cette semaine » juste sous le titre (avancée en une ligne), seule la séance conseillée est dépliée avec le gros bouton, les autres en une ligne avec flèche ; puis critères de l'étape suivante + bilan ; puis « Tes outils » (9 tuiles compactes, texte sur une ligne) ; « Gérer le parcours » replié en bas (revenir, recommencer, changer d'étape, arrêter). Aucune fonction retirée. Suite : 229 OK, 2 KO déjà connus (date du jour).
+
+**Suite** : écran Aujourd'hui (vérifier l'étiquette « corde à sauter · sans impact » avec une gêne à 1/10).
+
 ## 2026-11-13 — Lot 32 « joueur actif » : gêne ≠ blessure, explosivité dès l'étape 1, séances de 45 min, 3 cardios (v88)
 
 **Demande** : programme trop protecteur et trop long (« un programme de grand blessé »), pas de sauts ni de sprints alors qu'il ne fait que ça au club ; gêne à 1/10 qui disparaît échauffé ; limites : cardio, force, vitesse, explosivité, gainage ; ventre. Il démarre à l'étape 3.
