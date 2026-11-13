@@ -141,3 +141,13 @@
 .home-blocks{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:calc((100% - 1.35rem) / 4.35);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .home-blocks::-webkit-scrollbar{display:none}
 .home-blocks>*{scroll-snap-align:start}
+
+/* Lot 34 · Aujourd'hui épuré */
+.constraint-strip.is-quiet{background:none;padding:.2rem 0;color:var(--sub);font-size:.8rem}
+.home-fit .constraint-strip.is-quiet{padding:.2rem 0}
+.constraint-strip.is-quiet>svg:first-child{color:var(--accent)}
+.radar-block.is-empty{display:flex;align-items:center;gap:.8rem;min-height:0;padding:.9rem 1rem}
+.radar-block.is-empty>svg:first-child{color:var(--accent);flex:none}
+.radar-block.is-empty>span{flex:1;display:grid;gap:.15rem;text-align:left}
+.radar-block.is-empty strong{font-size:.92rem;font-weight:600}
+.radar-block.is-empty small{font-size:.75rem;color:var(--sub)}

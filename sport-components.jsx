@@ -67,7 +67,9 @@ function PTSportToday({data,update,go,notify}){
   const done=data.draft?Object.values(data.draft.entries).flat().filter(r=>r.done).length:0,total=data.draft?Object.values(data.draft.entries).flat().length:0;
   return <PTSportMotion identity="today"><div className="sport-home home-fit">
     <div className="sport-greeting sport-reveal"><div><span className="caption">{new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</span><h1>{data.profile.name?`À TOI DE JOUER, ${data.profile.name}.`:'À TOI DE JOUER.'}</h1></div><button className="avatar-button" aria-label="Ouvrir mon profil" onClick={()=>go('profile')}>{data.profile.name?.slice(0,1).toUpperCase()||<PTIcon name="profile"/>}</button></div>
-    {symptoms.length>0&&<button className="constraint-strip" onClick={()=>go('symptoms')}><PTIcon name="pain" size={18}/><span>{ctx.active.blocked?'Fais le point avant de démarrer':symptoms.map(s=>PT.regions[s.region]).join(' · ')+' : séance adaptée'}</span><PTIcon name="arrow" size={16}/></button>}
+    {symptoms.length>0&&(()=>{const gene=!ctx.active.blocked&&symptoms.every(s=>Number(s.severity)<=2);
+      // Lot 34 : une simple gêne (2/10 ou moins) ne change presque rien à la séance : rappel discret au lieu d'un bandeau d'alerte.
+      return <button className={`constraint-strip${gene?' is-quiet':''}`} onClick={()=>go('symptoms')}><PTIcon name="pain" size={gene?16:18}/><span>{ctx.active.blocked?'Fais le point avant de démarrer':gene?'Gêne légère · '+symptoms.map(s=>PT.regions[s.region]).join(' · '):symptoms.map(s=>PT.regions[s.region]).join(' · ')+' : séance adaptée'}</span><PTIcon name="arrow" size={16}/></button>;})()}
     {typeof PTDoneToday==='function'&&<PTDoneToday data={data} go={go}/>}
     {typeof PTWeekReview==='function'&&<PTWeekReview data={data} update={update} notify={notify}/>}
     <section className="week-hub sport-reveal" aria-label="Ma semaine et la séance du jour">

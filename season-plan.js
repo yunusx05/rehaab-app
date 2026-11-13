@@ -162,7 +162,7 @@
     const cur=built.current.id;
     if(BP&&(p||cur.startsWith('dev'))){
       const step=BP.stepById(p?p.step:BP.steps.length);
-      step.days.forEach(d=>out.push({key:`P${d.key}`,type:'pathway',day:d.key,label:`${step.short} · ${d.name}`,legs:legLoad(PT,d.slots.map(s=>s.ids[0]))>=2?'heavy':'light',minutes:Math.min(max,45),physical:true}));
+      step.days.forEach(d=>out.push({key:`P${d.key}`,type:'pathway',day:d.key,label:`${step.short} · ${d.name}`,legs:legLoad(PT,d.slots.map(s=>s.ids[0]))>=2?'heavy':'light',minutes:Math.min(Number(a.maxMinutes)||45,45),physical:true}));
     }
     const prog=state.program&&state.program.status==='active'?state.program:null;
     if(prog) for(let i=0;i<Math.min(3,Number(prog.daysPerWeek)||2);i++) out.push({key:`M${i+1}`,type:'muscu',label:'Muscu complémentaire',legs:'light',minutes:Math.min(max,Number(prog.minutes)||45),physical:true,extra:true});
@@ -284,7 +284,7 @@
       const options=optionsFor(item);
       // Cardio à impacts sans jour compatible (semaine de club et de match, jambes lourdes partout) : même séance, version sans impact.
       if(!options.length&&item.type==='cardio'&&item.legs==='impact'){
-        const lite={...item,legs:'light',soft:true,label:`${item.label} · sans impact`},alt=optionsFor(lite);
+        const lite={...item,legs:'light',soft:true,label:'Cardio sans impact · vélo ou marche vive'},alt=optionsFor(lite);
         if(alt.length){placed.push({...lite,date:alt[0].d.date});continue;}
       }
       // Skills sans jour à elles : elles passent après une séance physique, en version courte, plutôt que de disparaître.

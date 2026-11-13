@@ -2,6 +2,10 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 34 « Aujourd'hui épuré » (v90)
+
+**Fait** (branche `feature/lot34-aujourdhui-epure`) : gêne ≤ 2/10 → rappel discret « Gêne légère · zones » au lieu du bandeau « séance adaptée » ; « Ma progression » sans mesure = une ligne vers le bilan (plus de toile vide), la rangée de raccourcis remonte au-dessus de la barre du bas ; badge de la séance du parcours à 45 min (un vieux check-in à 30 min ne la raccourcit plus à l'affichage, `season-plan.js`) ; cardio replié en version douce affiché « Cardio sans impact · vélo ou marche vive » (avant : « corde à sauter · sans impact », trompeur). Suite : 229 OK, 2 KO connus.
+
 ## 2026-11-13 — Lot 33 « Plan épuré » : la séance d'abord (v89)
 
 **Demande** : écrans trop chargés ; on les reprend un par un (impeccable distill + principes minimalist-ui, palette et polices actuelles gardées). Captures de tous les écrans : `../../captures-ecrans/` (script `tests/zz-shots-all.spec.cjs`, non suivi).
