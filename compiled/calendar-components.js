@@ -237,7 +237,7 @@ function PTCalendar({
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
     title: "Mon planning."
-  }, "Muscu, skills et tir dans un seul planning. R\xE8gle chaque jour : muscu, skills, shooting, les deux ou repos."), /*#__PURE__*/React.createElement("div", {
+  }, "Ta semaine, jour par jour."), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
   }, /*#__PURE__*/React.createElement("div", {
     className: "calendar-nav"
@@ -323,9 +323,14 @@ function PTCalendar({
   }, w)))), error && /*#__PURE__*/React.createElement("p", {
     className: "error",
     role: "alert"
-  }, error), /*#__PURE__*/React.createElement("ol", {
+  }, error), (() => {
+    const gone = week.days.filter(d => d.before && d.items.length === 0);
+    return gone.length > 0 && /*#__PURE__*/React.createElement("p", {
+      className: "fine calendar-before"
+    }, gone.length > 1 ? `${gone[0].label} → ${gone[gone.length - 1].label}` : gone[0].label, " : avant le d\xE9but de ton plan.");
+  })(), /*#__PURE__*/React.createElement("ol", {
     className: "calendar-week"
-  }, week.days.map(d => /*#__PURE__*/React.createElement("li", {
+  }, week.days.filter(d => !(d.before && d.items.length === 0)).map(d => /*#__PURE__*/React.createElement("li", {
     key: d.date,
     className: `calendar-day${d.date === now ? ' is-today' : ''}${d.club.match ? ' is-match' : ''}`
   }, /*#__PURE__*/React.createElement("div", {
@@ -349,9 +354,12 @@ function PTCalendar({
   }, "non dispo"), d.weighIn && window.BodyWeight && /*#__PURE__*/React.createElement("button", {
     className: "text-button calendar-weigh",
     onClick: () => go('weight')
-  }, "Pes\xE9e du matin")), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
+  }, "Pes\xE9e du matin")), d.date === now && typeof PTMishap === 'function' && d.items.some(x => x.status !== 'done') && /*#__PURE__*/React.createElement("button", {
+    className: "text-button calendar-mishap",
+    onClick: () => go('mishap')
+  }, "Je ne peux pas aujourd\u2019hui \u2192"), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos', d.qi && !d.club.match ? ' · QI du jour (5 min)' : ''), d.items.map(item => /*#__PURE__*/React.createElement("div", {
+  }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos', d.qi && !d.club.match ? ' · QI du jour (5 min)' : ''), d.items.map((item, idx) => /*#__PURE__*/React.createElement("div", {
     key: item.key,
     className: `calendar-item is-${item.status}`
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -362,13 +370,13 @@ function PTCalendar({
   }, "\u26A0 ", item.warning)), item.status !== 'done' && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("span", {
     className: "calendar-actions"
   }, d.date === now && /*#__PURE__*/React.createElement(PTButton, {
-    primary: true,
+    primary: d.items.filter(x => x.status !== 'done').indexOf(item) === 0,
     onClick: () => launch(item, d)
-  }, "Lancer"), d.date === now && /*#__PURE__*/React.createElement("button", {
+  }, "Lancer"), d.date === now && typeof PTMishap !== 'function' && /*#__PURE__*/React.createElement("button", {
     className: "chip-action",
-    onClick: () => typeof PTMishap === 'function' ? go('mishap') : cannot(item)
+    onClick: () => cannot(item)
   }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
-    className: "chip-action",
+    className: "text-button calendar-move-btn",
     "aria-expanded": moving === item.key,
     onClick: () => {
       setConfirm(null);
@@ -461,7 +469,8 @@ function PTSeasonPlan({
   notify
 }) {
   const [loading, setLoading] = usePTState(false),
-    [error, setError] = usePTState('');
+    [error, setError] = usePTState(''),
+    [allPhases, setAllPhases] = usePTState(false);
   if (!SP) return /*#__PURE__*/React.createElement("p", {
     className: "empty"
   }, "Plan indisponible.");
@@ -532,43 +541,47 @@ function PTSeasonPlan({
     title: "Ton plan."
   }, built.returnRange ? `Repère : ${built.returnRange.min} à ${built.returnRange.max} semaines jusqu’au retour au jeu, si les tests suivent. Ce n’est pas une promesse.` : 'Les phases s’enchaînent à ton rythme, validées par tes tests.'), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
-  }, built.need.reasons.length > 0 && /*#__PURE__*/React.createElement("section", {
-    className: "card stack-sm"
-  }, /*#__PURE__*/React.createElement("h2", null, "Pourquoi ce plan"), /*#__PURE__*/React.createElement("ul", {
+  }, built.need.reasons.length > 0 && /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, "Pourquoi ce plan"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
   }, built.need.reasons.map(r => /*#__PURE__*/React.createElement("li", {
     key: r
-  }, r)))), /*#__PURE__*/React.createElement("ol", {
+  }, r))))), /*#__PURE__*/React.createElement("ol", {
     className: "roadmap"
-  }, built.phases.map((ph, i) => /*#__PURE__*/React.createElement("li", {
-    key: ph.id,
-    className: `roadmap-step${i === built.current.index ? ' is-current' : i < built.current.index ? ' is-done' : ''}`
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "roadmap-dot",
-    "aria-hidden": "true"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "stack-sm"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("strong", null, ph.name), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, ph.weeks)), i === built.current.index && /*#__PURE__*/React.createElement("p", {
-    className: "badge"
-  }, "Tu es ici \xB7 semaine ", built.current.week, built.deload ? ' · semaine allégée' : ''), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, ph.goal), ph.why?.length > 0 && /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, /*#__PURE__*/React.createElement("strong", null, "Pourquoi un d\xE9part prudent :"), " ", ph.why.join(' ')), i === built.current.index && ph.rules && /*#__PURE__*/React.createElement("ul", {
-    className: "reason-list"
-  }, ph.rules.map(r => /*#__PURE__*/React.createElement("li", {
-    key: r
-  }, r))), arch?.accents?.filter(a => ph.name.toLowerCase().includes(a.phase.toLowerCase()) || a.phase === ph.id).map(a => /*#__PURE__*/React.createElement("p", {
-    key: a.text,
-    className: "court-transfer"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "spark",
-    size: 16
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Accent de l\u2019architecte"), a.text))))))), gate?.last && gate.ready && !data.seasonPlan?.devStart && /*#__PURE__*/React.createElement(PTButton, {
+  }, built.phases.map((ph, i) => {
+    const near = allPhases || i === built.current.index || i === built.current.index + 1;
+    return /*#__PURE__*/React.createElement("li", {
+      key: ph.id,
+      className: `roadmap-step${i === built.current.index ? ' is-current' : i < built.current.index ? ' is-done' : ''}`
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "roadmap-dot",
+      "aria-hidden": "true"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "stack-sm"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "topline"
+    }, /*#__PURE__*/React.createElement("strong", null, ph.name), /*#__PURE__*/React.createElement("span", {
+      className: "caption"
+    }, ph.weeks)), i === built.current.index && /*#__PURE__*/React.createElement("p", {
+      className: "badge"
+    }, "Tu es ici \xB7 semaine ", built.current.week, built.deload ? ' · semaine allégée' : ''), near && /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, ph.goal), i === built.current.index && ph.rules && /*#__PURE__*/React.createElement("ul", {
+      className: "reason-list"
+    }, ph.rules.map(r => /*#__PURE__*/React.createElement("li", {
+      key: r
+    }, r))), arch?.accents?.filter(a => ph.name.toLowerCase().includes(a.phase.toLowerCase()) || a.phase === ph.id).map(a => /*#__PURE__*/React.createElement("p", {
+      key: a.text,
+      className: "court-transfer"
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: "spark",
+      size: 16
+    }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Accent de l\u2019architecte"), a.text)))));
+  })), !allPhases && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => setAllPhases(true)
+  }, "Voir le d\xE9tail de toutes les phases"), gate?.last && gate.ready && !data.seasonPlan?.devStart && /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: () => {
       set({
