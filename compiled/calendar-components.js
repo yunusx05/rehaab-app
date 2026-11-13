@@ -294,7 +294,7 @@ function PTCalendar({
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
     className: "fine"
-  }, "Cardio (navettes, corde, course) / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+  }, "Cardio / semaine, club compris"), /*#__PURE__*/React.createElement(PTChips, {
     value: cardioPerWeek,
     onChange: setCardioPerWeek,
     options: [0, 1, 2, 3].map(n => ({

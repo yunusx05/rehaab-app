@@ -131,7 +131,8 @@ test('semaine chargée (club, match) : le cardio reste au planning en version sa
   s.basketProfile={matchDay:5,practiceDays:[1]};s.cardio={perWeek:2,chosen:true};
   const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
   expect(w.warnings).toEqual([]);
-  expect(cardio.length).toBe(2);
+  // Lot 37 : l'entraînement du club compte comme un cardio : 2 voulus - 1 club = 1 à faire soi-même.
+  expect(cardio.length).toBe(1);
   expect(cardio.every(x=>x.soft&&x.legs==='light'&&/sans impact/.test(x.label))).toBe(true);
   expect(cardio.some(x=>x.day===5)).toBe(false); // pas le jour du match
   // Lancée depuis le calendrier : aucune corde ni course, un message qui explique pourquoi.
@@ -206,4 +207,14 @@ test('un seul cardio par jour, même la semaine de départ réduite à un jour',
   // Une semaine entière garde ses trois cardios (lot 32), sur trois jours différents.
   const full=items(SP.weekSchedule(joueur(),MONDAY,MONDAY)).filter(x=>x.type==='cardio');
   expect(full).toHaveLength(3);expect(new Set(full.map(x=>x.date)).size).toBe(3);
+});
+
+test('lot 37 : les entraînements de club comptent comme du cardio ; un jour « Skills » accueille un cardio à impacts',()=>{
+  const s=joueur({step:3});s.seasonPlan={resetWeeks:0};
+  s.basketProfile={practiceDays:[1,3]};s.cardio={perWeek:3,chosen:true};
+  s.calendar={week:{0:'muscu',1:'skills',2:'muscu',3:'shooting',4:'muscu',5:'skills',6:'off'}};
+  const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
+  expect(cardio.length).toBe(1);
+  expect(cardio[0].legs).toBe('impact');
+  expect(cardio[0].day).toBe(5);
 });

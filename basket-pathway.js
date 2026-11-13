@@ -230,7 +230,8 @@
   // fait en premier après l'échauffement (frais, et sans aller-retour maison → terrain → maison). Le reste suit à l'intérieur.
   // Exception : avec une vraie douleur (3/10 ou plus), le soin qui calme la zone reste en tête, avant tout impact.
   const OUTSIDE=['court','outdoor','sand','hoop'];
-  const placeOf=e=>(e&&(e.needs||[]).some(n=>OUTSIDE.includes(n)))?'out':'in';
+  // Lot 37 : le bloc skills (dribble, tir) se fait sur le terrain, même quand il ne demande qu'un ballon.
+  const placeOf=e=>(e&&(e.skillBlock||e.skillArea||(e.needs||[]).some(n=>OUTSIDE.includes(n))))?'out':'in';
   // « Transportable » (poids du corps, élastique) : le soin, le bloc kiné et le bloc explosivité suivent le bloc terrain.
   // Ils gardent leur ordre : soin et kiné d'abord (préparer genou et cheville), puis les sprints, sans couper la séance en deux.
   const anywhere=e=>(e.needs||['bodyweight']).every(n=>n==='bodyweight'||n==='bands');
@@ -247,7 +248,7 @@
     const out=ordered.map((e,i)=>({...e,placeStart:i===0||ordered[i-1].place!==e.place?(e.place==='out'?'Sur le terrain':'À l’intérieur'):undefined}));
     const moves=out.filter((e,i)=>i>0&&e.placeStart).length;
     const note=head.length?'Soin de la zone d’abord, puis un seul bloc sur le terrain, puis le reste à l’intérieur.'
-      :`Un seul passage sur le terrain, en premier : ${out.filter(e=>e.place==='out').map(e=>e.name.split(' · ')[0]).join(', ')}. Prends ton élastique : échauffement et soin se font sur place, puis tu rentres pour la suite.`;
+      :`Terrain d’abord (${out.filter(e=>e.place==='out').length} exercices), puis le reste à l’intérieur : un seul aller-retour. Prends ton élastique${out.some(e=>e.place==='out'&&(e.skillBlock||e.skillArea))?' et ton ballon':''}.`;
     return {...plan,exercises:out,placeMoves:moves,reasons:[...(plan.reasons||[]).filter(r=>!/^Bloc explosivité en début de séance/.test(r)),note]};
   }
   function sessionPlan(PT,PP,state,p,dayKey,opts={}) {return groupByPlace(PT,state,withSkills(PT,state,sessionPlanCore(PT,PP,state,p,dayKey,opts)));}

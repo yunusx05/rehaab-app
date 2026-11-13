@@ -118,8 +118,11 @@
   function fitsMode(item,mode) {
     if(item.type==='care') return true;
     if(mode==='off') return false;
-    if(mode==='shooting') return item.type==='shooting';
+    // Lot 37 : un jour « Shooting » accepte aussi un cardio (on est sur le terrain, la séance de tir est légère).
+    if(mode==='shooting') return item.type==='shooting'||item.type==='cardio';
     if(item.type==='skills'||item.type==='shooting') return ['auto','skills','both'].includes(mode);
+    // Lot 37 : le cardio (navettes, corde, course, sable) va aussi un jour « Skills » : on est déjà sur le terrain, et les jours « Muscu » portent les jambes lourdes.
+    if(item.type==='cardio') return ['auto','muscu','both','skills'].includes(mode);
     return ['auto','muscu','both'].includes(mode);
   }
 
@@ -171,7 +174,10 @@
     if(step>=2) for(let i=0;i<(cur==='dev-quick'?2:1);i++) out.push({key:`V${i+1}`,type:'vivacite',label:'Vivacité · 15 min',legs:'impact',minutes:15});
     // Cardio régulier (lot 22) : corde et course fractionnée. Sans impact en « Remise en route » ou avec une douleur du bas du corps.
     const CAR=CARL();
-    if(CAR) CAR.weekKinds(CAR.perWeek(state),monday,state).forEach(kind=>{
+    // Lot 37 : chaque entraînement de club compte comme un cardio (1 h 30 de basket, c'est du souffle et des sprints). Il en reste au moins un à faire soi-même.
+    const practices=Array.from({length:7},(_,i)=>clubOf(state,at(monday,i))).filter(c=>c.practice&&!c.match).length;
+    const cardioWanted=CAR?CAR.perWeek(state):0,cardioOwn=cardioWanted>0?Math.max(1,cardioWanted-practices):0;
+    if(CAR) CAR.weekKinds(cardioOwn,monday,state).forEach(kind=>{
       const k=CAR.KINDS[kind];
       out.push({key:k.key,type:'cardio',kind,phase:cur,label:`Cardio · ${k.label.toLowerCase()}`,legs:CAR.impactStatus(state,cur).ok?'impact':'light',minutes:kind==='sand'?30:20});
     });
