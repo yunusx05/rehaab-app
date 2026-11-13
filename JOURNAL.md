@@ -2,6 +2,31 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 39 « un lieu par séance » : terrain loin de chez soi (v95)
+
+**Demande** : les terrains sont à ~20 min en voiture ; terrain puis maison dans la même séance = impossible (motivation, matériel à réinstaller). Il faut séparer complètement extérieur et intérieur avec charges.
+
+**Fait** (branche `feature/lot39-un-lieu-par-seance`) :
+- Réglage « Terrain de basket : Loin de chez moi / À côté » (Ma semaine type, `calendar.courtNear`). Sans réponse = loin.
+- Terrain loin : séance du parcours = séance à la maison. Ce qui demande le terrain est remplacé par un exercice sur place du même geste (accélérations → posture d'accélération au mur, saut horizontal → réception contrôlée…), sinon retiré ; pas de bloc dribble dans les séances à la maison ; pas de fusion de la vivacité. Le coach repasse par la même règle.
+- Séances de terrain (vivacité, skills, tir, cardio) : entières au terrain.
+- Planning : vivacité et navettes/sable jamais un jour « Muscu » (maison) ; vivacité autorisée les jours Skills/Shooting ; plus aucun cardio un jour de club (l'entraînement en est un) ; un seul cardio à faire soi-même = navettes basket si terrain dans le matériel.
+- Sa semaine type : lun/mer/ven maison (45 min), mar/jeu terrain (club + skills/tir), sam terrain (vivacité + navettes, 35 min). Vérifié avec son dossier réel, coach compris.
+- Tests : contenu du programme testé en « terrain à côté » ; 2 nouveaux tests « terrain loin » ; cardio mis à jour. Suite 238 OK, 2 KO connus.
+
+**Limite** : semaine en cours (commencée mercredi) : samedi cumule vivacité + navettes + skills (95 min) car les skills n'ont plus d'autre jour.
+
+## 2026-11-13 — Lot 38 « terrain partout » : la règle terrain → intérieur appliquée à toute séance (v94)
+
+**Constat** : mélange revenu après le bilan du coach (son soin s'ajoute en tête et en fin, sans tenir compte du lieu) ; risque identique sur tous les chemins qui créent une séance.
+
+**Fait** (branche `feature/lot38-coach-terrain`) :
+- Point unique : `update` (personal-app) regroupe toute séance enregistrée non commencée (`BP.groupByPlace`) ; le coach regroupe aussi son résultat. Une séance commencée n'est jamais réordonnée.
+- Transportable = poids du corps, élastique, miniband, disques glissants, ballon, corde, plots. Si tout le reste est transportable → « Tout sur le terrain » (Copenhagen sur banc → adduction couchée sur le côté) : jours C sans aucun aller-retour.
+- Vivacité prévue le même jour qu'une séance du parcours : fusionnée dans le bloc terrain (2 exercices au plus, sans doublon avec le bloc explosivité, juste après le dernier exercice explosif), cochée « faite » par le planning (`withVivacite`), mention « incluse dans ta séance » sur l'accueil.
+- Bloc dribble calé sur la durée max du dossier (10-20 min) ; avec la vivacité, il rend la place si la séance dépasse.
+- Vérifié avec le dossier réel (accueil → préparer → bilan coach avec gêne hanche) : un seul passage terrain → intérieur. Tests : 3 nouveaux ; test cardio-ui mis à jour (nom du réglage, oublié au lot 37) ; suite 235 OK, 2 KO connus.
+
 ## 2026-11-13 — Lot 37 « dossier réel » : corrections tirées de l'export de l'utilisateur (v93)
 
 **Constat** (export `../donées/rehaab-2026-11-13.json`, lu en local uniquement, jamais commité) : parcours à l'étape 2 (Force), gênes à 1/10, semaine type lun/mer/ven Muscu, mar/sam Skills, jeu Shooting, dim Repos, club mar et jeu, durée max 60 min. Les impacts étaient autorisés : le « cardio sans impact » venait du planning — le cardio n'allait que sur les jours Muscu (jambes lourdes) ou tombait sur les jours de club (pas d'impacts en plus) → vélo en doublon du club. Le mélange intérieur/extérieur restant venait du bloc skills (dribble, besoin « ballon » seulement) placé en fin de séance.

@@ -7,7 +7,7 @@ const AP=require('../athletic-profile.js');
 const home=['bodyweight','dumbbells','kettlebell','barbell','bench','bands','bike','court'];
 const weak={jump:'much',firststep:'slow',brake:'stable',landing:'quiet',contact:'solid',engine:'match',strength:'regular',squat:'heels',stiff:['ankle'],mindset:'careful'};
 function player({position='meneur',archetypes=['slasher'],pains=[],answers=weak,layoff='long'}={}){
-  const data=PT.initialState();
+  const data=PT.initialState();data.calendar={courtNear:true};
   data.profile.onboarded=true;data.profile.name='Test';data.profile.experience='returning';
   data.owned=home;data.checkIn.equipment=home;
   data.player=JP.validatePlayer({position,archetypes,layoff});

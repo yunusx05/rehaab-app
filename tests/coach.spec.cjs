@@ -270,3 +270,25 @@ test('bilan avant séance : douleur 8/10 = repos proposé, la séance est annul�
   await page.getByRole('button',{name:'OK, repos aujourd’hui'}).click();
   expect((await state(page)).draft).toBeNull();
 });
+
+test('lot 38 : gêne signalée au bilan du coach : la séance garde un seul passage terrain → intérieur',async({page})=>{
+  await page.setViewportSize({width:390,height:844});
+  await page.route('**/api/coach',route=>route.abort());
+  const p=player();p.owned=[...new Set([...(p.owned||[]),'court','bands','dumbbells','bench','barbell'])];p.checkIn.equipment=p.owned;p.pathway={...(p.pathway||{}),step:3};
+  await seed(page,p,'pathway');
+  await prepare(page);
+  await page.getByRole('button',{name:'Quelque chose ne va pas'}).click();
+  await page.getByRole('button',{name:'Fatigué',exact:true}).click();
+  await page.getByRole('button',{name:'Moyenne',exact:true}).click();
+  await page.getByRole('button',{name:'Légères',exact:true}).click();
+  const painQ=page.locator('.coach-q',{hasText:'Une douleur ?'});
+  await painQ.getByRole('button',{name:'Oui',exact:true}).click();
+  await painQ.getByRole('button',{name:/Hanche/}).first().click();
+  await painQ.getByLabel(/Intensité/).fill('2');
+  await page.getByRole('button',{name:/Adapter ma séance/}).click();
+  await expect(page.locator('.precheck.is-done')).toBeVisible();
+  const saved=await state(page);
+  const places=saved.draft.exercises.map(e=>e.place);
+  expect(places.filter((x,i)=>i>0&&x!==places[i-1]).length,places.join(' ')).toBeLessThanOrEqual(1);
+  if(places.includes('out'))expect(places[0]).toBe('out');
+});

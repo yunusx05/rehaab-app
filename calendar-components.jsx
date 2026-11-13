@@ -10,6 +10,8 @@ const ptShortDay=date=>`${date.slice(8,10)}/${date.slice(5,7)}`;
 function ptCalendarPlan(data,item,day){
   const BP=window.BasketPathway,JP=window.PlayerProfile,SK=window.BasketSkills;
   const ownSkills=!!day&&day.items.some(x=>x.type==='skills');
+  const vivaToday=!!day&&day.items.some(x=>x.type==='vivacite'&&x.status==='planned');
+  if(item.type==='pathway'&&data.pathway&&vivaToday&&BP.withVivacite){const base=ownSkills&&BP.sessionPlanCore?BP.sessionPlanCore(PT,JP,data,data.pathway,item.day):BP.sessionPlan(PT,JP,data,data.pathway,item.day);return BP.withVivacite(PT,JP,data,base);}
   if(item.type==='pathway'&&data.pathway)return ownSkills&&BP.sessionPlanCore?(BP.groupByPlace?BP.groupByPlace(PT,data,BP.sessionPlanCore(PT,JP,data,data.pathway,item.day)):BP.sessionPlanCore(PT,JP,data,data.pathway,item.day)):BP.sessionPlan(PT,JP,data,data.pathway,item.day);
   if(item.type==='reset'){
     // Remise en route : les jours de l'étape 1, sans saut ni impact, hors parcours (rien n'est validé dans les étapes).
@@ -75,6 +77,8 @@ function PTCalendar({data,update,go,notify}){
           <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setMode(SP.at(monday,i),e.target.value,true)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
           <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique.</p>
           <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
+          <div className="topline"><span className="fine">Terrain de basket</span><PTChips value={!!(data.calendar&&data.calendar.courtNear)} onChange={v=>update(s=>({...s,calendar:{...(SP.validateCalendar(s.calendar)||{moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]}),courtNear:v}}))} options={[{value:false,label:'Loin de chez moi'},{value:true,label:'À côté'}]}/></div>
+          <p className="fine">{data.calendar&&data.calendar.courtNear?'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.':'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'}</p>
           {BC&&<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
           {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
             :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}

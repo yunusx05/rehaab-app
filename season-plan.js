@@ -78,7 +78,7 @@
   // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
   // Lot 31 bis : « Shooting » = jour réservé à la séance de tir (placée à la main), comme un jour skills mais seulement le tir.
   const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',shooting:'Shooting',both:'Muscu + skills',off:'Repos'};
-  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]};}
+  function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[],courtNear:false};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
     const moves={},skips={},forced={};
@@ -95,8 +95,10 @@
       ?{date:e.date,action:e.action,keys:e.keys.filter(k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k)).slice(0,10),prev:MODES[e.prev]?e.prev:null,why:typeof e.why==='string'?e.why.slice(0,400):''}:null;
     // Lot 31 : jours de pluie (notés depuis « Un imprévu ») : ce qui se fait dehors passe en intérieur ou glisse.
     const rain=(Array.isArray(v.rain)?v.rain:[]).filter(isDay).sort().slice(-30);
-    return {moves,skips,forced,week,dates,excused,rain};
+    // Lot 39 : terrain près de chez soi ? Sans réponse : loin (une séance = un seul lieu).
+    return {moves,skips,forced,week,dates,excused,rain,courtNear:v.courtNear===true};
   }
+  const courtAway=state=>!(state&&state.calendar&&state.calendar.courtNear===true);
   function rainOn(state,date=today()) {const cal=validateCalendar(state.calendar);return !!(cal&&cal.rain.includes(date));}
   function setRain(state,on,date=today()) {
     const cal=validateCalendar(state.calendar)||blankCalendar(),list=cal.rain.filter(d=>d!==date);
@@ -119,10 +121,12 @@
     if(item.type==='care') return true;
     if(mode==='off') return false;
     // Lot 37 : un jour « Shooting » accepte aussi un cardio (on est sur le terrain, la séance de tir est légère).
-    if(mode==='shooting') return item.type==='shooting'||item.type==='cardio';
+    if(mode==='shooting') return item.type==='shooting'||item.type==='cardio'||item.type==='vivacite';
     if(item.type==='skills'||item.type==='shooting') return ['auto','skills','both'].includes(mode);
     // Lot 37 : le cardio (navettes, corde, course, sable) va aussi un jour « Skills » : on est déjà sur le terrain, et les jours « Muscu » portent les jambes lourdes.
     if(item.type==='cardio') return ['auto','muscu','both','skills'].includes(mode);
+    // Lot 39 : la vivacité (départs, appuis) se fait au terrain : elle va aussi les jours « Skills ».
+    if(item.type==='vivacite') return ['auto','muscu','both','skills'].includes(mode);
     return ['auto','muscu','both'].includes(mode);
   }
 
@@ -216,6 +220,8 @@
     const i=days.findIndex(d=>d.date===date),d=days[i];if(!d) return 'Jour hors de la semaine.';
     const mode=d.mode||'auto';
     if(!fitsMode(item,mode)) return `Jour réglé sur « ${MODES[mode]} ».`;
+    // Lot 39 : terrain loin de chez toi. Ce qui demande le terrain (vivacité, navettes, sable) ne va pas un jour « Muscu » (séance à la maison).
+    if(days.courtAway&&mode==='muscu'&&(item.type==='vivacite'||item.type==='cardio'&&['court','sand'].includes(item.kind))) return 'Jour muscu à la maison : le terrain est loin, ça se fait un jour de terrain.';
     const prev=days[i-1]||{club:days.prevClub||{match:false,practice:false}},next=days[i+1]||{club:clubOfNext(days,i)};
     if(d.club.match&&item.type!=='care') return 'Jour de match : seulement l’échauffement.';
     if(item.legs==='heavy'&&next.club.match) return 'Veille de match : pas de jambes lourdes.';
@@ -231,6 +237,8 @@
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
     // Lot 26 : un seul cardio par jour, même sans impact (un plan commencé un dimanche empilait corde + course le même jour).
     if(item.type==='cardio'&&placed.some(x=>x!==item&&x.type==='cardio'&&x.date===date)) return 'Une seule séance de cardio par jour.';
+    // Lot 39 : un jour de club, pas de cardio du tout, même sans impact : l'entraînement en est déjà un.
+    if(item.type==='cardio'&&d.club.practice) return 'Entraînement au club ce jour-là : c’est déjà ton cardio.';
     // Cardio à impacts (corde, course) : jamais deux jours de suite, ni avec des jambes lourdes, ni un jour de club ou au lendemain d'un match.
     if(item.type==='cardio'&&item.legs==='impact'){
       if(placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Cardio à impacts et jambes lourdes le même jour : trop de charge.';
@@ -256,7 +264,7 @@
     const free=freeDays(state),cal=validateCalendar(state.calendar)||blankCalendar();
     // « Auto » choisi pour un seul jour le rend disponible, même hors de tes jours habituels.
     const days=Array.from({length:7},(_,i)=>{const date=at(monday,i),mode=dayMode(state,date);return {date,weekday:i,label:DAYS[i],club:clubOf(state,date),mode,rain:cal.rain.includes(date),free:mode==='off'?false:mode==='auto'?free.includes(i)||cal.dates[date]==='auto':true,items:[]};});
-    days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));
+    days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));
     const built=build(state,now),all=items(state,built,monday),tgt=target(state),warnings=[];
     const ans=state.dossier&&state.dossier.answers||{};days.maxMinutes=Math.max(30,Math.round((Number(ans.maxMinutes)||75)*1.15));
     // Semaine du début : les jours d'avant ne comptent pas (rien de « manqué » avant d'avoir commencé).
@@ -313,7 +321,7 @@
     const match=item=>sessions.find(s=>!used.has(s.id)&&(
       item.type==='pathway'&&s.source==='pathway'&&s.pathwayDay===item.day||item.type==='reset'&&['reset','pathway'].includes(s.source)||
       item.type==='muscu'&&s.source==='program-plan'||item.type==='skills'&&s.source==='skills'||
-      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='cardio'&&s.source==='cardio'&&s.cardioKind===item.kind||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
+      item.type==='vivacite'&&(s.source==='quick'&&/vivacit/i.test(s.title||'')||s.source==='pathway'&&s.withVivacite&&s.date===item.date)||item.type==='cardio'&&s.source==='cardio'&&s.cardioKind===item.kind||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
     placed.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{
       const s=match(item);if(s)used.add(s.id);
       item.status=s?'done':diff(item.date,now)<0?'missed':'planned';item.doneDate=s?s.date:null;
@@ -328,7 +336,7 @@
   // Contrôle d'un planning : utilisé par les tests et après chaque déplacement.
   function violations(state,schedule) {
     const out=[],placed=schedule.days.flatMap(d=>d.items);
-    const days=schedule.days.map(d=>({...d}));days.nextClub=clubOf(state,at(schedule.monday,7));days.prevClub=clubOf(state,at(schedule.monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
+    const days=schedule.days.map(d=>({...d}));days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(schedule.monday,7));days.prevClub=clubOf(state,at(schedule.monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
     placed.filter(item=>!item.forced).forEach(item=>{const r=ruleBreak(item,item.date,placed,days);if(r)out.push({key:item.key,date:item.date,rule:r});});
     if(placed.filter(x=>x.physical).length>schedule.target) out.push({key:'*',rule:'Plus de séances physiques que l’objectif de la semaine.'});
     return out;
@@ -340,7 +348,7 @@
     if(!item) return {ok:false,why:'Séance introuvable cette semaine.'};
     if(diff(toDate,monday)<0||diff(toDate,monday)>6) return {ok:false,why:'Choisis un jour de cette semaine.'};
     const others=before.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
-    const days=before.days.map(d=>({...d}));days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
+    const days=before.days.map(d=>({...d}));days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
     const why=ruleBreak(item,toDate,others,days);
     if(why&&!opts.force) return {ok:false,why,canForce:true};
     const cal=validateCalendar(state.calendar)||blankCalendar();
@@ -354,7 +362,7 @@
     const sch=weekSchedule(state,monday),item=sch.days.flatMap(d=>d.items).find(x=>x.key===itemKey);
     if(!item) return null;
     const others=sch.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
-    const days=sch.days.map(d=>({...d}));days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
+    const days=sch.days.map(d=>({...d}));days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
     return ruleBreak(item,toDate,others,days);
   }
   // Retour au placement automatique pour une séance déplacée.
@@ -480,5 +488,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,MODES,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,courtAway,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
 });

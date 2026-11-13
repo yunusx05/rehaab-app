@@ -6,7 +6,7 @@ const QI=require('../basket-qi.js');
 
 const home=['bodyweight','dumbbells','kettlebell','barbell','bench','bands','bike','court'];
 function player({position='meneur',archetypes=['slasher'],pains=[],owned=home,experience='returning'}={}){
-  const data=PT.initialState();
+  const data=PT.initialState();data.calendar={courtNear:true};
   data.profile.onboarded=true;data.profile.name='Test';data.profile.experience=experience;
   data.owned=owned;data.checkIn.equipment=owned;
   data.player=JP.validatePlayer({position,archetypes,layoff:'long'});

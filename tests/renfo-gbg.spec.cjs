@@ -9,7 +9,7 @@ const BP=require('../basket-pathway.js');
 const NEW=['toe-rock','knee-over-toe-rock','credit-card-hop','rfe-quad-hold','heavy-calf-iso','rfe-goblet-hold','couch-lift','frog-rock','ham-pails','sl-rdl-crescent','skater-ankle-rock','step-off-3d','split-push-step','stop-go-single-leg','scissor-cut','hop-step-rhythm','hop-step-press','copenhagen-long','landmine-lateral-lunge','psoas-plank','bench-hip-flexion','reverse-plank','overhead-side-bend-ecc','plank-db-row','sa-db-press','kneel-hip-press','sl-hinge-seesaw-row'];
 const full=['bodyweight','dumbbells','kettlebell','barbell','bench','bands','box','court','landmine','cable','pullup'];
 function player(owned=full){
-  const s=PT.initialState();
+  const s=PT.initialState();s.calendar={courtNear:true};
   s.profile.onboarded=true;s.profile.experience='regular';s.profile.impactReady=true;
   s.owned=owned;s.checkIn.equipment=owned;
   s.player=JP.validatePlayer({position:'meneur',archetypes:['slasher'],layoff:'none'});

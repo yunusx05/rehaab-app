@@ -588,18 +588,21 @@ function ptCoachAdapt(state, check, base, c, plan) {
     error: 'Trop de zones à épargner : repos ou soin aujourd’hui.'
   };
   const reasons = [`Coach : ${plan.why || COACH_DECISIONS[plan.decision]}`, ...(plan.because || []).map(b => `Parce que ${b.replace(/^parce ques*/i, '')}`), ...(care?.note && exercises.some(e => e.pathwayRole === 'soin') ? [care.note] : []), ...(base.reasons || [])];
+  const draft = {
+    ...base,
+    id: PT.uid(),
+    exercises,
+    coach: {
+      decision: plan.decision,
+      why: plan.why
+    },
+    reasons,
+    estimatedMinutes: Math.ceil((PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60) / 60)
+  };
+  // Lot 38 : le soin ajouté par le coach (en tête et en fin) ne doit pas recasser l'ordre terrain → intérieur : on regroupe à nouveau.
+  const BPg = window.BasketPathway;
   return {
-    draft: {
-      ...base,
-      id: PT.uid(),
-      exercises,
-      coach: {
-        decision: plan.decision,
-        why: plan.why
-      },
-      reasons,
-      estimatedMinutes: Math.ceil((PT.estimateSeconds(exercises, 'classic') + (base.warmupSeconds || 0) + 60) / 60)
-    }
+    draft: BPg && BPg.groupByPlace ? BPg.groupByPlace(PT, state, draft) : draft
   };
 }
 function PTCoachCard({

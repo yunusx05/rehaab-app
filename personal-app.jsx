@@ -246,7 +246,10 @@ function PersonalApp() {
   // Observe writes from another tab instead of silently overwriting newer data.
   usePTEffect(()=>{const handler=e=>{if(e.key===PT.STORAGE_KEY&&e.newValue){storageBlocked.current=true;setStorageError('Ton suivi a changé dans un autre onglet. Recharge cet onglet avant de continuer, ou exporte son état actuel.');}};window.addEventListener('storage',handler);return()=>window.removeEventListener('storage',handler);},[]);
   const go=(page,id)=>{window.location.hash=page+(id?`/${id}`:'');if(route===page&&detailId===(id||null))window.scrollTo(0,0);};
-  const update=fn=>setData(prev=>typeof fn==='function'?fn(prev):fn);
+  // Lot 38 : point unique. Toute séance enregistrée (parcours, coach, cardio, skills, séance libre…) passe par la règle
+  // « terrain d'abord, intérieur ensuite » avant d'être affichée. Une séance déjà commencée n'est jamais réordonnée.
+  const placed=(prev,next)=>{const BPg=window.BasketPathway,d=next&&next.draft;if(!d||d===(prev&&prev.draft)||d.status==='active'||!BPg||!BPg.groupByPlace)return next;try{return {...next,draft:BPg.groupByPlace(PT,next,d)};}catch(e){return next;}};
+  const update=fn=>setData(prev=>placed(prev,typeof fn==='function'?fn(prev):fn));
   const props={data,update,go,notify:setToast,id:detailId,storageError,setStorageError};
   const active=ptTabOf(route);
   let content;

@@ -72,6 +72,8 @@
     const second=state&&(state.owned||[]).includes('sand')?'sand':'run';
     if(n>=3) return ['court','rope',second];
     if(n>=2) return ['rope',second];
+    // Lot 39 : un seul cardio à faire soi-même : les navettes basket (les plus proches du match) si tu as un terrain, sinon corde et course en alternance.
+    if(state&&(state.owned||[]).includes('court')) return ['court'];
     const week=Math.floor(Date.parse(`${monday}T12:00:00Z`)/(7*86400000));
     return [week%2===0?'rope':second];
   }
