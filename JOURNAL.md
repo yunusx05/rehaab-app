@@ -2,6 +2,14 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 36 « Terrain d'abord » : une seule sortie par séance (v92)
+
+**Demande** : séances qui mélangent intérieur et extérieur (soin à la maison, sprints dehors, puis retour maison) : trop compliqué ; regrouper tout l'extérieur.
+
+**Fait** (branche `feature/lot36-interieur-exterieur`) : `BP.groupByPlace` — exercices « terrain » (besoin court/outdoor/sand/hoop) regroupés en un seul bloc en tête ; soin, bloc kiné et bloc explosivité transportables (poids du corps, élastique) suivent ce bloc dans leur ordre (genou et cheville préparés avant les sprints) ; le reste à l'intérieur. Appliqué à `sessionPlan`, `quickPlan` (Vivacité entière sur le terrain) et aux séances lancées depuis le planning (`ptCalendarPlan`, y compris remise en route). Aperçu : repères « Sur le terrain » / « À l'intérieur ». Résultat mesuré : au plus 1 passage terrain → intérieur dans toutes les séances des étapes 1 à 5. Tests : 2 nouveaux dans `joueur-actif.spec.cjs` ; suite 231 OK, 2 KO connus.
+
+**Limite** : les séances muscu du programme à part (`personal-programs.js`) et les séances générées hors parcours ne sont pas regroupées (pas signalé par l'utilisateur).
+
 ## 2026-11-13 — Lot 35 « Planning épuré » : calendrier et plan de saison (v91)
 
 **Fait** (branche `feature/lot35-planning-epure`) : calendrier — en-tête raccourci, jours passés sans séance regroupés en une ligne, « Je ne peux pas aujourd'hui » une seule fois pour la journée, un seul « Lancer » en vert (le premier), « Choisir le jour » en petit lien sur la même ligne que la séance. Plan de saison — « Pourquoi ce plan » replié, le doublon « Pourquoi un départ prudent » retiré de la phase, seules la phase en cours et la suivante gardent leur description (« Voir le détail de toutes les phases »). Suite : 229 OK, 2 KO connus. L'utilisateur ne veut pas épurer les autres écrans (pas ouverts tous les jours).

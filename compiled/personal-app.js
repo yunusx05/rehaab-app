@@ -1063,9 +1063,15 @@ function PTPreview({
   }, plan.exercises.map((e, i) => {
     const choices = PT.alternatives(e, data, plan.check, plan.exercises.map(x => x.id));
     const advice = PT.loadAdvice(e, data, plan.check);
-    return /*#__PURE__*/React.createElement("article", {
-      className: "exercise-item",
+    return /*#__PURE__*/React.createElement(React.Fragment, {
       key: e.id
+    }, e.placeStart && /*#__PURE__*/React.createElement("p", {
+      className: "place-divider"
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: e.place === 'out' ? 'court' : 'body',
+      size: 16
+    }), e.placeStart), /*#__PURE__*/React.createElement("article", {
+      className: "exercise-item"
     }, /*#__PURE__*/React.createElement(PTDemo, {
       minimal: true,
       exercise: e
@@ -1169,7 +1175,7 @@ function PTPreview({
         }));
         setReplaceId(null);
       }
-    }, "Retirer de cette s\xE9ance")));
+    }, "Retirer de cette s\xE9ance"))));
   })), error && /*#__PURE__*/React.createElement("p", {
     role: "alert",
     className: "error"
