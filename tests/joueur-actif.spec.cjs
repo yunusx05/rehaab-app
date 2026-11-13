@@ -72,3 +72,23 @@ test('écran du parcours : passer directement à l’étape 3',async({page})=>{
   expect(await page.evaluate(k=>JSON.parse(localStorage.getItem(k)).pathway.step,PT.STORAGE_KEY)).toBe(3);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+
+test('lot 36 : une seule sortie sur le terrain, en premier, dans chaque séance du parcours et en vivacité',()=>{
+  const d=player([{region:'knee',severity:1}]);
+  for(const step of [1,2,3,4,5]) for(const day of BP.stepById(step).days){
+    const plan=BP.sessionPlan(PT,JP,d,{...BP.create(),step},day.key);
+    if(plan.error) continue;
+    const places=plan.exercises.map(e=>e.place);
+    const switches=places.filter((x,i)=>i>0&&x!==places[i-1]).length;
+    expect(switches,`${step}${day.key}`).toBeLessThanOrEqual(1);
+    if(places.includes('out')) expect(places[0],`${step}${day.key}`).toBe('out');
+  }
+  const v=BP.quickPlan(PT,JP,d,'vivacite');
+  expect(v.exercises.every(e=>e.place===v.exercises[0].place)).toBe(true);
+});
+
+test('lot 36 : vraie douleur (4/10) : le soin qui calme la zone reste en tête',()=>{
+  const d=player([{region:'knee',severity:4}]);
+  const plan=BP.sessionPlan(PT,JP,d,{...BP.create(),step:3},'A');
+  if(!plan.error&&plan.exercises.some(e=>e.place==='out')) expect(plan.exercises[0].pathwayRole).toBe('soin');
+});

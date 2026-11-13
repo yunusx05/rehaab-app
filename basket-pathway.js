@@ -226,7 +226,31 @@
     if(day&&(day.club.today.any)) return plan;
     return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date});
   }
-  function sessionPlan(PT,PP,state,p,dayKey,opts={}) {return withSkills(PT,state,sessionPlanCore(PT,PP,state,p,dayKey,opts));}
+  // Lot 36 : une seule sortie. Ce qui se fait dehors ou sur le terrain (sprints, navettes, skills au panier) forme un seul bloc,
+  // fait en premier après l'échauffement (frais, et sans aller-retour maison → terrain → maison). Le reste suit à l'intérieur.
+  // Exception : avec une vraie douleur (3/10 ou plus), le soin qui calme la zone reste en tête, avant tout impact.
+  const OUTSIDE=['court','outdoor','sand','hoop'];
+  const placeOf=e=>(e&&(e.needs||[]).some(n=>OUTSIDE.includes(n)))?'out':'in';
+  // « Transportable » (poids du corps, élastique) : le soin, le bloc kiné et le bloc explosivité suivent le bloc terrain.
+  // Ils gardent leur ordre : soin et kiné d'abord (préparer genou et cheville), puis les sprints, sans couper la séance en deux.
+  const anywhere=e=>(e.needs||['bodyweight']).every(n=>n==='bodyweight'||n==='bands');
+  function groupByPlace(PT,state,plan,{pull=e=>e.primer||['kiné','soin'].includes(e.pathwayRole)}={}){
+    if(!plan||plan.error||!(plan.exercises||[]).length) return plan;
+    const hasOut=plan.exercises.some(e=>placeOf(e)==='out');
+    const ex=plan.exercises.map(e=>({...e,place:placeOf(e)==='out'||hasOut&&anywhere(e)&&pull(e)?'out':'in'}));
+    if(!ex.some(e=>e.place==='out')||!ex.some(e=>e.place==='in')) return {...plan,exercises:ex.map(e=>({...e,placeStart:undefined}))};
+    // Un soin qui ne se transporte pas (rare) reste en tête quand la douleur est réelle (3/10 ou plus), avant tout impact.
+    const pain=PT&&PT.safety?PT.safety(state).active.some(x=>!x.gene):false;
+    const head=pain?ex.filter((e,i)=>e.place==='in'&&['kiné','soin'].includes(e.pathwayRole)&&ex.slice(0,i).every(x=>['kiné','soin'].includes(x.pathwayRole))):[];
+    const rest=ex.filter(e=>!head.includes(e));
+    const ordered=[...head,...rest.filter(e=>e.place==='out'),...rest.filter(e=>e.place==='in')];
+    const out=ordered.map((e,i)=>({...e,placeStart:i===0||ordered[i-1].place!==e.place?(e.place==='out'?'Sur le terrain':'À l’intérieur'):undefined}));
+    const moves=out.filter((e,i)=>i>0&&e.placeStart).length;
+    const note=head.length?'Soin de la zone d’abord, puis un seul bloc sur le terrain, puis le reste à l’intérieur.'
+      :`Un seul passage sur le terrain, en premier : ${out.filter(e=>e.place==='out').map(e=>e.name.split(' · ')[0]).join(', ')}. Prends ton élastique : échauffement et soin se font sur place, puis tu rentres pour la suite.`;
+    return {...plan,exercises:out,placeMoves:moves,reasons:[...(plan.reasons||[]).filter(r=>!/^Bloc explosivité en début de séance/.test(r)),note]};
+  }
+  function sessionPlan(PT,PP,state,p,dayKey,opts={}) {return groupByPlace(PT,state,withSkills(PT,state,sessionPlanCore(PT,PP,state,p,dayKey,opts)));}
   function sessionPlanCore(PT,PP,state,p,dayKey,{minutes}={}) {
     const step=stepById(p.step),day=step&&step.days.find(d=>d.key===dayKey);
     if(!day) return {error:'Séance introuvable dans cette étape.'};
@@ -482,8 +506,8 @@
     const reasons=['Séance courte à la carte, hors parcours : elle ne fait pas avancer ton programme.'];
     if(kine.length) reasons.push(`Construite depuis ton bilan : ${[...new Set(kine.map(x=>x.why))].join(', ')}. Elle ne remplace pas l’avis d’un kiné.`);
     if(noImpact) reasons.push('Pas de départ chronométré avant l’étape 3 du parcours : on prépare le premier pas sans sprint.');
-    return {id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()};
+    return groupByPlace(PT,state,{id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()},{pull:()=>true});
   }
 
-  return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
+  return {steps,tests,ladder,quick,group,groupByPlace,placeOf,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
 });

@@ -546,3 +546,7 @@
 .calendar-item>.calendar-actions,.calendar-item>.calendar-move{grid-column:1/-1}
 .calendar-item>.calendar-actions:has(>.calendar-move-btn:only-child){grid-column:3;grid-row:1;align-self:center}
 .calendar-move-btn{color:var(--sub);padding:0 .2rem;white-space:nowrap}
+
+/* Lot 36 · Terrain puis intérieur : une seule sortie */
+.place-divider{display:flex;align-items:center;gap:.45rem;margin:.6rem 0 -.2rem;color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.place-divider:first-child{margin-top:0}

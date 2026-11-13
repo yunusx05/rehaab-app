@@ -25,7 +25,7 @@ function ptCalendarPlan(data, item, day) {
     JP = window.PlayerProfile,
     SK = window.BasketSkills;
   const ownSkills = !!day && day.items.some(x => x.type === 'skills');
-  if (item.type === 'pathway' && data.pathway) return ownSkills && BP.sessionPlanCore ? BP.sessionPlanCore(PT, JP, data, data.pathway, item.day) : BP.sessionPlan(PT, JP, data, data.pathway, item.day);
+  if (item.type === 'pathway' && data.pathway) return ownSkills && BP.sessionPlanCore ? BP.groupByPlace ? BP.groupByPlace(PT, data, BP.sessionPlanCore(PT, JP, data, data.pathway, item.day)) : BP.sessionPlanCore(PT, JP, data, data.pathway, item.day) : BP.sessionPlan(PT, JP, data, data.pathway, item.day);
   if (item.type === 'reset') {
     // Remise en route : les jours de l'étape 1, sans saut ni impact, hors parcours (rien n'est validé dans les étapes).
     const p = data.pathway && data.pathway.step === 1 ? data.pathway : BP.create({
@@ -34,7 +34,8 @@ function ptCalendarPlan(data, item, day) {
     const plan = BP.sessionPlanCore ? BP.sessionPlanCore(PT, JP, data, p, item.day) : BP.sessionPlan(PT, JP, data, p, item.day);
     if (plan.error) return plan;
     const exercises = plan.exercises.filter(e => !e.impact && e.pattern !== 'jump' && !e.skillBlock);
-    return {
+    const regroup = x => BP.groupByPlace ? BP.groupByPlace(PT, data, x) : x;
+    return regroup({
       ...plan,
       id: PT.uid(),
       source: 'reset',
@@ -45,7 +46,7 @@ function ptCalendarPlan(data, item, day) {
       exercises,
       reasons: ['Remise en route : aucun saut ni sprint, les tendons d’abord.', ...(plan.reasons || []).filter(r => !/saut|impact/i.test(r))],
       estimatedMinutes: Math.max(10, Math.round(PT.estimateSeconds(exercises, 'classic') / 60) + 5)
-    };
+    });
   }
   if (item.type === 'vivacite') return BP.quickPlan(PT, JP, data, 'vivacite');
   if (item.type === 'cardio' && window.BasketCardio) return window.BasketCardio.plan(PT, JP, data, item.kind, {
