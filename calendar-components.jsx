@@ -63,7 +63,7 @@ function PTCalendar({data,update,go,notify}){
   const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length,cardioCount=week.days.flatMap(d=>d.items).filter(x=>x.type==='cardio').length;
   const BC=window.BasketCardio,cardioPerWeek=BC?BC.perWeek(data):0;
   const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n,chosen:true}}));
-  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Muscu, skills et tir dans un seul planning. Règle chaque jour : muscu, skills, shooting, les deux ou repos.</PTPageHead>
+  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine, jour par jour.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
       <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span><span><strong>{week.days.flatMap(d=>d.items).filter(x=>x.type==='shooting').length}</strong> tir</span>{BC&&<span><strong>{cardioCount}</strong> cardio</span>}<span className="fine">cette semaine</span></p>
@@ -81,16 +81,18 @@ function PTCalendar({data,update,go,notify}){
       </details>
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
-      <ol className="calendar-week">{week.days.map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
+      {(()=>{const gone=week.days.filter(d=>d.before&&d.items.length===0);return gone.length>0&&<p className="fine calendar-before">{gone.length>1?`${gone[0].label} → ${gone[gone.length-1].label}`:gone[0].label} : avant le début de ton plan.</p>;})()}
+      <ol className="calendar-week">{week.days.filter(d=>!(d.before&&d.items.length===0)).map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
         <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
+        {d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}{d.qi&&!d.club.match?' · QI du jour (5 min)':''}</p>}
-        {d.items.map(item=><div key={item.key} className={`calendar-item is-${item.status}`}>
+        {d.items.map((item,idx)=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
           <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
           {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
-            {d.date===now&&<PTButton primary onClick={()=>launch(item,d)}>Lancer</PTButton>}
-            {d.date===now&&<button className="chip-action" onClick={()=>typeof PTMishap==='function'?go('mishap'):cannot(item)}>Je ne peux pas aujourd’hui</button>}
-            <button className="chip-action" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
+            {d.date===now&&<PTButton primary={d.items.filter(x=>x.status!=='done').indexOf(item)===0} onClick={()=>launch(item,d)}>Lancer</PTButton>}
+            {d.date===now&&typeof PTMishap!=='function'&&<button className="chip-action" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
+            <button className="text-button calendar-move-btn" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
           {moving===item.key&&<div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
             <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,here=x.date===d.date,rule=!past&&!here?SP.ruleBreakAt(data,monday,item.key,x.date):null;
@@ -123,7 +125,7 @@ function ptArchitectSlots(data){
 }
 
 function PTSeasonPlan({data,update,go,notify}){
-  const [loading,setLoading]=usePTState(false),[error,setError]=usePTState('');
+  const [loading,setLoading]=usePTState(false),[error,setError]=usePTState(''),[allPhases,setAllPhases]=usePTState(false);
   if(!SP)return <p className="empty">Plan indisponible.</p>;
   const built=SP.build(data),arch=data.seasonPlan?.architect,BP=window.BasketPathway;
   const gate=data.pathway&&BP?BP.gate(PT,data,data.pathway):null;
@@ -142,16 +144,16 @@ function PTSeasonPlan({data,update,go,notify}){
   const set=patch=>update(s=>({...s,seasonPlan:{...(SP.validate(s.seasonPlan)||SP.blank()),...patch}}));
   return <><PTPageHead onBack={()=>go('calendar')} eyebrow="Plan de saison" title="Ton plan.">{built.returnRange?`Repère : ${built.returnRange.min} à ${built.returnRange.max} semaines jusqu’au retour au jeu, si les tests suivent. Ce n’est pas une promesse.`:'Les phases s’enchaînent à ton rythme, validées par tes tests.'}</PTPageHead>
     <div className="stack-lg">
-      {built.need.reasons.length>0&&<section className="card stack-sm"><h2>Pourquoi ce plan</h2><ul className="reason-list">{built.need.reasons.map(r=><li key={r}>{r}</li>)}</ul></section>}
-      <ol className="roadmap">{built.phases.map((ph,i)=><li key={ph.id} className={`roadmap-step${i===built.current.index?' is-current':i<built.current.index?' is-done':''}`}>
+      {built.need.reasons.length>0&&<details className="disclosure"><summary>Pourquoi ce plan</summary><div><ul className="reason-list">{built.need.reasons.map(r=><li key={r}>{r}</li>)}</ul></div></details>}
+      <ol className="roadmap">{built.phases.map((ph,i)=>{const near=allPhases||i===built.current.index||i===built.current.index+1;return <li key={ph.id} className={`roadmap-step${i===built.current.index?' is-current':i<built.current.index?' is-done':''}`}>
         <span className="roadmap-dot" aria-hidden="true"/>
         <div className="stack-sm"><div className="topline"><strong>{ph.name}</strong><span className="caption">{ph.weeks}</span></div>
           {i===built.current.index&&<p className="badge">Tu es ici · semaine {built.current.week}{built.deload?' · semaine allégée':''}</p>}
-          <p className="fine">{ph.goal}</p>
-          {ph.why?.length>0&&<p className="fine"><strong>Pourquoi un départ prudent :</strong> {ph.why.join(' ')}</p>}
+          {near&&<p className="fine">{ph.goal}</p>}
           {i===built.current.index&&ph.rules&&<ul className="reason-list">{ph.rules.map(r=><li key={r}>{r}</li>)}</ul>}
           {arch?.accents?.filter(a=>ph.name.toLowerCase().includes(a.phase.toLowerCase())||a.phase===ph.id).map(a=><p key={a.text} className="court-transfer"><PTIcon name="spark" size={16}/><span><strong>Accent de l’architecte</strong>{a.text}</span></p>)}
-        </div></li>)}</ol>
+        </div></li>;})}</ol>
+      {!allPhases&&<button className="text-button" onClick={()=>setAllPhases(true)}>Voir le détail de toutes les phases</button>}
       {gate?.last&&gate.ready&&!data.seasonPlan?.devStart&&<PTButton primary onClick={()=>{set({devStart:PT.dateKey()});notify('Phase de développement lancée : cycles de 4 semaines.');}}>Commencer le développement</PTButton>}
       <p className="fine">Prochain point de test : {ptShortDay(built.nextTest)}. Détente, sprint et douleur font avancer le plan.</p>
       <section className="card stack">

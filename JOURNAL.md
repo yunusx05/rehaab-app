@@ -2,6 +2,10 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 35 « Planning épuré » : calendrier et plan de saison (v91)
+
+**Fait** (branche `feature/lot35-planning-epure`) : calendrier — en-tête raccourci, jours passés sans séance regroupés en une ligne, « Je ne peux pas aujourd'hui » une seule fois pour la journée, un seul « Lancer » en vert (le premier), « Choisir le jour » en petit lien sur la même ligne que la séance. Plan de saison — « Pourquoi ce plan » replié, le doublon « Pourquoi un départ prudent » retiré de la phase, seules la phase en cours et la suivante gardent leur description (« Voir le détail de toutes les phases »). Suite : 229 OK, 2 KO connus. L'utilisateur ne veut pas épurer les autres écrans (pas ouverts tous les jours).
+
 ## 2026-11-13 — Lot 34 « Aujourd'hui épuré » (v90)
 
 **Fait** (branche `feature/lot34-aujourdhui-epure`) : gêne ≤ 2/10 → rappel discret « Gêne légère · zones » au lieu du bandeau « séance adaptée » ; « Ma progression » sans mesure = une ligne vers le bilan (plus de toile vide), la rangée de raccourcis remonte au-dessus de la barre du bas ; badge de la séance du parcours à 45 min (un vieux check-in à 30 min ne la raccourcit plus à l'affichage, `season-plan.js`) ; cardio replié en version douce affiché « Cardio sans impact · vélo ou marche vive » (avant : « corde à sauter · sans impact », trompeur). Suite : 229 OK, 2 KO connus.

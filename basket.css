@@ -537,3 +537,12 @@
 .plan-arsenal .image-tile-body small{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .plan-manage>div{padding-top:.6rem}
 .plan-arsenal .image-tile:last-child:nth-child(odd){grid-column:1/-1}
+
+/* Lot 35 · Planning épuré */
+.calendar-before{margin:-.4rem 0 0}
+.calendar-mishap{display:block;margin-top:.35rem;font-size:.8rem}
+.calendar-move-btn{font-size:.78rem;min-height:36px}
+.calendar-item{grid-template-columns:auto 1fr auto}
+.calendar-item>.calendar-actions,.calendar-item>.calendar-move{grid-column:1/-1}
+.calendar-item>.calendar-actions:has(>.calendar-move-btn:only-child){grid-column:3;grid-row:1;align-self:center}
+.calendar-move-btn{color:var(--sub);padding:0 .2rem;white-space:nowrap}
