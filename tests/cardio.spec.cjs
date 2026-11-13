@@ -111,13 +111,14 @@ test('progression : deux séances propres montent d’un niveau, une douleur ne 
   expect(BC.levelOf(s,'rope','2026-11-20').lapsed).toBe(true);
 });
 
-test('planning : deux séances cardio par semaine, jamais deux jours de suite à impacts (vivacité comprise)',()=>{
+test('planning : trois séances cardio par semaine (lot 32), jamais deux jours de suite à impacts (vivacité comprise)',()=>{
   const s=joueur({step:3});
   s.seasonPlan={resetWeeks:0};
   const w=SP.weekSchedule(s,MONDAY,MONDAY),all=items(w),cardio=all.filter(x=>x.type==='cardio');
-  expect(cardio.map(x=>x.kind).sort()).toEqual(['rope','run']);
+  expect(cardio.map(x=>x.kind).sort()).toEqual(['court','rope','run']);
   expect(cardio.every(x=>x.legs==='impact')).toBe(true);
-  const impacts=all.filter(x=>x.legs==='impact').map(x=>x.day).sort((a,b)=>a-b);
+  // Lot 32 : navettes et vivacité peuvent partager un jour ; on compte les jours à impacts.
+  const impacts=[...new Set(all.filter(x=>x.legs==='impact').map(x=>x.day))].sort((a,b)=>a-b);
   for(let i=1;i<impacts.length;i++) expect(impacts[i]-impacts[i-1],`impacts les jours ${impacts}`).toBeGreaterThanOrEqual(2);
   // Jamais le même jour que des jambes lourdes.
   for(const c of cardio) expect(all.some(x=>x.legs==='heavy'&&x.day===c.day)).toBe(false);
@@ -127,7 +128,7 @@ test('planning : deux séances cardio par semaine, jamais deux jours de suite à
 test('semaine chargée (club, match) : le cardio reste au planning en version sans impact, jamais la veille du match',()=>{
   const s=joueur({step:3});
   s.seasonPlan={resetWeeks:0};
-  s.basketProfile={matchDay:5,practiceDays:[1]};
+  s.basketProfile={matchDay:5,practiceDays:[1]};s.cardio={perWeek:2,chosen:true};
   const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
   expect(w.warnings).toEqual([]);
   expect(cardio.length).toBe(2);
@@ -143,7 +144,7 @@ test('semaine chargée (club, match) : le cardio reste au planning en version sa
 // Lot 31 : la remise en route est fusionnée dans Fondations. Après une longue pause, on démarre en Fondations, cardio en allure facile.
 test('planning : après une longue pause, Fondations d’emblée et cardio en allure facile',()=>{
   const s=joueur({step:1});
-  s.dossier=PD.saveChapter(s,'break',{layoffMonths:24,layoffReason:'work',dropped:[]}).dossier;
+  s.dossier=PD.saveChapter(s,'break',{layoffMonths:24,layoffReason:'work',dropped:[]}).dossier;s.cardio={perWeek:2,chosen:true};
   const w=SP.weekSchedule(s,MONDAY,MONDAY);
   expect(w.phase.id).toBe('step1');
   const cardio=items(w).filter(x=>x.type==='cardio');
@@ -164,7 +165,7 @@ test('fréquence au choix : 0 retire le cardio, 1 alterne corde et course d’un
 });
 
 test('le joueur garde la main : déplacement avec alerte, retour au choix automatique',()=>{
-  const s=joueur({step:3});s.seasonPlan={resetWeeks:0};
+  const s=joueur({step:3});s.seasonPlan={resetWeeks:0};s.cardio={perWeek:2,chosen:true};
   const w=SP.weekSchedule(s,MONDAY,MONDAY),rope=items(w).find(x=>x.kind==='rope'),run=items(w).find(x=>x.kind==='run');
   // Mettre la course juste après la corde : refusé tel quel (impacts rapprochés ou jambes lourdes), accepté en connaissance de cause.
   const next=SP.at(rope.date,1);
@@ -190,7 +191,10 @@ test('séance faite : reconnue comme faite dans le planning, et la sauvegarde ga
   const back=PT.validateState(JSON.parse(JSON.stringify(s)));
   expect(back.cardio).toEqual({perWeek:1});
   const old=JSON.parse(JSON.stringify(s));delete old.cardio;
-  expect(PT.validateState(old).cardio).toEqual({perWeek:2});
+  expect(PT.validateState(old).cardio).toEqual({perWeek:3});
+  // Lot 32 : l'ancien réglage par défaut (2, jamais choisi) passe à 3 ; un 2 choisi à la main reste.
+  expect(PT.validateState({...old,cardio:{perWeek:2}}).cardio).toEqual({perWeek:3});
+  expect(PT.validateState({...old,cardio:{perWeek:2,chosen:true}}).cardio).toEqual({perWeek:2,chosen:true});
 });
 
 // Lot 26 : un plan commencé un dimanche n'a qu'un jour dans sa première semaine. On n'y empile plus corde + course.
@@ -199,7 +203,7 @@ test('un seul cardio par jour, même la semaine de départ réduite à un jour',
   const w=SP.weekSchedule(s,MONDAY,'2026-10-18');
   const sunday=items(w).filter(x=>x.type==='cardio'&&x.date==='2026-10-18');
   expect(sunday.length).toBeLessThanOrEqual(1);
-  // Une semaine entière garde ses deux cardios, sur deux jours différents.
+  // Une semaine entière garde ses trois cardios (lot 32), sur trois jours différents.
   const full=items(SP.weekSchedule(joueur(),MONDAY,MONDAY)).filter(x=>x.type==='cardio');
-  expect(full).toHaveLength(2);expect(new Set(full.map(x=>x.date)).size).toBe(2);
+  expect(full).toHaveLength(3);expect(new Set(full.map(x=>x.date)).size).toBe(3);
 });

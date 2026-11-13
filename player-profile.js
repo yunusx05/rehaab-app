@@ -97,6 +97,8 @@
   function tolerates(e,pains) {
     return pains.every(p=>{
       if(!e.regions.includes(p.region)) return true;
+      // Lot 32 : gêne (2/10 ou moins, lendemains calmes) : tout est permis, le soin de la zone reste dans la séance.
+      if(p.gene) return true;
       const level=load(e,p.region);
       if(level===null) return false;
       return level==='low' || (level==='moderate' && tier(p.severity)==='light');

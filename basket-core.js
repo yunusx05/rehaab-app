@@ -74,7 +74,8 @@
     if(['skills','cardio','core','match-intensity'].includes(plan.source)) return null;
     if(plan.exercises.some(e=>e.coreBlock)) return null;
     // Jour de soin (zone douloureuse) : la séance est déjà plus longue, on n'ajoute rien.
-    if(plan.exercises.some(e=>e.pathwayRole==='soin')) return null;
+    // Lot 32 : une gêne n'a que deux mouvements de soin, le finisher reste (le gainage est un point faible).
+    if(plan.exercises.filter(e=>e.pathwayRole==='soin').length>2) return null;
     if(plan.exercises.filter(e=>ALL.includes(e.id)).length>=2) return null;
     if(state.preferences&&state.preferences.coreFinisher===false) return null;
     const lvl=level(state),{check,ctx}=context(PT,state,{...(plan.check||{}),date});

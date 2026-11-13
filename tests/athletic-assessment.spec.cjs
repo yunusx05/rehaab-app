@@ -60,7 +60,8 @@ test('parcours avec bilan : point faible adapté à l’étape, bloc kiné, séc
     expect(new Set(plan.exercises.map(e=>e.id)).size).toBe(plan.exercises.length);
     // Avec une douleur, le soin intégré tient la place du mouvement « douleur » du bloc kiné.
     expect(plan.exercises.some(e=>['kiné','soin'].includes(e.pathwayRole))).toBe(true);
-    if(step.id===1)expect(plan.exercises.filter(e=>e.impact&&!['landing','pogo'].includes(e.id)).map(e=>e.id)).toEqual([]);
+    // Lot 32 : à l'étape 1, seuls les petits sauts et les départs à 70 % du bloc explosivité ; aucun saut maximal.
+    if(step.id===1)expect(plan.exercises.filter(e=>e.impact&&!['landing','pogo','pogo-lateral','accel-10','court-shuttle'].includes(e.id)).map(e=>e.id)).toEqual([]);
     if(pains.length)expect(plan.exercises.some(e=>e.id==='reverse-nordic'||e.impact&&['knee','ankle'].includes(pains[0].region))).toBe(false);
   }
   const quick=BP.quickPlan(PT,JP,data,'first-step');

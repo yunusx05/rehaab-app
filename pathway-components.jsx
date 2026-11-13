@@ -21,7 +21,7 @@ function PTPathwayIntro({data,update,go}) {
       <section className="stack-sm"><h3>Par où commencer ?</h3>
         <PTChips value={start} onChange={setStart} options={BP.steps.map(s => ({value:s.id, label:`Étape ${s.id}`}))}/>
         {advice && <p className="notice">Ton bilan conseille l’étape {advice.step}. {advice.reason}</p>}
-        <p className="fine">{start === 1 ? 'Après une longue pause, l’étape 1 est la bonne porte d’entrée, même si tu te sens en forme : les tendons ont besoin de plus de temps que les muscles.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.'}</p>
+        <p className="fine">{start === 1 ? 'Après une longue pause sans jouer, l’étape 1 est la bonne porte d’entrée. Si tu joues déjà en club (sauts, sprints), l’étape 3 te correspond mieux : ton bloc kiné garde le travail des tendons.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.'}</p>
       </section>
       <PTButton primary onClick={() => update(s => ({...s, pathway: AP.seedPathwayTests(BP.create({startStep:start}), s.athletic)}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
       {(data.pathwayArchive || []).slice(-1).map(old => <button key={old.id} className="home-action" onClick={() => update(s => {const {stoppedAt, ...kept} = old; return {...s, pathway: BP.validatePathway(kept), pathwayArchive: (s.pathwayArchive || []).filter(x => x.id !== old.id)};})}><PTIcon name="refresh"/><span><strong>Reprendre mon parcours arrêté</strong><small>Étape {old.step} · {BP.stepById(old.step)?.name}, arrêté le {shortDate(old.stoppedAt)}</small></span><PTIcon name="arrow" size={18}/></button>)}
@@ -66,61 +66,68 @@ function PTPathway({data,update,go,notify}) {
     go('preview');
   };
 
+  // Lot 33 « Plan épuré » : d'abord la séance à faire, puis la progression, puis les outils ; la gestion du parcours est repliée.
+  const vivacite = () => {if (data.draft?.status === 'active') { setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.'); return; } const plan = BP.quickPlan(PT, JP, data, 'vivacite'); if (plan.error) { setError(plan.error); return; } update(s => ({...s, draft: plan})); go('preview');};
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
-      <PTPlanArsenal data={data} go={go} update={update} notify={notify}/>
-      <div className="step-track pathway-track">{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
-      <section className="card stack-sm">
-        <div className="topline"><strong>Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''}</strong><span className="caption">{status.sessions} / {status.needed} séances</span></div>
+      <section className="stack plan-week">
+        <div className="topline"><h2>Cette semaine</h2><span className="caption">Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''} · {status.sessions}/{status.needed} séances</span></div>
         <span className="mini-progress"><i style={{transform:`scaleX(${Math.min(1, status.sessions / status.needed)})`}}/></span>
-        <p className="fine">Trois séances par semaine{step.days.length === 2 ? ' (deux à cette étape)' : ''}, dans l’ordre que tu veux. Laisse au moins un jour entre deux séances de jambes.</p>
-      </section>
-      <PTAssessmentSummary data={data} go={go}/>
-      <details className="disclosure"><summary>Les règles de cette étape</summary><div><ul className="reason-list">{step.rules.map(r => <li key={r}>{r}</li>)}</ul></div></details>
-
-      <section className="stack">
-        <div className="topline"><h2>Cette semaine</h2></div>
         <PTChips value={minutes} onChange={setMinutes} options={[{value:0,label:'Séance complète'},{value:30,label:'30 min'},{value:45,label:'45 min'}]}/>
         {step.days.map(day => {
           const plan = BP.sessionPlan(PT, JP, data, p, day.key, {minutes: minutes || undefined});
-          const done = status.done.includes(day.key);
-          return <article key={day.key} className={`card stack-sm pathway-day${done ? ' is-done' : ''}`}>
-            <div className="exercise-summary"><span className="exercise-number">{day.key}</span><div><h3>{day.name}</h3><p>{plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`}{done ? ' · faite' : status.next === day.key ? ' · conseillée' : ''}</p></div></div>
-            {plan.error ? <p className="fine">{plan.error}</p> : <details className="dose-details" open={!done && status.next === day.key}><summary>Les {plan.exercises.length} mouvements</summary><ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul></details>}
-            {confirm === day.key && <div className="notice warning stack-sm"><p>Une séance est en cours. La remplacer effacera ce qui n’a pas été enregistré.</p><PTButton quiet onClick={() => {setConfirm(null); go('session');}}>Reprendre la séance en cours</PTButton></div>}
-            {!plan.error && <PTButton primary={!done && status.next === day.key} onClick={() => launch(day.key)}>{confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance'}<PTIcon name="arrow" size={18}/></PTButton>}
+          const done = status.done.includes(day.key), main = !done && status.next === day.key;
+          const label = confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance';
+          return <article key={day.key} className={`card stack-sm pathway-day${done ? ' is-done' : ''}${main ? ' is-main' : ' is-compact'}`}>
+            <div className="exercise-summary"><span className="exercise-number">{done ? <PTIcon name="check" size={16}/> : day.key}</span><div><h3>{day.name}</h3><p>{plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`}{done ? ' · faite' : main ? ' · conseillée' : ''}</p></div>
+              {!main && !plan.error && <button className="icon-button pathway-day-go" aria-label={`${label} · ${day.name}`} onClick={() => launch(day.key)}><PTIcon name="arrow" size={18}/></button>}</div>
+            {plan.error ? <p className="fine">{plan.error}</p> : <details className="dose-details" open={main}><summary>Les {plan.exercises.length} mouvements</summary><ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul></details>}
+            {confirm === day.key && <div className="notice warning stack-sm"><p>Une séance est en cours. La remplacer effacera ce qui n’a pas été enregistré.</p>{!main && <PTButton onClick={() => launch(day.key)}>Remplacer et préparer</PTButton>}<PTButton quiet onClick={() => {setConfirm(null); go('session');}}>Reprendre la séance en cours</PTButton></div>}
+            {main && !plan.error && <PTButton primary onClick={() => launch(day.key)}>{label}<PTIcon name="arrow" size={18}/></PTButton>}
           </article>;
         })}
         {error && <p className="error" role="alert">{error}</p>}
-        <button className="home-action" onClick={() => {if (data.draft?.status === 'active') { setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.'); return; } const plan = BP.quickPlan(PT, JP, data, 'vivacite'); if (plan.error) { setError(plan.error); return; } update(s => ({...s, draft: plan})); go('preview');}}><PTIcon name="spark"/><span><strong>Vivacité · 15 min</strong><small>{p.step < 2 ? 'Appuis et chevilles en version isométrique, sans saut à cette étape.' : 'Pogos, départs au signal, freinages : jusqu’à 3 fois par semaine, ou juste après l’échauffement.'}</small></span><PTIcon name="arrow" size={18}/></button>
+        <div className="home-options">
+          <button className="home-action" onClick={vivacite}><PTIcon name="spark"/><span><strong>Vivacité · 15 min</strong><small>{p.step < 2 ? 'Appuis et chevilles, sans saut à cette étape.' : 'Pogos, départs, freinages. Jusqu’à 3 fois par semaine.'}</small></span><PTIcon name="arrow" size={18}/></button>
+        </div>
+        <details className="disclosure"><summary>Les règles de cette étape</summary><div><ul className="reason-list"><li>Trois séances par semaine{step.days.length === 2 ? ' (deux à cette étape)' : ''}, dans l’ordre que tu veux. Au moins un jour entre deux séances de jambes.</li>{step.rules.map(r => <li key={r}>{r}</li>)}</ul></div></details>
       </section>
 
       {p.step === BP.steps.length && <PTPathwayLadder data={data} update={update} go={go} notify={notify}/>}
 
       <section className="stack">
         <h2>{gate.last ? 'Pour boucler le parcours' : `Pour passer à l’étape ${next.id}`}</h2>
+        <div className="step-track pathway-track" aria-label={`Étape ${p.step} sur ${BP.steps.length}`}>{BP.steps.map(s => <span key={s.id} className={s.id <= p.step ? 'done' : ''}/>)}</div>
         <ul className="criteria-list">{gate.criteria.map(c => <li key={c.id} className={c.ok ? 'is-ok' : ''}>
           <span className="criteria-mark"><PTIcon name={c.ok ? 'check' : 'clock'} size={16}/></span>
           <div><strong>{c.label}</strong><small>{c.detail}</small></div>
           {BP.tests[c.id] && !['pain','ladder'].includes(c.id) && <button className="chip" onClick={() => go('pathway-test', c.id)}>{BP.latest(p, c.id) ? 'Remesurer' : 'Mesurer'}</button>}
         </li>)}</ul>
-        <p className="fine">Ces repères d’entraînement ne sont pas des normes médicales. Un kiné peut les remplacer par ses propres tests.</p>
         {gate.ready && !gate.last && <PTButton primary onClick={() => {update(s => ({...s, pathway: BP.advance(s.pathway)})); notify(`Étape ${next.id} débloquée : ${next.name}.`); window.scrollTo(0,0);}}>Passer à l’étape {next.id} · {next.name}<PTIcon name="arrow" size={18}/></PTButton>}
         {gate.ready && gate.last && <p className="notice">Parcours bouclé. Garde deux séances de renforcement par semaine pendant la saison : c’est ce qui évite la blessure suivante.</p>}
-        {!gate.ready && <p className="fine">Tu peux rester sur cette étape aussi longtemps que nécessaire : les semaines supplémentaires passent en consolidation.</p>}
+        <p className="fine">{!gate.ready && 'Pas de limite de temps : les semaines en plus servent à consolider. '}Repères d’entraînement, pas des normes médicales.</p>
+        <div className="home-options"><PTAssessmentSummary data={data} go={go}/></div>
       </section>
 
-      <section className="stack"><h3>Gérer le parcours</h3>
+      <section className="stack"><h2>Tes outils</h2>
+        <PTPlanArsenal data={data} go={go} update={update} notify={notify}/>
+      </section>
+
+      <details className="disclosure plan-manage"><summary>Gérer le parcours</summary><div className="stack">
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
+          <PTRestartProgram data={data} update={update} notify={notify} go={go}/>
         </div>
-        <PTRestartProgram data={data} update={update} notify={notify} go={go}/>
+        <div className="stack-sm pathway-jump"><strong>Aller directement à une autre étape</strong>
+          <p className="fine">Tu joues déjà en club ? Saute les étapes que le terrain a validées. Tout est gardé.</p>
+          <div className="chips">{BP.steps.filter(s => s.id !== p.step).map(s => <button key={s.id} className="chip" onClick={() => {update(st => ({...st, pathway: BP.jumpTo(st.pathway, s.id)})); notify(`Étape ${s.id} · ${s.name} : c’est parti.`); window.scrollTo(0,0);}}>Étape {s.id} · {s.short}</button>)}</div>
+        </div>
         {stopping
           ? <div className="notice warning stack-sm"><p>Arrêter le parcours ? Il est archivé avec tes tests et ton avancement : tu pourras le reprendre à la même étape. Tes séances restent dans l’historique.</p>
               <PTButton danger onClick={() => {update(s => ({...s, pathway:null, pathwayArchive:[...(s.pathwayArchive || []), {...s.pathway, stoppedAt: PT.dateKey()}].slice(-10), draft: s.draft?.source === 'pathway' && s.draft.status !== 'active' ? null : s.draft})); notify('Parcours arrêté et archivé.'); go('today');}}>Oui, arrêter le parcours</PTButton>
               <PTButton quiet onClick={() => setStopping(false)}>Continuer le parcours</PTButton></div>
           : <PTButton danger onClick={() => setStopping(true)}><PTIcon name="close" size={18}/>Arrêter le parcours</PTButton>}
-      </section>
+      </div></details>
     </div></>;
 }
 
@@ -199,8 +206,8 @@ function PTPlanArsenal({data,go,update,notify}){
   const SP=window.SeasonPlan,phase=SP?SP.build(data).current:null;
   const tests=data.pathway?Object.values(data.pathway.tests||{}).reduce((n,l)=>n+(l||[]).length,0):0;
   return <div className="image-grid plan-arsenal">
-    <PTImageTile tall photo={ptHub('week')} title="Mon planning" text="Choisis tes jours et place chaque séance où tu veux." onClick={()=>go('calendar')}/>
-    <PTImageTile tall photo={ptHub('season')} badge={phase?.phase?`Semaine ${phase.week}`:null} title="Mon plan de saison" text={phase?.phase?phase.phase.name:'Les phases et l’architecte IA.'} onClick={()=>go('plan')}/>
+    <PTImageTile photo={ptHub('week')} title="Mon planning" text="Choisis tes jours et place chaque séance où tu veux." onClick={()=>go('calendar')}/>
+    <PTImageTile photo={ptHub('season')} badge={phase?.phase?`Semaine ${phase.week}`:null} title="Mon plan de saison" text={phase?.phase?phase.phase.name:'Les phases et l’architecte IA.'} onClick={()=>go('plan')}/>
     <PTImageTile photo={ptHub('muscu')} title="Ma muscu" text={prog&&PPR?`${PPR.familyById(prog.familyId)?.short||'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}`:'Programme à côté du parcours, sans le doubler.'} onClick={()=>go(prog?'program':'program-new')}/>
     <PTImageTile photo={ptHub('skills')} title="Mes skills basket" text={SK?.complete(data.skills)?'Dribble, tir, finition, défense, moves.':'Questionnaire puis programme à ton niveau.'} onClick={()=>go('skills')}/>
     <PTImageTile photo={ptHub('tests')} badge={tests?`${tests} mesure${tests>1?'s':''}`:null} title="Mesurer ma détente et mes tests" text="Saut, sprint, RSI : un mur, un mètre ou une vidéo." onClick={()=>go('bilan','tests')}/>

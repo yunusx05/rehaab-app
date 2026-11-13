@@ -2,6 +2,33 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 33 « Plan épuré » : la séance d'abord (v89)
+
+**Demande** : écrans trop chargés ; on les reprend un par un (impeccable distill + principes minimalist-ui, palette et polices actuelles gardées). Captures de tous les écrans : `../../captures-ecrans/` (script `tests/zz-shots-all.spec.cjs`, non suivi).
+
+**Fait** (branche `feature/lot33-plan-epure`, cache `v89-plan-epure`) : écran Plan réordonné — « Cette semaine » juste sous le titre (avancée en une ligne), seule la séance conseillée est dépliée avec le gros bouton, les autres en une ligne avec flèche ; puis critères de l'étape suivante + bilan ; puis « Tes outils » (9 tuiles compactes, texte sur une ligne) ; « Gérer le parcours » replié en bas (revenir, recommencer, changer d'étape, arrêter). Aucune fonction retirée. Suite : 229 OK, 2 KO déjà connus (date du jour).
+
+**Suite** : écran Aujourd'hui (vérifier l'étiquette « corde à sauter · sans impact » avec une gêne à 1/10).
+
+## 2026-11-13 — Lot 32 « joueur actif » : gêne ≠ blessure, explosivité dès l'étape 1, séances de 45 min, 3 cardios (v88)
+
+**Demande** : programme trop protecteur et trop long (« un programme de grand blessé »), pas de sauts ni de sprints alors qu'il ne fait que ça au club ; gêne à 1/10 qui disparaît échauffé ; limites : cardio, force, vitesse, explosivité, gainage ; ventre. Il démarre à l'étape 3.
+
+**Mesuré avant** : séances du parcours 50-59 min (hors échauffement et skills) ; avec une gêne au genou, l'étape 3 perdait TOUS ses sauts et sprints (séance devenue soin) ; un entraînement de club la veille retirait aussi les impacts.
+
+**Fait** (branche `feature/lot32-joueur-actif`, cache `v88-joueur-actif`)
+- Gêne = douleur ≤ 2/10 (`personal-engine.js` `safety` → `gene:true`) : `PlayerProfile.tolerates` garde tout. Lendemain « pire » dans les 2 derniers jours → la gêne redevient une douleur (impacts retirés). ≥ 3/10 : règles d'avant.
+- Dans le parcours, un entraînement de club (veille, jour, lendemain) ne retire plus les sauts ; seul un match compte.
+- Bloc explosivité (`BP.primers`) en tête des jours qui n'en avaient pas : étape 1 à 70 % (pogo, départs 10 m), puis sauts horizontaux/verticaux + départs. Règle étape 1 réécrite.
+- Durée : 45 min par défaut (échauffement + finisher abdos compris, `BP.DEFAULT_MINUTES`), séries 4-5 → 3 avant de retirer un exercice. Soin limité à 2 mouvements quand tout est gêne, bloc kiné à 2 (+ alignement genou). Finisher abdos gardé les jours de soin court. Planning : séance du parcours comptée 45 min.
+- Cardio : 3e séance « Navettes basket » (`court`, K4, terrain couvert), 3/semaine par défaut ; l'ancien « 2 » jamais choisi passe à 3, un 0/1/2 choisi à la main (`chosen:true`) reste. Navettes permises le même jour que la vivacité (48 h gardées entre deux jours à impacts). Gêne ≤ 2 ne rend plus le cardio « sans impact ».
+- Parcours : « Aller directement à une autre étape » (`BP.jumpTo`, tests et historique gardés). Texte d'intro : étape 3 conseillée à qui joue déjà en club.
+- Tests : nouveau `tests/joueur-actif.spec.cjs` (6) ; mis à jour : athletic-assessment, basket-return, cardio, cardio-ui. Suite : 229 OK, 2 KO déjà KO avant (`poids-tir:55`, `accueil:50` en 375×667 — vérifié sur la version d'avant).
+
+**À savoir**
+- Pas testé sur iPhone. Ses données sont sur son téléphone : il doit lui-même passer à l'étape 3 (Plan → Gérer le parcours) et noter ses gênes à 1/10.
+- Hanche : il pense que la gêne est au moyen fessier (raideur qui bouge, soulagée par l'étirement). Conseils donnés, pas de changement d'app.
+
 ## 2026-11-11 (soir) — Démos vidéo des exercices qui n'en avaient pas (v87, branche `feature/demos-manquantes`)
 
 **Fait**

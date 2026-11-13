@@ -313,7 +313,8 @@
     // (L'alignement du genou ajoute lui-même son mouvement dans kineBlock.)
     const a=state.athletic;
     if(minutes&&minutes<=30) return 2;
-    return (!minutes||minutes>45||a&&a.answers.mindset==='afraid')?3:2;
+    // Lot 32 : bloc kiné court (2 mouvements) : les séances ne doivent plus ressembler à une rééducation de grand blessé.
+    return minutes>60?3:2;
   }
 
   // Les mesures communes au bilan et au parcours comptent pour les critères de passage.
