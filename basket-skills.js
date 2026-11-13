@@ -273,10 +273,16 @@
   }
 
   // Choix des exercices : domaine, palier atteint (on reprend aussi le palier du dessous), points faibles, panier, sauts.
+  // Lot 40 : comme dans le parcours (lot 32), une gêne (2/10 ou moins) n'est pas une blessure : seules les vraies douleurs,
+  // ou une gêne qui a empiré un lendemain de séance (2 derniers jours), retirent les exercices de la zone.
+  function painRegions(state){
+    const now=today(),flare=(state.sessions||[]).some(x=>x&&x.nextDay==='worse'&&typeof x.date==='string'&&(Date.parse(now)-Date.parse(x.date))/86400000<=2&&x.date<=now);
+    return (state.symptoms||[]).filter(x=>x&&x.active&&(Number(x.severity)>2||flare)).map(x=>x.region);
+  }
   function pick(state,{area,count=2,hoop=false,noImpact=false,exclude=[],stationary=false}) {
     const s=state.skills||blank(),tier=s.levels[area]||1,prio=priorities(s,state.player);
     const weight=d=>d.tags.reduce((n,t)=>n+((prio.find(p=>p.id===t)||{}).score||0),0);
-    const pains=(state.symptoms||[]).filter(x=>x.active).map(x=>x.region);
+    const pains=painRegions(state);
     return drills.filter(d=>d.area===area&&!d.intense&&d.tier<=tier&&d.tier>=tier-1&&(hoop||!d.needs.includes('hoop'))&&!(hoop&&area==='shoot'&&!d.needs.includes('hoop'))&&!(noImpact&&(d.impact||d.cuts))&&!(stationary&&d.cuts)
       &&!exclude.includes(d.id)&&!d.regions.some(r=>pains.includes(r)))
       .sort((a,b)=>(b.tier===tier)-(a.tier===tier)||(hoop?b.needs.includes('hoop')-a.needs.includes('hoop'):0)||weight(b)-weight(a)||a.id.localeCompare(b.id)).slice(0,count);
@@ -312,18 +318,28 @@
     plan.push(...take(second,1));
     if(total>=60) plan.push(...take(main==='shoot'?'finish':'shoot',1),...take('footwork',1));
     // Avec un panier, la séance se termine toujours par des lancers francs (routine sous fatigue légère).
-    const ft=hoop?dose(byId('sk-ft'),PT):null;
-    fill(state,plan,(total-5)*60-(ft?estimate([ft]):0),[main,second,hoop?'shoot':'handle','footwork'],{...opts,exclude:ft?['sk-ft']:[],PT});
+    // Lot 40 : chaque séance finit sous fatigue, comme en match. Fondations : lancers francs essoufflé ; au-delà, un exercice « intensité match » de ton palier.
+    const pains=painRegions(state),top=Math.max(1,...Object.values(s.levels));
+    const tiredOk=d=>(hoop||!d.needs.includes('hoop'))&&!(light&&(d.impact||d.cuts))&&!d.regions.some(r=>pains.includes(r))&&!used.includes(d.id);
+    const tiredPool=drills.filter(d=>(d.intense||d.id==='sk-ft-tired')&&tiredOk(d)&&d.tier<=Math.max(2,top));
+    const tiredDrill=top<=1?(tiredPool.find(d=>d.id==='sk-ft-tired')||tiredPool.filter(d=>d.tier<=2).sort((a,b)=>(b.area===main)-(a.area===main)||a.id.localeCompare(b.id))[0])
+      :tiredPool.sort((a,b)=>(b.tier===Math.min(3,top))-(a.tier===Math.min(3,top))||(b.area===main)-(a.area===main)||a.id.localeCompare(b.id))[0];
+    const tired=tiredDrill&&!light?{...dose(tiredDrill,PT),tiredFinisher:true}:null;
+    if(tired) used.push(tired.id);
+    const ft=hoop&&!(tired&&tired.id==='sk-ft-tired')?dose(byId('sk-ft'),PT):null;
+    fill(state,plan,(total-5)*60-(ft?estimate([ft]):0)-(tired?estimate([tired]):0),[main,second,hoop?'shoot':'handle','footwork'],{...opts,exclude:ft?['sk-ft']:[],PT});
+    if(tired) plan.push(tired);
     if(ft) plan.push(ft);
-    // On raccourcit par la fin, sans jamais retirer le dribble du début.
-    while(estimate(plan)>(total-5)*60&&plan.length>3) plan.splice(Math.max(1,plan.length-2),1);
+    // On raccourcit par la fin, sans jamais retirer le dribble du début ni le final sous fatigue.
+    while(estimate(plan)>(total-5)*60&&plan.length>3){const i=plan.findIndex((e,k)=>k>0&&!e.tiredFinisher&&k>=plan.length-3);plan.splice(i>0?i:Math.max(1,plan.length-2),1);}
     while(estimate(plan)>(total-5)*60&&plan.some(e=>e.sets>2)) {const e=[...plan].reverse().find(x=>x.sets>2);e.sets-=1;}
     if(plan.length<2) return {error:'Pas assez d’exercices compatibles aujourd’hui (douleurs ou matériel).'};
     if(plan[0]&&plan[0].area==='handle') plan[0]={...plan[0],dribbleWarm:true};
     const reasons=[`Point faible travaillé : ${areas[main].label.toLowerCase()} (palier ${TIERS[s.levels[main]-1].toLowerCase()})${!hoop&&['shoot','finish'].includes(main)?', au panier dès que tu en as un':''}.`,
       'Dribble d’abord : quelques minutes balle en main avant tout le reste.',
       hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
-      'Note tes tirs réussis et tentés : ils font évoluer ton palier.'];
+      'Pendant la séance, valide chaque série avec « Fait ». À la fin, tu notes combien de tirs tu as mis : ça fait évoluer ton palier.'];
+    if(tired) reasons.push(`Final sous fatigue : ${tired.name}. Tirer et finir essoufflé, comme en fin de match.`);
     if(light) reasons.push('Version légère : ni saut ni changement de direction, tes jambes restent fraîches.');
     const styles=[...new Set(plan.map(e=>e.style).filter(Boolean))];
     if(styles.length) reasons.push(`Inspiration : ${styles.join(', ')} (style de jeu, pas un programme officiel).`);
@@ -337,7 +353,7 @@
   const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
   function matchSession(PT,state,{minutes=30,date=today()}={}) {
     const s=validate(state.skills),hoop=hoopOn(state,s,date),total=Number(minutes)||30;
-    const pains=(state.symptoms||[]).filter(x=>x.active);
+    const pains=(state.symptoms||[]).filter(x=>x.active&&painRegions(state).includes(x.region));
     if(pains.some(p=>['knee','ankle','hip','back'].includes(p.region)&&Number(p.severity)>=3)) return {error:'Douleur aux jambes ou au dos : pas d’intensité match aujourd’hui. Fais plutôt une séance skills légère ou ton soin.'};
     const lvl=a=>Math.max(2,s.levels[a]||1);
     const avail=d=>d.intense&&d.tier<=lvl(d.area)&&(hoop||!d.needs.includes('hoop'))&&!d.regions.some(r=>pains.some(p=>p.region===r));
@@ -403,7 +419,8 @@
       const a=e.skillArea,rows=((session.entries||{})[e.id]||[]).filter(r=>r.done);
       byArea[a]=byArea[a]||{made:0,attempts:0,done:0};
       byArea[a].done+=rows.length;
-      if(e.measure==='shots') rows.forEach(r=>{byArea[a].made+=Number(r.made)||0;byArea[a].attempts+=Number(r.attempts)||0;});
+      // Lot 40 : une série de tirs validée sans nombre de réussis ne compte ni en réussis ni en tentés.
+      if(e.measure==='shots') rows.filter(r=>r.made!==''&&r.made!=null).forEach(r=>{byArea[a].made+=Number(r.made)||0;byArea[a].attempts+=Number(r.attempts)||0;});
     });
     const changes=[];const levels={...s.levels};
     Object.entries(byArea).forEach(([area,v])=>{
@@ -412,7 +429,8 @@
       const rating=ratings[area]||(pct===null?'right':pct>=0.7?'easy':pct<0.35?'hard':'right');
       log.push({date,area,tier:levels[area],rating,made:v.made,attempts:v.attempts,sessionId:session.id||null});
       const mine=log.filter(x=>x.area===area).slice(-2);
-      if(mine.length===2&&mine.every(x=>x.rating==='easy'&&x.tier===levels[area])&&levels[area]<3){levels[area]+=1;changes.push({area,dir:1});}
+      // Lot 40 : une séance « trop facile » suffit pour monter (avant : deux). Pour redescendre, il en faut toujours deux « trop dur ».
+      if(rating==='easy'&&levels[area]<3){levels[area]+=1;changes.push({area,dir:1});}
       else if(mine.length===2&&mine.every(x=>x.rating==='hard'&&x.tier===levels[area])&&levels[area]>1){levels[area]-=1;changes.push({area,dir:-1});}
     });
     return {skills:{...s,levels,log:log.slice(-200)},changes};
@@ -424,5 +442,15 @@
     return Object.entries(areas).map(([a,x])=>`${x.short} : ${TIERS[v.levels[a]-1].toLowerCase()}`).join(' ; ')+(v.program?` ; ${v.program.perWeek} séance(s) skills/semaine`:'')+'.';
   }
 
-  return {dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
+  // Lot 40 : réussis notés en fin de séance, répartis sur les séries faites (dans l'ordre, sans dépasser les tentés de chaque série).
+  function applyShotTotals(draft,totals){
+    if(!totals||!draft) return draft;
+    const entries={...draft.entries};
+    Object.entries(totals).forEach(([id,made])=>{
+      if(made===''||made==null||!entries[id]) return;let left=Math.max(0,Math.round(Number(made))||0);
+      entries[id]=entries[id].map(r=>{if(!r.done) return r;const a=Number(r.attempts)||0,m=Math.min(a,left);left-=m;return {...r,made:String(m),later:false};});
+    });
+    return {...draft,entries};
+  }
+  return {applyShotTotals,painRegions,dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
 });

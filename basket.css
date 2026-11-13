@@ -550,3 +550,30 @@
 /* Lot 36 · Terrain puis intérieur : une seule sortie */
 .place-divider{display:flex;align-items:center;gap:.45rem;margin:.6rem 0 -.2rem;color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .place-divider:first-child{margin-top:0}
+
+/* Lot 40 · Tirs notés en fin de séance */
+.shot-total-row{display:flex;align-items:center;gap:.8rem;padding:.7rem 0;border-top:1px solid var(--line)}
+.shot-total-row>span:first-child{flex:1;display:grid;gap:.15rem}
+.shot-total-row strong{font-size:.9rem;font-weight:600}
+.shot-total-row small{font-size:.74rem;color:var(--sub)}
+.shot-total-input{display:flex;align-items:center;gap:.4rem}
+.shot-total-input input{width:4.2rem;min-height:44px;text-align:center;font-size:1.1rem;border-radius:12px;border:1px solid var(--line);background:var(--raised);color:var(--text)}
+
+.skill-levels{display:grid;border-bottom:1px solid var(--line)}
+.skill-level-row{display:grid;gap:.5rem;padding:.8rem 0;border-top:1px solid var(--line)}
+.skill-level-row>span{display:grid;gap:.15rem}
+.skill-level-row strong{font-size:.92rem;font-weight:600}
+.skill-level-row small{font-size:.74rem;color:var(--sub)}
+
+/* Lot 40 · Bibliothèque par thème */
+.library-groups{display:grid;border-bottom:1px solid var(--line)}
+.library-group{border-top:1px solid var(--line)}
+.library-group>summary{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:52px;cursor:pointer;list-style:none;font-weight:600;font-size:.95rem}
+.library-group>summary::-webkit-details-marker{display:none}
+.library-group>summary small{color:var(--sub);font-weight:500;font-size:.78rem}
+.library-group>summary::after{content:'+';color:var(--sub);margin-left:.6rem}
+.library-group[open]>summary::after{content:'−'}
+.library-group[open]{padding-bottom:1rem}
+.library-level{display:grid;gap:.6rem;margin-top:.4rem}
+.library-level h4{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:.6rem 0 0}
+.library-group>summary>span{flex:1}

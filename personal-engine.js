@@ -898,7 +898,8 @@
       if(row.result==='missed' && !row.reason) return 'Indique ce qui a limité la série.';
     }
     if(e.measure==='seconds' && !bounded(row.seconds,1,10000)) return 'Renseigne le temps réellement effectué.';
-    if(e.measure==='shots' && (!bounded(row.attempts,1,1000)||!bounded(row.made,0,Number(row.attempts)))) return 'Vérifie les réussites et les tentatives.';
+    // Lot 40 : une série de tirs peut être validée d'un geste ; les réussis se notent en fin de séance (row.later).
+    if(e.measure==='shots' && (!bounded(row.attempts,1,1000)||!(row.later&&(row.made===''||row.made==null))&&!bounded(row.made,0,Number(row.attempts)))) return 'Vérifie les réussites et les tentatives.';
     return '';
   }
   function finishDraft(draft,{effort,liked,notes='',now=Date.now()}={}) {

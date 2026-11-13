@@ -46,7 +46,7 @@ const ptSetLine=e=>`${e.sets} × ${e.measure==='seconds'?`${e.seconds} s`:ptReps
 function PTSession({data,update,go,notify}) {
   const draft=data.draft;
   const [tick,setTick]=usePTState(Date.now()),[logging,setLogging]=usePTState(false),[error,setError]=usePTState('');
-  const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[painAfter,setPainAfter]=usePTState(null),[skillRatings,setSkillRatings]=usePTState({}),[abandon,setAbandon]=usePTState(false),[menu,setMenu]=usePTState(false);
+  const [finishing,setFinishing]=usePTState(!!draft?.reviewing),[effort,setEffort]=usePTState(''),[liked,setLiked]=usePTState(null),[notes,setNotes]=usePTState(''),[painAfter,setPainAfter]=usePTState(null),[skillRatings,setSkillRatings]=usePTState({}),[shotTotals,setShotTotals]=usePTState({}),[abandon,setAbandon]=usePTState(false),[menu,setMenu]=usePTState(false);
   const wake=usePTRef(null),fired=usePTRef(new Set()),saved=usePTRef(false),segmentEnd=usePTRef(null),announce=usePTRef(null);
   const voice=data.preferences?.voice!==false,say=text=>{if(voice)ptSay(text);};
   const running=!!(draft?.status==='active'&&!finishing&&(draft.clockStarted||draft.stageStarted||draft.timer?.endAt||draft.blockTimer?.endAt));
@@ -175,16 +175,21 @@ function PTSession({data,update,go,notify}) {
   const quickRow=()=>{
     const target=String(exercise.targetMin||exercise.min||'');
     if(exercise.measure==='seconds')return {...row,seconds:row.seconds||String(exercise.seconds)};
+    // Lot 40 : tirs comme en muscu : « Fait » valide la série ; les réussis se notent à la fin.
+    if(exercise.measure==='shots')return {...row,attempts:row.attempts||String(exercise.targetMax||exercise.max||exercise.min||10),...(row.made===''||row.made==null?{made:'',later:true}:{})};
     if(exercise.measure==='reps'||exercise.measure==='contacts')return {...row,...(exercise.unilateral?{left:row.left||target,right:row.right||target}:{reps:row.reps||target}),weight:row.weight||String(PT.loadAdvice(exercise,data,draft.check)?.value??''),result:'passed',rir:''};
     return null;
   };
   const finish=()=>{
     if(saved.current)return;
     if(!effort){setError('Choisis ton ressenti de 1 à 10.');return;}
+    const badShot=Object.entries(shotTotals).find(([id,v])=>{if(v===''||v==null)return false;const att=(draft.entries[id]||[]).filter(r=>r.done).reduce((n,r)=>n+(Number(r.attempts)||0),0);return !(Number(v)>=0&&Number(v)<=att);});
+    if(badShot){setError('Tirs réussis : un nombre entre 0 et le nombre de tirs tentés.');return;}
     if(draft.source==='rehab'&&painAfter==null){setError('Indique ta douleur sur la zone, de 0 à 10.');return;}
     // Les routines guidées ne sont pas gardées en entier dans l'historique : seulement ce qui a été fait.
     const {warmupMoves,cooldownMoves,...kept}=draft;
-    const finished=PT.finishDraft({...kept,routines:{warmup:draft.warmupSkipped?[]:(warmupMoves||[]).map(e=>e.id),cooldown:draft.cooldownDone&&!draft.cooling?(cooldownMoves||[]).map(e=>e.id):[]}},{effort:Number(effort),liked,notes});
+    const SKx=window.BasketSkills,withShots=SKx&&SKx.applyShotTotals?SKx.applyShotTotals(kept,shotTotals):kept;
+    const finished=PT.finishDraft({...withShots,routines:{warmup:draft.warmupSkipped?[]:(warmupMoves||[]).map(e=>e.id),cooldown:draft.cooldownDone&&!draft.cooling?(cooldownMoves||[]).map(e=>e.id):[]}},{effort:Number(effort),liked,notes});
     if(finished.error){setError(finished.error);return;}
     // Soin intégré à une autre séance : la douleur après (facultative) fait aussi progresser son protocole.
     const cares=draft.source==='rehab'?[]:[...new Map(draft.exercises.filter(e=>e.pathwayRole==='soin'&&e.careProtocol).map(e=>[e.careProtocol,e.careLevel||0])).entries()];
@@ -230,6 +235,7 @@ function PTSession({data,update,go,notify}) {
       <section className="effort-picker stack"><h2>C’était comment ?</h2><div className="effort-scale" role="group" aria-label="Effort global de 1 à 10">{[1,2,3,4,5,6,7,8,9,10].map(n=><button key={n} aria-label={`Effort ${n} sur 10`} aria-pressed={Number(effort)===n} onClick={()=>setEffort(String(n))}>{n}</button>)}</div><div className="topline caption"><span>Très facile</span><span>Maximal</span></div>{effort&&<p className="fine">{Number(effort)>=8?'Bien reçu. Les prochaines propositions seront allégées.':'Bien reçu. Ce ressenti accompagnera tes résultats.'}</p>}</section>
       {draft.source==='rehab'&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
       {draft.source!=='rehab'&&draft.exercises.some(e=>e.pathwayRole==='soin')&&typeof PTRehabPainAfter==='function'&&<PTRehabPainAfter value={painAfter} onChange={setPainAfter}/>}
+      {typeof PTShotTotals==='function'&&<PTShotTotals draft={draft} value={shotTotals} onChange={setShotTotals}/>}
       {typeof PTSkillsRating==='function'&&<PTSkillsRating draft={draft} value={skillRatings} onChange={setSkillRatings}/>}
       <PTChoices value={liked} onChange={setLiked} options={[{value:true,label:'À refaire',icon:'heart'},{value:false,label:'Autre chose',icon:'shuffle'}]}/>
       {['amrap','emom'].includes(draft.format)&&<div className="form-grid"><PTField label={draft.format==='amrap'?'Tours réalisés':'Minutes de travail validées'} type="number" min="0" value={draft.rounds||''} onChange={e=>setDraft(d=>({...d,rounds:e.target.value}))}/><PTField label="Reps supplémentaires" type="number" min="0" value={draft.extraReps||''} onChange={e=>setDraft(d=>({...d,extraReps:e.target.value}))}/></div>}

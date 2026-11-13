@@ -255,10 +255,15 @@
       if(placeOf(e)!=='out'){out.push({...e,place:'in',placeStart:undefined});return;}
       if(e.skillBlock||e.skillArea){dropped.push(e.name);return;}
       const ids=plan.exercises.map(x=>x.id).concat(out.map(x=>x.id));
-      const alt=PT.alternatives?PT.alternatives(e,state,homeCheck,ids).find(x=>placeOf(x)==='in'&&(x.qualities||[]).some(q=>(e.qualities||[]).includes(q)))||PT.alternatives(e,state,homeCheck,ids).find(x=>placeOf(x)==='in'):null;
+      // Exercice d'alignement du genou : le remplaçant vient de la même liste (même objectif kiné).
+      const AL=e.kineSource==='alignment'?athleticLib():null,ctxH=PT.context?PT.context(state,homeCheck):undefined;
+      const fromList=AL&&AL.alignLists?[...(AL.alignLists.in||[]),...(AL.alignLists.out||[])].map(id=>PT.catalog.find(x=>x.id===id)).find(x=>x&&!ids.includes(x.id)&&placeOf(x)==='in'&&(!PT.allowed||PT.allowed(x,state,homeCheck,ctxH))&&((AL.alignLists.in||[]).includes(e.id)?(AL.alignLists.in||[]).includes(x.id):true)):null;
+      const alts=PT.alternatives?PT.alternatives(e,state,homeCheck,ids).filter(x=>placeOf(x)==='in'):[];
+      const alt=fromList||alts.find(x=>(x.qualities||[]).some(q=>(e.qualities||[]).includes(q)))||alts[0]||null;
       if(!alt){dropped.push(e.name);return;}
-      const p=PT.makePrescription?PT.makePrescription(alt,'classic',check.minutes||45,PT.context?PT.context(state,homeCheck):undefined):alt;
-      out.push({...p,sets:e.sets,rest:Math.max(e.rest||0,p.rest||0),pathwayRole:e.pathwayRole,primer:e.primer,key:e.key,place:'in',swappedFrom:e.id});swapped.push(`${e.name} → ${alt.name}`);
+      const p=PT.makePrescription?PT.makePrescription(alt,'classic',check.minutes||45,ctxH):alt;
+      const keep={};['pathwayRole','primer','key','kineSource','careProtocol','careLevel','careRegion','sideNote','weakSide','coreFinisher','architect'].forEach(k=>{if(e[k]!==undefined)keep[k]=e[k];});
+      out.push({...p,sets:e.sets,rest:Math.max(e.rest||0,p.rest||0),...keep,place:'in',swappedFrom:e.id});swapped.push(`${e.name} → ${alt.name}`);
     });
     if(!swapped.length&&!dropped.length) return {...plan,exercises:out,placeMoves:0};
     const skills=plan.exercises.filter(e=>e.skillBlock).length;

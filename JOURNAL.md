@@ -2,6 +2,19 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-14 — Lot 40 « skills » : gêne, fatigue, paliers, tirs notés en fin de séance, bibliothèque par thème (v96)
+
+**Constat** (dossier réel) : paliers Fondations dans 6 domaines sur 7 (questionnaire du 13/10), aucune séance skills enregistrée (donc aucune montée), les 12 exercices « intensité match » jamais dans les séances skills normales, et surtout la gêne à 1/10 genou/hanche retirait 95 exercices skills sur 130 (toutes les finitions) : la règle « gêne ≠ blessure » du lot 32 n'était pas appliquée aux skills.
+
+**Fait** (branche `feature/lot40-skills`) :
+- `SK.painRegions` : seules les douleurs > 2/10 (ou une gêne qui a empiré un lendemain, 2 derniers jours) retirent des exercices skills et l'intensité match.
+- Chaque séance skills finit sous fatigue (Fondations : lancers francs fatigué ; au-delà : un exercice intensité match du palier), sauf version légère.
+- Montée de palier après UNE séance « trop facile » (≥ 70 % de tirs) ; descente toujours après deux « trop dur ». Paliers réglables à la main par domaine (Mes skills).
+- Tirs comme en muscu : « Fait » valide la série (row.later) ; en fin de séance, « Tes tirs » demande les réussis par exercice (sur le total tenté), répartis sur les séries (`SK.applyShotTotals`) ; non notés = ignorés pour le palier.
+- Bibliothèque : groupes repliables par thème (motif), le basket par domaine puis par palier ; ouverts dès qu'un filtre est actif. ~2 écrans au lieu de ~90.
+- Remplacement « maison » (lot 39) : garde le rôle kiné / soin / alignement et choisit dans la liste d'alignement.
+- Tests : 4 nouveaux ; skills mis à jour ; suite 239 OK ; KO connus (accueil 375×667, poids-tir) + 2 tests instables en parallèle (QI basket-return:132, coach:191), verts seuls.
+
 ## 2026-11-13 — Lot 39 « un lieu par séance » : terrain loin de chez soi (v95)
 
 **Demande** : les terrains sont à ~20 min en voiture ; terrain puis maison dans la même séance = impossible (motivation, matériel à réinstaller). Il faut séparer complètement extérieur et intérieur avec charges.

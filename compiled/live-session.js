@@ -168,6 +168,7 @@ function PTSession({
     [notes, setNotes] = usePTState(''),
     [painAfter, setPainAfter] = usePTState(null),
     [skillRatings, setSkillRatings] = usePTState({}),
+    [shotTotals, setShotTotals] = usePTState({}),
     [abandon, setAbandon] = usePTState(false),
     [menu, setMenu] = usePTState(false);
   const wake = usePTRef(null),
@@ -569,6 +570,15 @@ function PTSession({
       ...row,
       seconds: row.seconds || String(exercise.seconds)
     };
+    // Lot 40 : tirs comme en muscu : « Fait » valide la série ; les réussis se notent à la fin.
+    if (exercise.measure === 'shots') return {
+      ...row,
+      attempts: row.attempts || String(exercise.targetMax || exercise.max || exercise.min || 10),
+      ...(row.made === '' || row.made == null ? {
+        made: '',
+        later: true
+      } : {})
+    };
     if (exercise.measure === 'reps' || exercise.measure === 'contacts') return {
       ...row,
       ...(exercise.unilateral ? {
@@ -589,6 +599,15 @@ function PTSession({
       setError('Choisis ton ressenti de 1 à 10.');
       return;
     }
+    const badShot = Object.entries(shotTotals).find(([id, v]) => {
+      if (v === '' || v == null) return false;
+      const att = (draft.entries[id] || []).filter(r => r.done).reduce((n, r) => n + (Number(r.attempts) || 0), 0);
+      return !(Number(v) >= 0 && Number(v) <= att);
+    });
+    if (badShot) {
+      setError('Tirs réussis : un nombre entre 0 et le nombre de tirs tentés.');
+      return;
+    }
     if (draft.source === 'rehab' && painAfter == null) {
       setError('Indique ta douleur sur la zone, de 0 à 10.');
       return;
@@ -599,8 +618,10 @@ function PTSession({
       cooldownMoves,
       ...kept
     } = draft;
+    const SKx = window.BasketSkills,
+      withShots = SKx && SKx.applyShotTotals ? SKx.applyShotTotals(kept, shotTotals) : kept;
     const finished = PT.finishDraft({
-      ...kept,
+      ...withShots,
       routines: {
         warmup: draft.warmupSkipped ? [] : (warmupMoves || []).map(e => e.id),
         cooldown: draft.cooldownDone && !draft.cooling ? (cooldownMoves || []).map(e => e.id) : []
@@ -765,6 +786,10 @@ function PTSession({
   }), draft.source !== 'rehab' && draft.exercises.some(e => e.pathwayRole === 'soin') && typeof PTRehabPainAfter === 'function' && /*#__PURE__*/React.createElement(PTRehabPainAfter, {
     value: painAfter,
     onChange: setPainAfter
+  }), typeof PTShotTotals === 'function' && /*#__PURE__*/React.createElement(PTShotTotals, {
+    draft: draft,
+    value: shotTotals,
+    onChange: setShotTotals
   }), typeof PTSkillsRating === 'function' && /*#__PURE__*/React.createElement(PTSkillsRating, {
     draft: draft,
     value: skillRatings,

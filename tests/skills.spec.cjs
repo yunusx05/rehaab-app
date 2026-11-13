@@ -77,8 +77,11 @@ test('skills : blocs après muscu haut du corps, footing et jambes ; rien les jo
 test('skills : progression par les tirs et le ressenti, redescente si trop dur',()=>{
   let s=player().skills;s.levels.shoot=2;
   const sess=(made)=>({id:PT.uid(),date:PT.dateKey(),exercises:[{id:'sk-catch-3',skillArea:'shoot',measure:'shots'}],entries:{'sk-catch-3':[{done:true,made,attempts:25}]}});
-  let r=SK.record(s,sess(19));expect(r.changes).toEqual([]);
-  r=SK.record(r.skills,sess(20));expect(r.skills.levels.shoot).toBe(3);
+  // Lot 40 : une seule séance « trop facile » (≥ 70 %) suffit pour monter.
+  let r=SK.record(s,sess(15));expect(r.changes).toEqual([]);
+  r=SK.record(r.skills,sess(19));expect(r.skills.levels.shoot).toBe(3);
+  // Tirs validés sans nombre de réussis : ne comptent pas.
+  const blank=SK.record(r.skills,{...sess(''),entries:{'sk-catch-3':[{done:true,made:'',attempts:25,later:true}]}});expect(blank.skills.log.slice(-1)[0].attempts).toBe(0);
   r=SK.record(r.skills,{...sess(10)},{shoot:'hard'});r=SK.record(r.skills,sess(8),{shoot:'hard'});
   expect(r.skills.levels.shoot).toBe(2);
 });
@@ -128,4 +131,52 @@ test('skills : la bibliothèque les montre dans l’onglet Basket',async({page})
   await page.getByRole('button',{name:'Basket',exact:true}).click();
   const n=Number((await page.locator('.library-count').innerText()).match(/\d+/)[0]);
   expect(n).toBeGreaterThanOrEqual(SK.drills.length);
+});
+
+test('lot 40 : gêne à 1/10 : les finitions et le travail des jambes restent proposés ; séance finie sous fatigue',()=>{
+  const data=player();data.symptoms=[{id:'k',region:'knee',severity:1,active:true,side:'right',onset:'known',redFlags:false,note:'',date:PT.dateKey(),followups:[]}];
+  data.skills.levels={handle:2,coordination:2,shoot:2,finish:3,footwork:2,defense:2,moves:2};data.skills.hoopDate=PT.dateKey();
+  expect(SK.painRegions(data)).toEqual([]);
+  expect(SK.pick(data,{area:'finish',count:5,hoop:true}).length).toBeGreaterThan(2);
+  const plan=SK.session(PT,data,{minutes:60});
+  expect(plan.error).toBeUndefined();
+  expect(plan.exercises.some(e=>e.tiredFinisher)).toBe(true);
+  // Vraie douleur (4/10) : la zone est de nouveau protégée.
+  data.symptoms[0].severity=4;expect(SK.painRegions(data)).toEqual(['knee']);
+});
+
+test('lot 40 : réussis notés en fin de séance, répartis sur les séries faites',()=>{
+  const d={entries:{a:[{done:true,attempts:'10',made:'',later:true},{done:true,attempts:'10',made:'',later:true},{done:false,attempts:'10',made:''}]}};
+  const out=SK.applyShotTotals(d,{a:'13'});
+  expect(out.entries.a.map(r=>r.made)).toEqual(['10','3','']);
+  expect(PT.validateRow({attempts:'10',made:'',later:true},{measure:'shots'})).toBe('');
+  expect(PT.validateRow({attempts:'10',made:''},{measure:'shots'})).not.toBe('');
+});
+
+test('lot 40 : fin de séance skills : « Tes tirs » se remplit une fois, les réussis sont enregistrés',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.setViewportSize({width:390,height:844});
+  const data=player();data.skills.hoopDate=PT.dateKey();
+  const plan=SK.session(PT,data,{minutes:45});
+  const shot=plan.exercises.find(e=>e.measure==='shots');expect(shot).toBeTruthy();
+  const d=PT.startDraft(plan,data);
+  Object.values(d.entries).forEach(rows=>rows.forEach(r=>{r.done=true;}));
+  d.entries[shot.id]=d.entries[shot.id].map(r=>({...r,done:true,attempts:'10',made:'',later:true}));
+  Object.assign(d,{ready:true,warmupDone:true,reviewing:true,clockStarted:null,stageStarted:null,elapsedBase:1800,timer:null,cooldownDone:true});
+  data.draft=d;
+  await seed(page,data,'session');
+  const total=d.entries[shot.id].length*10;
+  const input=page.getByLabel(new RegExp(`Tirs réussis, .*sur ${total}`)).first();
+  await expect(input).toBeVisible();
+  await input.fill(String(total+5));
+  await page.getByRole('button',{name:'Effort 6 sur 10'}).click();
+  await page.getByRole('button',{name:/Enregistrer ma séance/}).click();
+  await expect(page.getByText(/entre 0 et le nombre de tirs tentés/)).toBeVisible();
+  await input.fill('7');
+  await page.getByRole('button',{name:/Enregistrer ma séance/}).click();
+  await page.waitForTimeout(800);
+  const saved=await state(page);
+  const s=saved.sessions.slice(-1)[0];
+  expect(s.entries[shot.id].reduce((n,r)=>n+(Number(r.made)||0),0)).toBe(7);
+  expect(errors).toEqual([]);
 });

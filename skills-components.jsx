@@ -31,8 +31,9 @@ function PTSkillsHome({data,update,go,notify}){
     </section>
     {SK.matchSession&&<PTMatchIntensityCard data={data} update={update} go={go} notify={notify} day={day}/>}
     <section className="stack"><h3>Mes paliers</h3>
-      <div className="home-options">{Object.entries(SK.areas).map(([id,a])=><div key={id} className="home-action"><PTIcon name="basket"/><span><strong>{a.label} · {SK.TIERS[s.levels[id]-1]}</strong><small>{a.style?`Inspiration ${a.style} · `:''}{a.why}</small></span></div>)}</div>
-      <p className="fine">Tu montes d’un palier après deux séances « trop facile » (ou 70 % de tirs réussis), tu redescends après deux « trop dur » (ou moins de 35 %).</p>
+      {/* Lot 40 : le joueur peut corriger lui-même son palier quand l'app se trompe. */}
+      <div className="skill-levels">{Object.entries(SK.areas).map(([id,a])=><div key={id} className="skill-level-row"><span><strong>{a.label}</strong><small>{a.why}</small></span><PTChips value={s.levels[id]} onChange={v=>{setSkills(x=>({...x,levels:{...x.levels,[id]:v}}));notify(`${a.label} : palier ${SK.TIERS[v-1].toLowerCase()}.`);}} options={SK.TIERS.map((label,i)=>({value:i+1,label}))}/></div>)}</div>
+      <p className="fine">Tu montes d’un palier dès qu’une séance est « trop facile » (ou 70 % de tirs réussis), tu redescends après deux « trop dur » (ou moins de 35 %). Tu peux aussi choisir ton palier toi-même.</p>
     </section>
     <section className="stack-sm"><h3>Mes priorités</h3><ul className="reason-list">{prio.map(p=><li key={p.id}>{p.label} · {SK.areas[p.area].short.toLowerCase()}</li>)}</ul></section>
     <section className="stack"><h3>Mon programme skills</h3>
@@ -108,6 +109,14 @@ function PTSkillsHoop({data,update,plan}){
 }
 
 // Fin de séance : ressenti par domaine, il fait évoluer les paliers avec les tirs notés.
+// Lot 40 : les tirs se notent une fois, en fin de séance (« sur 30 tirs, j'en ai mis 18 »), pas pendant l'effort.
+function PTShotTotals({draft,value,onChange}){
+  const list=(draft.exercises||[]).filter(e=>e.measure==='shots').map(e=>({e,att:(draft.entries[e.id]||[]).filter(r=>r.done).reduce((n,r)=>n+(Number(r.attempts)||0),0),pending:(draft.entries[e.id]||[]).some(r=>r.done&&r.later)})).filter(x=>x.att>0&&x.pending);
+  if(!list.length)return null;
+  return <section className="stack-sm shot-totals"><h2>Tes tirs</h2><p className="fine">Combien tu en as mis, au total, pour chaque exercice ? Laisse vide si tu n'as pas compté.</p>
+    {list.map(({e,att})=>{const v=value[e.id]??'',bad=v!==''&&(Number(v)<0||Number(v)>att);return <label key={e.id} className="shot-total-row"><span><strong>{e.name}</strong><small>{att} tirs tentés</small></span><span className="shot-total-input"><input type="number" inputMode="numeric" min="0" max={att} step="1" value={v} aria-label={`Tirs réussis, ${e.name}, sur ${att}`} onChange={ev=>onChange({...value,[e.id]:ev.target.value})}/><small>/ {att}</small></span>{bad&&<small className="error">Entre 0 et {att}.</small>}</label>;})}
+  </section>;
+}
 function PTSkillsRating({draft,value,onChange}){
   const SK=window.BasketSkills;
   const list=[...new Set((draft.exercises||[]).map(e=>e.skillArea).filter(Boolean))];
