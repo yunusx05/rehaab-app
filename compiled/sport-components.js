@@ -221,16 +221,20 @@ function PTSportToday({
     onClick: () => go('profile')
   }, data.profile.name?.slice(0, 1).toUpperCase() || /*#__PURE__*/React.createElement(PTIcon, {
     name: "profile"
-  }))), symptoms.length > 0 && /*#__PURE__*/React.createElement("button", {
-    className: "constraint-strip",
-    onClick: () => go('symptoms')
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "pain",
-    size: 18
-  }), /*#__PURE__*/React.createElement("span", null, ctx.active.blocked ? 'Fais le point avant de démarrer' : symptoms.map(s => PT.regions[s.region]).join(' · ') + ' : séance adaptée'), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 16
-  })), typeof PTDoneToday === 'function' && /*#__PURE__*/React.createElement(PTDoneToday, {
+  }))), symptoms.length > 0 && (() => {
+    const gene = !ctx.active.blocked && symptoms.every(s => Number(s.severity) <= 2);
+    // Lot 34 : une simple gêne (2/10 ou moins) ne change presque rien à la séance : rappel discret au lieu d'un bandeau d'alerte.
+    return /*#__PURE__*/React.createElement("button", {
+      className: `constraint-strip${gene ? ' is-quiet' : ''}`,
+      onClick: () => go('symptoms')
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: "pain",
+      size: gene ? 16 : 18
+    }), /*#__PURE__*/React.createElement("span", null, ctx.active.blocked ? 'Fais le point avant de démarrer' : gene ? 'Gêne légère · ' + symptoms.map(s => PT.regions[s.region]).join(' · ') : symptoms.map(s => PT.regions[s.region]).join(' · ') + ' : séance adaptée'), /*#__PURE__*/React.createElement(PTIcon, {
+      name: "arrow",
+      size: 16
+    }));
+  })(), typeof PTDoneToday === 'function' && /*#__PURE__*/React.createElement(PTDoneToday, {
     data: data,
     go: go
   }), typeof PTWeekReview === 'function' && /*#__PURE__*/React.createElement(PTWeekReview, {

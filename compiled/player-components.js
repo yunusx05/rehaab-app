@@ -519,6 +519,19 @@ function PTRadarBlock({
     weak = rows.filter(q => q.level === 0).length,
     summary = [strong ? `${strong} point${strong > 1 ? 's' : ''} fort${strong > 1 ? 's' : ''}` : '', weak ? `${weak} à travailler` : ''].filter(Boolean).join(' · ') || 'Niveau correct partout';
   const levelText = q => q.level === null || q.level === undefined ? 'pas évalué' : q.levelLabel.toLowerCase();
+  // Lot 34 : sans aucune mesure, pas de toile vide : une seule ligne qui mène au bilan.
+  if (!any) return /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    className: "radar-block is-empty sport-reveal",
+    onClick: () => go('card'),
+    "aria-label": "Ma progression : faire mon bilan"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "chart",
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ma progression"), /*#__PURE__*/React.createElement("small", null, "Fais ton bilan : ta carte joueur se remplit.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 16
+  }));
   return /*#__PURE__*/React.createElement("button", {
     type: "button",
     className: "radar-block sport-reveal",
