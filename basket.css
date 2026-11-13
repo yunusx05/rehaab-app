@@ -523,3 +523,17 @@
 .pick-layer .pick-zone{fill-opacity:.12}.pick-layer .pick-zone.selected{fill-opacity:1}.pick-chips{flex-wrap:wrap;justify-content:center}.pick-chips .fine{text-align:center;margin:0}
 .mishap .choice{text-align:left;justify-items:start}.match-intensity strong{font-size:1.1rem}.match-intensity .chips{flex-wrap:wrap}
 .pick-hit{fill:transparent;stroke:none;pointer-events:all;cursor:pointer;outline:none}.pick-hit:focus-visible{stroke:var(--accent);stroke-width:1.5}
+
+/* Lot 33 · Plan épuré : la séance d'abord, outils compacts, gestion repliée */
+.plan-week>.mini-progress{margin-top:-.4rem}
+.pathway-day.is-main{border:1px solid #c3e65a40}
+.pathway-day.is-compact{padding:.85rem 1rem}
+.pathway-day .exercise-summary{align-items:center}
+.pathway-day-go{margin-left:auto;flex:none;min-width:44px;min-height:44px;border-radius:50%;background:var(--raised);color:var(--text)}
+.pathway-day-go:hover{color:var(--accent)}
+.plan-arsenal .image-tile{min-height:112px;border-radius:16px}
+.plan-arsenal .image-tile-body{padding:.75rem}
+.plan-arsenal .image-tile-body strong{font-size:.92rem}
+.plan-arsenal .image-tile-body small{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.plan-manage>div{padding-top:.6rem}
+.plan-arsenal .image-tile:last-child:nth-child(odd){grid-column:1/-1}

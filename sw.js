@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v88-joueur-actif';
+const CACHE = 'rehaab-v89-plan-epure';
 const PRECACHE = [
   './',
   './index.html',

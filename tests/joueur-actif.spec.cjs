@@ -65,7 +65,7 @@ test('écran du parcours : passer directement à l’étape 3',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('s')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('s','1');}},{data:d,key:PT.STORAGE_KEY});
   await page.goto('/#pathway');
-  await page.getByText('Aller directement à une autre étape').click();
+  await page.getByText('Gérer le parcours').click();
   await page.getByRole('button',{name:'Étape 3 · Puissance'}).click();
   await expect(page.getByRole('heading',{name:/Puissance/}).first()).toBeVisible();
   await page.waitForTimeout(400);
