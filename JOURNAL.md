@@ -2,6 +2,12 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-13 — Lot 37 « dossier réel » : corrections tirées de l'export de l'utilisateur (v93)
+
+**Constat** (export `../donées/rehaab-2026-11-13.json`, lu en local uniquement, jamais commité) : parcours à l'étape 2 (Force), gênes à 1/10, semaine type lun/mer/ven Muscu, mar/sam Skills, jeu Shooting, dim Repos, club mar et jeu, durée max 60 min. Les impacts étaient autorisés : le « cardio sans impact » venait du planning — le cardio n'allait que sur les jours Muscu (jambes lourdes) ou tombait sur les jours de club (pas d'impacts en plus) → vélo en doublon du club. Le mélange intérieur/extérieur restant venait du bloc skills (dribble, besoin « ballon » seulement) placé en fin de séance.
+
+**Fait** : le cardio va aussi les jours « Skills » et « Shooting » ; chaque entraînement de club compte comme un cardio (voulu − entraînements, au moins 1) → sa semaine : navettes/sable le samedi, plus de vélo sur les jours de club ; réglage renommé « Cardio / semaine, club compris ». Bloc skills rangé « Sur le terrain » (avec soin, sprints) → un seul aller-retour. Message raccourci. Tests : cardio mis à jour + 1 nouveau ; suite 231 OK, 2 KO connus.
+
 ## 2026-11-13 — Lot 36 « Terrain d'abord » : une seule sortie par séance (v92)
 
 **Demande** : séances qui mélangent intérieur et extérieur (soin à la maison, sprints dehors, puis retour maison) : trop compliqué ; regrouper tout l'extérieur.

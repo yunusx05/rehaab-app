@@ -75,7 +75,7 @@ function PTCalendar({data,update,go,notify}){
           <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setMode(SP.at(monday,i),e.target.value,true)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
           <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique.</p>
           <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
-          {BC&&<div className="topline"><span className="fine">Cardio (navettes, corde, course) / semaine</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
+          {BC&&<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
           {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
             :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
         </div>
