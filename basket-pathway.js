@@ -221,7 +221,8 @@
     const g=typeof globalThis!=='undefined'?globalThis:{};
     const lib=n=>g[n]||(()=>{try{return typeof require==='function'?require(n==='BasketSkills'?'./basket-skills.js':'./training-load.js'):null;}catch(e){return null;}})();
     const SK=lib('BasketSkills'),TLs=lib('TrainingLoad');
-    if(!SK||!plan||plan.error||!state.skills) return plan;
+    // Lot 39 : terrain loin : pas de bloc dribble dans une séance à la maison, il a ses jours de terrain.
+    if(!SK||!plan||plan.error||!state.skills||courtAway(state)) return plan;
     const day=TLs?TLs.day(state,date):null;
     if(day&&(day.club.today.any)) return plan;
     // Lot 38 : le bloc skills prend le temps qui reste sous ta durée maximale (dossier), 10 min au moins.
@@ -241,8 +242,36 @@
   const anywhere=e=>(e.needs||['bodyweight']).every(n=>CARRY.includes(n));
   // Équivalent sans banc, pour finir la séance sur le terrain au lieu de rentrer pour un seul exercice.
   const COURT_SWAP={copenhagen:'side-lying-adduction','copenhagen-long':'side-lying-adduction'};
+  // Lot 39 : terrain loin de chez soi (réglage par défaut). Une séance = un seul lieu, jamais d'aller-retour en voiture.
+  const courtAway=state=>!(state&&state.calendar&&state.calendar.courtNear===true);
+  const courtSession=plan=>['skills','shooting','cardio'].includes(plan.source)||plan.source==='quick'&&/vivacit/i.test(plan.title||'');
+  const HOME_NOTE=/^(Séance à la maison|Séance au terrain)/;
+  // Séance à la maison : ce qui demande le terrain est remplacé par un exercice sur place du même geste (sinon retiré). Le dribble reste pour les jours de terrain.
+  function homeOnly(PT,state,plan){
+    const check=plan.check||state.checkIn||{},homeEq=(check.equipment||state.owned||['bodyweight']).filter(n=>!OUTSIDE.includes(n));
+    const homeCheck={...check,equipment:homeEq.length?homeEq:['bodyweight']};
+    const out=[],swapped=[],dropped=[];
+    plan.exercises.forEach(e=>{
+      if(placeOf(e)!=='out'){out.push({...e,place:'in',placeStart:undefined});return;}
+      if(e.skillBlock||e.skillArea){dropped.push(e.name);return;}
+      const ids=plan.exercises.map(x=>x.id).concat(out.map(x=>x.id));
+      const alt=PT.alternatives?PT.alternatives(e,state,homeCheck,ids).find(x=>placeOf(x)==='in'&&(x.qualities||[]).some(q=>(e.qualities||[]).includes(q)))||PT.alternatives(e,state,homeCheck,ids).find(x=>placeOf(x)==='in'):null;
+      if(!alt){dropped.push(e.name);return;}
+      const p=PT.makePrescription?PT.makePrescription(alt,'classic',check.minutes||45,PT.context?PT.context(state,homeCheck):undefined):alt;
+      out.push({...p,sets:e.sets,rest:Math.max(e.rest||0,p.rest||0),pathwayRole:e.pathwayRole,primer:e.primer,key:e.key,place:'in',swappedFrom:e.id});swapped.push(`${e.name} → ${alt.name}`);
+    });
+    if(!swapped.length&&!dropped.length) return {...plan,exercises:out,placeMoves:0};
+    const skills=plan.exercises.filter(e=>e.skillBlock).length;
+    const note=`Séance à la maison, sans passer par le terrain${swapped.length?` : ${swapped.join(', ')}`:''}${dropped.length?`. Retiré ici, fait au terrain${skills?' (dribble, sprints)':''} : ${dropped.length} exercice${dropped.length>1?'s':''}`:''}. Les sprints et le dribble ont leurs jours de terrain (vivacité, navettes, skills, club).`;
+    const est=PT.estimateSeconds?Math.round(PT.estimateSeconds(out,'classic')/60)+Math.round((plan.warmupSeconds||0)/60):plan.estimatedMinutes;
+    return {...plan,exercises:out,placeMoves:0,homeOnly:true,skillBlockMinutes:skills?0:plan.skillBlockMinutes,estimatedMinutes:Math.min(plan.estimatedMinutes||est,est),reasons:[...(plan.reasons||[]).filter(r=>!/^(Bloc explosivité en début de séance|Terrain d’abord|Soin de la zone d’abord|Toute la séance sur le terrain|Bloc skills)/.test(r)&&!HOME_NOTE.test(r)),note]};
+  }
   function groupByPlace(PT,state,plan,{pull=e=>e.primer||['kiné','soin','vivacité'].includes(e.pathwayRole)}={}){
     if(!plan||plan.error||!(plan.exercises||[]).length) return plan;
+    if(courtAway(state)){
+      if(courtSession(plan)) return {...plan,exercises:plan.exercises.map(e=>({...e,place:'out',placeStart:undefined})),placeMoves:0};
+      return homeOnly(PT,state,plan);
+    }
     const hasOut=plan.exercises.some(e=>placeOf(e)==='out');
     let ex=plan.exercises.map(e=>({...e,place:placeOf(e)==='out'||hasOut&&anywhere(e)&&pull(e)?'out':'in'}));
     // Lot 38 : si tout ce qui reste ne demande que le poids du corps ou un élastique (abdos, gainage, mobilité), on ne rentre pas : toute la séance sur le terrain.
@@ -268,7 +297,7 @@
   // Lot 38 : Vivacité prévue le même jour qu'une séance du parcours : elle rejoint le bloc terrain de cette séance (un seul passage sur le terrain).
   // La séance garde withVivacite : le planning coche alors la Vivacité du jour comme faite.
   function withVivacite(PT,PP,state,plan){
-    if(!plan||plan.error||plan.withVivacite) return plan;
+    if(!plan||plan.error||plan.withVivacite||courtAway(state)) return plan;
     const v=quickPlan(PT,PP,state,'vivacite');if(!v||v.error) return plan;
     // Seulement ce que la séance n'a pas déjà (le bloc explosivité couvre une partie de la vivacité), 2 exercices au plus : la journée reste dans ta durée.
     const add=v.exercises.filter(e=>!plan.exercises.some(x=>x.id===e.id||x.primer&&x.pattern===e.pattern)).slice(0,2).map(e=>({...e,pathwayRole:'vivacité'}));
@@ -543,5 +572,5 @@
     return groupByPlace(PT,state,{id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()},{pull:()=>true});
   }
 
-  return {steps,tests,ladder,quick,group,groupByPlace,placeOf,withVivacite,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
+  return {steps,tests,ladder,quick,group,groupByPlace,placeOf,withVivacite,courtAway,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
 });

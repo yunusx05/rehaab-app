@@ -295,7 +295,37 @@ function PTCalendar({
       value: n,
       label: String(n)
     }))
-  })), BC && /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Terrain de basket"), /*#__PURE__*/React.createElement(PTChips, {
+    value: !!(data.calendar && data.calendar.courtNear),
+    onChange: v => update(s => ({
+      ...s,
+      calendar: {
+        ...(SP.validateCalendar(s.calendar) || {
+          moves: {},
+          skips: {},
+          forced: {},
+          week: {},
+          dates: {},
+          excused: null,
+          rain: []
+        }),
+        courtNear: v
+      }
+    })),
+    options: [{
+      value: false,
+      label: 'Loin de chez moi'
+    }, {
+      value: true,
+      label: 'À côté'
+    }]
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, data.calendar && data.calendar.courtNear ? 'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.' : 'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'), BC && /*#__PURE__*/React.createElement("div", {
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
     className: "fine"

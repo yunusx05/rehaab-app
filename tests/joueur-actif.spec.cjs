@@ -7,7 +7,7 @@ const BC=require('../basket-cardio.js');
 
 const home=['bodyweight','dumbbells','kettlebell','barbell','bench','bands','bike','court','hoop','rope'];
 function player(pains=[]){
-  const d=PT.initialState();d.profile.onboarded=true;d.profile.experience='returning';d.owned=home;d.checkIn.equipment=home;
+  const d=PT.initialState();d.calendar={courtNear:true};d.profile.onboarded=true;d.profile.experience='returning';d.owned=home;d.checkIn.equipment=home;
   d.player=JP.validatePlayer({position:'ailier',archetypes:['slasher'],layoff:'long'});
   d.symptoms=pains.map((p,i)=>({id:`s${i}`,side:'right',onset:'known',redFlags:false,note:'',date:PT.dateKey(),active:true,followups:[],...p}));
   return d;
@@ -125,4 +125,34 @@ test('lot 38 : Vivacité du même jour fusionnée dans le bloc terrain, puis coc
     const w=SP.weekSchedule(done,monday,viva.date);
     expect(w.days.flatMap(x=>x.items).find(x=>x.type==='vivacite').status).toBe('done');
   }
+});
+
+test('lot 39 : terrain loin (réglage par défaut) : séance du parcours à la maison sans rien qui demande le terrain',()=>{
+  const d=player([{region:'knee',severity:1}]);d.calendar=null; // pas de réglage = terrain loin
+  expect(BP.courtAway(d)).toBe(true);
+  for(const step of [1,2,3,4,5]) for(const day of BP.stepById(step).days){
+    const plan=BP.sessionPlan(PT,JP,d,{...BP.create(),step},day.key);
+    if(plan.error) continue;
+    expect(plan.exercises.filter(e=>BP.placeOf(e)==='out').map(e=>e.id),`${step}${day.key}`).toEqual([]);
+    expect(plan.exercises.some(e=>e.skillBlock),`${step}${day.key}`).toBe(false);
+    expect(plan.exercises.length,`${step}${day.key}`).toBeGreaterThan(4);
+  }
+  // Vivacité, séance de terrain : intacte.
+  const v=BP.quickPlan(PT,JP,d,'vivacite');
+  expect(v.exercises.every(e=>e.place==='out')).toBe(true);
+  // Pas de fusion de la vivacité dans une séance à la maison.
+  const a=BP.sessionPlan(PT,JP,d,{...BP.create(),step:3},'A');
+  expect(BP.withVivacite(PT,JP,d,a)).toBe(a);
+});
+
+test('lot 39 : terrain loin : le planning met vivacité et navettes un jour de terrain, jamais un jour muscu ni un jour de club',()=>{
+  const SP=require('../season-plan.js');global.BasketPathway=BP;
+  const d=player([]);d.calendar={week:{0:'muscu',1:'skills',2:'muscu',3:'shooting',4:'muscu',5:'skills',6:'off'}};
+  d.basketProfile={practiceDays:[1,3]};d.cardio={perWeek:3,chosen:true};d.pathway={...BP.create(),step:3};
+  const monday='2026-11-16',w=SP.weekSchedule(d,monday,monday);
+  const all=w.days.flatMap(x=>x.items.map(i=>({...i,mode:x.mode,club:x.club.practice})));
+  const court=all.filter(i=>i.type==='vivacite'||i.type==='cardio'&&['court','sand'].includes(i.kind));
+  expect(court.length).toBeGreaterThan(0);
+  court.forEach(i=>{expect(i.mode).not.toBe('muscu');});
+  all.filter(i=>i.type==='cardio').forEach(i=>expect(i.club).toBe(false));
 });

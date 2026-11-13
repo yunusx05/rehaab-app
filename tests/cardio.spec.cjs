@@ -163,6 +163,9 @@ test('fréquence au choix : 0 retire le cardio, 1 alterne corde et course d’un
   const a=items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.type==='cardio'),b=items(SP.weekSchedule(s,SP.at(MONDAY,7),SP.at(MONDAY,7))).filter(x=>x.type==='cardio');
   expect(a.length).toBe(1);expect(b.length).toBe(1);
   expect(a[0].kind).not.toBe(b[0].kind);
+  // Lot 39 : avec un terrain, l'unique cardio = les navettes basket, chaque semaine.
+  const c={...s,owned:[...s.owned,'court']};
+  expect(BC.weekKinds(1,MONDAY,c)).toEqual(['court']);
 });
 
 test('le joueur garde la main : déplacement avec alerte, retour au choix automatique',()=>{
@@ -216,5 +219,6 @@ test('lot 37 : les entraînements de club comptent comme du cardio ; un jour « 
   const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
   expect(cardio.length).toBe(1);
   expect(cardio[0].legs).toBe('impact');
-  expect(cardio[0].day).toBe(5);
+  // Lot 39 : jamais un jour de club (mardi, jeudi) ; sans terrain dans le matériel, la corde peut se faire à la maison.
+  expect([1,3]).not.toContain(cardio[0].day);
 });
