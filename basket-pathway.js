@@ -224,7 +224,10 @@
     if(!SK||!plan||plan.error||!state.skills) return plan;
     const day=TLs?TLs.day(state,date):null;
     if(day&&(day.club.today.any)) return plan;
-    return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date});
+    // Lot 38 : le bloc skills prend le temps qui reste sous ta durée maximale (dossier), 10 min au moins.
+    const max=Number(state.dossier&&state.dossier.answers&&state.dossier.answers.maxMinutes)||0;
+    const room=max?Math.max(10,Math.min(20,max-(plan.estimatedMinutes||DEFAULT_MINUTES))):undefined;
+    return SK.withBlock(PT,state,plan,{protectLegs:!!(day&&day.protectLegs),date,minutes:room});
   }
   // Lot 36 : une seule sortie. Ce qui se fait dehors ou sur le terrain (sprints, navettes, skills au panier) forme un seul bloc,
   // fait en premier après l'échauffement (frais, et sans aller-retour maison → terrain → maison). Le reste suit à l'intérieur.
@@ -234,12 +237,23 @@
   const placeOf=e=>(e&&(e.skillBlock||e.skillArea||(e.needs||[]).some(n=>OUTSIDE.includes(n))))?'out':'in';
   // « Transportable » (poids du corps, élastique) : le soin, le bloc kiné et le bloc explosivité suivent le bloc terrain.
   // Ils gardent leur ordre : soin et kiné d'abord (préparer genou et cheville), puis les sprints, sans couper la séance en deux.
-  const anywhere=e=>(e.needs||['bodyweight']).every(n=>n==='bodyweight'||n==='bands');
-  function groupByPlace(PT,state,plan,{pull=e=>e.primer||['kiné','soin'].includes(e.pathwayRole)}={}){
+  const CARRY=['bodyweight','bands','miniband','sliders','ball','rope','cones'];
+  const anywhere=e=>(e.needs||['bodyweight']).every(n=>CARRY.includes(n));
+  // Équivalent sans banc, pour finir la séance sur le terrain au lieu de rentrer pour un seul exercice.
+  const COURT_SWAP={copenhagen:'side-lying-adduction','copenhagen-long':'side-lying-adduction'};
+  function groupByPlace(PT,state,plan,{pull=e=>e.primer||['kiné','soin','vivacité'].includes(e.pathwayRole)}={}){
     if(!plan||plan.error||!(plan.exercises||[]).length) return plan;
     const hasOut=plan.exercises.some(e=>placeOf(e)==='out');
-    const ex=plan.exercises.map(e=>({...e,place:placeOf(e)==='out'||hasOut&&anywhere(e)&&pull(e)?'out':'in'}));
-    if(!ex.some(e=>e.place==='out')||!ex.some(e=>e.place==='in')) return {...plan,exercises:ex.map(e=>({...e,placeStart:undefined}))};
+    let ex=plan.exercises.map(e=>({...e,place:placeOf(e)==='out'||hasOut&&anywhere(e)&&pull(e)?'out':'in'}));
+    // Lot 38 : si tout ce qui reste ne demande que le poids du corps ou un élastique (abdos, gainage, mobilité), on ne rentre pas : toute la séance sur le terrain.
+    if(hasOut&&PT&&PT.catalog){
+      const stuck=ex.filter(e=>e.place==='in'&&!anywhere(e));
+      const swaps=stuck.map(e=>{const alt=COURT_SWAP[e.id]&&PT.catalog.find(x=>x.id===COURT_SWAP[e.id]);return alt&&!ex.some(x=>x.id===alt.id)&&(!PT.allowed||PT.allowed(alt,state,plan.check||state.checkIn,PT.context?PT.context(state,plan.check):undefined))?[e,alt]:null;});
+      if(stuck.length&&swaps.every(Boolean)) ex=ex.map(e=>{const sw=swaps.find(x=>x[0]===e);if(!sw) return e;const alt=sw[1];return {...(PT.makePrescription?PT.makePrescription(alt,'classic',(plan.check&&plan.check.minutes)||45,PT.context?PT.context(state,plan.check):undefined):alt),sets:e.sets,rest:e.rest,pathwayRole:e.pathwayRole,coreFinisher:e.coreFinisher,place:'in',swappedFrom:e.id};});
+    }
+    if(hasOut&&ex.filter(e=>e.place==='in').every(anywhere)) ex=ex.map(e=>({...e,place:'out'}));
+    if(!ex.some(e=>e.place==='in')) return {...plan,exercises:ex.map((e,i)=>({...e,placeStart:i===0&&plan.exercises.some(x=>placeOf(x)==='in')?'Tout sur le terrain':undefined})),placeMoves:0,reasons:[...(plan.reasons||[]).filter(r=>!/^(Bloc explosivité en début de séance|Terrain d’abord|Soin de la zone d’abord|Toute la séance sur le terrain)/.test(r)),...(plan.exercises.some(x=>placeOf(x)==='in')?['Toute la séance sur le terrain : le reste ne demande que ton poids du corps ou un élastique. Pas besoin de rentrer.']:[])]};
+    if(!ex.some(e=>e.place==='out')) return {...plan,exercises:ex.map(e=>({...e,placeStart:undefined}))};
     // Un soin qui ne se transporte pas (rare) reste en tête quand la douleur est réelle (3/10 ou plus), avant tout impact.
     const pain=PT&&PT.safety?PT.safety(state).active.some(x=>!x.gene):false;
     const head=pain?ex.filter((e,i)=>e.place==='in'&&['kiné','soin'].includes(e.pathwayRole)&&ex.slice(0,i).every(x=>['kiné','soin'].includes(x.pathwayRole))):[];
@@ -249,7 +263,26 @@
     const moves=out.filter((e,i)=>i>0&&e.placeStart).length;
     const note=head.length?'Soin de la zone d’abord, puis un seul bloc sur le terrain, puis le reste à l’intérieur.'
       :`Terrain d’abord (${out.filter(e=>e.place==='out').length} exercices), puis le reste à l’intérieur : un seul aller-retour. Prends ton élastique${out.some(e=>e.place==='out'&&(e.skillBlock||e.skillArea))?' et ton ballon':''}.`;
-    return {...plan,exercises:out,placeMoves:moves,reasons:[...(plan.reasons||[]).filter(r=>!/^Bloc explosivité en début de séance/.test(r)),note]};
+    return {...plan,exercises:out,placeMoves:moves,reasons:[...(plan.reasons||[]).filter(r=>!/^(Bloc explosivité en début de séance|Terrain d’abord|Soin de la zone d’abord|Toute la séance sur le terrain)/.test(r)),note]};
+  }
+  // Lot 38 : Vivacité prévue le même jour qu'une séance du parcours : elle rejoint le bloc terrain de cette séance (un seul passage sur le terrain).
+  // La séance garde withVivacite : le planning coche alors la Vivacité du jour comme faite.
+  function withVivacite(PT,PP,state,plan){
+    if(!plan||plan.error||plan.withVivacite) return plan;
+    const v=quickPlan(PT,PP,state,'vivacite');if(!v||v.error) return plan;
+    // Seulement ce que la séance n'a pas déjà (le bloc explosivité couvre une partie de la vivacité), 2 exercices au plus : la journée reste dans ta durée.
+    const add=v.exercises.filter(e=>!plan.exercises.some(x=>x.id===e.id||x.primer&&x.pattern===e.pattern)).slice(0,2).map(e=>({...e,pathwayRole:'vivacité'}));
+    if(!add.length) return {...plan,withVivacite:true,reasons:[...(plan.reasons||[]),'Vivacité du jour : déjà couverte par le bloc explosivité de cette séance.']};
+    // Juste après le bloc explosivité, avant le dribble : la vitesse se travaille frais.
+    // Repère : le dernier exercice explosif (marqué bloc explosivité, sinon à impacts) avant les abdos et le dribble.
+    const ex=plan.exercises,firstSkill=ex.findIndex(e=>e.skillBlock||e.skillArea),head=firstSkill>=0?ex.slice(0,firstSkill):ex;
+    const lastPrimer=Math.max(head.map(e=>!!e.primer).lastIndexOf(true),head.map(e=>!!e.impact).lastIndexOf(true));
+    const at=lastPrimer>=0?lastPrimer+1:firstSkill>=0?firstSkill:0;
+    let merged=[...ex.slice(0,at),...add,...ex.slice(at)],extra=Math.round(PT.estimateSeconds(add,'classic')/60);
+    // Au-delà de ta durée maximale : le bloc dribble rend la place (il en reste au moins 2).
+    const max=Number(state.dossier&&state.dossier.answers&&state.dossier.answers.maxMinutes)||0;
+    while(max&&(plan.estimatedMinutes||0)+extra>max+3&&merged.filter(e=>e.skillBlock).length>2){const drop=[...merged].reverse().find(e=>e.skillBlock);extra-=Math.round(PT.estimateSeconds([drop],'classic')/60);merged=merged.filter(e=>e!==drop);}
+    return groupByPlace(PT,state,{...plan,withVivacite:true,exercises:merged,estimatedMinutes:(plan.estimatedMinutes||0)+extra,reasons:[...(plan.reasons||[]),'Vivacité du jour incluse dans le bloc terrain : pas besoin d’y retourner plus tard.']});
   }
   function sessionPlan(PT,PP,state,p,dayKey,opts={}) {return groupByPlace(PT,state,withSkills(PT,state,sessionPlanCore(PT,PP,state,p,dayKey,opts)));}
   function sessionPlanCore(PT,PP,state,p,dayKey,{minutes}={}) {
@@ -510,5 +543,5 @@
     return groupByPlace(PT,state,{id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()},{pull:()=>true});
   }
 
-  return {steps,tests,ladder,quick,group,groupByPlace,placeOf,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
+  return {steps,tests,ladder,quick,group,groupByPlace,placeOf,withVivacite,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
 });

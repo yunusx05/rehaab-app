@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v93-dossier-reel';
+const CACHE = 'rehaab-v94-terrain-partout';
 const PRECACHE = [
   './',
   './index.html',

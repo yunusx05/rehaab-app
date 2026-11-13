@@ -25,6 +25,11 @@ function ptCalendarPlan(data, item, day) {
     JP = window.PlayerProfile,
     SK = window.BasketSkills;
   const ownSkills = !!day && day.items.some(x => x.type === 'skills');
+  const vivaToday = !!day && day.items.some(x => x.type === 'vivacite' && x.status === 'planned');
+  if (item.type === 'pathway' && data.pathway && vivaToday && BP.withVivacite) {
+    const base = ownSkills && BP.sessionPlanCore ? BP.sessionPlanCore(PT, JP, data, data.pathway, item.day) : BP.sessionPlan(PT, JP, data, data.pathway, item.day);
+    return BP.withVivacite(PT, JP, data, base);
+  }
   if (item.type === 'pathway' && data.pathway) return ownSkills && BP.sessionPlanCore ? BP.groupByPlace ? BP.groupByPlace(PT, data, BP.sessionPlanCore(PT, JP, data, data.pathway, item.day)) : BP.sessionPlanCore(PT, JP, data, data.pathway, item.day) : BP.sessionPlan(PT, JP, data, data.pathway, item.day);
   if (item.type === 'reset') {
     // Remise en route : les jours de l'étape 1, sans saut ni impact, hors parcours (rien n'est validé dans les étapes).

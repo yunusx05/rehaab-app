@@ -278,7 +278,7 @@ function PTTodayPlan({
   }, x.status === 'done' && /*#__PURE__*/React.createElement(PTIcon, {
     name: "check",
     size: 13
-  }), x.label), /*#__PURE__*/React.createElement("span", {
+  }), x.label, x.type === 'vivacite' && x.status !== 'done' && calPrimary?.type === 'pathway' ? ' · incluse dans ta séance' : ''), /*#__PURE__*/React.createElement("span", {
     className: "today-program-min"
   }, x.minutes, " min")))), /*#__PURE__*/React.createElement("div", {
     className: "today-plan-links"

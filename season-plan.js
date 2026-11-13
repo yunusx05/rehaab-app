@@ -313,7 +313,7 @@
     const match=item=>sessions.find(s=>!used.has(s.id)&&(
       item.type==='pathway'&&s.source==='pathway'&&s.pathwayDay===item.day||item.type==='reset'&&['reset','pathway'].includes(s.source)||
       item.type==='muscu'&&s.source==='program-plan'||item.type==='skills'&&s.source==='skills'||
-      item.type==='vivacite'&&s.source==='quick'&&/vivacit/i.test(s.title||'')||item.type==='cardio'&&s.source==='cardio'&&s.cardioKind===item.kind||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
+      item.type==='vivacite'&&(s.source==='quick'&&/vivacit/i.test(s.title||'')||s.source==='pathway'&&s.withVivacite&&s.date===item.date)||item.type==='cardio'&&s.source==='cardio'&&s.cardioKind===item.kind||item.type==='shooting'&&s.source==='shooting'||item.type==='care'&&['rehab','quick'].includes(s.source)&&!/vivacit/i.test(s.title||'')));
     placed.sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>{
       const s=match(item);if(s)used.add(s.id);
       item.status=s?'done':diff(item.date,now)<0?'missed':'planned';item.doneDate=s?s.date:null;

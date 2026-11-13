@@ -92,3 +92,37 @@ test('lot 36 : vraie douleur (4/10) : le soin qui calme la zone reste en tête',
   const plan=BP.sessionPlan(PT,JP,d,{...BP.create(),step:3},'A');
   if(!plan.error&&plan.exercises.some(e=>e.place==='out')) expect(plan.exercises[0].pathwayRole).toBe('soin');
 });
+
+test('lot 38 : quand le reste ne demande que poids du corps ou élastique, toute la séance se fait sur le terrain (Copenhagen → adduction au sol)',()=>{
+  const d=player([{region:'knee',severity:1}]);d.owned=[...new Set([...d.owned,'sliders'])];d.checkIn.equipment=d.owned;
+  const plan=BP.sessionPlan(PT,JP,d,{...BP.create(),step:3},'C');
+  expect(plan.error).toBeUndefined();
+  expect(plan.exercises.every(e=>e.place==='out')).toBe(true);
+  expect(plan.exercises.some(e=>e.id==='copenhagen')).toBe(false);
+  // Regrouper une seconde fois ne change rien (le coach et l'enregistrement repassent par la même règle).
+  const again=BP.groupByPlace(PT,d,plan);
+  expect(again.exercises.map(e=>e.id)).toEqual(plan.exercises.map(e=>e.id));
+  expect(again.reasons.filter(r=>/terrain/i.test(r)).length).toBe(1);
+});
+
+test('lot 38 : Vivacité du même jour fusionnée dans le bloc terrain, puis cochée par le planning',()=>{
+  const d=player([{region:'knee',severity:1}]);
+  const base=BP.sessionPlan(PT,JP,d,{...BP.create(),step:3},'A');
+  const m=BP.withVivacite(PT,JP,d,base);
+  expect(m.withVivacite).toBe(true);
+  const places=m.exercises.map(e=>e.place);
+  expect(places.filter((x,i)=>i>0&&x!==places[i-1]).length).toBeLessThanOrEqual(1);
+  m.exercises.filter(e=>e.pathwayRole==='vivacité').forEach(e=>expect(e.place).toBe('out'));
+  // Fusionner deux fois ne rajoute rien.
+  expect(BP.withVivacite(PT,JP,d,m).exercises.length).toBe(m.exercises.length);
+  // Le planning compte la vivacité du jour comme faite quand la séance fusionnée est terminée.
+  const SP=require('../season-plan.js');global.BasketPathway=BP;
+  const monday=SP.mondayOf(PT.dateKey());
+  const w0=SP.weekSchedule(d,monday,PT.dateKey());
+  const viva=w0.days.flatMap(x=>x.items).find(x=>x.type==='vivacite');
+  if(viva){
+    const done={...d,sessions:[{id:'s1',date:viva.date,source:'pathway',pathwayDay:'B',withVivacite:true,title:'x',minutes:50}]};
+    const w=SP.weekSchedule(done,monday,viva.date);
+    expect(w.days.flatMap(x=>x.items).find(x=>x.type==='vivacite').status).toBe('done');
+  }
+});
