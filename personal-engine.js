@@ -589,7 +589,7 @@
   const isoDay = v => typeof v==='string' && /^\d{4}-\d{2}-\d{2}$/.test(v) && !isNaN(Date.parse(v)) && new Date(`${v}T12:00:00Z`).toISOString().slice(0,10)===v;
   function tryRequire(path) { try { return typeof require==='function'?require(path):null; } catch (e) { return null; } }
   function initialState() {
-    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null,seasonPlan:null,calendar:null,weeklyReviews:[],shooting:null,weightPrefs:null,cardio:{perWeek:2}};
+    return {version:VERSION,profile:{onboarded:false,name:'',age:'',height:'',weight:'',goal:'balanced',experience:'beginner',weeklyTarget:3,impactReady:false,safeties:false,basketLevel:'beginner'},owned:['bodyweight'],loads:{},preferences:{likes:[],avoids:[],anchors:[]},checkIn:{date:dateKey(),energy:'normal',motivation:'normal',minutes:30,equipment:['bodyweight'],focus:'muscle',format:'auto',novelty:'balanced',constraints:[],basketSkill:'shoot'},symptoms:[],events:[],sessions:[],measurements:[],customExercises:[],savedWorkouts:[],draft:null,programWeek:1,trash:[],program:null,programArchive:[],nutrition:null,player:null,pathway:null,athletic:null,qi:{answers:[],cards:{},reviews:[],rest:true},rehab:{levels:{},log:[]},dossier:null,seasonPlan:null,calendar:null,weeklyReviews:[],shooting:null,weightPrefs:null,cardio:{perWeek:3}};
   }
   function assert(condition,message) { if (!condition) throw new Error(message); }
   function validateState(value) {
@@ -678,8 +678,13 @@
   function equipmentIds(ids) {return Array.isArray(ids) && ids.every(id=>equipment.some(e=>e.id===id));}
   function allExercises(state) {return catalog.concat(state.customExercises||[]);}
   function activeSymptoms(state) {return state.symptoms.filter(s=>s.active);}
+  // Lot 32 : une gêne (2/10 ou moins) n'est pas une blessure. Elle garde tous les mouvements, sauts et sprints compris,
+  // tant que le lendemain d'une séance n'a pas été signalé « pire » dans les 2 derniers jours (le vrai signal, l'échauffement masquant la douleur).
+  const GENE_MAX=2;
+  function flaredRecently(state,now=dateKey()) {return (state.sessions||[]).some(s=>s&&s.nextDay==='worse'&&dayDiff(now,s.date)>=0&&dayDiff(now,s.date)<=2);}
   function safety(state) {
-    const active=activeSymptoms(state);
+    const flare=flaredRecently(state);
+    const active=activeSymptoms(state).map(s=>Number(s.severity)<=GENE_MAX&&!s.redFlags&&!flare?{...s,gene:true}:s);
     return {blocked:active.some(s=>s.redFlags || Number(s.severity)>=7),active,regions:[...new Set(active.map(s=>s.region))]};
   }
   // Profil joueur renseigné : une zone douloureuse garde les mouvements qu'elle tolère (renforcement) au lieu d'être exclue en bloc.
@@ -690,7 +695,9 @@
     const recent=state.sessions.filter(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=(guided?1:2));
     const upcoming=state.events.filter(e=>!e.completed && dayDiff(e.date,now)>=0 && dayDiff(e.date,now)<=1 && ['match','club'].includes(e.type));
     const active=safety(state);
-    const recentLegs=recent.some(s=>s.focus==='basket' || s.source==='external' && ['match','club'].includes(s.eventType) || s.exercises.some(e=>['squat','hinge','jump'].includes(e.pattern) && (s.entries[e.id]||[]).some(r=>r.done)));
+    // Lot 32 : dans le parcours, un entraînement de club (hier, aujourd'hui ou demain) ne retire plus les sauts : le joueur y saute déjà. Seul un match compte.
+    const upcomingHard=guided?upcoming.filter(e=>e.type==='match'):upcoming;
+    const recentLegs=recent.some(s=>!guided && s.focus==='basket' || s.source==='external' && (guided?['match']:['match','club']).includes(s.eventType) || s.exercises.some(e=>['squat','hinge','jump'].includes(e.pattern) && (s.entries[e.id]||[]).some(r=>r.done)));
     const last=[...state.sessions].sort((a,b)=>b.date.localeCompare(a.date))[0];
     const returning=!!last && dayDiff(now,last.date)>10 || state.profile.experience==='returning' && !guided;
     const hardRecently=recent.some(s=>Number(s.effort)>=8);
@@ -699,7 +706,7 @@
     const low=check.energy==='low' || returning || hardRecently || loadSpike || state.sessions.some(s=>dayDiff(now,s.date)>=0 && dayDiff(now,s.date)<=2 && s.nextDay==='worse');
     // Warm Up basket : les appuis et petits sauts font partie de l'échauffement, même la veille ou le jour d'un match ; seule une douleur les retire.
     if(check&&check.warmup) return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:false,avoidImpact:active.active.length>0 && !tol};
-    return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:upcoming.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcoming.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
+    return {now,recent,upcoming,active,low,returning,hardRecently,loadSpike,protectLegs:upcomingHard.length>0 || recentLegs,avoidImpact:active.active.length>0 && !tol || upcomingHard.length>0 || recentLegs || low || !guided && (!state.profile.impactReady || state.profile.experience==='beginner')};
   }
   // Lot 31 : jour de pluie, noté depuis « Un imprévu » (calendar.rain). Le terrain de basket est couvert :
   // seuls la course dehors (piste, parcours extérieur) et le sable sortent de la séance.

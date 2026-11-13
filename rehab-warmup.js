@@ -304,7 +304,9 @@
     const list=(pains||(state.symptoms||[]).filter(s=>s.active)).filter(p=>p&&zoneOfRegion[p.region]&&Number(p.severity)<7&&!p.redFlags)
       .sort((a,b)=>Number(b.severity)-Number(a.severity));
     const head=[],tail=[],used=new Set(exclude),done=new Set(),notes=[];
-    const cap=minutes&&minutes<=20?2:minutes&&minutes<=35?3:4;
+    // Lot 32 : quand toutes les zones ne sont que des gênes (2/10 ou moins), deux mouvements de soin suffisent.
+    const allGene=list.length>0&&list.every(p=>Number(p.severity)<=2);
+    const cap=allGene?2:minutes&&minutes<=20?2:minutes&&minutes<=35?3:4;
     const all=PT.allExercises(state);
     for(const pain of list) {
       if(head.length+tail.length>=cap) break;

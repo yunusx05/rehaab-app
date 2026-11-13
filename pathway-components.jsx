@@ -21,7 +21,7 @@ function PTPathwayIntro({data,update,go}) {
       <section className="stack-sm"><h3>Par où commencer ?</h3>
         <PTChips value={start} onChange={setStart} options={BP.steps.map(s => ({value:s.id, label:`Étape ${s.id}`}))}/>
         {advice && <p className="notice">Ton bilan conseille l’étape {advice.step}. {advice.reason}</p>}
-        <p className="fine">{start === 1 ? 'Après une longue pause, l’étape 1 est la bonne porte d’entrée, même si tu te sens en forme : les tendons ont besoin de plus de temps que les muscles.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.'}</p>
+        <p className="fine">{start === 1 ? 'Après une longue pause sans jouer, l’étape 1 est la bonne porte d’entrée. Si tu joues déjà en club (sauts, sprints), l’étape 3 te correspond mieux : ton bloc kiné garde le travail des tendons.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.'}</p>
       </section>
       <PTButton primary onClick={() => update(s => ({...s, pathway: AP.seedPathwayTests(BP.create({startStep:start}), s.athletic)}))}>Commencer le parcours<PTIcon name="arrow" size={18}/></PTButton>
       {(data.pathwayArchive || []).slice(-1).map(old => <button key={old.id} className="home-action" onClick={() => update(s => {const {stoppedAt, ...kept} = old; return {...s, pathway: BP.validatePathway(kept), pathwayArchive: (s.pathwayArchive || []).filter(x => x.id !== old.id)};})}><PTIcon name="refresh"/><span><strong>Reprendre mon parcours arrêté</strong><small>Étape {old.step} · {BP.stepById(old.step)?.name}, arrêté le {shortDate(old.stoppedAt)}</small></span><PTIcon name="arrow" size={18}/></button>)}
@@ -114,6 +114,10 @@ function PTPathway({data,update,go,notify}) {
         <div className="home-options">
           {p.step > 1 && <button className="home-action" onClick={() => {update(s => ({...s, pathway: BP.stepBack(s.pathway)})); notify('Retour à l’étape précédente. Tes séances et tes tests sont conservés.');}}><PTIcon name="back"/><span><strong>Revenir à l’étape {p.step - 1}</strong><small>Après une douleur ou une coupure.</small></span><PTIcon name="arrow" size={18}/></button>}
         </div>
+        <details className="disclosure pathway-jump"><summary>Aller directement à une autre étape</summary><div className="stack-sm">
+          <p className="fine">Pour un joueur qui joue déjà en club : inutile de refaire les étapes que le terrain a déjà validées. Tes séances, tes tests et ton historique sont gardés. Tu peux revenir en arrière à tout moment.</p>
+          <div className="chips">{BP.steps.filter(s => s.id !== p.step).map(s => <button key={s.id} className="chip" onClick={() => {update(st => ({...st, pathway: BP.jumpTo(st.pathway, s.id)})); notify(`Étape ${s.id} · ${s.name} : c’est parti.`); window.scrollTo(0,0);}}>Étape {s.id} · {s.short}</button>)}</div>
+        </div></details>
         <PTRestartProgram data={data} update={update} notify={notify} go={go}/>
         {stopping
           ? <div className="notice warning stack-sm"><p>Arrêter le parcours ? Il est archivé avec tes tests et ton avancement : tu pourras le reprendre à la même étape. Tes séances restent dans l’historique.</p>

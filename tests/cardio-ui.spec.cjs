@@ -28,8 +28,8 @@ test('planning : le cardio apparaît, le joueur règle la fréquence et le nombr
   await expect(page.locator('.calendar-item',{hasText:'Cardio · course fractionnée'}).first()).toBeVisible();
   // Réglage dans « Ma semaine type » : 0 retire le cardio du planning.
   await page.getByText('Ma semaine type').click();
-  const row=page.locator('.topline',{hasText:'Cardio (corde, course) / semaine'});
-  await expect(row.getByRole('button',{name:'2'})).toHaveAttribute('aria-pressed','true');
+  const row=page.locator('.topline',{hasText:'Cardio (navettes, corde, course) / semaine'});
+  await expect(row.getByRole('button',{name:'3'})).toHaveAttribute('aria-pressed','true');
   await row.getByRole('button',{name:'0'}).click();
   await expect(page.locator('.calendar-item',{hasText:'Cardio ·'})).toHaveCount(0);
   await row.getByRole('button',{name:'1'}).click();

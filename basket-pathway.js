@@ -12,7 +12,7 @@
   const steps = [
     {id:1,name:'Fondations',short:'Fondations',minWeeks:3,
       goal:'Redonner de la capacité aux tendons, aux chevilles et aux hanches avant de charger. Après une longue pause, les muscles reviennent vite, les tendons plus lentement : c’est là que se jouent les blessures de reprise.',
-      rules:['Aucun sprint, aucun saut maximal.','Tempo lent (3 s à la descente) sur les mouvements de force.','Douleur tolérée pendant l’effort : 2/10 au maximum, revenue à la normale le lendemain.'],
+      rules:['Sprints et sauts à 70 %, jamais à fond : on réveille la vitesse sans la forcer.','Tempo lent (3 s à la descente) sur les mouvements de force.','Douleur tolérée pendant l’effort : 2/10 au maximum, revenue à la normale le lendemain.'],
       days:[
         {key:'A',name:'Jambes & tendons',slots:[
           S('tendon',['slant-iso-squat','spanish-squat','wall-sit'],['3x1','3x1','4x1','4x1'],[30,40,40,45]),
@@ -133,6 +133,25 @@
       tests:['ladder','pain']}
   ];
 
+  // Lot 32 : bloc explosivité en début de séance, juste après l'échauffement et le kiné, quand on est frais.
+  // Seulement les jours qui n'ont pas déjà sprints et sauts en tête. Dès l'étape 1, à intensité modérée.
+  const P = (role,ids,doses) => ({role,ids,doses,primer:true,optional:true});
+  const primers = {
+    1:{A:[P('explosivité',['pogo-lateral','pogo'],['2x10','2x12','3x10','3x12']),P('vitesse',['accel-10','court-shuttle'],['1x3','1x3','1x4','1x4'])],
+       B:[P('explosivité',['pogo','pogo-lateral'],['2x10','2x12','3x10','3x12']),P('vitesse',['accel-10','court-shuttle'],['1x3','1x3','1x4','1x4'])],
+       C:[P('vitesse',['accel-10','court-shuttle'],['1x3','1x4','1x4','1x4'])]},
+    2:{A:[P('vitesse',['accel-10','falling-start'],['1x4','1x4','1x5','1x3'])],
+       B:[P('explosivité',['broad-jump','vertical-jump','pogo'],['3x3','3x3','3x4','2x3']),P('vitesse',['accel-10','falling-start'],['1x4','1x4','1x5','1x3'])],
+       C:[P('vitesse',['accel-10','falling-start'],['1x4','1x4','1x5','1x3'])]},
+    3:{A:[P('vitesse',['accel-10','split-start'],['1x4','1x5','1x5','1x3'])],
+       B:[P('explosivité',['vertical-jump','broad-jump','pogo'],['3x3','3x4','4x3','2x3']),P('vitesse',['accel-10','reaction-start'],['1x4','1x5','1x5','1x3'])]},
+    4:{A:[P('vitesse',['sprint-20','accel-10'],['1x3','1x4','1x4','1x3'])],
+       B:[P('explosivité',['broad-jump','vertical-jump'],['3x3','3x4','4x3','2x3']),P('vitesse',['reaction-start','accel-10'],['1x4','1x5','1x5','1x3'])]},
+    5:{A:[P('explosivité',['vertical-jump','broad-jump'],['3x3','3x3','3x3','2x3']),P('vitesse',['accel-10'],['1x4','1x4','1x4','1x3'])]}
+  };
+  // Durée par défaut d'une séance du parcours, échauffement et finisher abdos compris (hors bloc skills).
+  const DEFAULT_MINUTES = 45;
+
   // Critères de passage. Repères d'entraînement courants, pas des normes médicales.
   const tests = {
     calf:{target:'20 répétitions par jambe, écart de 15 % au plus',label:'Montées sur pointes une jambe',unit:'rép.',sides:true,min:20,gap:15,how:['Sur une marche, une jambe, un doigt contre le mur pour l’équilibre.','Monte le plus haut possible, redescends sous l’horizontale, rythme régulier.','Compte jusqu’à ce que l’amplitude baisse.'],why:'Le mollet et le tendon d’Achille encaissent chaque appui.'},
@@ -243,7 +262,7 @@
       else if(chosen.measure==='seconds') e.seconds=d.secs?d.secs[idx]:chosen.seconds;
       else if(slot.dosesFor&&chosen.kind==='cardio'&&d.secs) e.seconds=d.secs[idx];
       else if(dose.max>1){e.targetMin=dose.min;e.targetMax=dose.max;}
-      if((ctx.upcoming.length||clubSoon)&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
+      if((ctx.upcoming.some(e=>e.type==='match')||clubSoon)&&chosen.impact){if(!slot.optional)changes.push(`${chosen.name} : écarté, un match ou un entraînement approche.`);return null;}
       return e;
     };
     // Choix de l'IA architecte (lot 14) : en tête de son créneau, puis les candidats habituels. resolve() garde tous les filtres de sécurité.
@@ -251,7 +270,10 @@
     const BW=(typeof globalThis!=='undefined'&&globalThis.BodyWeight)||(()=>{try{return typeof require==='function'?require('./body-weight.js'):null;}catch(e){return null;}})();
     const heavy=!!(BW&&BW.cautious(state));
     const bikeFirst=ids=>heavy&&ids.some(id=>/^run/.test(id))?[...ids.filter(id=>/^bike/.test(id)),...ids.filter(id=>!/^bike/.test(id))]:ids;
+    // Bloc explosivité d'abord : il fait partie des mouvements clés, jamais retiré pour gagner du temps.
+    const primed=((primers[step.id]||{})[day.key]||[]).map(slot=>resolve(slot,true)).filter(Boolean).map(e=>({...e,primer:true,sideNote:e.sideNote||'Bloc explosivité : à fond mais propre, récupération complète. Arrête dès que la vitesse baisse.'}));
     day.slots.forEach((slot,i)=>{const pick=arch[`${step.id}${day.key}${i}`];const s0=pick&&!slot.pos?{...slot,ids:[pick,...slot.ids.filter(x=>x!==pick)]}:slot;const s=s0.pos||s0.role!=='cardio'?s0:{...s0,ids:bikeFirst(s0.ids)};const e=resolve(s,i<3);if(e){if(pick&&e.id===pick)e.architect=true;exercises.push(e);}});
+    exercises.unshift(...primed);
     // Point faible du bilan : un créneau de plus, adapté à l'étape, juste après les mouvements clés.
     let focusNote=null;
     if(athletic){
@@ -307,13 +329,19 @@
     if(cared){const kept=RW.withCare(exercises,care);exercises.length=0;exercises.push(...kept);}
     if(!exercises.length) return {error:'Aucun mouvement de cette séance n’est compatible aujourd’hui. Adapte ton matériel ou choisis une autre séance.'};
     // Sans durée choisie, le soin ne doit pas allonger la séance au-delà d'une heure.
-    const budget=minutes?minutes*60-360:cared?60*60-360:Infinity;
+    // Lot 32 : 45 min par défaut, échauffement (6 min) et finisher abdos (~6 min) compris. Le travail secondaire sort en premier.
+    const coreRoom=(!minutes||minutes>=45)?360:0;
+    const budget=(minutes||DEFAULT_MINUTES)*60-360-coreRoom;
+    // On raccourcit d'abord les séries (4-5 → 3), puis on retire le travail secondaire : mieux vaut plus de mouvements utiles, moins de volume.
+    while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>e.sets>3)) {const e=[...exercises].reverse().find(x=>x.sets>3);e.sets--;}
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>!e.key)) exercises.splice(exercises.map(e=>e.key).lastIndexOf(false),1);
     while(PT.estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>e.sets>2)) {const e=[...exercises].reverse().find(x=>x.sets>2);e.sets--;}
     // Le soin prend du temps : c'est le travail secondaire qui sort, jamais le soin ni les trois premiers mouvements de la séance.
     if(cared){const main=()=>exercises.filter(e=>e.pathwayRole!=='soin');while(PT.estimateSeconds(exercises,'classic')>budget&&main().length>3){const drop=main().slice(3).pop();exercises.splice(exercises.indexOf(drop),1);changes.push(`${drop.name} : retiré aujourd’hui pour laisser la place au soin.`);}}
     const deload=doseIndex(week,4)===3;
     const reasons=[`Étape ${step.id} · ${step.name}, semaine ${week}${week>step.minWeeks?' (consolidation)':''}.`];
+    if(primed.length) reasons.push(`Bloc explosivité en début de séance (${primed.map(e=>e.name).join(', ')}) : la vitesse et la détente se travaillent frais, pas en fin de séance.`);
+    if(pains.some(x=>x.gene)) reasons.push('Gêne légère (2/10 ou moins) : sauts et sprints gardés, le soin de la zone reste dans la séance. Le vrai signal, c’est le lendemain matin : si c’est pire au réveil, l’app retire les impacts 48 h.');
     if(deload) reasons.push('Semaine allégée : moins de séries pour assimiler le travail.');
     if(player.position) reasons.push(`Variantes choisies pour ton poste (${PP?PP.positions[player.position]?.label:player.position}).`);
     if(cared&&exercises.some(e=>e.pathwayRole==='soin')) reasons.push(care.note);
@@ -321,7 +349,7 @@
     if(heavy){exercises.forEach(e=>{if((e.pattern==='jump'||e.impact)&&e.sets>3)e.sets=3;});reasons.push('Au-dessus de ton poids de jeu : sauts limités à 3 séries, souffle au vélo plutôt qu’en course, pour ménager les genoux.');}
     if(focusNote&&exercises.some(e=>['point faible','priorité'].includes(e.pathwayRole))) reasons.push(focusNote);
     if(legNote) reasons.push(legNote);
-    if(pains.length) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
+    if(pains.some(x=>!x.gene)) reasons.push('Zones signalées : seuls les mouvements qu’elles tolèrent sont gardés.');
     reasons.push(...step.rules);
     // Lot 31 : finisher abdos en fin de séance (sangle abdominale, point faible), sauf version courte.
     const CORE=(typeof globalThis!=='undefined'&&globalThis.BasketCore)||(()=>{try{return typeof require==='function'?require('./basket-core.js'):null;}catch(e){return null;}})();
@@ -387,6 +415,12 @@
     if(p.step>=steps.length) return p;
     return {...p,step:p.step+1,stepStartedAt:now,history:[...p.history,{step:p.step+1,date:now}]};
   }
+  // Lot 32 : aller directement à une étape (joueur qui joue déjà en club). Séances, tests et historique gardés.
+  function jumpTo(p,step,now=today()) {
+    const n=Number(step);
+    if(!stepById(n)||n===p.step) return p;
+    return {...p,step:n,stepStartedAt:now,history:[...p.history,{step:n,date:now,jump:true}]};
+  }
   function stepBack(p,now=today()) {
     if(p.step<=1) return p;
     return {...p,step:p.step-1,stepStartedAt:now,history:[...p.history,{step:p.step-1,date:now,back:true}]};
@@ -451,5 +485,5 @@
     return {id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
-  return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,stepBack,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
+  return {steps,tests,ladder,quick,group,stepById,create,weekOf,weekStatus,sessionPlan,sessionPlanCore,markCompleted,latest,evaluate,gate,advance,jumpTo,stepBack,primers,DEFAULT_MINUTES,recordTest,recordRung,rungFeedback,ladderLevel,validatePathway,quickPlan,parseDose};
 });

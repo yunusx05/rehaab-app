@@ -31,6 +31,12 @@
       doses:[{sets:6,seconds:30,rest:90},{sets:8,seconds:30,rest:90},{sets:8,seconds:30,rest:60},{sets:10,seconds:30,rest:60}],
       how:['Marche d’abord 3 minutes, puis quelques foulées faciles.','Le temps de travail : cours à une allure soutenue, pas à bloc. La récupération se fait en marchant.','Pose le pied sous toi, foulée courte. Arrête si le genou ou la hanche se plaint.'],
       why:'Le souffle des efforts courts répétés, comme une contre-attaque puis le retour en défense.'},
+    // Lot 32 : cardio basket. Efforts courts et répétés, comme en match : sprint, freinage, retour. Sur le terrain couvert (jamais bloqué par la pluie).
+    court:{id:'court',label:'Navettes basket',title:'Cardio · navettes basket',key:'K4',
+      impactId:'court-shuttle',
+      doses:[{sets:8,seconds:15,rest:45},{sets:10,seconds:15,rest:30},{sets:12,seconds:15,rest:25},{sets:12,seconds:20,rest:20}],
+      how:['Ligne de fond → lancer franc → ligne de fond → milieu → ligne de fond, puis on enchaîne tant que le temps court.','Freine en abaissant les hanches, pied extérieur bien posé, et repars. Touche la ligne avec la main.','Récupération debout, mains sur la tête, pas penché en avant : c’est là que le souffle se construit.'],
+      why:'Le souffle du basket : répéter des sprints courts et des freinages sans perdre en vitesse, au 4e quart comme au 1er.'},
     // Lot 31 : terrain de beach-volley. Circuit dans le sable : plus d'effort à chaque appui, moins de choc à la réception.
     sand:{id:'sand',label:'Séance sable',title:'Cardio · séance sable',key:'K3',
       impactId:'sand-sprint',
@@ -48,12 +54,15 @@
   const SAND_SOFT = ['sand-barefoot-walk','sand-lunge-walk','sand-bear-crawl'];
   const KIND_IDS = Object.keys(KINDS);
 
-  // Fréquence choisie par le joueur : 0 à 2 séances par semaine (2 par défaut).
-  function blank() {return {perWeek:2};}
+  // Fréquence choisie par le joueur : 0 à 3 séances par semaine (3 par défaut depuis le lot 32 : le souffle est son premier point faible).
+  // L'ancien réglage par défaut (« 2 », jamais choisi à la main) passe à 3 ; un 0 ou un 1 choisi avant reste tel quel.
+  function blank() {return {perWeek:3};}
   function validate(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return blank();
-    const n=Number(v.perWeek);
-    return {perWeek:Number.isInteger(n)&&n>=0&&n<=2?n:2};
+    const n=Number(v.perWeek),chosen=v.chosen===true;
+    if(!Number.isInteger(n)||n<0||n>3) return blank();
+    if(n===2&&!chosen) return blank();
+    return chosen?{perWeek:n,chosen:true}:{perWeek:n};
   }
   function perWeek(state) {return validate(state&&state.cardio).perWeek;}
   // Une seule séance : on alterne corde et course d'une semaine à l'autre. Deux : les deux.
@@ -61,6 +70,7 @@
   function weekKinds(n, monday, state) {
     if(n<=0) return [];
     const second=state&&(state.owned||[]).includes('sand')?'sand':'run';
+    if(n>=3) return ['court','rope',second];
     if(n>=2) return ['rope',second];
     const week=Math.floor(Date.parse(`${monday}T12:00:00Z`)/(7*86400000));
     return [week%2===0?'rope':second];
@@ -85,7 +95,9 @@
   // Le parcours et les douleurs décident si les impacts sont possibles, pas le nombre de jours depuis la dernière séance :
   // c'est justement la reprise que cette séance doit relancer.
   function impactStatus(state, phase) {
-    const pains=(state.symptoms||[]).filter(s=>s&&s.active&&LOWER.includes(s.region));
+    // Lot 32 : une gêne (2/10 ou moins) ne retire plus les impacts, sauf si un lendemain de séance a été signalé « pire » ces 2 derniers jours.
+    const flare=(state.sessions||[]).some(s=>s&&s.nextDay==='worse'&&diff(today(),s.date)>=0&&diff(today(),s.date)<=2);
+    const pains=(state.symptoms||[]).filter(s=>s&&s.active&&LOWER.includes(s.region)&&(Number(s.severity)>2||flare));
     const step=state.pathway&&state.pathway.status!=='archived'?Number(state.pathway.step)||1:0;
     if(phase==='reset') return {ok:false,why:'Remise en route : aucun saut ni sprint pour l’instant. Cardio sans impact.'};
     if(pains.length) return {ok:false,why:'Une douleur est active (hanche, genou ou cheville) : cardio sans impact.'};
@@ -118,11 +130,11 @@
     const ok=e=>e&&PT.allowed(e,state,check,ctx)&&(!PP||PP.tolerates(e,safety.active));
     const reasons=['Séance cardio régulière, hors parcours : elle ne fait pas avancer ton programme.'];
     let chosen=null,soft=false;
-    const indoor=rain&&k.id==='run';
+    const indoor=rain&&k.id==='run'||k.id==='court';
     if(rain&&k.id==='run') reasons.push(owned.includes('court')?'Pluie notée aujourd’hui : le fractionné se fait en navettes sur ton terrain couvert.':'Pluie notée aujourd’hui : le fractionné se fait en intérieur, course sur place genoux hauts.');
     if(kind==='sand'&&!rain) reasons.push('Pas de terrain de sable dans ton matériel aujourd’hui : course fractionnée à la place.');
     if(impact.ok){
-      const wanted=find(all,indoor?(owned.includes('court')?'court-shuttle':'run-in-place'):k.impactId);
+      const wanted=find(all,k.id==='court'?(owned.includes('court')?'court-shuttle':'run-in-place'):indoor?(owned.includes('court')?'court-shuttle':'run-in-place'):k.impactId);
       if(ok(wanted)) chosen=wanted;
       else if(kind==='rope'&&!owned.includes('rope')) reasons.push('Pas de corde à sauter dans ton matériel : ajoute-la dans ton profil pour la débloquer. En attendant, cardio sans impact.');
     } else reasons.push(impact.why);
@@ -138,14 +150,14 @@
     const rest=soft?Math.max(45,d.rest):d.rest;
     const sets=soft?Math.min(d.sets,8):d.sets;
     const how=soft?(chosen.id==='bike-interval'?['Résistance modérée, cadence rapide pendant le temps de travail.','Récupère en pédalant très doucement.','Sans impact : le travail est le même, sans le choc pour le genou et la cheville.']:['Allure vive, bras actifs pendant le temps de travail.','Récupère à allure tranquille.']):k.how;
-    const ex={...rx,sets,seconds,rest,measure:'seconds',name:soft||indoor?`${chosen.name} · ${seconds} s / ${rest} s`:`${k.label} · ${seconds} s / ${rest} s`,instructions:indoor&&!soft?chosen.instructions:how,transfer:k.why};
+    const ex={...rx,sets,seconds,rest,measure:'seconds',name:soft||indoor?`${chosen.name} · ${seconds} s / ${rest} s`:`${k.label} · ${seconds} s / ${rest} s`,instructions:indoor&&!soft&&k.id!=='court'?chosen.instructions:how,transfer:k.why};
     if(impact.ok&&impact.gentle&&!soft) reasons.push('Étape 1 du parcours : allure facile, jamais à fond. Les efforts rapides arrivent à l’étape 2.');
     reasons.push(`Niveau ${level+1} sur ${LEVELS} : ${sets} × ${seconds} s de travail, ${rest} s de récupération.`);
     if(lv.lapsed) reasons.push('Plus de trois semaines sans cette séance : on reprend un niveau plus bas.');
     if(lv.held) reasons.push('Dernière fois, une douleur a été signalée : le niveau ne monte pas avant une séance propre.');
     else if(!soft&&lv.next) reasons.push(`Encore ${lv.next} séance${lv.next>1?'s':''} sans douleur avant le niveau suivant.`);
     const exercises=[ex];
-    return {id:PT.uid(),title:soft?`Cardio · ${chosen.id==='bike-interval'?'vélo par intervalles':'marche vive'}`:indoor?'Cardio · fractionné sur le terrain couvert':k.title,source:'cardio',cardioKind:kind,cardioLevel:level,cardioSoft:soft,
+    return {id:PT.uid(),title:soft?`Cardio · ${chosen.id==='bike-interval'?'vélo par intervalles':'marche vive'}`:k.id==='court'?k.title:indoor?'Cardio · fractionné sur le terrain couvert':k.title,source:'cardio',cardioKind:kind,cardioLevel:level,cardioSoft:soft,
       focus:'cardio',format:'classic',exercises,check,reasons,warmupSeconds:240,estimatedMinutes:Math.ceil((240+PT.estimateSeconds(exercises,'classic'))/60)+3,
       status:'preview',entries:{},createdAt:new Date().toISOString()};
   }

@@ -57,8 +57,10 @@ test('parcours : toutes les séances se construisent, étape 1 sans sprint ni sa
       for(const day of step.days){const plan=BP.sessionPlan(PT,JP,data,p,day.key);expect(plan.error,`${step.id}${day.key}`).toBeUndefined();expect(plan.exercises.length).toBeGreaterThan(1);}
     }
   }
+  // Lot 32 : étape 1 = bloc explosivité à 70 % (petits sauts, départs sur 10 m) en tête de séance, jamais de saut maximal.
   const first=BP.steps[0].days.flatMap(d=>BP.sessionPlan(PT,JP,player(),BP.create(),d.key).exercises);
-  expect(first.some(e=>e.pattern==='footwork'||e.pattern==='jump'&&!['landing','pogo'].includes(e.id))).toBe(false);
+  expect(first.some(e=>e.primer&&e.id==='accel-10')).toBe(true);
+  expect(first.some(e=>e.pattern==='jump'&&!['landing','pogo','pogo-lateral'].includes(e.id))).toBe(false);
   // Chaque exercice proposé passe aussi le contrôle fait pendant la séance.
   for(const step of BP.steps)for(const day of step.days){const data=player({pains:[{region:'knee',severity:2}]});const plan=BP.sessionPlan(PT,JP,data,{...BP.create(),step:step.id},day.key);expect(plan.exercises.filter(e=>!PT.allowed(e,data,plan.check)).map(e=>e.id)).toEqual([]);}
   const short=BP.sessionPlan(PT,JP,player(),{...BP.create(),step:2},'B',{minutes:30});
@@ -108,7 +110,9 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   const draft=(await state(page)).draft;
   expect(draft.source).toBe('pathway');expect(draft.pathwayStep).toBe(1);
-  expect(draft.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>JP.tolerates(e,data.symptoms))).toBe(true);
+  // Lot 32 : une gêne (2/10) garde sauts et sprints ; le soin de la zone reste dans la séance.
+  expect(draft.exercises.filter(e=>e.pathwayRole!=='soin').every(e=>JP.tolerates(e,PT.safety(data).active))).toBe(true);
+  expect(draft.exercises.filter(e=>e.pathwayRole==='soin').length).toBeLessThanOrEqual(2);
   expect(draft.exercises[0].pathwayRole).toBe('soin');
   // Séance réduite à un exercice déjà validé pour aller droit à l'enregistrement.
   const done=PT.startDraft({...draft,exercises:[draft.exercises.find(e=>e.measure==='reps')].map(e=>({...e,sets:1}))},data);

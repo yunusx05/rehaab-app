@@ -59,7 +59,7 @@ function PTPathwayIntro({
     className: "notice"
   }, "Ton bilan conseille l\u2019\xE9tape ", advice.step, ". ", advice.reason), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, start === 1 ? 'Après une longue pause, l’étape 1 est la bonne porte d’entrée, même si tu te sens en forme : les tendons ont besoin de plus de temps que les muscles.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.')), /*#__PURE__*/React.createElement(PTButton, {
+  }, start === 1 ? 'Après une longue pause sans jouer, l’étape 1 est la bonne porte d’entrée. Si tu joues déjà en club (sauts, sprints), l’étape 3 te correspond mieux : ton bloc kiné garde le travail des tendons.' : 'Commencer plus loin suppose que tu réussis déjà les critères des étapes précédentes. Tu pourras revenir en arrière à tout moment.')), /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
     onClick: () => update(s => ({
       ...s,
@@ -394,7 +394,26 @@ function PTPathway({
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Revenir \xE0 l\u2019\xE9tape ", p.step - 1), /*#__PURE__*/React.createElement("small", null, "Apr\xE8s une douleur ou une coupure.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), /*#__PURE__*/React.createElement(PTRestartProgram, {
+  }))), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure pathway-jump"
+  }, /*#__PURE__*/React.createElement("summary", null, "Aller directement \xE0 une autre \xE9tape"), /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Pour un joueur qui joue d\xE9j\xE0 en club : inutile de refaire les \xE9tapes que le terrain a d\xE9j\xE0 valid\xE9es. Tes s\xE9ances, tes tests et ton historique sont gard\xE9s. Tu peux revenir en arri\xE8re \xE0 tout moment."), /*#__PURE__*/React.createElement("div", {
+    className: "chips"
+  }, BP.steps.filter(s => s.id !== p.step).map(s => /*#__PURE__*/React.createElement("button", {
+    key: s.id,
+    className: "chip",
+    onClick: () => {
+      update(st => ({
+        ...st,
+        pathway: BP.jumpTo(st.pathway, s.id)
+      }));
+      notify(`Étape ${s.id} · ${s.name} : c’est parti.`);
+      window.scrollTo(0, 0);
+    }
+  }, "\xC9tape ", s.id, " \xB7 ", s.short))))), /*#__PURE__*/React.createElement(PTRestartProgram, {
     data: data,
     update: update,
     notify: notify,

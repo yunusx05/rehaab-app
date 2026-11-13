@@ -229,7 +229,8 @@ function PTCalendar({
     ...s,
     cardio: {
       ...(s.cardio || {}),
-      perWeek: n
+      perWeek: n,
+      chosen: true
     }
   }));
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
@@ -292,10 +293,10 @@ function PTCalendar({
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
     className: "fine"
-  }, "Cardio (corde, course) / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+  }, "Cardio (navettes, corde, course) / semaine"), /*#__PURE__*/React.createElement(PTChips, {
     value: cardioPerWeek,
     onChange: setCardioPerWeek,
-    options: [0, 1, 2].map(n => ({
+    options: [0, 1, 2, 3].map(n => ({
       value: n,
       label: String(n)
     }))

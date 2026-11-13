@@ -162,7 +162,7 @@
     const cur=built.current.id;
     if(BP&&(p||cur.startsWith('dev'))){
       const step=BP.stepById(p?p.step:BP.steps.length);
-      step.days.forEach(d=>out.push({key:`P${d.key}`,type:'pathway',day:d.key,label:`${step.short} · ${d.name}`,legs:legLoad(PT,d.slots.map(s=>s.ids[0]))>=2?'heavy':'light',minutes:Math.min(max,60),physical:true}));
+      step.days.forEach(d=>out.push({key:`P${d.key}`,type:'pathway',day:d.key,label:`${step.short} · ${d.name}`,legs:legLoad(PT,d.slots.map(s=>s.ids[0]))>=2?'heavy':'light',minutes:Math.min(max,45),physical:true}));
     }
     const prog=state.program&&state.program.status==='active'?state.program:null;
     if(prog) for(let i=0;i<Math.min(3,Number(prog.daysPerWeek)||2);i++) out.push({key:`M${i+1}`,type:'muscu',label:'Muscu complémentaire',legs:'light',minutes:Math.min(max,Number(prog.minutes)||45),physical:true,extra:true});
@@ -228,7 +228,9 @@
     // Cardio à impacts (corde, course) : jamais deux jours de suite, ni avec des jambes lourdes, ni un jour de club ou au lendemain d'un match.
     if(item.type==='cardio'&&item.legs==='impact'){
       if(placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Cardio à impacts et jambes lourdes le même jour : trop de charge.';
-      if(placed.some(x=>x!==item&&(x.type==='cardio'||x.type==='vivacite')&&x.legs==='impact'&&Math.abs(diff(x.date,date))<2)) return '48 heures minimum entre deux séances à impacts (corde, course, vivacité).';
+      // Lot 32 : les navettes basket peuvent suivre la vivacité le même jour (vitesse fraîche, puis souffle) : les 48 h restent entre deux jours à impacts.
+      const pair=x=>diff(x.date,date)===0&&x.type==='vivacite'&&item.kind==='court';
+      if(placed.some(x=>x!==item&&(x.type==='cardio'||x.type==='vivacite')&&x.legs==='impact'&&Math.abs(diff(x.date,date))<2&&!pair(x))) return '48 heures minimum entre deux séances à impacts (corde, course, vivacité).';
       if(d.club.practice) return 'Entraînement au club ce jour-là : pas de cardio à impacts en plus.';
       if(prev.club.match) return 'Lendemain de match : récupération, pas d’impacts.';
     }
@@ -277,7 +279,7 @@
         // Un jour que tu as réglé pour ce type de séance passe devant.
         const skillsType=item.type==='skills'||item.type==='shooting';
         const wanted=d.mode==='both'||d.mode==='skills'&&skillsType||d.mode==='muscu'&&!skillsType;
-        return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(d.mode==='shooting'&&item.type==='shooting'?12:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)};
+        return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(d.mode==='shooting'&&item.type==='shooting'?12:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)+(item.kind==='court'&&placed.some(x=>x.type==='vivacite'&&x.date===d.date)?20:0)};
       }).sort((a,b)=>b.score-a.score||a.d.weekday-b.d.weekday);
       const options=optionsFor(item);
       // Cardio à impacts sans jour compatible (semaine de club et de match, jambes lourdes partout) : même séance, version sans impact.
