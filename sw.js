@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v96-skills';
+const CACHE = 'rehaab-v97-extra';
 const PRECACHE = [
   './',
   './index.html',
@@ -46,6 +46,7 @@ const PRECACHE = [
   './compiled/qi-scene-components.js',
   './compiled/shooting-components.js',
   './compiled/nutrition-components.js',
+  './compiled/extra-components.js',
   './basket-nutrition.js',
   './body-weight.js',
   './shooting.js',

@@ -154,7 +154,7 @@
     D('sk-inside-hand','Finition main intérieure','finish',3,['weakFinish','footFinish'],HH,['Attaque côté droit.','Finis de la main gauche, côté intérieur.','Effet sur la planche.'],{min:6,max:8,unilateral:true,rest:40,impact:true,transfer:'Éviter le contreur qui arrive du côté de la main forte.',cues:['Balle loin du contreur','Planche haute']}),
     D('sk-reverse-pivot','Reverse pivot et lay-up','finish',3,['footFinish'],HH,['Attaque, arrêt deux temps.','Pivot arrière dos au défenseur.','Finis de l’autre côté.'],{min:6,max:8,rest:40,impact:true,cuts:true,transfer:'Se dégager d’un défenseur collé en drive.',cues:['Balle collée au corps','Épaule qui protège']}),
     D('sk-up-under','Up-and-under','finish',2,['footFinish','contactFinish'],HH,['Arrêt deux pieds sous le cercle.','Feinte de tir haute.','Pas croisé sous le défenseur, finis.'],{min:6,max:8,rest:40,impact:true,transfer:'Finir quand le défenseur saute sur la feinte.',cues:['Feinte crédible','Pied de pivot fixe']}),
-    D('sk-same-foot','Lay-up pied et main du même côté','finish',2,['footFinish','weakFinish'],HH,['Attaque côté droit.','Décolle du pied droit, finis main droite.','Puis côté gauche.'],{min:6,max:8,unilateral:true,rest:40,impact:true,transfer:'Surprendre le contreur qui attend le rythme classique.',cues:['Timing décalé','Corps entre balle et défenseur']}),
+    D('sk-same-foot','Lay-up main droite, pied droit (même côté)','finish',2,['footFinish','weakFinish'],HH,['Côté droit, pied droit derrière : un pas, finis main droite.','Varie : par en dessous, balle à l’oreille, bras écarté.','Puis deux pas depuis l’angle de la raquette. Même chose à gauche.'],{min:6,max:8,unilateral:true,rest:40,impact:true,transfer:'Surprendre le contreur qui attend le rythme classique.',cues:['Timing décalé','Corps entre balle et défenseur']}),
     D('sk-euro-counter','Euro-step contré','finish',3,['footFinish'],HH,['Premier pas d’euro vers la gauche.','Ramène vers la droite au deuxième pas.','Finis main forte.'],{min:6,max:8,rest:40,impact:true,cuts:true,transfer:'Contrer le défenseur qui lit l’euro-step.',cues:['Premier pas vendu','Deuxième pas court']}),
     D('sk-floater-1','Floater en un temps','finish',3,['floater'],HH,['Attaque à pleine vitesse.','Décolle dès le premier appui, sans ralentir.','Lâcher haut en cloche.'],shots(3,5,{impact:true,regions:['ankle','knee','wrist'],transfer:'Finir avant que l’aide intérieure n’arrive.',cues:['Décollage précoce','Bras tendu vers le haut']})),
     // Appuis.
@@ -182,6 +182,13 @@
     D('sk-cross-hardstop','Crossover, arrêt net sur la jambe intérieure','footwork',3,['stops'],HH,['Crossover, deux pas de course, puis arrêt net jambe intérieure.','Le pied reste au sol et pivote : pas de sautillement.','Repousse dans l’autre sens et monte au tir.'],{min:6,max:8,unilateral:true,rest:40,cuts:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Le changement de direction de Luka : freiner fort, puis tirer en reculant.',cues:['Talon levé, le pied tourne','Arrêt net, pas de saut']}),
     D('sk-grounded-feet','Float, pieds ancrés, un dribble et tir','footwork',2,['stops'],HH,['Petit saut, réception gauche-droite, sans glisser.','Entre les jambes, pied au sol : pas de sautillement.','Un dribble, tir. Contrôle les pieds dans un petit espace.'],{min:5,max:8,rest:35,cuts:true,regions:['wrist','elbow','shoulder','knee','ankle'],transfer:'Changer de main sans perdre ses appuis : on reste équilibré pour tirer.',cues:['Pieds ancrés','Réception un-deux']}),
     D('sk-float-space','Float, décalage, deux dribbles et tir','shoot',3,['pullup','onMove'],HH,['Entre les jambes, petit saut sur place, réception souple.','À la réception, décale-toi d’un coup de hanche.','Deux dribbles vers l’espace, coupe le second, tir en fade.'],shots(3,5,{regions:['wrist','elbow','shoulder','knee','ankle'],cuts:true,transfer:'Se créer un tir seul : lent puis vite, comme les meneurs NBA.',cues:['Lent puis vite','Monte haut sur le tir']})),
+    // Lot 41 : finitions et dribble pour s'entraîner seul, écrits d'après des vidéos précises (créditées dans drill-sources.js).
+    D('sk-chairs-high','Lay-up balle haute autour de deux chaises','finish',1,['weakFinish','contactFinish'],HH,['Deux chaises ou plots à un mètre du cercle, de chaque côté.','Contourne la chaise, balle au-dessus des épaules, jamais à la taille.','Finis le lay-up, puis l’autre côté main gauche.'],{min:5,max:6,unilateral:true,rest:30,impact:true,transfer:'Garder la balle haute près du cercle, là où les petits défenseurs la volent.',cues:['Balle au-dessus des épaules','Le corps entre la chaise et la balle']}),
+    D('sk-left-layup','Lay-up main gauche : un pas, deux pas, un dribble','finish',1,['weakFinish'],HH,['Tout près, côté gauche : pied droit, genou gauche, main gauche.','Recule : deux pas, même finition, vise le carré.','Puis un dribble main gauche. Cinq réussis avant de reculer.'],shots(3,8,{impact:true,regions:['ankle','knee','wrist'],transfer:'Finir à gauche sans repasser main droite.',cues:['Pied droit, genou gauche, main gauche','Vise le carré de la planche']})),
+    D('sk-contact-high','Finir fort : épaule dedans, balle haute','finish',2,['contactFinish','explosive'],HH,['Attaque le cercle en deux dribbles.','Dernier pas : épaule et hanche intérieures en avant, vers le contreur.','Balle haute à deux mains, monte fort, finis contre la planche.'],{min:5,max:6,unilateral:true,rest:40,impact:true,transfer:'Ne plus avoir peur de finir devant un grand : c’est toi qui vas au contact.',cues:['Épaule intérieure devant','Balle haute, jamais à la taille','Monter, pas dériver']}),
+    D('sk-mikan-var','Mikan : pied intérieur, main extérieure','finish',2,['weakFinish','footFinish'],HH,['Sous le cercle, décolle du pied le plus proche du panier.','Finis de la main la plus éloignée : ton corps protège.','Alterne droite, gauche, sans arrêt. Puis la même chose en reverse.'],{measure:'seconds',seconds:45,rest:30,impact:true,transfer:'Finir des deux côtés quel que soit le pied.',cues:['Pied intérieur, main extérieure','Départ bas, finition haute']}),
+    D('sk-ladder-cross','Échelle pound-cross de 1 à 5','handle',1,['weakHand','moves'],H,['Appuis plus larges que les épaules, poitrine derrière les genoux.','Un dribble appuyé puis crossover ; deux, puis crossover ; jusqu’à cinq.','Redescends de cinq à un, main gauche d’abord. Tête haute.'],{measure:'seconds',seconds:45,rest:20,transfer:'Le crossover garde sa force après plusieurs dribbles.',cues:['Base large, poitrine haute','Compte à voix haute']}),
+    D('sk-ladder-btl','Échelle dribble appuyé puis entre les jambes','handle',2,['moves','weakHand'],H,['Même échelle : dribble appuyé puis entre les jambes.','Change de pied avant à chaque passage.','Monte jusqu’à cinq, redescends à un, de l’autre main.'],{measure:'seconds',seconds:45,rest:25,transfer:'Enchaîner le changement de main sans casser le rythme.',cues:['Balle sous le genou','Pied avant qui change']}),
     D('sk-kill-dribble','Sonder, couper le dribble, arrêt un-deux','finish',2,['floater','footFinish'],HH,['Deux à quatre dribbles pour sonder, balle qui pend.','Vois l’espace : coupe le dribble, arrêt droite-gauche.','Floater ou petit tir, selon le contre.'],{min:6,max:8,rest:35,cuts:true,transfer:'Arriver à l’arrêt au bon moment, comme Brunson.',cues:['Patience','Arrêt net un-deux']}),
     D('sk-step-through-3','Arrêt un-deux et trois step-through','finish',3,['footFinish','contactFinish'],HH,['Arrêt droite-gauche dans la raquette, yeux sur le cercle.','Choisis : pas prolongé, step-through ou step-through inversé.','Grand pas, monte sur le cercle. Feinte si tu veux.'],{min:6,max:9,rest:40,impact:true,cuts:true,transfer:'Finir malgré l’aide : l’option dépend de la place du défenseur.',cues:['Pied de pivot fixe','Grand pas']}),
     D('mv-flip-feet','Pieds qui changent, puis une des trois options','moves',3,['combos','counter'],HH,['Petits sauts : change de pied avant une à trois fois.','Puis choisis : crossover et pars, entre les jambes, ou arrêt Luka.','Pieds agressifs : ça doit crisser.'],{min:6,max:8,rest:40,cuts:true,regions:['wrist','ankle','knee'],transfer:'Préparer le défenseur, puis frapper avec l’option qu’il n’attend pas.',cues:['Imprévisible','Pieds vifs']}),
@@ -452,5 +459,63 @@
     });
     return {...draft,entries};
   }
-  return {applyShotTotals,painRegions,dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
+  // Lot 41 : séance « Extra » à la carte : un seul thème (tir, dribble, finition, moves, défense), au niveau choisi, de 10 à 60 min,
+  // à un seul endroit (au terrain avec panier, ou à la maison). Elle ne remplace pas la séance du planning et ne la coche pas.
+  const EXTRA = {
+    shoot:{label:'Tir',areas:['shoot'],warm:'sk-form'},
+    handle:{label:'Dribble',areas:['handle','coordination'],warm:null},
+    finish:{label:'Finition',areas:['finish'],warm:'sk-mikan'},
+    moves:{label:'Moves & appuis',areas:['moves','footwork'],warm:null},
+    defense:{label:'Défense',areas:['defense'],warm:'df-stance'}
+  };
+  function extraLevel(state,theme) {
+    const s=validate(state.skills),list=(EXTRA[theme]||EXTRA.shoot).areas;
+    return Math.max(...list.map(a=>s.levels[a]||1));
+  }
+  function areaSession(PT,state,{theme='shoot',minutes=30,tier=null,court=true,date=today()}={}) {
+    const def=EXTRA[theme];if(!def) return {error:'Thème inconnu.'};
+    const s=validate(state.skills),total=Math.max(10,Math.min(60,Number(minutes)||30));
+    const lvl=Math.max(1,Math.min(3,Number(tier)||extraLevel(state,theme)));
+    const pains=painRegions(state),prio=priorities(s,state.player);
+    const weight=d=>d.tags.reduce((n,t)=>n+((prio.find(p=>p.id===t)||{}).score||0),0);
+    // Ce qui a été fait dans les dernières séances passe après : une séance Extra varie d'une fois sur l'autre.
+    const seen={};(state.sessions||[]).slice(-10).forEach((x,i)=>(x.exercises||[]).forEach(e=>{seen[e.id]=i+1;}));
+    const place=d=>court||d.needs.every(n=>n==='ball');
+    const ok=d=>def.areas.includes(d.area)&&d.tier<=lvl&&place(d)&&!d.regions.some(r=>pains.includes(r));
+    const order=(a,b)=>(b.tier===lvl)-(a.tier===lvl)||(b.tier===lvl-1)-(a.tier===lvl-1)||def.areas.indexOf(a.area)-def.areas.indexOf(b.area)||(seen[a.id]||0)-(seen[b.id]||0)||weight(b)-weight(a)||a.id.localeCompare(b.id);
+    let pool=drills.filter(d=>ok(d)&&!d.intense).sort(order);
+    // Au terrain, le tir et la finition se font au panier : les versions « sans panier » (allongé, contre le mur) restent pour la maison.
+    if(court&&['shoot','finish'].includes(theme)&&pool.filter(d=>d.needs.includes('hoop')).length>=2) pool=pool.filter(d=>d.needs.includes('hoop'));
+    const maxDrills=Math.max(2,Math.round(total/6));
+    if(!pool.length) return {error:court?'Aucun exercice compatible aujourd’hui (douleur ou niveau).':`${def.label} : rien à faire sans panier ni terrain. Choisis « Au terrain ».`};
+    const budget=(total-(total<=15?1:3))*60;
+    const plan=[];
+    const warm=def.warm&&byId(def.warm);
+    if(warm&&ok(warm)&&total>=15) plan.push({...dose(warm,PT),sets:Math.min(warm.sets,2),extraWarm:true});
+    // Fin sous fatigue dès 20 min (tir, finition, dribble) : un exercice « intensité match » du thème, à ton niveau.
+    const tiredDrill=total>=20?drills.filter(d=>(d.intense||d.id==='sk-ft-tired')&&def.areas.includes(d.area)&&d.tier<=Math.max(2,lvl)&&place(d)&&!d.regions.some(r=>pains.includes(r))).sort(order)[0]:null;
+    const tired=tiredDrill?{...dose(tiredDrill,PT),sets:Math.min(tiredDrill.sets,3),tiredFinisher:true}:null;
+    const room=budget-(tired?estimate([tired]):0);
+    for(const d of pool){if(estimate(plan)>=room*0.9||plan.length>=maxDrills)break;if(plan.some(e=>e.id===d.id))continue;plan.push(dose(d,PT));}
+    let guard=0;
+    while(estimate(plan)<room*0.85&&plan.some(e=>e.sets<5&&!e.extraWarm)&&guard++<40){const e=plan.filter(x=>x.sets<5&&!x.extraWarm).sort((a,b)=>a.sets-b.sets)[0];e.sets+=1;}
+    if(tired) plan.push(tired);
+    while(estimate(plan)>budget&&plan.length>2){const i=plan.findIndex((e,k)=>k>0&&!e.tiredFinisher&&k===plan.length-(tired?2:1));if(i<0)break;plan.splice(i,1);}
+    while(estimate(plan)>budget&&plan.some(e=>e.sets>1)){const e=[...plan].reverse().find(x=>x.sets>1);e.sets-=1;}
+    if(!plan.length) return {error:'Pas assez d’exercices compatibles aujourd’hui.'};
+    const shotsIn=plan.some(e=>e.measure==='shots');
+    const reasons=[`${def.label} · niveau ${TIERS[lvl-1].toLowerCase()}${lvl!==extraLevel(state,theme)?` (ton palier : ${TIERS[extraLevel(state,theme)-1].toLowerCase()})`:''}.`,
+      court?'Tout se fait au terrain, panier compris : rien à faire en rentrant.':'Tout se fait à la maison, sans panier.',
+      'Séance en plus : ta séance du planning reste prévue et n’est pas cochée par celle-ci.'];
+    if(tired) reasons.push(`Final sous fatigue : ${tired.name}.`);
+    const est=Math.ceil((estimate(plan)+(total<=15?60:180))/60);
+    if(est<total-5) reasons.push(`À ce niveau, ce thème tient en ~${est} min : c’est assez. Pour plus long, monte d’un niveau ou enchaîne un autre thème.`);
+    if(shotsIn) reasons.push('Valide chaque série avec « Fait » ; à la fin, tu notes tes tirs réussis.');
+    const styles=[...new Set(plan.map(e=>e.style).filter(Boolean))];
+    if(styles.length) reasons.push(`Inspiration : ${styles.join(', ')} (style de jeu, pas un programme officiel).`);
+    return {id:uid(),title:`Extra · ${def.label}`,source:'extra',extraTheme:theme,focus:'basket-skills',format:'classic',exercises:plan,
+      check:{...(state.checkIn||{}),date,minutes:total,equipment:[...new Set([...(state.owned||[]),'ball',...(court?['hoop','court']:[])])],focus:'mixed',format:'classic'},
+      reasons,warmupSeconds:total<=15?60:180,estimatedMinutes:Math.ceil((estimate(plan)+(total<=15?60:180))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+  }
+  return {EXTRA,extraLevel,areaSession,applyShotTotals,painRegions,dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
 });

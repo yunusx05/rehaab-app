@@ -32,7 +32,8 @@ test('planning : les skills gardent leurs 3 séances, au besoin en version court
   const s=player(),w=SP.weekSchedule(s,MONDAY,MONDAY);
   expect(w.skills).toEqual({wanted:3,placed:3});
   const combined=all(w).filter(x=>x.combined);
-  combined.forEach(x=>{expect(x.minutes).toBeGreaterThanOrEqual(20);expect(all(w).some(y=>y.physical&&y.day===x.day)).toBe(true);});
+  // Lot 41 : raccourcie dès qu'une autre séance est prévue le même jour (muscu, vivacité ou navettes), pour tenir dans la durée maximale.
+  combined.forEach(x=>{expect(x.minutes).toBeGreaterThanOrEqual(20);expect(all(w).some(y=>y!==x&&y.type!=='care'&&y.type!=='skills'&&y.day===x.day)).toBe(true);});
   expect(all(w).filter(x=>x.type==='skills').every(x=>![1,3,5].includes(x.day))).toBe(true);
   expect(SP.violations(s,w)).toEqual([]);
 });
@@ -116,7 +117,7 @@ test('nutrition : repères, horaires autour de la séance, compléments adaptés
   expect(ted.energy).toBe(null);expect(ted.blocked).toBeTruthy();
 });
 
-test('écrans : planning réglable par jour, onglet nutrition avec questionnaire, remise à zéro, sans débordement à 390 px',async({page})=>{
+test('écrans : planning réglable par jour, onglet Extra, remise à zéro, sans débordement à 390 px',async({page})=>{
   await page.setViewportSize({width:390,height:844});
   const s=player();
   await seed(page,s,'calendar');
@@ -125,13 +126,9 @@ test('écrans : planning réglable par jour, onglet nutrition avec questionnaire
   await firstFree.selectOption('skills');
   expect(Object.values((await state(page)).calendar.dates)).toContain('skills');
   await noOverflow(page);
-  await page.locator('.bottom-nav button',{hasText:'Nutrition'}).click();
-  await page.getByRole('button',{name:/Faire le questionnaire/}).click();
-  for(const label of ['Perdre du gras','Masculine','Assis la plupart du temps','Le soir (après 18 h)','3 repas','Halal','Pas de souci','Une fois','7 h ou plus','1 à 2 par jour','Non'])
-    await page.getByRole('button',{name:label,exact:true}).first().click();
-  await page.getByRole('button',{name:/Voir mes conseils/}).click();
-  await expect(page.locator('.nutri-kcal')).toBeVisible();
-  await expect(page.locator('.nutri-supp')).toHaveCount(8);
+  // Lot 41 : la nutrition a quitté l'app ; l'onglet Extra la remplace.
+  await page.locator('.bottom-nav button',{hasText:'Extra'}).click();
+  await expect(page.locator('.extra-summary')).toBeVisible();
   await noOverflow(page);
   await page.locator('.bottom-nav button',{hasText:'Moi'}).click();
   await page.getByText('Repartir à zéro').click();

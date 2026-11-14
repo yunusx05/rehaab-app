@@ -22,7 +22,7 @@ html[data-nav=back]::view-transition-new(root){animation-name:vt-in-left}
 ::view-transition-new(tabbar),::view-transition-new(shell-header),::view-transition-group(tabbar),::view-transition-group(shell-header){animation:none}
 
 /* Barre du bas : une seule pastille qui glisse vers l'onglet actif. La barre elle-même garde transform:none (bug iOS 26). */
-.nav-pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 22px)/5);border-radius:30px;background:var(--accent);transform:translateX(calc(var(--tab,0)*(100% + 2px)));transition:transform 420ms var(--ease-glide);pointer-events:none}
+.nav-pill{position:absolute;top:7px;bottom:7px;left:7px;width:calc((100% - 20px)/4);border-radius:30px;background:var(--accent);transform:translateX(calc(var(--tab,0)*(100% + 2px)));transition:transform 420ms var(--ease-glide);pointer-events:none}
 .nav-button{position:relative;z-index:1;transition:color 220ms var(--ease-out),transform 160ms var(--ease-out),background-color 180ms}
 .nav-button[aria-current=page],.nav-button[aria-current=page]:hover{background:transparent;color:#17200d}
 .nav-button[aria-current=page] svg{animation:nav-pop 420ms var(--ease-glide)}

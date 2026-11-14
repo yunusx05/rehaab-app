@@ -66,31 +66,64 @@ function PTPathway({data,update,go,notify}) {
     go('preview');
   };
 
-  // Lot 33 « Plan épuré » : d'abord la séance à faire, puis la progression, puis les outils ; la gestion du parcours est repliée.
-  const vivacite = () => {if (data.draft?.status === 'active') { setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.'); return; } const plan = BP.quickPlan(PT, JP, data, 'vivacite'); if (plan.error) { setError(plan.error); return; } update(s => ({...s, draft: plan})); go('preview');};
+  // Lot 41 : une seule vérité. La semaine affichée ici est celle du planning, la même que l'accueil. Avant, le Plan conseillait
+  // « la prochaine séance A/B/C non faite » pendant que l'accueil lançait la séance du jour du planning : deux programmes différents.
+  const SPL = window.SeasonPlan, now = PT.dateKey();
+  const week = SPL ? SPL.weekSchedule(data, now, now) : null;
+  const ORDER = ['pathway','reset','muscu','vivacite','skills','shooting','cardio'];
+  const sorted = d => d.items.filter(x => x.type !== 'care').sort((a,b) => ORDER.indexOf(a.type) - ORDER.indexOf(b.type));
+  const todayDay = week ? week.days.find(d => d.date === now) : null;
+  const todayLeft = todayDay ? sorted(todayDay).filter(x => x.status === 'planned') : [];
+  const nextDay = week && !todayLeft.length ? week.days.find(d => d.date > now && sorted(d).some(x => x.status === 'planned')) : null;
+  const launchItem = (item, day) => {
+    if (item.type === 'muscu') { go('program'); return; }
+    if (item.type === 'shooting') { go('shooting'); return; }
+    if (data.draft?.status === 'active') { setError('Une séance est en cours : reprends-la ou termine-la avant d’en lancer une autre.'); return; }
+    const plan = typeof ptCalendarPlan === 'function' ? ptCalendarPlan(data, item, day) : null;
+    if (!plan || plan.error) { setError(plan?.error || 'Séance indisponible aujourd’hui.'); return; }
+    setError(''); update(s => ({...s, draft: plan})); go('preview');
+  };
+  const dayName = d => d.date === now ? 'Aujourd’hui' : d.label;
   return <><PTPageHead onBack={() => go('today')} eyebrow={`Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`} title={`${step.name}.`}>{step.goal}</PTPageHead>
     <div className="stack-lg">
       <section className="stack plan-week">
-        <div className="topline"><h2>Cette semaine</h2><span className="caption">Semaine {status.week}{status.week > step.minWeeks ? ' · consolidation' : ''} · {status.sessions}/{status.needed} séances</span></div>
+        <div className="topline"><h2>Cette semaine</h2><span className="caption">Semaine {status.week} de l’étape · {status.sessions}/{status.needed} séances</span></div>
         <span className="mini-progress"><i style={{transform:`scaleX(${Math.min(1, status.sessions / status.needed)})`}}/></span>
-        <PTChips value={minutes} onChange={setMinutes} options={[{value:0,label:'Séance complète'},{value:30,label:'30 min'},{value:45,label:'45 min'}]}/>
-        {step.days.map(day => {
-          const plan = BP.sessionPlan(PT, JP, data, p, day.key, {minutes: minutes || undefined});
-          const done = status.done.includes(day.key), main = !done && status.next === day.key;
-          const label = confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance';
-          return <article key={day.key} className={`card stack-sm pathway-day${done ? ' is-done' : ''}${main ? ' is-main' : ' is-compact'}`}>
-            <div className="exercise-summary"><span className="exercise-number">{done ? <PTIcon name="check" size={16}/> : day.key}</span><div><h3>{day.name}</h3><p>{plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`}{done ? ' · faite' : main ? ' · conseillée' : ''}</p></div>
-              {!main && !plan.error && <button className="icon-button pathway-day-go" aria-label={`${label} · ${day.name}`} onClick={() => launch(day.key)}><PTIcon name="arrow" size={18}/></button>}</div>
-            {plan.error ? <p className="fine">{plan.error}</p> : <details className="dose-details" open={main}><summary>Les {plan.exercises.length} mouvements</summary><ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul></details>}
-            {confirm === day.key && <div className="notice warning stack-sm"><p>Une séance est en cours. La remplacer effacera ce qui n’a pas été enregistré.</p>{!main && <PTButton onClick={() => launch(day.key)}>Remplacer et préparer</PTButton>}<PTButton quiet onClick={() => {setConfirm(null); go('session');}}>Reprendre la séance en cours</PTButton></div>}
-            {main && !plan.error && <PTButton primary onClick={() => launch(day.key)}>{label}<PTIcon name="arrow" size={18}/></PTButton>}
-          </article>;
-        })}
+        {data.draft?.status === 'active' && <button className="resume-workout" onClick={() => go('session')}><span><small>Séance en cours</small><strong>{data.draft.title}</strong></span><PTIcon name="arrow" size={18}/></button>}
+        {todayDay && todayLeft.length > 0 && <article className="card stack-sm plan-today">
+          <span className="caption">Aujourd’hui · comme sur l’accueil</span>
+          {todayLeft.map((item, i) => <div key={item.key} className="plan-today-item">
+            <div><strong>{item.label}</strong><small>~{item.minutes} min</small></div>
+            <PTButton primary={i === 0} onClick={() => launchItem(item, todayDay)}>{i === 0 ? 'Lancer' : 'Ensuite'}<PTIcon name="arrow" size={18}/></PTButton>
+          </div>)}
+        </article>}
+        {todayDay && !todayLeft.length && <article className="card stack-sm plan-today is-rest">
+          <strong>{sorted(todayDay).some(x => x.status === 'done') ? 'Séance du jour faite.' : todayDay.club.match ? 'Jour de match.' : todayDay.club.practice ? 'Club ce soir.' : 'Repos aujourd’hui.'}</strong>
+          <p className="fine">{nextDay ? `Prochaine séance : ${nextDay.label.toLowerCase()} · ${sorted(nextDay).filter(x => x.status === 'planned').map(x => x.label).join(' + ')}.` : 'Plus rien de prévu cette semaine.'} Envie de bouger quand même ? Une séance courte dans Extra.</p>
+          <button className="text-button" onClick={() => go('extra')}>Ouvrir Extra →</button>
+        </article>}
+        {week && <ol className="plan-days" aria-label="Ma semaine">{week.days.map(d => {const items = sorted(d);
+          return <li key={d.date} className={`plan-day${d.date === now ? ' is-today' : ''}`}>
+            <span className="plan-day-name">{d.label.slice(0,3)}<small>{Number(d.date.slice(8))}</small></span>
+            <span className="plan-day-items">{items.length ? items.map(x => <em key={x.key} className={`is-${x.status}`}>{x.status === 'done' && <PTIcon name="check" size={12}/>}{x.label}</em>) : <em className="is-rest">{d.club.match ? 'Match' : d.club.practice ? 'Club' : 'Repos'}</em>}{items.length > 0 && d.club.practice && <em className="is-club">+ club</em>}</span>
+          </li>;})}</ol>}
+        <button className="text-button" onClick={() => go('calendar')}>Changer un jour ou ma semaine type →</button>
         {error && <p className="error" role="alert">{error}</p>}
-        <div className="home-options">
-          <button className="home-action" onClick={vivacite}><PTIcon name="spark"/><span><strong>Vivacité · 15 min</strong><small>{p.step < 2 ? 'Appuis et chevilles, sans saut à cette étape.' : 'Pogos, départs, freinages. Jusqu’à 3 fois par semaine.'}</small></span><PTIcon name="arrow" size={18}/></button>
-        </div>
-        <details className="disclosure"><summary>Les règles de cette étape</summary><div><ul className="reason-list"><li>Trois séances par semaine{step.days.length === 2 ? ' (deux à cette étape)' : ''}, dans l’ordre que tu veux. Au moins un jour entre deux séances de jambes.</li>{step.rules.map(r => <li key={r}>{r}</li>)}</ul></div></details>
+        <details className="disclosure"><summary>Le contenu des séances de l’étape</summary><div className="stack">
+          <p className="fine">Le planning place ces séances sur tes jours de muscu. Tu peux en faire une maintenant si tu as raté son jour.</p>
+          <PTChips value={minutes} onChange={setMinutes} options={[{value:0,label:'Séance complète'},{value:30,label:'30 min'},{value:45,label:'45 min'}]}/>
+          {step.days.map(day => {
+            const plan = BP.sessionPlan(PT, JP, data, p, day.key, {minutes: minutes || undefined});
+            const done = status.done.includes(day.key);
+            return <article key={day.key} className={`card stack-sm pathway-day is-compact${done ? ' is-done' : ''}`}>
+              <div className="exercise-summary"><span className="exercise-number">{done ? <PTIcon name="check" size={16}/> : day.key}</span><div><h3>{day.name}</h3><p>{plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`}{done ? ' · faite cette semaine' : ''}</p></div></div>
+              {plan.error ? <p className="fine">{plan.error}</p> : <details className="dose-details"><summary>Les {plan.exercises.length} mouvements</summary><ul className="dose-list">{plan.exercises.map(e => <li key={e.id}><span>{e.name}</span><small>{ptRoleLabel(e.pathwayRole)} · {ptDoseLabel(e)}</small></li>)}</ul></details>}
+              {confirm === day.key && <div className="notice warning stack-sm"><p>Une séance est en cours. La remplacer effacera ce qui n’a pas été enregistré.</p><PTButton onClick={() => launch(day.key)}>Remplacer et préparer</PTButton><PTButton quiet onClick={() => {setConfirm(null); go('session');}}>Reprendre la séance en cours</PTButton></div>}
+              {!plan.error && confirm !== day.key && <button className="text-button" onClick={() => launch(day.key)}>{done ? 'Refaire cette séance' : 'Faire celle-ci maintenant'} →</button>}
+            </article>;
+          })}
+          <ul className="reason-list"><li>Trois séances par semaine{step.days.length === 2 ? ' (deux à cette étape)' : ''}. Au moins un jour entre deux séances de jambes.</li>{step.rules.map(r => <li key={r}>{r}</li>)}</ul>
+        </div></details>
       </section>
 
       {p.step === BP.steps.length && <PTPathwayLadder data={data} update={update} go={go} notify={notify}/>}
@@ -206,14 +239,12 @@ function PTPlanArsenal({data,go,update,notify}){
   const SP=window.SeasonPlan,phase=SP?SP.build(data).current:null;
   const tests=data.pathway?Object.values(data.pathway.tests||{}).reduce((n,l)=>n+(l||[]).length,0):0;
   return <div className="image-grid plan-arsenal">
-    <PTImageTile photo={ptHub('week')} title="Mon planning" text="Choisis tes jours et place chaque séance où tu veux." onClick={()=>go('calendar')}/>
     <PTImageTile photo={ptHub('season')} badge={phase?.phase?`Semaine ${phase.week}`:null} title="Mon plan de saison" text={phase?.phase?phase.phase.name:'Les phases et l’architecte IA.'} onClick={()=>go('plan')}/>
-    <PTImageTile photo={ptHub('muscu')} title="Ma muscu" text={prog&&PPR?`${PPR.familyById(prog.familyId)?.short||'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}`:'Programme à côté du parcours, sans le doubler.'} onClick={()=>go(prog?'program':'program-new')}/>
+    {/* Lot 41 : planning (lien plus haut), abdos (dans Extra) et poids (dans Moi) quittent les outils ; la muscu à côté n'apparaît que si elle existe déjà. */}
+    {prog&&<PTImageTile photo={ptHub('muscu')} title="Ma muscu" text={prog&&PPR?`${PPR.familyById(prog.familyId)?.short||'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}`:'Programme à côté du parcours, sans le doubler.'} onClick={()=>go(prog?'program':'program-new')}/>}
     <PTImageTile photo={ptHub('skills')} title="Mes skills basket" text={SK?.complete(data.skills)?'Dribble, tir, finition, défense, moves.':'Questionnaire puis programme à ton niveau.'} onClick={()=>go('skills')}/>
     <PTImageTile photo={ptHub('tests')} badge={tests?`${tests} mesure${tests>1?'s':''}`:null} title="Mesurer ma détente et mes tests" text="Saut, sprint, RSI : un mur, un mètre ou une vidéo." onClick={()=>go('bilan','tests')}/>
     <PTImageTile photo={ptHub('library')} title="Tous les exercices" text={`${PT.allExercises(data).length+(window.BasketSkills?.drills.length||0)} mouvements, filtres basket.`} onClick={()=>go('library')}/>
-    {window.BasketCore&&update&&<PTImageTile photo={rwPhoto('plank')||'media/ui/dossier/body.webp'} title="Abdos & gainage" text={`Core workout complet · ~20 min, niveau ${window.BasketCore.level(data)} sur 3.`} onClick={()=>rwLaunch({data,update,go,notify},s=>window.BasketCore.workout(PT,s,{minutes:20}))}/>}
     <PTImageTile photo={ptHub('shooting')} title="Mes séances de tir" text={window.Shooting?.summary(data.shooting)||'Compteur en direct, % par semaine, carte de tir.'} onClick={()=>go('shooting')}/>
-    <PTImageTile photo="media/ui/dossier/body.webp" title="Poids de forme" text="Ton poids face à ton poids de jeu." onClick={()=>go('weight')}/>
   </div>;
 }

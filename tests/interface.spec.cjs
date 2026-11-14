@@ -36,7 +36,7 @@ test('accueil, hub Plan et Moi : photos, carte joueur fidèle au bilan, sans dé
     await expect(page.locator('.radar-block')).toHaveCount(1);
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#pathway');
-    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(9);
+    await expect(page.locator('.plan-arsenal .image-tile')).toHaveCount(5); // lot 41 : outils allégés
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
     await page.goto('/#profile');
     await expect(page.getByRole('heading',{name:'Moi.'})).toBeVisible();

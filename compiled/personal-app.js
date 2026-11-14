@@ -1004,7 +1004,7 @@ function PTPreview({
   return /*#__PURE__*/React.createElement("div", {
     className: "visual-preview"
   }, /*#__PURE__*/React.createElement(PTPageHead, {
-    onBack: () => go(plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup', 'recovery'].includes(plan.source) ? 'today' : plan.source === 'cardio' ? 'calendar' : 'prepare'),
+    onBack: () => go(plan.extra ? 'extra' : plan.source === 'program' ? 'program-legacy' : plan.source === 'program-plan' ? 'program' : plan.source === 'pathway' ? 'pathway' : plan.source === 'skills' ? 'skills' : ['quick', 'rehab', 'warmup', 'recovery'].includes(plan.source) ? 'today' : plan.source === 'cardio' ? 'calendar' : 'prepare'),
     eyebrow: "Ta proposition",
     title: plan.title
   }), /*#__PURE__*/React.createElement("div", {
@@ -2311,13 +2311,13 @@ function PTProfile({
     className: "stack"
   }, /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Efface ton dossier joueur, tes questionnaires (bilan, skills, \xAB Mon jeu \xBB, nutrition), tes tests, tes paliers, ton parcours, ton plan et ton calendrier. L\u2019app te fait tout refaire depuis le d\xE9but. Ton mat\xE9riel, tes charges et tes infos de base restent."), /*#__PURE__*/React.createElement("label", {
+  }, "Efface ton dossier joueur, tes questionnaires (bilan, skills, \xAB Mon jeu \xBB), tes tests, tes paliers, ton parcours, ton plan et ton calendrier. L\u2019app te fait tout refaire depuis le d\xE9but. Ton mat\xE9riel, tes charges et tes infos de base restent."), /*#__PURE__*/React.createElement("label", {
     className: "check-label"
   }, /*#__PURE__*/React.createElement("input", {
     type: "checkbox",
     checked: resetAll,
     onChange: e => setResetAll(e.target.checked)
-  }), "Effacer aussi mon historique (s\xE9ances, poids, QI, tirs, douleurs signal\xE9es)."), !resetAsk ? /*#__PURE__*/React.createElement(PTButton, {
+  }), "Effacer aussi mon historique (s\xE9ances, poids, tirs, douleurs signal\xE9es)."), !resetAsk ? /*#__PURE__*/React.createElement(PTButton, {
     danger: true,
     onClick: () => setResetAsk(true)
   }, "R\xE9initialiser mon profil") : /*#__PURE__*/React.createElement("div", {
@@ -2434,10 +2434,11 @@ class PTErrorBoundary extends React.Component {
     }, this.props.children);
   }
 }
-const ptTabs = ['today', 'pathway', 'qi', 'nutrition', 'profile'];
+// Lot 41 : QI et nutrition retirés de la navigation (jamais utilisés) ; leurs données restent dans l'export. Extra prend leur place.
+const ptTabs = ['today', 'pathway', 'extra', 'profile'];
 const ptPlanRoutes = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'];
 function ptTabOf(route) {
-  return ptPlanRoutes.includes(route) ? 'pathway' : route.startsWith('qi') ? 'qi' : route.startsWith('nutrition') ? 'nutrition' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
+  return ptPlanRoutes.includes(route) ? 'pathway' : route === 'extra' ? 'extra' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
 }
 function PersonalApp() {
   const initial = usePTRef(null);
@@ -2622,6 +2623,9 @@ function PersonalApp() {
       'shooting-live': PTShootingLive,
       weight: PTWeight,
       routines: PTRoutines,
+      ...(typeof PTExtra === 'function' ? {
+        extra: PTExtra
+      } : {}),
       card: PTPlayerCardScreen,
       ...(typeof PTMishap === 'function' ? {
         mishap: PTMishap,
@@ -2677,13 +2681,9 @@ function PersonalApp() {
     label: 'Plan',
     icon: 'weight'
   }, {
-    id: 'qi',
-    label: 'QI',
-    icon: 'court'
-  }, {
-    id: 'nutrition',
-    label: 'Nutrition',
-    icon: 'food'
+    id: 'extra',
+    label: 'Extra',
+    icon: 'plus'
   }, {
     id: 'profile',
     label: 'Moi',

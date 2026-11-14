@@ -105,7 +105,9 @@ test('parcours dans l’app : lancer une séance, la terminer, le suivi avance',
   await page.getByRole('button',{name:'Plan',exact:true}).click();
   await expect(page.getByRole('heading',{name:'Fondations.'})).toBeVisible();
   await noOverflow(page);
-  await page.getByRole('button',{name:/Préparer cette séance/}).first().click();
+  // Lot 41 : le Plan suit le planning ; les séances de l'étape restent faisables à la demande, dans « Le contenu des séances ».
+  await page.getByText('Le contenu des séances de l’étape').click();
+  await page.getByRole('button',{name:/Faire celle-ci maintenant/}).first().click();
   await page.getByRole('button',{name:'Rien à signaler'}).click();
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toBeVisible();
   const draft=(await state(page)).draft;
@@ -223,7 +225,7 @@ test('accueil allégé : la séance du jour lance directement la séance prévue
   await seed(page,data,'today');
   const card=page.locator('.today-plan');
   await expect(card.locator('h2')).toHaveText('Fondations · Jambes & tendons');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Nutrition','Moi']);
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','Extra','Moi']);
   await expect(page.getByText('Trouver ma séance')).toHaveCount(0);
   await card.getByRole('button',{name:/Préparer ma séance/}).click();
   await page.getByRole('button',{name:'Rien à signaler'}).click();

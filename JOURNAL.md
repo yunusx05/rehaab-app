@@ -2,6 +2,21 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-14 — Lot 41 « Extra » : QI et nutrition retirés, Plan = planning, séances à la carte, finitions pour s'entraîner seul (v97)
+
+**Demande** : retirer QI et nutrition (jamais utilisés) ; Plan et Aujourd'hui montraient deux programmes différents ; une section de séances « extra » (tir par niveau, dribble, haut/bas du corps, abdos…) de 10 min à 1 h ; des exercices basket plus originaux pour s'entraîner seul (vidéos YouTube réelles) ; séances pas trop longues, une logique qu'on suit sans se poser de questions.
+
+**Constat** (dossier réel, samedi 14/11) : le Plan conseillait « Séance A » (prochaine séance du parcours non faite, ses 3 séances étant des « Remise en route ») pendant que l'accueil lançait vivacité + navettes + skills ; ce samedi totalisait 95 min pour une limite de 60 ; Extra « haut du corps » était toujours allégé car le profil dit « je reprends ».
+
+**Fait** (branche `feature/lot41-extra`, partie de `feature/lot40-skills`) :
+- Navigation à 4 onglets : Aujourd'hui, Plan, Extra, Moi. QI et nutrition hors de la navigation, du questionnaire de Moi et du planning ; données et écrans conservés (export intact, liens directs).
+- Plan : « Cette semaine » = la semaine du planning (`SeasonPlan.weekSchedule`), même séance du jour que l'accueil, lancée de la même façon (`ptCalendarPlan`) ; jour de repos → prochaine séance + lien Extra ; séances A/B/C de l'étape repliées (« Faire celle-ci maintenant »). Outils allégés : 9 → 5 tuiles.
+- Même ordre partout un jour de terrain : vivacité (fraîcheur) → skills → navettes.
+- Planning : les skills sont raccourcis dès qu'une autre séance est prévue le même jour (vivacité, navettes comprises) : la journée tient dans la durée max (samedi réel : 95 → 60 min, « Skills basket · version courte »).
+- Extra (`extra-components.jsx`) : 5 thèmes basket (`SK.areaSession` : un thème, niveau choisi ou palier, terrain ou maison, fin sous fatigue dès 20 min, variété selon les dernières séances) et 5 physiques (`PT.zoneSession` haut/bas du corps structuré : gros mouvements lourds d'abord ; abdos, explosivité, mobilité). Durées 10, 15, 20, 30, 45 min, 1 h. Source `extra` : ne coche pas la séance du planning, ignorée par la règle « un lieu par séance ».
+- 6 fiches nouvelles d'après des vidéos vérifiées (titre, chaîne, chapitres ou sous-titres via yt-dlp) : lay-up balle haute autour de deux chaises (Playbook Sports), lay-up main gauche progression (Get Handles, THINCPRO), finir fort épaule dedans (IN THE LAB, R2BBALL), Mikan pied intérieur / main extérieure (BreakthroughBBall), échelles pound-cross et entre les jambes (Phil Handy). Sources ajoutées aussi à « lay-up même main même pied » (ATTACKBball, Coach Frikki, Jr. NBA), finitions main faible et deux ballons.
+- Tests : `tests/extra.spec.cjs` (4) ; 6 specs adaptés au nouveau Plan et aux 4 onglets ; suite 245 OK ; KO connus liés à la date (accueil 375×667, poids-tir).
+
 ## 2026-11-14 — Lot 40 « skills » : gêne, fatigue, paliers, tirs notés en fin de séance, bibliothèque par thème (v96)
 
 **Constat** (dossier réel) : paliers Fondations dans 6 domaines sur 7 (questionnaire du 13/10), aucune séance skills enregistrée (donc aucune montée), les 12 exercices « intensité match » jamais dans les séances skills normales, et surtout la gêne à 1/10 genou/hanche retirait 95 exercices skills sur 130 (toutes les finitions) : la règle « gêne ≠ blessure » du lot 32 n'était pas appliquée aux skills.

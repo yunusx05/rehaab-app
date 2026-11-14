@@ -273,6 +273,8 @@
   }
   function groupByPlace(PT,state,plan,{pull=e=>e.primer||['kiné','soin','vivacité'].includes(e.pathwayRole)}={}){
     if(!plan||plan.error||!(plan.exercises||[]).length) return plan;
+    // Lot 41 : une séance Extra a déjà choisi son lieu (terrain ou maison) : on n'y touche pas.
+    if(plan.extra||plan.source==='extra') return plan;
     if(courtAway(state)){
       if(courtSession(plan)) return {...plan,exercises:plan.exercises.map(e=>({...e,place:'out',placeStart:undefined})),placeMoves:0};
       return homeOnly(PT,state,plan);

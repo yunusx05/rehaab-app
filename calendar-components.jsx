@@ -90,7 +90,7 @@ function PTCalendar({data,update,go,notify}){
       <ol className="calendar-week">{week.days.filter(d=>!(d.before&&d.items.length===0)).map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
         <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
         {d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
-        {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}{d.qi&&!d.club.match?' · QI du jour (5 min)':''}</p>}
+        {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}</p>}
         {d.items.map((item,idx)=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
           <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
@@ -192,7 +192,6 @@ function PTWeekReview({data,update,notify}){
       {r.missed.length>0&&<li>Manquées : {r.missed.join(', ')}.</li>}
       {r.weight&&<li>Poids : {r.weight.value} kg{r.weight.change!==null?` (${r.weight.change>0?'+':''}${r.weight.change} kg)`:''}.</li>}
       {r.shooting&&<li>Tir : {r.shooting.made}/{r.shooting.attempts} ({r.shooting.pct} %).</li>}
-      {r.qi.answered>0&&<li>QI : {r.qi.correct}/{r.qi.answered} bonnes lectures.</li>}
       {r.tests.length>0&&<li>{r.tests.length} test{r.tests.length>1?'s':''} mesuré{r.tests.length>1?'s':''}.</li>}
       {r.pains.length>0&&<li>Douleur active : {r.pains.map(p=>`${PT.regions[p.region]} ${p.severity}/10`).join(', ')}.</li>}
     </ul>
