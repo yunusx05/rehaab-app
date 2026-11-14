@@ -220,23 +220,42 @@ function PTPathway({
     go('preview');
   };
 
-  // Lot 33 « Plan épuré » : d'abord la séance à faire, puis la progression, puis les outils ; la gestion du parcours est repliée.
-  const vivacite = () => {
+  // Lot 41 : une seule vérité. La semaine affichée ici est celle du planning, la même que l'accueil. Avant, le Plan conseillait
+  // « la prochaine séance A/B/C non faite » pendant que l'accueil lançait la séance du jour du planning : deux programmes différents.
+  const SPL = window.SeasonPlan,
+    now = PT.dateKey();
+  const week = SPL ? SPL.weekSchedule(data, now, now) : null;
+  const ORDER = ['pathway', 'reset', 'muscu', 'vivacite', 'skills', 'shooting', 'cardio'];
+  const sorted = d => d.items.filter(x => x.type !== 'care').sort((a, b) => ORDER.indexOf(a.type) - ORDER.indexOf(b.type));
+  const todayDay = week ? week.days.find(d => d.date === now) : null;
+  const todayLeft = todayDay ? sorted(todayDay).filter(x => x.status === 'planned') : [];
+  const nextDay = week && !todayLeft.length ? week.days.find(d => d.date > now && sorted(d).some(x => x.status === 'planned')) : null;
+  const launchItem = (item, day) => {
+    if (item.type === 'muscu') {
+      go('program');
+      return;
+    }
+    if (item.type === 'shooting') {
+      go('shooting');
+      return;
+    }
     if (data.draft?.status === 'active') {
-      setError('Une séance est en cours : termine-la ou reprends-la avant de lancer Vivacité.');
+      setError('Une séance est en cours : reprends-la ou termine-la avant d’en lancer une autre.');
       return;
     }
-    const plan = BP.quickPlan(PT, JP, data, 'vivacite');
-    if (plan.error) {
-      setError(plan.error);
+    const plan = typeof ptCalendarPlan === 'function' ? ptCalendarPlan(data, item, day) : null;
+    if (!plan || plan.error) {
+      setError(plan?.error || 'Séance indisponible aujourd’hui.');
       return;
     }
+    setError('');
     update(s => ({
       ...s,
       draft: plan
     }));
     go('preview');
   };
+  const dayName = d => d.date === now ? 'Aujourd’hui' : d.label;
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('today'),
     eyebrow: `Étape ${step.id} sur ${BP.steps.length}${step.base ? ` · ${step.base}` : ''}`,
@@ -249,13 +268,74 @@ function PTPathway({
     className: "topline"
   }, /*#__PURE__*/React.createElement("h2", null, "Cette semaine"), /*#__PURE__*/React.createElement("span", {
     className: "caption"
-  }, "Semaine ", status.week, status.week > step.minWeeks ? ' · consolidation' : '', " \xB7 ", status.sessions, "/", status.needed, " s\xE9ances")), /*#__PURE__*/React.createElement("span", {
+  }, "Semaine ", status.week, " de l\u2019\xE9tape \xB7 ", status.sessions, "/", status.needed, " s\xE9ances")), /*#__PURE__*/React.createElement("span", {
     className: "mini-progress"
   }, /*#__PURE__*/React.createElement("i", {
     style: {
       transform: `scaleX(${Math.min(1, status.sessions / status.needed)})`
     }
-  })), /*#__PURE__*/React.createElement(PTChips, {
+  })), data.draft?.status === 'active' && /*#__PURE__*/React.createElement("button", {
+    className: "resume-workout",
+    onClick: () => go('session')
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("small", null, "S\xE9ance en cours"), /*#__PURE__*/React.createElement("strong", null, data.draft.title)), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), todayDay && todayLeft.length > 0 && /*#__PURE__*/React.createElement("article", {
+    className: "card stack-sm plan-today"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "caption"
+  }, "Aujourd\u2019hui \xB7 comme sur l\u2019accueil"), todayLeft.map((item, i) => /*#__PURE__*/React.createElement("div", {
+    key: item.key,
+    className: "plan-today-item"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, "~", item.minutes, " min")), /*#__PURE__*/React.createElement(PTButton, {
+    primary: i === 0,
+    onClick: () => launchItem(item, todayDay)
+  }, i === 0 ? 'Lancer' : 'Ensuite', /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))))), todayDay && !todayLeft.length && /*#__PURE__*/React.createElement("article", {
+    className: "card stack-sm plan-today is-rest"
+  }, /*#__PURE__*/React.createElement("strong", null, sorted(todayDay).some(x => x.status === 'done') ? 'Séance du jour faite.' : todayDay.club.match ? 'Jour de match.' : todayDay.club.practice ? 'Club ce soir.' : 'Repos aujourd’hui.'), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, nextDay ? `Prochaine séance : ${nextDay.label.toLowerCase()} · ${sorted(nextDay).filter(x => x.status === 'planned').map(x => x.label).join(' + ')}.` : 'Plus rien de prévu cette semaine.', " Envie de bouger quand m\xEAme ? Une s\xE9ance courte dans Extra."), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('extra')
+  }, "Ouvrir Extra \u2192")), week && /*#__PURE__*/React.createElement("ol", {
+    className: "plan-days",
+    "aria-label": "Ma semaine"
+  }, week.days.map(d => {
+    const items = sorted(d);
+    return /*#__PURE__*/React.createElement("li", {
+      key: d.date,
+      className: `plan-day${d.date === now ? ' is-today' : ''}`
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "plan-day-name"
+    }, d.label.slice(0, 3), /*#__PURE__*/React.createElement("small", null, Number(d.date.slice(8)))), /*#__PURE__*/React.createElement("span", {
+      className: "plan-day-items"
+    }, items.length ? items.map(x => /*#__PURE__*/React.createElement("em", {
+      key: x.key,
+      className: `is-${x.status}`
+    }, x.status === 'done' && /*#__PURE__*/React.createElement(PTIcon, {
+      name: "check",
+      size: 12
+    }), x.label)) : /*#__PURE__*/React.createElement("em", {
+      className: "is-rest"
+    }, d.club.match ? 'Match' : d.club.practice ? 'Club' : 'Repos'), items.length > 0 && d.club.practice && /*#__PURE__*/React.createElement("em", {
+      className: "is-club"
+    }, "+ club")));
+  })), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => go('calendar')
+  }, "Changer un jour ou ma semaine type \u2192"), error && /*#__PURE__*/React.createElement("p", {
+    className: "error",
+    role: "alert"
+  }, error), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, "Le contenu des s\xE9ances de l\u2019\xE9tape"), /*#__PURE__*/React.createElement("div", {
+    className: "stack"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Le planning place ces s\xE9ances sur tes jours de muscu. Tu peux en faire une maintenant si tu as rat\xE9 son jour."), /*#__PURE__*/React.createElement(PTChips, {
     value: minutes,
     onChange: setMinutes,
     options: [{
@@ -272,12 +352,10 @@ function PTPathway({
     const plan = BP.sessionPlan(PT, JP, data, p, day.key, {
       minutes: minutes || undefined
     });
-    const done = status.done.includes(day.key),
-      main = !done && status.next === day.key;
-    const label = confirm === day.key ? 'Remplacer et préparer' : done ? 'Refaire cette séance' : 'Préparer cette séance';
+    const done = status.done.includes(day.key);
     return /*#__PURE__*/React.createElement("article", {
       key: day.key,
-      className: `card stack-sm pathway-day${done ? ' is-done' : ''}${main ? ' is-main' : ' is-compact'}`
+      className: `card stack-sm pathway-day is-compact${done ? ' is-done' : ''}`
     }, /*#__PURE__*/React.createElement("div", {
       className: "exercise-summary"
     }, /*#__PURE__*/React.createElement("span", {
@@ -285,25 +363,17 @@ function PTPathway({
     }, done ? /*#__PURE__*/React.createElement(PTIcon, {
       name: "check",
       size: 16
-    }) : day.key), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, day.name), /*#__PURE__*/React.createElement("p", null, plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`, done ? ' · faite' : main ? ' · conseillée' : '')), !main && !plan.error && /*#__PURE__*/React.createElement("button", {
-      className: "icon-button pathway-day-go",
-      "aria-label": `${label} · ${day.name}`,
-      onClick: () => launch(day.key)
-    }, /*#__PURE__*/React.createElement(PTIcon, {
-      name: "arrow",
-      size: 18
-    }))), plan.error ? /*#__PURE__*/React.createElement("p", {
+    }) : day.key), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, day.name), /*#__PURE__*/React.createElement("p", null, plan.error ? 'Indisponible aujourd’hui' : `~${plan.estimatedMinutes} min · ${plan.exercises.length} mouvements`, done ? ' · faite cette semaine' : ''))), plan.error ? /*#__PURE__*/React.createElement("p", {
       className: "fine"
     }, plan.error) : /*#__PURE__*/React.createElement("details", {
-      className: "dose-details",
-      open: main
+      className: "dose-details"
     }, /*#__PURE__*/React.createElement("summary", null, "Les ", plan.exercises.length, " mouvements"), /*#__PURE__*/React.createElement("ul", {
       className: "dose-list"
     }, plan.exercises.map(e => /*#__PURE__*/React.createElement("li", {
       key: e.id
     }, /*#__PURE__*/React.createElement("span", null, e.name), /*#__PURE__*/React.createElement("small", null, ptRoleLabel(e.pathwayRole), " \xB7 ", ptDoseLabel(e)))))), confirm === day.key && /*#__PURE__*/React.createElement("div", {
       className: "notice warning stack-sm"
-    }, /*#__PURE__*/React.createElement("p", null, "Une s\xE9ance est en cours. La remplacer effacera ce qui n\u2019a pas \xE9t\xE9 enregistr\xE9."), !main && /*#__PURE__*/React.createElement(PTButton, {
+    }, /*#__PURE__*/React.createElement("p", null, "Une s\xE9ance est en cours. La remplacer effacera ce qui n\u2019a pas \xE9t\xE9 enregistr\xE9."), /*#__PURE__*/React.createElement(PTButton, {
       onClick: () => launch(day.key)
     }, "Remplacer et pr\xE9parer"), /*#__PURE__*/React.createElement(PTButton, {
       quiet: true,
@@ -311,31 +381,13 @@ function PTPathway({
         setConfirm(null);
         go('session');
       }
-    }, "Reprendre la s\xE9ance en cours")), main && !plan.error && /*#__PURE__*/React.createElement(PTButton, {
-      primary: true,
+    }, "Reprendre la s\xE9ance en cours")), !plan.error && confirm !== day.key && /*#__PURE__*/React.createElement("button", {
+      className: "text-button",
       onClick: () => launch(day.key)
-    }, label, /*#__PURE__*/React.createElement(PTIcon, {
-      name: "arrow",
-      size: 18
-    })));
-  }), error && /*#__PURE__*/React.createElement("p", {
-    className: "error",
-    role: "alert"
-  }, error), /*#__PURE__*/React.createElement("div", {
-    className: "home-options"
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: vivacite
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "spark"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Vivacit\xE9 \xB7 15 min"), /*#__PURE__*/React.createElement("small", null, p.step < 2 ? 'Appuis et chevilles, sans saut à cette étape.' : 'Pogos, départs, freinages. Jusqu’à 3 fois par semaine.')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 18
-  }))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles de cette \xE9tape"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
+    }, done ? 'Refaire cette séance' : 'Faire celle-ci maintenant', " \u2192"));
+  }), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
-  }, /*#__PURE__*/React.createElement("li", null, "Trois s\xE9ances par semaine", step.days.length === 2 ? ' (deux à cette étape)' : '', ", dans l\u2019ordre que tu veux. Au moins un jour entre deux s\xE9ances de jambes."), step.rules.map(r => /*#__PURE__*/React.createElement("li", {
+  }, /*#__PURE__*/React.createElement("li", null, "Trois s\xE9ances par semaine", step.days.length === 2 ? ' (deux à cette étape)' : '', ". Au moins un jour entre deux s\xE9ances de jambes."), step.rules.map(r => /*#__PURE__*/React.createElement("li", {
     key: r
   }, r)))))), p.step === BP.steps.length && /*#__PURE__*/React.createElement(PTPathwayLadder, {
     data: data,
@@ -728,17 +780,12 @@ function PTPlanArsenal({
   return /*#__PURE__*/React.createElement("div", {
     className: "image-grid plan-arsenal"
   }, /*#__PURE__*/React.createElement(PTImageTile, {
-    photo: ptHub('week'),
-    title: "Mon planning",
-    text: "Choisis tes jours et place chaque s\xE9ance o\xF9 tu veux.",
-    onClick: () => go('calendar')
-  }), /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('season'),
     badge: phase?.phase ? `Semaine ${phase.week}` : null,
     title: "Mon plan de saison",
     text: phase?.phase ? phase.phase.name : 'Les phases et l’architecte IA.',
     onClick: () => go('plan')
-  }), /*#__PURE__*/React.createElement(PTImageTile, {
+  }), prog && /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('muscu'),
     title: "Ma muscu",
     text: prog && PPR ? `${PPR.familyById(prog.familyId)?.short || 'Programme'} · semaine ${PPR.progressOf(prog).currentWeek}/${prog.weeks}` : 'Programme à côté du parcours, sans le doubler.',
@@ -759,27 +806,10 @@ function PTPlanArsenal({
     title: "Tous les exercices",
     text: `${PT.allExercises(data).length + (window.BasketSkills?.drills.length || 0)} mouvements, filtres basket.`,
     onClick: () => go('library')
-  }), window.BasketCore && update && /*#__PURE__*/React.createElement(PTImageTile, {
-    photo: rwPhoto('plank') || 'media/ui/dossier/body.webp',
-    title: "Abdos & gainage",
-    text: `Core workout complet · ~20 min, niveau ${window.BasketCore.level(data)} sur 3.`,
-    onClick: () => rwLaunch({
-      data,
-      update,
-      go,
-      notify
-    }, s => window.BasketCore.workout(PT, s, {
-      minutes: 20
-    }))
   }), /*#__PURE__*/React.createElement(PTImageTile, {
     photo: ptHub('shooting'),
     title: "Mes s\xE9ances de tir",
     text: window.Shooting?.summary(data.shooting) || 'Compteur en direct, % par semaine, carte de tir.',
     onClick: () => go('shooting')
-  }), /*#__PURE__*/React.createElement(PTImageTile, {
-    photo: "media/ui/dossier/body.webp",
-    title: "Poids de forme",
-    text: "Ton poids face \xE0 ton poids de jeu.",
-    onClick: () => go('weight')
   }));
 }

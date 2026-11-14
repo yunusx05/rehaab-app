@@ -395,7 +395,7 @@ function PTCalendar({
     onClick: () => go('mishap')
   }, "Je ne peux pas aujourd\u2019hui \u2192"), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos', d.qi && !d.club.match ? ' · QI du jour (5 min)' : ''), d.items.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+  }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos'), d.items.map((item, idx) => /*#__PURE__*/React.createElement("div", {
     key: item.key,
     className: `calendar-item is-${item.status}`
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -715,7 +715,7 @@ function PTWeekReview({
     className: "eyebrow"
   }, "Bilan de la semaine"), /*#__PURE__*/React.createElement("h2", null, r.done, " s\xE9ance", r.done > 1 ? 's' : '', " sur ", r.planned, " pr\xE9vue", r.planned > 1 ? 's' : '', "."), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
-  }, r.missed.length > 0 && /*#__PURE__*/React.createElement("li", null, "Manqu\xE9es : ", r.missed.join(', '), "."), r.weight && /*#__PURE__*/React.createElement("li", null, "Poids : ", r.weight.value, " kg", r.weight.change !== null ? ` (${r.weight.change > 0 ? '+' : ''}${r.weight.change} kg)` : '', "."), r.shooting && /*#__PURE__*/React.createElement("li", null, "Tir : ", r.shooting.made, "/", r.shooting.attempts, " (", r.shooting.pct, " %)."), r.qi.answered > 0 && /*#__PURE__*/React.createElement("li", null, "QI : ", r.qi.correct, "/", r.qi.answered, " bonnes lectures."), r.tests.length > 0 && /*#__PURE__*/React.createElement("li", null, r.tests.length, " test", r.tests.length > 1 ? 's' : '', " mesur\xE9", r.tests.length > 1 ? 's' : '', "."), r.pains.length > 0 && /*#__PURE__*/React.createElement("li", null, "Douleur active : ", r.pains.map(p => `${PT.regions[p.region]} ${p.severity}/10`).join(', '), ".")), ai && /*#__PURE__*/React.createElement("p", {
+  }, r.missed.length > 0 && /*#__PURE__*/React.createElement("li", null, "Manqu\xE9es : ", r.missed.join(', '), "."), r.weight && /*#__PURE__*/React.createElement("li", null, "Poids : ", r.weight.value, " kg", r.weight.change !== null ? ` (${r.weight.change > 0 ? '+' : ''}${r.weight.change} kg)` : '', "."), r.shooting && /*#__PURE__*/React.createElement("li", null, "Tir : ", r.shooting.made, "/", r.shooting.attempts, " (", r.shooting.pct, " %)."), r.tests.length > 0 && /*#__PURE__*/React.createElement("li", null, r.tests.length, " test", r.tests.length > 1 ? 's' : '', " mesur\xE9", r.tests.length > 1 ? 's' : '', "."), r.pains.length > 0 && /*#__PURE__*/React.createElement("li", null, "Douleur active : ", r.pains.map(p => `${PT.regions[p.region]} ${p.severity}/10`).join(', '), ".")), ai && /*#__PURE__*/React.createElement("p", {
     className: "coach-quote"
   }, ai), r.suggestions.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "stack-sm"

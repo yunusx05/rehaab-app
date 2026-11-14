@@ -144,15 +144,29 @@ function PTSkillsHome({
   }), /*#__PURE__*/React.createElement("section", {
     className: "stack"
   }, /*#__PURE__*/React.createElement("h3", null, "Mes paliers"), /*#__PURE__*/React.createElement("div", {
-    className: "home-options"
+    className: "skill-levels"
   }, Object.entries(SK.areas).map(([id, a]) => /*#__PURE__*/React.createElement("div", {
     key: id,
-    className: "home-action"
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: "basket"
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, a.label, " \xB7 ", SK.TIERS[s.levels[id] - 1]), /*#__PURE__*/React.createElement("small", null, a.style ? `Inspiration ${a.style} · ` : '', a.why))))), /*#__PURE__*/React.createElement("p", {
+    className: "skill-level-row"
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, a.label), /*#__PURE__*/React.createElement("small", null, a.why)), /*#__PURE__*/React.createElement(PTChips, {
+    value: s.levels[id],
+    onChange: v => {
+      setSkills(x => ({
+        ...x,
+        levels: {
+          ...x.levels,
+          [id]: v
+        }
+      }));
+      notify(`${a.label} : palier ${SK.TIERS[v - 1].toLowerCase()}.`);
+    },
+    options: SK.TIERS.map((label, i) => ({
+      value: i + 1,
+      label
+    }))
+  })))), /*#__PURE__*/React.createElement("p", {
     className: "fine"
-  }, "Tu montes d\u2019un palier apr\xE8s deux s\xE9ances \xAB trop facile \xBB (ou 70 % de tirs r\xE9ussis), tu redescends apr\xE8s deux \xAB trop dur \xBB (ou moins de 35 %).")), /*#__PURE__*/React.createElement("section", {
+  }, "Tu montes d\u2019un palier d\xE8s qu\u2019une s\xE9ance est \xAB trop facile \xBB (ou 70 % de tirs r\xE9ussis), tu redescends apr\xE8s deux \xAB trop dur \xBB (ou moins de 35 %). Tu peux aussi choisir ton palier toi-m\xEAme.")), /*#__PURE__*/React.createElement("section", {
     className: "stack-sm"
   }, /*#__PURE__*/React.createElement("h3", null, "Mes priorit\xE9s"), /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
@@ -426,6 +440,50 @@ function PTSkillsHoop({
 }
 
 // Fin de séance : ressenti par domaine, il fait évoluer les paliers avec les tirs notés.
+// Lot 40 : les tirs se notent une fois, en fin de séance (« sur 30 tirs, j'en ai mis 18 »), pas pendant l'effort.
+function PTShotTotals({
+  draft,
+  value,
+  onChange
+}) {
+  const list = (draft.exercises || []).filter(e => e.measure === 'shots').map(e => ({
+    e,
+    att: (draft.entries[e.id] || []).filter(r => r.done).reduce((n, r) => n + (Number(r.attempts) || 0), 0),
+    pending: (draft.entries[e.id] || []).some(r => r.done && r.later)
+  })).filter(x => x.att > 0 && x.pending);
+  if (!list.length) return null;
+  return /*#__PURE__*/React.createElement("section", {
+    className: "stack-sm shot-totals"
+  }, /*#__PURE__*/React.createElement("h2", null, "Tes tirs"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Combien tu en as mis, au total, pour chaque exercice ? Laisse vide si tu n'as pas compt\xE9."), list.map(({
+    e,
+    att
+  }) => {
+    const v = value[e.id] ?? '',
+      bad = v !== '' && (Number(v) < 0 || Number(v) > att);
+    return /*#__PURE__*/React.createElement("label", {
+      key: e.id,
+      className: "shot-total-row"
+    }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, att, " tirs tent\xE9s")), /*#__PURE__*/React.createElement("span", {
+      className: "shot-total-input"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "number",
+      inputMode: "numeric",
+      min: "0",
+      max: att,
+      step: "1",
+      value: v,
+      "aria-label": `Tirs réussis, ${e.name}, sur ${att}`,
+      onChange: ev => onChange({
+        ...value,
+        [e.id]: ev.target.value
+      })
+    }), /*#__PURE__*/React.createElement("small", null, "/ ", att)), bad && /*#__PURE__*/React.createElement("small", {
+      className: "error"
+    }, "Entre 0 et ", att, "."));
+  }));
+}
 function PTSkillsRating({
   draft,
   value,

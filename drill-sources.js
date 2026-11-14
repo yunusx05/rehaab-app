@@ -1204,6 +1204,13 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=on3Nd0BQGbU&t=150s"
   }
  ],
+ "sk-chairs-high": [
+  {
+   "creator": "Playbook Sports",
+   "title": "Two Chairs  Keep Ball High | Basketball | Finishing | Playbook",
+   "url": "https://www.youtube.com/watch?v=Gh_CPhNaRHs&t=0s"
+  }
+ ],
  "sk-change-pace": [
   {
    "creator": "SportsEdTV Basketball Training",
@@ -1243,6 +1250,18 @@ window.RehaabSources = {
    "creator": "Get Handles",
    "title": "How To Finish Layups In Traffic",
    "url": "https://www.youtube.com/watch?v=gtImFoRoPQI&t=403s"
+  }
+ ],
+ "sk-contact-high": [
+  {
+   "creator": "IN THE LAB",
+   "title": "IN THE LAB - HOW TO FINISH WITH CONTACT",
+   "url": "https://www.youtube.com/watch?v=mececvLFFVA&t=1s"
+  },
+  {
+   "creator": "Ryan Razooky (R2BBALL)",
+   "title": "7 Ways You Can Finish Through Contact (Ryan Razooky)",
+   "url": "https://www.youtube.com/watch?v=PZmuJMft_Mo&t=255s"
   }
  ],
  "sk-cross-hardstop": [
@@ -1373,6 +1392,20 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=y6rKGk1ZdfE&t=0s"
   }
  ],
+ "sk-ladder-btl": [
+  {
+   "creator": "Phil Handy",
+   "title": "Get Your HANDLE Right | At-Home Dribbling Workout",
+   "url": "https://www.youtube.com/watch?v=Dk65Bq24OyQ&t=389s"
+  }
+ ],
+ "sk-ladder-cross": [
+  {
+   "creator": "Phil Handy",
+   "title": "Get Your HANDLE Right | At-Home Dribbling Workout",
+   "url": "https://www.youtube.com/watch?v=Dk65Bq24OyQ&t=77s"
+  }
+ ],
  "sk-layup2": [
   {
    "creator": "Get Handles",
@@ -1383,6 +1416,18 @@ window.RehaabSources = {
    "creator": "THINCPRO Basketball",
    "title": "How to: Finish At The RIM!!! Daily 3 Minute LAYUP ROUTINE (Basketball Training Drills AT HOME)",
    "url": "https://www.youtube.com/watch?v=N8omkdkVLRE&t=82s"
+  }
+ ],
+ "sk-left-layup": [
+  {
+   "creator": "Get Handles Basketball",
+   "title": "MASTER Weak Hand Layups IN 2 DAYS! Basketball Drills",
+   "url": "https://www.youtube.com/watch?v=ssiGnB4oJaw&t=0s"
+  },
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "How to: Do a Left Hand Lay Up in Basketball! (Must Watch for Beginners)",
+   "url": "https://www.youtube.com/watch?v=RW316ZSWV4E&t=0s"
   }
  ],
  "sk-low-fast": [
@@ -1397,6 +1442,13 @@ window.RehaabSources = {
    "creator": "Pro Training Basketball",
    "title": "3 Finishing Drills For BEGINNERS | How To Make A Lay-Up | Pro Training Basketball",
    "url": "https://www.youtube.com/watch?v=_sf0CrcVtZA&t=68s"
+  }
+ ],
+ "sk-mikan-var": [
+  {
+   "creator": "BreakthroughBBall",
+   "title": "Make More Lay Ups!  Kyrie Irving Mikan Drill With 12 Variations!",
+   "url": "https://www.youtube.com/watch?v=HaLql0ueNpY&t=60s"
   }
  ],
  "sk-pound": [
@@ -1466,6 +1518,23 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=Xmzh33PWeJk&t=16s"
   }
  ],
+ "sk-same-foot": [
+  {
+   "creator": "ATTACKBball",
+   "title": "Same Foot Layup",
+   "url": "https://www.youtube.com/watch?v=Xq0nHdGAgEw&t=255s"
+  },
+  {
+   "creator": "Coach Frikki",
+   "title": "Best Layup For Undersized Players (Same Hand Same Foot)",
+   "url": "https://www.youtube.com/watch?v=8dg615ZkJgI&t=0s"
+  },
+  {
+   "creator": "Jr. NBA Jr. WNBA",
+   "title": "Same Hand, Same Foot Finishes",
+   "url": "https://www.youtube.com/watch?v=52bAFA_xX0M&t=0s"
+  }
+ ],
  "sk-shot-fake": [
   {
    "creator": "Get Handles",
@@ -1513,11 +1582,25 @@ window.RehaabSources = {
    "url": "https://www.youtube.com/watch?v=Xmzh33PWeJk&t=142s"
   }
  ],
+ "sk-two-ball": [
+  {
+   "creator": "THINCPRO Basketball",
+   "title": "The ULTIMATE 5 Minute DRIBBLING WORKOUT!!! (2 Ball Basketball Dribbling Workout)",
+   "url": "https://www.youtube.com/watch?v=g2FaABi85nY&t=0s"
+  }
+ ],
  "sk-weak-court": [
   {
    "creator": "Get Handles",
    "title": "How To Dribble A Basketball For Beginners",
    "url": "https://www.youtube.com/watch?v=n1T4RAWua78&t=384s"
+  }
+ ],
+ "sk-weak-finish": [
+  {
+   "creator": "Get Handles Basketball",
+   "title": "MASTER Weak Hand Layups IN 2 DAYS! Basketball Drills",
+   "url": "https://www.youtube.com/watch?v=ssiGnB4oJaw&t=0s"
   }
  ],
  "skater": [

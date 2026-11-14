@@ -41,7 +41,7 @@ test('coach : bilan envoyé avec l’historique, séance allégée appliquée sa
   let sent=null;
   await page.route('**/api/coach',async route=>{sent=route.request().postDataJSON();await route.fulfill({json:{message:'Match dur hier et genou sensible : on allège.',questions:['La douleur est-elle apparue pendant le match ?'],plan:{decision:'light',intensity:'reduced',setsFactor:.5,restFactor:1.2,minutes:25,avoidRegions:[],avoidImpact:true,rehabRegion:'',why:'Fatigue et genou sensible.'}}});});
   await seed(page,data,'today');
-  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','QI','Nutrition','Moi']);
+  await expect(page.locator('.bottom-nav button')).toHaveText(['Aujourd’hui','Plan','Extra','Moi']);
   // Plus de carte d'accueil : l'écran du coach reste ouvert depuis « Parler au coach ».
   await expect(page.locator('.coach-card')).toHaveCount(0);
   await page.goto('/#coach');
@@ -212,7 +212,9 @@ test('coach : veille de match, il choisit la muscu et l’app protège les jambe
 
 /* ---------- Bilan avant séance (UX simple) : la question posée au lancement de la séance prévue ---------- */
 async function prepare(page){
-  await page.getByRole('button',{name:/Préparer cette séance/}).first().click();
+  // Lot 41 : sur le Plan, une séance de l'étape se lance depuis « Le contenu des séances de l'étape ».
+  await page.getByText('Le contenu des séances de l’étape').click();
+  await page.getByRole('button',{name:/Faire celle-ci maintenant/}).first().click();
   await expect(page.locator('.precheck')).toContainText('Comment tu te sens ?');
   await expect(page.getByRole('button',{name:'Démarrer la séance'})).toHaveCount(0);
 }

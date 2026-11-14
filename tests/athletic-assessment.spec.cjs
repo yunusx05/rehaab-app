@@ -106,6 +106,9 @@ test('bilan dans l’app : répondre, passer les tests, lancer le parcours',asyn
   await page.waitForTimeout(300);
   const saved=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),PT.STORAGE_KEY);
   expect(saved.pathway.step).toBe(1);expect(saved.athletic.date).toBeTruthy();expect(saved.athletic.tests.kneewall).toHaveLength(1);
+  // Lot 41 : le détail des séances de l'étape est replié sous la semaine du planning.
+  await page.getByText('Le contenu des séances de l’étape').click();
+  await page.locator('.dose-details summary').first().click();
   await expect(page.locator('.dose-list small',{hasText:'Kiné'}).first()).toBeVisible();
 
   await page.setViewportSize({width:390,height:844});await page.goto('/#bilan');

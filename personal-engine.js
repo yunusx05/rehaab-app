@@ -760,6 +760,55 @@
     });
     return total;
   }
+  // Lot 41 : séance Extra « haut du corps » ou « bas du corps », construite comme un vrai programme : un mouvement par rôle,
+  // les gros mouvements lourds d'abord (pousser, tirer, squat, charnière), puis l'unilatéral, la prévention et les bras ou les mollets.
+  // Le premier exercice disponible de chaque liste est pris (matériel, douleur) ; sinon un autre mouvement du même geste.
+  const ZONE_SLOTS={
+    upper:[['push',['bb-press','db-press','floor-press','landmine-press','decline-pushup','vest-pushup','pushup']],
+      ['pull',['pullup','chinup','neutral-pullup','vest-pullup','bb-row','chest-supported-row','db-row','inverted-row','kb-row','band-row']],
+      ['push',['bb-ohp','db-shoulder','kb-press','arnold-press','landmine-press','pike-pushup','band-ohp']],
+      ['pull',['db-row','kb-row','chest-supported-row','inverted-row','cable-row-single','band-row']],
+      ['arms',['curl','bb-curl','incline-curl','band-curl']],
+      ['arms',['dips','overhead-triceps','skullcrusher','close-grip-press','diamond-pushup','triceps']],
+      ['pull',['facepull','band-pullapart','rear-delt-fly','band-er']]],
+    lower:[['squat',['bb-squat','front-squat','goblet','kb-front-squat','db-squat','squat']],
+      ['hinge',['trapbar-deadlift','deadlift','bb-rdl','rdl','kb-deadlift','db-single-rdl','kb-swing']],
+      ['squat',['db-bulgarian','bulgarian','atg-split-squat','db-step-up','reverse-lunge','split-squat','lateral-lunge']],
+      ['hinge',['nordic-assisted','slider-ham-curl','legcurl','single-rdl','db-single-rdl']],
+      ['calf',['db-calf','vest-calf','single-calf','calf']],
+      ['hinge',['bb-hip-thrust','db-hip-thrust','hip-thrust','sl-hip-thrust']],
+      ['squat',['reverse-nordic','spanish-squat','tke','legextension']]]
+  };
+  function zoneSession(state,{zone='upper',minutes=45,equipment=state.owned,now=dateKey()}={}) {
+    const slots=ZONE_SLOTS[zone];if(!slots) return {error:'Zone inconnue.'};
+    const total=Math.max(10,Math.min(60,Number(minutes)||45));
+    // Parcours en cours : même règle que ses séances (reprise = plus de 10 jours sans séance, pas le profil « je reprends » à vie).
+    const check={...state.checkIn,guided:state.pathway?Number(state.pathway.step)||1:0,date:now,equipment,minutes:total,focus:'muscle',zone,format:'classic',motivation:'normal',energy:state.checkIn&&state.checkIn.date===now?state.checkIn.energy:'normal'};
+    const ctx=context(state,check,now);
+    if(ctx.active.blocked) return {error:'Douleur importante ou signe inhabituel : la génération est suspendue. Demande un avis médical avant de reprendre.'};
+    const all=allExercises(state).filter(e=>e.kind==='strength'&&!e.passive&&allowed(e,state,check,ctx));
+    const count=total<=10?2:total<=20?3:total<=30?4:total<=45?5:7;
+    const picked=[];
+    for(const [pattern,ids] of slots){
+      if(picked.length>=count) break;
+      const e=ids.map(id=>all.find(x=>x.id===id)).find(x=>x&&!picked.some(p=>p.id===x.id))
+        ||all.find(x=>x.pattern===pattern&&!x.isolation&&!picked.some(p=>p.id===x.id));
+      if(e) picked.push(e);
+    }
+    if(picked.length<2) return {error:'Pas assez d’exercices compatibles avec ce matériel et tes douleurs.'};
+    const sets=ctx.low?2:total>=20?3:2;
+    const exercises=picked.map((e,i)=>({...makePrescription(e,'classic',total,ctx),sets:i<2&&total>=45&&!ctx.low?4:sets}));
+    const budget=total*60-180;
+    while(estimateSeconds(exercises,'classic')>budget&&exercises.some(e=>e.sets>2)){const e=[...exercises].reverse().find(x=>x.sets>2);e.sets--;}
+    while(estimateSeconds(exercises,'classic')>budget&&exercises.length>2) exercises.pop();
+    const reasons=[zone==='upper'?'Haut du corps : pousser et tirer lourd d’abord, puis épaules, bras et l’arrière des épaules.':'Bas du corps : squat et charnière lourds d’abord, puis une jambe à la fois, ischios, mollets et hanches.',
+      'Charge : 2 à 3 répétitions encore possibles en fin de série. Quand toutes les séries passent en haut de la fourchette, monte d’un cran la fois suivante.',
+      'Séance en plus : ton planning ne bouge pas. Évite le bas du corps la veille d’un match ou d’une séance de jambes.'];
+    if(ctx.low) reasons.push('Volume allégé : reprise, effort élevé récemment ou énergie basse.');
+    if(ctx.active.active.length) reasons.push('Les mouvements qui sollicitent une zone douloureuse sont écartés.');
+    return {id:uid(),title:zone==='upper'?'Haut du corps':'Bas du corps',source:'generated',focus:'muscle',format:'classic',exercises,check:clone(check),reasons,warmupSeconds:180,
+      estimatedMinutes:Math.ceil((180+estimateSeconds(exercises,'classic'))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+  }
   function generate(state,check=state.checkIn,{random=Math.random,exclude=[],pinned=[],now=dateKey()}={}) {
     if(check.focus==='basket')check={...check,focus:'mixed'};
     const ctx=context(state,check,now), format=chooseFormat(check,ctx);
@@ -769,6 +818,9 @@
     // focus 'basket' est déjà converti en 'mixed' plus haut : le basket a son propre parcours.
     let kinds=check.focus==='mobility'?['mobility']:check.focus==='plyo'?['plyo']:check.focus==='cardio'?['cardio']:check.focus==='mixed'?['strength','cardio']:['strength'];
     let candidates=pool.filter(e=>kinds.includes(e.kind) && (check.focus!=='core' || e.pattern==='core'));
+    // Lot 41 : séance Extra « haut du corps » ou « bas du corps ».
+    const ZONES={upper:['push','pull','arms'],lower:['squat','hinge','calf']};
+    if(ZONES[check.zone]) candidates=candidates.filter(e=>ZONES[check.zone].includes(e.pattern));
     const counts=exposure(state,14,now);
     const last=state.sessions[state.sessions.length-1];
     const score=e=>{
@@ -783,7 +835,7 @@
     candidates=candidates.map(e=>({e,score:score(e)})).sort((a,b)=>b.score-a.score).map(x=>x.e);
     // Pistolet de massage : un passage au plus par séance, il complète la mobilité sans la remplacer.
     {let tool=false;candidates=candidates.filter(e=>!e.tool||(!tool&&(tool=true)));}
-    const count=check.focus==='cardio'?1:Math.max(1,Math.min(check.focus==='plyo'?3:5,Math.floor(check.minutes/7)));
+    const count=check.focus==='cardio'?1:Math.max(1,Math.min(check.focus==='plyo'?3:ZONES[check.zone]?7:5,Math.floor(check.minutes/7)));
     const selected=pinned.filter(e=>e.kind!=='basket' && allowed(e,state,check,ctx)).map(e=>({...e,pinned:true}));
     while(selected.length<count && candidates.length){
       const candidate=candidates.find(e=>!selected.some(x=>x.id===e.id) && (!selected.some(x=>x.pattern===e.pattern)||check.focus==='core'||check.focus==='mobility'||check.focus==='plyo')) || candidates.find(e=>!selected.some(x=>x.id===e.id));
@@ -791,6 +843,8 @@
       selected.push(makePrescription(candidate,format,Number(check.minutes),ctx));
       candidates=candidates.filter(e=>e.id!==candidate.id);
     }
+    // Lot 41 : haut / bas du corps : les gros mouvements d'abord (pousser, tirer, squat, charnière), les bras et les mollets à la fin.
+    if(ZONES[check.zone]) selected.sort((a,b)=>ZONES[check.zone].indexOf(a.pattern)-ZONES[check.zone].indexOf(b.pattern));
     if(!selected.length) return {error:'Aucun exercice compatible avec ce matériel et tes contraintes. Modifie le matériel ou l’intention ; ne contourne pas une douleur.'};
     const warmupSeconds=check.minutes<=10?120:300;
     const budget=Math.max(120,check.minutes*60-warmupSeconds-60);
@@ -808,7 +862,7 @@
     if(ctx.active.active.length) reasons.push('Les mouvements sollicitant les zones signalées sont écartés. Cela ne garantit pas l’absence de douleur.');
     if(format==='onex20') reasons.push('1 × 20 : une seule série de 20 répétitions par exercice, charge notée. Si les 20 passent proprement, prends un peu plus lourd la prochaine fois.');
     if(format!==check.format && check.format!=='auto' && ['muscle','mixed','core'].includes(check.focus)) reasons.push('Le format demandé a été remplacé par des séries contrôlées compte tenu du contexte.');
-    return {id:uid(),title:titles[check.focus],source:'generated',focus:check.focus,format,exercises:selected,check:clone(check),reasons,warmupSeconds,blockSeconds:['amrap','emom'].includes(format)?Math.floor(budget/60)*60:null,estimatedMinutes:Math.ceil((warmupSeconds+60+(['amrap','emom'].includes(format)?Math.floor(budget/60)*60:estimateSeconds(selected,format)))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    return {id:uid(),title:check.zone==='upper'?'Haut du corps':check.zone==='lower'?'Bas du corps':titles[check.focus],source:'generated',focus:check.focus,format,exercises:selected,check:clone(check),reasons,warmupSeconds,blockSeconds:['amrap','emom'].includes(format)?Math.floor(budget/60)*60:null,estimatedMinutes:Math.ceil((warmupSeconds+60+(['amrap','emom'].includes(format)?Math.floor(budget/60)*60:estimateSeconds(selected,format)))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
   function alternatives(exercise,state,check,exclude=[]) {
     const ctx=context(state,check);
@@ -898,7 +952,8 @@
       if(row.result==='missed' && !row.reason) return 'Indique ce qui a limité la série.';
     }
     if(e.measure==='seconds' && !bounded(row.seconds,1,10000)) return 'Renseigne le temps réellement effectué.';
-    if(e.measure==='shots' && (!bounded(row.attempts,1,1000)||!bounded(row.made,0,Number(row.attempts)))) return 'Vérifie les réussites et les tentatives.';
+    // Lot 40 : une série de tirs peut être validée d'un geste ; les réussis se notent en fin de séance (row.later).
+    if(e.measure==='shots' && (!bounded(row.attempts,1,1000)||!(row.later&&(row.made===''||row.made==null))&&!bounded(row.made,0,Number(row.attempts)))) return 'Vérifie les réussites et les tentatives.';
     return '';
   }
   function finishDraft(draft,{effort,liked,notes='',now=Date.now()}={}) {
@@ -992,5 +1047,5 @@
     return next;
   }
   function importBundle(raw) {const bundle=JSON.parse(raw);assert(bundle.app==='Rehaab','Ce fichier n’est pas une sauvegarde Rehaab récente.');return {state:validateState(bundle.state),legacy:bundle.legacy && typeof bundle.legacy==='object'?bundle.legacy:{}};}
-  return {VERSION,STORAGE_KEY,OUTDOOR,rainOn,equipment,regions,patterns,patternWhy,courtWhy,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,resetProfile,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,trainingLoad,loadZones,liftHistory,trackedLifts,todayPlan,exportBundle,importBundle,estimateSeconds,makePrescription};
+  return {VERSION,STORAGE_KEY,OUTDOOR,rainOn,equipment,regions,patterns,patternWhy,courtWhy,formats,catalog,clone,uid,dateKey,dayDiff,bounded,isoDay,initialState,validateState,resetProfile,validateRow,allExercises,activeSymptoms,safety,context,allowed,exposure,generate,zoneSession,alternatives,fromProgram,loadAdvice,schedule,newRows,startDraft,finishDraft,weeklySummary,trainingLoad,loadZones,liftHistory,trackedLifts,todayPlan,exportBundle,importBundle,estimateSeconds,makePrescription};
 });

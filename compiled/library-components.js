@@ -337,43 +337,78 @@ function PTLibrary({
   }, items.length, " mouvements"), (query || muscle !== 'all' || equipment !== 'all' || kind !== 'all' || care !== 'all' || quality !== 'all' || creator !== 'all') && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: reset
-  }, "Effacer les filtres")), /*#__PURE__*/React.createElement("div", {
-    className: "exercise-library-grid"
-  }, items.map(e => /*#__PURE__*/React.createElement("article", {
-    className: `exercise-item library-tile${open === e.id ? ' expanded' : ''}`,
-    key: e.id
-  }, /*#__PURE__*/React.createElement("button", {
-    className: "home-action",
-    onClick: () => setOpen(open === e.id ? null : e.id),
-    "aria-expanded": open === e.id
-  }, /*#__PURE__*/React.createElement(PTThumbnail, {
-    exercise: e
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, PT.patterns[e.pattern], " \xB7 ", e.needs.filter(id => id !== 'bodyweight').map(id => PT.equipment.find(x => x.id === id)?.label).join(', ') || 'Poids du corps', data.preferences.avoids.includes(e.id) ? ' · écarté des propositions' : '')), /*#__PURE__*/React.createElement(PTIcon, {
-    name: "arrow",
-    size: 16
-  })), open === e.id && /*#__PURE__*/React.createElement("div", {
-    className: "stack"
-  }, /*#__PURE__*/React.createElement(PTExerciseDetails, {
-    exercise: e
-  }), /*#__PURE__*/React.createElement(PTChips, {
-    multi: true,
-    value: [...(data.preferences.likes.includes(e.id) ? ['like'] : []), ...(data.preferences.avoids.includes(e.id) ? ['avoid'] : [])],
-    options: [{
-      value: 'like',
-      label: 'J’aime'
-    }, {
-      value: 'avoid',
-      label: 'Ne plus proposer'
-    }],
-    onChange: values => update(s => ({
-      ...s,
-      preferences: {
-        ...s.preferences,
-        likes: values.includes('like') ? [...new Set([...s.preferences.likes, e.id])] : s.preferences.likes.filter(id => id !== e.id),
-        avoids: values.includes('avoid') ? [...new Set([...s.preferences.avoids, e.id])] : s.preferences.avoids.filter(id => id !== e.id)
-      }
-    }))
-  }))))), !items.length && /*#__PURE__*/React.createElement("p", {
+  }, "Effacer les filtres")), (() => {
+    const SKl = window.BasketSkills,
+      tile = e => /*#__PURE__*/React.createElement("article", {
+        className: `exercise-item library-tile${open === e.id ? ' expanded' : ''}`,
+        key: e.id
+      }, /*#__PURE__*/React.createElement("button", {
+        className: "home-action",
+        onClick: () => setOpen(open === e.id ? null : e.id),
+        "aria-expanded": open === e.id
+      }, /*#__PURE__*/React.createElement(PTThumbnail, {
+        exercise: e
+      }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, e.name), /*#__PURE__*/React.createElement("small", null, PT.patterns[e.pattern], " \xB7 ", e.needs.filter(id => id !== 'bodyweight').map(id => PT.equipment.find(x => x.id === id)?.label).join(', ') || 'Poids du corps', data.preferences.avoids.includes(e.id) ? ' · écarté des propositions' : '')), /*#__PURE__*/React.createElement(PTIcon, {
+        name: "arrow",
+        size: 16
+      })), open === e.id && /*#__PURE__*/React.createElement("div", {
+        className: "stack"
+      }, /*#__PURE__*/React.createElement(PTExerciseDetails, {
+        exercise: e
+      }), /*#__PURE__*/React.createElement(PTChips, {
+        multi: true,
+        value: [...(data.preferences.likes.includes(e.id) ? ['like'] : []), ...(data.preferences.avoids.includes(e.id) ? ['avoid'] : [])],
+        options: [{
+          value: 'like',
+          label: 'J’aime'
+        }, {
+          value: 'avoid',
+          label: 'Ne plus proposer'
+        }],
+        onChange: values => update(s => ({
+          ...s,
+          preferences: {
+            ...s.preferences,
+            likes: values.includes('like') ? [...new Set([...s.preferences.likes, e.id])] : s.preferences.likes.filter(id => id !== e.id),
+            avoids: values.includes('avoid') ? [...new Set([...s.preferences.avoids, e.id])] : s.preferences.avoids.filter(id => id !== e.id)
+          }
+        }))
+      })));
+    const groups = new Map(),
+      pat = Object.keys(PT.patterns),
+      filtered = !!query || muscle !== 'all' || equipment !== 'all' || care !== 'all' || quality !== 'all' || creator !== 'all';
+    items.forEach(e => {
+      const b = SKl && e.area && e.tier && SKl.areas[e.area];
+      const key = b ? `b-${e.area}` : `p-${e.pattern || e.kind}`;
+      if (!groups.has(key)) groups.set(key, {
+        key,
+        label: b ? `Basket · ${b.label}` : PT.patterns[e.pattern] || e.kind,
+        basket: !!b,
+        order: b ? 100 + Object.keys(SKl.areas).indexOf(e.area) : pat.indexOf(e.pattern) + 1 || 90,
+        list: []
+      });
+      groups.get(key).list.push(e);
+    });
+    const byLevel = (a, b) => (a.level || 1) - (b.level || 1) || a.name.localeCompare(b.name, 'fr');
+    const sorted = [...groups.values()].sort((a, b) => a.order - b.order);
+    return /*#__PURE__*/React.createElement("div", {
+      className: "library-groups"
+    }, sorted.map(g => /*#__PURE__*/React.createElement("details", {
+      key: g.key,
+      className: "library-group",
+      open: filtered || sorted.length === 1
+    }, /*#__PURE__*/React.createElement("summary", null, /*#__PURE__*/React.createElement("span", null, g.label), /*#__PURE__*/React.createElement("small", null, g.list.length)), g.basket ? SKl.TIERS.map((label, k) => {
+      const l = g.list.filter(e => e.tier === k + 1).sort(byLevel);
+      return l.length ? /*#__PURE__*/React.createElement("div", {
+        key: label,
+        className: "library-level"
+      }, /*#__PURE__*/React.createElement("h4", null, label, " \xB7 ", l.length), /*#__PURE__*/React.createElement("div", {
+        className: "exercise-library-grid"
+      }, l.map(tile))) : null;
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "exercise-library-grid"
+    }, g.list.slice().sort(byLevel).map(tile)))));
+  })(), !items.length && /*#__PURE__*/React.createElement("p", {
     className: "empty"
   }, "Aucun r\xE9sultat. Essaie un autre mot, ou efface les filtres.")));
 }

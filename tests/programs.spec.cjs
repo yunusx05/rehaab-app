@@ -355,8 +355,8 @@ for(const width of [320,390])test(`mon jeu puis ma muscu depuis le parcours, san
   await page.getByRole('button',{name:/Enregistrer mon jeu/}).click();
   let saved=await state(page);
   expect(saved.basketProfile).toMatchObject({weaknesses:['contact'],practiceDays:[1],matchDay:5});
-  await page.goto('/#pathway');
-  await page.getByRole('button',{name:/Ma muscu/}).first().click();
+  // Lot 41 : un seul programme affiché dans le Plan ; la muscu « à côté » ne se crée plus depuis le Plan, l'écran reste accessible directement.
+  await page.goto('/#program-new');
   await expect(page.getByRole('heading',{name:'Créer ma muscu.'})).toBeVisible();
   await page.getByRole('button',{name:/Basket · force complémentaire/}).click();
   await page.getByRole('button',{name:'Créer ce programme'}).click();

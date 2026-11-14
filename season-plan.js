@@ -308,11 +308,13 @@
       else if(item.type!=='care'&&!startWeek) warnings.push(`${item.label} : aucun jour libre compatible cette semaine${item.type==='vivacite'?' (fais-la juste après l’échauffement d’une séance du haut du corps)':''}.`);
     }
     // Skills le même jour qu'une séance physique : version courte (20 min au moins) pour ne pas dépasser ta durée maximale.
+    // Lot 41 : tout ce qui est prévu le même jour compte (vivacité, navettes comprises) : la journée ne dépasse jamais ta durée maximale.
     placed.filter(x=>x.type==='skills').forEach(x=>{
-      const phys=placed.filter(y=>y.physical&&y.date===x.date).reduce((n,y)=>n+y.minutes,0);
+      const phys=placed.filter(y=>y!==x&&y.date===x.date&&y.type!=='care'&&y.type!=='skills').reduce((n,y)=>n+y.minutes,0);
       if(!phys) return;
       const room=Math.max(20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-phys)/5)*5));
-      Object.assign(x,{minutes:room,combined:true,label:'Skills basket · après la séance'});
+      const afterMuscu=placed.some(y=>y.physical&&y.date===x.date);
+      Object.assign(x,{minutes:room,combined:true,label:afterMuscu?'Skills basket · après la séance':'Skills basket · version courte'});
     });
     // Statut : faite (séance correspondante enregistrée dans la semaine), manquée (jour passé), prévue.
     const shots=((state.shooting&&state.shooting.sessions)||[]).map(s=>({id:s.id,date:s.date,source:'shooting'}));
