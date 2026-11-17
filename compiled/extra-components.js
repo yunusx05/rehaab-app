@@ -49,6 +49,12 @@ const PT_EXTRA = [{
   icon: 'core',
   place: 'home'
 }, {
+  id: 'wod',
+  label: 'Circuit training',
+  icon: 'run',
+  place: 'home',
+  legs: true
+}, {
   id: 'explosive',
   label: 'Explosivité',
   icon: 'spark',
@@ -111,7 +117,12 @@ function ptExtraPlan(data, {
   });else if (theme === 'mobility') plan = PT.generate(data, {
     ...check,
     focus: 'mobility'
-  });
+  });else if (theme === 'wod') plan = window.BasketCardio && window.BasketCardio.wodPlan ? window.BasketCardio.wodPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, {
+    minutes
+  }) : null;
   if (!plan || plan.error) return plan || {
     error: 'Séance indisponible pour l’instant.'
   };
@@ -119,7 +130,7 @@ function ptExtraPlan(data, {
   return {
     ...plan,
     id: PT.uid(),
-    source: t.basket ? 'extra' : plan.source,
+    source: t.basket || theme === 'wod' ? 'extra' : plan.source,
     extra: theme,
     title: `Extra · ${t.label}`,
     reasons: [...(plan.reasons || []).filter(r => !/^Tout (se fait )?(au terrain|à la maison)/.test(r)), ...(t.basket ? [] : [where])]

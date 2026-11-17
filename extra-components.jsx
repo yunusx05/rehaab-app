@@ -9,6 +9,7 @@ const PT_EXTRA=[
   {id:'upper',label:'Haut du corps',icon:'weight',place:'home'},
   {id:'lower',label:'Bas du corps',icon:'body',place:'home',legs:true},
   {id:'core',label:'Abdos & gainage',icon:'core',place:'home'},
+  {id:'wod',label:'Circuit training',icon:'run',place:'home',legs:true},
   {id:'explosive',label:'Explosivité',icon:'spark',place:'court',legs:true},
   {id:'mobility',label:'Mobilité & récup',icon:'refresh',place:'home'}
 ];
@@ -29,9 +30,10 @@ function ptExtraPlan(data,{theme,place,minutes,tier}){
   else if(theme==='core')plan=BC?BC.workout(PT,{...data,owned:equipment},{minutes}):null;
   else if(theme==='explosive')plan=court&&minutes<=20&&BP?BP.quickPlan(PT,JP,data,'vivacite'):PT.generate(data,{...check,focus:'plyo'});
   else if(theme==='mobility')plan=PT.generate(data,{...check,focus:'mobility'});
+  else if(theme==='wod')plan=window.BasketCardio&&window.BasketCardio.wodPlan?window.BasketCardio.wodPlan(PT,JP,{...data,owned:equipment},{minutes}):null;
   if(!plan||plan.error)return plan||{error:'Séance indisponible pour l’instant.'};
   const where=court?'Tout au terrain.':'Tout à la maison.';
-  return {...plan,id:PT.uid(),source:t.basket?'extra':plan.source,extra:theme,title:`Extra · ${t.label}`,
+  return {...plan,id:PT.uid(),source:t.basket||theme==='wod'?'extra':plan.source,extra:theme,title:`Extra · ${t.label}`,
     reasons:[...(plan.reasons||[]).filter(r=>!/^Tout (se fait )?(au terrain|à la maison)/.test(r)),...(t.basket?[]:[where])]};
 }
 

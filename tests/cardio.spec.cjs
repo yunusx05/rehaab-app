@@ -1,4 +1,5 @@
 const {test,expect}=require('@playwright/test');
+// Lot 42 : le circuit training (kind 'wod') est compté à part du cardio : il est exclu des comptes ci-dessous (voir circuit-echange.spec.cjs).
 const PT=require('../personal-engine.js');
 const PD=require('../player-dossier.js');
 const BP=require('../basket-pathway.js');
@@ -114,7 +115,7 @@ test('progression : deux séances propres montent d’un niveau, une douleur ne 
 test('planning : trois séances cardio par semaine (lot 32), jamais deux jours de suite à impacts (vivacité comprise)',()=>{
   const s=joueur({step:3});
   s.seasonPlan={resetWeeks:0};
-  const w=SP.weekSchedule(s,MONDAY,MONDAY),all=items(w),cardio=all.filter(x=>x.type==='cardio');
+  const w=SP.weekSchedule(s,MONDAY,MONDAY),all=items(w),cardio=all.filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(cardio.map(x=>x.kind).sort()).toEqual(['court','rope','run']);
   expect(cardio.every(x=>x.legs==='impact')).toBe(true);
   // Lot 32 : navettes et vivacité peuvent partager un jour ; on compte les jours à impacts.
@@ -129,7 +130,7 @@ test('semaine chargée (club, match) : le cardio reste au planning en version sa
   const s=joueur({step:3});
   s.seasonPlan={resetWeeks:0};
   s.basketProfile={matchDay:5,practiceDays:[1]};s.cardio={perWeek:2,chosen:true};
-  const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
+  const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(w.warnings).toEqual([]);
   // Lot 37 : l'entraînement du club compte comme un cardio : 2 voulus - 1 club = 1 à faire soi-même.
   expect(cardio.length).toBe(1);
@@ -148,7 +149,7 @@ test('planning : après une longue pause, Fondations d’emblée et cardio en al
   s.dossier=PD.saveChapter(s,'break',{layoffMonths:24,layoffReason:'work',dropped:[]}).dossier;s.cardio={perWeek:2,chosen:true};
   const w=SP.weekSchedule(s,MONDAY,MONDAY);
   expect(w.phase.id).toBe('step1');
-  const cardio=items(w).filter(x=>x.type==='cardio');
+  const cardio=items(w).filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(cardio.length).toBe(2);
   const p=BC.plan(PT,JP,s,'run',{phase:'step1'});
   expect(p.cardioLevel).toBeLessThanOrEqual(1);
@@ -158,9 +159,9 @@ test('planning : après une longue pause, Fondations d’emblée et cardio en al
 test('fréquence au choix : 0 retire le cardio, 1 alterne corde et course d’une semaine à l’autre',()=>{
   const s=joueur({step:3});s.seasonPlan={resetWeeks:0};
   s.cardio={perWeek:0};
-  expect(items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.type==='cardio').length).toBe(0);
+  expect(items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.type==='cardio'&&x.kind!=='wod').length).toBe(0);
   s.cardio={perWeek:1};
-  const a=items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.type==='cardio'),b=items(SP.weekSchedule(s,SP.at(MONDAY,7),SP.at(MONDAY,7))).filter(x=>x.type==='cardio');
+  const a=items(SP.weekSchedule(s,MONDAY,MONDAY)).filter(x=>x.type==='cardio'&&x.kind!=='wod'),b=items(SP.weekSchedule(s,SP.at(MONDAY,7),SP.at(MONDAY,7))).filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(a.length).toBe(1);expect(b.length).toBe(1);
   expect(a[0].kind).not.toBe(b[0].kind);
   // Lot 39 : avec un terrain, l'unique cardio = les navettes basket, chaque semaine.
@@ -205,10 +206,10 @@ test('séance faite : reconnue comme faite dans le planning, et la sauvegarde ga
 test('un seul cardio par jour, même la semaine de départ réduite à un jour',()=>{
   const s=joueur({step:1});s.pathway=BP.create({startStep:1,now:'2026-10-18'});
   const w=SP.weekSchedule(s,MONDAY,'2026-10-18');
-  const sunday=items(w).filter(x=>x.type==='cardio'&&x.date==='2026-10-18');
+  const sunday=items(w).filter(x=>x.type==='cardio'&&x.kind!=='wod'&&x.date==='2026-10-18');
   expect(sunday.length).toBeLessThanOrEqual(1);
   // Une semaine entière garde ses trois cardios (lot 32), sur trois jours différents.
-  const full=items(SP.weekSchedule(joueur(),MONDAY,MONDAY)).filter(x=>x.type==='cardio');
+  const full=items(SP.weekSchedule(joueur(),MONDAY,MONDAY)).filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(full).toHaveLength(3);expect(new Set(full.map(x=>x.date)).size).toBe(3);
 });
 
@@ -216,7 +217,7 @@ test('lot 37 : les entraînements de club comptent comme du cardio ; un jour « 
   const s=joueur({step:3});s.seasonPlan={resetWeeks:0};
   s.basketProfile={practiceDays:[1,3]};s.cardio={perWeek:3,chosen:true};
   s.calendar={week:{0:'muscu',1:'skills',2:'muscu',3:'shooting',4:'muscu',5:'skills',6:'off'}};
-  const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio');
+  const w=SP.weekSchedule(s,MONDAY,MONDAY),cardio=items(w).filter(x=>x.type==='cardio'&&x.kind!=='wod');
   expect(cardio.length).toBe(1);
   expect(cardio[0].legs).toBe('impact');
   // Lot 39 : jamais un jour de club (mardi, jeudi) ; sans terrain dans le matériel, la corde peut se faire à la maison.

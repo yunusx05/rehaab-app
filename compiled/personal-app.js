@@ -1054,8 +1054,8 @@ function PTPreview({
     className: "fine"
   }, {
     amrap: `AMRAP : ${Math.round(plan.blockSeconds / 60)} min. Fais des tours contrôlés, avec des pauses libres. Note les tours et les répétitions supplémentaires.`,
-    emom: `EMOM : ${Math.round(plan.blockSeconds / 60)} min. Un exercice par minute, 30 secondes de travail maximum, le reste en récupération.`,
-    hiit: 'HIIT : intervalles de 30 secondes, puis 30 secondes de récupération. L’effort reste maîtrisé.',
+    emom: `EMOM : ${Math.round(plan.blockSeconds / 60)} min. Un exercice par minute, ${plan.exercises[0]?.seconds || 30} secondes de travail maximum, le reste en récupération.`,
+    hiit: `HIIT : intervalles de ${plan.exercises[0]?.seconds || 30} secondes, puis ${plan.exercises[0]?.rest || 30} secondes de récupération. L’effort reste maîtrisé.`,
     superset: 'Supersets : alterne deux exercices, puis récupère. Le guidage gère l’ordre des séries.',
     circuit: 'Circuit : un passage par exercice, puis un nouveau tour. Le guidage garde l’ordre pour toi.'
   }[plan.format])), /*#__PURE__*/React.createElement("div", {

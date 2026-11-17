@@ -230,6 +230,23 @@ function PTTodayPlan({
   }, "Finalement, je peux m\u2019entra\xEEner"));
   // Lot 31 : pluie notée aujourd'hui (depuis « Un imprévu ») : rappel, et retour en arrière possible.
   const rain = SPL && SPL.rainOn ? SPL.rainOn(data, now) : false;
+  // Lot 42 : deux journées échangées cette semaine : rappel, et retour en arrière possible tant que les deux jours ne sont pas passés.
+  const sw = SPL && SPL.validateCalendar ? (SPL.validateCalendar(data.calendar) || {}).swapped : null;
+  const swapNote = sw && PT.dayDiff(sw.a, now) >= 0 && PT.dayDiff(sw.b, now) >= 0 && SPL.mondayOf(sw.a) === SPL.mondayOf(now) && /*#__PURE__*/React.createElement("p", {
+    className: "rain-note swap-note"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "refresh",
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", null, "S\xE9ances \xE9chang\xE9es : ", SPL.DAYS[SPL.weekday(sw.a)].toLowerCase(), " \u2194 ", SPL.DAYS[SPL.weekday(sw.b)].toLowerCase(), "."), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => {
+      update(s => ({
+        ...s,
+        calendar: SPL.unswap(s)
+      }));
+      notify('Échange annulé : chaque séance retrouve son jour.');
+    }
+  }, "Annuler l\u2019\xE9change"));
   const rainNote = rain && /*#__PURE__*/React.createElement("p", {
     className: "rain-note"
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -249,7 +266,7 @@ function PTTodayPlan({
   return /*#__PURE__*/React.createElement("section", {
     className: `today-plan kind-${plan.kind}`,
     "aria-labelledby": "today-plan-title"
-  }, rainNote, /*#__PURE__*/React.createElement("div", {
+  }, rainNote, swapNote, /*#__PURE__*/React.createElement("div", {
     className: "today-plan-line"
   }, /*#__PURE__*/React.createElement("span", {
     className: "today-plan-tag"
@@ -289,7 +306,7 @@ function PTTodayPlan({
   }, cardioToday && calPrimary?.type !== 'cardio' && /*#__PURE__*/React.createElement("button", {
     className: "text-button",
     onClick: launchCardio
-  }, "Lancer le cardio \u2192"), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
+  }, cardioToday.kind === 'wod' ? 'Lancer le circuit training →' : 'Lancer le cardio →'), plannedToday.length > 0 && typeof PTMishap === 'function' ? /*#__PURE__*/React.createElement("button", {
     className: "today-mishap-btn",
     onClick: () => go('mishap')
   }, /*#__PURE__*/React.createElement(PTIcon, {

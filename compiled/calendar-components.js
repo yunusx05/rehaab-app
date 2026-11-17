@@ -54,6 +54,10 @@ function ptCalendarPlan(data, item, day) {
     });
   }
   if (item.type === 'vivacite') return BP.quickPlan(PT, JP, data, 'vivacite');
+  if (item.type === 'cardio' && item.kind === 'wod' && window.BasketCardio) return window.BasketCardio.wodPlan(PT, JP, data, {
+    phase: item.phase,
+    minutes: item.minutes
+  });
   if (item.type === 'cardio' && window.BasketCardio) return window.BasketCardio.plan(PT, JP, data, item.kind, {
     phase: item.phase,
     soft: item.soft
@@ -72,7 +76,8 @@ function PTCalendar({
   const [shift, setShift] = usePTState(0),
     [moving, setMoving] = usePTState(null),
     [confirm, setConfirm] = usePTState(null),
-    [error, setError] = usePTState('');
+    [error, setError] = usePTState(''),
+    [swapOpen, setSwapOpen] = usePTState(false);
   if (!SP) return /*#__PURE__*/React.createElement("p", {
     className: "empty"
   }, "Calendrier indisponible.");
@@ -239,6 +244,18 @@ function PTCalendar({
       chosen: true
     }
   }));
+  // Lot 42 : circuit training (0 ou 1 par semaine), en plus du cardio.
+  const circuitPerWeek = BC && BC.circuitPerWeek ? BC.circuitPerWeek(data) : 0;
+  const setCircuit = n => update(s => {
+    const c = {
+      ...(s.cardio || {})
+    };
+    if (n === 0) c.circuit = 0;else delete c.circuit;
+    return {
+      ...s,
+      cardio: c
+    };
+  });
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
@@ -336,6 +353,17 @@ function PTCalendar({
       value: n,
       label: String(n)
     }))
+  })), BC && BC.circuitPerWeek && /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Circuit training full body / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+    value: circuitPerWeek,
+    onChange: setCircuit,
+    options: [0, 1].map(n => ({
+      value: n,
+      label: String(n)
+    }))
   })), sk ? /*#__PURE__*/React.createElement("div", {
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
@@ -393,7 +421,16 @@ function PTCalendar({
   }, "Pes\xE9e du matin")), d.date === now && typeof PTMishap === 'function' && d.items.some(x => x.status !== 'done') && /*#__PURE__*/React.createElement("button", {
     className: "text-button calendar-mishap",
     onClick: () => go('mishap')
-  }, "Je ne peux pas aujourd\u2019hui \u2192"), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
+  }, "Je ne peux pas aujourd\u2019hui \u2192"), d.date === now && SP.swapOptions && /*#__PURE__*/React.createElement("button", {
+    className: "text-button calendar-swap",
+    "aria-expanded": swapOpen,
+    onClick: () => setSwapOpen(!swapOpen)
+  }, "Faire la s\xE9ance d\u2019un autre jour"), d.date === now && swapOpen && /*#__PURE__*/React.createElement(PTSwapPicker, {
+    data: data,
+    update: update,
+    notify: notify,
+    after: () => setSwapOpen(false)
+  }), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos'), d.items.map((item, idx) => /*#__PURE__*/React.createElement("div", {
     key: item.key,
@@ -478,6 +515,71 @@ function PTCalendar({
   })))));
 }
 const diff0 = (a, b) => PT.dayDiff(a, b);
+
+// Lot 42 : faire aujourd'hui la séance d'un autre jour de la semaine (pluie, envie, contrainte).
+// Les deux journées s'échangent ; le reste de la semaine ne bouge pas. Une règle de charge cassée demande confirmation.
+function PTSwapPicker({
+  data,
+  update,
+  notify,
+  after
+}) {
+  const [pending, setPending] = usePTState(null);
+  const SPx = window.SeasonPlan,
+    now = PT.dateKey();
+  if (!SPx || !SPx.swapOptions) return null;
+  const opts = SPx.swapOptions(data, now);
+  if (!opts.length) return /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Plus aucune s\xE9ance pr\xE9vue d\u2019ici dimanche : rien \xE0 \xE9changer cette semaine.");
+  const pick = (date, confirmed = false) => {
+    const r = SPx.swapDays(data, now, date, now);
+    if (!r.ok) {
+      notify(r.why);
+      return;
+    }
+    if (r.warnings.length && !confirmed) {
+      setPending({
+        date,
+        warnings: r.warnings
+      });
+      return;
+    }
+    update(s => ({
+      ...s,
+      calendar: r.calendar
+    }));
+    notify(r.why);
+    setPending(null);
+    if (after) after();
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "swap-picker stack-sm"
+  }, opts.map(d => /*#__PURE__*/React.createElement("button", {
+    key: d.date,
+    className: "home-action swap-day",
+    "aria-pressed": pending?.date === d.date,
+    onClick: () => pick(d.date)
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "refresh"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Faire celle du ", d.label.toLowerCase(), " aujourd\u2019hui"), /*#__PURE__*/React.createElement("small", null, d.items.map(x => x.label).join(' + '))), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  }))), pending && /*#__PURE__*/React.createElement("div", {
+    className: "notice warning stack-sm",
+    role: "alert"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, "Attention :"), " ", pending.warnings.join(' ')), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => pick(pending.date, true)
+  }, "\xC9changer quand m\xEAme"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setPending(null)
+  }, "Choisir un autre jour"))), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Ce qui \xE9tait pr\xE9vu aujourd\u2019hui part \xE0 la place de cette s\xE9ance. Le reste de la semaine ne bouge pas, et tu peux annuler l\u2019\xE9change depuis l\u2019accueil."));
+}
 
 // Choix des créneaux proposés à l'IA architecte : la liste fermée de chaque créneau (exercices du créneau + fiches basket du même mouvement).
 function ptArchitectSlots(data) {

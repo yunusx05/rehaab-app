@@ -96,7 +96,13 @@
     // Lot 31 : jours de pluie (notés depuis « Un imprévu ») : ce qui se fait dehors passe en intérieur ou glisse.
     const rain=(Array.isArray(v.rain)?v.rain:[]).filter(isDay).sort().slice(-30);
     // Lot 39 : terrain près de chez soi ? Sans réponse : loin (une séance = un seul lieu).
-    return {moves,skips,forced,week,dates,excused,rain,courtNear:v.courtNear===true};
+    // Lot 42 : dernier échange de deux journées (« faire aujourd'hui la séance de demain »), gardé pour pouvoir l'annuler.
+    const sw=v.swapped,keyOk=k=>typeof k==='string'&&/^[A-Za-z0-9-]{1,20}$/.test(k);
+    const swapped=sw&&typeof sw==='object'&&isDay(sw.a)&&isDay(sw.b)&&Array.isArray(sw.keys)
+      ?{a:sw.a,b:sw.b,keys:sw.keys.filter(keyOk).slice(0,20),prevA:MODES[sw.prevA]?sw.prevA:null,prevB:MODES[sw.prevB]?sw.prevB:null,
+        before:{moves:Object.fromEntries(Object.entries(sw.before&&sw.before.moves&&typeof sw.before.moves==='object'?sw.before.moves:{}).filter(([k,d])=>keyOk(k)&&isDay(d)).slice(0,20)),
+          forced:(sw.before&&Array.isArray(sw.before.forced)?sw.before.forced:[]).filter(keyOk).slice(0,20)}}:null;
+    return {moves,skips,forced,week,dates,excused,rain,courtNear:v.courtNear===true,...(swapped?{swapped}:{})};
   }
   const courtAway=state=>!(state&&state.calendar&&state.calendar.courtNear===true);
   function rainOn(state,date=today()) {const cal=validateCalendar(state.calendar);return !!(cal&&cal.rain.includes(date));}
@@ -185,6 +191,8 @@
       const k=CAR.KINDS[kind];
       out.push({key:k.key,type:'cardio',kind,phase:cur,label:`Cardio · ${k.label.toLowerCase()}`,legs:CAR.impactStatus(state,cur).ok?'impact':'light',minutes:kind==='sand'?30:20});
     });
+    // Lot 42 : circuit training full body (style CrossFit), une fois par semaine en plus du cardio, à la maison.
+    if(CAR&&CAR.circuitPerWeek&&CAR.circuitPerWeek(state)) out.push({key:'K5',type:'cardio',kind:'wod',phase:cur,label:'Circuit training · full body',legs:'light',minutes:25});
     // Lot 31 : deux sortes de séances basket. Les skills mélangent dribble, tir et lay-up ; la séance de tir (une par semaine) ne fait que tirer.
     // Toutes commencent par quelques minutes de dribble.
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
@@ -224,6 +232,13 @@
     if(days.courtAway&&mode==='muscu'&&(item.type==='vivacite'||item.type==='cardio'&&['court','sand'].includes(item.kind))) return 'Jour muscu à la maison : le terrain est loin, ça se fait un jour de terrain.';
     const prev=days[i-1]||{club:days.prevClub||{match:false,practice:false}},next=days[i+1]||{club:clubOfNext(days,i)};
     if(d.club.match&&item.type!=='care') return 'Jour de match : seulement l’échauffement.';
+    // Lot 42 : le circuit training se fait à la maison et fatigue tout le corps.
+    if(item.kind==='wod'){
+      if(days.courtAway&&['skills','shooting'].includes(mode)) return 'Jour de terrain : le circuit se fait à la maison, et le terrain est loin.';
+      if(next.club.match) return 'Veille de match : pas de circuit.';
+      if(prev.club.match) return 'Lendemain de match : récupération, pas de circuit.';
+      if(placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Circuit et jambes lourdes le même jour : trop de charge.';
+    }
     if(item.legs==='heavy'&&next.club.match) return 'Veille de match : pas de jambes lourdes.';
     if(item.legs==='impact'&&next.club.match) return 'Veille de match : pas d’impacts répétés.';
     if(item.legs==='heavy'&&prev.club.match) return 'Lendemain de match : récupération, pas de jambes lourdes.';
@@ -252,7 +267,9 @@
     const total=placed.filter(x=>x!==item&&x.date===date&&x.type!=='care'&&!(x.type==='skills'&&(mode==='both'||x.combined))).reduce((n,x)=>n+x.minutes,0);
     // Muscu + skills le même jour : la séance skills est raccourcie pour tenir dans ta durée (voir weekSchedule).
     const paired=item.type==='skills'&&(mode==='both'||ignoreMinutes||item.combined)||item.physical&&mode==='both'&&placed.every(x=>x===item||x.date!==date||x.type==='skills'||x.type==='care');
-    if(item.type!=='care'&&!paired&&total&&total+item.minutes>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
+    // Lot 42 : le circuit se raccourcit jusqu'à 20 min pour tenir dans la journée (voir weekSchedule).
+    const need=item.kind==='wod'?Math.min(item.minutes,20):item.minutes;
+    if(item.type!=='care'&&!paired&&total&&total+need>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
     if(d.before) return 'Avant le début de ton plan.';
     return null;
   }
@@ -315,6 +332,13 @@
       const room=Math.max(20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-phys)/5)*5));
       const afterMuscu=placed.some(y=>y.physical&&y.date===x.date);
       Object.assign(x,{minutes:room,combined:true,label:afterMuscu?'Skills basket · après la séance':'Skills basket · version courte'});
+    });
+    // Lot 42 : circuit le même jour qu'une autre séance : raccourci à ce qui reste de ta durée maximale (20 min au moins, déjà échauffé).
+    placed.filter(x=>x.kind==='wod').forEach(x=>{
+      const other=placed.filter(y=>y!==x&&y.date===x.date&&y.type!=='care').reduce((n,y)=>n+y.minutes,0);
+      if(!other) return;
+      const room=Math.max(20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-other)/5)*5));
+      Object.assign(x,{minutes:room,combined:true,label:`Circuit training · ${room} min après la séance`});
     });
     // Statut : faite (séance correspondante enregistrée dans la semaine), manquée (jour passé), prévue.
     const shots=((state.shooting&&state.shooting.sessions)||[]).map(s=>({id:s.id,date:s.date,source:'shooting'}));
@@ -406,6 +430,54 @@
     const calendar={...cal,dates:{...cal.dates,[now]:'off'},excused:{date:now,action,keys:list.map(x=>x.key),prev,why:notes.join(' ')}};
     return {ok:true,calendar,why:notes.join(' ')};
   }
+  // Lot 42 : échanger deux journées de la même semaine (pluie, envie, contrainte) : tout ce qui est prévu ce jour-là part à l'autre,
+  // et le type des deux journées (Muscu, Skills…) est échangé aussi. Le reste de la semaine ne bouge pas : rien n'est sauté ni rattrapé.
+  // Les règles de charge sont vérifiées : si l'échange en casse une, c'est signalé (warnings) mais respecté, comme un déplacement choisi.
+  function swapDays(state, dateA, dateB, now=today()) {
+    if(!isDay(dateA)||!isDay(dateB)||dateA===dateB) return {ok:false,why:'Choisis deux jours différents.'};
+    const monday=mondayOf(dateA);
+    if(mondayOf(dateB)!==monday) return {ok:false,why:'Les deux jours doivent être dans la même semaine.'};
+    if(diff(dateA,now)<0||diff(dateB,now)<0) return {ok:false,why:'Un jour déjà passé ne peut plus être échangé.'};
+    const sch=weekSchedule(state,monday,now),dayOf=d=>sch.days.find(x=>x.date===d);
+    const movable=d=>dayOf(d).items.filter(x=>x.status==='planned'&&x.type!=='care');
+    const A=movable(dateA),B=movable(dateB);
+    if(!A.length&&!B.length) return {ok:false,why:'Rien de prévu ces deux jours-là.'};
+    const cal=validateCalendar(state.calendar)||blankCalendar();
+    const prevA=cal.dates[dateA]||null,prevB=cal.dates[dateB]||null;
+    const modeA=dayMode(state,dateA),modeB=dayMode(state,dateB),dates={...cal.dates};
+    // Un jour « Repos » qui reçoit une séance devient « Auto » ; l'autre prend le repos.
+    dates[dateA]=B.length?(modeB==='off'?'auto':modeB):'off';
+    dates[dateB]=A.length?(modeA==='off'?'auto':modeA):'off';
+    const keys=[...A,...B].map(x=>x.key),moves={...(cal.moves[monday]||{})};
+    // Toutes les autres séances de la semaine restent figées à leur jour : l'échange ne relance pas le placement automatique.
+    const others=sch.days.flatMap(d=>d.items).filter(x=>!keys.includes(x.key));
+    others.forEach(x=>moves[x.key]=x.date);
+    A.forEach(x=>moves[x.key]=dateB);B.forEach(x=>moves[x.key]=dateA);
+    const forced=[...new Set([...(cal.forced[monday]||[]),...keys,...others.map(x=>x.key)])];
+    const before={moves:cal.moves[monday]||{},forced:cal.forced[monday]||[]};
+    const calendar={...cal,dates,moves:{...cal.moves,[monday]:moves},forced:{...cal.forced,[monday]:forced},swapped:{a:dateA,b:dateB,keys,prevA,prevB,before}};
+    const after=weekSchedule({...state,calendar},monday,now);
+    const warnings=after.days.flatMap(d=>d.items).filter(x=>keys.includes(x.key)&&x.warning).map(x=>`${x.label} : ${x.warning.charAt(0).toLowerCase()+x.warning.slice(1)}`);
+    const name=d=>DAYS[weekday(d)].toLowerCase(),list=xs=>xs.map(x=>x.label).join(' + ');
+    const why=A.length&&B.length?`Échangé : ${list(B)} aujourd’hui${dateA===now?'':` (${name(dateA)})`}, ${list(A)} ${name(dateB)}. Le reste de la semaine ne bouge pas.`
+      :B.length?`${list(B)} avancée au ${name(dateA)} ; ${name(dateB)} devient un jour de repos.`:`${list(A)} décalée au ${name(dateB)} ; ${name(dateA)} devient un jour de repos.`;
+    return {ok:true,calendar,warnings,why};
+  }
+  // Annule le dernier échange : les deux journées retrouvent leur type et leurs séances.
+  function unswap(state) {
+    const cal=validateCalendar(state.calendar)||blankCalendar(),sw=cal.swapped;
+    if(!sw) return cal;
+    const monday=mondayOf(sw.a),dates={...cal.dates};
+    if(sw.prevA) dates[sw.a]=sw.prevA; else delete dates[sw.a];
+    if(sw.prevB) dates[sw.b]=sw.prevB; else delete dates[sw.b];
+    const {swapped,...rest}=cal;
+    return {...rest,dates,moves:{...cal.moves,[monday]:sw.before.moves},forced:{...cal.forced,[monday]:sw.before.forced}};
+  }
+  // Jours de la semaine (après aujourd'hui) dont la séance peut venir aujourd'hui.
+  function swapOptions(state, now=today()) {
+    const sch=weekSchedule(state,mondayOf(now),now);
+    return sch.days.filter(d=>diff(d.date,now)>0).map(d=>({date:d.date,label:d.label,items:d.items.filter(x=>x.status==='planned'&&x.type!=='care')})).filter(d=>d.items.length);
+  }
   // « Finalement, je peux » : annule l'imprévu du jour et rend les séances à leur place.
   function unexcuse(state, now=today()) {
     const cal=validateCalendar(state.calendar)||blankCalendar(),e=cal.excused;
@@ -430,7 +502,7 @@
     if(p&&BP){const fresh=BP.create({startStep:1,now});next.pathway={...fresh,tests:p.tests||{},history:[...(p.history||[]),{step:1,date:now,restart:true}].slice(-40)};}
     next.seasonPlan={...(validate(state.seasonPlan)||blank()),start:now,resetWeeks:null,resetDone:null,devStart:null};
     const cal=validateCalendar(state.calendar)||blankCalendar();
-    next.calendar={...cal,moves:{},skips:{},forced:{},excused:null};
+    next.calendar={...cal,moves:{},skips:{},forced:{},excused:null};delete next.calendar.swapped;
     if(state.program&&state.program.status!=='archived') next.program={...state.program,completed:[],startDate:now,status:'active',pausedAt:null};
     if(state.draft&&state.draft.status!=='active') next.draft=null;
     return next;
@@ -490,5 +562,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,MODES,courtAway,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,swapDays,unswap,swapOptions,courtAway,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
 });

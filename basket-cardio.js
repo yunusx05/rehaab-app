@@ -60,9 +60,11 @@
   function validate(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return blank();
     const n=Number(v.perWeek),chosen=v.chosen===true;
-    if(!Number.isInteger(n)||n<0||n>3) return blank();
-    if(n===2&&!chosen) return blank();
-    return chosen?{perWeek:n,chosen:true}:{perWeek:n};
+    // Lot 42 : circuit training (0 ou 1 par semaine, 1 par défaut), gardé à part du nombre de cardios.
+    const circuit=v.circuit===0?{circuit:0}:{};
+    if(!Number.isInteger(n)||n<0||n>3) return {...blank(),...circuit};
+    if(n===2&&!chosen) return {...blank(),...circuit};
+    return chosen?{perWeek:n,chosen:true,...circuit}:{perWeek:n,...circuit};
   }
   function perWeek(state) {return validate(state&&state.cardio).perWeek;}
   // Une seule séance : on alterne corde et course d'une semaine à l'autre. Deux : les deux.
@@ -110,6 +112,7 @@
   const find = (all,id) => all.find(e=>e.id===id);
   // Séance prête à lancer. PT : personal-engine, PP : player-profile, phase : phase actuelle du plan de saison ('reset', 'step1'…).
   function plan(PT, PP, state, kind, {now=today(), phase='', soft: forceSoft=false}={}) {
+    if(kind==='wod') return wodPlan(PT,PP,state,{now,phase,soft:forceSoft});
     if(!KINDS[kind]) return {error:'Séance cardio introuvable.'};
     // Séance sable impossible (pluie, pas de terrain) : fractionné de course à la place, compté comme la séance sable.
     const k=kind==='sand'?{...KINDS.run,key:KINDS.sand.key}:KINDS[kind];
@@ -191,5 +194,79 @@
       status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
-  return {KINDS,KIND_IDS,LEVELS,PER_LEVEL,blank,validate,perWeek,weekKinds,history,levelOf,impactStatus,plan};
+  // Lot 42 : circuit training full body, style CrossFit, une fois par semaine, à la maison.
+  // Le format tourne chaque semaine : AMRAP (un maximum de tours), EMOM (un exercice par minute), intervalles 40/20.
+  // Mouvements choisis dans ton matériel ; sauts, corde et burpees seulement si les impacts sont permis.
+  const WOD_SLOTS = {
+    power:['kb-swing','db-snatch','db-thruster','kb-deadlift'],
+    legs:['db-thruster','box-jump-step','goblet','vest-step-up','db-step-up','reverse-lunge','squat'],
+    push:['burpee','pushup','push-press','vest-pushup','burpee-nojump','incline-pushup'],
+    pull:['plank-db-row','kb-row','db-row','band-row','inverted-row'],
+    engine:['rope','bike-sprints','burpee','mountain-climber','slider-climber','jumping-jack','bike-interval','stepjack'],
+    core:['plank-shoulder-tap','slider-bodysaw','bear-crawl','plank']
+  };
+  const WOD_FORMATS = ['amrap','emom','hiit'];
+  const WOD_BLOCK = {amrap:[12,14,16,18],emom:[12,15,16,20]};
+  const WOD_ROUNDS = [3,3,4,5];
+  function circuitPerWeek(state) {const v=state&&state.cardio;return v&&v.circuit===0?0:1;}
+  const weekIndex = d => Math.floor(Date.parse(`${d}T12:00:00Z`)/(7*86400000));
+  function wodPlan(PT, PP, state, {now=today(), phase='', soft: forceSoft=false, format: wanted=null, minutes: budget=null}={}) {
+    const safety=PT.safety(state);
+    if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
+    // À la maison : ce qui demande le terrain, le parcours extérieur ou le sable est écarté.
+    const owned=(state.owned||['bodyweight']).filter(n=>!['court','outdoor','sand','hoop'].includes(n));
+    const impact=forceSoft?{ok:false,why:'Semaine chargée : le circuit de cette semaine se fait sans sauts.'}:impactStatus(state,phase), lv=levelOf(state,'wod',now);
+    const level=impact.ok&&impact.gentle?Math.min(lv.level,1):lv.level;
+    const check={...state.checkIn,equipment:owned,focus:'cardio',format:'circuit',minutes:25,date:now,guided:2,constraints:state.checkIn&&state.checkIn.constraints||[],impactCleared:impact.ok};
+    const ctx={...PT.context(state,check),low:false,avoidImpact:!impact.ok};
+    const all=PT.allExercises(state),ok=e=>e&&!(e.impact&&!impact.ok)&&PT.allowed(e,state,check,ctx)&&(!PP||PP.tolerates(e,safety.active));
+    const wk=weekIndex(now);
+    const format=WOD_FORMATS.includes(wanted)?wanted:WOD_FORMATS[((wk%3)+3)%3];
+    // Variété : chaque semaine, on part d'un rang différent dans la liste de chaque famille.
+    // Les listes sont rangées du plus « CrossFit » au plus simple : la rotation ne tourne que sur les trois premiers possibles.
+    const pick=(slot,taken)=>{const list=WOD_SLOTS[slot].map(id=>find(all,id)).filter(e=>ok(e)&&!taken.includes(e.id)).slice(0,3);const r=Math.floor(wk/3)+Object.keys(WOD_SLOTS).indexOf(slot);return list.length?list[((r%list.length)+list.length)%list.length]:null;};
+    const order=format==='emom'?['power','push','pull','engine']:['power','legs','push','pull','engine','core'];
+    const taken=[],moves=[];
+    order.forEach(slot=>{const e=pick(slot,taken);if(e){taken.push(e.id);moves.push(e);}});
+    const count=format==='amrap'?5:format==='emom'?4:6;
+    const list=moves.slice(0,count);
+    if(list.length<3) return {error:'Pas assez de mouvements compatibles avec ton matériel et tes douleurs pour un circuit.'};
+    const reps=[8,10,12,15][level];
+    let exercises,blockSeconds=null,rounds;
+    if(format==='amrap'){
+      blockSeconds=(budget?Math.max(8,Math.min(WOD_BLOCK.amrap[level],budget-8)):WOD_BLOCK.amrap[level])*60;
+      exercises=list.map(e=>{
+        const rx=PT.makePrescription(e,'amrap',25,ctx);
+        // Burpees comptés en répétitions, comme dans un WOD.
+        if(/^burpee/.test(e.id)){const n=[6,8,10,12][level];return {...rx,sets:1,rest:10,measure:'reps',min:n,max:n,targetMin:n,targetMax:n};}
+        if(e.measure==='seconds') return {...rx,sets:1,rest:10,seconds:e.id==='bike-sprints'?15:30,measure:'seconds'};
+        const n=e.kind==='plyo'?[5,6,8,8][level]:e.unilateral?Math.max(6,reps-2):e.weighted?reps:reps+4;
+        return {...rx,sets:1,rest:10,min:n,max:n,targetMin:n,targetMax:n};
+      });
+    } else if(format==='emom'){
+      const minutes=budget?Math.max(8,Math.min(WOD_BLOCK.emom[level],budget-8)):WOD_BLOCK.emom[level];
+      rounds=Math.max(2,Math.floor(minutes/list.length));blockSeconds=rounds*list.length*60;
+      exercises=list.map(e=>({...PT.makePrescription(e,'emom',25,ctx),sets:rounds,seconds:[30,35,40,40][level],rest:20,measure:'seconds'}));
+    } else {
+      rounds=budget?Math.max(2,Math.min(WOD_ROUNDS[level],Math.floor((budget-6)/list.length))):WOD_ROUNDS[level];
+      exercises=list.map(e=>({...PT.makePrescription(e,'hiit',25,ctx),sets:rounds,seconds:40,rest:20,measure:'seconds'}));
+    }
+    const name={amrap:`AMRAP ${Math.round(blockSeconds/60)} min`,emom:`EMOM ${Math.round(blockSeconds/60)} min`,hiit:`${rounds} tours · 40 s / 20 s`}[format];
+    const reasons=['Circuit training full body, une fois par semaine : le souffle, la force et le gainage dans la même séance, sans faire avancer ton programme.',
+      {amrap:'AMRAP : enchaîne les mouvements dans l’ordre, le plus de tours possible avant la fin du chrono. Note tes tours à la fin : la semaine où le format revient, essaie d’en faire un de plus.',
+       emom:'EMOM : au début de chaque minute, fais le mouvement indiqué ; le reste de la minute, tu récupères. Si tu n’as plus le temps de souffler, ralentis le rythme, pas la technique.',
+       hiit:'Intervalles : 40 secondes de travail, 20 secondes pour passer au mouvement suivant. Un tour = tous les mouvements.'}[format],
+      `Niveau ${level+1} sur ${LEVELS}.`];
+    if(!impact.ok) reasons.push(`${impact.why.replace(/[Cc]ardio sans impact\.?/,'')} Ni sauts, ni corde, ni burpees aujourd’hui.`.trim());
+    else if(impact.gentle) reasons.push('Étape 1 du parcours : allure contrôlée, pas de course contre la montre.');
+    if(lv.held) reasons.push('Dernière fois, une douleur a été signalée : le niveau ne monte pas avant une séance propre.');
+    else if(lv.next) reasons.push(`Encore ${lv.next} séance${lv.next>1?'s':''} sans douleur avant le niveau suivant.`);
+    reasons.push('Charges moyennes : tu dois pouvoir enchaîner toutes les répétitions sans t’arrêter. La technique passe avant le chrono.');
+    const estimate=Math.ceil((300+(blockSeconds||PT.estimateSeconds(exercises,format))+60)/60);
+    return {id:PT.uid(),title:`Circuit training · ${name}`,source:'cardio',cardioKind:'wod',cardioLevel:level,cardioSoft:!impact.ok,
+      focus:'cardio',format,exercises,check,reasons,warmupSeconds:300,blockSeconds,estimatedMinutes:estimate,
+      status:'preview',entries:{},createdAt:new Date().toISOString()};
+  }
+
+  return {KINDS,KIND_IDS,LEVELS,PER_LEVEL,WOD_SLOTS,blank,validate,perWeek,circuitPerWeek,weekKinds,history,levelOf,impactStatus,plan,wodPlan};
 });
