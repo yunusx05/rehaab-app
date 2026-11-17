@@ -302,7 +302,11 @@ window.RehaabMedia = {
     "frames": "Bicycling_Stationary",
     "muscles": [
       "quadriceps"
-    ]
+    ],
+    "video": "media/videos/yt/bike.mp4",
+    "poster": "media/videos/yt/bike.webp",
+    "credit": "YouTube · How To Do Assault Bike Intervals (HIIT)",
+    "source": "https://www.youtube.com/watch?v=VEyTqLqrqX8&t=215s"
   },
   "bike-interval": {
     "frames": "Bicycling_Stationary",
@@ -857,7 +861,11 @@ window.RehaabMedia = {
     "frames": "Sumo_Deadlift",
     "muscles": [
       "hamstrings"
-    ]
+    ],
+    "video": "media/videos/yt/sumo-deadlift.mp4",
+    "poster": "media/videos/yt/sumo-deadlift.webp",
+    "credit": "YouTube · Sumo Deadlift",
+    "source": "https://www.youtube.com/watch?v=pfSMst14EFk&t=1s"
   },
   "good-morning": {
     "frames": "Good_Morning",
@@ -901,7 +909,11 @@ window.RehaabMedia = {
     "frames": "Glute_Kickback",
     "muscles": [
       "glutes"
-    ]
+    ],
+    "video": "media/videos/yt/glute-kickback.mp4",
+    "poster": "media/videos/yt/glute-kickback.webp",
+    "credit": "YouTube · Glute Kickbacks with a Cable Machine (Less is More)",
+    "source": "https://www.youtube.com/watch?v=ifP5sFBT7IE&t=35s"
   },
   "back-extension": {
     "frames": "Hyperextensions_Back_Extensions",
@@ -3962,5 +3974,155 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/max-velocity-sprint.webp",
     "credit": "YouTube · Explosive Athlete Training | Improve Speed & Explosiveness | JoeyBergles",
     "source": "https://www.youtube.com/watch?v=w7Q1zHe0w4M&t=183s"
+  },
+  "band-eversion": {
+    "video": "media/videos/yt/band-eversion.mp4",
+    "poster": "media/videos/yt/band-eversion.webp",
+    "credit": "YouTube · Ankle Bands (PF/EV/INV/DF) - Exercise",
+    "source": "https://www.youtube.com/watch?v=3O9RlKY_rZw&t=23s"
+  },
+  "reverse-walk": {
+    "video": "media/videos/yt/reverse-walk.mp4",
+    "poster": "media/videos/yt/reverse-walk.webp",
+    "credit": "YouTube · Walking backward - knees over toes program",
+    "source": "https://www.youtube.com/watch?v=TFALlIwnMw4&t=15s"
+  },
+  "sk-weak-court": {
+    "video": "media/videos/yt/sk-weak-court.mp4",
+    "poster": "media/videos/yt/sk-weak-court.webp",
+    "credit": "YouTube · FIX Your Weak Hand Dribble! [5 Minute Video]",
+    "source": "https://www.youtube.com/watch?v=0_NiW74SVbM&t=25s"
+  },
+  "hop-step-rhythm": {
+    "video": "media/videos/yt/hop-step-rhythm.mp4",
+    "poster": "media/videos/yt/hop-step-rhythm.webp",
+    "credit": "YouTube · Jumpstop - Pro Hop - Hop Step Move Tutorial | Basketball Scoring Drills | Dre Baldwin",
+    "source": "https://www.youtube.com/watch?v=8Vt77jBPZQs&t=12s"
+  },
+  "reverse-plank": {
+    "video": "media/videos/yt/reverse-plank.mp4",
+    "poster": "media/videos/yt/reverse-plank.webp",
+    "credit": "YouTube · How to do a Reverse Plank | The Right Way | Well+Good",
+    "source": "https://www.youtube.com/watch?v=bnu5b61vqGQ&t=47s"
+  },
+  "plank-hip-dip": {
+    "video": "media/videos/yt/plank-hip-dip.mp4",
+    "poster": "media/videos/yt/plank-hip-dip.webp",
+    "credit": "YouTube · How to Do Plank Hip Dip Exercise Correctly (for Abs and Obliques)",
+    "source": "https://www.youtube.com/watch?v=LisPIeqX2JY&t=25s"
+  },
+  "sand-bear-crawl": {
+    "video": "media/videos/yt/sand-bear-crawl.mp4",
+    "poster": "media/videos/yt/sand-bear-crawl.webp",
+    "credit": "YouTube · Technique Tuesday- Bear Crawl with a sandbag",
+    "source": "https://www.youtube.com/watch?v=KjInrowmOzE&t=39s"
+  },
+  "sand-lunge-walk": {
+    "video": "media/videos/yt/sand-lunge-walk.mp4",
+    "poster": "media/videos/yt/sand-lunge-walk.webp",
+    "credit": "YouTube · Sand Medicine Ball Walking Lunge",
+    "source": "https://www.youtube.com/watch?v=Zxuc6Xo5E6Q&t=5s"
+  },
+  "mv-flip-feet": {
+    "video": "media/videos/yt/mv-flip-feet.mp4",
+    "poster": "media/videos/yt/mv-flip-feet.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=oFf4FbY4lDs&t=244s"
+  },
+  "sand-lateral-bound": {
+    "video": "media/videos/yt/sand-lateral-bound.mp4",
+    "poster": "media/videos/yt/sand-lateral-bound.webp",
+    "credit": "YouTube · Lateral Bound to Vertical Jump (Sand COD)",
+    "source": "https://www.youtube.com/watch?v=78d2TkP9-tw&t=7s"
+  },
+  "db-snatch": {
+    "video": "media/videos/yt/db-snatch.mp4",
+    "poster": "media/videos/yt/db-snatch.webp",
+    "credit": "YouTube · Dumbbell Snatch",
+    "source": "https://www.youtube.com/watch?v=xA_DpewzL7c&t=2s"
+  },
+  "split-calf-iso": {
+    "video": "media/videos/yt/split-calf-iso.mp4",
+    "poster": "media/videos/yt/split-calf-iso.webp",
+    "credit": "YouTube · Split Stance Iso w Calf Raise Hold",
+    "source": "https://www.youtube.com/watch?v=4u06JwaisL4&t=1s"
+  },
+  "ffe-split-hold": {
+    "video": "media/videos/yt/ffe-split-hold.mp4",
+    "poster": "media/videos/yt/ffe-split-hold.webp",
+    "credit": "YouTube · Dumbbells Front Foot Elevated Split Squat (Isometric)",
+    "source": "https://www.youtube.com/watch?v=IzHVHwMg7j0&t=3s"
+  },
+  "lateral-stepdown-iso": {
+    "video": "media/videos/yt/lateral-stepdown-iso.mp4",
+    "poster": "media/videos/yt/lateral-stepdown-iso.webp",
+    "credit": "YouTube · Lateral Step Down Iso Hold with Ball Pass",
+    "source": "https://www.youtube.com/watch?v=vu26g4XbHZA&t=5s"
+  },
+  "resisted-pogo": {
+    "video": "media/videos/yt/resisted-pogo.mp4",
+    "poster": "media/videos/yt/resisted-pogo.webp",
+    "credit": "YouTube · Band Resisted Pogo Jumps",
+    "source": "https://www.youtube.com/watch?v=mUNo0KXHWzw&t=11s"
+  },
+  "seated-hurdle-jump": {
+    "video": "media/videos/yt/seated-hurdle-jump.mp4",
+    "poster": "media/videos/yt/seated-hurdle-jump.webp",
+    "credit": "YouTube · Seated Hurdle Box Jumps",
+    "source": "https://www.youtube.com/watch?v=-Xj96X3OQ5Q&t=1s"
+  },
+  "imtp": {
+    "video": "media/videos/yt/imtp.mp4",
+    "poster": "media/videos/yt/imtp.webp",
+    "credit": "YouTube · Barbell Split-Stance Isometric Mid-Thigh Pull",
+    "source": "https://www.youtube.com/watch?v=4aj5LF2I4lg&t=12s"
+  },
+  "resisted-broad-jump": {
+    "video": "media/videos/yt/resisted-broad-jump.mp4",
+    "poster": "media/videos/yt/resisted-broad-jump.webp",
+    "credit": "YouTube · Band Resisted Broad Jump",
+    "source": "https://www.youtube.com/watch?v=T-6Krr8BrNg&t=1s"
+  },
+  "sk-chairs-high": {
+    "video": "media/videos/yt/sk-chairs-high.mp4",
+    "poster": "media/videos/yt/sk-chairs-high.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=Gh_CPhNaRHs&t=3s"
+  },
+  "sk-left-layup": {
+    "video": "media/videos/yt/sk-left-layup.mp4",
+    "poster": "media/videos/yt/sk-left-layup.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=ssiGnB4oJaw&t=40s"
+  },
+  "sk-mikan-var": {
+    "video": "media/videos/yt/sk-mikan-var.mp4",
+    "poster": "media/videos/yt/sk-mikan-var.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=HaLql0ueNpY&t=65s"
+  },
+  "sk-ladder-cross": {
+    "video": "media/videos/yt/sk-ladder-cross.mp4",
+    "poster": "media/videos/yt/sk-ladder-cross.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=Dk65Bq24OyQ&t=80s"
+  },
+  "sk-ladder-btl": {
+    "video": "media/videos/yt/sk-ladder-btl.mp4",
+    "poster": "media/videos/yt/sk-ladder-btl.webp",
+    "credit": "YouTube · ",
+    "source": "https://www.youtube.com/watch?v=Dk65Bq24OyQ&t=425s"
+  },
+  "figure-four": {
+    "video": "media/videos/yt/figure-four.mp4",
+    "poster": "media/videos/yt/figure-four.webp",
+    "credit": "YouTube · Supine Figure 4 Stretch",
+    "source": "https://www.youtube.com/watch?v=SSbRKbeoFCs&t=7s"
+  },
+  "db-thruster": {
+    "video": "media/videos/yt/db-thruster.mp4",
+    "poster": "media/videos/yt/db-thruster.webp",
+    "credit": "YouTube · Dumbbell Thruster",
+    "source": "https://www.youtube.com/watch?v=sLIswEpOHng&t=1s"
   }
 };
