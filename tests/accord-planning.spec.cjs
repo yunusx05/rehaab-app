@@ -8,7 +8,8 @@ const SP=require('../season-plan.js');
 const PP=require('../personal-programs.js');
 
 const MONDAY='2026-10-19';
-const ORDER=['pathway','reset','muscu','skills'];
+// Lot 41 : la vivacité passe avant les skills un jour de terrain (même ordre que l'accueil).
+const ORDER=['pathway','reset','muscu','vivacite','skills'];
 // Étape 2, un programme muscu actif et un programme skills : le même cas que sur le téléphone.
 function player(){
   const s=PT.initialState();s.profile={...s.profile,name:'Y',onboarded:true,age:27,height:183,weight:82,safeties:true};

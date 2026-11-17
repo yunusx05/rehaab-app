@@ -23,13 +23,14 @@ function ptCalendarPlan(data,item,day){
     return regroup({...plan,id:PT.uid(),source:'reset',pathwayId:undefined,pathwayStep:undefined,pathwayDay:undefined,title:item.label,exercises,reasons:['Remise en route : aucun saut ni sprint, les tendons d’abord.',...(plan.reasons||[]).filter(r=>!/saut|impact/i.test(r))],estimatedMinutes:Math.max(10,Math.round(PT.estimateSeconds(exercises,'classic')/60)+5)});
   }
   if(item.type==='vivacite')return BP.quickPlan(PT,JP,data,'vivacite');
+  if(item.type==='cardio'&&item.kind==='wod'&&window.BasketCardio)return window.BasketCardio.wodPlan(PT,JP,data,{phase:item.phase,minutes:item.minutes});
   if(item.type==='cardio'&&window.BasketCardio)return window.BasketCardio.plan(PT,JP,data,item.kind,{phase:item.phase,soft:item.soft});
   if(item.type==='skills'&&SK)return SK.session(PT,data,{minutes:item.minutes});
   return null;
 }
 
 function PTCalendar({data,update,go,notify}){
-  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[confirm,setConfirm]=usePTState(null),[error,setError]=usePTState('');
+  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[confirm,setConfirm]=usePTState(null),[error,setError]=usePTState(''),[swapOpen,setSwapOpen]=usePTState(false);
   if(!SP)return <p className="empty">Calendrier indisponible.</p>;
   const now=PT.dateKey(),monday=SP.at(SP.mondayOf(now),shift*7);
   const week=SP.weekSchedule(data,monday,now),phase=week.phase.phase;
@@ -66,6 +67,9 @@ function PTCalendar({data,update,go,notify}){
   const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length,cardioCount=week.days.flatMap(d=>d.items).filter(x=>x.type==='cardio').length;
   const BC=window.BasketCardio,cardioPerWeek=BC?BC.perWeek(data):0;
   const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n,chosen:true}}));
+  // Lot 42 : circuit training (0 ou 1 par semaine), en plus du cardio.
+  const circuitPerWeek=BC&&BC.circuitPerWeek?BC.circuitPerWeek(data):0;
+  const setCircuit=n=>update(s=>{const c={...(s.cardio||{})};if(n===0)c.circuit=0;else delete c.circuit;return {...s,cardio:c};});
   return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine, jour par jour.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
@@ -80,6 +84,7 @@ function PTCalendar({data,update,go,notify}){
           <div className="topline"><span className="fine">Terrain de basket</span><PTChips value={!!(data.calendar&&data.calendar.courtNear)} onChange={v=>update(s=>({...s,calendar:{...(SP.validateCalendar(s.calendar)||{moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]}),courtNear:v}}))} options={[{value:false,label:'Loin de chez moi'},{value:true,label:'À côté'}]}/></div>
           <p className="fine">{data.calendar&&data.calendar.courtNear?'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.':'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'}</p>
           {BC&&<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
+          {BC&&BC.circuitPerWeek&&<div className="topline"><span className="fine">Circuit training full body / semaine</span><PTChips value={circuitPerWeek} onChange={setCircuit} options={[0,1].map(n=>({value:n,label:String(n)}))}/></div>}
           {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
             :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
         </div>
@@ -90,6 +95,8 @@ function PTCalendar({data,update,go,notify}){
       <ol className="calendar-week">{week.days.filter(d=>!(d.before&&d.items.length===0)).map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
         <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
         {d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
+        {d.date===now&&SP.swapOptions&&<button className="text-button calendar-swap" aria-expanded={swapOpen} onClick={()=>setSwapOpen(!swapOpen)}>Faire la séance d’un autre jour</button>}
+        {d.date===now&&swapOpen&&<PTSwapPicker data={data} update={update} notify={notify} after={()=>setSwapOpen(false)}/>}
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}</p>}
         {d.items.map((item,idx)=><div key={item.key} className={`calendar-item is-${item.status}`}>
           <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
@@ -116,6 +123,27 @@ function PTCalendar({data,update,go,notify}){
     </div></>;
 }
 const diff0=(a,b)=>PT.dayDiff(a,b);
+
+// Lot 42 : faire aujourd'hui la séance d'un autre jour de la semaine (pluie, envie, contrainte).
+// Les deux journées s'échangent ; le reste de la semaine ne bouge pas. Une règle de charge cassée demande confirmation.
+function PTSwapPicker({data,update,notify,after}){
+  const [pending,setPending]=usePTState(null);
+  const SPx=window.SeasonPlan,now=PT.dateKey();
+  if(!SPx||!SPx.swapOptions)return null;
+  const opts=SPx.swapOptions(data,now);
+  if(!opts.length)return <p className="fine">Plus aucune séance prévue d’ici dimanche : rien à échanger cette semaine.</p>;
+  const pick=(date,confirmed=false)=>{
+    const r=SPx.swapDays(data,now,date,now);
+    if(!r.ok){notify(r.why);return;}
+    if(r.warnings.length&&!confirmed){setPending({date,warnings:r.warnings});return;}
+    update(s=>({...s,calendar:r.calendar}));notify(r.why);setPending(null);if(after)after();
+  };
+  return <div className="swap-picker stack-sm">
+    {opts.map(d=><button key={d.date} className="home-action swap-day" aria-pressed={pending?.date===d.date} onClick={()=>pick(d.date)}><PTIcon name="refresh"/><span><strong>Faire celle du {d.label.toLowerCase()} aujourd’hui</strong><small>{d.items.map(x=>x.label).join(' + ')}</small></span><PTIcon name="arrow" size={18}/></button>)}
+    {pending&&<div className="notice warning stack-sm" role="alert"><p><strong>Attention :</strong> {pending.warnings.join(' ')}</p><div className="button-row"><PTButton primary onClick={()=>pick(pending.date,true)}>Échanger quand même</PTButton><PTButton quiet onClick={()=>setPending(null)}>Choisir un autre jour</PTButton></div></div>}
+    <p className="fine">Ce qui était prévu aujourd’hui part à la place de cette séance. Le reste de la semaine ne bouge pas, et tu peux annuler l’échange depuis l’accueil.</p>
+  </div>;
+}
 
 // Choix des créneaux proposés à l'IA architecte : la liste fermée de chaque créneau (exercices du créneau + fiches basket du même mouvement).
 function ptArchitectSlots(data){

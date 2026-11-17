@@ -115,6 +115,7 @@ function PTStretchPicker(props){
 // Route « mishap » : un imprévu. La raison d'abord, puis la solution qui va avec.
 const ptMishapReasons=[
   {value:'rain',label:'Il pleut',hint:'La course dehors passe sur le terrain couvert',icon:'rain'},
+  {value:'swap',label:'Faire la séance d’un autre jour',hint:'Échange avec demain ou plus tard : le reste de la semaine ne bouge pas',icon:'refresh'},
   {value:'time',label:'Pas assez de temps',hint:'Une version courte de ta séance',icon:'clock'},
   {value:'tired',label:'Grosse fatigue',hint:'Une récup douce à la place',icon:'heart'},
   {value:'sore',label:'Courbatures',hint:'Une séance pour les soulager',icon:'body'},
@@ -171,6 +172,10 @@ function PTMishap(props){
         {planned.length>0?<ul className="reason-list">{planned.map(x=><li key={x.key}><strong>{x.label}</strong> : {ptRainEffect(x)}.</li>)}</ul>:<p className="fine">Rien n’est prévu aujourd’hui : la pluie sera prise en compte si tu lances une séance.</p>}
         <PTButton primary onClick={()=>{update(s=>({...s,calendar:SPL.setRain(s,true,now)}));notify('Pluie notée : ta course dehors passe sur le terrain couvert. Tu peux revenir en arrière depuis l’accueil.');go('today');}}><PTIcon name="rain" size={18}/>Noter la pluie et adapter ma journée</PTButton>
         {planned.length>0&&<div className="button-row"><PTButton quiet onClick={()=>simple('postpone')}>Plutôt tout reporter</PTButton></div>}
+        {typeof PTSwapPicker==='function'&&<div className="stack-sm"><h3>Ou échanger avec un autre jour</h3><p className="fine">Tu ne veux pas sortir ? Fais aujourd’hui la séance d’un autre jour (la muscu à la maison, par exemple), et celle d’aujourd’hui prend sa place.</p><PTSwapPicker data={data} update={update} notify={notify} after={()=>go('today')}/></div>}
+      </section>}
+      {reason==='swap'&&<section className="stack">
+        {typeof PTSwapPicker==='function'?<PTSwapPicker data={data} update={update} notify={notify} after={()=>go('today')}/>:<p className="fine">Échange indisponible.</p>}
       </section>}
       {reason==='time'&&<section className="stack">
         <PTCoachQ title="Combien de temps as-tu ?"><PTChips options={[10,15,20,30].map(n=>({value:n,label:`${n} min`}))} value={minutes} onChange={setMinutes}/></PTCoachQ>

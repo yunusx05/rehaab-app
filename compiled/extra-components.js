@@ -49,10 +49,22 @@ const PT_EXTRA = [{
   icon: 'core',
   place: 'home'
 }, {
+  id: 'wod',
+  label: 'Circuit training',
+  icon: 'run',
+  place: 'home',
+  legs: true
+}, {
   id: 'explosive',
   label: 'Explosivité',
   icon: 'spark',
   place: 'court',
+  legs: true
+}, {
+  id: 'iso',
+  label: 'Isométrie & tendons',
+  icon: 'body',
+  place: 'home',
   legs: true
 }, {
   id: 'mobility',
@@ -105,13 +117,30 @@ function ptExtraPlan(data, {
     owned: equipment
   }, {
     minutes
-  }) : null;else if (theme === 'explosive') plan = court && minutes <= 20 && BP ? BP.quickPlan(PT, JP, data, 'vivacite') : PT.generate(data, {
+  }) : null;
+  // Lot 43 : à la maison, l'explosivité suit la méthode « iso puis saut » (Joey Bergles) ; au terrain, la vivacité.
+  else if (theme === 'explosive') plan = court && minutes <= 20 && BP ? BP.quickPlan(PT, JP, data, 'vivacite') : !court && BP ? BP.quickPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, 'explosif', {
+    minutes
+  }) : PT.generate(data, {
     ...check,
     focus: 'plyo'
-  });else if (theme === 'mobility') plan = PT.generate(data, {
+  });else if (theme === 'iso') plan = BP ? BP.quickPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, 'iso-tendons', {
+    minutes
+  }) : null;else if (theme === 'mobility') plan = PT.generate(data, {
     ...check,
     focus: 'mobility'
-  });
+  });else if (theme === 'wod') plan = window.BasketCardio && window.BasketCardio.wodPlan ? window.BasketCardio.wodPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, {
+    minutes
+  }) : null;
   if (!plan || plan.error) return plan || {
     error: 'Séance indisponible pour l’instant.'
   };
@@ -119,7 +148,7 @@ function ptExtraPlan(data, {
   return {
     ...plan,
     id: PT.uid(),
-    source: t.basket ? 'extra' : plan.source,
+    source: t.basket || theme === 'wod' ? 'extra' : plan.source,
     extra: theme,
     title: `Extra · ${t.label}`,
     reasons: [...(plan.reasons || []).filter(r => !/^Tout (se fait )?(au terrain|à la maison)/.test(r)), ...(t.basket ? [] : [where])]

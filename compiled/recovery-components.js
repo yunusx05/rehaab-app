@@ -371,6 +371,11 @@ const ptMishapReasons = [{
   hint: 'La course dehors passe sur le terrain couvert',
   icon: 'rain'
 }, {
+  value: 'swap',
+  label: 'Faire la séance d’un autre jour',
+  hint: 'Échange avec demain ou plus tard : le reste de la semaine ne bouge pas',
+  icon: 'refresh'
+}, {
   value: 'time',
   label: 'Pas assez de temps',
   hint: 'Une version courte de ta séance',
@@ -567,7 +572,25 @@ function PTMishap(props) {
   }, /*#__PURE__*/React.createElement(PTButton, {
     quiet: true,
     onClick: () => simple('postpone')
-  }, "Plut\xF4t tout reporter"))), reason === 'time' && /*#__PURE__*/React.createElement("section", {
+  }, "Plut\xF4t tout reporter")), typeof PTSwapPicker === 'function' && /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("h3", null, "Ou \xE9changer avec un autre jour"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Tu ne veux pas sortir ? Fais aujourd\u2019hui la s\xE9ance d\u2019un autre jour (la muscu \xE0 la maison, par exemple), et celle d\u2019aujourd\u2019hui prend sa place."), /*#__PURE__*/React.createElement(PTSwapPicker, {
+    data: data,
+    update: update,
+    notify: notify,
+    after: () => go('today')
+  }))), reason === 'swap' && /*#__PURE__*/React.createElement("section", {
+    className: "stack"
+  }, typeof PTSwapPicker === 'function' ? /*#__PURE__*/React.createElement(PTSwapPicker, {
+    data: data,
+    update: update,
+    notify: notify,
+    after: () => go('today')
+  }) : /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "\xC9change indisponible.")), reason === 'time' && /*#__PURE__*/React.createElement("section", {
     className: "stack"
   }, /*#__PURE__*/React.createElement(PTCoachQ, {
     title: "Combien de temps as-tu ?"

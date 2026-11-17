@@ -2,6 +2,27 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-17 — Lots 42-43 : circuit training, échange de séances, isométrie Joey Bergles, démos manquantes (v98 → v99)
+
+**Demande** : (1) un circuit training full body style CrossFit 1×/semaine avec son matériel ; (2) pouvoir intervertir deux séances (pluie : faire la muscu du lendemain) sans perturber le programme ; (3) analyser deux vidéos de Joey Bergles (isométrie, explosivité) et récupérer leurs extraits ; (4) ajouter les vidéos des exercices qui n'en ont pas.
+
+**Fait — lot 42** (branche `feature/lot42-circuit-echange`) :
+- `BasketCardio.wodPlan` : AMRAP, EMOM puis intervalles 40/20 d'une semaine à l'autre ; familles de mouvements (puissance, jambes, poussée, tirage, moteur, gainage) prises dans son matériel de maison ; rotation sur les 3 meilleurs de chaque famille ; sans impact (douleur > 2/10) → ni sauts, ni corde, ni burpees. Niveau 1→4 comme le cardio.
+- Planning : item `K5` (type cardio, kind `wod`), en plus du cardio ; jamais un jour de terrain (terrain loin), de club, veille/lendemain de match, ni avec jambes lourdes ; raccourci à 20 min quand il suit une séance (sa semaine : mercredi après « Haut du corps »). Réglage 0/1 dans Ma semaine type (`cardio.circuit`). Thème « Circuit training » dans Extra (ne coche pas la séance prévue).
+- Thruster et arraché à l'haltère ajoutés au catalogue.
+- `SeasonPlan.swapDays/unswap/swapOptions` : échange de deux journées de la semaine (séances + type de jour) ; toutes les autres séances de la semaine sont figées à leur jour (sinon le placement auto les redistribuait) ; règle cassée signalée avant confirmation. Accès : Un imprévu → « Faire la séance d'un autre jour » (aussi sous « Il pleut »), et calendrier (aujourd'hui). Accueil : « Séances échangées … · Annuler l'échange ».
+
+**Fait — lot 43** (branche `feature/lot43-iso-explosivite`) :
+- Vidéo 1 « 12 Isometric Exercises » : 12 exercices ; vidéo 2 « Explosive Athlete Training » : 9. Ajoutés (15 fiches) : tirage iso en fente, tirages éclair (RFD), mi-cuisse (IMTP), squat cosaque tenu, chaise talons surélevés haltères, fente tenue barre, poussée de cheville sous barre, mollet Hatfield, fente sur pointe, fente pied avant surélevé tenue, descente latérale tenue, sprint lancé, saut horizontal freiné, rebonds freinés, saut de haie assis. Déjà dans l'app : fente iso haltères (`iso-split`), chaise une jambe, saut lesté (`db-jump`). Non ajoutés : box jumps enchaînés (exercice pas clair à l'image), rotation interne de hanche au flywheel (matériel absent), test CMJ (pas un exercice).
+- Séances Extra « Isométrie & tendons » et « Explosivité · iso puis saut » (maison) ; isos dans la rotation de l'activation ; sprint lancé en tête de l'étape 4 A, saut de haie assis en tête de l'étape 3 B.
+- Démos : 8 extraits coupés dans les vidéos de Joey (garçons ; 3 recadrés car une femme / des silhouettes au fond ; écartés : saut freiné et IMTP de la vidéo — personnes douteuses au fond —, rebonds freinés — femme au fond —, saut de haie — saut non filmé). 28 autres démos trouvées par recherche (planche 2 × 12 images, extrait contrôlé) dont 7 drills.
+
+**Reste sans vidéo** : développé militaire barre, marche gilet lesté, lay-ups tout terrain, hop step + poussée, électrostimulation (normal) ; drills : ligne, huit autour de deux plots, passe-attaque, arrêts, closeout, finir au contact. Raison : femmes, groupes ou personne trop petite à l'image.
+
+**Tests** : `tests/circuit-echange.spec.cjs` (6, dont un qui clique dans l'app) ; mis à jour : cardio (circuit exclu des comptes), accord-planning (ordre vivacité avant skills du lot 41), basket-removal (495 fiches). Suite : 251 OK, 1 KO connu (`poids-tir:55`, date).
+
+**À savoir** : pas testé sur iPhone. Les démos de sable (ours, fentes) sont filmées en salle, faute de mieux.
+
 ## 2026-11-14 — Lot 41 « Extra » : QI et nutrition retirés, Plan = planning, séances à la carte, finitions pour s'entraîner seul (v97)
 
 **Demande** : retirer QI et nutrition (jamais utilisés) ; Plan et Aujourd'hui montraient deux programmes différents ; une section de séances « extra » (tir par niveau, dribble, haut/bas du corps, abdos…) de 10 min à 1 h ; des exercices basket plus originaux pour s'entraîner seul (vidéos YouTube réelles) ; séances pas trop longues, une logique qu'on suit sans se poser de questions.

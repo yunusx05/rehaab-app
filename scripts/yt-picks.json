@@ -1129,6 +1129,14 @@
   "query": "supine psoas march band"
  },
  "bike": {
+  "videoId": "VEyTqLqrqX8",
+  "duration": 325,
+  "title": "How To Do Assault Bike Intervals (HIIT)",
+  "start": 215,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 229204,
+  "manual": true,
   "rejected": [
    "gWosN1CY4bg",
    "aU7OGLF4JZA",
@@ -1728,6 +1736,14 @@
   "query": "90/90 hip lift off mobility drill"
  },
  "band-eversion": {
+  "videoId": "3O9RlKY_rZw",
+  "duration": 65,
+  "title": "Ankle Bands (PF/EV/INV/DF) - Exercise",
+  "start": 23,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 71592,
+  "manual": true,
   "rejected": [
    "YGPnqHVgohk",
    "2bfxL8gt55c",
@@ -1825,19 +1841,18 @@
   "query": "single leg RDL to bent over row dumbbell"
  },
  "reverse-walk": {
-  "rejected": [
-   "BGoW1IQ4y2E"
-  ],
-  "videoId": "iAkAPxkMAAM",
-  "start": 87,
-  "title": "Fix your knees -  walking backwards uphill!",
-  "duration": 172,
+  "videoId": "TFALlIwnMw4",
+  "duration": 152,
+  "title": "Walking backward - knees over toes program",
+  "start": 15,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 123207,
   "manual": true,
-  "seen": "choix manuel sur planche",
-  "size": 286085,
-  "query": "backward walking exercise knee rehab",
-  "refused": true,
-  "refusedWhy": "extrait vérifié : personne trop petite ou coupe en plein milieu"
+  "rejected": [
+   "BGoW1IQ4y2E",
+   "iAkAPxkMAAM"
+  ]
  },
  "side-lying-adduction": {
   "videoId": "-X3sDsQ4QhI",
@@ -2002,24 +2017,23 @@
   "query": "dribbling under pressure drill basketball"
  },
  "sk-weak-court": {
+  "videoId": "0_NiW74SVbM",
+  "duration": 270,
+  "title": "FIX Your Weak Hand Dribble! [5 Minute Video]",
+  "start": 25,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 133372,
+  "manual": true,
   "rejected": [
    "TEM4RPqrbWA",
    "Ae02fpLRsns",
    "zmHcuu6ugeg",
    "UCSg5eSnUfQ",
    "yiUoBqtlCqg",
-   "Q9GhaXd18hE"
-  ],
-  "videoId": "36guV6WeRm0",
-  "start": 11,
-  "title": "Dribbling Full Court Right & Left Hand",
-  "duration": 36,
-  "manual": true,
-  "seen": "choix manuel sur planche",
-  "size": 98461,
-  "query": "left hand dribble full court basketball",
-  "refused": true,
-  "refusedWhy": "joueur trop petit à l’écran"
+   "Q9GhaXd18hE",
+   "36guV6WeRm0"
+  ]
  },
  "sk-snatch": {
   "videoId": "pwUDY1c8iQk",
@@ -4543,6 +4557,14 @@
   "query": "lying hamstring stretch with towel"
  },
  "figure-four": {
+  "videoId": "SSbRKbeoFCs",
+  "duration": 16,
+  "title": "Supine Figure 4 Stretch",
+  "start": 7,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 153404,
+  "manual": true,
   "rejected": [
    "Xb5gHdYtHnk",
    "-g0nuyTHMrI",
@@ -5339,6 +5361,14 @@
   "query": "scissor hop change of direction cut drill"
  },
  "hop-step-rhythm": {
+  "videoId": "8Vt77jBPZQs",
+  "duration": 59,
+  "title": "Jumpstop - Pro Hop - Hop Step Move Tutorial | Basketball Scoring Drills | Dre Baldwin",
+  "start": 12,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 90934,
+  "manual": true,
   "rejected": [
    "oJUIg7kSpXo",
    "aPq08RB9aeI"
@@ -5389,6 +5419,14 @@
   "query": "seated hip flexor knee raise bench lean back"
  },
  "reverse-plank": {
+  "videoId": "bnu5b61vqGQ",
+  "duration": 92,
+  "title": "How to do a Reverse Plank | The Right Way | Well+Good",
+  "start": 47,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 126302,
+  "manual": true,
   "rejected": [
    "ZNAxdJ6Bt00",
    "PgezBeNqke0"
@@ -5480,6 +5518,14 @@
   "query": "crunch exercise proper form"
  },
  "plank-hip-dip": {
+  "videoId": "LisPIeqX2JY",
+  "duration": 92,
+  "title": "How to Do Plank Hip Dip Exercise Correctly (for Abs and Obliques)",
+  "start": 25,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 58693,
+  "manual": true,
   "rejected": [
    "em4gADvYvMA",
    "XAT8SDAj5EM"
@@ -5592,22 +5638,29 @@
   "query": "lateral shuffle in sand beach workout"
  },
  "sand-bear-crawl": {
+  "videoId": "KjInrowmOzE",
+  "duration": 76,
+  "title": "Technique Tuesday- Bear Crawl with a sandbag",
+  "start": 39,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 131064,
+  "manual": true,
   "rejected": [
    "6KsoSQcWstw",
-   "i8lDrUsjVIw"
-  ],
-  "videoId": "jyL-gUGfXhA",
-  "start": 54,
-  "title": "Total Body Beach Workout: Sandbag Presses And Bear Crawls",
-  "duration": 84,
-  "manual": true,
-  "seen": "choix manuel sur planche",
-  "size": 141760,
-  "query": "bear crawl beach sand",
-  "refused": true,
-  "refusedWhy": "extrait vérifié : personne trop petite ou coupe en plein milieu"
+   "i8lDrUsjVIw",
+   "jyL-gUGfXhA"
+  ]
  },
  "sand-lunge-walk": {
+  "videoId": "Zxuc6Xo5E6Q",
+  "duration": 17,
+  "title": "Sand Medicine Ball Walking Lunge",
+  "start": 5,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 86536,
+  "manual": true,
   "rejected": [
    "8J9V_7SZNok",
    "pyulUgkngH4"
@@ -5938,6 +5991,14 @@
   "query": "step through move basketball post footwork"
  },
  "mv-flip-feet": {
+  "videoId": "oFf4FbY4lDs",
+  "duration": 0,
+  "title": "",
+  "start": 244,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 265072,
+  "manual": true,
   "rejected": [
    "k4V9sUNngNk",
    "dVe3dqkET5Q"
@@ -6285,12 +6346,28 @@
   "query": "double kettlebell front squat"
  },
  "sumo-deadlift": {
+  "videoId": "pfSMst14EFk",
+  "duration": 10,
+  "title": "Sumo Deadlift",
+  "start": 1,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 197295,
+  "manual": true,
   "rejected": [
    "JbY72Him34Q",
    "1ltxpKdXkG4"
   ]
  },
  "glute-kickback": {
+  "videoId": "ifP5sFBT7IE",
+  "duration": 101,
+  "title": "Glute Kickbacks with a Cable Machine (Less is More)",
+  "start": 35,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 174835,
+  "manual": true,
   "rejected": [
    "O5-ROTyo2dA",
    "pdP0uJXvc44",
@@ -6464,6 +6541,14 @@
   "query": "sand sprint training football"
  },
  "sand-lateral-bound": {
+  "videoId": "78d2TkP9-tw",
+  "duration": 23,
+  "title": "Lateral Bound to Vertical Jump (Sand COD)",
+  "start": 7,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 170151,
+  "manual": true,
   "rejected": [
    "wVU08hvtUHw",
    "zy-eL9iI3IA"
@@ -6542,5 +6627,225 @@
   "seen": "choix manuel sur planche",
   "size": 199688,
   "query": "basketball dribble moves circuit solo workout"
+ },
+ "iso-split-pull": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 25,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré : une femme au fond)",
+  "quality": 5,
+  "size": 361018,
+  "manual": true
+ },
+ "cossack-iso": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 69,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 186667,
+  "manual": true
+ },
+ "db-wall-sit-heels": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 205,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 112226,
+  "manual": true
+ },
+ "bb-split-yield": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 223,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 154828,
+  "manual": true
+ },
+ "rfd-iso-pull": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 241,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré : silhouettes au fond)",
+  "quality": 5,
+  "size": 289545,
+  "manual": true
+ },
+ "ankle-iso-push": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 378,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré)",
+  "quality": 5,
+  "size": 295220,
+  "manual": true
+ },
+ "hatfield-ankle-iso": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 517,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 199707,
+  "manual": true
+ },
+ "max-velocity-sprint": {
+  "videoId": "w7Q1zHe0w4M",
+  "duration": 693,
+  "title": "Explosive Athlete Training | Improve Speed & Explosiveness | JoeyBergles",
+  "start": 183,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 260904,
+  "manual": true
+ },
+ "db-snatch": {
+  "videoId": "xA_DpewzL7c",
+  "duration": 14,
+  "title": "Dumbbell Snatch",
+  "start": 2,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 161489,
+  "manual": true
+ },
+ "split-calf-iso": {
+  "videoId": "4u06JwaisL4",
+  "duration": 10,
+  "title": "Split Stance Iso w Calf Raise Hold",
+  "start": 1,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 126917,
+  "manual": true
+ },
+ "ffe-split-hold": {
+  "videoId": "IzHVHwMg7j0",
+  "duration": 11,
+  "title": "Dumbbells Front Foot Elevated Split Squat (Isometric)",
+  "start": 3,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 80807,
+  "manual": true
+ },
+ "lateral-stepdown-iso": {
+  "videoId": "vu26g4XbHZA",
+  "duration": 30,
+  "title": "Lateral Step Down Iso Hold with Ball Pass",
+  "start": 5,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 106314,
+  "manual": true
+ },
+ "resisted-pogo": {
+  "videoId": "mUNo0KXHWzw",
+  "duration": 54,
+  "title": "Band Resisted Pogo Jumps",
+  "start": 11,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 174035,
+  "manual": true
+ },
+ "seated-hurdle-jump": {
+  "videoId": "-Xj96X3OQ5Q",
+  "duration": 19,
+  "title": "Seated Hurdle Box Jumps",
+  "start": 1,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 83293,
+  "manual": true
+ },
+ "imtp": {
+  "videoId": "4aj5LF2I4lg",
+  "duration": 34,
+  "title": "Barbell Split-Stance Isometric Mid-Thigh Pull",
+  "start": 12,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 145900,
+  "manual": true
+ },
+ "resisted-broad-jump": {
+  "videoId": "T-6Krr8BrNg",
+  "duration": 14,
+  "title": "Band Resisted Broad Jump",
+  "start": 1,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 179381,
+  "manual": true
+ },
+ "sk-chairs-high": {
+  "videoId": "Gh_CPhNaRHs",
+  "duration": 0,
+  "title": "",
+  "start": 3,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 109154,
+  "manual": true
+ },
+ "sk-left-layup": {
+  "videoId": "ssiGnB4oJaw",
+  "duration": 0,
+  "title": "",
+  "start": 40,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 107850,
+  "manual": true
+ },
+ "sk-mikan-var": {
+  "videoId": "HaLql0ueNpY",
+  "duration": 0,
+  "title": "",
+  "start": 65,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 166692,
+  "manual": true
+ },
+ "sk-ladder-cross": {
+  "videoId": "Dk65Bq24OyQ",
+  "duration": 0,
+  "title": "",
+  "start": 80,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 90300,
+  "manual": true
+ },
+ "sk-ladder-btl": {
+  "videoId": "Dk65Bq24OyQ",
+  "duration": 0,
+  "title": "",
+  "start": 425,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 116034,
+  "manual": true
+ },
+ "db-thruster": {
+  "videoId": "sLIswEpOHng",
+  "duration": 11,
+  "title": "Dumbbell Thruster",
+  "start": 1,
+  "seen": "choix manuel sur planche, extrait contrôlé, démonstrateur masculin",
+  "quality": 4,
+  "size": 92416,
+  "manual": true
  }
 }

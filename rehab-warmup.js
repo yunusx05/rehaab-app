@@ -426,7 +426,7 @@
     // Unilatéral en majorité : chaque côté travaille seul (la jambe droite, en retrait, ne se cache pas derrière la gauche).
     {id:'activation',title:'Activation bas du corps',minutes:14,thumb:'single-bridge',sources:['shred','fifa','mckeon','copenhagen','rio','behm'],
       steps:[['raise',1,60],[['hip-gate','glute-cradle','leg-swing-side','worlds-greatest','hip-circles'],2,30],[['foot-bridge','pad-single-calf','tibialis','single-calf','calf','ankle-mob'],2,30],[['quadruped-hip-car','side-lying-abduction','single-bridge','monster-walk','hip-abduction','clamshell','bridge'],2,30],[['copenhagen','ham-iso-bridge','side-plank'],1,20],
-        [['single-leg-stand','sl-balance-perturb','airplane'],1,30],[['iso-split','soleus-wall-iso','wall-sit'],1,30],[['pogo','single-hop-stick','snap-down'],1,20]]},
+        [['single-leg-stand','sl-balance-perturb','airplane'],1,30],[['iso-split','soleus-wall-iso','wall-sit','hatfield-ankle-iso','cossack-iso','ffe-split-hold','split-calf-iso'],1,30],[['pogo','single-hop-stick','snap-down'],1,20]]},
     // Lot 27 : échauffement pieds nus de GBG Hoops. Orteils, chevilles, genoux, puis petits rebonds et quadriceps tenus, avant de mettre les chaussures.
     {id:'barefoot',title:'Pieds nus · chevilles et genoux',minutes:10,thumb:'knee-over-toe-rock',sources:['gbgWarm','backman','behm'],
       steps:[[['toe-rock','calf'],1,30,{fixed:true}],[['knee-over-toe-rock','ankle-mob'],1,30,{fixed:true}],[['credit-card-hop','pogo','calf'],1,30,{fixed:true}],[['rfe-quad-hold','couch-lift','couch-stretch'],1,60,{fixed:true}],['mobLegs',2,30],['actLegs',1,30]]},
