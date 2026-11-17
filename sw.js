@@ -1357,7 +1357,23 @@ const PRECACHE_MEDIA = [
   './media/videos/yt/sk-kill-dribble.mp4',
   './media/videos/yt/sk-kill-dribble.webp',
   './media/videos/yt/mv-call-circuit.mp4',
-  './media/videos/yt/mv-call-circuit.webp'
+  './media/videos/yt/mv-call-circuit.webp',
+  './media/videos/yt/iso-split-pull.mp4',
+  './media/videos/yt/iso-split-pull.webp',
+  './media/videos/yt/cossack-iso.mp4',
+  './media/videos/yt/cossack-iso.webp',
+  './media/videos/yt/db-wall-sit-heels.mp4',
+  './media/videos/yt/db-wall-sit-heels.webp',
+  './media/videos/yt/bb-split-yield.mp4',
+  './media/videos/yt/bb-split-yield.webp',
+  './media/videos/yt/rfd-iso-pull.mp4',
+  './media/videos/yt/rfd-iso-pull.webp',
+  './media/videos/yt/ankle-iso-push.mp4',
+  './media/videos/yt/ankle-iso-push.webp',
+  './media/videos/yt/hatfield-ankle-iso.mp4',
+  './media/videos/yt/hatfield-ankle-iso.webp',
+  './media/videos/yt/max-velocity-sprint.mp4',
+  './media/videos/yt/max-velocity-sprint.webp'
 ];
 const clipFetches = new Set();
 // Only the app shell and its public libraries are cached. Account, profile and sync traffic must always hit the network.

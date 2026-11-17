@@ -144,8 +144,8 @@
        B:[P('explosivité',['broad-jump','vertical-jump','pogo'],['3x3','3x3','3x4','2x3']),P('vitesse',['accel-10','falling-start'],['1x4','1x4','1x5','1x3'])],
        C:[P('vitesse',['accel-10','falling-start'],['1x4','1x4','1x5','1x3'])]},
     3:{A:[P('vitesse',['accel-10','split-start'],['1x4','1x5','1x5','1x3'])],
-       B:[P('explosivité',['vertical-jump','broad-jump','pogo'],['3x3','3x4','4x3','2x3']),P('vitesse',['accel-10','reaction-start'],['1x4','1x5','1x5','1x3'])]},
-    4:{A:[P('vitesse',['sprint-20','accel-10'],['1x3','1x4','1x4','1x3'])],
+       B:[P('explosivité',['seated-hurdle-jump','vertical-jump','broad-jump','pogo'],['3x3','3x4','4x3','2x3']),P('vitesse',['accel-10','reaction-start'],['1x4','1x5','1x5','1x3'])]},
+    4:{A:[P('vitesse',['max-velocity-sprint','sprint-20','accel-10'],['1x2','1x3','1x3','1x2'])],
        B:[P('explosivité',['broad-jump','vertical-jump'],['3x3','3x4','4x3','2x3']),P('vitesse',['reaction-start','accel-10'],['1x4','1x5','1x5','1x3'])]},
     5:{A:[P('explosivité',['vertical-jump','broad-jump'],['3x3','3x3','3x3','2x3']),P('vitesse',['accel-10'],['1x4','1x4','1x4','1x3'])]}
   };
@@ -553,10 +553,17 @@
     // Vivacité : 15 minutes, jusqu'à 3 fois par semaine ou juste après l'échauffement. Avant l'étape 2, sauts et départs laissent place aux versions isométriques.
     {id:'vivacite',title:'Vivacité',minutes:15,icon:'spark',impactFromStep:2,ids:[['pogo-forward','pogo','soleus-wall-iso'],['reaction-start','hip-open-start','split-start','iso-wall-drive'],['drop-squat','snap-down','miniband-stance'],['shuffle-sprint','lateral-shuffle','miniband-slides','knee-drive-iso'],['pogo-lateral','lateral-hop','calf-hold'],['cut-45-stick','decel-stick','ecc-split-squat']]},
     // Construite depuis le bilan athlétique et les douleurs ; liste générique sans bilan.
+    // Lot 43 : d'après Joey Bergles. Isométries qui « tiennent » (tendons du genou et de la cheville), puis « iso puis saut » :
+    // une poussée maximale contre une barre bloquée, juste avant un saut, pour qu'il parte plus fort (potentialisation).
+    {id:'iso-tendons',title:'Isométrie · tendons',minutes:15,icon:'body',source:'Joey Bergles · 12 Isometric Exercises For Athletes',
+      ids:[['hatfield-ankle-iso','split-calf-iso','calf-hold'],['db-wall-sit-heels','slant-iso-squat','wall-sit'],['cossack-iso'],['ffe-split-hold','bb-split-yield','iso-split'],['lateral-stepdown-iso','single-wall-sit'],['ankle-iso-push','soleus-wall-iso']]},
+    {id:'explosif',title:'Explosivité · iso puis saut',minutes:20,icon:'spark',impactFromStep:2,source:'Joey Bergles · Explosive Athlete Training',
+      ids:[['imtp','iso-split-pull','iso-wall-drive'],['seated-hurdle-jump','seated-box-jump','pause-squat-jump'],['db-jump','pause-squat-jump','vertical-jump'],['ankle-iso-push','hatfield-ankle-iso'],['resisted-pogo','pogo'],['rfd-iso-pull','knee-drive-iso']]},
     {id:'kine',title:'Mon bloc kiné',minutes:15,icon:'heart',ids:[['ankle-mob'],['couch-stretch','hip-flexor'],['spanish-squat','wall-sit'],['calf-hold'],['foot-doming','tibialis'],['active-slr','hamstring']]}
   ];
-  function quickPlan(PT,PP,state,id) {
-    const q=quick.find(x=>x.id===id); if(!q) return {error:'Séance introuvable.'};
+  function quickPlan(PT,PP,state,id,{minutes=null}={}) {
+    const base=quick.find(x=>x.id===id); if(!base) return {error:'Séance introuvable.'};
+    const q=minutes?{...base,minutes}:base;
     const safety=PT.safety(state);
     if(safety.blocked) return {error:'Douleur importante ou signe inhabituel : pas de séance. Demande un avis médical.'};
     const check={...state.checkIn,equipment:state.owned,focus:'mobility',format:'classic',minutes:q.minutes,date:today(),guided:1};
@@ -576,6 +583,9 @@
     const reasons=['Séance courte à la carte, hors parcours : elle ne fait pas avancer ton programme.'];
     if(kine.length) reasons.push(`Construite depuis ton bilan : ${[...new Set(kine.map(x=>x.why))].join(', ')}. Elle ne remplace pas l’avis d’un kiné.`);
     if(noImpact) reasons.push('Pas de départ chronométré avant l’étape 3 du parcours : on prépare le premier pas sans sprint.');
+    if(q.id==='iso-tendons') reasons.push('Isométries tenues : on reste dans la position, talon haut, sans laisser descendre. Ça tremble : c’est le signe que ça travaille.');
+    if(q.id==='explosif') reasons.push('Par paires : d’abord pousser ou tirer de toutes tes forces contre une charge qui ne bouge pas, puis sauter tout de suite. Le saut part plus fort.');
+    if(q.source) reasons.push(`D’après ${q.source}.`);
     return groupByPlace(PT,state,{id:uid(),title:q.title,source:'quick',focus:'mobility',format:'classic',exercises,check,reasons,warmupSeconds:q.id==='recovery'?0:120,estimatedMinutes:q.minutes,status:'preview',entries:{},createdAt:new Date().toISOString()},{pull:()=>true});
   }
 

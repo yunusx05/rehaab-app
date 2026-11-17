@@ -61,6 +61,12 @@ const PT_EXTRA = [{
   place: 'court',
   legs: true
 }, {
+  id: 'iso',
+  label: 'Isométrie & tendons',
+  icon: 'body',
+  place: 'home',
+  legs: true
+}, {
   id: 'mobility',
   label: 'Mobilité & récup',
   icon: 'refresh',
@@ -111,10 +117,22 @@ function ptExtraPlan(data, {
     owned: equipment
   }, {
     minutes
-  }) : null;else if (theme === 'explosive') plan = court && minutes <= 20 && BP ? BP.quickPlan(PT, JP, data, 'vivacite') : PT.generate(data, {
+  }) : null;
+  // Lot 43 : à la maison, l'explosivité suit la méthode « iso puis saut » (Joey Bergles) ; au terrain, la vivacité.
+  else if (theme === 'explosive') plan = court && minutes <= 20 && BP ? BP.quickPlan(PT, JP, data, 'vivacite') : !court && BP ? BP.quickPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, 'explosif', {
+    minutes
+  }) : PT.generate(data, {
     ...check,
     focus: 'plyo'
-  });else if (theme === 'mobility') plan = PT.generate(data, {
+  });else if (theme === 'iso') plan = BP ? BP.quickPlan(PT, JP, {
+    ...data,
+    owned: equipment
+  }, 'iso-tendons', {
+    minutes
+  }) : null;else if (theme === 'mobility') plan = PT.generate(data, {
     ...check,
     focus: 'mobility'
   });else if (theme === 'wod') plan = window.BasketCardio && window.BasketCardio.wodPlan ? window.BasketCardio.wodPlan(PT, JP, {

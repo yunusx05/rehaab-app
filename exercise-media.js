@@ -3914,5 +3914,53 @@ window.RehaabMedia = {
     "poster": "media/videos/yt/df-box-out.webp",
     "credit": "YouTube · Blake Griffin - Rebounding: Box-Out Drill - Nike Basketball Pro Training",
     "source": "https://www.youtube.com/watch?v=-TLWi7uOI3s&t=32s"
+  },
+  "iso-split-pull": {
+    "video": "media/videos/yt/iso-split-pull.mp4",
+    "poster": "media/videos/yt/iso-split-pull.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=25s"
+  },
+  "cossack-iso": {
+    "video": "media/videos/yt/cossack-iso.mp4",
+    "poster": "media/videos/yt/cossack-iso.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=69s"
+  },
+  "db-wall-sit-heels": {
+    "video": "media/videos/yt/db-wall-sit-heels.mp4",
+    "poster": "media/videos/yt/db-wall-sit-heels.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=205s"
+  },
+  "bb-split-yield": {
+    "video": "media/videos/yt/bb-split-yield.mp4",
+    "poster": "media/videos/yt/bb-split-yield.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=223s"
+  },
+  "rfd-iso-pull": {
+    "video": "media/videos/yt/rfd-iso-pull.mp4",
+    "poster": "media/videos/yt/rfd-iso-pull.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=241s"
+  },
+  "ankle-iso-push": {
+    "video": "media/videos/yt/ankle-iso-push.mp4",
+    "poster": "media/videos/yt/ankle-iso-push.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=378s"
+  },
+  "hatfield-ankle-iso": {
+    "video": "media/videos/yt/hatfield-ankle-iso.mp4",
+    "poster": "media/videos/yt/hatfield-ankle-iso.webp",
+    "credit": "YouTube · 12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=mJ4sXPhdZwc&t=517s"
+  },
+  "max-velocity-sprint": {
+    "video": "media/videos/yt/max-velocity-sprint.mp4",
+    "poster": "media/videos/yt/max-velocity-sprint.webp",
+    "credit": "YouTube · Explosive Athlete Training | Improve Speed & Explosiveness | JoeyBergles",
+    "source": "https://www.youtube.com/watch?v=w7Q1zHe0w4M&t=183s"
   }
 };

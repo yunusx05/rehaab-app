@@ -6542,5 +6542,85 @@
   "seen": "choix manuel sur planche",
   "size": 199688,
   "query": "basketball dribble moves circuit solo workout"
+ },
+ "iso-split-pull": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 25,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré : une femme au fond)",
+  "quality": 5,
+  "size": 361018,
+  "manual": true
+ },
+ "cossack-iso": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 69,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 186667,
+  "manual": true
+ },
+ "db-wall-sit-heels": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 205,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 112226,
+  "manual": true
+ },
+ "bb-split-yield": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 223,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 154828,
+  "manual": true
+ },
+ "rfd-iso-pull": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 241,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré : silhouettes au fond)",
+  "quality": 5,
+  "size": 289545,
+  "manual": true
+ },
+ "ankle-iso-push": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 378,
+  "seen": "choix manuel, démonstrateur masculin vérifié (recadré)",
+  "quality": 5,
+  "size": 295220,
+  "manual": true
+ },
+ "hatfield-ankle-iso": {
+  "videoId": "mJ4sXPhdZwc",
+  "duration": 604,
+  "title": "12 Isometric Exercises For Athletes | Bulletproof Your Tendons! | JoeyBergles",
+  "start": 517,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 199707,
+  "manual": true
+ },
+ "max-velocity-sprint": {
+  "videoId": "w7Q1zHe0w4M",
+  "duration": 693,
+  "title": "Explosive Athlete Training | Improve Speed & Explosiveness | JoeyBergles",
+  "start": 183,
+  "seen": "choix manuel, démonstrateur masculin vérifié",
+  "quality": 5,
+  "size": 260904,
+  "manual": true
  }
 }
