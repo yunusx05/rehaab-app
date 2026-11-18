@@ -17,7 +17,7 @@ function PTAssessment({data,update,go,notify,id}) {
     {title:'Tes tests.', intro:'Facultatifs : un mur, un mètre et ton téléphone suffisent. Chaque mesure rend le bilan plus précis. Tu peux les faire maintenant ou plus tard.', valid:true},
     {title:'Ton bilan.', intro:'Tes qualités, tes priorités et ce qu’elles changent dans tes séances.', valid:true}
   ];
-  const next = () => { setStep(step + 1); window.scrollTo(0, 0); };
+  const next = () => { setStep(step + 1); ptScrollTo(0, 0); };
   return <div>
     <PTPageHead eyebrow="Bilan physique" title={steps[step].title} onBack={step === 0 ? () => go(data.pathway ? 'pathway' : 'today') : () => setStep(step - 1)}>{steps[step].intro}</PTPageHead>
     <div className="step-caption"><span>Ton état physique</span><span>{step + 1} / {steps.length}</span></div>

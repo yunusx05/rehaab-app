@@ -256,6 +256,18 @@ function PTCalendar({
       cardio: c
     };
   });
+  // Lot 44 : jour fixe du circuit, toutes les semaines (« L'app choisit » = placement auto).
+  const circuitDay = Number.isInteger(data.cardio?.circuitDay) ? String(data.cardio.circuitDay) : 'auto';
+  const setCircuitDay = v => update(s => {
+    const c = {
+      ...(s.cardio || {})
+    };
+    if (v === 'auto') delete c.circuitDay;else c.circuitDay = Number(v);
+    return {
+      ...s,
+      cardio: c
+    };
+  });
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
@@ -364,7 +376,18 @@ function PTCalendar({
       value: n,
       label: String(n)
     }))
-  })), sk ? /*#__PURE__*/React.createElement("div", {
+  })), BC && BC.circuitPerWeek && circuitPerWeek > 0 && /*#__PURE__*/React.createElement("label", {
+    className: "calendar-mode-row"
+  }, /*#__PURE__*/React.createElement("span", null, "Jour du circuit"), /*#__PURE__*/React.createElement("select", {
+    "aria-label": "Jour du circuit training",
+    value: circuitDay,
+    onChange: e => setCircuitDay(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "auto"
+  }, "L\u2019app choisit"), SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("option", {
+    key: d,
+    value: i
+  }, d)))), sk ? /*#__PURE__*/React.createElement("div", {
     className: "topline"
   }, /*#__PURE__*/React.createElement("span", {
     className: "fine"
@@ -492,7 +515,7 @@ function PTCalendar({
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
-  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club (le basket y est d\xE9j\xE0), sauf si tu r\xE8gles ce jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("li", null, "Skills sans jour libre : elles passent apr\xE8s une s\xE9ance physique, en version courte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine.")), /*#__PURE__*/React.createElement("p", {
+  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club (le basket y est d\xE9j\xE0), sauf si tu r\xE8gles ce jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("li", null, "Skills sans jour libre : elles passent apr\xE8s une s\xE9ance physique, en version courte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine."), /*#__PURE__*/React.createElement("li", null, "Circuit training : \xE0 la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S\u2019il n\u2019a pas de jour id\xE9al, il reste au programme avec une alerte, plut\xF4t que de dispara\xEEtre.")), /*#__PURE__*/React.createElement("p", {
     className: "fine"
   }, "Ce sont des conventions d\u2019entra\xEEnement courantes, pas des normes m\xE9dicales (voir les sources du plan)."))), /*#__PURE__*/React.createElement("div", {
     className: "home-options"

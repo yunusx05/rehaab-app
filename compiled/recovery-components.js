@@ -527,7 +527,7 @@ function PTMishap(props) {
     setReason(v);
     setFeel(v === 'sore' || v === 'heavy' || v === 'tired' ? v : null);
     setZones(v === 'heavy' ? ['quads', 'hamstrings', 'calves'] : []);
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   const back = () => reason ? setReason(null) : go('today');
   const r = ptMishapReasons.find(x => x.value === reason);

@@ -838,7 +838,7 @@ function PTPreCheck({
         }
       }
     }));
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   const send = async () => {
     if (missing) {

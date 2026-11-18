@@ -28,7 +28,7 @@ function PTSportMotion({children,identity}){
     gsap.registerPlugin(ScrollTrigger);
     const context=gsap.context(()=>{
       gsap.from('.sport-reveal',{y:12,opacity:0,duration:.28,stagger:.04,ease:'power3.out',clearProps:'all'});
-      gsap.utils.toArray('.scroll-reveal').forEach(el=>gsap.from(el,{y:16,scale:.98,opacity:0,duration:.4,ease:'power3.out',clearProps:'all',scrollTrigger:{trigger:el,start:'top 94%',once:true}}));
+      gsap.utils.toArray('.scroll-reveal').forEach(el=>gsap.from(el,{y:16,scale:.98,opacity:0,duration:.4,ease:'power3.out',clearProps:'all',scrollTrigger:{trigger:el,scroller:window.ptScroller?window.ptScroller():undefined,start:'top 94%',once:true}}));
     },ref);
     return()=>context.revert();
   },[identity,reduced]);

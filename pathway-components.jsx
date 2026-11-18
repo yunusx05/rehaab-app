@@ -136,7 +136,7 @@ function PTPathway({data,update,go,notify}) {
           <div><strong>{c.label}</strong><small>{c.detail}</small></div>
           {BP.tests[c.id] && !['pain','ladder'].includes(c.id) && <button className="chip" onClick={() => go('pathway-test', c.id)}>{BP.latest(p, c.id) ? 'Remesurer' : 'Mesurer'}</button>}
         </li>)}</ul>
-        {gate.ready && !gate.last && <PTButton primary onClick={() => {update(s => ({...s, pathway: BP.advance(s.pathway)})); notify(`Étape ${next.id} débloquée : ${next.name}.`); window.scrollTo(0,0);}}>Passer à l’étape {next.id} · {next.name}<PTIcon name="arrow" size={18}/></PTButton>}
+        {gate.ready && !gate.last && <PTButton primary onClick={() => {update(s => ({...s, pathway: BP.advance(s.pathway)})); notify(`Étape ${next.id} débloquée : ${next.name}.`); ptScrollTo(0,0);}}>Passer à l’étape {next.id} · {next.name}<PTIcon name="arrow" size={18}/></PTButton>}
         {gate.ready && gate.last && <p className="notice">Parcours bouclé. Garde deux séances de renforcement par semaine pendant la saison : c’est ce qui évite la blessure suivante.</p>}
         <p className="fine">{!gate.ready && 'Pas de limite de temps : les semaines en plus servent à consolider. '}Repères d’entraînement, pas des normes médicales.</p>
         <div className="home-options"><PTAssessmentSummary data={data} go={go}/></div>
@@ -153,7 +153,7 @@ function PTPathway({data,update,go,notify}) {
         </div>
         <div className="stack-sm pathway-jump"><strong>Aller directement à une autre étape</strong>
           <p className="fine">Tu joues déjà en club ? Saute les étapes que le terrain a validées. Tout est gardé.</p>
-          <div className="chips">{BP.steps.filter(s => s.id !== p.step).map(s => <button key={s.id} className="chip" onClick={() => {update(st => ({...st, pathway: BP.jumpTo(st.pathway, s.id)})); notify(`Étape ${s.id} · ${s.name} : c’est parti.`); window.scrollTo(0,0);}}>Étape {s.id} · {s.short}</button>)}</div>
+          <div className="chips">{BP.steps.filter(s => s.id !== p.step).map(s => <button key={s.id} className="chip" onClick={() => {update(st => ({...st, pathway: BP.jumpTo(st.pathway, s.id)})); notify(`Étape ${s.id} · ${s.name} : c’est parti.`); ptScrollTo(0,0);}}>Étape {s.id} · {s.short}</button>)}</div>
         </div>
         {stopping
           ? <div className="notice warning stack-sm"><p>Arrêter le parcours ? Il est archivé avec tes tests et ton avancement : tu pourras le reprendre à la même étape. Tes séances restent dans l’historique.</p>

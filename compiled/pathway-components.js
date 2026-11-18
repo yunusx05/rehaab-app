@@ -423,7 +423,7 @@ function PTPathway({
         pathway: BP.advance(s.pathway)
       }));
       notify(`Étape ${next.id} débloquée : ${next.name}.`);
-      window.scrollTo(0, 0);
+      ptScrollTo(0, 0);
     }
   }, "Passer \xE0 l\u2019\xE9tape ", next.id, " \xB7 ", next.name, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
@@ -484,7 +484,7 @@ function PTPathway({
         pathway: BP.jumpTo(st.pathway, s.id)
       }));
       notify(`Étape ${s.id} · ${s.name} : c’est parti.`);
-      window.scrollTo(0, 0);
+      ptScrollTo(0, 0);
     }
   }, "\xC9tape ", s.id, " \xB7 ", s.short)))), stopping ? /*#__PURE__*/React.createElement("div", {
     className: "notice warning stack-sm"

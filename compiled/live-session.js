@@ -330,7 +330,7 @@ function PTSession({
         stageStarted: Date.now(),
         timer: ptReady(next || ptWorkTemplate(d.exercises[0]))
       }));
-      window.scrollTo(0, 0);
+      ptScrollTo(0, 0);
     };
     const minutes = Math.ceil(((draft.warmupMoves || []).reduce((n, m) => n + ptMoveSeconds(m), 0) || draft.warmupSeconds || 0) / 60 + PT.estimateSeconds(draft.exercises, draft.format) / 60);
     return /*#__PURE__*/React.createElement("div", {
@@ -428,7 +428,7 @@ function PTSession({
       timer: ptReady(ptWorkTemplate(exercise)),
       blockTimer: d.blockTimer || (d.blockSeconds ? makeTimer(d.blockSeconds, `Bloc ${d.format.toUpperCase()}`, 'block') : null)
     }));
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   const pause = () => {
     if (!paused) try {
@@ -459,7 +459,7 @@ function PTSession({
       blockTimer: freeze(d.blockTimer)
     }));
     setFinishing(true);
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   const reportPain = () => {
     if (row) updateRow({
@@ -530,7 +530,7 @@ function PTSession({
       }));
       setLogging(false);
       setError('');
-      window.scrollTo(0, 0);
+      ptScrollTo(0, 0);
       return;
     }
     const rest = draft.format === 'emom' ? Math.max(0, 60 - Math.floor(stageElapsed)) : step.rest > 0 ? step.rest : exercise.rest > 0 ? exercise.rest : 60;
@@ -561,7 +561,7 @@ function PTSession({
       setFinishing(true);
       say('Séance terminée. Bien joué !');
     }
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   // Série « comme prévu » : bas de la fourchette, charge préremplie, marge laissée vide (aucune hausse de charge n'en est déduite).
   const quickRow = () => {
@@ -738,7 +738,7 @@ function PTSession({
         timer: ptReady(ptWorkTemplate(first))
       };
     });
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   // Fin de séance : l'écran se remplit de citron, le titre déborde du cadre, puis le bilan sur fond charbon.
   if (finishing) return /*#__PURE__*/React.createElement("div", {
@@ -856,7 +856,7 @@ function PTSession({
       stageElapsed: 0,
       stageStarted: d.clockStarted ? Date.now() : null
     }));
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
     return true;
   };
   const endCooldown = () => {
@@ -869,7 +869,7 @@ function PTSession({
   };
   const stepMove = delta => {
     setDraft(d => ptRoutineStep(d, delta));
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   // Un exercice chronométré repart avec un « Prépare-toi » (gelé si la séance est en pause).
   const jump = index => {
@@ -885,7 +885,7 @@ function PTSession({
       stageElapsed: 0,
       stageStarted: paused ? null : Date.now()
     }));
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   // Unilatéral en répétitions : le premier « Fait » vaut pour le côté gauche, puis 5 s pour changer de côté.
   const toSecondSide = () => {

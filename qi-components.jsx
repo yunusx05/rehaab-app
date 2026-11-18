@@ -198,7 +198,7 @@ function PTQiRun({data,update,go,id}) {
     if (correct) setScore(n => n + 1);
     update(s => ({...s, qi: QI.record(s.qi, {id: current.item.id, mode: current.scan ? 'scan' : current.speed ? 'speed' : current.mode, theme: current.item.theme, correct})}));
   };
-  const nextItem = () => { setIndex(i => i + 1); setAnswered(false); window.scrollTo(0, 0); };
+  const nextItem = () => { setIndex(i => i + 1); setAnswered(false); ptScrollTo(0, 0); };
 
   if (!items.length) return <><PTPageHead onBack={() => go('qi')} eyebrow="QI basket" title="Rien à proposer ici."/><PTButton primary onClick={() => go('qi')}>Revenir au QI</PTButton></>;
   if (!current) return <><PTPageHead onBack={() => go('qi')} eyebrow={title} title={`${score} sur ${items.length}.`}>{score === items.length ? 'Lecture parfaite. Les prochaines questions iront chercher plus loin.' : 'Les situations ratées reviendront en priorité, jusqu’à ce qu’elles deviennent des réflexes.'}</PTPageHead>
