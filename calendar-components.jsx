@@ -73,6 +73,14 @@ function PTCalendar({data,update,go,notify}){
   // Lot 44 : jour fixe du circuit, toutes les semaines (« L'app choisit » = placement auto).
   const circuitDay=Number.isInteger(data.cardio?.circuitDay)?String(data.cardio.circuitDay):'auto';
   const setCircuitDay=v=>update(s=>{const c={...(s.cardio||{})};if(v==='auto')delete c.circuitDay;else c.circuitDay=Number(v);return {...s,cardio:c};});
+  // Lot 44 : choix du jour, partagé entre les séances placées et le circuit sans jour (here = null).
+  const movePanel=(item,here)=><div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
+            <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,isHere=x.date===here,rule=!past&&!isHere?SP.ruleBreakAt(data,monday,item.key,x.date):null;
+              return <button key={x.date} className={`calendar-move-day${rule?' has-rule':''}`} disabled={past||isHere} aria-pressed={isHere} onClick={()=>moveTo(item,x.date)}><strong>{fullDate(x.date)}</strong><small>{isHere?'Jour actuel':past?'Passé':rule?'⚠ règle':x.club.match?'Match':x.club.practice?'Club':free.includes(x.weekday)?'Libre':'Jour off'}</small></button>;})}</div>
+            {confirm?.item.key===item.key&&<div className="notice warning stack-sm" role="alert"><p><strong>{fullDate(confirm.date)} :</strong> {confirm.why} Placer quand même ?</p><div className="button-row"><PTButton primary onClick={()=>moveTo(item,confirm.date,true)}>Oui, ce jour-là</PTButton><PTButton quiet onClick={()=>setConfirm(null)}>Choisir un autre jour</PTButton></div></div>}
+            {item.moved&&<button className="text-button" onClick={()=>reset(item)}>Laisser l’app choisir le jour</button>}
+            <p className="fine">Pour une autre semaine, change de semaine avec les flèches en haut.</p>
+          </div>;
   return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine, jour par jour.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
@@ -96,6 +104,12 @@ function PTCalendar({data,update,go,notify}){
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       {(()=>{const gone=week.days.filter(d=>d.before&&d.items.length===0);return gone.length>0&&<p className="fine calendar-before">{gone.length>1?`${gone[0].label} → ${gone[gone.length-1].label}`:gone[0].label} : avant le début de ton plan.</p>;})()}
+      {(week.unplaced||[]).length>0&&<div className="card stack-sm calendar-unplaced-day"><strong>À placer cette semaine</strong>{week.unplaced.map(item=><div key={item.key} className="calendar-item calendar-unplaced is-planned">
+        <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
+        <span><strong>{item.label}</strong><small>{item.minutes} min</small><small className="calendar-warning">⚠ {item.why}</small></span>
+        <span className="calendar-actions"><button className="text-button calendar-move-btn" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button></span>
+        {moving===item.key&&movePanel(item,null)}
+      </div>)}</div>}
       <ol className="calendar-week">{week.days.filter(d=>!(d.before&&d.items.length===0)).map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
         <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
         {d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
@@ -110,13 +124,7 @@ function PTCalendar({data,update,go,notify}){
             {d.date===now&&typeof PTMishap!=='function'&&<button className="chip-action" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
             <button className="text-button calendar-move-btn" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
-          {moving===item.key&&<div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
-            <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,here=x.date===d.date,rule=!past&&!here?SP.ruleBreakAt(data,monday,item.key,x.date):null;
-              return <button key={x.date} className={`calendar-move-day${rule?' has-rule':''}`} disabled={past||here} aria-pressed={here} onClick={()=>moveTo(item,x.date)}><strong>{fullDate(x.date)}</strong><small>{here?'Jour actuel':past?'Passé':rule?'⚠ règle':x.club.match?'Match':x.club.practice?'Club':free.includes(x.weekday)?'Libre':'Jour off'}</small></button>;})}</div>
-            {confirm?.item.key===item.key&&<div className="notice warning stack-sm" role="alert"><p><strong>{fullDate(confirm.date)} :</strong> {confirm.why} Placer quand même ?</p><div className="button-row"><PTButton primary onClick={()=>moveTo(item,confirm.date,true)}>Oui, ce jour-là</PTButton><PTButton quiet onClick={()=>setConfirm(null)}>Choisir un autre jour</PTButton></div></div>}
-            {item.moved&&<button className="text-button" onClick={()=>reset(item)}>Laisser l’app choisir le jour</button>}
-            <p className="fine">Pour une autre semaine, change de semaine avec les flèches en haut.</p>
-          </div>}
+          {moving===item.key&&movePanel(item,d.date)}
         </div>)}
       </li>)}</ol>
       <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li><li>Circuit training : à la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S’il n’a pas de jour idéal, il reste au programme avec une alerte, plutôt que de disparaître.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>

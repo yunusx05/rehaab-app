@@ -297,7 +297,7 @@
     if(physical.length>tgt) physical=physical.slice(0,tgt);
     const rest=all.filter(x=>!x.physical);
     const queue=[...physical.sort((a,b)=>(b.legs==='heavy')-(a.legs==='heavy')),...rest.filter(x=>x.type==='vivacite'),...rest.filter(x=>x.type==='cardio'),...rest.filter(x=>x.type==='skills'),...rest.filter(x=>x.type==='shooting'),...rest.filter(x=>x.type==='care')].filter(x=>!skips.includes(x.key));
-    const placed=[];
+    const placed=[],unplaced=[];
     for(const item of queue){
       const moved=moves[item.key];
       const broken=moved?ruleBreak(item,moved,placed,days):null;
@@ -341,6 +341,8 @@
       const paired=!options.length&&item.type==='skills'?days.filter(d=>d.free&&!ruleBreak(item,d.date,placed,days,{ignoreMinutes:true})&&!placed.some(x=>x.date===d.date&&x.type==='skills')).sort((a,b)=>placed.filter(x=>x.date===a.date).length-placed.filter(x=>x.date===b.date).length||a.weekday-b.weekday):[];
       if(options.length) placed.push({...item,date:options[0].d.date});
       else if(paired.length) placed.push({...item,date:paired[0].date});
+      // Lot 44 : un circuit sans jour sûr reste visible (« Choisir le jour »), même la semaine où le plan commence.
+      else if(item.kind==='wod') unplaced.push({...item,status:'planned',why:'Pas de jour sûr cette semaine (jambes lourdes, club, terrain ou match les autres jours). Choisis-le toi-même ou règle un « Jour du circuit ».'});
       else if(item.type!=='care'&&!startWeek) warnings.push(`${item.label} : aucun jour libre compatible cette semaine${item.type==='vivacite'?' (fais-la juste après l’échauffement d’une séance du haut du corps)':''}.`);
     }
     // Skills le même jour qu'une séance physique : version courte (20 min au moins) pour ne pas dépasser ta durée maximale.
@@ -376,7 +378,7 @@
     days.forEach(d=>{d.qi=!d.club.match;d.weighIn=d.weekday===0;});
     delete days.nextClub;delete days.prevClub;delete days.maxMinutes;
     const skillsWanted=all.filter(x=>x.type==='skills'&&!skips.includes(x.key)).length,skillsPlaced=placed.filter(x=>x.type==='skills').length;
-    return {monday,days,warnings,target:tgt,skills:{wanted:skillsWanted,placed:skillsPlaced},phase:built.current,skipped:all.filter(x=>skips.includes(x.key)).map(x=>x.label)};
+    return {monday,days,warnings,unplaced,target:tgt,skills:{wanted:skillsWanted,placed:skillsPlaced},phase:built.current,skipped:all.filter(x=>skips.includes(x.key)).map(x=>x.label)};
   }
 
   // Contrôle d'un planning : utilisé par les tests et après chaque déplacement.
@@ -392,7 +394,7 @@
 
   function reschedule(state, monday, itemKey, toDate, opts={}) {
     monday=mondayOf(monday);
-    const before=weekSchedule(state,monday),item=before.days.flatMap(d=>d.items).find(x=>x.key===itemKey);
+    const before=weekSchedule(state,monday),item=before.days.flatMap(d=>d.items).find(x=>x.key===itemKey)||(before.unplaced||[]).find(x=>x.key===itemKey);
     if(!item) return {ok:false,why:'Séance introuvable cette semaine.'};
     if(diff(toDate,monday)<0||diff(toDate,monday)>6) return {ok:false,why:'Choisis un jour de cette semaine.'};
     const others=before.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
@@ -407,7 +409,7 @@
   // Règle cassée si la séance allait ce jour-là (null = jour compatible) : sert au choix du jour dans le calendrier.
   function ruleBreakAt(state, monday, itemKey, toDate) {
     monday=mondayOf(monday);
-    const sch=weekSchedule(state,monday),item=sch.days.flatMap(d=>d.items).find(x=>x.key===itemKey);
+    const sch=weekSchedule(state,monday),item=sch.days.flatMap(d=>d.items).find(x=>x.key===itemKey)||(sch.unplaced||[]).find(x=>x.key===itemKey);
     if(!item) return null;
     const others=sch.days.flatMap(d=>d.items).filter(x=>x.key!==itemKey);
     const days=sch.days.map(d=>({...d}));days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(monday,7));days.prevClub=clubOf(state,at(monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));

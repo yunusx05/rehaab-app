@@ -268,6 +268,41 @@ function PTCalendar({
       cardio: c
     };
   });
+  // Lot 44 : choix du jour, partagé entre les séances placées et le circuit sans jour (here = null).
+  const movePanel = (item, here) => /*#__PURE__*/React.createElement("div", {
+    className: "calendar-move stack-sm",
+    role: "group",
+    "aria-label": `Choisir le jour de ${item.label}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "calendar-move-days"
+  }, week.days.map(x => {
+    const past = diff0(x.date, now) < 0,
+      isHere = x.date === here,
+      rule = !past && !isHere ? SP.ruleBreakAt(data, monday, item.key, x.date) : null;
+    return /*#__PURE__*/React.createElement("button", {
+      key: x.date,
+      className: `calendar-move-day${rule ? ' has-rule' : ''}`,
+      disabled: past || isHere,
+      "aria-pressed": isHere,
+      onClick: () => moveTo(item, x.date)
+    }, /*#__PURE__*/React.createElement("strong", null, fullDate(x.date)), /*#__PURE__*/React.createElement("small", null, isHere ? 'Jour actuel' : past ? 'Passé' : rule ? '⚠ règle' : x.club.match ? 'Match' : x.club.practice ? 'Club' : free.includes(x.weekday) ? 'Libre' : 'Jour off'));
+  })), confirm?.item.key === item.key && /*#__PURE__*/React.createElement("div", {
+    className: "notice warning stack-sm",
+    role: "alert"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, fullDate(confirm.date), " :"), " ", confirm.why, " Placer quand m\xEAme ?"), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: () => moveTo(item, confirm.date, true)
+  }, "Oui, ce jour-l\xE0"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => setConfirm(null)
+  }, "Choisir un autre jour"))), item.moved && /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => reset(item)
+  }, "Laisser l\u2019app choisir le jour"), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Pour une autre semaine, change de semaine avec les fl\xE8ches en haut."));
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
@@ -415,7 +450,26 @@ function PTCalendar({
     return gone.length > 0 && /*#__PURE__*/React.createElement("p", {
       className: "fine calendar-before"
     }, gone.length > 1 ? `${gone[0].label} → ${gone[gone.length - 1].label}` : gone[0].label, " : avant le d\xE9but de ton plan.");
-  })(), /*#__PURE__*/React.createElement("ol", {
+  })(), (week.unplaced || []).length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "card stack-sm calendar-unplaced-day"
+  }, /*#__PURE__*/React.createElement("strong", null, "\xC0 placer cette semaine"), week.unplaced.map(item => /*#__PURE__*/React.createElement("div", {
+    key: item.key,
+    className: "calendar-item calendar-unplaced is-planned"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: ptCalIcon[item.type] || 'weight',
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min"), /*#__PURE__*/React.createElement("small", {
+    className: "calendar-warning"
+  }, "\u26A0 ", item.why)), /*#__PURE__*/React.createElement("span", {
+    className: "calendar-actions"
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "text-button calendar-move-btn",
+    "aria-expanded": moving === item.key,
+    onClick: () => {
+      setConfirm(null);
+      setMoving(moving === item.key ? null : item.key);
+    }
+  }, "Choisir le jour")), moving === item.key && movePanel(item, null)))), /*#__PURE__*/React.createElement("ol", {
     className: "calendar-week"
   }, week.days.filter(d => !(d.before && d.items.length === 0)).map(d => /*#__PURE__*/React.createElement("li", {
     key: d.date,
@@ -478,40 +532,7 @@ function PTCalendar({
       setConfirm(null);
       setMoving(moving === item.key ? null : item.key);
     }
-  }, "Choisir le jour")), moving === item.key && /*#__PURE__*/React.createElement("div", {
-    className: "calendar-move stack-sm",
-    role: "group",
-    "aria-label": `Choisir le jour de ${item.label}`
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "calendar-move-days"
-  }, week.days.map(x => {
-    const past = diff0(x.date, now) < 0,
-      here = x.date === d.date,
-      rule = !past && !here ? SP.ruleBreakAt(data, monday, item.key, x.date) : null;
-    return /*#__PURE__*/React.createElement("button", {
-      key: x.date,
-      className: `calendar-move-day${rule ? ' has-rule' : ''}`,
-      disabled: past || here,
-      "aria-pressed": here,
-      onClick: () => moveTo(item, x.date)
-    }, /*#__PURE__*/React.createElement("strong", null, fullDate(x.date)), /*#__PURE__*/React.createElement("small", null, here ? 'Jour actuel' : past ? 'Passé' : rule ? '⚠ règle' : x.club.match ? 'Match' : x.club.practice ? 'Club' : free.includes(x.weekday) ? 'Libre' : 'Jour off'));
-  })), confirm?.item.key === item.key && /*#__PURE__*/React.createElement("div", {
-    className: "notice warning stack-sm",
-    role: "alert"
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, fullDate(confirm.date), " :"), " ", confirm.why, " Placer quand m\xEAme ?"), /*#__PURE__*/React.createElement("div", {
-    className: "button-row"
-  }, /*#__PURE__*/React.createElement(PTButton, {
-    primary: true,
-    onClick: () => moveTo(item, confirm.date, true)
-  }, "Oui, ce jour-l\xE0"), /*#__PURE__*/React.createElement(PTButton, {
-    quiet: true,
-    onClick: () => setConfirm(null)
-  }, "Choisir un autre jour"))), item.moved && /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => reset(item)
-  }, "Laisser l\u2019app choisir le jour"), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Pour une autre semaine, change de semaine avec les fl\xE8ches en haut."))))))), /*#__PURE__*/React.createElement("details", {
+  }, "Choisir le jour")), moving === item.key && movePanel(item, d.date)))))), /*#__PURE__*/React.createElement("details", {
     className: "disclosure"
   }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"

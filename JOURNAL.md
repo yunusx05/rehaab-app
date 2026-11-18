@@ -2,6 +2,12 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-18 — Lot 44 (suite) : circuit « à placer » quand aucun jour n'est sûr (v101)
+
+**Retour** : v100 en ligne, le circuit n'apparaît toujours pas. Export du jour (`../donées/rehaab-2026-11-18.json`, local, jamais commité).
+**Cause** : plan recommencé le mardi 17/11, mardi réglé « Muscu » ce jour-là → jambes lourdes mercredi et vendredi, mardi et jeudi club, samedi terrain (loin), dimanche repos. Aucun jour sûr ; et comme c'est la semaine où le plan commence, l'alerte était masquée. Semaine du 23/11 : circuit le mercredi, normal.
+**Fait** : `weekSchedule` renvoie `unplaced` (circuit sans jour sûr) ; `reschedule` et `ruleBreakAt` le trouvent ; le planning affiche un bloc « À placer cette semaine » avec « Choisir le jour » (même panneau que les autres séances, alerte puis placement forcé). Test ajouté dans `circuit-menu.spec.cjs`. Suite : 254 OK + mêmes KO connus (poids-tir:55, accueil:50).
+
 ## 2026-11-18 — Lot 44 : circuit toujours au programme + jour fixe, barre du bas qui ne flotte plus (v100)
 
 **Retours** (test de la v99 sur iPhone) : (1) la barre du bas (Aujourd'hui, Plan…) se retrouve parfois au milieu de l'écran quand on fait défiler ; (2) le circuit training n'apparaît pas dans son planning, donc impossible de le placer.
