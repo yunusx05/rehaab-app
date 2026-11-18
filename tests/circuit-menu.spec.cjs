@@ -76,3 +76,20 @@ test('écran : jour du circuit réglable dans Ma semaine type ; la barre du bas 
   await page.locator('.bottom-nav').getByRole('button',{name:'Plan'}).click();
   await expect.poll(()=>page.evaluate(()=>document.getElementById('root').scrollTop)).toBe(0);
 });
+
+// Retour du 18/11 (son export) : plan recommencé un mardi, mardi réglé « Muscu » ce jour-là → jambes lourdes mercredi et vendredi,
+// mardi et jeudi club, samedi terrain, dimanche repos : aucun jour sûr. Le circuit doit rester visible et se placer à la main.
+test('circuit sans jour sûr : visible « à placer », placement à la main avec alerte',()=>{
+  const s=joueur();
+  s.events=[{type:'match',date:'2026-10-17'}]; // samedi : vendredi veille, jambes lourdes poussées au mercredi
+  const w=SP.weekSchedule(s,MONDAY,MONDAY);
+  expect(all(w).some(x=>x.kind==='wod')).toBe(false);
+  expect(w.unplaced.map(x=>x.key)).toEqual(['K5']);
+  expect(w.unplaced[0].why).toMatch(/Choisis-le toi-même/);
+  expect(SP.ruleBreakAt(s,MONDAY,'K5','2026-10-18')).toBeTruthy(); // dimanche = lendemain de match
+  const r=SP.reschedule(s,MONDAY,'K5','2026-10-14');
+  expect(r.ok).toBe(false);expect(r.canForce).toBe(true);
+  const f=SP.reschedule(s,MONDAY,'K5','2026-10-14',{force:true});expect(f.ok).toBe(true);
+  const w2=SP.weekSchedule({...s,calendar:SP.validateCalendar(f.calendar)},MONDAY,MONDAY),k=all(w2).find(x=>x.kind==='wod');
+  expect(k.day).toBe(2);expect(k.warning).toBeTruthy();expect(w2.unplaced).toEqual([]);
+});

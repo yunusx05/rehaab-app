@@ -1,4 +1,4 @@
-const CACHE = 'rehaab-v100-circuit-menu';
+const CACHE = 'rehaab-v101-circuit-a-placer';
 const PRECACHE = [
   './',
   './index.html',
