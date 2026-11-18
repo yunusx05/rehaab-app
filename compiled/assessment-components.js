@@ -44,7 +44,7 @@ function PTAssessment({
   }];
   const next = () => {
     setStep(step + 1);
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(PTPageHead, {
     eyebrow: "Bilan physique",

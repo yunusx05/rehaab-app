@@ -100,7 +100,7 @@ function PTSession({data,update,go,notify}) {
     const first=draft.warmupMoves?.[0];
     const next=first?ptRoutineTemplate(first,'warmup'):draft.warmupSeconds>0?{seconds:draft.warmupSeconds,label:'Échauffement',kind:'warmup'}:null;
     // Sans échauffement, on part directement sur le premier exercice (toujours après le « Prépare-toi »).
-    const getReady=()=>{say(`C’est parti pour ${draft.title}. Prépare-toi.`);setDraft(d=>({...d,ready:true,...(next?{}:{warmupDone:true,blockTimer:d.blockSeconds?ptTimer(d.blockSeconds,`Bloc ${d.format.toUpperCase()}`,'block'):null}),clockStarted:Date.now(),stageElapsed:0,stageStarted:Date.now(),timer:ptReady(next||ptWorkTemplate(d.exercises[0]))}));window.scrollTo(0,0);};
+    const getReady=()=>{say(`C’est parti pour ${draft.title}. Prépare-toi.`);setDraft(d=>({...d,ready:true,...(next?{}:{warmupDone:true,blockTimer:d.blockSeconds?ptTimer(d.blockSeconds,`Bloc ${d.format.toUpperCase()}`,'block'):null}),clockStarted:Date.now(),stageElapsed:0,stageStarted:Date.now(),timer:ptReady(next||ptWorkTemplate(d.exercises[0]))}));ptScrollTo(0,0);};
     const minutes=Math.ceil(((draft.warmupMoves||[]).reduce((n,m)=>n+ptMoveSeconds(m),0)||draft.warmupSeconds||0)/60+PT.estimateSeconds(draft.exercises,draft.format)/60);
     return <div className="live-session live-ready-gate">
       <header className="live-topbar"><button className="icon-button" aria-label="Revenir à l’accueil" onClick={()=>go('today')}><PTIcon name="back"/></button><div className="live-position"><span className="eyebrow">Avant de commencer</span><strong>Prêt ?</strong></div><span className="live-topbar-spacer"/></header>
@@ -137,10 +137,10 @@ function PTSession({data,update,go,notify}) {
     setDraft(d=>({...d,warmupDone:true,side:null,clockStarted:d.clockStarted||Date.now(),stageElapsed:0,stageStarted:Date.now(),
       timer:ptReady(ptWorkTemplate(exercise)),
       blockTimer:d.blockTimer||(d.blockSeconds?makeTimer(d.blockSeconds,`Bloc ${d.format.toUpperCase()}`,'block'):null)}));
-    window.scrollTo(0,0);
+    ptScrollTo(0,0);
   };
   const pause=()=>{if(!paused)try{window.speechSynthesis?.cancel();}catch(e){}setDraft(d=>({...d,elapsedBase:elapsed,clockStarted:paused?Date.now():null,stageElapsed,stageStarted:paused?Date.now():null,timer:paused?thaw(d.timer):freeze(d.timer),blockTimer:paused?thaw(d.blockTimer):freeze(d.blockTimer)}));};
-  const review=()=>{setLogging(false);setError('');setMenu(false);setDraft(d=>({...d,reviewing:true,elapsedBase:elapsed,clockStarted:null,stageElapsed,stageStarted:null,timer:freeze(d.timer),blockTimer:freeze(d.blockTimer)}));setFinishing(true);window.scrollTo(0,0);};
+  const review=()=>{setLogging(false);setError('');setMenu(false);setDraft(d=>({...d,reviewing:true,elapsedBase:elapsed,clockStarted:null,stageElapsed,stageStarted:null,timer:freeze(d.timer),blockTimer:freeze(d.blockTimer)}));setFinishing(true);ptScrollTo(0,0);};
   const reportPain=()=>{if(row)updateRow({...row,pain:true,done:false,result:'pain'});setDraft(d=>({...d,elapsedBase:elapsed,clockStarted:null,stageElapsed,stageStarted:null,timer:null,blockTimer:freeze(d.blockTimer)}));go('symptoms');};
   const openLog=()=>{
     setError('');
@@ -162,14 +162,14 @@ function PTSession({data,update,go,notify}) {
     // Dernière série : le retour au calme guidé passe avant le bilan (sauf AMRAP / EMOM, bornés par leur chrono).
     if(done&&!['amrap','emom'].includes(draft.format)&&draft.cooldownMoves?.length&&!draft.cooldownDone){
       setDraft(d=>({...d,entries,cursor,side:null,cooling:true,coolIndex:0,timer:ptRoutineTimer(d.cooldownMoves[0],'cooldown',false),stageElapsed:0,stageStarted:Date.now(),blockTimer:freeze(d.blockTimer)}));
-      setLogging(false);setError('');window.scrollTo(0,0);return;
+      setLogging(false);setError('');ptScrollTo(0,0);return;
     }
     const rest=draft.format==='emom'?Math.max(0,60-Math.floor(stageElapsed)):step.rest>0?step.rest:exercise.rest>0?exercise.rest:60;
     setDraft(d=>({...d,entries,side:null,cursor:done?cursor:next,timer:done?null:makeTimer(rest,'Récupération','rest'),stageElapsed:0,stageStarted:Date.now(),
       ...(done&&!['amrap','emom'].includes(draft.format)?{reviewing:true,elapsedBase:elapsed,clockStarted:null,stageStarted:null,blockTimer:freeze(d.blockTimer)}:{})}));
     setLogging(false);setError('');if(!row.done){try{navigator.vibrate?.(40);}catch(e){}}
     if(done&&!['amrap','emom'].includes(draft.format)){setFinishing(true);say('Séance terminée. Bien joué !');}
-    window.scrollTo(0,0);
+    ptScrollTo(0,0);
   };
   // Série « comme prévu » : bas de la fourchette, charge préremplie, marge laissée vide (aucune hausse de charge n'en est déduite).
   const quickRow=()=>{
@@ -221,7 +221,7 @@ function PTSession({data,update,go,notify}) {
   };
   const addRound=()=>{
     setDraft(d=>{const entries={...d.entries};d.exercises.forEach(e=>entries[e.id]=[...entries[e.id],PT.newRows({...e,sets:1})[0]]);
-      const first=d.exercises[0];return {...d,entries,exercises:d.exercises.map(e=>({...e,sets:e.sets+1})),cursor:steps.length,side:null,stageElapsed:0,stageStarted:Date.now(),timer:ptReady(ptWorkTemplate(first))};});window.scrollTo(0,0);
+      const first=d.exercises[0];return {...d,entries,exercises:d.exercises.map(e=>({...e,sets:e.sets+1})),cursor:steps.length,side:null,stageElapsed:0,stageStarted:Date.now(),timer:ptReady(ptWorkTemplate(first))};});ptScrollTo(0,0);
   };
   // Fin de séance : l'écran se remplit de citron, le titre déborde du cadre, puis le bilan sur fond charbon.
   if(finishing)return <div className="live-review">
@@ -244,11 +244,11 @@ function PTSession({data,update,go,notify}) {
     </div></div>;
   const allDone=completed===total;
   // Retour au calme : lancé à la fin (dernière série ou « Terminer la séance »), passable à tout moment.
-  const startCooldown=()=>{if(!draft.cooldownMoves?.length||draft.cooldownDone)return false;setDraft(d=>({...d,cooling:true,coolIndex:0,timer:ptRoutineTimer(d.cooldownMoves[0],'cooldown',!d.clockStarted),stageElapsed:0,stageStarted:d.clockStarted?Date.now():null}));window.scrollTo(0,0);return true;};
+  const startCooldown=()=>{if(!draft.cooldownMoves?.length||draft.cooldownDone)return false;setDraft(d=>({...d,cooling:true,coolIndex:0,timer:ptRoutineTimer(d.cooldownMoves[0],'cooldown',!d.clockStarted),stageElapsed:0,stageStarted:d.clockStarted?Date.now():null}));ptScrollTo(0,0);return true;};
   const endCooldown=()=>{setDraft(d=>({...d,cooling:false,cooldownDone:true}));review();};
-  const stepMove=delta=>{setDraft(d=>ptRoutineStep(d,delta));window.scrollTo(0,0);};
+  const stepMove=delta=>{setDraft(d=>ptRoutineStep(d,delta));ptScrollTo(0,0);};
   // Un exercice chronométré repart avec un « Prépare-toi » (gelé si la séance est en pause).
-  const jump=index=>{setError('');setLogging(false);setMenu(false);const e=draft.exercises.find(x=>x.id===steps[index]?.id);setDraft(d=>({...d,cursor:index,side:null,timer:e&&e.measure==='seconds'?ptReady(ptWorkTemplate(e),paused):null,stageElapsed:0,stageStarted:paused?null:Date.now()}));window.scrollTo(0,0);};
+  const jump=index=>{setError('');setLogging(false);setMenu(false);const e=draft.exercises.find(x=>x.id===steps[index]?.id);setDraft(d=>({...d,cursor:index,side:null,timer:e&&e.measure==='seconds'?ptReady(ptWorkTemplate(e),paused):null,stageElapsed:0,stageStarted:paused?null:Date.now()}));ptScrollTo(0,0);};
   // Unilatéral en répétitions : le premier « Fait » vaut pour le côté gauche, puis 5 s pour changer de côté.
   const toSecondSide=()=>{setDraft(d=>({...d,timer:ptSwitch(null),stageStarted:Date.now()}));};
   const nextIndex=steps.findIndex((s,i)=>i>cursor&&!draft.entries[s.id][s.set].done&&!draft.entries[s.id][s.set].pain);

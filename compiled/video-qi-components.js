@@ -363,7 +363,7 @@ function PTQiVideoRun({
     onClick: () => {
       setIndex(i => i + 1);
       setAnswered(false);
-      window.scrollTo(0, 0);
+      ptScrollTo(0, 0);
     }
   }, index + 1 < items.length ? 'Extrait suivant' : 'Voir mon résultat', /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",

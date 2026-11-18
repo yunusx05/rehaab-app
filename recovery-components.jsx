@@ -160,7 +160,7 @@ function PTMishap(props){
     if(!plan||plan.error){notify(plan?.error||'Séance indisponible aujourd’hui.');return;}
     update(s=>({...s,draft:{...plan,reasons:[note,...(plan.reasons||[])]}}));go('preview');
   };
-  const pick=v=>{setReason(v);setFeel(v==='sore'||v==='heavy'||v==='tired'?v:null);setZones(v==='heavy'?['quads','hamstrings','calves']:[]);window.scrollTo(0,0);};
+  const pick=v=>{setReason(v);setFeel(v==='sore'||v==='heavy'||v==='tired'?v:null);setZones(v==='heavy'?['quads','hamstrings','calves']:[]);ptScrollTo(0,0);};
   const back=()=>reason?setReason(null):go('today');
   const r=ptMishapReasons.find(x=>x.value===reason);
   return <><PTPageHead onBack={back} eyebrow="Un imprévu" title={r?r.label+'.':'Qu’est-ce qui se passe ?'}>{r?r.hint+'.':'Dis-nous pourquoi : la solution n’est pas la même pour un manque de temps, une grosse fatigue ou une douleur.'}</PTPageHead>

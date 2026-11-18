@@ -102,7 +102,7 @@ function PTRehabQuiz({data, update, go, notify, id}) {
     {title:'Ce qu’il faut vérifier.', intro:'Avant tout exercice ciblé, quelques signes demandent l’avis d’un professionnel.', valid:answers.flagsChecked},
     {title:'Ton protocole.', intro:'Un protocole publié, adapté à ton matériel et à ta douleur.', valid:true}
   ];
-  const next = () => { setStep(step + 1); window.scrollTo(0, 0); };
+  const next = () => { setStep(step + 1); ptScrollTo(0, 0); };
   const launch = () => {
     const protocol = result.protocol;
     const symptom = save && !hasSymptom && Number(answers.severity) > 0 ? {id:PT.uid(), region:protocol.region, side:answers.side, severity:Number(answers.severity), onset:answers.onset === 'acute' ? 'new' : 'known', redFlags:false, note:`Quick Rehab · ${protocol.title}`, date:PT.dateKey(), active:true, followups:[]} : null;

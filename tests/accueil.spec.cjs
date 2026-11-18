@@ -60,7 +60,7 @@ test(`accueil : tout tient dans l'écran sans défiler (${size.width}×${size.he
   await expect(page.locator('.radar-block .player-radar.is-mini')).toBeVisible();
   await expect(page.locator('.home-blocks').getByRole('button',{name:/Lire le jeu|Ma carte/})).toHaveCount(0);
   await page.waitForTimeout(700);
-  const m=await page.evaluate(()=>({scroll:document.documentElement.scrollHeight,inner:innerHeight,tiles:document.querySelector('.home-blocks').getBoundingClientRect().bottom,nav:document.querySelector('.bottom-nav').getBoundingClientRect().top}));
+  const m=await page.evaluate(()=>({scroll:document.getElementById('root').scrollHeight,inner:document.getElementById('root').clientHeight,tiles:document.querySelector('.home-blocks').getBoundingClientRect().bottom,nav:document.querySelector('.bottom-nav').getBoundingClientRect().top}));
   expect(m.scroll).toBeLessThanOrEqual(m.inner+1);
   expect(m.tiles).toBeLessThanOrEqual(m.nav);
 });

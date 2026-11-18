@@ -106,6 +106,7 @@ test('écran : Un imprévu → Faire la séance d’un autre jour → échange a
   await page.getByRole('button',{name:/Faire celle du vendredi aujourd’hui/}).click();
   await expect(page.locator('.week-hub')).toBeVisible({timeout:30000});
   await expect(page.locator('.swap-note')).toContainText('mercredi ↔ vendredi');
+  await expect.poll(()=>page.evaluate(k=>!!JSON.parse(localStorage.getItem(k)).calendar.swapped,PT.STORAGE_KEY)).toBe(true);
   const saved=await page.evaluate(k=>JSON.parse(localStorage.getItem(k)).calendar.swapped,PT.STORAGE_KEY);
   expect(saved.a).toBe('2026-10-14');expect(saved.b).toBe('2026-10-16');
   await page.locator('.swap-note').getByRole('button',{name:'Annuler l’échange'}).click();

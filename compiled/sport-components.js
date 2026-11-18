@@ -86,6 +86,7 @@ function PTSportMotion({
         clearProps: 'all',
         scrollTrigger: {
           trigger: el,
+          scroller: window.ptScroller ? window.ptScroller() : undefined,
           start: 'top 94%',
           once: true
         }

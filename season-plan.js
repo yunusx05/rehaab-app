@@ -224,7 +224,9 @@
   }
 
   // Règles de placement (conventions courantes, voir COACH-SOURCES.md).
-  function ruleBreak(item,date,placed,days,{ignoreMinutes=false}={}) {
+  // relax (lot 44, circuit seulement) : règles de confort qu'on accepte d'enfreindre, avec l'alerte, plutôt que de faire disparaître le circuit.
+  // 1 = durée max, 2 = + un seul cardio par jour. Jamais : match, veille, lendemain, jour de club, jour de terrain, jambes lourdes.
+  function ruleBreak(item,date,placed,days,{ignoreMinutes=false,relax=0}={}) {
     const i=days.findIndex(d=>d.date===date),d=days[i];if(!d) return 'Jour hors de la semaine.';
     const mode=d.mode||'auto';
     if(!fitsMode(item,mode)) return `Jour réglé sur « ${MODES[mode]} ».`;
@@ -251,7 +253,7 @@
     if(item.physical&&placed.some(x=>x!==item&&x.physical&&x.date===date)) return 'Une seule séance physique par jour.';
     if(item.type==='vivacite'&&placed.some(x=>x!==item&&x.legs==='heavy'&&x.date===date)) return 'Vivacité et jambes lourdes le même jour : trop de charge.';
     // Lot 26 : un seul cardio par jour, même sans impact (un plan commencé un dimanche empilait corde + course le même jour).
-    if(item.type==='cardio'&&placed.some(x=>x!==item&&x.type==='cardio'&&x.date===date)) return 'Une seule séance de cardio par jour.';
+    if(relax<2&&item.type==='cardio'&&placed.some(x=>x!==item&&x.type==='cardio'&&x.date===date)) return 'Une seule séance de cardio par jour.';
     // Lot 39 : un jour de club, pas de cardio du tout, même sans impact : l'entraînement en est déjà un.
     if(item.type==='cardio'&&d.club.practice) return 'Entraînement au club ce jour-là : c’est déjà ton cardio.';
     // Cardio à impacts (corde, course) : jamais deux jours de suite, ni avec des jambes lourdes, ni un jour de club ou au lendemain d'un match.
@@ -269,7 +271,7 @@
     const paired=item.type==='skills'&&(mode==='both'||ignoreMinutes||item.combined)||item.physical&&mode==='both'&&placed.every(x=>x===item||x.date!==date||x.type==='skills'||x.type==='care');
     // Lot 42 : le circuit se raccourcit jusqu'à 20 min pour tenir dans la journée (voir weekSchedule).
     const need=item.kind==='wod'?Math.min(item.minutes,20):item.minutes;
-    if(item.type!=='care'&&!paired&&total&&total+need>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
+    if(relax<1&&item.type!=='care'&&!paired&&total&&total+need>(days.maxMinutes||90)) return `Plus de ${days.maxMinutes||90} minutes ce jour-là : ta durée maximale est dépassée.`;
     if(d.before) return 'Avant le début de ton plan.';
     return null;
   }
@@ -288,6 +290,7 @@
     days.forEach(d=>{if(diff(d.date,built.start)<0){d.before=true;d.free=false;}});
     const startWeek=days.some(d=>d.before);
     const skips=cal.skips[monday]||[],moves=cal.moves[monday]||{},forced=cal.forced[monday]||[];
+    const circuitDay=state.cardio&&Number.isInteger(state.cardio.circuitDay)&&state.cardio.circuitDay>=0&&state.cardio.circuitDay<7?state.cardio.circuitDay:null;
     // Séances physiques : autant que l'objectif hebdomadaire, le parcours d'abord.
     let physical=all.filter(x=>x.physical);
     if(physical.length>tgt){physical.filter(x=>x.extra).slice(0,physical.length-tgt).forEach(x=>x.dropped=true);physical=physical.filter(x=>!x.dropped);}
@@ -312,7 +315,23 @@
         const wanted=d.mode==='both'||d.mode==='skills'&&skillsType||d.mode==='muscu'&&!skillsType;
         return {d,score:gap*2-load*(d.mode==='both'?0:3)-(d.club.practice?2:0)+(wanted&&item.type!=='care'?8:0)+(d.mode==='shooting'&&item.type==='shooting'?12:0)+(item.type==='care'&&!placed.some(x=>x.date===d.date)?3:0)+(item.kind==='court'&&placed.some(x=>x.type==='vivacite'&&x.date===d.date)?20:0)};
       }).sort((a,b)=>b.score-a.score||a.d.weekday-b.d.weekday);
+      // Lot 44 : jour fixe du circuit (Ma semaine type). Ton choix passe devant le placement auto ; une règle cassée s'affiche sur la séance.
+      if(item.kind==='wod'&&Number.isInteger(circuitDay)){
+        const date=at(monday,circuitDay),d=days.find(x=>x.date===date);
+        if(d&&!d.before&&!d.club.match&&!(cal.excused&&cal.excused.date===date)){const why=ruleBreak(item,date,placed,days);placed.push({...item,date,fixedDay:true,...(why?{forced:true,warning:why}:{})});continue;}
+      }
       const options=optionsFor(item);
+      // Lot 44 : circuit sans jour qui respecte toutes les règles : il reste au programme, sur le jour qui casse la règle la moins grave
+      // (durée, puis deux cardios), avec l'alerte. Jamais un jour de match, une veille ou un lendemain, un jour de club ou de terrain, ni avec des jambes lourdes.
+      if(!options.length&&item.kind==='wod'){
+        const load=d=>placed.filter(x=>x.date===d.date&&x.type!=='care').reduce((n,x)=>n+x.minutes,0);
+        let spot=null;
+        for(let relax=1;relax<=2&&!spot;relax++){
+          const ok=days.filter(d=>d.free&&!d.before&&!(cal.excused&&cal.excused.date===d.date)&&!ruleBreak(item,d.date,placed,days,{relax})).sort((a,b)=>load(a)-load(b)||a.weekday-b.weekday);
+          if(ok.length) spot=ok[0];
+        }
+        if(spot){placed.push({...item,date:spot.date,forced:true,fallback:true,warning:ruleBreak(item,spot.date,placed,days)});continue;}
+      }
       // Cardio à impacts sans jour compatible (semaine de club et de match, jambes lourdes partout) : même séance, version sans impact.
       if(!options.length&&item.type==='cardio'&&item.legs==='impact'){
         const lite={...item,legs:'light',soft:true,label:'Cardio sans impact · vélo ou marche vive'},alt=optionsFor(lite);
@@ -337,7 +356,8 @@
     placed.filter(x=>x.kind==='wod').forEach(x=>{
       const other=placed.filter(y=>y!==x&&y.date===x.date&&y.type!=='care').reduce((n,y)=>n+y.minutes,0);
       if(!other) return;
-      const room=Math.max(20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-other)/5)*5));
+      // Lot 44 : placé faute de mieux (jour déjà plein), il descend jusqu'à 15 min.
+      const room=Math.max(x.forced?15:20,Math.min(x.minutes,Math.round(((Number(ans.maxMinutes)||75)-other)/5)*5));
       Object.assign(x,{minutes:room,combined:true,label:`Circuit training · ${room} min après la séance`});
     });
     // Statut : faite (séance correspondante enregistrée dans la semaine), manquée (jour passé), prévue.
@@ -363,7 +383,9 @@
   function violations(state,schedule) {
     const out=[],placed=schedule.days.flatMap(d=>d.items);
     const days=schedule.days.map(d=>({...d}));days.courtAway=courtAway(state);days.nextClub=clubOf(state,at(schedule.monday,7));days.prevClub=clubOf(state,at(schedule.monday,-1));days.maxMinutes=Math.max(30,Math.round((Number((state.dossier&&state.dossier.answers||{}).maxMinutes)||75)*1.15));
-    placed.filter(item=>!item.forced).forEach(item=>{const r=ruleBreak(item,item.date,placed,days);if(r)out.push({key:item.key,date:item.date,rule:r});});
+    // Une séance placée malgré une règle (ton choix, ou le circuit faute de mieux) porte déjà son alerte : elle ne rend pas fautives les autres.
+    const kept=placed.filter(x=>!x.forced);
+    kept.forEach(item=>{const r=ruleBreak(item,item.date,kept,days);if(r)out.push({key:item.key,date:item.date,rule:r});});
     if(placed.filter(x=>x.physical).length>schedule.target) out.push({key:'*',rule:'Plus de séances physiques que l’objectif de la semaine.'});
     return out;
   }

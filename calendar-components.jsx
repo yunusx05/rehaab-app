@@ -70,6 +70,9 @@ function PTCalendar({data,update,go,notify}){
   // Lot 42 : circuit training (0 ou 1 par semaine), en plus du cardio.
   const circuitPerWeek=BC&&BC.circuitPerWeek?BC.circuitPerWeek(data):0;
   const setCircuit=n=>update(s=>{const c={...(s.cardio||{})};if(n===0)c.circuit=0;else delete c.circuit;return {...s,cardio:c};});
+  // Lot 44 : jour fixe du circuit, toutes les semaines (« L'app choisit » = placement auto).
+  const circuitDay=Number.isInteger(data.cardio?.circuitDay)?String(data.cardio.circuitDay):'auto';
+  const setCircuitDay=v=>update(s=>{const c={...(s.cardio||{})};if(v==='auto')delete c.circuitDay;else c.circuitDay=Number(v);return {...s,cardio:c};});
   return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine, jour par jour.</PTPageHead>
     <div className="stack-lg">
       <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
@@ -85,6 +88,7 @@ function PTCalendar({data,update,go,notify}){
           <p className="fine">{data.calendar&&data.calendar.courtNear?'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.':'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'}</p>
           {BC&&<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
           {BC&&BC.circuitPerWeek&&<div className="topline"><span className="fine">Circuit training full body / semaine</span><PTChips value={circuitPerWeek} onChange={setCircuit} options={[0,1].map(n=>({value:n,label:String(n)}))}/></div>}
+          {BC&&BC.circuitPerWeek&&circuitPerWeek>0&&<label className="calendar-mode-row"><span>Jour du circuit</span><select aria-label="Jour du circuit training" value={circuitDay} onChange={e=>setCircuitDay(e.target.value)}><option value="auto">L’app choisit</option>{SP.DAYS.map((d,i)=><option key={d} value={i}>{d}</option>)}</select></label>}
           {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
             :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
         </div>
@@ -115,7 +119,7 @@ function PTCalendar({data,update,go,notify}){
           </div>}
         </div>)}
       </li>)}</ol>
-      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
+      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li><li>Circuit training : à la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S’il n’a pas de jour idéal, il reste au programme avec une alerte, plutôt que de disparaître.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
       <div className="home-options">
         <button className="home-action" onClick={()=>go('plan')}><PTIcon name="chart"/><span><strong>Mon plan de saison</strong><small>Les phases, où tu en es, et pourquoi ce plan.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={exportIcs}><PTIcon name="today"/><span><strong>Ajouter à mon agenda</strong><small>Fichier .ics des 4 prochaines semaines, avec les rappels de ton téléphone.</small></span><PTIcon name="arrow" size={18}/></button>

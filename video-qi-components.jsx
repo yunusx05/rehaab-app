@@ -127,7 +127,7 @@ function PTQiVideoRun({data, update, go, id}) {
     <div className="stack-lg qi-run">
       <div className="step-track">{items.map((_, i) => <span key={i} className={i <= index ? 'done' : ''}/>)}</div>
       <PTQiVideoItem key={clip.id} clip={clip} onAnswer={answer}/>
-      {answered && <PTButton primary onClick={() => { setIndex(i => i + 1); setAnswered(false); window.scrollTo(0, 0); }}>{index + 1 < items.length ? 'Extrait suivant' : 'Voir mon résultat'}<PTIcon name="arrow" size={18}/></PTButton>}
+      {answered && <PTButton primary onClick={() => { setIndex(i => i + 1); setAnswered(false); ptScrollTo(0, 0); }}>{index + 1 < items.length ? 'Extrait suivant' : 'Voir mon résultat'}<PTIcon name="arrow" size={18}/></PTButton>}
     </div></>;
 }
 

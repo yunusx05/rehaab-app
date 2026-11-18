@@ -2,6 +2,22 @@
 
 Entrées empilées de la plus récente à la plus ancienne.
 
+## 2026-11-18 — Lot 44 : circuit toujours au programme + jour fixe, barre du bas qui ne flotte plus (v100)
+
+**Retours** (test de la v99 sur iPhone) : (1) la barre du bas (Aujourd'hui, Plan…) se retrouve parfois au milieu de l'écran quand on fait défiler ; (2) le circuit training n'apparaît pas dans son planning, donc impossible de le placer.
+
+**Constat**
+- Circuit : avec l'export du 13/11, il n'avait qu'un seul jour possible (mercredi après « Haut du corps », 60 min max, terrain loin). Durée max ≤ 55 min, terrain « à côté », mercredi en « Muscu + skills », match dans la semaine… → il disparaissait sans bruit (simple ligne d'alerte), et une séance absente n'a pas de bouton « Choisir le jour ». Sa semaine actuelle sur le téléphone n'est pas connue (pas de nouvel export) : cause exacte chez lui non vérifiée.
+- Barre du bas : bug connu de Safari iOS 26 sur les éléments fixés en bas quand la page défile (barres de Safari qui se replient). Pas reproductible sur ordinateur.
+
+**Fait** (branche `feature/lot44-circuit-menu`)
+- `season-plan.js` : si aucun jour ne respecte toutes les règles, le circuit reste au programme sur le jour qui casse la règle la moins grave (durée max, puis deux cardios le même jour), raccourci jusqu'à 15 min, avec l'alerte sur la séance (`forced`, `fallback`). Jamais : match, veille/lendemain de match, jour de club, jour de terrain, jambes lourdes. `violations()` ignore les séances placées malgré une règle (elles portent leur alerte).
+- Jour fixe : « Jour du circuit » dans Ma semaine type (`cardio.circuitDay`, gardé par `BasketCardio.validate`) ; placé ce jour-là chaque semaine, alerte si une règle casse (ex. vendredi = jambes lourdes).
+- Défilement : la page ne défile plus, seul `#root` défile (`index.html`) ; la barre fixe ne peut plus décrocher. `window.scrollTo` → `ptScrollTo` (20 appels), ScrollTrigger branché sur `#root`.
+- Tests : `tests/circuit-menu.spec.cjs` (4) ; accueil (hauteur mesurée sur `#root`), circuit-echange (attente de la sauvegarde). Suite : 254 OK ; KO connus : `poids-tir:55` et `accueil:50` (375×667, vérifié KO à l'identique sur la v99).
+
+**À savoir** : pas testé sur iPhone. Le défilement interne garde la barre d'adresse de Safari visible (elle ne se replie plus). Semaine avec match le samedi (jambes lourdes le mercredi, vendredi veille de match) : aucun jour sûr, le circuit n'est pas placé, sauf jour fixe choisi.
+
 ## 2026-11-17 — Lots 42-43 : circuit training, échange de séances, isométrie Joey Bergles, démos manquantes (v98 → v99)
 
 **Demande** : (1) un circuit training full body style CrossFit 1×/semaine avec son matériel ; (2) pouvoir intervertir deux séances (pluie : faire la muscu du lendemain) sans perturber le programme ; (3) analyser deux vidéos de Joey Bergles (isométrie, explosivité) et récupérer leurs extraits ; (4) ajouter les vidéos des exercices qui n'en ont pas.

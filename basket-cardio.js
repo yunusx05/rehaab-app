@@ -61,7 +61,8 @@
     if(!v||typeof v!=='object'||Array.isArray(v)) return blank();
     const n=Number(v.perWeek),chosen=v.chosen===true;
     // Lot 42 : circuit training (0 ou 1 par semaine, 1 par défaut), gardé à part du nombre de cardios.
-    const circuit=v.circuit===0?{circuit:0}:{};
+    // Lot 44 : jour fixe du circuit (0 = lundi … 6 = dimanche), sinon l'app choisit.
+    const circuit={...(v.circuit===0?{circuit:0}:{}),...(Number.isInteger(v.circuitDay)&&v.circuitDay>=0&&v.circuitDay<7?{circuitDay:v.circuitDay}:{})};
     if(!Number.isInteger(n)||n<0||n>3) return {...blank(),...circuit};
     if(n===2&&!chosen) return {...blank(),...circuit};
     return chosen?{perWeek:n,chosen:true,...circuit}:{perWeek:n,...circuit};

@@ -239,7 +239,7 @@ function PTPreCheck({data,update,go,notify,plan}){
     const notes=[p.decision!=='mobility'&&adaptPlan.setsFactor<1&&`Séries réduites (${Math.round(adaptPlan.setsFactor*100)} %)`,p.restFactor>1&&'Repos allongé',p.avoidRegions.length>0&&`Zones épargnées : ${p.avoidRegions.map(x=>PT.regions[x]).join(', ')}`,p.avoidImpact&&'Pas de sauts ni d’impacts',base!==plan&&plan.source==='program-plan'&&'Volume calé sur ta forme du jour'].filter(Boolean);
     const unchanged=p.decision==='normal'&&r.draft.exercises.length===plan.exercises.length&&r.draft.exercises.every((e,i)=>e.id===plan.exercises[i].id&&e.sets===plan.exercises[i].sets);
     update(s=>({...s,coachLog:(s.coachLog||[]).map(x=>x.id===entry.id?{...x,applied:true}:x),draft:unchanged?{...s.draft,precheck:{date:today,status:'ok'}}:{...r.draft,precheck:{date:today,status:'adapted',decision:p.decision,why:p.why||COACH_DECISIONS[p.decision],notes}}}));
-    window.scrollTo(0,0);
+    ptScrollTo(0,0);
   };
   const send=async()=>{
     if(missing){setError('Réponds à chaque question pour que le coach adapte ta séance.');return;}

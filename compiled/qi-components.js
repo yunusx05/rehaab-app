@@ -528,7 +528,7 @@ function PTQiRun({
   const nextItem = () => {
     setIndex(i => i + 1);
     setAnswered(false);
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   if (!items.length) return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
     onBack: () => go('qi'),

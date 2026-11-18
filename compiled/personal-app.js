@@ -1183,7 +1183,7 @@ function PTPreview({
     className: "preview-start"
   }, typeof ptPreCheckNeeded === 'function' && ptPreCheckNeeded(plan) ? /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
-    onClick: () => window.scrollTo({
+    onClick: () => ptScrollTo({
       top: 0,
       behavior: 'smooth'
     })
@@ -2495,7 +2495,7 @@ function PersonalApp() {
       const apply = () => {
         setRoute(page || 'today');
         setDetailId(id || null);
-        window.scrollTo({
+        ptScrollTo({
           top: 0,
           behavior: 'instant'
         });
@@ -2549,7 +2549,7 @@ function PersonalApp() {
   }, []);
   const go = (page, id) => {
     window.location.hash = page + (id ? `/${id}` : '');
-    if (route === page && detailId === (id || null)) window.scrollTo(0, 0);
+    if (route === page && detailId === (id || null)) ptScrollTo(0, 0);
   };
   // Lot 38 : point unique. Toute séance enregistrée (parcours, coach, cardio, skills, séance libre…) passe par la règle
   // « terrain d'abord, intérieur ensuite » avant d'être affichée. Une séance déjà commencée n'est jamais réordonnée.

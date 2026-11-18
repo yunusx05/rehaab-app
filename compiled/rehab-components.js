@@ -353,7 +353,7 @@ function PTRehabQuiz({
   }];
   const next = () => {
     setStep(step + 1);
-    window.scrollTo(0, 0);
+    ptScrollTo(0, 0);
   };
   const launch = () => {
     const protocol = result.protocol;
