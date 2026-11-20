@@ -359,3 +359,19 @@ Entrées empilées de la plus récente à la plus ancienne.
 - Quick rehab : la planche passe en premier si on l'a (entorse de cheville niveaux 1-2, genou dans l'axe niveau 1, genou qui rentre niveau 2) ; sans planche, rien ne change.
 - Échauffement des pieds : 2 exercices de planche ajoutés à la rotation.
 - Pas encore de vidéo de démo pour ces 6 exercices (icône + consignes).
+
+## 2026-11-20 — Lot 45 « Mes thèmes » + planning en vue semaine (v102)
+
+**Fait**
+- Nouvel écran « Mes thèmes » (depuis Plan) : muscu, skills, tir, vivacité, cardio, circuit — allumé, éteint, ou en pause 1/2/4 semaines (retour automatique à la date prévue). Les réglages de volume (séances physiques, skills, cardio, jour du circuit) y sont regroupés.
+- Le planning se refait sans le thème éteint à partir de la semaine suivante (la semaine en cours ne bouge pas). Jour libéré = repos + une seule suggestion, acceptée ou écartée.
+- Tir éteint : plus de séance de tir, ni d'exercices de tir dans les skills et les blocs après la muscu ; l'onglet Extra le garde à la carte.
+- Écran Planning : grille des 7 jours avec une couleur + une icône par thème, légende, puis détail jour par jour. Bandeau « Hors de ton planning » quand un thème est éteint ; rappel sur l'accueil ; le coach IA ne propose rien d'un thème éteint.
+- Tests : `tests/themes.spec.cjs` (5) OK ; suite complète 260 OK, 3 KO déjà présents avant le lot (`poids-tir.spec.cjs:55`, `accueil.spec.cjs:50` qui déborde de 31 px selon la date — même résultat sur l'ancienne version, `skills-cooper.spec.cjs:12` qui passe quand on le relance seul).
+- Choix de l'utilisateur : repos + suggestion, tir éteint partout sauf Extra, éteindre ou pause, vue semaine + détail.
+
+**À savoir**
+- Pas testé sur iPhone.
+
+**Prochaine action**
+- Fusionné dans `main`, pas encore envoyé en ligne : attendre son « push ».
