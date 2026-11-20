@@ -274,6 +274,15 @@
   // Lot 31 : jour de pluie noté (calendar.rain). Le terrain est couvert : la pluie ne change rien aux skills.
   const rainy = (state,date=today()) => !!(state&&state.calendar&&Array.isArray(state.calendar.rain)&&state.calendar.rain.includes(date));
   const hoopOn = (state,s,date=today()) => hoopToday(s,date);
+  // Lot 45 : thème « Tir » éteint (ou en pause) : plus aucun tir dans les skills, les blocs et l'intensité match. Extra garde le tir à la carte.
+  // Un exercice « fait tirer » s'il est de la zone tir, s'il compte des tirs hors finition, ou s'il finit par un tir en extension.
+  const SHOT_ENDING=['sk-grounded-feet','sk-jab-series'];
+  const isShot = d => d.area==='shoot'||(d.measure==='shots'&&d.area!=='finish')||SHOT_ENDING.includes(d.id);
+  const shootingOff = (state,date=today()) => {
+    const g=typeof globalThis!=='undefined'?globalThis:{};let SP=g.SeasonPlan;
+    if(!SP){try{SP=typeof require==='function'?require('./season-plan.js'):null;}catch(e){SP=null;}}
+    return !!(SP&&SP.themeOn&&!SP.themeOn(state,'shooting',date));
+  };
   // Lot 31 : quelques minutes de dribble avant tout travail basket, même court (séance de tir comprise).
   function dribbleWarm(PT,state,{count=2,date=today()}={}) {
     return pick(state,{area:'handle',count,stationary:true}).map(d=>({...dose(d,PT),sets:1,rest:20,dribbleWarm:true}));
@@ -286,12 +295,12 @@
     const now=today(),flare=(state.sessions||[]).some(x=>x&&x.nextDay==='worse'&&typeof x.date==='string'&&(Date.parse(now)-Date.parse(x.date))/86400000<=2&&x.date<=now);
     return (state.symptoms||[]).filter(x=>x&&x.active&&(Number(x.severity)>2||flare)).map(x=>x.region);
   }
-  function pick(state,{area,count=2,hoop=false,noImpact=false,exclude=[],stationary=false}) {
+  function pick(state,{area,count=2,hoop=false,noImpact=false,exclude=[],stationary=false,noShoot=false}) {
     const s=state.skills||blank(),tier=s.levels[area]||1,prio=priorities(s,state.player);
     const weight=d=>d.tags.reduce((n,t)=>n+((prio.find(p=>p.id===t)||{}).score||0),0);
     const pains=painRegions(state);
     return drills.filter(d=>d.area===area&&!d.intense&&d.tier<=tier&&d.tier>=tier-1&&(hoop||!d.needs.includes('hoop'))&&!(hoop&&area==='shoot'&&!d.needs.includes('hoop'))&&!(noImpact&&(d.impact||d.cuts))&&!(stationary&&d.cuts)
-      &&!exclude.includes(d.id)&&!d.regions.some(r=>pains.includes(r)))
+      &&!exclude.includes(d.id)&&!d.regions.some(r=>pains.includes(r))&&!(noShoot&&isShot(d)))
       .sort((a,b)=>(b.tier===tier)-(a.tier===tier)||(hoop?b.needs.includes('hoop')-a.needs.includes('hoop'):0)||weight(b)-weight(a)||a.id.localeCompare(b.id)).slice(0,count);
   }
   function dose(d,PT) {
@@ -312,29 +321,30 @@
   // Séance skills complète. light : la veille d'un match ou jambes protégées (aucun saut ni changement de direction).
   function session(PT,state,{minutes,light=false,date=today()}={}) {
     const s=validate(state.skills),prog=s.program||{minutes:45};
-    const total=Number(minutes)||prog.minutes||45,hoop=hoopOn(state,s,date),prio=priorities(s,state.player);
-    const main=prio[0]?prio[0].area:'handle',second=(prio.find(p=>p.area!==main)||{area:hoop?'shoot':'footwork'}).area;
-    const opts={hoop,noImpact:light};
+    const total=Number(minutes)||prog.minutes||45,hoop=hoopOn(state,s,date),noShoot=shootingOff(state,date);
+    const prio=priorities(s,state.player).filter(p=>!(noShoot&&p.area==='shoot'));
+    const main=prio[0]?prio[0].area:'handle',second=(prio.find(p=>p.area!==main)||{area:hoop&&!noShoot?'shoot':hoop?'finish':'footwork'}).area;
+    const opts={hoop,noImpact:light,noShoot};
     const used=hoop?['sk-ft']:[],take=(area,count)=>{const list=pick(state,{...opts,area,count,exclude:used});list.forEach(d=>used.push(d.id));return list.map(d=>dose(d,PT));};
     // Lot 31 : une séance skills mélange dribble, tir et lay-up. Toujours du dribble d'abord, puis la coordination tant qu'elle est faible,
     // le point faible, et avec un panier au moins un exercice de lay-up et un de tir.
     const plan=[...take('handle',1)];
     if((s.levels.coordination||1)<3&&main!=='coordination') plan.push(...take('coordination',1));
     plan.push(...take(main,total>=45?2:1));
-    if(hoop){if(!plan.some(e=>e.area==='finish'))plan.push(...take('finish',1));if(!plan.some(e=>e.area==='shoot'))plan.push(...take('shoot',1));}
+    if(hoop){if(!plan.some(e=>e.area==='finish'))plan.push(...take('finish',1));if(!noShoot&&!plan.some(e=>e.area==='shoot'))plan.push(...take('shoot',1));}
     plan.push(...take(second,1));
-    if(total>=60) plan.push(...take(main==='shoot'?'finish':'shoot',1),...take('footwork',1));
+    if(total>=60) plan.push(...take(main==='shoot'||noShoot?'finish':'shoot',1),...take('footwork',1));
     // Avec un panier, la séance se termine toujours par des lancers francs (routine sous fatigue légère).
     // Lot 40 : chaque séance finit sous fatigue, comme en match. Fondations : lancers francs essoufflé ; au-delà, un exercice « intensité match » de ton palier.
     const pains=painRegions(state),top=Math.max(1,...Object.values(s.levels));
-    const tiredOk=d=>(hoop||!d.needs.includes('hoop'))&&!(light&&(d.impact||d.cuts))&&!d.regions.some(r=>pains.includes(r))&&!used.includes(d.id);
+    const tiredOk=d=>(hoop||!d.needs.includes('hoop'))&&!(light&&(d.impact||d.cuts))&&!d.regions.some(r=>pains.includes(r))&&!used.includes(d.id)&&!(noShoot&&isShot(d));
     const tiredPool=drills.filter(d=>(d.intense||d.id==='sk-ft-tired')&&tiredOk(d)&&d.tier<=Math.max(2,top));
     const tiredDrill=top<=1?(tiredPool.find(d=>d.id==='sk-ft-tired')||tiredPool.filter(d=>d.tier<=2).sort((a,b)=>(b.area===main)-(a.area===main)||a.id.localeCompare(b.id))[0])
       :tiredPool.sort((a,b)=>(b.tier===Math.min(3,top))-(a.tier===Math.min(3,top))||(b.area===main)-(a.area===main)||a.id.localeCompare(b.id))[0];
     const tired=tiredDrill&&!light?{...dose(tiredDrill,PT),tiredFinisher:true}:null;
     if(tired) used.push(tired.id);
-    const ft=hoop&&!(tired&&tired.id==='sk-ft-tired')?dose(byId('sk-ft'),PT):null;
-    fill(state,plan,(total-5)*60-(ft?estimate([ft]):0)-(tired?estimate([tired]):0),[main,second,hoop?'shoot':'handle','footwork'],{...opts,exclude:ft?['sk-ft']:[],PT});
+    const ft=hoop&&!noShoot&&!(tired&&tired.id==='sk-ft-tired')?dose(byId('sk-ft'),PT):null;
+    fill(state,plan,(total-5)*60-(ft?estimate([ft]):0)-(tired?estimate([tired]):0),[main,second,hoop&&!noShoot?'shoot':'handle','footwork'],{...opts,exclude:ft?['sk-ft']:[],PT});
     if(tired) plan.push(tired);
     if(ft) plan.push(ft);
     // On raccourcit par la fin, sans jamais retirer le dribble du début ni le final sous fatigue.
@@ -344,26 +354,27 @@
     if(plan[0]&&plan[0].area==='handle') plan[0]={...plan[0],dribbleWarm:true};
     const reasons=[`Point faible travaillé : ${areas[main].label.toLowerCase()} (palier ${TIERS[s.levels[main]-1].toLowerCase()})${!hoop&&['shoot','finish'].includes(main)?', au panier dès que tu en as un':''}.`,
       'Dribble d’abord : quelques minutes balle en main avant tout le reste.',
-      hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
-      'Pendant la séance, valide chaque série avec « Fait ». À la fin, tu notes combien de tirs tu as mis : ça fait évoluer ton palier.'];
+      noShoot?(hoop?'Tir éteint dans « Mes thèmes » : dribble, appuis et lay-up, sans tir ni lancer franc.':'Tir éteint dans « Mes thèmes » : maniement et appuis, sans tir.')
+        :hoop?'Panier disponible aujourd’hui : dribble, lay-up et tir au programme.':'Sans panier aujourd’hui : maniement, appuis et tir de forme sans panier. Coche « panier » si tu en as un.',
+      noShoot?'Pendant la séance, valide chaque série avec « Fait ».':'Pendant la séance, valide chaque série avec « Fait ». À la fin, tu notes combien de tirs tu as mis : ça fait évoluer ton palier.'];
     if(tired) reasons.push(`Final sous fatigue : ${tired.name}. Tirer et finir essoufflé, comme en fin de match.`);
     if(light) reasons.push('Version légère : ni saut ni changement de direction, tes jambes restent fraîches.');
     const styles=[...new Set(plan.map(e=>e.style).filter(Boolean))];
     if(styles.length) reasons.push(`Inspiration : ${styles.join(', ')} (style de jeu, pas un programme officiel).`);
     const counts={};plan.forEach(e=>counts[e.area]=(counts[e.area]||0)+1);
     const lead=Object.keys(counts).sort((a,b)=>counts[b]-counts[a])[0];
-    return {id:uid(),title:hoop?'Skills · dribble, tir, lay-up':`Skills · ${areas[lead].short}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
+    return {id:uid(),title:hoop?(noShoot?'Skills · dribble, lay-up':'Skills · dribble, tir, lay-up'):`Skills · ${areas[lead].short}`,source:'skills',focus:'basket-skills',format:'classic',exercises:plan,check:{...state.checkIn,date,minutes:total,equipment:[...(state.owned||[]),'ball',...(hoop?['hoop']:[])],focus:'mixed',format:'classic'},reasons,warmupSeconds:180,estimatedMinutes:Math.ceil((estimate(plan)+240)/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
 
   // Intensité match : efforts de 20 à 60 s, récupérations courtes, tir, dribble et finition sous fatigue.
   // Le basket alterne des efforts très intenses et des récupérations incomplètes : on reproduit ce rythme ballon en main.
   const hash = s => [...String(s)].reduce((n,c)=>(n*31+c.charCodeAt(0))%9973,7);
   function matchSession(PT,state,{minutes=30,date=today()}={}) {
-    const s=validate(state.skills),hoop=hoopOn(state,s,date),total=Number(minutes)||30;
+    const s=validate(state.skills),hoop=hoopOn(state,s,date),total=Number(minutes)||30,noShoot=shootingOff(state,date);
     const pains=(state.symptoms||[]).filter(x=>x.active&&painRegions(state).includes(x.region));
     if(pains.some(p=>['knee','ankle','hip','back'].includes(p.region)&&Number(p.severity)>=3)) return {error:'Douleur aux jambes ou au dos : pas d’intensité match aujourd’hui. Fais plutôt une séance skills légère ou ton soin.'};
     const lvl=a=>Math.max(2,s.levels[a]||1);
-    const avail=d=>d.intense&&d.tier<=lvl(d.area)&&(hoop||!d.needs.includes('hoop'))&&!d.regions.some(r=>pains.some(p=>p.region===r));
+    const avail=d=>d.intense&&d.tier<=lvl(d.area)&&(hoop||!d.needs.includes('hoop'))&&!d.regions.some(r=>pains.some(p=>p.region===r))&&!(noShoot&&isShot(d));
     const order=hoop?['handle','shoot','finish','shoot','defense','handle','finish']:['handle','handle','handle'];
     const plan=[],used=new Set();
     const add=d=>{used.add(d.id);plan.push({...dose(d,PT),sets:d.sets,rest:d.rest});};
@@ -375,7 +386,7 @@
     // Sans panier : on complète avec la défense et la coordination ballon en main, à vitesse de match.
     if(!hoop) ['df-slide-sprint','df-zigzag','co-figure8-cones'].forEach(id=>{const d=byId(id);if(d&&estimate(plan)<(total-6)*60&&!d.regions.some(r=>pains.some(p=>p.region===r)))add(d);});
     // Avec un panier, on finit toujours par des lancers francs fatigué.
-    const ft=hoop?byId('mi-suicide-ft'):null;
+    const ft=hoop&&!noShoot?byId('mi-suicide-ft'):null;
     if(ft) add(ft);
     while(estimate(plan)>(total-5)*60&&plan.some(e=>e.sets>2)) {const e=[...plan].reverse().find(x=>x.sets>2);e.sets-=1;}
     while(estimate(plan)>(total-5)*60&&plan.length>3) plan.splice(plan.length-(ft?2:1),1);
@@ -400,14 +411,14 @@
     const s=validate(state.skills);
     if(!s.program||s.program.status!=='active'||!s.program.blocks) return null;
     const hoop=hoopOn(state,s,date),host=hostOf(exercises),m=Number(minutes)||s.program.blockMinutes||15;
-    const legs=protectLegs||host==='legs',count=m>=20?3:2,used=exercises.map(e=>e.id);
+    const legs=protectLegs||host==='legs',count=m>=20?3:2,used=exercises.map(e=>e.id),noShoot=shootingOff(state,date);
     // Lot 31 : le dribble ouvre toujours le bloc, même court.
-    const areasFor=host==='cardio'?(hoop?['handle','finish']:['handle','footwork']):host==='legs'?['handle','shoot']:['handle','shoot'];
+    const areasFor=host==='cardio'?(hoop?['handle','finish']:['handle','footwork']):noShoot?['handle','footwork']:['handle','shoot'];
     const list=[];
-    areasFor.forEach((area,i)=>pick(state,{area,count:i===0?count-1:1,hoop,noImpact:legs,stationary:legs,exclude:used.concat(list.map(d=>d.id))}).forEach(d=>list.push(d)));
+    areasFor.forEach((area,i)=>pick(state,{area,count:i===0?count-1:1,hoop,noImpact:legs,stationary:legs,noShoot,exclude:used.concat(list.map(d=>d.id))}).forEach(d=>list.push(d)));
     if(!list.length) return null;
-    const items=fill(state,list.map(d=>dose(d,PT)),m*60,areasFor,{hoop,noImpact:legs,stationary:legs,PT}).map(e=>({...e,skillBlock:true}));
-    const label={upper:'après le haut du corps : dribble puis tir',cardio:hoop?'jour de footing : dribble puis finition au cercle':'jour de footing : dribble en mouvement',legs:'après les jambes : dribble sur place puis tir de forme, sans saut'}[host];
+    const items=fill(state,list.map(d=>dose(d,PT)),m*60,areasFor,{hoop,noImpact:legs,stationary:legs,noShoot,PT}).map(e=>({...e,skillBlock:true}));
+    const label=noShoot&&host!=='cardio'?{upper:'après le haut du corps : dribble puis appuis',legs:'après les jambes : dribble et appuis sur place, sans saut'}[host]:{upper:'après le haut du corps : dribble puis tir',cardio:hoop?'jour de footing : dribble puis finition au cercle':'jour de footing : dribble en mouvement',legs:'après les jambes : dribble sur place puis tir de forme, sans saut'}[host];
     return {exercises:items,minutes:Math.ceil(estimate(items)/60),note:`Bloc skills (${label}, ~${Math.ceil(estimate(items)/60)} min)${hoop?'':' — sans panier aujourd’hui'}.`};
   }
   // Ajoute le bloc à une séance déjà construite (sans le doubler).
@@ -517,5 +528,5 @@
       check:{...(state.checkIn||{}),date,minutes:total,equipment:[...new Set([...(state.owned||[]),'ball',...(court?['hoop','court']:[])])],focus:'mixed',format:'classic'},
       reasons,warmupSeconds:total<=15?60:180,estimatedMinutes:Math.ceil((estimate(plan)+(total<=15?60:180))/60),status:'preview',entries:{},createdAt:new Date().toISOString()};
   }
-  return {EXTRA,extraLevel,areaSession,applyShotTotals,painRegions,dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
+  return {EXTRA,isShot,shootingOff,extraLevel,areaSession,applyShotTotals,painRegions,dribbleWarm,rainy,hoopOn,areas,TIERS,items,ratings,drills,byId,blank,validate,complete,saveProfile,initialLevels,tierFromAnswers,tierFromTests,priorities,pick,session,matchSession,hostOf,block,withBlock,record,summary,hoopToday,estimate};
 });

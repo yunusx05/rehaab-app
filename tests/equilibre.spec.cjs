@@ -121,7 +121,9 @@ test('écrans : planning réglable par jour, onglet Extra, remise à zéro, sans
   await page.setViewportSize({width:390,height:844});
   const s=player();
   await seed(page,s,'calendar');
-  await expect(page.locator('.calendar-balance')).toContainText('skills');
+  // Lot 45 : la ligne « 4 muscu · 2 skills » est remplacée par la grille de la semaine et sa légende.
+  await expect(page.locator('.calendar-cell')).toHaveCount(7);
+  await expect(page.locator('.calendar-legend')).toContainText('Skills');
   const firstFree=page.locator('.calendar-day-mode').first();
   await firstFree.selectOption('skills');
   expect(Object.values((await state(page)).calendar.dates)).toContain('skills');

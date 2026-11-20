@@ -248,6 +248,9 @@ function PTSportToday({
   }, typeof PTWeekStrip === 'function' && /*#__PURE__*/React.createElement(PTWeekStrip, {
     data: data,
     go: go
+  }), typeof PTThemesOff === 'function' && /*#__PURE__*/React.createElement(PTThemesOff, {
+    data: data,
+    go: go
   }), data.draft && /*#__PURE__*/React.createElement("button", {
     className: "resume-workout",
     onClick: () => go(data.draft.status === 'active' ? 'session' : 'preview')
