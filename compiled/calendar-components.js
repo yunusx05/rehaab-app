@@ -67,6 +67,114 @@ function ptCalendarPlan(data, item, day) {
   });
   return null;
 }
+
+// Lot 45 : thème de chaque séance (couleur et icône communes au planning, à « Mes thèmes » et à la légende).
+const ptThemeOf = item => ['pathway', 'muscu', 'reset'].includes(item.type) ? 'muscu' : item.kind === 'wod' ? 'circuit' : item.type;
+const ptThemeLabel = {
+  muscu: 'Muscu',
+  skills: 'Skills',
+  shooting: 'Tir',
+  vivacite: 'Vivacité',
+  cardio: 'Cardio',
+  circuit: 'Circuit',
+  care: 'Soin'
+};
+const ptThemeIcon = {
+  muscu: 'weight',
+  skills: 'court',
+  shooting: 'basket',
+  vivacite: 'spark',
+  cardio: 'run',
+  circuit: 'run',
+  care: 'heart'
+};
+const ptLongDay = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR', {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'numeric'
+});
+
+// Ce qu'un changement de thèmes fait à la semaine en cours, d'aujourd'hui à dimanche.
+function ptWeekDiff(before, after, now) {
+  const real = d => d.items.filter(x => x.type !== 'care');
+  const list = w => w.days.filter(d => diff0(d.date, now) >= 0).flatMap(d => real(d).filter(x => x.status === 'planned').map(x => ({
+    key: x.key,
+    label: x.label,
+    day: d.label.toLowerCase(),
+    date: d.date
+  })));
+  const a = list(before),
+    b = list(after);
+  const removed = a.filter(x => !b.some(y => y.key === x.key)),
+    added = b.filter(x => !a.some(y => y.key === x.key));
+  const moved = b.filter(x => a.some(y => y.key === x.key && y.date !== x.date));
+  const rest = after.days.filter((d, i) => diff0(d.date, now) >= 0 && !real(d).length && real(before.days[i]).length).map(d => d.label.toLowerCase());
+  return {
+    removed,
+    added,
+    moved,
+    rest,
+    none: !removed.length && !added.length && !moved.length
+  };
+}
+
+// Thèmes éteints ou en pause : une ligne, avec le lien vers « Mes thèmes ».
+function PTThemesOff({
+  data,
+  go
+}) {
+  if (!SP || !SP.themesOff) return null;
+  const off = SP.themesOff(data, PT.dateKey());
+  if (!off.length) return null;
+  const text = off.map(t => t.until ? `${t.label} en pause jusqu’au ${ptLongDay(t.until)}` : `${t.label} éteint`).join(' · ');
+  return /*#__PURE__*/React.createElement("button", {
+    className: "themes-off",
+    onClick: () => go('themes')
+  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("small", null, "Hors de ton planning"), /*#__PURE__*/React.createElement("strong", null, text)), /*#__PURE__*/React.createElement("span", {
+    className: "themes-off-link"
+  }, "Mes th\xE8mes"));
+}
+
+// Un thème éteint libère des jours : l'app propose une seule chose, qu'on accepte ou non. Sinon, repos.
+function PTThemeSuggestion({
+  data,
+  update,
+  notify
+}) {
+  if (!SP || !SP.themeSuggestion) return null;
+  const now = PT.dateKey(),
+    sug = SP.themeSuggestion(data, SP.mondayOf(now), now);
+  if (!sug) return null;
+  const accept = () => {
+    update(s => {
+      const n = SP.applyThemeSuggestion(s, sug.id);
+      return n ? {
+        ...n,
+        themes: SP.dismissThemeSuggestion(n, sug.key)
+      } : s;
+    });
+    notify('Ajouté. Le planning a trouvé sa place, sans casser tes règles de charge.');
+  };
+  const keep = () => {
+    update(s => ({
+      ...s,
+      themes: SP.dismissThemeSuggestion(s, sug.key)
+    }));
+    notify('Le repos reste du repos.');
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "theme-suggestion stack-sm",
+    role: "status"
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, sug.label), " ", sug.why), /*#__PURE__*/React.createElement("div", {
+    className: "button-row"
+  }, /*#__PURE__*/React.createElement(PTButton, {
+    primary: true,
+    onClick: accept
+  }, "Oui, ajouter"), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: keep
+  }, "Garder le repos")));
+}
 function PTCalendar({
   data,
   update,
@@ -77,7 +185,8 @@ function PTCalendar({
     [moving, setMoving] = usePTState(null),
     [confirm, setConfirm] = usePTState(null),
     [error, setError] = usePTState(''),
-    [swapOpen, setSwapOpen] = usePTState(false);
+    [swapOpen, setSwapOpen] = usePTState(false),
+    [picked, setPicked] = usePTState(null);
   if (!SP) return /*#__PURE__*/React.createElement("p", {
     className: "empty"
   }, "Calendrier indisponible.");
@@ -151,124 +260,37 @@ function PTCalendar({
     setMoving(null);
     notify(`${item.label} : placement automatique rétabli.`);
   };
-  // Mes jours d'entraînement : même réponse que dans le dossier joueur, modifiable ici.
-  const free = SP.freeDays(data),
-    perWeek = SP.target(data);
-  const setLife = (k, v) => update(s => {
-    const PD = window.PlayerDossier,
-      base = s.dossier || (PD ? PD.blank() : {
-        answers: {}
-      });
-    return {
-      ...s,
-      dossier: {
-        ...base,
-        answers: {
-          ...(base.answers || {}),
-          [k]: v
-        }
-      }
-    };
-  });
-  const fullDate = date => new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'numeric'
-  });
-  // Type de journée : un seul jour (cette semaine) ou toute la semaine type.
-  const setMode = (date, mode, every) => update(s => {
-    let next = {
-      ...s,
-      calendar: SP.setDayMode(s, date, mode, {
-        every
-      })
-    };
-    const wd = SP.weekday(date),
-      days = SP.freeDays(s);
-    // « Auto » sur un jour non disponible le rend disponible : sinon l'app n'y placerait rien.
-    if (every && mode === 'auto' && !days.includes(wd)) {
-      const PD = window.PlayerDossier,
-        base = s.dossier || (PD ? PD.blank() : {
-          answers: {}
-        });
-      next = {
-        ...next,
-        dossier: {
-          ...base,
-          answers: {
-            ...(base.answers || {}),
-            freeDays: [...days, wd].sort((a, b) => a - b)
-          }
-        }
-      };
-    }
-    return next;
-  });
-  const weekMode = wd => {
-    const m = SP.dayMode({
-      calendar: {
-        week: (data.calendar || {}).week || {}
-      }
-    }, SP.at(monday, wd));
-    return m === 'auto' && !free.includes(wd) ? 'off' : m;
-  };
-  const modeOptions = Object.entries(SP.MODES).map(([value, label]) => ({
+  const free = SP.freeDays(data);
+  // Type de journée d'un seul jour (cette semaine) ; la semaine type se règle dans « Mes thèmes ».
+  const setMode = (date, mode) => update(s => ({
+    ...s,
+    calendar: SP.setDayMode(s, date, mode, {
+      every: false
+    })
+  }));
+  const modeOptions = date => Object.entries(SP.modesFor ? SP.modesFor(data, date) : SP.MODES).map(([value, label]) => ({
     value,
     label
-  }));
-  const sk = data.skills?.program;
-  const setSkillsPerWeek = n => update(s => ({
-    ...s,
-    skills: {
-      ...s.skills,
-      program: {
-        ...s.skills.program,
-        perWeek: n,
-        status: 'active'
-      }
-    }
   }));
   const exportIcs = () => {
     ptDownload(`rehaab-plan-${now}.ics`, SP.ics(data, now, 4), 'text/calendar');
     notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');
   };
-  const physCount = week.days.flatMap(d => d.items).filter(x => x.physical).length,
-    cardioCount = week.days.flatMap(d => d.items).filter(x => x.type === 'cardio').length;
-  const BC = window.BasketCardio,
-    cardioPerWeek = BC ? BC.perWeek(data) : 0;
-  const setCardioPerWeek = n => update(s => ({
-    ...s,
-    cardio: {
-      ...(s.cardio || {}),
-      perWeek: n,
-      chosen: true
-    }
-  }));
-  // Lot 42 : circuit training (0 ou 1 par semaine), en plus du cardio.
-  const circuitPerWeek = BC && BC.circuitPerWeek ? BC.circuitPerWeek(data) : 0;
-  const setCircuit = n => update(s => {
-    const c = {
-      ...(s.cardio || {})
-    };
-    if (n === 0) c.circuit = 0;else delete c.circuit;
-    return {
-      ...s,
-      cardio: c
-    };
-  });
-  // Lot 44 : jour fixe du circuit, toutes les semaines (« L'app choisit » = placement auto).
-  const circuitDay = Number.isInteger(data.cardio?.circuitDay) ? String(data.cardio.circuitDay) : 'auto';
-  const setCircuitDay = v => update(s => {
-    const c = {
-      ...(s.cardio || {})
-    };
-    if (v === 'auto') delete c.circuitDay;else c.circuitDay = Number(v);
-    return {
-      ...s,
-      cardio: c
-    };
-  });
-  // Lot 44 : choix du jour, partagé entre les séances placées et le circuit sans jour (here = null).
+  // Lot 45 : le jour ouvert (aujourd'hui par défaut) montre ses actions ; les autres jours restent en une ligne.
+  const visible = week.days.filter(d => !(d.before && d.items.length === 0));
+  const open = visible.find(d => d.date === picked)?.date || visible.find(d => d.date === now)?.date || visible.find(d => diff0(d.date, now) >= 0)?.date || visible[0]?.date;
+  const pick = date => {
+    setPicked(date);
+    setMoving(null);
+    setConfirm(null);
+    setSwapOpen(false);
+    const el = document.getElementById(`day-${date}`);
+    if (el && el.scrollIntoView) el.scrollIntoView({
+      block: 'nearest',
+      behavior: 'smooth'
+    });
+  };
+  const themesInWeek = [...new Set(week.days.flatMap(d => d.items.map(ptThemeOf)))];
   const movePanel = (item, here) => /*#__PURE__*/React.createElement("div", {
     className: "calendar-move stack-sm",
     role: "group",
@@ -285,11 +307,11 @@ function PTCalendar({
       disabled: past || isHere,
       "aria-pressed": isHere,
       onClick: () => moveTo(item, x.date)
-    }, /*#__PURE__*/React.createElement("strong", null, fullDate(x.date)), /*#__PURE__*/React.createElement("small", null, isHere ? 'Jour actuel' : past ? 'Passé' : rule ? '⚠ règle' : x.club.match ? 'Match' : x.club.practice ? 'Club' : free.includes(x.weekday) ? 'Libre' : 'Jour off'));
+    }, /*#__PURE__*/React.createElement("strong", null, ptLongDay(x.date)), /*#__PURE__*/React.createElement("small", null, isHere ? 'Jour actuel' : past ? 'Passé' : rule ? '⚠ règle' : x.club.match ? 'Match' : x.club.practice ? 'Club' : free.includes(x.weekday) ? 'Libre' : 'Jour off'));
   })), confirm?.item.key === item.key && /*#__PURE__*/React.createElement("div", {
     className: "notice warning stack-sm",
     role: "alert"
-  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, fullDate(confirm.date), " :"), " ", confirm.why, " Placer quand m\xEAme ?"), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("strong", null, ptLongDay(confirm.date), " :"), " ", confirm.why, " Placer quand m\xEAme ?"), /*#__PURE__*/React.createElement("div", {
     className: "button-row"
   }, /*#__PURE__*/React.createElement(PTButton, {
     primary: true,
@@ -307,136 +329,81 @@ function PTCalendar({
     onBack: () => go('pathway'),
     eyebrow: phase ? `${phase.name} · semaine ${week.phase.week}` : 'Mon plan',
     title: "Mon planning."
-  }, "Ta semaine, jour par jour."), /*#__PURE__*/React.createElement("div", {
+  }, "Ta semaine d\u2019un coup d\u2019\u0153il. Touche un jour pour ses s\xE9ances."), /*#__PURE__*/React.createElement("div", {
     className: "stack-lg"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
   }, /*#__PURE__*/React.createElement("div", {
     className: "calendar-nav"
   }, /*#__PURE__*/React.createElement("button", {
     className: "icon-button",
     "aria-label": "Semaine pr\xE9c\xE9dente",
-    onClick: () => setShift(shift - 1)
+    onClick: () => {
+      setShift(shift - 1);
+      setPicked(null);
+    }
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "back",
     size: 18
   })), /*#__PURE__*/React.createElement("strong", null, "Semaine du ", ptShortDay(monday)), /*#__PURE__*/React.createElement("button", {
     className: "icon-button",
     "aria-label": "Semaine suivante",
-    onClick: () => setShift(shift + 1)
+    onClick: () => {
+      setShift(shift + 1);
+      setPicked(null);
+    }
   }, /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  }))), /*#__PURE__*/React.createElement("p", {
-    className: "calendar-balance"
-  }, /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, physCount), " muscu"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.skills.placed), " skills"), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, week.days.flatMap(d => d.items).filter(x => x.type === 'shooting').length), " tir"), BC && /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, cardioCount), " cardio"), /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "cette semaine")), week.skills.placed < week.skills.wanted && /*#__PURE__*/React.createElement("p", {
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "calendar-grid",
+    role: "group",
+    "aria-label": "Ta semaine"
+  }, week.days.map(d => {
+    const items = d.items.filter(x => x.type !== 'care'),
+      past = diff0(d.date, now) < 0;
+    return /*#__PURE__*/React.createElement("button", {
+      key: d.date,
+      className: `calendar-cell${d.date === now ? ' is-today' : ''}${d.date === open ? ' is-open' : ''}${past ? ' is-past' : ''}${d.before ? ' is-before' : ''}`,
+      "aria-pressed": d.date === open,
+      "aria-label": `${d.label} ${ptShortDay(d.date)} : ${items.length ? items.map(x => x.label).join(', ') : d.club.match ? 'match' : d.club.practice ? 'club' : 'repos'}`,
+      disabled: d.before && !d.items.length,
+      onClick: () => pick(d.date)
+    }, /*#__PURE__*/React.createElement("small", null, d.label.slice(0, 3)), /*#__PURE__*/React.createElement("em", null, Number(d.date.slice(8))), /*#__PURE__*/React.createElement("i", {
+      "aria-hidden": "true"
+    }, items.map(x => /*#__PURE__*/React.createElement("b", {
+      key: x.key,
+      className: `theme-dot theme-${ptThemeOf(x)} is-${x.status}`
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: ptThemeIcon[ptThemeOf(x)] || 'weight',
+      size: 12
+    }))), !items.length && !d.club.match && !d.club.practice && /*#__PURE__*/React.createElement("b", {
+      className: "theme-dot is-rest"
+    })), d.club.match ? /*#__PURE__*/React.createElement("span", {
+      className: "cell-tag is-match"
+    }, "Match") : d.club.practice ? /*#__PURE__*/React.createElement("span", {
+      className: "cell-tag"
+    }, "Club") : null);
+  })), themesInWeek.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "calendar-legend"
+  }, themesInWeek.map(t => /*#__PURE__*/React.createElement("span", {
+    key: t,
+    className: `theme-${t}`
+  }, /*#__PURE__*/React.createElement("b", {
+    className: "theme-dot"
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: ptThemeIcon[t] || 'weight',
+    size: 12
+  })), ptThemeLabel[t] || t)))), /*#__PURE__*/React.createElement(PTThemesOff, {
+    data: data,
+    go: go
+  }), shift === 0 && /*#__PURE__*/React.createElement(PTThemeSuggestion, {
+    data: data,
+    update: update,
+    notify: notify
+  }), week.skills.placed < week.skills.wanted && /*#__PURE__*/React.createElement("p", {
     className: "notice warning"
-  }, week.skills.wanted - week.skills.placed, " s\xE9ance", week.skills.wanted - week.skills.placed > 1 ? 's' : '', " skills sans place cette semaine : r\xE8gle un jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("details", {
-    className: "card stack-sm calendar-life disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, /*#__PURE__*/React.createElement("strong", null, "Ma semaine type"), /*#__PURE__*/React.createElement("small", null, "Le type de chaque jour, toutes les semaines")), /*#__PURE__*/React.createElement("div", {
-    className: "stack-sm"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "calendar-modes"
-  }, SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("label", {
-    key: d,
-    className: "calendar-mode-row"
-  }, /*#__PURE__*/React.createElement("span", null, d), /*#__PURE__*/React.createElement("select", {
-    value: weekMode(i),
-    onChange: e => setMode(SP.at(monday, i), e.target.value, true)
-  }, modeOptions.map(o => /*#__PURE__*/React.createElement("option", {
-    key: o.value,
-    value: o.value
-  }, o.label)))))), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "\xAB Auto \xBB : l\u2019app choisit selon tes r\xE8gles de charge. \xAB Muscu + skills \xBB : la s\xE9ance skills, raccourcie, suit la s\xE9ance physique."), /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "S\xE9ances physiques / semaine"), /*#__PURE__*/React.createElement(PTChips, {
-    value: perWeek,
-    onChange: v => setLife('sessions', String(v)),
-    options: [2, 3, 4, 5, 6].map(n => ({
-      value: n,
-      label: String(n)
-    }))
-  })), /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "Terrain de basket"), /*#__PURE__*/React.createElement(PTChips, {
-    value: !!(data.calendar && data.calendar.courtNear),
-    onChange: v => update(s => ({
-      ...s,
-      calendar: {
-        ...(SP.validateCalendar(s.calendar) || {
-          moves: {},
-          skips: {},
-          forced: {},
-          week: {},
-          dates: {},
-          excused: null,
-          rain: []
-        }),
-        courtNear: v
-      }
-    })),
-    options: [{
-      value: false,
-      label: 'Loin de chez moi'
-    }, {
-      value: true,
-      label: 'À côté'
-    }]
-  })), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, data.calendar && data.calendar.courtNear ? 'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.' : 'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'), BC && /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "Cardio / semaine, club compris"), /*#__PURE__*/React.createElement(PTChips, {
-    value: cardioPerWeek,
-    onChange: setCardioPerWeek,
-    options: [0, 1, 2, 3].map(n => ({
-      value: n,
-      label: String(n)
-    }))
-  })), BC && BC.circuitPerWeek && /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "Circuit training full body / semaine"), /*#__PURE__*/React.createElement(PTChips, {
-    value: circuitPerWeek,
-    onChange: setCircuit,
-    options: [0, 1].map(n => ({
-      value: n,
-      label: String(n)
-    }))
-  })), BC && BC.circuitPerWeek && circuitPerWeek > 0 && /*#__PURE__*/React.createElement("label", {
-    className: "calendar-mode-row"
-  }, /*#__PURE__*/React.createElement("span", null, "Jour du circuit"), /*#__PURE__*/React.createElement("select", {
-    "aria-label": "Jour du circuit training",
-    value: circuitDay,
-    onChange: e => setCircuitDay(e.target.value)
-  }, /*#__PURE__*/React.createElement("option", {
-    value: "auto"
-  }, "L\u2019app choisit"), SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("option", {
-    key: d,
-    value: i
-  }, d)))), sk ? /*#__PURE__*/React.createElement("div", {
-    className: "topline"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "fine"
-  }, "S\xE9ances skills / semaine"), /*#__PURE__*/React.createElement(PTChips, {
-    value: sk.perWeek,
-    onChange: setSkillsPerWeek,
-    options: [1, 2, 3, 4].map(n => ({
-      value: n,
-      label: String(n)
-    }))
-  })) : /*#__PURE__*/React.createElement("button", {
-    className: "text-button",
-    onClick: () => go('skills-quiz')
-  }, "Faire le questionnaire skills pour ajouter des s\xE9ances skills \u2192"))), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, week.skills.wanted - week.skills.placed, " s\xE9ance", week.skills.wanted - week.skills.placed > 1 ? 's' : '', " skills sans place cette semaine : r\xE8gle un jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), week.warnings.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "notice warning"
   }, /*#__PURE__*/React.createElement("ul", {
     className: "reason-list"
@@ -454,9 +421,9 @@ function PTCalendar({
     className: "card stack-sm calendar-unplaced-day"
   }, /*#__PURE__*/React.createElement("strong", null, "\xC0 placer cette semaine"), week.unplaced.map(item => /*#__PURE__*/React.createElement("div", {
     key: item.key,
-    className: "calendar-item calendar-unplaced is-planned"
+    className: `calendar-item calendar-unplaced is-planned theme-${ptThemeOf(item)}`
   }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: ptCalIcon[item.type] || 'weight',
+    name: ptThemeIcon[ptThemeOf(item)] || 'weight',
     size: 18
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min"), /*#__PURE__*/React.createElement("small", {
     className: "calendar-warning"
@@ -471,76 +438,88 @@ function PTCalendar({
     }
   }, "Choisir le jour")), moving === item.key && movePanel(item, null)))), /*#__PURE__*/React.createElement("ol", {
     className: "calendar-week"
-  }, week.days.filter(d => !(d.before && d.items.length === 0)).map(d => /*#__PURE__*/React.createElement("li", {
-    key: d.date,
-    className: `calendar-day${d.date === now ? ' is-today' : ''}${d.club.match ? ' is-match' : ''}`
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "calendar-day-head"
-  }, /*#__PURE__*/React.createElement("strong", null, d.label), /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, ptShortDay(d.date)), !d.club.match && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("select", {
-    className: "calendar-day-mode",
-    "aria-label": `Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`,
-    value: d.mode === 'auto' && !d.free ? 'off' : d.mode,
-    onChange: e => setMode(d.date, e.target.value, false)
-  }, modeOptions.map(o => /*#__PURE__*/React.createElement("option", {
-    key: o.value,
-    value: o.value
-  }, o.label))), d.club.match && /*#__PURE__*/React.createElement("span", {
-    className: "badge"
-  }, "Match"), d.club.practice && /*#__PURE__*/React.createElement("span", {
-    className: "badge quiet"
-  }, "Club"), !d.free && !d.club.match && !d.club.practice && /*#__PURE__*/React.createElement("span", {
-    className: "caption"
-  }, "non dispo"), d.weighIn && window.BodyWeight && /*#__PURE__*/React.createElement("button", {
-    className: "text-button calendar-weigh",
-    onClick: () => go('weight')
-  }, "Pes\xE9e du matin")), d.date === now && typeof PTMishap === 'function' && d.items.some(x => x.status !== 'done') && /*#__PURE__*/React.createElement("button", {
-    className: "text-button calendar-mishap",
-    onClick: () => go('mishap')
-  }, "Je ne peux pas aujourd\u2019hui \u2192"), d.date === now && SP.swapOptions && /*#__PURE__*/React.createElement("button", {
-    className: "text-button calendar-swap",
-    "aria-expanded": swapOpen,
-    onClick: () => setSwapOpen(!swapOpen)
-  }, "Faire la s\xE9ance d\u2019un autre jour"), d.date === now && swapOpen && /*#__PURE__*/React.createElement(PTSwapPicker, {
-    data: data,
-    update: update,
-    notify: notify,
-    after: () => setSwapOpen(false)
-  }), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos'), d.items.map((item, idx) => /*#__PURE__*/React.createElement("div", {
-    key: item.key,
-    className: `calendar-item is-${item.status}`
-  }, /*#__PURE__*/React.createElement(PTIcon, {
-    name: ptCalIcon[item.type] || 'weight',
-    size: 18
-  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min \xB7 ", ptCalStatus[item.status], item.moved ? ' · placée par toi' : '', item.legs === 'heavy' ? ' · jambes' : ''), item.warning && /*#__PURE__*/React.createElement("small", {
-    className: "calendar-warning"
-  }, "\u26A0 ", item.warning)), item.status !== 'done' && diff0(d.date, now) >= 0 && /*#__PURE__*/React.createElement("span", {
-    className: "calendar-actions"
-  }, d.date === now && /*#__PURE__*/React.createElement(PTButton, {
-    primary: d.items.filter(x => x.status !== 'done').indexOf(item) === 0,
-    onClick: () => launch(item, d)
-  }, "Lancer"), d.date === now && typeof PTMishap !== 'function' && /*#__PURE__*/React.createElement("button", {
-    className: "chip-action",
-    onClick: () => cannot(item)
-  }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
-    className: "text-button calendar-move-btn",
-    "aria-expanded": moving === item.key,
-    onClick: () => {
-      setConfirm(null);
-      setMoving(moving === item.key ? null : item.key);
-    }
-  }, "Choisir le jour")), moving === item.key && movePanel(item, d.date)))))), /*#__PURE__*/React.createElement("details", {
-    className: "disclosure"
-  }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
-    className: "reason-list"
-  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club (le basket y est d\xE9j\xE0), sauf si tu r\xE8gles ce jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("li", null, "Skills sans jour libre : elles passent apr\xE8s une s\xE9ance physique, en version courte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine."), /*#__PURE__*/React.createElement("li", null, "Circuit training : \xE0 la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S\u2019il n\u2019a pas de jour id\xE9al, il reste au programme avec une alerte, plut\xF4t que de dispara\xEEtre.")), /*#__PURE__*/React.createElement("p", {
-    className: "fine"
-  }, "Ce sont des conventions d\u2019entra\xEEnement courantes, pas des normes m\xE9dicales (voir les sources du plan)."))), /*#__PURE__*/React.createElement("div", {
+  }, visible.map(d => {
+    const isOpen = d.date === open,
+      future = diff0(d.date, now) >= 0;
+    return /*#__PURE__*/React.createElement("li", {
+      key: d.date,
+      id: `day-${d.date}`,
+      className: `calendar-day${d.date === now ? ' is-today' : ''}${d.club.match ? ' is-match' : ''}${isOpen ? ' is-open' : ' is-closed'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "calendar-day-head"
+    }, isOpen ? /*#__PURE__*/React.createElement("strong", null, d.label) : /*#__PURE__*/React.createElement("button", {
+      className: "calendar-day-toggle",
+      "aria-expanded": false,
+      onClick: () => pick(d.date)
+    }, /*#__PURE__*/React.createElement("strong", null, d.label)), /*#__PURE__*/React.createElement("span", {
+      className: "caption"
+    }, ptShortDay(d.date)), isOpen && !d.club.match && future && /*#__PURE__*/React.createElement("select", {
+      className: "calendar-day-mode",
+      "aria-label": `Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`,
+      value: d.mode === 'auto' && !d.free ? 'off' : d.mode,
+      onChange: e => setMode(d.date, e.target.value)
+    }, modeOptions(d.date).map(o => /*#__PURE__*/React.createElement("option", {
+      key: o.value,
+      value: o.value
+    }, o.label))), d.club.match && /*#__PURE__*/React.createElement("span", {
+      className: "badge"
+    }, "Match"), d.club.practice && /*#__PURE__*/React.createElement("span", {
+      className: "badge quiet"
+    }, "Club"), !d.free && !d.club.match && !d.club.practice && /*#__PURE__*/React.createElement("span", {
+      className: "caption"
+    }, "non dispo"), isOpen && d.weighIn && window.BodyWeight && /*#__PURE__*/React.createElement("button", {
+      className: "text-button calendar-weigh",
+      onClick: () => go('weight')
+    }, "Pes\xE9e du matin")), isOpen && d.date === now && typeof PTMishap === 'function' && d.items.some(x => x.status !== 'done') && /*#__PURE__*/React.createElement("button", {
+      className: "text-button calendar-mishap",
+      onClick: () => go('mishap')
+    }, "Je ne peux pas aujourd\u2019hui \u2192"), isOpen && d.date === now && SP.swapOptions && /*#__PURE__*/React.createElement("button", {
+      className: "text-button calendar-swap",
+      "aria-expanded": swapOpen,
+      onClick: () => setSwapOpen(!swapOpen)
+    }, "Faire la s\xE9ance d\u2019un autre jour"), isOpen && d.date === now && swapOpen && /*#__PURE__*/React.createElement(PTSwapPicker, {
+      data: data,
+      update: update,
+      notify: notify,
+      after: () => setSwapOpen(false)
+    }), d.items.length === 0 && /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, d.before ? 'Avant le début de ton plan.' : d.club.match ? 'Échauffement avant match, rien d’autre.' : d.club.practice ? 'Entraînement au club.' : 'Repos'), d.items.map(item => /*#__PURE__*/React.createElement("div", {
+      key: item.key,
+      className: `calendar-item is-${item.status} theme-${ptThemeOf(item)}`,
+      onClick: isOpen ? undefined : () => pick(d.date)
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: ptThemeIcon[ptThemeOf(item)] || 'weight',
+      size: 18
+    }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, item.label), /*#__PURE__*/React.createElement("small", null, item.minutes, " min \xB7 ", ptCalStatus[item.status], item.moved ? ' · placée par toi' : '', item.legs === 'heavy' ? ' · jambes' : ''), isOpen && item.warning && /*#__PURE__*/React.createElement("small", {
+      className: "calendar-warning"
+    }, "\u26A0 ", item.warning)), isOpen && item.status !== 'done' && future && /*#__PURE__*/React.createElement("span", {
+      className: "calendar-actions"
+    }, d.date === now && /*#__PURE__*/React.createElement(PTButton, {
+      primary: d.items.filter(x => x.status !== 'done').indexOf(item) === 0,
+      onClick: () => launch(item, d)
+    }, "Lancer"), d.date === now && typeof PTMishap !== 'function' && /*#__PURE__*/React.createElement("button", {
+      className: "chip-action",
+      onClick: () => cannot(item)
+    }, "Je ne peux pas aujourd\u2019hui"), /*#__PURE__*/React.createElement("button", {
+      className: "text-button calendar-move-btn",
+      "aria-expanded": moving === item.key,
+      onClick: () => {
+        setConfirm(null);
+        setMoving(moving === item.key ? null : item.key);
+      }
+    }, "Choisir le jour")), isOpen && moving === item.key && movePanel(item, d.date))));
+  })), /*#__PURE__*/React.createElement("div", {
     className: "home-options"
   }, /*#__PURE__*/React.createElement("button", {
+    className: "home-action",
+    onClick: () => go('themes')
+  }, /*#__PURE__*/React.createElement(PTIcon, {
+    name: "spark"
+  }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Mes th\xE8mes"), /*#__PURE__*/React.createElement("small", null, "Allumer, \xE9teindre ou mettre en pause muscu, skills, tir, cardio\u2026 et ta semaine type.")), /*#__PURE__*/React.createElement(PTIcon, {
+    name: "arrow",
+    size: 18
+  })), /*#__PURE__*/React.createElement("button", {
     className: "home-action",
     onClick: () => go('plan')
   }, /*#__PURE__*/React.createElement(PTIcon, {
@@ -556,7 +535,387 @@ function PTCalendar({
   }), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("strong", null, "Ajouter \xE0 mon agenda"), /*#__PURE__*/React.createElement("small", null, "Fichier .ics des 4 prochaines semaines, avec les rappels de ton t\xE9l\xE9phone.")), /*#__PURE__*/React.createElement(PTIcon, {
     name: "arrow",
     size: 18
-  })))));
+  }))), /*#__PURE__*/React.createElement("details", {
+    className: "disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, "Les r\xE8gles du calendrier"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("ul", {
+    className: "reason-list"
+  }, /*#__PURE__*/React.createElement("li", null, "Pas de jambes lourdes la veille ni le lendemain d\u2019un match."), /*#__PURE__*/React.createElement("li", null, "48 heures entre deux s\xE9ances de jambes lourdes."), /*#__PURE__*/React.createElement("li", null, "Pas de skills un jour de club (le basket y est d\xE9j\xE0), sauf si tu r\xE8gles ce jour sur \xAB Skills \xBB ou \xAB Muscu + skills \xBB."), /*#__PURE__*/React.createElement("li", null, "Skills sans jour libre : elles passent apr\xE8s une s\xE9ance physique, en version courte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Une seule s\xE9ance physique par jour, et pas plus que ton objectif de la semaine."), /*#__PURE__*/React.createElement("li", null, "Circuit training : \xE0 la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S\u2019il n\u2019a pas de jour id\xE9al, il reste au programme avec une alerte, plut\xF4t que de dispara\xEEtre."), /*#__PURE__*/React.createElement("li", null, "Un th\xE8me \xE9teint dans \xAB Mes th\xE8mes \xBB ne place plus rien ; le soin reste toujours l\xE0 tant qu\u2019une douleur est active.")), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Ce sont des conventions d\u2019entra\xEEnement courantes, pas des normes m\xE9dicales (voir les sources du plan).")))));
+}
+
+// Lot 45 : « Mes thèmes ». Chaque thème s'allume, s'éteint ou se met en pause ; le planning se refait seul.
+// Éteindre montre d'abord ce qui change cette semaine ; « Annuler » remet tout comme avant.
+function PTThemes({
+  data,
+  update,
+  go,
+  notify
+}) {
+  const [pending, setPending] = usePTState(null),
+    [undo, setUndo] = usePTState(null);
+  if (!SP || !SP.THEMES) return /*#__PURE__*/React.createElement("p", {
+    className: "empty"
+  }, "Th\xE8mes indisponibles.");
+  const now = PT.dateKey(),
+    monday = SP.mondayOf(now),
+    BC = window.BasketCardio;
+  const sk = data.skills?.program,
+    skActive = !!(sk && sk.status === 'active');
+  const cardioN = BC ? BC.perWeek(data) : 0,
+    circuitN = BC && BC.circuitPerWeek ? BC.circuitPerWeek(data) : 0;
+  const themeOn = id => SP.themeOn(data, id, now);
+  const isOn = id => themeOn(id) && (id === 'skills' ? skActive : id === 'cardio' ? cardioN > 0 : id === 'circuit' ? circuitN > 0 : true);
+  const offInfo = id => SP.validateThemes(data.themes).off[id];
+  const week = s => SP.weekSchedule(s, monday, now);
+  const slice = s => ({
+    themes: s.themes,
+    cardio: s.cardio,
+    skills: s.skills
+  });
+  const offState = (id, weeks) => ({
+    ...data,
+    themes: SP.setTheme(data, id, false, {
+      weeks,
+      now
+    })
+  });
+  const onState = id => {
+    let next = {
+      ...data,
+      themes: SP.setTheme(data, id, true, {
+        now
+      })
+    };
+    if (id === 'cardio' && cardioN === 0) next = {
+      ...next,
+      cardio: {
+        ...(next.cardio || {}),
+        perWeek: 1,
+        chosen: true
+      }
+    };
+    if (id === 'circuit') {
+      const c = {
+        ...(next.cardio || {})
+      };
+      delete c.circuit;
+      next = {
+        ...next,
+        cardio: c
+      };
+    }
+    return next;
+  };
+  const say = (d, word) => d.none ? `Rien ne change d’ici dimanche.` : [d.removed.length ? `${word} : ${d.removed.map(x => `${x.label} (${x.day})`).join(', ')}.` : '', d.added.length ? `Ajouté : ${d.added.map(x => `${x.label} (${x.day})`).join(', ')}.` : '', d.moved.length ? `Déplacé : ${d.moved.map(x => `${x.label} → ${x.day}`).join(', ')}.` : '', d.rest.length ? `${d.rest.join(', ')} : repos.` : ''].filter(Boolean).join(' ');
+  const apply = (next, text) => {
+    setUndo({
+      prev: slice(data),
+      text
+    });
+    setPending(null);
+    update(s => ({
+      ...s,
+      ...slice(next)
+    }));
+    notify(text);
+  };
+  const turnOn = id => {
+    const next = onState(id),
+      d = ptWeekDiff(week(data), week(next), now);
+    apply(next, `${SP.THEMES[id].label} rallumé. ${say(d, 'Retiré')}`);
+  };
+  const ask = id => setPending({
+    id,
+    weeks: 0
+  });
+  const setLife = (k, v) => update(s => {
+    const PD = window.PlayerDossier,
+      base = s.dossier || (PD ? PD.blank() : {
+        answers: {}
+      });
+    return {
+      ...s,
+      dossier: {
+        ...base,
+        answers: {
+          ...(base.answers || {}),
+          [k]: v
+        }
+      }
+    };
+  });
+  const setSkillsPerWeek = n => update(s => ({
+    ...s,
+    skills: {
+      ...s.skills,
+      program: {
+        ...s.skills.program,
+        perWeek: n,
+        status: 'active'
+      }
+    }
+  }));
+  const setCardioPerWeek = n => update(s => ({
+    ...s,
+    cardio: {
+      ...(s.cardio || {}),
+      perWeek: n,
+      chosen: true
+    }
+  }));
+  const circuitDay = Number.isInteger(data.cardio?.circuitDay) ? String(data.cardio.circuitDay) : 'auto';
+  const setCircuitDay = v => update(s => {
+    const c = {
+      ...(s.cardio || {})
+    };
+    if (v === 'auto') delete c.circuitDay;else c.circuitDay = Number(v);
+    return {
+      ...s,
+      cardio: c
+    };
+  });
+  const free = SP.freeDays(data);
+  const weekMode = wd => {
+    const m = SP.dayMode({
+      calendar: {
+        week: (data.calendar || {}).week || {}
+      },
+      themes: data.themes
+    }, SP.at(monday, wd));
+    return m === 'auto' && !free.includes(wd) ? 'off' : m;
+  };
+  const setWeekMode = (wd, mode) => update(s => {
+    const date = SP.at(monday, wd);
+    let next = {
+      ...s,
+      calendar: SP.setDayMode(s, date, mode, {
+        every: true
+      })
+    };
+    const days = SP.freeDays(s);
+    if (mode === 'auto' && !days.includes(wd)) {
+      const PD = window.PlayerDossier,
+        base = s.dossier || (PD ? PD.blank() : {
+          answers: {}
+        });
+      next = {
+        ...next,
+        dossier: {
+          ...base,
+          answers: {
+            ...(base.answers || {}),
+            freeDays: [...days, wd].sort((a, b) => a - b)
+          }
+        }
+      };
+    }
+    return next;
+  });
+  const modeOptions = Object.entries(SP.modesFor ? SP.modesFor(data, now) : SP.MODES).map(([value, label]) => ({
+    value,
+    label
+  }));
+  const status = id => {
+    const o = offInfo(id);
+    if (o) return o.until ? `En pause jusqu’au ${ptLongDay(o.until)}` : 'Éteint';
+    if (id === 'skills' && !skActive) return 'Questionnaire à faire';
+    if (id === 'cardio' && !cardioN) return 'Réglé sur 0';
+    if (id === 'circuit' && !circuitN) return 'Réglé sur 0';
+    return 'Allumé';
+  };
+  const settings = id => {
+    if (id === 'muscu') return /*#__PURE__*/React.createElement("div", {
+      className: "topline"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "fine"
+    }, "S\xE9ances physiques / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+      value: SP.target(data),
+      onChange: v => setLife('sessions', String(v)),
+      options: [2, 3, 4, 5, 6].map(n => ({
+        value: n,
+        label: String(n)
+      }))
+    }));
+    if (id === 'skills') return skActive ? /*#__PURE__*/React.createElement("div", {
+      className: "topline"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "fine"
+    }, "S\xE9ances skills / semaine"), /*#__PURE__*/React.createElement(PTChips, {
+      value: sk.perWeek,
+      onChange: setSkillsPerWeek,
+      options: [1, 2, 3, 4].map(n => ({
+        value: n,
+        label: String(n)
+      }))
+    })) : null;
+    if (id === 'cardio') return BC ? /*#__PURE__*/React.createElement("div", {
+      className: "topline"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "fine"
+    }, "Cardio / semaine, club compris"), /*#__PURE__*/React.createElement(PTChips, {
+      value: cardioN,
+      onChange: setCardioPerWeek,
+      options: [1, 2, 3].map(n => ({
+        value: n,
+        label: String(n)
+      }))
+    })) : null;
+    if (id === 'circuit') return /*#__PURE__*/React.createElement("label", {
+      className: "calendar-mode-row"
+    }, /*#__PURE__*/React.createElement("span", null, "Jour du circuit"), /*#__PURE__*/React.createElement("select", {
+      "aria-label": "Jour du circuit training",
+      value: circuitDay,
+      onChange: e => setCircuitDay(e.target.value)
+    }, /*#__PURE__*/React.createElement("option", {
+      value: "auto"
+    }, "L\u2019app choisit"), SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("option", {
+      key: d,
+      value: i
+    }, d))));
+    if (id === 'shooting') return /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, "Une s\xE9ance par semaine, plus une par jour r\xE9gl\xE9 sur \xAB Shooting \xBB dans ta semaine type.");
+    if (id === 'vivacite') return /*#__PURE__*/React.createElement("p", {
+      className: "fine"
+    }, "Une \xE0 deux fois par semaine, \xE0 partir de l\u2019\xE9tape 2 du parcours.");
+    return null;
+  };
+  const preview = pending ? ptWeekDiff(week(data), week(offState(pending.id, pending.weeks)), now) : null;
+  return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(PTPageHead, {
+    onBack: () => go('calendar'),
+    title: "Mes th\xE8mes."
+  }, "Garde ce que tu veux travailler. Le planning se refait seul, sans casser tes r\xE8gles de charge."), /*#__PURE__*/React.createElement("div", {
+    className: "stack-lg"
+  }, undo && /*#__PURE__*/React.createElement("div", {
+    className: "theme-undo",
+    role: "status"
+  }, /*#__PURE__*/React.createElement("p", null, undo.text), /*#__PURE__*/React.createElement("button", {
+    className: "text-button",
+    onClick: () => {
+      update(s => ({
+        ...s,
+        ...undo.prev
+      }));
+      setUndo(null);
+      notify('Retour au planning d’avant.');
+    }
+  }, "Annuler")), /*#__PURE__*/React.createElement(PTThemeSuggestion, {
+    data: data,
+    update: update,
+    notify: notify
+  }), /*#__PURE__*/React.createElement("ul", {
+    className: "theme-list"
+  }, Object.entries(SP.THEMES).map(([id, t]) => {
+    const on = isOn(id),
+      asking = pending?.id === id;
+    return /*#__PURE__*/React.createElement("li", {
+      key: id,
+      className: `theme-row theme-${id}${on ? ' is-on' : ' is-off'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "theme-row-head"
+    }, /*#__PURE__*/React.createElement("b", {
+      className: "theme-dot is-big"
+    }, /*#__PURE__*/React.createElement(PTIcon, {
+      name: ptThemeIcon[id] || 'weight',
+      size: 18
+    })), /*#__PURE__*/React.createElement("span", {
+      className: "theme-row-text"
+    }, /*#__PURE__*/React.createElement("strong", null, t.label), /*#__PURE__*/React.createElement("small", null, status(id))), id === 'skills' && !skActive && themeOn(id) ? /*#__PURE__*/React.createElement("button", {
+      className: "text-button",
+      onClick: () => go('skills-quiz')
+    }, "Faire le questionnaire") : /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      role: "switch",
+      "aria-checked": on,
+      "aria-label": `${t.label} : ${on ? 'allumé' : 'éteint'}`,
+      className: "theme-switch",
+      onClick: () => on ? ask(id) : turnOn(id)
+    }, /*#__PURE__*/React.createElement("span", null))), /*#__PURE__*/React.createElement("p", {
+      className: "fine theme-what"
+    }, t.what), on && !asking && settings(id), asking && /*#__PURE__*/React.createElement("div", {
+      className: "theme-confirm stack-sm"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "topline"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "fine"
+    }, "Combien de temps ?"), /*#__PURE__*/React.createElement(PTChips, {
+      value: pending.weeks,
+      onChange: v => setPending({
+        ...pending,
+        weeks: v
+      }),
+      options: [{
+        value: 0,
+        label: 'Jusqu’à nouvel ordre'
+      }, {
+        value: 1,
+        label: '1 sem.'
+      }, {
+        value: 2,
+        label: '2 sem.'
+      }, {
+        value: 4,
+        label: '4 sem.'
+      }]
+    })), /*#__PURE__*/React.createElement("p", {
+      className: "theme-preview"
+    }, /*#__PURE__*/React.createElement("strong", null, "Cette semaine"), " ", say(preview, 'En moins')), id === 'muscu' && /*#__PURE__*/React.createElement("p", {
+      className: "notice warning"
+    }, "Ton parcours \xAB Retour au jeu \xBB se met en pause : ses \xE9tapes et ses tests n\u2019avancent plus tant que la muscu est \xE9teinte."), /*#__PURE__*/React.createElement("div", {
+      className: "button-row"
+    }, /*#__PURE__*/React.createElement(PTButton, {
+      primary: true,
+      onClick: () => apply(offState(id, pending.weeks), `${t.label} ${pending.weeks ? `en pause ${pending.weeks} sem.` : 'éteint'}. ${say(preview, 'Retiré')}`)
+    }, pending.weeks ? 'Mettre en pause' : 'Éteindre'), /*#__PURE__*/React.createElement(PTButton, {
+      quiet: true,
+      onClick: () => setPending(null)
+    }, "Annuler"))));
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "Le soin n\u2019est pas un th\xE8me : il reste au programme tant qu\u2019une douleur est active. Extra garde tout \xE0 la carte, tir compris."), /*#__PURE__*/React.createElement("details", {
+    className: "card stack-sm calendar-life disclosure"
+  }, /*#__PURE__*/React.createElement("summary", null, /*#__PURE__*/React.createElement("strong", null, "Ma semaine type"), /*#__PURE__*/React.createElement("small", null, "Le type de chaque jour, toutes les semaines")), /*#__PURE__*/React.createElement("div", {
+    className: "stack-sm"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "calendar-modes"
+  }, SP.DAYS.map((d, i) => /*#__PURE__*/React.createElement("label", {
+    key: d,
+    className: "calendar-mode-row"
+  }, /*#__PURE__*/React.createElement("span", null, d), /*#__PURE__*/React.createElement("select", {
+    value: weekMode(i),
+    onChange: e => setWeekMode(i, e.target.value)
+  }, modeOptions.map(o => /*#__PURE__*/React.createElement("option", {
+    key: o.value,
+    value: o.value
+  }, o.label)))))), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, "\xAB Auto \xBB : l\u2019app choisit selon tes r\xE8gles de charge. \xAB Muscu + skills \xBB : la s\xE9ance skills, raccourcie, suit la s\xE9ance physique. Les types li\xE9s \xE0 un th\xE8me \xE9teint sont masqu\xE9s."), /*#__PURE__*/React.createElement("div", {
+    className: "topline"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "fine"
+  }, "Terrain de basket"), /*#__PURE__*/React.createElement(PTChips, {
+    value: !!(data.calendar && data.calendar.courtNear),
+    onChange: v => update(s => ({
+      ...s,
+      calendar: {
+        ...(SP.validateCalendar(s.calendar) || SP.blankCalendar()),
+        courtNear: v
+      }
+    })),
+    options: [{
+      value: false,
+      label: 'Loin de chez moi'
+    }, {
+      value: true,
+      label: 'À côté'
+    }]
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "fine"
+  }, data.calendar && data.calendar.courtNear ? 'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.' : 'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'))), /*#__PURE__*/React.createElement(PTButton, {
+    quiet: true,
+    onClick: () => go('calendar')
+  }, "Voir mon planning")));
 }
 const diff0 = (a, b) => PT.dayDiff(a, b);
 

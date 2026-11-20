@@ -68,7 +68,7 @@ function ptCoachSeason(data,today){
   const SP=window.SeasonPlan;if(!SP)return null;
   try{const built=SP.build(data,today),week=SP.weekSchedule(data,today,today),next=SP.at(today,1);
     const on=date=>{const d=week.days.find(x=>x.date===date)||SP.weekSchedule(data,date,today).days.find(x=>x.date===date);return d?d.items.map(x=>({label:x.label,legs:x.legs,status:x.status})):[];};
-    return {phase:built.current.phase?.name||null,week:built.current.week,deload:built.deload,today:on(today),tomorrow:on(next),warnings:week.warnings};}catch(e){return null;}
+    return {phase:built.current.phase?.name||null,week:built.current.week,deload:built.deload,today:on(today),tomorrow:on(next),warnings:week.warnings,themesOff:SP.themesOff?SP.themesOff(data,today).map(t=>t.until?`${t.label} (en pause jusqu’au ${t.until})`:t.label):[]};}catch(e){return null;}
 }
 // Tendances sur 14 jours : douleur (bilans du coach), forme, poids.
 function ptCoachTrends(data,today){

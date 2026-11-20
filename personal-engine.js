@@ -675,6 +675,8 @@
     const season=globals.SeasonPlan||tryRequire('./season-plan.js');
     s.seasonPlan=s.seasonPlan==null?null:season?season.validate(s.seasonPlan):null;
     s.calendar=s.calendar==null?null:season?season.validateCalendar(s.calendar):null;
+    // Lot 45 : thèmes éteints ou en pause (« Mes thèmes »), absents des anciennes sauvegardes : tout allumé.
+    s.themes=s.themes==null?null:season&&season.validateThemes?season.validateThemes(s.themes):null;
     // Lot 17 : séances de tir et préférences du poids de forme.
     const shooting=globals.Shooting||tryRequire('./shooting.js'),bw=globals.BodyWeight||tryRequire('./body-weight.js');
     s.shooting=s.shooting==null?null:shooting?shooting.validate(s.shooting):null;
@@ -1056,7 +1058,7 @@
   function exportBundle(state,legacy={}) {return {app:'Rehaab',exportedAt:new Date().toISOString(),state:validateState(state),legacy};}
   // Repartir à zéro : questionnaires, bilan, tests, paliers, parcours, plan et calendrier effacés ; l'accueil redemande le dossier.
   // Le matériel, les paliers de charge et les infos de base (prénom, âge, taille, poids) restent. all : l'historique part aussi.
-  const PROFILE_KEYS=['player','pathway','athletic','dossier','basketProfile','skills','seasonPlan','calendar','weeklyReviews','coachLog','program','weightPrefs','nutrition','rehab','draft'];
+  const PROFILE_KEYS=['player','pathway','athletic','dossier','basketProfile','skills','seasonPlan','calendar','themes','weeklyReviews','coachLog','program','weightPrefs','nutrition','rehab','draft'];
   function resetProfile(state,{all=false}={}) {
     const base=initialState(),next={...state};
     PROFILE_KEYS.forEach(k=>{next[k]=base[k]!==undefined?clone(base[k]):null;});

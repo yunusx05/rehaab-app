@@ -73,7 +73,7 @@ function PTSportToday({data,update,go,notify}){
     {typeof PTDoneToday==='function'&&<PTDoneToday data={data} go={go}/>}
     {typeof PTWeekReview==='function'&&<PTWeekReview data={data} update={update} notify={notify}/>}
     <section className="week-hub sport-reveal" aria-label="Ma semaine et la séance du jour">
-      {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}
+      {typeof PTWeekStrip==='function'&&<PTWeekStrip data={data} go={go}/>}{typeof PTThemesOff==='function'&&<PTThemesOff data={data} go={go}/>}
       {data.draft&&<button className="resume-workout" onClick={()=>go(data.draft.status==='active'?'session':'preview')}><PTThumbnail exercise={data.draft.exercises[0]}/><span><small>{data.draft.status==='active'?'Reprendre la séance':'Ta séance est prête'}</small><strong>{data.draft.title}</strong><span className="mini-progress"><i style={{transform:`scaleX(${total?done/total:0})`}}/></span></span><span className="round-play"><PTIcon name="play" size={20}/></span></button>}
       {data.draft&&typeof PTDraftCancel==='function'&&<PTDraftCancel update={update} notify={notify} compact/>}
       {!data.draft&&typeof PTTodayPlan==='function'&&<PTTodayPlan data={data} update={update} go={go} notify={notify}/>}

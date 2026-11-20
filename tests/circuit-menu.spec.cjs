@@ -62,9 +62,10 @@ test('écran : jour du circuit réglable dans Ma semaine type ; la barre du bas 
   await page.setViewportSize({width:390,height:844});
   await page.clock.install({time:new Date('2026-10-14T09:00:00')});
   await page.addInitScript(({data,key})=>{if(!sessionStorage.getItem('s')){localStorage.setItem(key,JSON.stringify(data));sessionStorage.setItem('s','1');}},{data:joueur(),key:PT.STORAGE_KEY});
-  await page.goto('/#calendar');
-  await page.getByText('Ma semaine type').click();
+  // Lot 45 : le jour du circuit se règle dans « Mes thèmes ».
+  await page.goto('/#themes');
   await page.getByLabel('Jour du circuit training').selectOption('4');
+  await page.getByRole('button',{name:'Voir mon planning'}).click();
   await expect(page.locator('.calendar-day').nth(4)).toContainText('Circuit training');
   await expect.poll(()=>page.evaluate(k=>(JSON.parse(localStorage.getItem(k)).cardio||{}).circuitDay,PT.STORAGE_KEY)).toBe(4);
   // La page elle-même ne défile jamais ; c'est #root qui défile.

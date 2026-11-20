@@ -78,6 +78,48 @@
   // week : semaine type (par jour, 0 = lundi) ; dates : réglage d'un seul jour, prioritaire sur la semaine type.
   // Lot 31 bis : « Shooting » = jour réservé à la séance de tir (placée à la main), comme un jour skills mais seulement le tir.
   const MODES = {auto:'Auto',muscu:'Muscu',skills:'Skills',shooting:'Shooting',both:'Muscu + skills',off:'Repos'};
+  // Lot 45 : thèmes activables. Chaque thème s'allume, s'éteint ou se met en pause jusqu'à un dimanche ; le planning se refait sans lui.
+  // Le soin n'est pas un thème : il reste au programme tant qu'une douleur est active.
+  const THEMES = {
+    muscu:{label:'Muscu',icon:'weight',what:'Ton parcours « Retour au jeu » et la muscu complémentaire.'},
+    skills:{label:'Skills',icon:'court',what:'Dribble, finition, appuis, défense. Le tir suit son propre réglage.'},
+    shooting:{label:'Tir',icon:'basket',what:'La séance de tir, et le tir dans les skills et les blocs après la muscu. Extra le garde à la carte.'},
+    vivacite:{label:'Vivacité',icon:'spark',what:'Départs, appuis rapides, 15 min au terrain.'},
+    cardio:{label:'Cardio',icon:'run',what:'Corde, course fractionnée, navettes, sable.'},
+    circuit:{label:'Circuit training',icon:'run',what:'Circuit full body à la maison, une fois par semaine.'}
+  };
+  function blankThemes() {return {off:{},dismissed:[]};}
+  function validateThemes(v) {
+    if(!v||typeof v!=='object'||Array.isArray(v)) return blankThemes();
+    const off={};
+    Object.entries(v.off&&typeof v.off==='object'&&!Array.isArray(v.off)?v.off:{}).forEach(([id,o])=>{if(THEMES[id]&&o&&typeof o==='object')off[id]={until:isDay(o.until)?o.until:null};});
+    const dismissed=(Array.isArray(v.dismissed)?v.dismissed:[]).filter(k=>typeof k==='string'&&/^\d{4}-\d{2}-\d{2}:[a-z+-]{2,30}$/.test(k)).slice(-20);
+    return {off,dismissed};
+  }
+  // Thème allumé pour la semaine de ce jour ? Une pause couvre toute semaine qui commence au plus tard à sa date de fin.
+  function themeOn(state,id,date=today()) {
+    const o=validateThemes(state&&state.themes).off[id];
+    if(!o) return true;
+    return !!(o.until&&diff(mondayOf(date),o.until)>0);
+  }
+  function themesOff(state,date=today()) {return Object.keys(THEMES).filter(id=>!themeOn(state,id,date)).map(id=>({id,label:THEMES[id].label,until:validateThemes(state&&state.themes).off[id].until}));}
+  // weeks : 0 = éteint jusqu'à nouvel ordre ; 1, 2 ou 4 = pause jusqu'au dimanche de la semaine qui contient aujourd'hui + 7×N − 1 jours.
+  function setTheme(state,id,on,{weeks=0,now=today()}={}) {
+    const t=validateThemes(state&&state.themes),off={...t.off};
+    if(!THEMES[id]) return t;
+    if(on) delete off[id];
+    else off[id]={until:weeks>0?at(mondayOf(at(now,7*weeks-1)),6):null};
+    return {...t,off};
+  }
+  // Un type de journée qui n'a plus de sens quand un thème est éteint (ex. « Shooting » sans le tir).
+  function modeAllowed(state,mode,date) {
+    const on=id=>themeOn(state,id,date);
+    if(mode==='shooting') return on('shooting');
+    if(mode==='skills') return on('skills')||on('shooting');
+    if(mode==='both') return on('skills')&&on('muscu');
+    return true;
+  }
+  function modesFor(state,date=today()) {return Object.fromEntries(Object.entries(MODES).filter(([m])=>modeAllowed(state,m,date)));}
   function blankCalendar() {return {moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[],courtNear:false};}
   function validateCalendar(v) {
     if(!v||typeof v!=='object'||Array.isArray(v)) return null;
@@ -112,7 +154,11 @@
   }
   function dayMode(state,date) {
     const cal=validateCalendar(state.calendar)||blankCalendar();
-    return cal.dates[date]||cal.week[weekday(date)]||'auto';
+    const m=cal.dates[date]||cal.week[weekday(date)]||'auto';
+    // Lot 45 : réglage gardé, mais sans effet tant que son thème est éteint (« Muscu + skills » sans skills → muscu).
+    if(modeAllowed(state,m,date)) return m;
+    if(m==='both') return themeOn(state,'muscu',date)?'muscu':'skills';
+    return 'auto';
   }
   // every : appliquer à ce jour de la semaine, toutes les semaines (le réglage ponctuel de ce jour est retiré).
   function setDayMode(state,date,mode,{every=false}={}) {
@@ -169,8 +215,11 @@
     return ids.map(find).filter(e=>e&&(['squat','hinge','jump'].includes(e.pattern)||e.impact||e.kind==='plyo')).length;
   }
   function items(state, built, monday) {
-    const BP=BPL(), PT=PTL(), out=[], p=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
+    const BP=BPL(), PT=PTL(), p=state.pathway&&state.pathway.status!=='archived'?state.pathway:null;
     const a=state.dossier&&state.dossier.answers||{};
+    // Lot 45 : un thème éteint (ou en pause) cette semaine ne place rien. Le soin passe toujours.
+    const themeOf=x=>x.type==='pathway'||x.type==='muscu'?'muscu':x.kind==='wod'?'circuit':x.type;
+    const out=[];out.push=(...xs)=>Array.prototype.push.apply(out,xs.filter(x=>x.type==='care'||!THEMES[themeOf(x)]||themeOn(state,themeOf(x),monday)));
     const max=Number(a.maxMinutes)||Number(state.checkIn&&state.checkIn.minutes)||45;
     const cur=built.current.id;
     if(BP&&(p||cur.startsWith('dev'))){
@@ -196,7 +245,7 @@
     // Lot 31 : deux sortes de séances basket. Les skills mélangent dribble, tir et lay-up ; la séance de tir (une par semaine) ne fait que tirer.
     // Toutes commencent par quelques minutes de dribble.
     const SK=SKL(),sk=state.skills&&state.skills.program&&state.skills.program.status==='active'?state.skills.program:null;
-    if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:'Skills · dribble, tir, lay-up',legs:'light',minutes:Math.min(max,sk.minutes||45)});
+    if(sk) for(let i=0;i<sk.perWeek;i++) out.push({key:`S${i+1}`,type:'skills',label:themeOn(state,'shooting',monday)?'Skills · dribble, tir, lay-up':'Skills · dribble, lay-up',legs:'light',minutes:Math.min(max,sk.minutes||45)});
     const hoop=a.hoop&&['daily','weekly'].includes(a.hoop);
     // Autant de séances de tir que de jours réglés sur « Shooting » cette semaine ; sinon une, placée par l'app.
     const shootDays=Array.from({length:7},(_,i)=>dayMode(state,at(monday,i))).filter(m=>m==='shooting').length;
@@ -392,6 +441,39 @@
     return out;
   }
 
+  // Lot 45 : un thème éteint libère des jours. Ils restent au repos ; l'app propose une seule chose, que tu acceptes ou non,
+  // et seulement si elle trouve sa place sans casser une règle de charge. Accepter = le réglage existant (+1 par semaine).
+  const SUGGEST={shooting:['skills'],skills:['cardio'],vivacite:['cardio'],circuit:['cardio'],cardio:['skills'],muscu:[]};
+  const SUGGEST_LABEL={skills:'une séance skills',cardio:'un cardio'};
+  function applyThemeSuggestion(state,target) {
+    if(target==='skills'){const sk=state.skills&&state.skills.program;if(!sk||sk.status!=='active'||(Number(sk.perWeek)||0)>=4)return null;return {...state,skills:{...state.skills,program:{...sk,perWeek:(Number(sk.perWeek)||0)+1}}};}
+    if(target==='cardio'){const CAR=CARL(),n=CAR?CAR.perWeek(state):0;if(!CAR||n>=3)return null;return {...state,cardio:{...(state.cardio||{}),perWeek:n+1,chosen:true}};}
+    return null;
+  }
+  function themeSuggestion(state, monday=mondayOf(today()), now=today()) {
+    monday=mondayOf(monday);
+    const off=themesOff(state,monday);if(!off.length) return null;
+    const t=validateThemes(state.themes),cur=weekSchedule(state,monday,now),full=weekSchedule({...state,themes:blankThemes()},monday,now);
+    const real=d=>d.items.filter(x=>x.type!=='care');
+    const freed=cur.days.filter((d,i)=>!real(d).length&&real(full.days[i]).length&&diff(d.date,now)>=0);
+    const keys=w=>w.days.filter(d=>diff(d.date,now)>=0).flatMap(d=>real(d).map(x=>x.key)),left=keys(cur);
+    const removed=keys(full).filter(k=>!left.includes(k)).length;
+    if(!removed) return null;
+    const count=(w,type)=>w.days.flatMap(d=>d.items).filter(x=>x.type===type).length,base=violations(state,cur).length;
+    for(const o of off) for(const target of SUGGEST[o.id]||[]){
+      const key=`${monday}:${o.id}+${target}`;
+      if(!themeOn(state,target,monday)||t.dismissed.includes(key)) continue;
+      const next=applyThemeSuggestion(state,target);if(!next) continue;
+      const after=weekSchedule(next,monday,now);
+      if(count(after,target)<=count(cur,target)||violations(next,after).length>base) continue;
+      const names=freed.map(d=>d.label.toLowerCase()),list=names.length>1?`${names.slice(0,-1).join(', ')} et ${names[names.length-1]}`:names[0];
+      const what=names.length?`${list} ${names.length>1?'deviennent des jours':'devient un jour'} de repos`:`${removed} séance${removed>1?'s':''} en moins cette semaine`;
+      return {key,id:target,from:o.id,label:`Ajouter ${SUGGEST_LABEL[target]} par semaine ?`,why:`${THEMES[o.id].label} ${o.until?'en pause':'éteint'} : ${what}. Tu peux garder ce repos, ou ajouter ${SUGGEST_LABEL[target]} par semaine.`};
+    }
+    return null;
+  }
+  function dismissThemeSuggestion(state,key) {const t=validateThemes(state.themes);return {...t,dismissed:[...t.dismissed.filter(k=>k!==key),key].slice(-20)};}
+
   function reschedule(state, monday, itemKey, toDate, opts={}) {
     monday=mondayOf(monday);
     const before=weekSchedule(state,monday),item=before.days.flatMap(d=>d.items).find(x=>x.key===itemKey)||(before.unplaced||[]).find(x=>x.key===itemKey);
@@ -586,5 +668,5 @@
     return state;
   }
 
-  return {DAYS,CYCLES,MODES,swapDays,unswap,swapOptions,courtAway,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
+  return {DAYS,CYCLES,MODES,THEMES,blankThemes,validateThemes,themeOn,themesOff,setTheme,modeAllowed,modesFor,themeSuggestion,applyThemeSuggestion,dismissThemeSuggestion,swapDays,unswap,swapOptions,courtAway,rainOn,setRain,restart,restartScope,dayMode,setDayMode,fitsMode,mondayOf,weekday,at,clubOf,freeDays,ruleBreakAt,unmove,resetNeed,blank,validate,validateArchitect,blankCalendar,validateCalendar,build,items,weekSchedule,violations,reschedule,missed,excuse,unexcuse,excusedToday,ics,review,applySuggestion,target};
 });

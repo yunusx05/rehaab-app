@@ -294,7 +294,8 @@ function ptCoachSeason(data, today) {
       deload: built.deload,
       today: on(today),
       tomorrow: on(next),
-      warnings: week.warnings
+      warnings: week.warnings,
+      themesOff: SP.themesOff ? SP.themesOff(data, today).map(t => t.until ? `${t.label} (en pause jusqu’au ${t.until})` : t.label) : []
     };
   } catch (e) {
     return null;

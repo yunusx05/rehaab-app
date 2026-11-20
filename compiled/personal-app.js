@@ -2436,7 +2436,7 @@ class PTErrorBoundary extends React.Component {
 }
 // Lot 41 : QI et nutrition retirés de la navigation (jamais utilisés) ; leurs données restent dans l'export. Extra prend leur place.
 const ptTabs = ['today', 'pathway', 'extra', 'profile'];
-const ptPlanRoutes = ['pathway', 'calendar', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'];
+const ptPlanRoutes = ['pathway', 'calendar', 'themes', 'plan', 'shooting', 'shooting-new', 'shooting-live', 'pathway-test', 'bilan', 'library', 'program', 'program-new', 'program-checkin', 'basket-profile', 'skills', 'skills-quiz'];
 function ptTabOf(route) {
   return ptPlanRoutes.includes(route) ? 'pathway' : route === 'extra' ? 'extra' : route === 'profile' || route === 'player' || route === 'weight' || route.startsWith('dossier') ? 'profile' : 'today';
 }
@@ -2614,6 +2614,7 @@ function PersonalApp() {
       'dossier-q': PTDossierChapter,
       'dossier-synthese': PTDossierSynthesis,
       calendar: PTCalendar,
+      themes: PTThemes,
       plan: PTSeasonPlan,
       'qi-scene': PTQiScenes,
       shooting: PTShooting,

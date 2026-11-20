@@ -26,13 +26,18 @@ test('planning : le cardio apparaît, le joueur règle la fréquence et le nombr
   await expect(page.getByRole('heading',{name:'Mon planning.'})).toBeVisible();
   await expect(page.locator('.calendar-item',{hasText:'Cardio · corde à sauter'}).first()).toBeVisible();
   await expect(page.locator('.calendar-item',{hasText:'Cardio · course fractionnée'}).first()).toBeVisible();
-  // Réglage dans « Ma semaine type » : 0 retire le cardio du planning.
-  await page.getByText('Ma semaine type').click();
-  const row=page.locator('.topline',{hasText:'Cardio / semaine, club compris'});
+  // Lot 45 : réglage dans « Mes thèmes ». Éteindre retire le cardio du planning ; rallumé, la fréquence choisie suit.
+  await page.getByRole('button',{name:/Mes thèmes/}).first().click();
+  const row=page.locator('.theme-row.theme-cardio');
   await expect(row.getByRole('button',{name:'3'})).toHaveAttribute('aria-pressed','true');
-  await row.getByRole('button',{name:'0'}).click();
+  await row.getByRole('switch').click();
+  await row.getByRole('button',{name:'Éteindre'}).click();
+  await page.getByRole('button',{name:'Voir mon planning'}).click();
   await expect(page.locator('.calendar-item',{hasText:'Cardio ·'})).toHaveCount(0);
+  await page.getByRole('button',{name:/Mes thèmes/}).first().click();
+  await row.getByRole('switch').click();
   await row.getByRole('button',{name:'1'}).click();
+  await page.getByRole('button',{name:'Voir mon planning'}).click();
   await expect(page.locator('.calendar-item',{hasText:'Cardio ·'})).toHaveCount(1);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   expect(errors).toEqual([]);

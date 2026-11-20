@@ -29,8 +29,47 @@ function ptCalendarPlan(data,item,day){
   return null;
 }
 
+// Lot 45 : thème de chaque séance (couleur et icône communes au planning, à « Mes thèmes » et à la légende).
+const ptThemeOf=item=>['pathway','muscu','reset'].includes(item.type)?'muscu':item.kind==='wod'?'circuit':item.type;
+const ptThemeLabel={muscu:'Muscu',skills:'Skills',shooting:'Tir',vivacite:'Vivacité',cardio:'Cardio',circuit:'Circuit',care:'Soin'};
+const ptThemeIcon={muscu:'weight',skills:'court',shooting:'basket',vivacite:'spark',cardio:'run',circuit:'run',care:'heart'};
+const ptLongDay=date=>new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'numeric'});
+
+// Ce qu'un changement de thèmes fait à la semaine en cours, d'aujourd'hui à dimanche.
+function ptWeekDiff(before,after,now){
+  const real=d=>d.items.filter(x=>x.type!=='care');
+  const list=w=>w.days.filter(d=>diff0(d.date,now)>=0).flatMap(d=>real(d).filter(x=>x.status==='planned').map(x=>({key:x.key,label:x.label,day:d.label.toLowerCase(),date:d.date})));
+  const a=list(before),b=list(after);
+  const removed=a.filter(x=>!b.some(y=>y.key===x.key)),added=b.filter(x=>!a.some(y=>y.key===x.key));
+  const moved=b.filter(x=>a.some(y=>y.key===x.key&&y.date!==x.date));
+  const rest=after.days.filter((d,i)=>diff0(d.date,now)>=0&&!real(d).length&&real(before.days[i]).length).map(d=>d.label.toLowerCase());
+  return {removed,added,moved,rest,none:!removed.length&&!added.length&&!moved.length};
+}
+
+// Thèmes éteints ou en pause : une ligne, avec le lien vers « Mes thèmes ».
+function PTThemesOff({data,go}){
+  if(!SP||!SP.themesOff)return null;
+  const off=SP.themesOff(data,PT.dateKey());
+  if(!off.length)return null;
+  const text=off.map(t=>t.until?`${t.label} en pause jusqu’au ${ptLongDay(t.until)}`:`${t.label} éteint`).join(' · ');
+  return <button className="themes-off" onClick={()=>go('themes')}><span><small>Hors de ton planning</small><strong>{text}</strong></span><span className="themes-off-link">Mes thèmes</span></button>;
+}
+
+// Un thème éteint libère des jours : l'app propose une seule chose, qu'on accepte ou non. Sinon, repos.
+function PTThemeSuggestion({data,update,notify}){
+  if(!SP||!SP.themeSuggestion)return null;
+  const now=PT.dateKey(),sug=SP.themeSuggestion(data,SP.mondayOf(now),now);
+  if(!sug)return null;
+  const accept=()=>{update(s=>{const n=SP.applyThemeSuggestion(s,sug.id);return n?{...n,themes:SP.dismissThemeSuggestion(n,sug.key)}:s;});notify('Ajouté. Le planning a trouvé sa place, sans casser tes règles de charge.');};
+  const keep=()=>{update(s=>({...s,themes:SP.dismissThemeSuggestion(s,sug.key)}));notify('Le repos reste du repos.');};
+  return <div className="theme-suggestion stack-sm" role="status">
+    <p><strong>{sug.label}</strong> {sug.why}</p>
+    <div className="button-row"><PTButton primary onClick={accept}>Oui, ajouter</PTButton><PTButton quiet onClick={keep}>Garder le repos</PTButton></div>
+  </div>;
+}
+
 function PTCalendar({data,update,go,notify}){
-  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[confirm,setConfirm]=usePTState(null),[error,setError]=usePTState(''),[swapOpen,setSwapOpen]=usePTState(false);
+  const [shift,setShift]=usePTState(0),[moving,setMoving]=usePTState(null),[confirm,setConfirm]=usePTState(null),[error,setError]=usePTState(''),[swapOpen,setSwapOpen]=usePTState(false),[picked,setPicked]=usePTState(null);
   if(!SP)return <p className="empty">Calendrier indisponible.</p>;
   const now=PT.dateKey(),monday=SP.at(SP.mondayOf(now),shift*7);
   const week=SP.weekSchedule(data,monday,now),phase=week.phase.phase;
@@ -47,93 +86,160 @@ function PTCalendar({data,update,go,notify}){
   // Liberté + alerte : un jour qui casse une règle demande confirmation, puis la séance y va quand même.
   const moveTo=(item,date,force=false)=>{const r=SP.reschedule(data,monday,item.key,date,{force});if(!r.ok&&r.canForce){setConfirm({item,date,why:r.why});return;}setMoving(null);setConfirm(null);if(r.ok)update(s=>({...s,calendar:r.calendar}));notify(r.why);};
   const reset=item=>{update(s=>({...s,calendar:SP.unmove(s,monday,item.key)}));setMoving(null);notify(`${item.label} : placement automatique rétabli.`);};
-  // Mes jours d'entraînement : même réponse que dans le dossier joueur, modifiable ici.
-  const free=SP.freeDays(data),perWeek=SP.target(data);
-  const setLife=(k,v)=>update(s=>{const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});return {...s,dossier:{...base,answers:{...(base.answers||{}),[k]:v}}};});
-  const fullDate=date=>new Date(`${date}T12:00:00`).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'numeric'});
-  // Type de journée : un seul jour (cette semaine) ou toute la semaine type.
-  const setMode=(date,mode,every)=>update(s=>{
-    let next={...s,calendar:SP.setDayMode(s,date,mode,{every})};
-    const wd=SP.weekday(date),days=SP.freeDays(s);
-    // « Auto » sur un jour non disponible le rend disponible : sinon l'app n'y placerait rien.
-    if(every&&mode==='auto'&&!days.includes(wd)){const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});next={...next,dossier:{...base,answers:{...(base.answers||{}),freeDays:[...days,wd].sort((a,b)=>a-b)}}};}
-    return next;
-  });
-  const weekMode=wd=>{const m=SP.dayMode({calendar:{week:(data.calendar||{}).week||{}}},SP.at(monday,wd));return m==='auto'&&!free.includes(wd)?'off':m;};
-  const modeOptions=Object.entries(SP.MODES).map(([value,label])=>({value,label}));
-  const sk=data.skills?.program;
-  const setSkillsPerWeek=n=>update(s=>({...s,skills:{...s.skills,program:{...s.skills.program,perWeek:n,status:'active'}}}));
+  const free=SP.freeDays(data);
+  // Type de journée d'un seul jour (cette semaine) ; la semaine type se règle dans « Mes thèmes ».
+  const setMode=(date,mode)=>update(s=>({...s,calendar:SP.setDayMode(s,date,mode,{every:false})}));
+  const modeOptions=date=>Object.entries(SP.modesFor?SP.modesFor(data,date):SP.MODES).map(([value,label])=>({value,label}));
   const exportIcs=()=>{ptDownload(`rehaab-plan-${now}.ics`,SP.ics(data,now,4),'text/calendar');notify('Calendrier exporté : ouvre le fichier pour ajouter les séances à ton agenda.');};
-  const physCount=week.days.flatMap(d=>d.items).filter(x=>x.physical).length,cardioCount=week.days.flatMap(d=>d.items).filter(x=>x.type==='cardio').length;
-  const BC=window.BasketCardio,cardioPerWeek=BC?BC.perWeek(data):0;
-  const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n,chosen:true}}));
-  // Lot 42 : circuit training (0 ou 1 par semaine), en plus du cardio.
-  const circuitPerWeek=BC&&BC.circuitPerWeek?BC.circuitPerWeek(data):0;
-  const setCircuit=n=>update(s=>{const c={...(s.cardio||{})};if(n===0)c.circuit=0;else delete c.circuit;return {...s,cardio:c};});
-  // Lot 44 : jour fixe du circuit, toutes les semaines (« L'app choisit » = placement auto).
-  const circuitDay=Number.isInteger(data.cardio?.circuitDay)?String(data.cardio.circuitDay):'auto';
-  const setCircuitDay=v=>update(s=>{const c={...(s.cardio||{})};if(v==='auto')delete c.circuitDay;else c.circuitDay=Number(v);return {...s,cardio:c};});
-  // Lot 44 : choix du jour, partagé entre les séances placées et le circuit sans jour (here = null).
+  // Lot 45 : le jour ouvert (aujourd'hui par défaut) montre ses actions ; les autres jours restent en une ligne.
+  const visible=week.days.filter(d=>!(d.before&&d.items.length===0));
+  const open=visible.find(d=>d.date===picked)?.date||visible.find(d=>d.date===now)?.date||visible.find(d=>diff0(d.date,now)>=0)?.date||visible[0]?.date;
+  const pick=date=>{setPicked(date);setMoving(null);setConfirm(null);setSwapOpen(false);const el=document.getElementById(`day-${date}`);if(el&&el.scrollIntoView)el.scrollIntoView({block:'nearest',behavior:'smooth'});};
+  const themesInWeek=[...new Set(week.days.flatMap(d=>d.items.map(ptThemeOf)))];
   const movePanel=(item,here)=><div className="calendar-move stack-sm" role="group" aria-label={`Choisir le jour de ${item.label}`}>
             <div className="calendar-move-days">{week.days.map(x=>{const past=diff0(x.date,now)<0,isHere=x.date===here,rule=!past&&!isHere?SP.ruleBreakAt(data,monday,item.key,x.date):null;
-              return <button key={x.date} className={`calendar-move-day${rule?' has-rule':''}`} disabled={past||isHere} aria-pressed={isHere} onClick={()=>moveTo(item,x.date)}><strong>{fullDate(x.date)}</strong><small>{isHere?'Jour actuel':past?'Passé':rule?'⚠ règle':x.club.match?'Match':x.club.practice?'Club':free.includes(x.weekday)?'Libre':'Jour off'}</small></button>;})}</div>
-            {confirm?.item.key===item.key&&<div className="notice warning stack-sm" role="alert"><p><strong>{fullDate(confirm.date)} :</strong> {confirm.why} Placer quand même ?</p><div className="button-row"><PTButton primary onClick={()=>moveTo(item,confirm.date,true)}>Oui, ce jour-là</PTButton><PTButton quiet onClick={()=>setConfirm(null)}>Choisir un autre jour</PTButton></div></div>}
+              return <button key={x.date} className={`calendar-move-day${rule?' has-rule':''}`} disabled={past||isHere} aria-pressed={isHere} onClick={()=>moveTo(item,x.date)}><strong>{ptLongDay(x.date)}</strong><small>{isHere?'Jour actuel':past?'Passé':rule?'⚠ règle':x.club.match?'Match':x.club.practice?'Club':free.includes(x.weekday)?'Libre':'Jour off'}</small></button>;})}</div>
+            {confirm?.item.key===item.key&&<div className="notice warning stack-sm" role="alert"><p><strong>{ptLongDay(confirm.date)} :</strong> {confirm.why} Placer quand même ?</p><div className="button-row"><PTButton primary onClick={()=>moveTo(item,confirm.date,true)}>Oui, ce jour-là</PTButton><PTButton quiet onClick={()=>setConfirm(null)}>Choisir un autre jour</PTButton></div></div>}
             {item.moved&&<button className="text-button" onClick={()=>reset(item)}>Laisser l’app choisir le jour</button>}
             <p className="fine">Pour une autre semaine, change de semaine avec les flèches en haut.</p>
           </div>;
-  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine, jour par jour.</PTPageHead>
+  return <><PTPageHead onBack={()=>go('pathway')} eyebrow={phase?`${phase.name} · semaine ${week.phase.week}`:'Mon plan'} title="Mon planning.">Ta semaine d’un coup d’œil. Touche un jour pour ses séances.</PTPageHead>
     <div className="stack-lg">
-      <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>setShift(shift-1)}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>setShift(shift+1)}><PTIcon name="arrow" size={18}/></button></div>
-      <p className="calendar-balance"><span><strong>{physCount}</strong> muscu</span><span><strong>{week.skills.placed}</strong> skills</span><span><strong>{week.days.flatMap(d=>d.items).filter(x=>x.type==='shooting').length}</strong> tir</span>{BC&&<span><strong>{cardioCount}</strong> cardio</span>}<span className="fine">cette semaine</span></p>
+      <div className="stack-sm">
+        <div className="calendar-nav"><button className="icon-button" aria-label="Semaine précédente" onClick={()=>{setShift(shift-1);setPicked(null);}}><PTIcon name="back" size={18}/></button><strong>Semaine du {ptShortDay(monday)}</strong><button className="icon-button" aria-label="Semaine suivante" onClick={()=>{setShift(shift+1);setPicked(null);}}><PTIcon name="arrow" size={18}/></button></div>
+        <div className="calendar-grid" role="group" aria-label="Ta semaine">{week.days.map(d=>{const items=d.items.filter(x=>x.type!=='care'),past=diff0(d.date,now)<0;
+          return <button key={d.date} className={`calendar-cell${d.date===now?' is-today':''}${d.date===open?' is-open':''}${past?' is-past':''}${d.before?' is-before':''}`} aria-pressed={d.date===open} aria-label={`${d.label} ${ptShortDay(d.date)} : ${items.length?items.map(x=>x.label).join(', '):d.club.match?'match':d.club.practice?'club':'repos'}`} disabled={d.before&&!d.items.length} onClick={()=>pick(d.date)}>
+            <small>{d.label.slice(0,3)}</small><em>{Number(d.date.slice(8))}</em>
+            <i aria-hidden="true">{items.map(x=><b key={x.key} className={`theme-dot theme-${ptThemeOf(x)} is-${x.status}`}><PTIcon name={ptThemeIcon[ptThemeOf(x)]||'weight'} size={12}/></b>)}{!items.length&&!d.club.match&&!d.club.practice&&<b className="theme-dot is-rest"/>}</i>
+            {d.club.match?<span className="cell-tag is-match">Match</span>:d.club.practice?<span className="cell-tag">Club</span>:null}
+          </button>;})}</div>
+        {themesInWeek.length>0&&<p className="calendar-legend">{themesInWeek.map(t=><span key={t} className={`theme-${t}`}><b className="theme-dot"><PTIcon name={ptThemeIcon[t]||'weight'} size={12}/></b>{ptThemeLabel[t]||t}</span>)}</p>}
+      </div>
+      <PTThemesOff data={data} go={go}/>
+      {shift===0&&<PTThemeSuggestion data={data} update={update} notify={notify}/>}
       {week.skills.placed<week.skills.wanted&&<p className="notice warning">{week.skills.wanted-week.skills.placed} séance{week.skills.wanted-week.skills.placed>1?'s':''} skills sans place cette semaine : règle un jour sur « Skills » ou « Muscu + skills ».</p>}
-      <details className="card stack-sm calendar-life disclosure">
-        <summary><strong>Ma semaine type</strong><small>Le type de chaque jour, toutes les semaines</small></summary>
-        <div className="stack-sm">
-          <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setMode(SP.at(monday,i),e.target.value,true)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
-          <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique.</p>
-          <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={perWeek} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>
-          <div className="topline"><span className="fine">Terrain de basket</span><PTChips value={!!(data.calendar&&data.calendar.courtNear)} onChange={v=>update(s=>({...s,calendar:{...(SP.validateCalendar(s.calendar)||{moves:{},skips:{},forced:{},week:{},dates:{},excused:null,rain:[]}),courtNear:v}}))} options={[{value:false,label:'Loin de chez moi'},{value:true,label:'À côté'}]}/></div>
-          <p className="fine">{data.calendar&&data.calendar.courtNear?'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.':'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'}</p>
-          {BC&&<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioPerWeek} onChange={setCardioPerWeek} options={[0,1,2,3].map(n=>({value:n,label:String(n)}))}/></div>}
-          {BC&&BC.circuitPerWeek&&<div className="topline"><span className="fine">Circuit training full body / semaine</span><PTChips value={circuitPerWeek} onChange={setCircuit} options={[0,1].map(n=>({value:n,label:String(n)}))}/></div>}
-          {BC&&BC.circuitPerWeek&&circuitPerWeek>0&&<label className="calendar-mode-row"><span>Jour du circuit</span><select aria-label="Jour du circuit training" value={circuitDay} onChange={e=>setCircuitDay(e.target.value)}><option value="auto">L’app choisit</option>{SP.DAYS.map((d,i)=><option key={d} value={i}>{d}</option>)}</select></label>}
-          {sk?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>
-            :<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire skills pour ajouter des séances skills →</button>}
-        </div>
-      </details>
       {week.warnings.length>0&&<div className="notice warning"><ul className="reason-list">{week.warnings.map(w=><li key={w}>{w}</li>)}</ul></div>}
       {error&&<p className="error" role="alert">{error}</p>}
       {(()=>{const gone=week.days.filter(d=>d.before&&d.items.length===0);return gone.length>0&&<p className="fine calendar-before">{gone.length>1?`${gone[0].label} → ${gone[gone.length-1].label}`:gone[0].label} : avant le début de ton plan.</p>;})()}
-      {(week.unplaced||[]).length>0&&<div className="card stack-sm calendar-unplaced-day"><strong>À placer cette semaine</strong>{week.unplaced.map(item=><div key={item.key} className="calendar-item calendar-unplaced is-planned">
-        <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
+      {(week.unplaced||[]).length>0&&<div className="card stack-sm calendar-unplaced-day"><strong>À placer cette semaine</strong>{week.unplaced.map(item=><div key={item.key} className={`calendar-item calendar-unplaced is-planned theme-${ptThemeOf(item)}`}>
+        <PTIcon name={ptThemeIcon[ptThemeOf(item)]||'weight'} size={18}/>
         <span><strong>{item.label}</strong><small>{item.minutes} min</small><small className="calendar-warning">⚠ {item.why}</small></span>
         <span className="calendar-actions"><button className="text-button calendar-move-btn" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button></span>
         {moving===item.key&&movePanel(item,null)}
       </div>)}</div>}
-      <ol className="calendar-week">{week.days.filter(d=>!(d.before&&d.items.length===0)).map(d=><li key={d.date} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}`}>
-        <div className="calendar-day-head"><strong>{d.label}</strong><span className="caption">{ptShortDay(d.date)}</span>{!d.club.match&&diff0(d.date,now)>=0&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value,false)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}{d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
-        {d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
-        {d.date===now&&SP.swapOptions&&<button className="text-button calendar-swap" aria-expanded={swapOpen} onClick={()=>setSwapOpen(!swapOpen)}>Faire la séance d’un autre jour</button>}
-        {d.date===now&&swapOpen&&<PTSwapPicker data={data} update={update} notify={notify} after={()=>setSwapOpen(false)}/>}
+      <ol className="calendar-week">{visible.map(d=>{const isOpen=d.date===open,future=diff0(d.date,now)>=0;
+        return <li key={d.date} id={`day-${d.date}`} className={`calendar-day${d.date===now?' is-today':''}${d.club.match?' is-match':''}${isOpen?' is-open':' is-closed'}`}>
+        <div className="calendar-day-head">{isOpen?<strong>{d.label}</strong>:<button className="calendar-day-toggle" aria-expanded={false} onClick={()=>pick(d.date)}><strong>{d.label}</strong></button>}<span className="caption">{ptShortDay(d.date)}</span>
+          {isOpen&&!d.club.match&&future&&<select className="calendar-day-mode" aria-label={`Type de journée, ${d.label.toLowerCase()} ${ptShortDay(d.date)}`} value={d.mode==='auto'&&!d.free?'off':d.mode} onChange={e=>setMode(d.date,e.target.value)}>{modeOptions(d.date).map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select>}
+          {d.club.match&&<span className="badge">Match</span>}{d.club.practice&&<span className="badge quiet">Club</span>}{!d.free&&!d.club.match&&!d.club.practice&&<span className="caption">non dispo</span>}{isOpen&&d.weighIn&&window.BodyWeight&&<button className="text-button calendar-weigh" onClick={()=>go('weight')}>Pesée du matin</button>}</div>
+        {isOpen&&d.date===now&&typeof PTMishap==='function'&&d.items.some(x=>x.status!=='done')&&<button className="text-button calendar-mishap" onClick={()=>go('mishap')}>Je ne peux pas aujourd’hui →</button>}
+        {isOpen&&d.date===now&&SP.swapOptions&&<button className="text-button calendar-swap" aria-expanded={swapOpen} onClick={()=>setSwapOpen(!swapOpen)}>Faire la séance d’un autre jour</button>}
+        {isOpen&&d.date===now&&swapOpen&&<PTSwapPicker data={data} update={update} notify={notify} after={()=>setSwapOpen(false)}/>}
         {d.items.length===0&&<p className="fine">{d.before?'Avant le début de ton plan.':d.club.match?'Échauffement avant match, rien d’autre.':d.club.practice?'Entraînement au club.':'Repos'}</p>}
-        {d.items.map((item,idx)=><div key={item.key} className={`calendar-item is-${item.status}`}>
-          <PTIcon name={ptCalIcon[item.type]||'weight'} size={18}/>
-          <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
-          {item.status!=='done'&&diff0(d.date,now)>=0&&<span className="calendar-actions">
+        {d.items.map(item=><div key={item.key} className={`calendar-item is-${item.status} theme-${ptThemeOf(item)}`} onClick={isOpen?undefined:()=>pick(d.date)}>
+          <PTIcon name={ptThemeIcon[ptThemeOf(item)]||'weight'} size={18}/>
+          <span><strong>{item.label}</strong><small>{item.minutes} min · {ptCalStatus[item.status]}{item.moved?' · placée par toi':''}{item.legs==='heavy'?' · jambes':''}</small>{isOpen&&item.warning&&<small className="calendar-warning">⚠ {item.warning}</small>}</span>
+          {isOpen&&item.status!=='done'&&future&&<span className="calendar-actions">
             {d.date===now&&<PTButton primary={d.items.filter(x=>x.status!=='done').indexOf(item)===0} onClick={()=>launch(item,d)}>Lancer</PTButton>}
             {d.date===now&&typeof PTMishap!=='function'&&<button className="chip-action" onClick={()=>cannot(item)}>Je ne peux pas aujourd’hui</button>}
             <button className="text-button calendar-move-btn" aria-expanded={moving===item.key} onClick={()=>{setConfirm(null);setMoving(moving===item.key?null:item.key);}}>Choisir le jour</button>
           </span>}
-          {moving===item.key&&movePanel(item,d.date)}
+          {isOpen&&moving===item.key&&movePanel(item,d.date)}
         </div>)}
-      </li>)}</ol>
-      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li><li>Circuit training : à la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S’il n’a pas de jour idéal, il reste au programme avec une alerte, plutôt que de disparaître.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
+      </li>;})}</ol>
       <div className="home-options">
+        <button className="home-action" onClick={()=>go('themes')}><PTIcon name="spark"/><span><strong>Mes thèmes</strong><small>Allumer, éteindre ou mettre en pause muscu, skills, tir, cardio… et ta semaine type.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={()=>go('plan')}><PTIcon name="chart"/><span><strong>Mon plan de saison</strong><small>Les phases, où tu en es, et pourquoi ce plan.</small></span><PTIcon name="arrow" size={18}/></button>
         <button className="home-action" onClick={exportIcs}><PTIcon name="today"/><span><strong>Ajouter à mon agenda</strong><small>Fichier .ics des 4 prochaines semaines, avec les rappels de ton téléphone.</small></span><PTIcon name="arrow" size={18}/></button>
       </div>
+      <details className="disclosure"><summary>Les règles du calendrier</summary><div><ul className="reason-list"><li>Pas de jambes lourdes la veille ni le lendemain d’un match.</li><li>48 heures entre deux séances de jambes lourdes.</li><li>Pas de skills un jour de club (le basket y est déjà), sauf si tu règles ce jour sur « Skills » ou « Muscu + skills ».</li><li>Skills sans jour libre : elles passent après une séance physique, en version courte, plutôt que de disparaître.</li><li>Une seule séance physique par jour, et pas plus que ton objectif de la semaine.</li><li>Circuit training : à la maison, ni un jour de match, ni la veille ou le lendemain, ni un jour de club, ni avec des jambes lourdes. S’il n’a pas de jour idéal, il reste au programme avec une alerte, plutôt que de disparaître.</li><li>Un thème éteint dans « Mes thèmes » ne place plus rien ; le soin reste toujours là tant qu’une douleur est active.</li></ul><p className="fine">Ce sont des conventions d’entraînement courantes, pas des normes médicales (voir les sources du plan).</p></div></details>
     </div></>;
 }
+
+// Lot 45 : « Mes thèmes ». Chaque thème s'allume, s'éteint ou se met en pause ; le planning se refait seul.
+// Éteindre montre d'abord ce qui change cette semaine ; « Annuler » remet tout comme avant.
+function PTThemes({data,update,go,notify}){
+  const [pending,setPending]=usePTState(null),[undo,setUndo]=usePTState(null);
+  if(!SP||!SP.THEMES)return <p className="empty">Thèmes indisponibles.</p>;
+  const now=PT.dateKey(),monday=SP.mondayOf(now),BC=window.BasketCardio;
+  const sk=data.skills?.program,skActive=!!(sk&&sk.status==='active');
+  const cardioN=BC?BC.perWeek(data):0,circuitN=BC&&BC.circuitPerWeek?BC.circuitPerWeek(data):0;
+  const themeOn=id=>SP.themeOn(data,id,now);
+  const isOn=id=>themeOn(id)&&(id==='skills'?skActive:id==='cardio'?cardioN>0:id==='circuit'?circuitN>0:true);
+  const offInfo=id=>SP.validateThemes(data.themes).off[id];
+  const week=s=>SP.weekSchedule(s,monday,now);
+  const slice=s=>({themes:s.themes,cardio:s.cardio,skills:s.skills});
+  const offState=(id,weeks)=>({...data,themes:SP.setTheme(data,id,false,{weeks,now})});
+  const onState=id=>{
+    let next={...data,themes:SP.setTheme(data,id,true,{now})};
+    if(id==='cardio'&&cardioN===0)next={...next,cardio:{...(next.cardio||{}),perWeek:1,chosen:true}};
+    if(id==='circuit'){const c={...(next.cardio||{})};delete c.circuit;next={...next,cardio:c};}
+    return next;
+  };
+  const say=(d,word)=>d.none?`Rien ne change d’ici dimanche.`:[d.removed.length?`${word} : ${d.removed.map(x=>`${x.label} (${x.day})`).join(', ')}.`:'',d.added.length?`Ajouté : ${d.added.map(x=>`${x.label} (${x.day})`).join(', ')}.`:'',d.moved.length?`Déplacé : ${d.moved.map(x=>`${x.label} → ${x.day}`).join(', ')}.`:'',d.rest.length?`${d.rest.join(', ')} : repos.`:''].filter(Boolean).join(' ');
+  const apply=(next,text)=>{setUndo({prev:slice(data),text});setPending(null);update(s=>({...s,...slice(next)}));notify(text);};
+  const turnOn=id=>{const next=onState(id),d=ptWeekDiff(week(data),week(next),now);apply(next,`${SP.THEMES[id].label} rallumé. ${say(d,'Retiré')}`);};
+  const ask=id=>setPending({id,weeks:0});
+  const setLife=(k,v)=>update(s=>{const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});return {...s,dossier:{...base,answers:{...(base.answers||{}),[k]:v}}};});
+  const setSkillsPerWeek=n=>update(s=>({...s,skills:{...s.skills,program:{...s.skills.program,perWeek:n,status:'active'}}}));
+  const setCardioPerWeek=n=>update(s=>({...s,cardio:{...(s.cardio||{}),perWeek:n,chosen:true}}));
+  const circuitDay=Number.isInteger(data.cardio?.circuitDay)?String(data.cardio.circuitDay):'auto';
+  const setCircuitDay=v=>update(s=>{const c={...(s.cardio||{})};if(v==='auto')delete c.circuitDay;else c.circuitDay=Number(v);return {...s,cardio:c};});
+  const free=SP.freeDays(data);
+  const weekMode=wd=>{const m=SP.dayMode({calendar:{week:(data.calendar||{}).week||{}},themes:data.themes},SP.at(monday,wd));return m==='auto'&&!free.includes(wd)?'off':m;};
+  const setWeekMode=(wd,mode)=>update(s=>{
+    const date=SP.at(monday,wd);let next={...s,calendar:SP.setDayMode(s,date,mode,{every:true})};
+    const days=SP.freeDays(s);
+    if(mode==='auto'&&!days.includes(wd)){const PD=window.PlayerDossier,base=s.dossier||(PD?PD.blank():{answers:{}});next={...next,dossier:{...base,answers:{...(base.answers||{}),freeDays:[...days,wd].sort((a,b)=>a-b)}}};}
+    return next;
+  });
+  const modeOptions=Object.entries(SP.modesFor?SP.modesFor(data,now):SP.MODES).map(([value,label])=>({value,label}));
+  const status=id=>{const o=offInfo(id);if(o)return o.until?`En pause jusqu’au ${ptLongDay(o.until)}`:'Éteint';if(id==='skills'&&!skActive)return 'Questionnaire à faire';if(id==='cardio'&&!cardioN)return 'Réglé sur 0';if(id==='circuit'&&!circuitN)return 'Réglé sur 0';return 'Allumé';};
+  const settings=id=>{
+    if(id==='muscu')return <div className="topline"><span className="fine">Séances physiques / semaine</span><PTChips value={SP.target(data)} onChange={v=>setLife('sessions',String(v))} options={[2,3,4,5,6].map(n=>({value:n,label:String(n)}))}/></div>;
+    if(id==='skills')return skActive?<div className="topline"><span className="fine">Séances skills / semaine</span><PTChips value={sk.perWeek} onChange={setSkillsPerWeek} options={[1,2,3,4].map(n=>({value:n,label:String(n)}))}/></div>:null;
+    if(id==='cardio')return BC?<div className="topline"><span className="fine">Cardio / semaine, club compris</span><PTChips value={cardioN} onChange={setCardioPerWeek} options={[1,2,3].map(n=>({value:n,label:String(n)}))}/></div>:null;
+    if(id==='circuit')return <label className="calendar-mode-row"><span>Jour du circuit</span><select aria-label="Jour du circuit training" value={circuitDay} onChange={e=>setCircuitDay(e.target.value)}><option value="auto">L’app choisit</option>{SP.DAYS.map((d,i)=><option key={d} value={i}>{d}</option>)}</select></label>;
+    if(id==='shooting')return <p className="fine">Une séance par semaine, plus une par jour réglé sur « Shooting » dans ta semaine type.</p>;
+    if(id==='vivacite')return <p className="fine">Une à deux fois par semaine, à partir de l’étape 2 du parcours.</p>;
+    return null;
+  };
+  const preview=pending?ptWeekDiff(week(data),week(offState(pending.id,pending.weeks)),now):null;
+  return <><PTPageHead onBack={()=>go('calendar')} title="Mes thèmes.">Garde ce que tu veux travailler. Le planning se refait seul, sans casser tes règles de charge.</PTPageHead>
+    <div className="stack-lg">
+      {undo&&<div className="theme-undo" role="status"><p>{undo.text}</p><button className="text-button" onClick={()=>{update(s=>({...s,...undo.prev}));setUndo(null);notify('Retour au planning d’avant.');}}>Annuler</button></div>}
+      <PTThemeSuggestion data={data} update={update} notify={notify}/>
+      <ul className="theme-list">{Object.entries(SP.THEMES).map(([id,t])=>{const on=isOn(id),asking=pending?.id===id;
+        return <li key={id} className={`theme-row theme-${id}${on?' is-on':' is-off'}`}>
+          <div className="theme-row-head">
+            <b className="theme-dot is-big"><PTIcon name={ptThemeIcon[id]||'weight'} size={18}/></b>
+            <span className="theme-row-text"><strong>{t.label}</strong><small>{status(id)}</small></span>
+            {id==='skills'&&!skActive&&themeOn(id)?<button className="text-button" onClick={()=>go('skills-quiz')}>Faire le questionnaire</button>
+              :<button type="button" role="switch" aria-checked={on} aria-label={`${t.label} : ${on?'allumé':'éteint'}`} className="theme-switch" onClick={()=>on?ask(id):turnOn(id)}><span/></button>}
+          </div>
+          <p className="fine theme-what">{t.what}</p>
+          {on&&!asking&&settings(id)}
+          {asking&&<div className="theme-confirm stack-sm">
+            <div className="topline"><span className="fine">Combien de temps ?</span><PTChips value={pending.weeks} onChange={v=>setPending({...pending,weeks:v})} options={[{value:0,label:'Jusqu’à nouvel ordre'},{value:1,label:'1 sem.'},{value:2,label:'2 sem.'},{value:4,label:'4 sem.'}]}/></div>
+            <p className="theme-preview"><strong>Cette semaine</strong> {say(preview,'En moins')}</p>
+            {id==='muscu'&&<p className="notice warning">Ton parcours « Retour au jeu » se met en pause : ses étapes et ses tests n’avancent plus tant que la muscu est éteinte.</p>}
+            <div className="button-row"><PTButton primary onClick={()=>apply(offState(id,pending.weeks),`${t.label} ${pending.weeks?`en pause ${pending.weeks} sem.`:'éteint'}. ${say(preview,'Retiré')}`)}>{pending.weeks?'Mettre en pause':'Éteindre'}</PTButton><PTButton quiet onClick={()=>setPending(null)}>Annuler</PTButton></div>
+          </div>}
+        </li>;})}</ul>
+      <p className="fine">Le soin n’est pas un thème : il reste au programme tant qu’une douleur est active. Extra garde tout à la carte, tir compris.</p>
+      <details className="card stack-sm calendar-life disclosure">
+        <summary><strong>Ma semaine type</strong><small>Le type de chaque jour, toutes les semaines</small></summary>
+        <div className="stack-sm">
+          <div className="calendar-modes">{SP.DAYS.map((d,i)=><label key={d} className="calendar-mode-row"><span>{d}</span><select value={weekMode(i)} onChange={e=>setWeekMode(i,e.target.value)}>{modeOptions.map(o=><option key={o.value} value={o.value}>{o.label}</option>)}</select></label>)}</div>
+          <p className="fine">« Auto » : l’app choisit selon tes règles de charge. « Muscu + skills » : la séance skills, raccourcie, suit la séance physique. Les types liés à un thème éteint sont masqués.</p>
+          <div className="topline"><span className="fine">Terrain de basket</span><PTChips value={!!(data.calendar&&data.calendar.courtNear)} onChange={v=>update(s=>({...s,calendar:{...(SP.validateCalendar(s.calendar)||SP.blankCalendar()),courtNear:v}}))} options={[{value:false,label:'Loin de chez moi'},{value:true,label:'À côté'}]}/></div>
+          <p className="fine">{data.calendar&&data.calendar.courtNear?'À côté : une séance peut commencer au terrain (sprints, dribble) et finir à la maison.':'Loin : chaque séance se fait à un seul endroit. À la maison : charges, soin, abdos et sauts sur place. Au terrain : sprints, vivacité, navettes, dribble.'}</p>
+        </div>
+      </details>
+      <PTButton quiet onClick={()=>go('calendar')}>Voir mon planning</PTButton>
+    </div></>;
+}
+
 const diff0=(a,b)=>PT.dayDiff(a,b);
 
 // Lot 42 : faire aujourd'hui la séance d'un autre jour de la semaine (pluie, envie, contrainte).
